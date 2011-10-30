@@ -1,0 +1,21 @@
+Version 1.1
+- Added swatches and swatch files (.swc, simple format, see Swatches/swatches.txt)
+- Fixed a few bugs relating to the color square
+- Added color sliders, more visual representation of color
+- Fixed undo/redo getting lost on player switch (originally was intended, removed now and switching works fine without committing)
+- Added keyboard shortcuts and customizable shortcut option
+- Added eraser, dodge and burn (also known as highlight and shadow) tools; note that dodge/burn is at a fixed 25% exposure at the moment.
+- All toolbar icons have mirror menu icons
+- Overlay is now togglable
+- New overlay picture (thanks to Zero)
+- Changed the visuals of the toolbar and menu strips
+- Fixed commit not re-enabling under certain circumstances
+- Removed some extraneous events
+- Fixed grass not appearing behind transparent objects
+- Decided, at release time, to start writing down things I change as I do them so I don't forget
+- Now including the Program Debug Database (pdb) file, so that crashes give me more important information
+- Added a more telling exception handler
+- Only draws grass on top face now, won't get in the way if you try to paint the feet
+
+Version 1.0
+- First release, nothing could of changed, silly.
