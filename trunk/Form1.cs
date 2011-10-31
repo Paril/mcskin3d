@@ -6,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -16,371 +15,16 @@ using Devcorp.Controls.Design;
 using MB.Controls;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System.Security.Cryptography;
+using Paril.Settings;
+using Paril.Settings.Serializers;
+using Paril.Components;
+using Paril.Components.Shortcuts;
 
 namespace MCSkin3D
 {
 	public partial class Form1 : Form
 	{
-		public const string VersionString = "1.1";
-
-		public static class HexSerializer
-		{
-			public static string GetHex(string s)
-			{
-				string h = "";
-
-				foreach (var c in s)
-					h += string.Format("{0:X2}", (int)c);
-
-				return h;
-			}
-
-			public static string GetString(string hex)
-			{
-				string s = "";
-
-				for (int i = 0; i < hex.Length; i += 2)
-					s += (char)int.Parse("" + hex[i] + hex[i + 1], System.Globalization.NumberStyles.HexNumber);
-
-				return s;
-			}
-		}
-
-		public class PasswordTypeSerializer<T> : TypeSerializer
-			where T : SymmetricAlgorithm, new()
-		{
-			/// <summary>
-			/// Encrypts specified plaintext using Rijndael symmetric key algorithm
-			/// and returns a base64-encoded result.
-			/// </summary>
-			/// <param name="plainText">
-			/// Plaintext value to be encrypted.
-			/// </param>
-			/// <param name="passPhrase">
-			/// Passphrase from which a pseudo-random password will be derived. The
-			/// derived password will be used to generate the encryption key.
-			/// Passphrase can be any string. In this example we assume that this
-			/// passphrase is an ASCII string.
-			/// </param>
-			/// <param name="saltValue">
-			/// Salt value used along with passphrase to generate password. Salt can
-			/// be any string. In this example we assume that salt is an ASCII string.
-			/// </param>
-			/// <param name="hashAlgorithm">
-			/// Hash algorithm used to generate password. Allowed values are: "MD5" and
-			/// "SHA1". SHA1 hashes are a bit slower, but more secure than MD5 hashes.
-			/// </param>
-			/// <param name="passwordIterations">
-			/// Number of iterations used to generate password. One or two iterations
-			/// should be enough.
-			/// </param>
-			/// <param name="initVector">
-			/// Initialization vector (or IV). This value is required to encrypt the
-			/// first block of plaintext data. For RijndaelManaged class IV must be 
-			/// exactly 16 ASCII characters long.
-			/// </param>
-			/// <param name="keySize">
-			/// Size of encryption key in bits. Allowed values are: 128, 192, and 256. 
-			/// Longer keys are more secure than shorter keys.
-			/// </param>
-			/// <returns>
-			/// Encrypted value formatted as a base64-encoded string.
-			/// </returns>
-			public static string Encrypt(string plainText,
-										 string passPhrase,
-										 string saltValue,
-										 string hashAlgorithm,
-										 int passwordIterations,
-										 string initVector,
-										 int keySize)
-			{
-				// Convert strings into byte arrays.
-				// Let us assume that strings only contain ASCII codes.
-				// If strings include Unicode characters, use Unicode, UTF7, or UTF8 
-				// encoding.
-				byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-				byte[] saltValueBytes  = Encoding.ASCII.GetBytes(saltValue);
-
-				// Convert our plaintext into a byte array.
-				// Let us assume that plaintext contains UTF8-encoded characters.
-				byte[] plainTextBytes  = Encoding.UTF8.GetBytes(plainText);
-
-				// First, we must create a password, from which the key will be derived.
-				// This password will be generated from the specified passphrase and 
-				// salt value. The password will be created using the specified hash 
-				// algorithm. Password creation can be done in several iterations.
-				PasswordDeriveBytes password = new PasswordDeriveBytes(
-																passPhrase,
-																saltValueBytes,
-																hashAlgorithm,
-																passwordIterations);
-
-				// Use the password to generate pseudo-random bytes for the encryption
-				// key. Specify the size of the key in bytes (instead of bits).
-				byte[] keyBytes = password.GetBytes(keySize / 8);
-
-				// Create uninitialized Rijndael encryption object.
-				T symmetricKey = new T();
-
-				// It is reasonable to set encryption mode to Cipher Block Chaining
-				// (CBC). Use default options for other symmetric key parameters.
-				symmetricKey.Mode = CipherMode.CBC;
-
-				// Generate encryptor from the existing key bytes and initialization 
-				// vector. Key size will be defined based on the number of the key 
-				// bytes.
-				ICryptoTransform encryptor = symmetricKey.CreateEncryptor(
-																 keyBytes,
-																 initVectorBytes);
-
-				// Define memory stream which will be used to hold encrypted data.
-				MemoryStream memoryStream = new MemoryStream();
-
-				// Define cryptographic stream (always use Write mode for encryption).
-				CryptoStream cryptoStream = new CryptoStream(memoryStream,
-															 encryptor,
-															 CryptoStreamMode.Write);
-				// Start encrypting.
-				cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-
-				// Finish encrypting.
-				cryptoStream.FlushFinalBlock();
-
-				// Convert our encrypted data from a memory stream into a byte array.
-				byte[] cipherTextBytes = memoryStream.ToArray();
-
-				// Close both streams.
-				memoryStream.Close();
-				cryptoStream.Close();
-
-				// Convert encrypted data into a base64-encoded string.
-				string cipherText = Convert.ToBase64String(cipherTextBytes);
-
-				// Return encrypted string.
-				return cipherText;
-			}
-
-			/// <summary>
-			/// Decrypts specified ciphertext using Rijndael symmetric key algorithm.
-			/// </summary>
-			/// <param name="cipherText">
-			/// Base64-formatted ciphertext value.
-			/// </param>
-			/// <param name="passPhrase">
-			/// Passphrase from which a pseudo-random password will be derived. The
-			/// derived password will be used to generate the encryption key.
-			/// Passphrase can be any string. In this example we assume that this
-			/// passphrase is an ASCII string.
-			/// </param>
-			/// <param name="saltValue">
-			/// Salt value used along with passphrase to generate password. Salt can
-			/// be any string. In this example we assume that salt is an ASCII string.
-			/// </param>
-			/// <param name="hashAlgorithm">
-			/// Hash algorithm used to generate password. Allowed values are: "MD5" and
-			/// "SHA1". SHA1 hashes are a bit slower, but more secure than MD5 hashes.
-			/// </param>
-			/// <param name="passwordIterations">
-			/// Number of iterations used to generate password. One or two iterations
-			/// should be enough.
-			/// </param>
-			/// <param name="initVector">
-			/// Initialization vector (or IV). This value is required to encrypt the
-			/// first block of plaintext data. For RijndaelManaged class IV must be
-			/// exactly 16 ASCII characters long.
-			/// </param>
-			/// <param name="keySize">
-			/// Size of encryption key in bits. Allowed values are: 128, 192, and 256.
-			/// Longer keys are more secure than shorter keys.
-			/// </param>
-			/// <returns>
-			/// Decrypted string value.
-			/// </returns>
-			/// <remarks>
-			/// Most of the logic in this function is similar to the Encrypt
-			/// logic. In order for decryption to work, all parameters of this function
-			/// - except cipherText value - must match the corresponding parameters of
-			/// the Encrypt function which was called to generate the
-			/// ciphertext.
-			/// </remarks>
-			public static string Decrypt(string cipherText,
-										 string passPhrase,
-										 string saltValue,
-										 string hashAlgorithm,
-										 int passwordIterations,
-										 string initVector,
-										 int keySize)
-			{
-				// Convert strings defining encryption key characteristics into byte
-				// arrays. Let us assume that strings only contain ASCII codes.
-				// If strings include Unicode characters, use Unicode, UTF7, or UTF8
-				// encoding.
-				byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-				byte[] saltValueBytes  = Encoding.ASCII.GetBytes(saltValue);
-
-				// Convert our ciphertext into a byte array.
-				byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
-
-				// First, we must create a password, from which the key will be 
-				// derived. This password will be generated from the specified 
-				// passphrase and salt value. The password will be created using
-				// the specified hash algorithm. Password creation can be done in
-				// several iterations.
-				PasswordDeriveBytes password = new PasswordDeriveBytes(
-																passPhrase,
-																saltValueBytes,
-																hashAlgorithm,
-																passwordIterations);
-
-				// Use the password to generate pseudo-random bytes for the encryption
-				// key. Specify the size of the key in bytes (instead of bits).
-				byte[] keyBytes = password.GetBytes(keySize / 8);
-
-				// Create uninitialized Rijndael encryption object.
-				T symmetricKey = new T();
-
-				// It is reasonable to set encryption mode to Cipher Block Chaining
-				// (CBC). Use default options for other symmetric key parameters.
-				symmetricKey.Mode = CipherMode.CBC;
-
-				// Generate decryptor from the existing key bytes and initialization 
-				// vector. Key size will be defined based on the number of the key 
-				// bytes.
-				ICryptoTransform decryptor = symmetricKey.CreateDecryptor(
-																 keyBytes,
-																 initVectorBytes);
-
-				// Define memory stream which will be used to hold encrypted data.
-				MemoryStream  memoryStream = new MemoryStream(cipherTextBytes);
-
-				// Define cryptographic stream (always use Read mode for encryption).
-				CryptoStream  cryptoStream = new CryptoStream(memoryStream,
-															  decryptor,
-															  CryptoStreamMode.Read);
-
-				// Since at this point we don't know what the size of decrypted data
-				// will be, allocate the buffer long enough to hold ciphertext;
-				// plaintext is never longer than ciphertext.
-				byte[] plainTextBytes = new byte[cipherTextBytes.Length];
-
-				// Start decrypting.
-				int decryptedByteCount = cryptoStream.Read(plainTextBytes,
-														   0,
-														   plainTextBytes.Length);
-
-				// Close both streams.
-				memoryStream.Close();
-				cryptoStream.Close();
-
-				// Convert decrypted data into a string. 
-				// Let us assume that the original plaintext string was UTF8-encoded.
-				string plainText = Encoding.UTF8.GetString(plainTextBytes,
-														   0,
-														   decryptedByteCount);
-
-				// Return decrypted string.   
-				return plainText;
-			}
-
-			static string   passPhrase         = Environment.UserName;        // can be any string
-			static string   saltValue          = Environment.MachineName;        // can be any string
-			static string   hashAlgorithm      = "SHA1";             // can be "MD5"
-			static int      passwordIterations = 2;                  // can be any number
-			static string   initVector         = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
-			static int      keySize            = 256;                // can be 192 or 128
-
-			public override object Deserialize(string str)
-			{
-				return Decrypt(str,
-													passPhrase,
-													saltValue,
-													hashAlgorithm,
-													passwordIterations,
-													initVector,
-													keySize);
-			}
-
-			public override string Serialize(object obj)
-			{
-				return Encrypt((string)obj,
-													passPhrase,
-													saltValue,
-													hashAlgorithm,
-													passwordIterations,
-													initVector,
-													keySize);
-			}
-		}
-
-		public enum TransparencySetting
-		{
-			Off,
-			Helmet,
-			All
-		}
-
-		public static class GlobalSettings
-		{
-			[Save]
-			public static bool Animate { get; set; }
-
-			[Save]
-			public static bool FollowCursor { get; set; }
-
-			[Save]
-			[DefaultValue(true)]
-			public static bool Grass { get; set; }
-
-			[Save]
-			[DefaultValue("")]
-			public static string LastSkin { get; set; }
-
-			[Save]
-			public static bool RememberMe { get; set; }
-
-			[Save]
-			public static bool AutoLogin { get; set; }
-			
-			[Save]
-			[DefaultValue("")]
-			public static string LastUsername { get; set; }
-
-			[Save]
-			[DefaultValue("")]
-			[TypeSerializer(typeof(PasswordTypeSerializer<AesManaged>))]
-			public static string LastPassword { get; set; }
-
-			[Save]
-			[DefaultValue(TransparencySetting.Helmet)]
-			public static TransparencySetting Transparency { get; set; }
-
-			[Save]
-			[DefaultValue(HeadFlag | ChestFlag | LeftArmFlag | RightArmFlag | LeftLegFlag | RightLegFlag)]
-			public static int ViewFlags { get; set; }
-
-			[Save]
-			[DefaultValue(true)]
-			public static bool AlphaCheckerboard { get; set; }
-
-			[Save]
-			[DefaultValue(true)]
-			public static bool TextureOverlay { get; set; }
-
-			[Save]
-			[DefaultValue("")]
-			public static string ShortcutKeys { get; set; }
-		}
-
-		public const int HeadFlag = 1;
-		public const int HelmetFlag = 2;
-		public const int ChestFlag = 4;
-		public const int LeftArmFlag = 8;
-		public const int RightArmFlag = 16;
-		public const int LeftLegFlag = 32;
-		public const int RightLegFlag = 64;
-
-		public static Settings Settings;
-
 		public Form1()
 		{
 			InitializeComponent();
@@ -390,11 +34,9 @@ namespace MCSkin3D
 			animTimer.Elapsed += new System.Timers.ElapsedEventHandler(animTimer_Elapsed);
 			animTimer.Start();
 
-			glControl1.MouseWheel += new MouseEventHandler(glControl1_MouseWheel);
+			GlobalSettings.Load();
 
-			Settings = new Settings();
-			Settings.Structures.Add(typeof(GlobalSettings));
-			Settings.Load("settings.ini");
+			glControl1.MouseWheel += new MouseEventHandler(glControl1_MouseWheel);
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -403,16 +45,35 @@ namespace MCSkin3D
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
 
-			SetCheckbox(HeadFlag, headToolStripMenuItem);
-			SetCheckbox(ChestFlag, chestToolStripMenuItem);
-			SetCheckbox(LeftArmFlag, leftArmToolStripMenuItem);
-			SetCheckbox(RightArmFlag, rightArmToolStripMenuItem);
-			SetCheckbox(HelmetFlag, helmetToolStripMenuItem);
-			SetCheckbox(LeftLegFlag, leftLegToolStripMenuItem);
-			SetCheckbox(RightLegFlag, rightLegToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.HeadFlag, headToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.ChestFlag, chestToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.LeftArmFlag, leftArmToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.RightArmFlag, rightArmToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.HelmetFlag, helmetToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.LeftLegFlag, leftLegToolStripMenuItem);
+			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
+
+			if (Screen.PrimaryScreen.BitsPerPixel != 32)
+			{
+				MessageBox.Show("Sorry, but apparently your video mode doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Application.Exit();
+			}
+
+			menuStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
+			toolStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
+
+			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
+			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
+			blueColorSlider.Renderer = blueRenderer = new ColorSliderRenderer(blueColorSlider);
+			alphaColorSlider.Renderer = alphaRenderer = new ColorSliderRenderer(alphaColorSlider);
+
+			KeyPreview = true;
+			Text = "MCSkin3D v" + ProductVersion[0] + '.' + ProductVersion[2];
+
+			swatchContainer1.AddDirectory("Swatches");
 		}
 
-		void SetCheckbox(int flag, ToolStripMenuItem checkbox)
+		void SetCheckbox(VisiblePartFlags flag, ToolStripMenuItem checkbox)
 		{
 			if ((GlobalSettings.ViewFlags & flag) != 0)
 				checkbox.Checked = true;
@@ -424,323 +85,10 @@ namespace MCSkin3D
 		{
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
-			Settings.Save("settings.ini");
+			GlobalSettings.Save();
 		}
 
-		// Function load a image, turn it into a texture, and return the texture ID as a GLuint for use
-		static int loadImage(string theFileName)
-		{
-			uint imageID;				// Create an image ID as a ULuint
-			int textureID;			// Create a texture ID as a GLuint
-			bool success;			// Create a flag to keep track of success/failure
-			IL.ErrorCode error;				// Create a flag to keep track of the IL error state
-
-			imageID = IL.ilGenImage(); 		// Generate the image ID
-
-			IL.ilBindImage(imageID); 			// Bind the image
-
-			success = IL.ilLoadImage(theFileName); 	// Load the image file
-
-			// If we managed to load the image, then we can start to do things with it...
-			if (success)
-			{
-				// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
-				//Ilu.iluFlipImage();
-
-				// Convert the image into a suitable format to work with
-				// NOTE: If your image contains alpha channel you can replace IL_RGB with IL_RGBA
-				success = IL.ilConvertImage(IL.ColorFormats.RGBA, IL.Types.UnsignedByte);
-
-				// Quit out if we failed the conversion
-				if (!success)
-				{
-					error = IL.ilGetError();
-					throw new Exception();
-				}
-
-				// Generate a new texture
-				textureID = GL.GenTexture();
-
-				// Bind the texture to a name
-				GL.BindTexture(TextureTarget.Texture2D, textureID);
-
-				// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-
-				// Specify the texture specification
-				GL.TexImage2D(TextureTarget.Texture2D, 				// Type of texture
-							 0,				// Pyramid level (for mip-mapping) - 0 is the top level
-							 (PixelInternalFormat)IL.ilGetInteger(IL.Parameters.ImageBPP),	// Image colour depth
-							 IL.ilGetInteger(IL.Parameters.ImageWidth),	// Image width
-							 IL.ilGetInteger(IL.Parameters.ImageHeight),	// Image height
-							 0,				// Border width in pixels (can either be 1 or 0)
-							 (PixelFormat)IL.ilGetInteger(IL.Parameters.ImageFormat),	// Image format (i.e. RGB, RGBA, BGR etc.)
-							 PixelType.UnsignedByte,		// Image data type
-							 IL.ilGetData());			// The actual image data itself
-			}
-			else // If we failed to open the image file in the first place...
-			{
-				error = IL.ilGetError();
-				throw new Exception();
-			}
-
-			IL.ilDeleteImage(imageID); // Because we have already copied image data into texture data we can release memory used by image.
-
-			return textureID; // Return the GLuint to the texture so you can use it!
-		}
-
-		interface Undoable
-		{
-			void Undo(object obj);
-			void Redo(object obj);
-		}
-
-		class PixelsChanged : Undoable
-		{
-			public Color NewColor;
-			public Dictionary<Point, Color> Points = new Dictionary<Point, Color>();
-
-			public void Undo(object obj)
-			{
-				Skin skin = (Skin)obj;
-
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
-				int[] array = new int[64 * 32];
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-
-				foreach (var kvp in Points)
-				{
-					var p = kvp.Key;
-					var color = kvp.Value;
-					array[p.X + (64 * p.Y)] = color.R | (color.G << 8) | (color.B << 16) | (color.A << 24);
-				}
-
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-			}
-
-			public void Redo(object obj)
-			{
-				Skin skin = (Skin)obj;
-
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
-				int[] array = new int[64 * 32];
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-
-				foreach (var p in Points.Keys)
-					array[p.X + (64 * p.Y)] = NewColor.R | (NewColor.G << 8) | (NewColor.B << 16) | (NewColor.A << 24);
-
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-			}
-		}
-
-		class UndoBuffer
-		{
-			List<Undoable> Undos = new List<Undoable>();
-			public int _depth = -1;
-			public object Object;
-
-			public int CurrentIndex
-			{
-				get
-				{
-					if (_depth == -1)
-						return Undos.Count;
-					return _depth;
-				}
-
-				set
-				{
-					_depth = value;
-
-					if (_depth == Undos.Count)
-						_depth = -1;
-				}
-			}
-
-			public UndoBuffer(object obj)
-			{
-				Object = obj;
-			}
-
-			public void AddBuffer(Undoable undoable)
-			{
-				if (CurrentIndex == Undos.Count)
-					Undos.Add(undoable);
-				else
-				{
-					Undos.RemoveRange(CurrentIndex, Undos.Count - CurrentIndex);
-					Undos.Add(undoable);
-					CurrentIndex = Undos.Count;
-				}
-			}
-
-			public bool CanUndo
-			{
-				get { return CurrentIndex != 0; }
-			}
-
-			public bool CanRedo
-			{
-				get { return Undos.Count > CurrentIndex; }
-			}
-
-			public void Undo()
-			{
-				CurrentIndex--;
-				Undos[CurrentIndex].Undo(Object);
-			}
-
-			public void Redo()
-			{
-				Undos[CurrentIndex].Redo(Object);
-				CurrentIndex++;
-			}
-
-			public void Clear()
-			{
-				Undos.Clear();
-				_depth = -1;
-			}
-		}
-
-		class Skin
-		{
-			public string Name;
-			public Bitmap Image;
-			public Bitmap Head;
-			public int GLImage;
-			public string FileName;
-			public UndoBuffer Undo;
-			public bool Dirty;
-
-			public Skin(string fileName)
-			{
-				Undo = new UndoBuffer(this);
-				FileName = fileName;
-				Name = Path.GetFileNameWithoutExtension(FileName);
-
-				SetImages();
-			}
-
-			void SetImages()
-			{
-				if (Head != null)
-				{
-					Head.Dispose();
-					GL.DeleteTexture(GLImage);
-				}
-
-				Image = new Bitmap(FileName);
-				Head = new Bitmap(8, 8);
-
-				using (Graphics g = Graphics.FromImage(Head))
-					g.DrawImage(Image, new Rectangle(0, 0, 8, 8), new Rectangle(8, 8, 8, 8), GraphicsUnit.Pixel);
-
-				Image.Dispose();
-				Image = null;
-				GLImage = loadImage(FileName);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-			}
-
-			public override string ToString()
-			{
-				if (Dirty)
-					return Name + " *";
-				return Name;
-			}
-
-			public void CommitChanges(int _currentSkin, bool save)
-			{
-				byte[] data = new byte[64 * 32 * 4];
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
-
-				GL.BindTexture(TextureTarget.Texture2D, GLImage);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
-
-				if (save)
-				{
-					uint ilim = IL.ilGenImage();
-					IL.ilBindImage(ilim);
-					IL.ilLoadDataL(data, (uint)data.Length, 64, 32, 1, 4);
-					File.Delete(FileName);
-					IL.ilSave(IL.ImageType.PNG, FileName);
-
-					SetImages();
-
-					IL.ilDeleteImage(ilim);
-					Dirty = false;
-				}
-			}
-		}
-
-		public class MySliderRenderer : SliderRenderer
-		{
-			public MySliderRenderer(ColorSlider slider) :
-				base(slider)
-			{
-			}
-
-			public Color StartColor
-			{
-				get;
-				set;
-			}
-
-			public Color EndColor
-			{
-				get;
-				set;
-			}
-
-			public override void Render(Graphics g)
-			{
-				//TrackBarRenderer.DrawHorizontalTrack(g, new Rectangle(0, (Slider.Height / 2) - 2, Slider.Width, 4));
-				var colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
-				var brush = new System.Drawing.Drawing2D.LinearGradientBrush(colorRect, StartColor, EndColor, System.Drawing.Drawing2D.LinearGradientMode.Horizontal);
-				g.FillRectangle(brush, colorRect);
-				g.DrawRectangle(Pens.Black, colorRect);
-
-				TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
-			}
-		}
-
-		MySliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
-
-		class MenuStripShortcut : IShortcutImplementor
-		{
-			ToolStripMenuItem _menuItem;
-
-			string _name;
-			public string Name
-			{
-				get { return _name; }
-			}
-
-			Keys _keys;
-			public Keys Keys
-			{
-				get { return _keys; }
-				set { _keys = value; _menuItem.ShortcutKeyDisplayString = ShortcutEditor.KeysToString(_keys); }
-			}
-
-			public Action Pressed { get; set; }
-
-			public MenuStripShortcut(ToolStripMenuItem item)
-			{
-				_menuItem = item;
-				_name = _menuItem.Text.Replace("&", "");
-				Keys = item.ShortcutKeys;
-				_menuItem.ShortcutKeys = 0;
-			}
-
-			public override string ToString()
-			{
-				return Name + " [" + ShortcutEditor.KeysToString(Keys) + "]";
-			}
-		}
+		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
 
 		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
 
@@ -748,9 +96,9 @@ namespace MCSkin3D
 		{
 			string c = "";
 
-			for (int i = 0; i < _shortcutEditor.Shortcuts.Count; ++i)
+			for (int i = 0; i < _shortcutEditor.ShortcutCount; ++i)
 			{
-				var shortcut = _shortcutEditor.Shortcuts[i];
+				var shortcut = _shortcutEditor.ShortcutAt(i);
 
 				if (i != 0)
 					c += "|";
@@ -817,7 +165,7 @@ namespace MCSkin3D
 			MenuStripShortcut shortcut = new MenuStripShortcut(item);
 			shortcut.Pressed = callback;
 
-			_shortcutEditor.Shortcuts.Add(shortcut);
+			_shortcutEditor.AddShortcut(shortcut);
 		}
 
 		void InitUnlinkedShortcut(string name, Keys defaultKeys, Action callback)
@@ -825,7 +173,7 @@ namespace MCSkin3D
 			ShortcutBase shortcut = new ShortcutBase(name, defaultKeys);
 			shortcut.Pressed = callback;
 
-			_shortcutEditor.Shortcuts.Add(shortcut);
+			_shortcutEditor.AddShortcut(shortcut);
 		}
 
 		void InitShortcuts()
@@ -849,21 +197,26 @@ namespace MCSkin3D
 			InitMenuShortcut(grassToolStripMenuItem, ToggleGrass);
 			InitMenuShortcut(alphaCheckerboardToolStripMenuItem, ToggleAlphaCheckerboard);
 			InitMenuShortcut(textureOverlayToolStripMenuItem, ToggleOverlay);
-			InitMenuShortcut(offToolStripMenuItem, () => SetTransparencyMode(TransparencySetting.Off));
-			InitMenuShortcut(helmetOnlyToolStripMenuItem, () => SetTransparencyMode(TransparencySetting.Helmet));
-			InitMenuShortcut(allToolStripMenuItem, () => SetTransparencyMode(TransparencySetting.All));
-			InitMenuShortcut(headToolStripMenuItem, () => ToggleVisiblePart(HeadFlag));
-			InitMenuShortcut(helmetToolStripMenuItem, () => ToggleVisiblePart(HelmetFlag));
-			InitMenuShortcut(chestToolStripMenuItem, () => ToggleVisiblePart(ChestFlag));
-			InitMenuShortcut(leftArmToolStripMenuItem, () => ToggleVisiblePart(LeftArmFlag));
-			InitMenuShortcut(rightArmToolStripMenuItem, () => ToggleVisiblePart(RightArmFlag));
-			InitMenuShortcut(leftLegToolStripMenuItem, () => ToggleVisiblePart(LeftLegFlag));
-			InitMenuShortcut(rightLegToolStripMenuItem, () => ToggleVisiblePart(RightLegFlag));
+			InitMenuShortcut(offToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Off));
+			InitMenuShortcut(helmetOnlyToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Helmet));
+			InitMenuShortcut(allToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.All));
+			InitMenuShortcut(headToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.HeadFlag));
+			InitMenuShortcut(helmetToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.HelmetFlag));
+			InitMenuShortcut(chestToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.ChestFlag));
+			InitMenuShortcut(leftArmToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.LeftArmFlag));
+			InitMenuShortcut(rightArmToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.RightArmFlag));
+			InitMenuShortcut(leftLegToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.LeftLegFlag));
+			InitMenuShortcut(rightLegToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.RightLegFlag));
+			InitMenuShortcut(saveToolStripMenuItem, PerformSave);
+			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
+			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
 			
 			// not in the menu
-			InitUnlinkedShortcut("Toggle transparency mode", Keys.Control | Keys.U, ToggleTransparencyMode);
-			InitUnlinkedShortcut("Save skin", Keys.Control | Keys.S, PerformCommit);
+			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
 			InitUnlinkedShortcut("Upload skin", Keys.Control | Keys.U, PerformUpload);
+			InitUnlinkedShortcut("Toggle view mode", Keys.Control | Keys.V, ToggleViewMode);
+			InitUnlinkedShortcut("Screenshot (clipboard)", Keys.Control | Keys.H, TakeScreenshot);
+			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.H, SaveScreenshot);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -876,23 +229,6 @@ namespace MCSkin3D
 			SetTool(Tools.Camera);
 			SetTransparencyMode(GlobalSettings.Transparency);
 			SetViewMode(_currentViewMode);
-
-			menuStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
-			toolStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
-
-			if (Screen.PrimaryScreen.BitsPerPixel != 32)
-			{
-				MessageBox.Show("Sorry, but apparently your video mode doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				Application.Exit();
-			}
-
-			redColorSlider.Renderer = redRenderer = new MySliderRenderer(redColorSlider);
-			greenColorSlider.Renderer = greenRenderer = new MySliderRenderer(greenColorSlider);
-			blueColorSlider.Renderer = blueRenderer = new MySliderRenderer(blueColorSlider);
-			alphaColorSlider.Renderer = alphaRenderer = new MySliderRenderer(alphaColorSlider);
-
-			KeyPreview = true;
-			Text = "MCSkin3D v" + VersionString;
 
 			glControl1.MakeCurrent();
 
@@ -912,8 +248,6 @@ namespace MCSkin3D
 			}
 
 			SetColor(Color.White);
-
-			swatchContainer1.AddDirectory("Swatches");
 		}
 
 		private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
@@ -939,19 +273,14 @@ namespace MCSkin3D
 			e.ItemHeight = 24;
 		}
 
-		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
-		{
-
-		}
-
 		int _grassTop;
 		int _charPaintTex, _alphaTex, _backgroundTex;
-		static int _previewPaint, _currentSkin;
+		static int _previewPaint;
 
 		private void glControl1_Load(object sender, EventArgs e)
 		{
 			glControl1_Resize(this, EventArgs.Empty);   // Ensure the Viewport is set up correctly
-			GL.ClearColor(Color.SkyBlue);
+			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			GL.Enable(EnableCap.Texture2D);
 			GL.ShadeModel(ShadingModel.Smooth);                        // Enable Smooth Shading
@@ -967,21 +296,21 @@ namespace MCSkin3D
 
 			IL.ilInit();
 
-			_grassTop = loadImage("grass.png");
+			_grassTop = ImageUtilities.LoadImage("grass.png");
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-			_backgroundTex = loadImage("inverted.png");
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+			_backgroundTex = ImageUtilities.LoadImage("inverted.png");
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
 			_charPaintTex = GL.GenTexture();
 			_previewPaint = GL.GenTexture();
-			_currentSkin = GL.GenTexture();
+			GlobalDirtiness.CurrentSkin = GL.GenTexture();
 			_alphaTex = GL.GenTexture();
 
 			unsafe
@@ -1013,7 +342,7 @@ namespace MCSkin3D
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -1144,10 +473,17 @@ namespace MCSkin3D
 		float _zoom = -80;
 		void glControl1_MouseWheel(object sender, MouseEventArgs e)
 		{
-			_zoom += e.Delta / 50;
+			if (_currentViewMode == ViewMode.Perspective)
+				_zoom += e.Delta / 50;
+			else
+				_2dZoom += e.Delta / 50;
 
 			glControl1.Invalidate();
 		}
+
+		float _2dCamOffsetX = 0;
+		float _2dCamOffsetY = 0;
+		float _2dZoom = 8;
 
 		void DrawPlayer(int tex, bool grass, bool pickView)
 		{
@@ -1167,14 +503,22 @@ namespace MCSkin3D
 
 				GL.BindTexture(TextureTarget.Texture2D, tex);
 
-				const float ratio = 32.0f / 64.0f;
+				GL.PushMatrix();
+
+				GL.Translate((glControl1.Width / 2) + -_2dCamOffsetX, (glControl1.Height / 2) + -_2dCamOffsetY, 0);
+				GL.Scale(_2dZoom, _2dZoom, 1);
+
 				GL.Enable(EnableCap.Blend);
 
+				float w = 64;
+				float h = 32;
+				GL.PushMatrix();
+				GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
 				GL.Begin(BeginMode.Quads);
-				GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
-				GL.TexCoord2(1, 0); GL.Vertex2(glControl1.Width, 0);
-				GL.TexCoord2(1, 1); GL.Vertex2(glControl1.Width, (float)glControl1.Width * ratio);
-				GL.TexCoord2(0, 1); GL.Vertex2(0, (float)glControl1.Width * ratio);
+				GL.TexCoord2(0, 0); GL.Vertex2(-(w / 2), -(h / 2));
+				GL.TexCoord2(1, 0); GL.Vertex2((w / 2), -(h / 2));
+				GL.TexCoord2(1, 1); GL.Vertex2((w / 2), (h / 2));
+				GL.TexCoord2(0, 1); GL.Vertex2(-(w / 2), (h / 2));
 				GL.End();
 
 				if (!pickView && GlobalSettings.TextureOverlay)
@@ -1182,12 +526,15 @@ namespace MCSkin3D
 					GL.BindTexture(TextureTarget.Texture2D, _backgroundTex);
 
 					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
-					GL.TexCoord2(1, 0); GL.Vertex2(glControl1.Width, 0);
-					GL.TexCoord2(1, 1); GL.Vertex2(glControl1.Width, (float)glControl1.Width * ratio);
-					GL.TexCoord2(0, 1); GL.Vertex2(0, (float)glControl1.Width * ratio);
+					GL.TexCoord2(0, 0); GL.Vertex2(-(w / 2), -(h / 2));
+					GL.TexCoord2(1, 0); GL.Vertex2((w / 2), -(h / 2));
+					GL.TexCoord2(1, 1); GL.Vertex2((w / 2), (h / 2));
+					GL.TexCoord2(0, 1); GL.Vertex2(-(w / 2), (h / 2));
 					GL.End();
 				}
+				GL.PopMatrix();
+
+				GL.PopMatrix();
 
 				GL.Disable(EnableCap.Blend);
 
@@ -1196,42 +543,50 @@ namespace MCSkin3D
 
 			Vector3 vec = new Vector3();
 			int count = 0;
-			if ((GlobalSettings.ViewFlags & HeadFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HeadFlag) != 0)
 			{
-				vec.Add(new Vector3(0, 10, 0));
+				vec = Vector3.Add(vec, new Vector3(0, 10, 0));
 				count++;
 			}
-			if ((GlobalSettings.ViewFlags & ChestFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
 			{
-				vec.Add(new Vector3(0, 0, 0));
+				vec = Vector3.Add(vec, new Vector3(0, 0, 0));
 				count++;
 			}
-			if ((GlobalSettings.ViewFlags & RightLegFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
 			{
-				vec.Add(new Vector3(-2, -12, 0));
+				vec = Vector3.Add(vec, new Vector3(-2, -12, 0));
 				count++;
 			}
-			if ((GlobalSettings.ViewFlags & LeftLegFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
 			{
-				vec.Add(new Vector3(2, -12, 0));
+				vec = Vector3.Add(vec, new Vector3(2, -12, 0));
 				count++;
 			}
-			if ((GlobalSettings.ViewFlags & RightArmFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
 			{
-				vec.Add(new Vector3(-6, 0, 0));
+				vec = Vector3.Add(vec, new Vector3(-6, 0, 0));
 				count++;
 			}
-			if ((GlobalSettings.ViewFlags & LeftArmFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftArmFlag) != 0)
 			{
-				vec.Add(new Vector3(6, 0, 0));
+				vec = Vector3.Add(vec, new Vector3(6, 0, 0));
 				count++;
 			}
-			if ((GlobalSettings.ViewFlags & HelmetFlag) != 0)
+
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HelmetFlag) != 0)
 			{
-				vec.Add(new Vector3(0, 10, 0));
+				vec = Vector3.Add(vec, new Vector3(0, 10, 0));
 				count++;
 			}
-			vec.Div(count);
+
+			vec = Vector3.Divide(vec, count);
 
 			GL.Translate(0, 0, _zoom);
 			GL.Rotate(_rotX, 1, 0, 0);
@@ -1246,7 +601,7 @@ namespace MCSkin3D
 
 			GL.PushMatrix();
 
-			if (!pickView && GlobalSettings.Transparency == TransparencySetting.All)
+			if (!pickView && GlobalSettings.Transparency == TransparencyMode.All)
 				GL.Enable(EnableCap.Blend);
 			else
 				GL.Disable(EnableCap.Blend);
@@ -1262,7 +617,7 @@ namespace MCSkin3D
 				GL.Translate(0, -4, 0);
 			}
 
-			if ((GlobalSettings.ViewFlags & HeadFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HeadFlag) != 0)
 				DrawSkinnedRectangle(0, 10, 0, 8, 8, 8,
 				8, 8, 8, 8,
 				24, 8, 8, 8,
@@ -1273,7 +628,7 @@ namespace MCSkin3D
 				tex);
 			GL.PopMatrix();
 
-			if ((GlobalSettings.ViewFlags & ChestFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
 				DrawSkinnedRectangle(0, 0, 0, 8, 12, 4,
 				20, 20, 8, 12,
 				32, 20, 8, 12,
@@ -1291,7 +646,7 @@ namespace MCSkin3D
 				GL.Rotate(Math.Sin(_rotTest) * 37, 1, 0, 0);
 				GL.Translate(0, 6, 0);
 			}
-			if ((GlobalSettings.ViewFlags & RightLegFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
 				DrawSkinnedRectangle(-2, -12, 0, 4, 12, 4,
 				4, 20, 4, 12,
 				12, 20, 4, 12,
@@ -1310,7 +665,7 @@ namespace MCSkin3D
 				GL.Rotate(Math.Sin(_rotTest) * -37, 1, 0, 0);
 				GL.Translate(0, 6, 0);
 			}
-			if ((GlobalSettings.ViewFlags & LeftLegFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
 				DrawSkinnedRectangle(2, -12, 0, 4, 12, 4,
 				8, 20, -4, 12,
 				16, 20, -4, 12,
@@ -1329,7 +684,7 @@ namespace MCSkin3D
 				GL.Rotate(Math.Sin(_rotTest) * -37, 1, 0, 0);
 				GL.Translate(0, -5, 0);
 			}
-			if ((GlobalSettings.ViewFlags & RightArmFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
 				DrawSkinnedRectangle(-6, 0, 0, 4, 12, 4,
 				44, 20, 4, 12,
 				52, 20, 4, 12,
@@ -1348,7 +703,7 @@ namespace MCSkin3D
 				GL.Translate(0, -5, 0);
 			}
 			// left arm
-			if ((GlobalSettings.ViewFlags & LeftArmFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftArmFlag) != 0)
 				DrawSkinnedRectangle(6, 0, 0, 4, 12, 4,
 				48, 20, -4, 12,
 				56, 20, -4, 12,
@@ -1359,7 +714,7 @@ namespace MCSkin3D
 				tex);
 			GL.PopMatrix();
 
-			if ((GlobalSettings.ViewFlags & HelmetFlag) != 0)
+			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HelmetFlag) != 0)
 			{
 				GL.PushMatrix();
 				if (followCursorToolStripMenuItem.Checked)
@@ -1370,20 +725,20 @@ namespace MCSkin3D
 					GL.Translate(0, -4, 0);
 				}
 
-				if (!pickView && GlobalSettings.Transparency != TransparencySetting.Off)
+				if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
 					GL.Enable(EnableCap.Blend);
 				else
 					GL.Disable(EnableCap.Blend);
 
 				DrawSkinnedRectangle(0, 10, 0, 9, 9, 9,
-				32 + 8, 8, 8, 8,
-				32 + 24, 8, 8, 8,
-				32 + 8, 0, 8, 8,
-				32 + 16, 0, 8, 8,
-				32 + 0, 8, 8, 8,
-				32 + 16, 8, 8, 8,
-				tex);
-			GL.PopMatrix();
+									32 + 8, 8, 8, 8,
+									32 + 24, 8, 8, 8,
+									32 + 8, 0, 8, 8,
+									32 + 16, 0, 8, 8,
+									32 + 0, 8, 8, 8,
+									32 + 16, 8, 8, 8,
+									tex);
+				GL.PopMatrix();
 			}
 
 			GL.PopMatrix();
@@ -1398,7 +753,7 @@ namespace MCSkin3D
 			if (_currentViewMode == ViewMode.Orthographic)
 				GL.ClearColor(Color.Black);
 			else
-				GL.ClearColor(Color.SkyBlue);
+				GL.ClearColor(GlobalSettings.BackgroundColor);
 			
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);
@@ -1432,7 +787,7 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
-		PixelsChanged _changedPixels = null;
+		PixelsChangedUndoable _changedPixels = null;
 		bool _md = false;
 		Point _mp;
 		private void glControl1_MouseDown(object sender, MouseEventArgs e)
@@ -1440,9 +795,7 @@ namespace MCSkin3D
 			_md = true;
 			_mp = e.Location;
 
-			if ((_currentTool == Tools.Pencil || _currentTool == Tools.Dropper ||
-				_currentTool == Tools.Burn || _currentTool == Tools.Eraser ||
-				_currentTool == Tools.Dodge) && e.Button == MouseButtons.Left)
+			if (e.Button == MouseButtons.Left)
 				UseToolOnViewport(e.X, e.Y);
 		}
 
@@ -1459,7 +812,7 @@ namespace MCSkin3D
 			{
 				Skin skin = (Skin)listBox1.SelectedItem;
 
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 				int[] array = new int[64 * 32];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
@@ -1468,28 +821,7 @@ namespace MCSkin3D
 					Point p = Point.Empty;
 
 					if (GetPick(_mp.X, _mp.Y, ref p))
-					{
-						var c = array[p.X + (64 * p.Y)];
-						var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-
-						if (_currentTool == Tools.Pencil)
-						{
-							Color blend = Color.FromArgb(ColorBlending.AlphaBlend(color, oldColor).ToArgb());
-							array[p.X + (64 * p.Y)] = blend.R | (blend.G << 8) | (blend.B << 16) | (blend.A << 24);
-						}
-						else if (_currentTool == Tools.Burn)
-						{
-							Color burnt = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
-							array[p.X + (64 * p.Y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
-						}
-						else if (_currentTool == Tools.Dodge)
-						{
-							Color burnt = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
-							array[p.X + (64 * p.Y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
-						}
-						else
-							array[p.X + (64 * p.Y)] = 0;
-					}
+						UseToolOnPixel(array, p.X, p.Y);
 				}
 
 				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
@@ -1505,7 +837,7 @@ namespace MCSkin3D
 
 			GL.ClearColor(Color.White);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.ClearColor(Color.SkyBlue);
+			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			DrawPlayer(_charPaintTex, false, true);
 
@@ -1526,6 +858,31 @@ namespace MCSkin3D
 			return false;
 		}
 
+		void UseToolOnPixel(int[] pixels, int x, int y)
+		{
+			var c = pixels[x + (64 * y)];
+			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+
+			// blend
+			if (_currentTool == Tools.Pencil)
+			{
+				Color blend = Color.FromArgb(ColorBlending.AlphaBlend(color, oldColor).ToArgb());
+				pixels[x + (64 * y)] = blend.R | (blend.G << 8) | (blend.B << 16) | (blend.A << 24);
+			}
+			else if (_currentTool == Tools.Burn)
+			{
+				Color burnt = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
+				pixels[x + (64 * y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
+			}
+			else if (_currentTool == Tools.Dodge)
+			{
+				Color burnt = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
+				pixels[x + (64 * y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
+			}
+			else if (_currentTool == Tools.Eraser)
+				pixels[x + (64 * y)] = 0;
+		}
+
 		void UseToolOnViewport(int x, int y)
 		{
 			if (listBox1.SelectedItem == null)
@@ -1537,7 +894,7 @@ namespace MCSkin3D
 			{
 				Skin skin = (Skin)listBox1.SelectedItem;
 
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 				int[] array = new int[64 * 32];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
@@ -1545,7 +902,7 @@ namespace MCSkin3D
 				{
 					if (_changedPixels == null)
 					{
-						_changedPixels = new PixelsChanged();
+						_changedPixels = new PixelsChangedUndoable();
 						_changedPixels.NewColor = color;
 					}
 
@@ -1555,26 +912,9 @@ namespace MCSkin3D
 						var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 						_changedPixels.Points[new Point(p.X, p.Y)] = oldColor;
 
-						// blend
-						if (_currentTool == Tools.Pencil)
-						{
-							Color blend = Color.FromArgb(ColorBlending.AlphaBlend(color, oldColor).ToArgb());
-							array[p.X + (64 * p.Y)] = blend.R | (blend.G << 8) | (blend.B << 16) | (blend.A << 24);
-						}
-						else if (_currentTool == Tools.Burn)
-						{
-							Color burnt = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
-							array[p.X + (64 * p.Y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
-						}
-						else if (_currentTool == Tools.Dodge)
-						{
-							Color burnt = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
-							array[p.X + (64 * p.Y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
-						}
-						else if (_currentTool == Tools.Eraser)
-							array[p.X + (64 * p.Y)] = 0;
+						UseToolOnPixel(array, p.X, p.Y);
 
-						button2.Enabled = true;
+						SetCanSave(true);
 						skin.Dirty = true;
 						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 					}
@@ -1598,13 +938,24 @@ namespace MCSkin3D
 				if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Left) ||
 					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Right))
 				{
-					_rotY += (float)delta.X;
-					_rotX += (float)delta.Y;
+					if (_currentViewMode == ViewMode.Perspective)
+					{
+						_rotY += (float)delta.X;
+						_rotX += (float)delta.Y;
+					}
+					else
+					{
+						_2dCamOffsetX += delta.X / _2dZoom;
+						_2dCamOffsetY += delta.Y / _2dZoom;
+					}
 				}
 				else if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Right) ||
 					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Middle))
 				{
-					_zoom += (float)-delta.Y;
+					if (_currentViewMode == ViewMode.Perspective)
+						_zoom += (float)-delta.Y;
+					else
+						_2dZoom += -delta.Y / 25.0f;
 				}
 
 				if ((_currentTool != Tools.Camera) && e.Button == MouseButtons.Left)
@@ -1638,19 +989,11 @@ namespace MCSkin3D
 			if (_skipListbox || listBox1.SelectedItem == _lastSkin)
 				return;
 
-			if (button2.Enabled && listBox1.SelectedItem != _lastSkin)
+			if (_lastSkin != null && listBox1.SelectedItem != _lastSkin)
 			{
-				/*if (MessageBox.Show("You have uncommited changes; you will lose all of your changes if you switch skins.\r\nAre you sure you want to switch?", "Question", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
-				{
-					_skipListbox = true;
-					listBox1.SelectedItem = _lastSkin;
-					_skipListbox = false;
-					return;
-				}*/
-				
 				// Copy over the current changes to the tex stored in the skin.
 				// This allows us to pick up where we left off later, without undoing any work.
-				_lastSkin.CommitChanges(_currentSkin, false);
+				_lastSkin.CommitChanges(GlobalDirtiness.CurrentSkin, false);
 			}
 
 			//if (_lastSkin != null)
@@ -1659,14 +1002,14 @@ namespace MCSkin3D
 			glControl1.MakeCurrent();
 
 			Skin skin = (Skin)listBox1.SelectedItem;
-			button2.Enabled = skin.Dirty;
+			SetCanSave(skin.Dirty);
 
 			if (skin == null)
 			{
 				_currentUndoBuffer = null;
 				GL.BindTexture(TextureTarget.Texture2D, 0);
 				int[] array = new int[64 * 32];
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 				undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = false;
 				redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = false;
@@ -1676,7 +1019,7 @@ namespace MCSkin3D
 				GL.BindTexture(TextureTarget.Texture2D, skin.GLImage);
 				int[] array = new int[64 * 32];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				GL.BindTexture(TextureTarget.Texture2D, _currentSkin);
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 				_currentUndoBuffer = skin.Undo;
@@ -1849,13 +1192,8 @@ namespace MCSkin3D
 			}
 			finally
 			{
-				Invoke((Action)delegate() { DoneUpload(); });
+				Invoke((Action)delegate() { _pleaseWaitForm.Close(); });
 			}
-		}
-
-		void DoneUpload()
-		{
-			_pleaseWaitForm.Close();
 		}
 
 		internal PleaseWait _pleaseWaitForm;
@@ -1970,18 +1308,30 @@ namespace MCSkin3D
 
 		void PerformImportSkin()
 		{
-			using (AddSkinDialog dlg = new AddSkinDialog())
+			using (var ofd = new OpenFileDialog())
 			{
-				if (dlg.ShowDialog() == DialogResult.OK)
+				ofd.Filter = "Minecraft Skins|*.png";
+				ofd.Multiselect = true;
+
+				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					var name = Path.GetFileNameWithoutExtension(dlg.FileName);
+					foreach (var f in ofd.FileNames)
+					{
+						var name = Path.GetFileNameWithoutExtension(f);
 
-					File.Copy(dlg.FileName, "./Skins/" + dlg.SkinName + ".png");
+						while (File.Exists("./Skins/" + name + ".png"))
+							name += " (New)";
 
-					Skin skin = new Skin("./Skins/" + dlg.SkinName + ".png");
-					listBox1.Items.Add(skin);
-					listBox1.SelectedItem = skin;
+						File.Copy(f, "./Skins/" + name + ".png");
+
+						Skin skin = new Skin("./Skins/" + name + ".png");
+						listBox1.Items.Add(skin);
+						listBox1.SelectedItem = skin;
+					}
 				}
+
+				listBox1.Sorted = false;
+				listBox1.Sorted = true;
 			}
 		}
 
@@ -2077,18 +1427,10 @@ namespace MCSkin3D
 
 						break;
 					}
+
+					break;
 				}
 			}
-		}
-
-		enum Tools
-		{
-			Camera,
-			Pencil,
-			Dropper,
-			Eraser,
-			Dodge,
-			Burn
 		}
 
 		ToolStripButton[] _buttons = null;
@@ -2138,25 +1480,94 @@ namespace MCSkin3D
 			SetTool(Tools.Eraser);
 		}
 
-		void PerformCommit()
+		void SetCanSave(bool value)
 		{
-			button2.Enabled = false;
+			saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = value;
+		}
 
+		void PerformSaveAs()
+		{
+			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+			int[] pixels = new int[64 * 32];
+			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+
+			Bitmap b = new Bitmap(64, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			var locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				fixed (void *inPixels = pixels)
+				{
+					void *outPixels = locked.Scan0.ToPointer();
+
+					int *inInt = (int*)inPixels;
+					int *outInt = (int*)outPixels;
+
+					for (int y = 0; y < b.Height; ++y)
+						for (int x = 0; x < b.Width; ++x)
+						{
+							var color = Color.FromArgb((*inInt >> 24) & 0xFF, (*inInt >> 0) & 0xFF, (*inInt >> 8) & 0xFF, (*inInt >> 16) & 0xFF);
+							*outInt = color.ToArgb();
+
+							inInt++;
+							outInt++;
+						}
+				}
+			}
+
+			b.UnlockBits(locked);
+
+			using (SaveFileDialog sfd = new SaveFileDialog())
+			{
+				sfd.Filter = "Skin Image|*.png";
+
+				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+					b.Save(sfd.FileName);
+			}
+
+			b.Dispose();
+		}
+
+		void PerformSaveSkin(Skin s)
+		{
 			glControl1.MakeCurrent();
 
-			Skin skin = (Skin)listBox1.SelectedItem;
-			skin.CommitChanges(_currentSkin, true);
+			s.CommitChanges((s == listBox1.SelectedItem) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
+		}
+
+		void PerformSaveAll()
+		{
+			foreach (var item in listBox1.Items)
+			{
+				Skin skin = (Skin)item;
+
+				if (!skin.Dirty)
+					continue;
+
+				PerformSaveSkin(skin);
+			}
 
 			listBox1.Invalidate();
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		void PerformSave()
 		{
-			PerformCommit();
+			Skin skin = (Skin)listBox1.SelectedItem;
+
+			if (!skin.Dirty)
+				return;
+
+			SetCanSave(false);
+			PerformSaveSkin(skin);
+			listBox1.Invalidate();
 		}
 
 		void PerformUndo()
 		{
+			if (!_currentUndoBuffer.CanUndo)
+				return;
+
 			glControl1.MakeCurrent();
 
 			_currentUndoBuffer.Undo();
@@ -2165,19 +1576,22 @@ namespace MCSkin3D
 			redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = _currentUndoBuffer.CanRedo;
 
 			Skin current = (Skin)listBox1.SelectedItem;
-			button2.Enabled = current.Dirty = true;
+			SetCanSave(current.Dirty = true);
 
 			glControl1.Invalidate();
 		}
 
 		void PerformRedo()
 		{
+			if (!_currentUndoBuffer.CanRedo)
+				return;
+
 			glControl1.MakeCurrent();
 
 			_currentUndoBuffer.Redo();
 
 			Skin current = (Skin)listBox1.SelectedItem;
-			button2.Enabled = current.Dirty = true;
+			SetCanSave(current.Dirty = true);
 
 			undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = _currentUndoBuffer.CanUndo;
 			redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = _currentUndoBuffer.CanRedo;
@@ -2296,12 +1710,6 @@ namespace MCSkin3D
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
-		enum ViewMode
-		{
-			Perspective,
-			Orthographic
-		}
-
 		ViewMode _currentViewMode = ViewMode.Perspective;
 
 		void SetViewMode(ViewMode newMode)
@@ -2345,20 +1753,20 @@ namespace MCSkin3D
 			SetViewMode(ViewMode.Orthographic);
 		}
 
-		void SetTransparencyMode(TransparencySetting trans)
+		void SetTransparencyMode(TransparencyMode trans)
 		{
 			offToolStripMenuItem.Checked = helmetOnlyToolStripMenuItem.Checked = allToolStripMenuItem.Checked = false;
 			GlobalSettings.Transparency = trans;
 
 			switch (GlobalSettings.Transparency)
 			{
-			case TransparencySetting.Off:
+			case TransparencyMode.Off:
 				offToolStripMenuItem.Checked = true;
 				break;
-			case TransparencySetting.Helmet:
+			case TransparencyMode.Helmet:
 				helmetOnlyToolStripMenuItem.Checked = true;
 				break;
-			case TransparencySetting.All:
+			case TransparencyMode.All:
 				allToolStripMenuItem.Checked = true;
 				break;
 			}
@@ -2368,20 +1776,20 @@ namespace MCSkin3D
 
 		private void offToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SetTransparencyMode(TransparencySetting.Off);
+			SetTransparencyMode(TransparencyMode.Off);
 		}
 
 		private void helmetOnlyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SetTransparencyMode(TransparencySetting.Helmet);
+			SetTransparencyMode(TransparencyMode.Helmet);
 		}
 
 		private void allToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SetTransparencyMode(TransparencySetting.All);
+			SetTransparencyMode(TransparencyMode.All);
 		}
 
-		void ToggleVisiblePart(int flag)
+		void ToggleVisiblePart(VisiblePartFlags flag)
 		{
 			GlobalSettings.ViewFlags ^= flag;
 
@@ -2392,25 +1800,25 @@ namespace MCSkin3D
 			// TODO: ugly
 			switch (flag)
 			{
-			case HeadFlag:
+			case VisiblePartFlags.HeadFlag:
 				item = headToolStripMenuItem;
 				break;
-			case HelmetFlag:
+			case VisiblePartFlags.HelmetFlag:
 				item = helmetToolStripMenuItem;
 				break;
-			case ChestFlag:
+			case VisiblePartFlags.ChestFlag:
 				item = chestToolStripMenuItem;
 				break;
-			case LeftArmFlag:
+			case VisiblePartFlags.LeftArmFlag:
 				item = leftArmToolStripMenuItem;
 				break;
-			case RightArmFlag:
+			case VisiblePartFlags.RightArmFlag:
 				item = rightArmToolStripMenuItem;
 				break;
-			case LeftLegFlag:
+			case VisiblePartFlags.LeftLegFlag:
 				item = leftLegToolStripMenuItem;
 				break;
-			case RightLegFlag:
+			case VisiblePartFlags.RightLegFlag:
 				item = rightLegToolStripMenuItem;
 				break;
 			}
@@ -2422,37 +1830,37 @@ namespace MCSkin3D
 
 		private void headToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(HeadFlag);
+			ToggleVisiblePart(VisiblePartFlags.HeadFlag);
 		}
 
 		private void helmetToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(HelmetFlag);
+			ToggleVisiblePart(VisiblePartFlags.HelmetFlag);
 		}
 
 		private void chestToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ChestFlag);
+			ToggleVisiblePart(VisiblePartFlags.ChestFlag);
 		}
 
 		private void leftArmToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(LeftArmFlag);
+			ToggleVisiblePart(VisiblePartFlags.LeftArmFlag);
 		}
 
 		private void rightArmToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(RightArmFlag);
+			ToggleVisiblePart(VisiblePartFlags.RightArmFlag);
 		}
 
 		private void leftLegToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(LeftLegFlag);
+			ToggleVisiblePart(VisiblePartFlags.LeftLegFlag);
 		}
 
 		private void rightLegToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(RightLegFlag);
+			ToggleVisiblePart(VisiblePartFlags.RightLegFlag);
 		}
 
 		void ToggleAlphaCheckerboard()
@@ -2494,22 +1902,31 @@ namespace MCSkin3D
 			PerformRedo();
 		}
 
-		private void Form1_Load(object sender, EventArgs e)
-		{
-		}
-
 		void ToggleTransparencyMode()
 		{
 			switch (GlobalSettings.Transparency)
 			{
-			case TransparencySetting.Off:
-				SetTransparencyMode(TransparencySetting.Helmet);
+			case TransparencyMode.Off:
+				SetTransparencyMode(TransparencyMode.Helmet);
 				break;
-			case TransparencySetting.Helmet:
-				SetTransparencyMode(TransparencySetting.All);
+			case TransparencyMode.Helmet:
+				SetTransparencyMode(TransparencyMode.All);
 				break;
-			case TransparencySetting.All:
-				SetTransparencyMode(TransparencySetting.Off);
+			case TransparencyMode.All:
+				SetTransparencyMode(TransparencyMode.Off);
+				break;
+			}
+		}
+
+		void ToggleViewMode()
+		{
+			switch (_currentViewMode)
+			{
+			case ViewMode.Orthographic:
+				SetViewMode(ViewMode.Perspective);
+				break;
+			case ViewMode.Perspective:
+				SetViewMode(ViewMode.Orthographic);
 				break;
 			}
 		}
@@ -2589,11 +2006,6 @@ namespace MCSkin3D
 			SetColor(e.Swatch);
 		}
 
-		private void colorSquare1_Click(object sender, EventArgs e)
-		{
-
-		}
-
 		private void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (skipSet)
@@ -2626,15 +2038,109 @@ namespace MCSkin3D
 		{
 			_shortcutEditor.ShowDialog();
 		}
-	}
 
-	class CustomGLControl : GLControl
-	{
-		// 32bpp color, 24bpp z-depth, 8bpp stencil and 4x antialiasing
-		// OpenGL version is major=3, minor=0
-			public CustomGLControl()
-			: base(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 0), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default)
+		private void backgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			using (MultiPainter.ColorPicker picker = new MultiPainter.ColorPicker())
+			{
+				picker.CurrentColor = GlobalSettings.BackgroundColor;
+
+				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					GlobalSettings.BackgroundColor = picker.CurrentColor;
+
+					glControl1.Invalidate();
+				}
+			}
+		}
+
+		Bitmap CopyScreenToBitmap()
+		{
+			glControl1.MakeCurrent();
+			Bitmap b = new Bitmap(glControl1.Width, glControl1.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			int[] pixels = new int[glControl1.Width * glControl1.Height];
+			GL.ReadPixels(0, 0, glControl1.Width, glControl1.Height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+
+			var locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				fixed (void *inPixels = pixels)
+				{
+					void *outPixels = locked.Scan0.ToPointer();
+
+					int *inInt = (int*)inPixels;
+					int *outInt = (int*)outPixels;
+
+					for (int y = 0; y < b.Height; ++y)
+						for (int x = 0; x < b.Width; ++x)
+						{
+							var color = Color.FromArgb((*inInt >> 24) & 0xFF, (*inInt >> 0) & 0xFF, (*inInt >> 8) & 0xFF, (*inInt >> 16) & 0xFF);
+							*outInt = color.ToArgb();
+
+							inInt++;
+							outInt++;
+						}
+				}
+			}
+
+			b.UnlockBits(locked);
+			b.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+			return b;
+		}
+
+		void TakeScreenshot()
+		{
+			Clipboard.SetImage(CopyScreenToBitmap());
+		}
+
+		void SaveScreenshot()
+		{
+			using (SaveFileDialog sfd = new SaveFileDialog())
+			{
+				sfd.Filter = "PNG Image|*.png";
+
+				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					using (var bmp = CopyScreenToBitmap())
+						bmp.Save(sfd.FileName);
+				}
+			}
+		}
+
+		private void screenshotToolStripButton_Click(object sender, EventArgs e)
+		{
+			if ((ModifierKeys & Keys.Shift) != 0)
+				SaveScreenshot();
+			else
+				TakeScreenshot();
+		}
+
+		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformSaveAs();
+		}
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformSave();
+		}
+
+		private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformSaveAll();
+		}
+
+		private void saveToolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformSave();
+		}
+
+		private void saveAlltoolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformSaveAll();
 		}
 	}
 }

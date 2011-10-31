@@ -54,7 +54,7 @@ namespace MultiPainter
 			SetColors();
 		}
 
-		public Devcorp.Controls.Design.HSL MyHSL
+		Devcorp.Controls.Design.HSL MyHSL
 		{
 			get { return new HSL(colorSquare1.CurrentHue, (float)colorSquare1.CurrentSat / 240.0f, (float)saturationSlider1.CurrentLum / 240.0f); }
 		}
@@ -64,6 +64,15 @@ namespace MultiPainter
 			get
 			{
 				return Color.FromArgb((int)numericUpDown4.Value, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor());
+			}
+
+			set
+			{
+				var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(value);
+
+				numericUpDown1.Value = (decimal)hsl.Hue;
+				numericUpDown2.Value = (decimal)hsl.Saturation * 240;
+				numericUpDown3.Value = (decimal)hsl.Luminance * 240;
 			}
 		}
 
@@ -189,6 +198,16 @@ namespace MultiPainter
 
 		private void numericUpDown4_ValueChanged(object sender, EventArgs e)
 		{
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			DialogResult = System.Windows.Forms.DialogResult.OK;
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			DialogResult = System.Windows.Forms.DialogResult.Cancel;
 		}
 	}
 }

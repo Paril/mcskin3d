@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -78,13 +79,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddSkinDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddSkinDialog.Designer.cs">
-      <DependentUpon>AddSkinDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Camera.cs" />
     <Compile Include="CIELab.cs" />
     <Compile Include="CIEXYZ.cs" />
     <Compile Include="CMYK.cs" />
@@ -95,14 +89,25 @@
     <Compile Include="ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalDirtiness.cs" />
+    <Compile Include="MenuStripShortcut.cs" />
+    <Compile Include="Paril\Components\Shortcuts\IShortcutImplementor.cs" />
+    <Compile Include="Paril\Components\Shortcuts\ShortcutBase.cs" />
+    <Compile Include="Paril\Controls\Color\ColorPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Paril\Controls\Color\ColorPicker.designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ColorSlider.designer.cs">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorSliderRenderer.cs" />
     <Compile Include="ColorSpaceHelper.cs" />
-    <Compile Include="ColorSquare.cs">
+    <Compile Include="Paril\Controls\Color\ColorSquare.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExceptionDialog.cs">
@@ -120,6 +125,7 @@
     </Compile>
     <Compile Include="HSB.cs" />
     <Compile Include="HSL.cs" />
+    <Compile Include="ImageUtilities.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +143,10 @@
     <Compile Include="NativeToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Paril\Components\Undoable.cs" />
+    <Compile Include="Paril\Components\UndoBuffer.cs" />
+    <Compile Include="Paril\Settings\Serializers\ColorSerializer.cs" />
+    <Compile Include="PixelsChangedUndoable.cs" />
     <Compile Include="PleaseWait.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,25 +160,33 @@
     <Compile Include="SaturationSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="ShortcutEditor.cs">
+    <Compile Include="Paril\Settings\Serializers\HexSerializer.cs" />
+    <Compile Include="Paril\Settings\Serializers\PasswordSerializer.cs" />
+    <Compile Include="Paril\Settings\Settings.cs" />
+    <Compile Include="Settings\GlobalSettings.cs" />
+    <Compile Include="Paril\Components\Shortcuts\ShortcutEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ShortcutEditor.Designer.cs">
+    <Compile Include="Paril\Components\Shortcuts\ShortcutEditor.Designer.cs">
       <DependentUpon>ShortcutEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Skin.cs" />
     <Compile Include="SwatchContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SwatchContainer.Designer.cs">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools.cs" />
+    <Compile Include="TransparencyMode.cs" />
     <Compile Include="Vector3.cs" />
+    <Compile Include="ViewMode.cs" />
+    <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="YUV.cs" />
-    <EmbeddedResource Include="AddSkinDialog.resx">
-      <DependentUpon>AddSkinDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Paril\Controls\Color\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ColorSlider.resx">
@@ -200,7 +218,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="ShortcutEditor.resx">
+    <EmbeddedResource Include="Paril\Components\Shortcuts\ShortcutEditor.resx">
       <DependentUpon>ShortcutEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SwatchContainer.resx">
@@ -276,6 +294,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dodge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\camera.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveAllHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\109_AllAnnotations_Error_16x16_72.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
