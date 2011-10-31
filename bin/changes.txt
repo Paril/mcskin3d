@@ -1,3 +1,11 @@
+Version 1.2
+- Bug fixes relating to importing and naming skins
+- Changed some default options (grass & helmet visibility)
+- Controllable 2D zoom and translate
+- Import multiple skins, simplified importing
+- Removed Commit button
+- Added Save, Save As and Save All buttons
+
 Version 1.1
 - Added swatches and swatch files (.swc, simple format, see Swatches/swatches.txt)
 - Fixed a few bugs relating to the color square
