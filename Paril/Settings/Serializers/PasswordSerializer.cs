@@ -252,13 +252,20 @@ namespace Paril.Settings.Serializers
 
 		public object Deserialize(string str)
 		{
-			return Decrypt(str,
-												passPhrase,
-												saltValue,
-												hashAlgorithm,
-												passwordIterations,
-												initVector,
-												keySize);
+			try
+			{
+				return Decrypt(str,
+													passPhrase,
+													saltValue,
+													hashAlgorithm,
+													passwordIterations,
+													initVector,
+													keySize);
+			}
+			catch
+			{
+				return "";
+			}
 		}
 
 		public string Serialize(object obj)

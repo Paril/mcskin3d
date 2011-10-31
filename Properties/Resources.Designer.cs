@@ -116,6 +116,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap image {
+            get {
+                object obj = ResourceManager.GetObject("image", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap pen {
             get {
                 object obj = ResourceManager.GetObject("pen", resourceCulture);

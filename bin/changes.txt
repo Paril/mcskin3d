@@ -1,10 +1,16 @@
 Version 1.2
 - Bug fixes relating to importing and naming skins
-- Changed some default options (grass & helmet visibility)
 - Controllable 2D zoom and translate
 - Import multiple skins, simplified importing
 - Removed Commit button
 - Added Save, Save As and Save All buttons
+- Fixed a password and enumeration serialization issue
+- Added a right-click context menu for the Skins list
+- Added HSLA as one of the alternatives to RGB.
+-- There seems to be some extraneous operations going on there that cause it to be slow, too much floating point math?
+- Made color slider thumbs smaller
+- Support for high resolution textures (up to 256x128)
+- Added auto update checking
 
 Version 1.1
 - Added swatches and swatch files (.swc, simple format, see Swatches/swatches.txt)
