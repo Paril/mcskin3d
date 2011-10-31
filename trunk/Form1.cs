@@ -20,11 +20,54 @@ using Paril.Settings;
 using Paril.Settings.Serializers;
 using Paril.Components;
 using Paril.Components.Shortcuts;
+using Paril.Components.Update;
 
 namespace MCSkin3D
 {
 	public partial class Form1 : Form
 	{
+		// ===============================================
+		// Private/Static variables
+		// ===============================================
+#region Variables
+		Updater _updater;
+
+		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
+		HueSliderRenderer hueRenderer;
+		SaturationSliderRenderer saturationRenderer;
+		LuminanceSliderRenderer lightnessRenderer;
+
+		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
+		int _grassTop;
+		int _alphaTex, _backgroundTex;
+		int _previewPaint;
+		Dictionary<Size, int> _charPaintSizes = new Dictionary<Size, int>();
+
+		float _animationTime = 0;
+		float _3dZoom = -80;
+		float _2dCamOffsetX = 0;
+		float _2dCamOffsetY = 0;
+		float _2dZoom = 8;
+		float _3dRotationX = 0, _3dRotationY = 0;
+		PixelsChangedUndoable _changedPixels = null;
+		bool _mouseIsDown = false;
+		Point _mousePoint;
+		UndoBuffer _currentUndoBuffer = null;
+		Skin _lastSkin = null;
+		bool _skipListbox = false;
+		internal PleaseWait _pleaseWaitForm;
+		ToolStripButton[] _toolButtons = null;
+		ToolStripMenuItem[] _toolMenus = null;
+		Tools _currentTool = Tools.Camera;
+		Color _currentColor = Color.FromArgb(255, 255, 255, 255);
+		bool _skipColors = false;
+		ViewMode _currentViewMode = ViewMode.Perspective;
+#endregion
+
+		// ===============================================
+		// Constructor
+		// ===============================================
+#region Constructor
 		public Form1()
 		{
 			InitializeComponent();
@@ -59,7 +102,7 @@ namespace MCSkin3D
 				Application.Exit();
 			}
 
-			menuStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
+			mainMenuStrip.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
 			toolStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
 
 			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
@@ -67,30 +110,53 @@ namespace MCSkin3D
 			blueColorSlider.Renderer = blueRenderer = new ColorSliderRenderer(blueColorSlider);
 			alphaColorSlider.Renderer = alphaRenderer = new ColorSliderRenderer(alphaColorSlider);
 
+			hueColorSlider.Renderer = hueRenderer = new HueSliderRenderer(hueColorSlider);
+			saturationColorSlider.Renderer = saturationRenderer = new SaturationSliderRenderer(saturationColorSlider);
+			lightnessColorSlider.Renderer = lightnessRenderer = new LuminanceSliderRenderer(lightnessColorSlider);
+
 			KeyPreview = true;
 			Text = "MCSkin3D v" + ProductVersion[0] + '.' + ProductVersion[2];
 
-			swatchContainer1.AddDirectory("Swatches");
-		}
+			swatchContainer.AddDirectory("Swatches");
 
-		void SetCheckbox(VisiblePartFlags flag, ToolStripMenuItem checkbox)
+			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", "" + ProductVersion[0] + '.' + ProductVersion[2]);
+			_updater.UpdateHandler = new AssemblyVersion();
+			_updater.NewVersionAvailable += _updater_NewVersionAvailable;
+			_updater.SameVersion += _updater_SameVersion;
+			_updater.CheckForUpdate();
+
+			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
+		}
+#endregion
+
+		// =====================================================================
+		// Updating
+		// =====================================================================
+#region Update
+		public void Invoke(Action action)
 		{
-			if ((GlobalSettings.ViewFlags & flag) != 0)
-				checkbox.Checked = true;
-			else
-				checkbox.Checked = false;
+			this.Invoke((Delegate)action);
 		}
 
-		protected override void OnFormClosing(FormClosingEventArgs e)
+		void _updater_SameVersion(object sender, EventArgs e)
 		{
-			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
-
-			GlobalSettings.Save();
+			this.Invoke(() => MessageBox.Show("You have the latest and greatest."));
 		}
 
-		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
+		void _updater_NewVersionAvailable(object sender, EventArgs e)
+		{
+			this.Invoke(delegate()
+			{
+				if (MessageBox.Show("A new version is available! Would you like to go to the forum post?", "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+					Process.Start("http://www.minecraftforum.net/topic/746941-mcskin3d-new-skinning-program/");
+			});
+		}
+#endregion
 
-		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
+		// =====================================================================
+		// Shortcuts
+		// =====================================================================
+#region Shortcuts
 
 		string CompileShortcutKeys()
 		{
@@ -190,8 +256,8 @@ namespace MCSkin3D
 			InitMenuShortcut(addNewSkinToolStripMenuItem, PerformImportSkin);
 			InitMenuShortcut(deleteSelectedSkinToolStripMenuItem, PerformDeleteSkin);
 			InitMenuShortcut(cloneSkinToolStripMenuItem, PerformCloneSkin);
-			InitMenuShortcut(dPerspectiveToolStripMenuItem, () => SetViewMode(ViewMode.Perspective));
-			InitMenuShortcut(dTextureToolStripMenuItem, () => SetViewMode(ViewMode.Orthographic));
+			InitMenuShortcut(perspectiveToolStripMenuItem, () => SetViewMode(ViewMode.Perspective));
+			InitMenuShortcut(textureToolStripMenuItem, () => SetViewMode(ViewMode.Orthographic));
 			InitMenuShortcut(animateToolStripMenuItem, ToggleAnimation);
 			InitMenuShortcut(followCursorToolStripMenuItem, ToggleFollowCursor);
 			InitMenuShortcut(grassToolStripMenuItem, ToggleGrass);
@@ -219,6 +285,45 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.H, SaveScreenshot);
 		}
 
+		bool PerformShortcut(Keys key, Keys modifiers)
+		{
+			foreach (var shortcut in _shortcutEditor.Shortcuts)
+			{
+				if ((shortcut.Keys & ~Keys.Modifiers) == key &&
+					(shortcut.Keys & ~(shortcut.Keys & ~Keys.Modifiers)) == modifiers)
+				{
+					shortcut.Pressed();
+					return true;
+				}
+			}
+
+			return false;
+		}
+#endregion
+
+		// =====================================================================
+		// Overrides
+		// =====================================================================
+#region Overrides
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
+			{
+				e.Handled = true;
+				return;
+			}
+
+			base.OnKeyDown(e);
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			_updater.Abort();
+			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
+
+			GlobalSettings.Save();
+		}
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -233,147 +338,72 @@ namespace MCSkin3D
 			glControl1.MakeCurrent();
 
 			foreach (var file in Directory.EnumerateFiles("./Skins/", "*.png"))
-				listBox1.Items.Add(new Skin(file));
+				skinsListBox.Items.Add(new Skin(file));
 
-			listBox1.SelectedIndex = 0;
-			foreach (var skin in listBox1.Items)
+			skinsListBox.SelectedIndex = 0;
+			foreach (var skin in skinsListBox.Items)
 			{
 				Skin s = (Skin)skin;
 
 				if (s.FileName.Equals(GlobalSettings.LastSkin, StringComparison.CurrentCultureIgnoreCase))
 				{
-					listBox1.SelectedItem = s;
+					skinsListBox.SelectedItem = s;
 					break;
 				}
 			}
 
 			SetColor(Color.White);
 		}
+#endregion
 
-		private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
+		// =====================================================================
+		// Private functions
+		// =====================================================================
+#region Private Functions
+		// Utility function, sets a tool strip checkbox item's state if the flag is present
+		void SetCheckbox(VisiblePartFlags flag, ToolStripMenuItem checkbox)
 		{
-			if (e.Index == -1)
-				return;
-			
-			e.DrawBackground();
-			e.DrawFocusRectangle();
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-			Skin skin = (Skin)listBox1.Items[e.Index];
-
-			if ((e.State & DrawItemState.Selected) == 0 && skin.FileName.Equals(GlobalSettings.LastSkin, StringComparison.CurrentCultureIgnoreCase))
-				e.Graphics.FillRectangle(new SolidBrush(System.Drawing.Color.Yellow), e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
-
-			TextRenderer.DrawText(e.Graphics, skin.ToString(), listBox1.Font, new Rectangle(e.Bounds.X + 24, e.Bounds.Y, e.Bounds.Width - 1 - 24, e.Bounds.Height - 1), System.Drawing.Color.Black, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
-			e.Graphics.DrawImage(skin.Head, new Rectangle(e.Bounds.X + 1, e.Bounds.Y + 1, 24, 24));
+			if ((GlobalSettings.ViewFlags & flag) != 0)
+				checkbox.Checked = true;
+			else
+				checkbox.Checked = false;
 		}
 
-		private void listBox1_MeasureItem(object sender, MeasureItemEventArgs e)
+		int GetPaintTexture(int width, int height)
 		{
-			e.ItemHeight = 24;
-		}
-
-		int _grassTop;
-		int _charPaintTex, _alphaTex, _backgroundTex;
-		static int _previewPaint;
-
-		private void glControl1_Load(object sender, EventArgs e)
-		{
-			glControl1_Resize(this, EventArgs.Empty);   // Ensure the Viewport is set up correctly
-			GL.ClearColor(GlobalSettings.BackgroundColor);
-
-			GL.Enable(EnableCap.Texture2D);
-			GL.ShadeModel(ShadingModel.Smooth);                        // Enable Smooth Shading
-			GL.ClearDepth(1.0f);                         // Depth Buffer Setup
-			GL.Enable(EnableCap.DepthTest);                        // Enables Depth Testing
-			GL.DepthFunc(DepthFunction.Lequal);                         // The Type Of Depth Testing To Do
-			GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);          // Really Nice Perspective Calculations
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvMode.Modulate);
-			GL.Enable(EnableCap.CullFace);
-			GL.CullFace(CullFaceMode.Front);
-
-			IL.ilInit();
-
-			_grassTop = ImageUtilities.LoadImage("grass.png");
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-
-			_backgroundTex = ImageUtilities.LoadImage("inverted.png");
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-
-			_charPaintTex = GL.GenTexture();
-			_previewPaint = GL.GenTexture();
-			GlobalDirtiness.CurrentSkin = GL.GenTexture();
-			_alphaTex = GL.GenTexture();
-
-			unsafe
+			if (!_charPaintSizes.ContainsKey(new Size(width, height)))
 			{
-				byte[] arra = new byte[64 * 32 * 4];
-				fixed (byte* texData = arra)
-				{
-					byte *d = texData;
+				int id = GL.GenTexture();
 
-					for (int y = 0; y < 32; ++y)
-						for (int x = 0; x < 64; ++x)
-						{
-							*((int*)d) = (x << 0) | (y << 8) | (0 << 16) | (255 << 24);
-							d += 4;
-						}
+				byte[] arra = new byte[width * height * 4];
+				unsafe
+				{
+					fixed (byte* texData = arra)
+					{
+						byte *d = texData;
+
+						for (int y = 0; y < height; ++y)
+							for (int x = 0; x < width; ++x)
+							{
+								*((int*)d) = (x << 0) | (y << 8) | (0 << 16) | (255 << 24);
+								d += 4;
+							}
+					}
 				}
 
-				GL.BindTexture(TextureTarget.Texture2D, _charPaintTex);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
+				GL.BindTexture(TextureTarget.Texture2D, id);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
-				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+				_charPaintSizes.Add(new Size(width, height), id);
 
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-
-				arra = new byte[4 * 4 * 4];
-				fixed (byte* texData = arra)
-				{
-					byte *d = texData;
-
-					for (int y = 0; y < 4; ++y)
-						for (int x = 0; x < 4; ++x)
-						{
-							bool dark = ((x + (y & 1)) & 1) == 1;
-
-							if (dark)
-								*((int*)d) = (80 << 0) | (80 << 8) | (80 << 16) | (255 << 24);
-							else
-								*((int*)d) = (127 << 0) | (127 << 8) | (127 << 16) | (255 << 24);
-							d += 4;
-						}
-				}
-
-				GL.BindTexture(TextureTarget.Texture2D, _alphaTex);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 4, 4, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+				return id;
 			}
+
+			return _charPaintSizes[new Size(width, height)];
 		}
 
 		void DrawSkinnedRectangle
@@ -463,29 +493,7 @@ namespace MCSkin3D
 			GL.End();
 		}
 
-		float _rotTest = 0;
-		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-		{
-			_rotTest += 0.24f;
-			glControl1.Invalidate();
-		}
-
-		float _zoom = -80;
-		void glControl1_MouseWheel(object sender, MouseEventArgs e)
-		{
-			if (_currentViewMode == ViewMode.Perspective)
-				_zoom += e.Delta / 50;
-			else
-				_2dZoom += e.Delta / 50;
-
-			glControl1.Invalidate();
-		}
-
-		float _2dCamOffsetX = 0;
-		float _2dCamOffsetY = 0;
-		float _2dZoom = 8;
-
-		void DrawPlayer(int tex, bool grass, bool pickView)
+		void DrawPlayer(int tex, int skinWidth, int skinHeight, bool grass, bool pickView)
 		{
 			if (_currentViewMode == ViewMode.Orthographic)
 			{
@@ -510,8 +518,8 @@ namespace MCSkin3D
 
 				GL.Enable(EnableCap.Blend);
 
-				float w = 64;
-				float h = 32;
+				float w = skinWidth;
+				float h = skinHeight;
 				GL.PushMatrix();
 				GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
 				GL.Begin(BeginMode.Quads);
@@ -588,9 +596,9 @@ namespace MCSkin3D
 
 			vec = Vector3.Divide(vec, count);
 
-			GL.Translate(0, 0, _zoom);
-			GL.Rotate(_rotX, 1, 0, 0);
-			GL.Rotate(_rotY, 0, 1, 0);
+			GL.Translate(0, 0, _3dZoom);
+			GL.Rotate(_3dRotationX, 1, 0, 0);
+			GL.Rotate(_3dRotationY, 0, 1, 0);
 
 			GL.Translate(-vec.X, -vec.Y, 0);
 			GL.PushMatrix();
@@ -643,7 +651,7 @@ namespace MCSkin3D
 			if (animateToolStripMenuItem.Checked)
 			{
 				GL.Translate(0, -6, 0);
-				GL.Rotate(Math.Sin(_rotTest) * 37, 1, 0, 0);
+				GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
 				GL.Translate(0, 6, 0);
 			}
 			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
@@ -662,7 +670,7 @@ namespace MCSkin3D
 			if (animateToolStripMenuItem.Checked)
 			{
 				GL.Translate(0, -6, 0);
-				GL.Rotate(Math.Sin(_rotTest) * -37, 1, 0, 0);
+				GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
 				GL.Translate(0, 6, 0);
 			}
 			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
@@ -681,7 +689,7 @@ namespace MCSkin3D
 			if (animateToolStripMenuItem.Checked)
 			{
 				GL.Translate(0, 5, 0);
-				GL.Rotate(Math.Sin(_rotTest) * -37, 1, 0, 0);
+				GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
 				GL.Translate(0, -5, 0);
 			}
 			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
@@ -699,7 +707,7 @@ namespace MCSkin3D
 			if (animateToolStripMenuItem.Checked)
 			{
 				GL.Translate(0, 5, 0);
-				GL.Rotate(Math.Sin(_rotTest) * 37, 1, 0, 0);
+				GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
 				GL.Translate(0, -5, 0);
 			}
 			// left arm
@@ -744,88 +752,32 @@ namespace MCSkin3D
 			GL.PopMatrix();
 		}
 
-		float _rotX = 0, _rotY= 0;
-		private void glControl1_Paint(object sender, PaintEventArgs e)
-		{
-			glControl1.MakeCurrent();
-			SetPreview();
-
-			if (_currentViewMode == ViewMode.Orthographic)
-				GL.ClearColor(Color.Black);
-			else
-				GL.ClearColor(GlobalSettings.BackgroundColor);
-			
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
-
-			DrawPlayer(_previewPaint, grassToolStripMenuItem.Checked, false);
-
-			glControl1.SwapBuffers();
-		}
-
-		private void glControl1_Resize(object sender, EventArgs e)
-		{
-			glControl1.MakeCurrent();
-			
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-
-			GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
-
-			if (_currentViewMode == ViewMode.Perspective)
-			{
-				var mat = OpenTK.Matrix4d.Perspective(45, (double)glControl1.Width / (double)glControl1.Height, 0.01, 100000);
-				GL.MultMatrix(ref mat);
-			}
-			else
-				GL.Ortho(0, glControl1.Width, glControl1.Height, 0, -1, 1);
-
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
-
-			glControl1.Invalidate();
-		}
-
-		PixelsChangedUndoable _changedPixels = null;
-		bool _md = false;
-		Point _mp;
-		private void glControl1_MouseDown(object sender, MouseEventArgs e)
-		{
-			_md = true;
-			_mp = e.Location;
-
-			if (e.Button == MouseButtons.Left)
-				UseToolOnViewport(e.X, e.Y);
-		}
-
 		void SetPreview()
 		{
-			if (listBox1.SelectedItem == null)
+			if (skinsListBox.SelectedItem == null)
 			{
 				int[] array = new int[64 * 32];
 				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				return;
 			}
 			else
 			{
-				Skin skin = (Skin)listBox1.SelectedItem;
+				Skin skin = _lastSkin;
 
 				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-				int[] array = new int[64 * 32];
+				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 				if (_currentTool == Tools.Pencil || _currentTool == Tools.Eraser || _currentTool == Tools.Burn || _currentTool == Tools.Dodge)
 				{
 					Point p = Point.Empty;
 
-					if (GetPick(_mp.X, _mp.Y, ref p))
-						UseToolOnPixel(array, p.X, p.Y);
+					if (GetPick(_mousePoint.X, _mousePoint.Y, ref p))
+						UseToolOnPixel(array, skin, p.X, p.Y);
 				}
 
 				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 			}
 		}
 
@@ -839,7 +791,9 @@ namespace MCSkin3D
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
-			DrawPlayer(_charPaintTex, false, true);
+			var skin = (Skin)skinsListBox.SelectedItem;
+
+			DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin.Width, skin.Height, false, true);
 
 			int[] viewport = new int[4];
 			byte[] pixel = new byte[3];
@@ -858,44 +812,45 @@ namespace MCSkin3D
 			return false;
 		}
 
-		void UseToolOnPixel(int[] pixels, int x, int y)
+		void UseToolOnPixel(int[] pixels, Skin skin, int x, int y)
 		{
-			var c = pixels[x + (64 * y)];
+			int pixNum = x + (skin.Width * y);
+			var c = pixels[pixNum];
 			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 
 			// blend
 			if (_currentTool == Tools.Pencil)
 			{
-				Color blend = Color.FromArgb(ColorBlending.AlphaBlend(color, oldColor).ToArgb());
-				pixels[x + (64 * y)] = blend.R | (blend.G << 8) | (blend.B << 16) | (blend.A << 24);
+				Color blend = Color.FromArgb(ColorBlending.AlphaBlend(_currentColor, oldColor).ToArgb());
+				pixels[pixNum] = blend.R | (blend.G << 8) | (blend.B << 16) | (blend.A << 24);
 			}
 			else if (_currentTool == Tools.Burn)
 			{
 				Color burnt = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
-				pixels[x + (64 * y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
+				pixels[pixNum] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
 			}
 			else if (_currentTool == Tools.Dodge)
 			{
 				Color burnt = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
-				pixels[x + (64 * y)] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
+				pixels[pixNum] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
 			}
 			else if (_currentTool == Tools.Eraser)
-				pixels[x + (64 * y)] = 0;
+				pixels[pixNum] = 0;
 		}
 
 		void UseToolOnViewport(int x, int y)
 		{
-			if (listBox1.SelectedItem == null)
+			if (skinsListBox.SelectedItem == null)
 				return;
 
 			Point p = Point.Empty;
 
 			if (GetPick(x, y, ref p))
 			{
-				Skin skin = (Skin)listBox1.SelectedItem;
+				Skin skin = (Skin)skinsListBox.SelectedItem;
 
 				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-				int[] array = new int[64 * 32];
+				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 				if (_currentTool == Tools.Pencil || _currentTool == Tools.Eraser || _currentTool == Tools.Burn || _currentTool == Tools.Dodge)
@@ -903,134 +858,33 @@ namespace MCSkin3D
 					if (_changedPixels == null)
 					{
 						_changedPixels = new PixelsChangedUndoable();
-						_changedPixels.NewColor = color;
+						_changedPixels.NewColor = _currentColor;
 					}
 
 					if (!_changedPixels.Points.ContainsKey(new Point(p.X, p.Y)))
 					{
-						var c = array[p.X + (64 * p.Y)];
+						var c = array[p.X + (skin.Width * p.Y)];
 						var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 						_changedPixels.Points[new Point(p.X, p.Y)] = oldColor;
 
-						UseToolOnPixel(array, p.X, p.Y);
+						UseToolOnPixel(array, skin, p.X, p.Y);
 
 						SetCanSave(true);
 						skin.Dirty = true;
-						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 					}
 				}
 				else if (_currentTool == Tools.Dropper)
 				{
-					var c = array[p.X + (64 * p.Y)];
+					var c = array[p.X + (skin.Width * p.Y)];
 					SetColor(Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF));
 				}
 			}
-		
-			glControl1.Invalidate();
-		}
-
-		private void glControl1_MouseMove(object sender, MouseEventArgs e)
-		{
-			if (_md)
-			{
-				var delta = new Point(e.X - _mp.X, e.Y - _mp.Y);
-
-				if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Left) ||
-					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Right))
-				{
-					if (_currentViewMode == ViewMode.Perspective)
-					{
-						_rotY += (float)delta.X;
-						_rotX += (float)delta.Y;
-					}
-					else
-					{
-						_2dCamOffsetX += delta.X / _2dZoom;
-						_2dCamOffsetY += delta.Y / _2dZoom;
-					}
-				}
-				else if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Right) ||
-					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Middle))
-				{
-					if (_currentViewMode == ViewMode.Perspective)
-						_zoom += (float)-delta.Y;
-					else
-						_2dZoom += -delta.Y / 25.0f;
-				}
-
-				if ((_currentTool != Tools.Camera) && e.Button == MouseButtons.Left)
-					UseToolOnViewport(e.X, e.Y);
-
-				glControl1.Invalidate();
-			}
-
-			_mp = e.Location;
-		}
-
-		private void glControl1_MouseUp(object sender, MouseEventArgs e)
-		{
-			if (_currentUndoBuffer != null && _changedPixels != null)
-			{
-				_currentUndoBuffer.AddBuffer(_changedPixels);
-				_changedPixels = null;
-
-				undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = _currentUndoBuffer.CanUndo;
-				redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = _currentUndoBuffer.CanRedo;		
-			}
-
-			_md = false;
-		}
-
-		UndoBuffer _currentUndoBuffer = null;
-		Skin _lastSkin = null;
-		bool _skipListbox = false;
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (_skipListbox || listBox1.SelectedItem == _lastSkin)
-				return;
-
-			if (_lastSkin != null && listBox1.SelectedItem != _lastSkin)
-			{
-				// Copy over the current changes to the tex stored in the skin.
-				// This allows us to pick up where we left off later, without undoing any work.
-				_lastSkin.CommitChanges(GlobalDirtiness.CurrentSkin, false);
-			}
-
-			//if (_lastSkin != null)
-			//	_lastSkin.Undo.Clear();
-
-			glControl1.MakeCurrent();
-
-			Skin skin = (Skin)listBox1.SelectedItem;
-			SetCanSave(skin.Dirty);
-
-			if (skin == null)
-			{
-				_currentUndoBuffer = null;
-				GL.BindTexture(TextureTarget.Texture2D, 0);
-				int[] array = new int[64 * 32];
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = false;
-				redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = false;
-			}
-			else
-			{
-				GL.BindTexture(TextureTarget.Texture2D, skin.GLImage);
-				int[] array = new int[64 * 32];
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-
-				_currentUndoBuffer = skin.Undo;
-				undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = _currentUndoBuffer.CanUndo;
-				redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = _currentUndoBuffer.CanRedo;
-			}
 
 			glControl1.Invalidate();
-			_lastSkin = (Skin)listBox1.SelectedItem;
 		}
 
+#region File uploading (FIXME: REMOVE)
 		public static Exception HttpUploadFile(string url, string file, string paramName, string contentType, Dictionary<string, byte[]> nvc, CookieContainer cookies)
 		{
 			//log.Debug(string.Format("Uploading {0} to {1}", file, url));
@@ -1196,10 +1050,9 @@ namespace MCSkin3D
 			}
 		}
 
-		internal PleaseWait _pleaseWaitForm;
 		void PerformUpload()
 		{
-			if (listBox1.SelectedItem == null)
+			if (skinsListBox.SelectedItem == null)
 				return;
 
 			using (Login login = new Login())
@@ -1225,7 +1078,7 @@ namespace MCSkin3D
 
 				Thread thread = new Thread(UploadThread);
 				ErrorReturn ret = new ErrorReturn();
-				thread.Start(new object[] { login.Username, login.Password, ((Skin)listBox1.SelectedItem).FileName, ret });
+				thread.Start(new object[] { login.Username, login.Password, ((Skin)skinsListBox.SelectedItem).FileName, ret });
 
 				_pleaseWaitForm.ShowDialog();
 				_pleaseWaitForm.Dispose();
@@ -1237,8 +1090,8 @@ namespace MCSkin3D
 				else
 				{
 					MessageBox.Show("Skin upload success! Enjoy!", "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					GlobalSettings.LastSkin = ((Skin)listBox1.SelectedItem).FileName;
-					listBox1.Invalidate();
+					GlobalSettings.LastSkin = ((Skin)skinsListBox.SelectedItem).FileName;
+					skinsListBox.Invalidate();
 				}
 
 				if (didShowDialog)
@@ -1256,16 +1109,7 @@ namespace MCSkin3D
 				}
 			}
 		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			PerformUpload();
-		}
-
-		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Close();
-		}
+#endregion
 
 		void ToggleAnimation()
 		{
@@ -1273,11 +1117,6 @@ namespace MCSkin3D
 			GlobalSettings.Animate = animateToolStripMenuItem.Checked;
 
 			Invalidate();
-		}
-
-		private void animateToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleAnimation();
 		}
 
 		void ToggleFollowCursor()
@@ -1288,11 +1127,6 @@ namespace MCSkin3D
 			Invalidate();
 		}
 
-		private void followCursorToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleFollowCursor();
-		}
-
 		void ToggleGrass()
 		{
 			grassToolStripMenuItem.Checked = !grassToolStripMenuItem.Checked;
@@ -1301,11 +1135,7 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
-		private void grassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleGrass();
-		}
-
+#region Skin Management
 		void PerformImportSkin()
 		{
 			using (var ofd = new OpenFileDialog())
@@ -1325,37 +1155,32 @@ namespace MCSkin3D
 						File.Copy(f, "./Skins/" + name + ".png");
 
 						Skin skin = new Skin("./Skins/" + name + ".png");
-						listBox1.Items.Add(skin);
-						listBox1.SelectedItem = skin;
+						skinsListBox.Items.Add(skin);
+						skinsListBox.SelectedItem = skin;
 					}
 				}
 
-				listBox1.Sorted = false;
-				listBox1.Sorted = true;
+				skinsListBox.Sorted = false;
+				skinsListBox.Sorted = true;
 			}
-		}
-
-		private void addNewSkinToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			PerformImportSkin();
 		}
 
 		void PerformDeleteSkin()
 		{
-			if (listBox1.SelectedItem == null)
+			if (skinsListBox.SelectedItem == null)
 				return;
 
 			if (MessageBox.Show("Delete this skin perminently?\r\nThis will delete the skin from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 			{
-				Skin skin = ((Skin)listBox1.SelectedItem);
-				if (listBox1.Items.Count != 1)
+				Skin skin = ((Skin)skinsListBox.SelectedItem);
+				if (skinsListBox.Items.Count != 1)
 				{
-					if (listBox1.SelectedIndex == listBox1.Items.Count - 1)
-						listBox1.SelectedIndex--;
+					if (skinsListBox.SelectedIndex == skinsListBox.Items.Count - 1)
+						skinsListBox.SelectedIndex--;
 					else
-						listBox1.SelectedIndex++;
+						skinsListBox.SelectedIndex++;
 				}
-				listBox1.Items.Remove(skin);
+				skinsListBox.Items.Remove(skin);
 
 				File.Delete(skin.FileName);
 
@@ -1363,17 +1188,12 @@ namespace MCSkin3D
 			}
 		}
 
-		private void deleteSelectedSkinToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			PerformDeleteSkin();
-		}
-
 		void PerformCloneSkin()
 		{
-			if (listBox1.SelectedItem == null)
+			if (skinsListBox.SelectedItem == null)
 				return;
 
-			Skin skin = ((Skin)listBox1.SelectedItem);
+			Skin skin = ((Skin)skinsListBox.SelectedItem);
 			string newName = skin.Name;
 			string newFileName;
 
@@ -1385,20 +1205,15 @@ namespace MCSkin3D
 
 			File.Copy(skin.FileName, newFileName);
 			Skin newSkin = new Skin(newFileName);
-			listBox1.Items.Add(newSkin);
+			skinsListBox.Items.Add(newSkin);
 		}
 
-		private void cloneSkinToolStripMenuItem_Click(object sender, EventArgs e)
+		void PerformNameChange()
 		{
-			PerformCloneSkin();
-		}
-
-		private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			if (listBox1.SelectedItem == null)
+			if (skinsListBox.SelectedItem == null)
 				return;
 
-			var skin = ((Skin)listBox1.SelectedItem);
+			var skin = ((Skin)skinsListBox.SelectedItem);
 
 			using (NameChange nc = new NameChange())
 			{
@@ -1422,8 +1237,8 @@ namespace MCSkin3D
 						skin.FileName = newName;
 						skin.Name = nc.SkinName;
 
-						listBox1.Sorted = false;
-						listBox1.Sorted = true;
+						skinsListBox.Sorted = false;
+						skinsListBox.Sorted = true;
 
 						break;
 					}
@@ -1432,54 +1247,33 @@ namespace MCSkin3D
 				}
 			}
 		}
+#endregion
 
-		ToolStripButton[] _buttons = null;
-		ToolStripMenuItem[] _toolMenus = null;
-		static Tools _currentTool = Tools.Camera;
 		void SetTool(Tools tool)
 		{
 			_currentTool = tool;
 
-			if (_buttons == null)
-				_buttons = new ToolStripButton[] { toolStripButton1, toolStripButton2, toolStripButton3, eraserToolStripButton, dodgeToolStripButton, burnToolStripButton };
+			if (_toolButtons == null)
+				_toolButtons = new ToolStripButton[] { cameraToolStripButton, pencilToolStripButton, pipetteToolStripButton, eraserToolStripButton, dodgeToolStripButton, burnToolStripButton };
 			if (_toolMenus == null)
 				_toolMenus = new ToolStripMenuItem[] { cameraToolStripMenuItem, pencilToolStripMenuItem, dropperToolStripMenuItem, eraserToolStripMenuItem, dodgeToolStripMenuItem, burnToolStripMenuItem };
 
-			for (int i = 0; i < _buttons.Length; ++i)
+			for (int i = 0; i < _toolButtons.Length; ++i)
 			{
 				if (i == (int)tool)
 				{
-					_buttons[i].Checked = true;
+					_toolButtons[i].Checked = true;
 					_toolMenus[i].Checked = true;
 				}
 				else
 				{
-					_buttons[i].Checked = false;
+					_toolButtons[i].Checked = false;
 					_toolMenus[i].Checked = false;
 				}
 			}
 		}
 
-		private void toolStripButton1_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Camera);
-		}
-
-		private void toolStripButton2_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Pencil);
-		}
-
-		private void toolStripButton3_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dropper);
-		}
-
-		private void eraserToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Eraser);
-		}
-
+#region Saving
 		void SetCanSave(bool value)
 		{
 			saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = value;
@@ -1487,11 +1281,13 @@ namespace MCSkin3D
 
 		void PerformSaveAs()
 		{
+			var skin = (Skin)skinsListBox.SelectedItem;
+
 			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-			int[] pixels = new int[64 * 32];
+			int[] pixels = new int[skin.Width * skin.Height];
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
 
-			Bitmap b = new Bitmap(64, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			Bitmap b = new Bitmap(skin.Width, skin.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
 			var locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
@@ -1533,12 +1329,12 @@ namespace MCSkin3D
 		{
 			glControl1.MakeCurrent();
 
-			s.CommitChanges((s == listBox1.SelectedItem) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
+			s.CommitChanges((s == skinsListBox.SelectedItem) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
 		}
 
 		void PerformSaveAll()
 		{
-			foreach (var item in listBox1.Items)
+			foreach (var item in skinsListBox.Items)
 			{
 				Skin skin = (Skin)item;
 
@@ -1548,20 +1344,21 @@ namespace MCSkin3D
 				PerformSaveSkin(skin);
 			}
 
-			listBox1.Invalidate();
+			skinsListBox.Invalidate();
 		}
 
 		void PerformSave()
 		{
-			Skin skin = (Skin)listBox1.SelectedItem;
+			Skin skin = (Skin)skinsListBox.SelectedItem;
 
 			if (!skin.Dirty)
 				return;
 
 			SetCanSave(false);
 			PerformSaveSkin(skin);
-			listBox1.Invalidate();
+			skinsListBox.Invalidate();
 		}
+#endregion
 
 		void PerformUndo()
 		{
@@ -1572,10 +1369,10 @@ namespace MCSkin3D
 
 			_currentUndoBuffer.Undo();
 
-			undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = _currentUndoBuffer.CanUndo;
-			redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = _currentUndoBuffer.CanRedo;
+			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 
-			Skin current = (Skin)listBox1.SelectedItem;
+			Skin current = (Skin)skinsListBox.SelectedItem;
 			SetCanSave(current.Dirty = true);
 
 			glControl1.Invalidate();
@@ -1590,167 +1387,83 @@ namespace MCSkin3D
 
 			_currentUndoBuffer.Redo();
 
-			Skin current = (Skin)listBox1.SelectedItem;
+			Skin current = (Skin)skinsListBox.SelectedItem;
 			SetCanSave(current.Dirty = true);
 
-			undoToolStripMenuItem.Enabled = undoStripButton5.Enabled = _currentUndoBuffer.CanUndo;
-			redoToolStripMenuItem.Enabled = redoStripButton4.Enabled = _currentUndoBuffer.CanRedo;
+			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 
 			glControl1.Invalidate();
 		}
 
-		private void undoStripButton5_Click(object sender, EventArgs e)
-		{
-			PerformUndo();
-		}
-
-		private void redoStripButton4_Click(object sender, EventArgs e)
-		{
-			PerformRedo();
-		}
-
-		Color color = Color.FromArgb(255, 255, 255, 255);
-
-		bool skipSet = false;
-
 		void SetColor(Color c)
 		{
-			color = c;
-			panel1.BackColor = color;
-
-			skipSet = true;
-			numericUpDown1.Value = c.R;
-			numericUpDown2.Value = c.G;
-			numericUpDown3.Value = c.B;
-			numericUpDown4.Value = c.A;
+			_currentColor = c;
+			panel1.BackColor = _currentColor;
 
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(c);
-			colorSquare1.CurrentHue = (int)hsl.Hue;
-			colorSquare1.CurrentSat = (int)(hsl.Saturation * 240);
-			saturationSlider1.CurrentLum = (int)(hsl.Luminance * 240);
+
+			_skipColors = true;
+			redNumericUpDown.Value = c.R;
+			greenNumericUpDown.Value = c.G;
+			blueNumericUpDown.Value = c.B;
+			alphaNumericUpDown.Value = c.A;
+			hueNumericUpDown.Value = (int)hsl.Hue;
+			saturationNumericUpDown.Value = (int)(hsl.Saturation * 240);
+			luminanceNumericUpDown.Value = (int)(hsl.Luminance * 240);
+
+			colorSquare.CurrentHue = (int)hsl.Hue;
+			colorSquare.CurrentSat = (int)(hsl.Saturation * 240);
+			saturationSlider.CurrentLum = (int)(hsl.Luminance * 240);
 
 			redRenderer.StartColor =
 				greenRenderer.StartColor =
-				blueRenderer.StartColor = color;
+				blueRenderer.StartColor = _currentColor;
 
-			redRenderer.EndColor = Color.FromArgb(255, 255, color.G, color.B);
-			greenRenderer.EndColor = Color.FromArgb(255, color.R, 255, color.B);
-			blueRenderer.EndColor = Color.FromArgb(255, color.R, color.G, 255);
+			redRenderer.EndColor = Color.FromArgb(255, 255, _currentColor.G, _currentColor.B);
+			greenRenderer.EndColor = Color.FromArgb(255, _currentColor.R, 255, _currentColor.B);
+			blueRenderer.EndColor = Color.FromArgb(255, _currentColor.R, _currentColor.G, 255);
 
-			redColorSlider.Value = color.R;
-			greenColorSlider.Value = color.G;
-			blueColorSlider.Value = color.B;
-			alphaColorSlider.Value = color.A;
+			hueRenderer.Saturation = colorSquare.CurrentSat;
+			hueRenderer.Luminance = saturationSlider.CurrentLum;
 
-			redColorSlider.Invalidate();
-			greenColorSlider.Invalidate();
-			blueColorSlider.Invalidate();
-			alphaColorSlider.Invalidate();
-			colorSquare1.Invalidate();
-			
-			skipSet = false;
+			saturationRenderer.Luminance = saturationSlider.CurrentLum;
+			saturationRenderer.Hue = (int)hsl.Hue;
+
+			lightnessRenderer.Hue = (int)hsl.Hue;
+			lightnessRenderer.Saturation = colorSquare.CurrentSat;
+
+			redColorSlider.Value = _currentColor.R;
+			greenColorSlider.Value = _currentColor.G;
+			blueColorSlider.Value = _currentColor.B;
+			alphaColorSlider.Value = _currentColor.A;
+
+			hueColorSlider.Value = (int)hsl.Hue;
+			saturationColorSlider.Value = (int)(hsl.Saturation * 240);
+			lightnessColorSlider.Value = (int)(hsl.Luminance * 240);
+
+			_skipColors = false;
 		}
-
-		private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(color.A, (byte)numericUpDown1.Value, color.G, color.B));
-		}
-
-		private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(color.A, color.R, (byte)numericUpDown2.Value, color.B));
-		}
-
-		private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(color.A, color.R, color.G, (byte)numericUpDown3.Value));
-		}
-
-		private void numericUpDown4_ValueChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb((byte)numericUpDown4.Value, color.R, color.G, color.B));
-		}
-
-		private void colorSquare1_HueChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			var c = new HSL(colorSquare1.CurrentHue, (float)colorSquare1.CurrentSat / 240.0f, (float)saturationSlider1.CurrentLum / 240.0f); ;
-			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
-		}
-
-		private void colorSquare1_SatChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			var c = new HSL(colorSquare1.CurrentHue, (float)colorSquare1.CurrentSat / 240.0f, (float)saturationSlider1.CurrentLum / 240.0f); ;
-			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
-		}
-
-		private void saturationSlider1_LumChanged(object sender, EventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			var c = new HSL(colorSquare1.CurrentHue, (float)colorSquare1.CurrentSat / 240.0f, (float)saturationSlider1.CurrentLum / 240.0f); ;
-			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
-		}
-
-		ViewMode _currentViewMode = ViewMode.Perspective;
 
 		void SetViewMode(ViewMode newMode)
 		{
-			toolStripButton4.Checked = toolStripButton5.Checked = false;
-			dPerspectiveToolStripMenuItem.Checked = dTextureToolStripMenuItem.Checked = false;
+			perspectiveToolStripButton.Checked = orthographicToolStripButton.Checked = false;
+			perspectiveToolStripMenuItem.Checked = textureToolStripMenuItem.Checked = false;
 			_currentViewMode = newMode;
 
 			switch (_currentViewMode)
 			{
 			case ViewMode.Orthographic:
-				toolStripButton5.Checked = true;
-				dTextureToolStripMenuItem.Checked = true;
+				orthographicToolStripButton.Checked = true;
+				textureToolStripMenuItem.Checked = true;
 				break;
 			case ViewMode.Perspective:
-				toolStripButton4.Checked = true;
-				dPerspectiveToolStripMenuItem.Checked = true;
+				perspectiveToolStripButton.Checked = true;
+				perspectiveToolStripMenuItem.Checked = true;
 				break;
 			}
 
 			glControl1_Resize(glControl1, null);
-		}
-
-		private void dPerspectiveToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetViewMode(ViewMode.Perspective);
-		}
-
-		private void dTextureToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetViewMode(ViewMode.Orthographic);
-		}
-
-		private void toolStripButton4_Click(object sender, EventArgs e)
-		{
-			SetViewMode(ViewMode.Perspective);
-		}
-
-		private void toolStripButton5_Click(object sender, EventArgs e)
-		{
-			SetViewMode(ViewMode.Orthographic);
 		}
 
 		void SetTransparencyMode(TransparencyMode trans)
@@ -1772,21 +1485,6 @@ namespace MCSkin3D
 			}
 
 			glControl1.Invalidate();
-		}
-
-		private void offToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTransparencyMode(TransparencyMode.Off);
-		}
-
-		private void helmetOnlyToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTransparencyMode(TransparencyMode.Helmet);
-		}
-
-		private void allToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTransparencyMode(TransparencyMode.All);
 		}
 
 		void ToggleVisiblePart(VisiblePartFlags flag)
@@ -1828,41 +1526,6 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
-		private void headToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.HeadFlag);
-		}
-
-		private void helmetToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.HelmetFlag);
-		}
-
-		private void chestToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.ChestFlag);
-		}
-
-		private void leftArmToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.LeftArmFlag);
-		}
-
-		private void rightArmToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.RightArmFlag);
-		}
-
-		private void leftLegToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.LeftLegFlag);
-		}
-
-		private void rightLegToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.RightLegFlag);
-		}
-
 		void ToggleAlphaCheckerboard()
 		{
 			GlobalSettings.AlphaCheckerboard = !GlobalSettings.AlphaCheckerboard;
@@ -1870,36 +1533,11 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
-		private void alphaCheckerboardToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleAlphaCheckerboard();
-		}
-
 		void ToggleOverlay()
 		{
 			GlobalSettings.TextureOverlay = !GlobalSettings.TextureOverlay;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
 			glControl1.Invalidate();
-		}
-
-		private void textureOverlayToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleOverlay();
-		}
-
-		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Process.Start("http://www.alteredsoftworks.com");
-		}
-
-		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			PerformUndo();
-		}
-
-		private void redoToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			PerformRedo();
 		}
 
 		void ToggleTransparencyMode()
@@ -1931,129 +1569,7 @@ namespace MCSkin3D
 			}
 		}
 
-		private bool PerformShortcut(Keys key, Keys modifiers)
-		{
-			foreach (var shortcut in _shortcutEditor.Shortcuts)
-			{
-				if ((shortcut.Keys & ~Keys.Modifiers) == key &&
-					(shortcut.Keys & ~(shortcut.Keys & ~Keys.Modifiers)) == modifiers)
-				{
-					shortcut.Pressed();
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		protected override void OnKeyDown(KeyEventArgs e)
-		{
-			if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
-			{
-				e.Handled = true;
-				return;
-			}
-			
-			base.OnKeyDown(e);
-		}
-
-		protected override void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
-		{
-			base.OnKeyPress(e);
-		}
-
-		private void cameraToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Camera);
-		}
-
-		private void pencilToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Pencil);
-		}
-
-		private void dropperToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dropper);
-		}
-
-		private void redColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(color.A, e.NewValue, color.G, color.B));
-		}
-
-		private void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(color.A, color.R, e.NewValue, color.B));
-		}
-
-		private void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(color.A, color.R, color.G, e.NewValue));
-		}
-
-		private void swatchContainer1_SwatchChanged(object sender, SwatchChangedEventArgs e)
-		{
-			SetColor(e.Swatch);
-		}
-
-		private void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (skipSet)
-				return;
-
-			SetColor(Color.FromArgb(e.NewValue, color.R, color.G, color.B));
-		}
-
-		private void dodgeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dodge);
-		}
-
-		private void burnToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Burn);
-		}
-
-		private void dodgeToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dodge);
-		}
-
-		private void burnToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Burn);
-		}
-
-		private void keyboardShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			_shortcutEditor.ShowDialog();
-		}
-
-		private void backgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using (MultiPainter.ColorPicker picker = new MultiPainter.ColorPicker())
-			{
-				picker.CurrentColor = GlobalSettings.BackgroundColor;
-
-				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-				{
-					GlobalSettings.BackgroundColor = picker.CurrentColor;
-
-					glControl1.Invalidate();
-				}
-			}
-		}
-
+#region Screenshots
 		Bitmap CopyScreenToBitmap()
 		{
 			glControl1.MakeCurrent();
@@ -2109,8 +1625,671 @@ namespace MCSkin3D
 				}
 			}
 		}
+#endregion
+#endregion
 
-		private void screenshotToolStripButton_Click(object sender, EventArgs e)
+
+		// =====================================================================
+		// Events
+		// =====================================================================
+		void skinsListBox_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			if (e.Index == -1)
+				return;
+			
+			e.DrawBackground();
+			e.DrawFocusRectangle();
+			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+			Skin skin = (Skin)skinsListBox.Items[e.Index];
+
+			if ((e.State & DrawItemState.Selected) == 0 && skin.FileName.Equals(GlobalSettings.LastSkin, StringComparison.CurrentCultureIgnoreCase))
+				e.Graphics.FillRectangle(new SolidBrush(System.Drawing.Color.Yellow), e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
+
+			TextRenderer.DrawText(e.Graphics, skin.ToString(), skinsListBox.Font, new Rectangle(e.Bounds.X + 24, e.Bounds.Y, e.Bounds.Width - 1 - 24, e.Bounds.Height - 1), System.Drawing.Color.Black, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
+			e.Graphics.DrawImage(skin.Head, new Rectangle(e.Bounds.X + 1, e.Bounds.Y + 1, 24, 24));
+		}
+
+		void skinsListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+		{
+			e.ItemHeight = 24;
+		}
+
+		void glControl1_Load(object sender, EventArgs e)
+		{
+			glControl1_Resize(this, EventArgs.Empty);   // Ensure the Viewport is set up correctly
+			GL.ClearColor(GlobalSettings.BackgroundColor);
+
+			GL.Enable(EnableCap.Texture2D);
+			GL.ShadeModel(ShadingModel.Smooth);                        // Enable Smooth Shading
+			GL.ClearDepth(1.0f);                         // Depth Buffer Setup
+			GL.Enable(EnableCap.DepthTest);                        // Enables Depth Testing
+			GL.DepthFunc(DepthFunction.Lequal);                         // The Type Of Depth Testing To Do
+			GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);          // Really Nice Perspective Calculations
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvMode.Modulate);
+			GL.Enable(EnableCap.CullFace);
+			GL.CullFace(CullFaceMode.Front);
+
+			IL.ilInit();
+
+			_grassTop = ImageUtilities.LoadImage("grass.png");
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+
+			_backgroundTex = ImageUtilities.LoadImage("inverted.png");
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+
+			_previewPaint = GL.GenTexture();
+			GlobalDirtiness.CurrentSkin = GL.GenTexture();
+			_alphaTex = GL.GenTexture();
+
+			unsafe
+			{
+				byte[] arra = new byte[64 * 32];
+				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+
+				arra = new byte[4 * 4 * 4];
+				fixed (byte* texData = arra)
+				{
+					byte *d = texData;
+
+					for (int y = 0; y < 4; ++y)
+						for (int x = 0; x < 4; ++x)
+						{
+							bool dark = ((x + (y & 1)) & 1) == 1;
+
+							if (dark)
+								*((int*)d) = (80 << 0) | (80 << 8) | (80 << 16) | (255 << 24);
+							else
+								*((int*)d) = (127 << 0) | (127 << 8) | (127 << 16) | (255 << 24);
+							d += 4;
+						}
+				}
+
+				GL.BindTexture(TextureTarget.Texture2D, _alphaTex);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 4, 4, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+			}
+		}
+
+		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			_animationTime += 0.24f;
+			glControl1.Invalidate();
+		}
+
+		void glControl1_MouseWheel(object sender, MouseEventArgs e)
+		{
+			if (_currentViewMode == ViewMode.Perspective)
+				_3dZoom += e.Delta / 50;
+			else
+				_2dZoom += e.Delta / 50;
+
+			glControl1.Invalidate();
+		}
+
+		void glControl1_Paint(object sender, PaintEventArgs e)
+		{
+			glControl1.MakeCurrent();
+			SetPreview();
+
+			if (_currentViewMode == ViewMode.Orthographic)
+				GL.ClearColor(Color.Black);
+			else
+				GL.ClearColor(GlobalSettings.BackgroundColor);
+			
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+
+			var skin = (Skin)skinsListBox.SelectedItem;
+
+			DrawPlayer(_previewPaint, skin.Width, skin.Height, grassToolStripMenuItem.Checked, false);
+
+			glControl1.SwapBuffers();
+		}
+
+		void glControl1_Resize(object sender, EventArgs e)
+		{
+			glControl1.MakeCurrent();
+			
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+
+			GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
+
+			if (_currentViewMode == ViewMode.Perspective)
+			{
+				var mat = OpenTK.Matrix4d.Perspective(45, (double)glControl1.Width / (double)glControl1.Height, 0.01, 100000);
+				GL.MultMatrix(ref mat);
+			}
+			else
+				GL.Ortho(0, glControl1.Width, glControl1.Height, 0, -1, 1);
+
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+
+			glControl1.Invalidate();
+		}
+
+		void glControl1_MouseDown(object sender, MouseEventArgs e)
+		{
+			_mouseIsDown = true;
+			_mousePoint = e.Location;
+
+			if (e.Button == MouseButtons.Left)
+				UseToolOnViewport(e.X, e.Y);
+		}
+
+		void glControl1_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (_mouseIsDown)
+			{
+				var delta = new Point(e.X - _mousePoint.X, e.Y - _mousePoint.Y);
+
+				if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Left) ||
+					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Right))
+				{
+					if (_currentViewMode == ViewMode.Perspective)
+					{
+						_3dRotationY += (float)delta.X;
+						_3dRotationX += (float)delta.Y;
+					}
+					else
+					{
+						_2dCamOffsetX += delta.X / _2dZoom;
+						_2dCamOffsetY += delta.Y / _2dZoom;
+					}
+				}
+				else if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Right) ||
+					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Middle))
+				{
+					if (_currentViewMode == ViewMode.Perspective)
+						_3dZoom += (float)-delta.Y;
+					else
+						_2dZoom += -delta.Y / 25.0f;
+				}
+
+				if ((_currentTool != Tools.Camera) && e.Button == MouseButtons.Left)
+					UseToolOnViewport(e.X, e.Y);
+
+				glControl1.Invalidate();
+			}
+
+			_mousePoint = e.Location;
+		}
+
+		void glControl1_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (_currentUndoBuffer != null && _changedPixels != null)
+			{
+				_currentUndoBuffer.AddBuffer(_changedPixels);
+				_changedPixels = null;
+
+				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;		
+			}
+
+			_mouseIsDown = false;
+		}
+
+		void skinsListBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (_skipListbox || skinsListBox.SelectedItem == _lastSkin)
+				return;
+
+			if (_lastSkin != null && skinsListBox.SelectedItem != _lastSkin)
+			{
+				// Copy over the current changes to the tex stored in the skin.
+				// This allows us to pick up where we left off later, without undoing any work.
+				_lastSkin.CommitChanges(GlobalDirtiness.CurrentSkin, false);
+			}
+
+			//if (_lastSkin != null)
+			//	_lastSkin.Undo.Clear();
+
+			glControl1.MakeCurrent();
+
+			Skin skin = (Skin)skinsListBox.SelectedItem;
+			SetCanSave(skin.Dirty);
+
+			if (skin == null)
+			{
+				_currentUndoBuffer = null;
+				GL.BindTexture(TextureTarget.Texture2D, 0);
+				int[] array = new int[64 * 32];
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = false;
+				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = false;
+			}
+			else
+			{
+				GL.BindTexture(TextureTarget.Texture2D, skin.GLImage);
+				int[] array = new int[skin.Width * skin.Height];
+				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+
+				_currentUndoBuffer = skin.Undo;
+				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+			}
+
+			glControl1.Invalidate();
+			_lastSkin = (Skin)skinsListBox.SelectedItem;
+		}
+
+		void uploadButton_Click(object sender, EventArgs e)
+		{
+			if (_lastSkin.Width != 64 || _lastSkin.Height != 32)
+			{
+				MessageBox.Show("While you can edit high resolution textures with MCSkin3D, you cannot upload them to your Minecraft profile.");
+				return;
+			}
+
+			PerformUpload();
+		}
+
+		void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		void animateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleAnimation();
+		}
+
+		void followCursorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleFollowCursor();
+		}
+
+		void grassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleGrass();
+		}
+
+		void addNewSkinToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformImportSkin();
+		}
+
+		void deleteSelectedSkinToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformDeleteSkin();
+		}
+
+		void cloneSkinToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformCloneSkin();
+		}
+
+		void skinsListBox_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			PerformNameChange();
+		}
+
+		void cameraToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Camera);
+		}
+
+		void pencilToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Pencil);
+		}
+
+		void pipetteToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Dropper);
+		}
+
+		void eraserToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Eraser);
+		}
+
+		void undoToolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformUndo();
+		}
+
+		void redoToolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformRedo();
+		}
+
+		void redNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(_currentColor.A, (byte)redNumericUpDown.Value, _currentColor.G, _currentColor.B));
+		}
+
+		void greenNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, (byte)greenNumericUpDown.Value, _currentColor.B));
+		}
+
+		void blueNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, _currentColor.G, (byte)blueNumericUpDown.Value));
+		}
+
+		void alphaNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb((byte)alphaNumericUpDown.Value, _currentColor.R, _currentColor.G, _currentColor.B));
+		}
+
+		void colorSquare_HueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat / 240.0f, (float)saturationSlider.CurrentLum / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void colorSquare_SatChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat / 240.0f, (float)saturationSlider.CurrentLum / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void saturationSlider_LumChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat / 240.0f, (float)saturationSlider.CurrentLum / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void hueColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value / 240.0f, (float)lightnessColorSlider.Value / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void saturationColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value / 240.0f, (float)lightnessColorSlider.Value / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void lightnessColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value / 240.0f, (float)lightnessColorSlider.Value / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void hueNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value / 240.0f, (float)luminanceNumericUpDown.Value / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void saturationNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value / 240.0f, (float)luminanceNumericUpDown.Value / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void luminanceNumericUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value / 240.0f, (float)luminanceNumericUpDown.Value / 240.0f);
+			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
+		}
+
+		void perspectiveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetViewMode(ViewMode.Perspective);
+		}
+
+		void textureToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetViewMode(ViewMode.Orthographic);
+		}
+
+		void perspectiveToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetViewMode(ViewMode.Perspective);
+		}
+
+		void orthographicToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetViewMode(ViewMode.Orthographic);
+		}
+
+		void offToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTransparencyMode(TransparencyMode.Off);
+		}
+
+		void helmetOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTransparencyMode(TransparencyMode.Helmet);
+		}
+
+		void allToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTransparencyMode(TransparencyMode.All);
+		}
+
+		void headToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.HeadFlag);
+		}
+
+		void helmetToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.HelmetFlag);
+		}
+
+		void chestToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.ChestFlag);
+		}
+
+		void leftArmToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.LeftArmFlag);
+		}
+
+		void rightArmToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.RightArmFlag);
+		}
+
+		void leftLegToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.LeftLegFlag);
+		}
+
+		void rightLegToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.RightLegFlag);
+		}
+
+		void alphaCheckerboardToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleAlphaCheckerboard();
+		}
+
+		void textureOverlayToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleOverlay();
+		}
+
+		void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (_updater.Checking)
+				return;
+
+			_updater.PrintOnEqual = true;
+			_updater.CheckForUpdate();
+		}
+
+		void undoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformUndo();
+		}
+
+		void redoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformRedo();
+		}
+
+		void cameraToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Camera);
+		}
+
+		void pencilToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Pencil);
+		}
+
+		void dropperToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Dropper);
+		}
+
+		void redColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(_currentColor.A, e.NewValue, _currentColor.G, _currentColor.B));
+		}
+
+		void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, e.NewValue, _currentColor.B));
+		}
+
+		void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, _currentColor.G, e.NewValue));
+		}
+
+		void swatchContainer_SwatchChanged(object sender, SwatchChangedEventArgs e)
+		{
+			SetColor(e.Swatch);
+		}
+
+		void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(Color.FromArgb(e.NewValue, _currentColor.R, _currentColor.G, _currentColor.B));
+		}
+
+		void dodgeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Dodge);
+		}
+
+		void burnToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Burn);
+		}
+
+		void dodgeToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Dodge);
+		}
+
+		void burnToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetTool(Tools.Burn);
+		}
+
+		void keyboardShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			_shortcutEditor.ShowDialog();
+		}
+
+		void backgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (MultiPainter.ColorPicker picker = new MultiPainter.ColorPicker())
+			{
+				picker.CurrentColor = GlobalSettings.BackgroundColor;
+
+				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					GlobalSettings.BackgroundColor = picker.CurrentColor;
+
+					glControl1.Invalidate();
+				}
+			}
+		}
+
+		void screenshotToolStripButton_Click(object sender, EventArgs e)
 		{
 			if ((ModifierKeys & Keys.Shift) != 0)
 				SaveScreenshot();
@@ -2118,29 +2297,73 @@ namespace MCSkin3D
 				TakeScreenshot();
 		}
 
-		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+		void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformSaveAs();
 		}
 
-		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformSave();
 		}
 
-		private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
+		void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformSaveAll();
 		}
 
-		private void saveToolStripButton_Click(object sender, EventArgs e)
+		void saveToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformSave();
 		}
 
-		private void saveAlltoolStripButton_Click(object sender, EventArgs e)
+		void saveAlltoolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformSaveAll();
+		}
+
+		void skinsListBox_MouseUp(object sender, MouseEventArgs e)
+		{
+			int l = skinsListBox.IndexFromPoint(e.Location);
+
+			if (l != -1)
+				skinsListBox.SelectedIndex = l;
+
+			if (skinsListBox.SelectedItem != null && e.Button == MouseButtons.Right)
+				contextMenuStrip1.Show(Cursor.Position);
+		}
+
+		void changeNameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformNameChange();
+		}
+
+		void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformDeleteSkin();
+		}
+
+		void cloneToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformCloneSkin();
+		}
+
+		void colorTabControl_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (colorTabControl.SelectedIndex == 1 || colorTabControl.SelectedIndex == 2)
+			{
+				colorTabControl.SelectedTab.Controls.Add(colorSquare);
+				colorTabControl.SelectedTab.Controls.Add(saturationSlider);
+				colorTabControl.SelectedTab.Controls.Add(colorPanel);
+				colorTabControl.SelectedTab.Controls.Add(label5);
+				colorTabControl.SelectedTab.Controls.Add(alphaColorSlider);
+				colorTabControl.SelectedTab.Controls.Add(alphaNumericUpDown);
+			}
+		}
+
+		void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			GlobalSettings.AutoUpdate = automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
 		}
 	}
 }

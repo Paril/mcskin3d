@@ -43,10 +43,12 @@ namespace MCSkin3D
 
 		[Savable]
 		[DefaultValue(TransparencyMode.Helmet)]
+		[TypeSerializer(typeof(EnumSerializer<TransparencyMode>), true)]
 		public static TransparencyMode Transparency { get; set; }
 
 		[Savable]
 		[DefaultValue(VisiblePartFlags.Default)]
+		[TypeSerializer(typeof(EnumSerializer<VisiblePartFlags>), true)]
 		public static VisiblePartFlags ViewFlags { get; set; }
 
 		[Savable]
@@ -65,6 +67,10 @@ namespace MCSkin3D
 		[DefaultValue("135 206 235 255")]
 		[TypeSerializer(typeof(ColorSerializer), true)]
 		public static Color BackgroundColor { get; set; }
+
+		[Savable]
+		[DefaultValue(true)]
+		public static bool AutoUpdate { get; set; }
 
 		static Settings Settings = null;
 		

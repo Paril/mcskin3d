@@ -146,7 +146,7 @@ namespace Paril.Settings
 								TypeSerializerAttribute serialize = (TypeSerializerAttribute)converters[0];
 
 								if (serialize.DeserializeDefault)
-									prop.SetValue(null, _serializer.Deserialize(prop, (string)dva.Value, prop.PropertyType), null);
+									prop.SetValue(null, _serializer.Deserialize(prop, dva.Value.ToString(), prop.PropertyType), null);
 								else
 									prop.SetValue(null, dva.Value, null);
 							}

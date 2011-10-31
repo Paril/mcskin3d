@@ -599,7 +599,7 @@ namespace MB.Controls
 			set { renderer = value; }
 		}
 
-        private int thumbSize = 15;
+		private int thumbSize = 12;
         /// <summary>
         /// Gets or sets the size of the thumb.
         /// </summary>
@@ -607,7 +607,7 @@ namespace MB.Controls
         /// <exception cref="T:System.ArgumentOutOfRangeException">exception thrown when value is lower than zero or grather than half of appropiate dimension</exception>
         [Description("Set Slider thumb size")]
         [Category("ColorSlider")]
-        [DefaultValue(15)]
+        [DefaultValue(12)]
         public int ThumbSize
         {
             get { return thumbSize; }

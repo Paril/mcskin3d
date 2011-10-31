@@ -16,17 +16,17 @@ namespace MCSkin3D
 			Skin skin = (Skin)obj;
 
 			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-			int[] array = new int[64 * 32];
+			int[] array = new int[skin.Width * skin.Height];
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 			foreach (var kvp in Points)
 			{
 				var p = kvp.Key;
 				var color = kvp.Value;
-				array[p.X + (64 * p.Y)] = color.R | (color.G << 8) | (color.B << 16) | (color.A << 24);
+				array[p.X + (skin.Width * p.Y)] = color.R | (color.G << 8) | (color.B << 16) | (color.A << 24);
 			}
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 		}
 
 		public void Redo(object obj)
@@ -34,13 +34,13 @@ namespace MCSkin3D
 			Skin skin = (Skin)obj;
 
 			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
-			int[] array = new int[64 * 32];
+			int[] array = new int[skin.Width * skin.Height];
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 			foreach (var p in Points.Keys)
-				array[p.X + (64 * p.Y)] = NewColor.R | (NewColor.G << 8) | (NewColor.B << 16) | (NewColor.A << 24);
+				array[p.X + (skin.Width * p.Y)] = NewColor.R | (NewColor.G << 8) | (NewColor.B << 16) | (NewColor.A << 24);
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 		}
 	}
 }

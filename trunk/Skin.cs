@@ -16,6 +16,10 @@ namespace MCSkin3D
 		public string FileName;
 		public UndoBuffer Undo;
 		public bool Dirty;
+		public Size Size;
+
+		public int Width { get { return Size.Width; } }
+		public int Height { get { return Size.Height; } } 
 
 		public Skin(string fileName)
 		{
@@ -35,10 +39,15 @@ namespace MCSkin3D
 			}
 
 			Image = new Bitmap(FileName);
-			Head = new Bitmap(8, 8);
 
+			Size = Image.Size;
+
+			float scale = Size.Width / 64.0f;
+			int headSize = (int)(8.0f * scale);
+
+			Head = new Bitmap(headSize, headSize);
 			using (Graphics g = Graphics.FromImage(Head))
-				g.DrawImage(Image, new Rectangle(0, 0, 8, 8), new Rectangle(8, 8, 8, 8), GraphicsUnit.Pixel);
+				g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
 
 			Image.Dispose();
 			Image = null;
@@ -56,18 +65,18 @@ namespace MCSkin3D
 
 		public void CommitChanges(int currentSkin, bool save)
 		{
-			byte[] data = new byte[64 * 32 * 4];
+			byte[] data = new byte[Width * Height * 4];
 			GL.BindTexture(TextureTarget.Texture2D, currentSkin);
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
 			GL.BindTexture(TextureTarget.Texture2D, GLImage);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
 			if (save)
 			{
 				uint ilim = IL.ilGenImage();
 				IL.ilBindImage(ilim);
-				IL.ilLoadDataL(data, (uint)data.Length, 64, 32, 1, 4);
+				IL.ilLoadDataL(data, (uint)data.Length, (uint)Width, (uint)Height, 1, 4);
 				File.Delete(FileName);
 				IL.ilSave(IL.ImageType.PNG, FileName);
 
