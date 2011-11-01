@@ -99,12 +99,6 @@ namespace Devcorp.Controls.Design
 		/// <param name="l">Lightness value.</param>
 		public HSL(double h, double s, double l) 
 		{
-			if (h > 360 || h < 0)
-				throw new ArgumentException("Hue must be between 0 and 360");
-			if (s > 1 || s < 0)
-				throw new ArgumentException("Saturation must be between 0 and 1");
-			if (l > 1 || l < 0)
-				throw new ArgumentException("Lightness must be between 0 and 1");
 			hue = h;
 			saturation = s;
 			luminance = l;

@@ -67,6 +67,34 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap arrow_state_blue_expanded {
+            get {
+                object obj = ResourceManager.GetObject("arrow_state_blue_expanded", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap arrow_state_blue_right {
+            get {
+                object obj = ResourceManager.GetObject("arrow_state_blue_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap arrow_state_grey_expanded {
+            get {
+                object obj = ResourceManager.GetObject("arrow_state_grey_expanded", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap arrow_state_grey_right {
+            get {
+                object obj = ResourceManager.GetObject("arrow_state_grey_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap burn {
             get {
                 object obj = ResourceManager.GetObject("burn", resourceCulture);
@@ -112,6 +140,20 @@ namespace MCSkin3D.Properties {
         public static System.Drawing.Bitmap eye__1_ {
             get {
                 object obj = ResourceManager.GetObject("eye__1_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap Folder_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Folder_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap FolderOpen_32x32_72 {
+            get {
+                object obj = ResourceManager.GetObject("FolderOpen_32x32_72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

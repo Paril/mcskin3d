@@ -11,6 +11,8 @@ Version 1.2
 - Made color slider thumbs smaller
 - Support for high resolution textures (up to 256x128)
 - Added auto update checking
+- Background works in 2d window as well
+- Fixed undo/redo not working with other tools
 
 Version 1.1
 - Added swatches and swatch files (.swc, simple format, see Swatches/swatches.txt)

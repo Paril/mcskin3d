@@ -21,6 +21,7 @@ using Paril.Settings.Serializers;
 using Paril.Components;
 using Paril.Components.Shortcuts;
 using Paril.Components.Update;
+using System.Runtime.InteropServices;
 
 namespace MCSkin3D
 {
@@ -29,7 +30,7 @@ namespace MCSkin3D
 		// ===============================================
 		// Private/Static variables
 		// ===============================================
-#region Variables
+		#region Variables
 		Updater _updater;
 
 		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
@@ -62,12 +63,12 @@ namespace MCSkin3D
 		Color _currentColor = Color.FromArgb(255, 255, 255, 255);
 		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
-#endregion
+		#endregion
 
 		// ===============================================
 		// Constructor
 		// ===============================================
-#region Constructor
+		#region Constructor
 		public Form1()
 		{
 			InitializeComponent();
@@ -127,12 +128,12 @@ namespace MCSkin3D
 
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 		}
-#endregion
+		#endregion
 
 		// =====================================================================
 		// Updating
 		// =====================================================================
-#region Update
+		#region Update
 		public void Invoke(Action action)
 		{
 			this.Invoke((Delegate)action);
@@ -151,12 +152,12 @@ namespace MCSkin3D
 					Process.Start("http://www.minecraftforum.net/topic/746941-mcskin3d-new-skinning-program/");
 			});
 		}
-#endregion
+		#endregion
 
 		// =====================================================================
 		// Shortcuts
 		// =====================================================================
-#region Shortcuts
+		#region Shortcuts
 
 		string CompileShortcutKeys()
 		{
@@ -276,7 +277,7 @@ namespace MCSkin3D
 			InitMenuShortcut(saveToolStripMenuItem, PerformSave);
 			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
-			
+
 			// not in the menu
 			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
 			InitUnlinkedShortcut("Upload skin", Keys.Control | Keys.U, PerformUpload);
@@ -299,12 +300,12 @@ namespace MCSkin3D
 
 			return false;
 		}
-#endregion
+		#endregion
 
 		// =====================================================================
 		// Overrides
 		// =====================================================================
-#region Overrides
+		#region Overrides
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
@@ -353,13 +354,184 @@ namespace MCSkin3D
 			}
 
 			SetColor(Color.White);
+
+			treeView1.DrawMode = TreeViewDrawMode.OwnerDrawAll;
+			treeView1.ItemHeight = 31;
+			treeView1.DrawNode += new DrawTreeNodeEventHandler(treeView1_DrawNode);
+			treeView1.FullRowSelect = true;
+			treeView1.HotTracking = true;
 		}
-#endregion
+
+		class DoubleBufferedTreeView : TreeView
+		{
+			public DoubleBufferedTreeView()
+			{
+				SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+				DoubleBuffered = true;
+			}
+
+			[DllImport("user32.dll", CharSet = CharSet.Auto)]
+			public static extern int GetScrollPos(int hWnd, int nBar);
+
+			[DllImport("user32.dll")]
+			static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+
+			private const int SB_HORZ = 0x0;
+			private const int SB_VERT = 0x1;
+
+			Point ScrollPosition
+			{
+				get
+				{
+					return new Point(
+						GetScrollPos((int)Handle, SB_HORZ),
+						GetScrollPos((int)Handle, SB_VERT));
+				}
+
+				set
+				{
+					SetScrollPos((IntPtr)Handle, SB_HORZ, value.X, true);
+					SetScrollPos((IntPtr)Handle, SB_VERT, value.Y, true);
+				}
+			}
+
+			void RecursiveDrawCheck(PaintEventArgs args, TreeNode node, ref int currentIndex)
+			{
+				OnDrawNode(new DrawTreeNodeEventArgs(args.Graphics, node, new Rectangle(0, node.Bounds.Y, Width, ItemHeight), 0));
+				currentIndex++;
+
+				if (node.IsExpanded)
+				foreach (TreeNode child in node.Nodes)
+					RecursiveDrawCheck(args, child, ref currentIndex);
+			}
+
+			int _numVisible = 0;
+			protected override void OnSizeChanged(EventArgs e)
+			{
+				_numVisible = (int)Math.Ceiling((float)Height / (float)ItemHeight);
+				base.OnSizeChanged(e);
+			}
+
+			TreeNode GetSelectedNodeAt(int y, TreeNode node, ref int currentIndex)
+			{
+				if (currentIndex >= ScrollPosition.Y + _numVisible)
+					return null;
+
+				if (y <= node.Bounds.Y + ItemHeight)
+					return node;
+
+				currentIndex++;
+
+				if (node.IsExpanded)
+				foreach (TreeNode child in node.Nodes)
+				{
+					var tryNode = GetSelectedNodeAt(y, child, ref currentIndex);
+
+					if (tryNode != null)
+						return tryNode;
+				}
+
+				return null;
+			}
+
+			TreeNode lastClick = null;
+			bool lastOpened = false;
+			protected override void OnMouseDoubleClick(MouseEventArgs e)
+			{
+				base.OnMouseDoubleClick(e);
+
+				if (SelectedNode == lastClick && lastClick.IsExpanded == lastOpened)
+					lastClick.Toggle();
+			}
+
+			protected override void OnMouseClick(MouseEventArgs e)
+			{
+				base.OnMouseClick(e);
+
+				var node = GetSelectedNodeAt(e.Location);
+
+				if (node != null)
+					SelectedNode = node;
+
+				lastClick = SelectedNode;
+				lastOpened = lastClick.IsExpanded;
+			}
+
+			private TreeNode GetSelectedNodeAt(Point p)
+			{
+				int currentIndex = 0;
+
+				TreeNode node = null;
+				foreach (TreeNode child in Nodes)
+				{
+					node = GetSelectedNodeAt(p.Y, child, ref currentIndex);
+
+					if (node != null)
+						break;
+				}
+
+				return node;
+			}
+
+			protected override void OnPaint(PaintEventArgs e)
+			{
+				int currentIndex = 0;
+				foreach (TreeNode n in Nodes)
+					RecursiveDrawCheck(e, n, ref currentIndex);
+			}
+		}
+
+		void treeView1_DrawNode(object sender, DrawTreeNodeEventArgs e)
+		{
+			if (e.Bounds.Width == 0 || e.Bounds.Height == 0)
+				return;
+
+			int realX = e.Bounds.X + ((e.Node.Level + 1) * 20);
+
+			e.Graphics.FillRectangle(new SolidBrush(treeView1.BackColor), 0, e.Bounds.Y, treeView1.Width, e.Bounds.Height);
+		
+			if (e.Node.IsSelected)
+				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, treeView1.Width, e.Bounds.Height);
+
+			if (e.Node.Nodes.Count != 0)
+			{
+				if (e.Node.IsExpanded)
+					e.Graphics.DrawImage(Properties.Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, 32, 32);
+				else
+					e.Graphics.DrawImage(Properties.Resources.Folder_32x32, realX, e.Bounds.Y, 32, 32);
+			}
+			else
+			{
+				e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+				e.Graphics.DrawImage(((Skin)skinsListBox.SelectedItem).Head, realX, e.Bounds.Y, 32, 32);
+			}
+
+			if (e.Node.Nodes.Count != 0)
+			{
+				if (e.Node.IsExpanded)
+				{
+					if ((e.State & TreeNodeStates.Hot) != 0)
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_blue_expanded, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+					else
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_grey_expanded, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+				}
+				else
+				{
+					if ((e.State & TreeNodeStates.Hot) != 0)
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_blue_right, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+					else
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_grey_right, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+				}
+			}
+
+			TextRenderer.DrawText(e.Graphics, e.Node.Text, treeView1.Font, new Rectangle(realX + 36, e.Bounds.Y, treeView1.Width, e.Bounds.Height), (e.Node.IsSelected) ? Color.White : Color.Black, TextFormatFlags.VerticalCenter);
+		}
+		#endregion
 
 		// =====================================================================
 		// Private functions
 		// =====================================================================
-#region Private Functions
+		#region Private Functions
 		// Utility function, sets a tool strip checkbox item's state if the flag is present
 		void SetCheckbox(VisiblePartFlags flag, ToolStripMenuItem checkbox)
 		{
@@ -812,30 +984,25 @@ namespace MCSkin3D
 			return false;
 		}
 
-		void UseToolOnPixel(int[] pixels, Skin skin, int x, int y)
+		Color UseToolOnPixel(int[] pixels, Skin skin, int x, int y)
 		{
 			int pixNum = x + (skin.Width * y);
 			var c = pixels[pixNum];
 			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+			Color newColor = Color.White;
 
 			// blend
 			if (_currentTool == Tools.Pencil)
-			{
-				Color blend = Color.FromArgb(ColorBlending.AlphaBlend(_currentColor, oldColor).ToArgb());
-				pixels[pixNum] = blend.R | (blend.G << 8) | (blend.B << 16) | (blend.A << 24);
-			}
+				newColor = Color.FromArgb(ColorBlending.AlphaBlend(_currentColor, oldColor).ToArgb());
 			else if (_currentTool == Tools.Burn)
-			{
-				Color burnt = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
-				pixels[pixNum] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
-			}
+				newColor = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
 			else if (_currentTool == Tools.Dodge)
-			{
-				Color burnt = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
-				pixels[pixNum] = burnt.R | (burnt.G << 8) | (burnt.B << 16) | (burnt.A << 24);
-			}
+				newColor = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
 			else if (_currentTool == Tools.Eraser)
-				pixels[pixNum] = 0;
+				newColor = Color.FromArgb(0);
+
+			pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
+			return newColor;
 		}
 
 		void UseToolOnViewport(int x, int y)
@@ -858,16 +1025,15 @@ namespace MCSkin3D
 					if (_changedPixels == null)
 					{
 						_changedPixels = new PixelsChangedUndoable();
-						_changedPixels.NewColor = _currentColor;
 					}
 
 					if (!_changedPixels.Points.ContainsKey(new Point(p.X, p.Y)))
 					{
 						var c = array[p.X + (skin.Width * p.Y)];
 						var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-						_changedPixels.Points[new Point(p.X, p.Y)] = oldColor;
-
-						UseToolOnPixel(array, skin, p.X, p.Y);
+						_changedPixels.Points[new Point(p.X, p.Y)] = new Tuple<Color, Color>
+							(oldColor,
+							UseToolOnPixel(array, skin, p.X, p.Y));
 
 						SetCanSave(true);
 						skin.Dirty = true;
@@ -884,7 +1050,7 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
-#region File uploading (FIXME: REMOVE)
+		#region File uploading (FIXME: REMOVE)
 		public static Exception HttpUploadFile(string url, string file, string paramName, string contentType, Dictionary<string, byte[]> nvc, CookieContainer cookies)
 		{
 			//log.Debug(string.Format("Uploading {0} to {1}", file, url));
@@ -1109,7 +1275,7 @@ namespace MCSkin3D
 				}
 			}
 		}
-#endregion
+		#endregion
 
 		void ToggleAnimation()
 		{
@@ -1135,7 +1301,7 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
-#region Skin Management
+		#region Skin Management
 		void PerformImportSkin()
 		{
 			using (var ofd = new OpenFileDialog())
@@ -1247,7 +1413,7 @@ namespace MCSkin3D
 				}
 			}
 		}
-#endregion
+		#endregion
 
 		void SetTool(Tools tool)
 		{
@@ -1273,7 +1439,7 @@ namespace MCSkin3D
 			}
 		}
 
-#region Saving
+		#region Saving
 		void SetCanSave(bool value)
 		{
 			saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = value;
@@ -1358,7 +1524,7 @@ namespace MCSkin3D
 			PerformSaveSkin(skin);
 			skinsListBox.Invalidate();
 		}
-#endregion
+		#endregion
 
 		void PerformUndo()
 		{
@@ -1408,13 +1574,14 @@ namespace MCSkin3D
 			greenNumericUpDown.Value = c.G;
 			blueNumericUpDown.Value = c.B;
 			alphaNumericUpDown.Value = c.A;
-			hueNumericUpDown.Value = (int)hsl.Hue;
-			saturationNumericUpDown.Value = (int)(hsl.Saturation * 240);
-			luminanceNumericUpDown.Value = (int)(hsl.Luminance * 240);
 
 			colorSquare.CurrentHue = (int)hsl.Hue;
 			colorSquare.CurrentSat = (int)(hsl.Saturation * 240);
 			saturationSlider.CurrentLum = (int)(hsl.Luminance * 240);
+
+			hueNumericUpDown.Value = colorSquare.CurrentHue;
+			saturationNumericUpDown.Value = colorSquare.CurrentSat;
+			luminanceNumericUpDown.Value = saturationSlider.CurrentLum;
 
 			redRenderer.StartColor =
 				greenRenderer.StartColor =
@@ -1428,9 +1595,9 @@ namespace MCSkin3D
 			hueRenderer.Luminance = saturationSlider.CurrentLum;
 
 			saturationRenderer.Luminance = saturationSlider.CurrentLum;
-			saturationRenderer.Hue = (int)hsl.Hue;
+			saturationRenderer.Hue = colorSquare.CurrentHue;
 
-			lightnessRenderer.Hue = (int)hsl.Hue;
+			lightnessRenderer.Hue = colorSquare.CurrentHue;
 			lightnessRenderer.Saturation = colorSquare.CurrentSat;
 
 			redColorSlider.Value = _currentColor.R;
@@ -1438,9 +1605,9 @@ namespace MCSkin3D
 			blueColorSlider.Value = _currentColor.B;
 			alphaColorSlider.Value = _currentColor.A;
 
-			hueColorSlider.Value = (int)hsl.Hue;
-			saturationColorSlider.Value = (int)(hsl.Saturation * 240);
-			lightnessColorSlider.Value = (int)(hsl.Luminance * 240);
+			hueColorSlider.Value = colorSquare.CurrentHue;
+			saturationColorSlider.Value = colorSquare.CurrentSat;
+			lightnessColorSlider.Value = saturationSlider.CurrentLum;
 
 			_skipColors = false;
 		}
@@ -1569,7 +1736,7 @@ namespace MCSkin3D
 			}
 		}
 
-#region Screenshots
+		#region Screenshots
 		Bitmap CopyScreenToBitmap()
 		{
 			glControl1.MakeCurrent();
@@ -1625,8 +1792,8 @@ namespace MCSkin3D
 				}
 			}
 		}
-#endregion
-#endregion
+		#endregion
+		#endregion
 
 
 		// =====================================================================
@@ -1636,7 +1803,7 @@ namespace MCSkin3D
 		{
 			if (e.Index == -1)
 				return;
-			
+
 			e.DrawBackground();
 			e.DrawFocusRectangle();
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -1755,11 +1922,8 @@ namespace MCSkin3D
 			glControl1.MakeCurrent();
 			SetPreview();
 
-			if (_currentViewMode == ViewMode.Orthographic)
-				GL.ClearColor(Color.Black);
-			else
-				GL.ClearColor(GlobalSettings.BackgroundColor);
-			
+			GL.ClearColor(GlobalSettings.BackgroundColor);
+
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
@@ -1774,7 +1938,7 @@ namespace MCSkin3D
 		void glControl1_Resize(object sender, EventArgs e)
 		{
 			glControl1.MakeCurrent();
-			
+
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
 
@@ -1849,7 +2013,7 @@ namespace MCSkin3D
 				_changedPixels = null;
 
 				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
-				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;		
+				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 			}
 
 			_mouseIsDown = false;
@@ -2017,12 +2181,14 @@ namespace MCSkin3D
 			SetColor(Color.FromArgb((byte)alphaNumericUpDown.Value, _currentColor.R, _currentColor.G, _currentColor.B));
 		}
 
+		const float oneDivTwoFourty = 1.0f / 240.0f;
+
 		void colorSquare_HueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat / 240.0f, (float)saturationSlider.CurrentLum / 240.0f);
+			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat * oneDivTwoFourty, (float)saturationSlider.CurrentLum * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2031,7 +2197,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat / 240.0f, (float)saturationSlider.CurrentLum / 240.0f);
+			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat * oneDivTwoFourty, (float)saturationSlider.CurrentLum * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2040,7 +2206,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat / 240.0f, (float)saturationSlider.CurrentLum / 240.0f);
+			var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat * oneDivTwoFourty, (float)saturationSlider.CurrentLum * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2049,7 +2215,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value / 240.0f, (float)lightnessColorSlider.Value / 240.0f);
+			var c = new HSL(e.NewValue, (float)saturationColorSlider.Value * oneDivTwoFourty, (float)lightnessColorSlider.Value * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2058,7 +2224,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value / 240.0f, (float)lightnessColorSlider.Value / 240.0f);
+			var c = new HSL(hueColorSlider.Value, (float)e.NewValue * oneDivTwoFourty, (float)lightnessColorSlider.Value * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2067,7 +2233,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value / 240.0f, (float)lightnessColorSlider.Value / 240.0f);
+			var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value * oneDivTwoFourty, (float)e.NewValue * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2076,7 +2242,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value / 240.0f, (float)luminanceNumericUpDown.Value / 240.0f);
+			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value * oneDivTwoFourty, (float)luminanceNumericUpDown.Value * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2085,7 +2251,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value / 240.0f, (float)luminanceNumericUpDown.Value / 240.0f);
+			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value * oneDivTwoFourty, (float)luminanceNumericUpDown.Value * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2094,7 +2260,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value / 240.0f, (float)luminanceNumericUpDown.Value / 240.0f);
+			var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value * oneDivTwoFourty, (float)luminanceNumericUpDown.Value * oneDivTwoFourty);
 			SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
 		}
 
@@ -2364,6 +2530,11 @@ namespace MCSkin3D
 		void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			GlobalSettings.AutoUpdate = automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
+		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+
 		}
 	}
 }
