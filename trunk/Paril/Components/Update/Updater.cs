@@ -56,7 +56,7 @@ namespace Paril.Components.Update
 				NewVersionAvailable(this, EventArgs.Empty);
 			else if (PrintOnEqual)
 				SameVersion(this, EventArgs.Empty);
-		}
+		}	
 
 		public void Abort()
 		{

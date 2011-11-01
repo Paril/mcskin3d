@@ -24,6 +24,9 @@ Default shortcut keys:
 - Ctrl+Shift+P		Transparency Mode: All
 - Ctrl+S		Save current changes to skin (commit)
 - Ctrl+U		Upload skin (hold shift to open dialog even if you have it set to auto-login to open)
+- Ctrl+V		Toggle view pode
+- Ctrl+H		Screenshot (clipboard)
+- Ctrl+Shift+H		Screenshot (save)
 
 You may change any of these at any time by visiting the Options < Shortcut Keys menu.
 

@@ -29,6 +29,29 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Hey");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode(":D");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("I am a skin.");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Males", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3});
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Wat");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Templates", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Char");
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Node0");
+			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Node1");
+			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Node2");
+			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Node3");
+			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Node4");
+			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Node5");
+			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Node6");
+			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Node7");
+			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Node8");
+			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Node9");
+			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node10");
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.skinsListBox = new System.Windows.Forms.ListBox();
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
@@ -86,6 +109,7 @@
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+			this.treeView1 = new MCSkin3D.Form1.DoubleBufferedTreeView();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
@@ -678,6 +702,7 @@
 			// 
 			// splitContainer3.Panel1
 			// 
+			this.splitContainer3.Panel1.Controls.Add(this.treeView1);
 			this.splitContainer3.Panel1.Controls.Add(this.skinsListBox);
 			// 
 			// splitContainer3.Panel2
@@ -686,6 +711,64 @@
 			this.splitContainer3.Size = new System.Drawing.Size(274, 638);
 			this.splitContainer3.SplitterDistance = 388;
 			this.splitContainer3.TabIndex = 1;
+			// 
+			// treeView1
+			// 
+			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView1.Location = new System.Drawing.Point(0, 0);
+			this.treeView1.Name = "treeView1";
+			treeNode1.Name = "Node3";
+			treeNode1.Text = "Hey";
+			treeNode2.Name = "Node4";
+			treeNode2.Text = ":D";
+			treeNode3.Name = "Node5";
+			treeNode3.Text = "I am a skin.";
+			treeNode4.Name = "Node2";
+			treeNode4.Text = "Males";
+			treeNode5.Name = "Node6";
+			treeNode5.Text = "Wat";
+			treeNode6.Name = "Node0";
+			treeNode6.Text = "Templates";
+			treeNode7.Name = "Node1";
+			treeNode7.Text = "Char";
+			treeNode8.Name = "Node0";
+			treeNode8.Text = "Node0";
+			treeNode9.Name = "Node1";
+			treeNode9.Text = "Node1";
+			treeNode10.Name = "Node2";
+			treeNode10.Text = "Node2";
+			treeNode11.Name = "Node3";
+			treeNode11.Text = "Node3";
+			treeNode12.Name = "Node4";
+			treeNode12.Text = "Node4";
+			treeNode13.Name = "Node5";
+			treeNode13.Text = "Node5";
+			treeNode14.Name = "Node6";
+			treeNode14.Text = "Node6";
+			treeNode15.Name = "Node7";
+			treeNode15.Text = "Node7";
+			treeNode16.Name = "Node8";
+			treeNode16.Text = "Node8";
+			treeNode17.Name = "Node9";
+			treeNode17.Text = "Node9";
+			treeNode18.Name = "Node10";
+			treeNode18.Text = "Node10";
+			this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode6,
+            treeNode7,
+            treeNode8,
+            treeNode9,
+            treeNode10,
+            treeNode11,
+            treeNode12,
+            treeNode13,
+            treeNode14,
+            treeNode15,
+            treeNode16,
+            treeNode17,
+            treeNode18});
+			this.treeView1.Size = new System.Drawing.Size(274, 388);
+			this.treeView1.TabIndex = 1;
 			// 
 			// colorTabControl
 			// 
@@ -1362,6 +1445,7 @@
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.Name = "Form1";
 			this.Text = "MCSkin3D";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			this.mainMenuStrip.ResumeLayout(false);
 			this.mainMenuStrip.PerformLayout();
 			this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1515,6 +1599,7 @@
 		private MB.Controls.ColorSlider lightnessColorSlider;
 		private MB.Controls.ColorSlider hueColorSlider;
 		private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
+		private DoubleBufferedTreeView treeView1;
 	}
 }
 
