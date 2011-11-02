@@ -255,5 +255,19 @@ namespace MCSkin3D.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap ZoomInHS {
+            get {
+                object obj = ResourceManager.GetObject("ZoomInHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ZoomOutHS {
+            get {
+                object obj = ResourceManager.GetObject("ZoomOutHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

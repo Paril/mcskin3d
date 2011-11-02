@@ -32,6 +32,7 @@ namespace MCSkin3D
 
 		private void SwatchContainer_Load(object sender, EventArgs e)
 		{
+			SetZoomAbility();
 		}
 
 		public void AddDirectory(string dir)
@@ -71,6 +72,38 @@ namespace MCSkin3D
 			}
 
 			swatchDisplayer1.Colors = (comboBox1.SelectedItem as SwatchFile).Colors;
+		}
+
+		void SetZoomAbility()
+		{
+			toolStripButton1.Enabled = (swatchDisplayer1.Scale != 0);
+		}
+
+		public void ZoomOut()
+		{
+			swatchDisplayer1.ZoomOut();
+			SetZoomAbility();
+		}
+
+		public void ZoomIn()
+		{
+			swatchDisplayer1.ZoomIn();
+			SetZoomAbility();
+		}
+
+		public SwatchDisplayer SwatchDisplayer
+		{
+			get { return swatchDisplayer1; }
+		}
+
+		private void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			ZoomOut();
+		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			ZoomIn();
 		}
 	}
 
@@ -182,20 +215,15 @@ namespace MCSkin3D
 			Invalidate();
 		}
 
-		protected override void OnKeyPress(KeyPressEventArgs e)
+		public void ZoomIn()
 		{
-			switch (e.KeyChar)
-			{
-			case '=':
-				Scale++;
-				break;
-			case '-':
-				if (Scale != 0)
-					Scale--;
-				break;
-			}
+			Scale++;
+		}
 
-			base.OnKeyPress(e);
+		public void ZoomOut()
+		{
+			if (Scale != 0)
+				Scale--;
 		}
 
 		int _lastSwatch = -1;
