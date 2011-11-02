@@ -33,7 +33,7 @@ namespace Paril.Components.Update
 			{
 				HttpWebRequest request = (HttpWebRequest)FileWebRequest.Create(updater.URL);
 
-				request.Timeout = 20000;
+				request.Timeout = -1;
 
 				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
