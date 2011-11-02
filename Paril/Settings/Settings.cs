@@ -41,6 +41,9 @@ namespace Paril.Settings
 	{
 		public virtual string Serialize(object field, object obj)
 		{
+			if (obj.GetType() == typeof(string))
+				return (string)obj;
+
 			try
 			{
 				if (field is PropertyInfo)
@@ -70,6 +73,9 @@ namespace Paril.Settings
 
 		public virtual object Deserialize(object field, string str, Type t)
 		{
+			if (t == typeof(string))
+				return str;
+
 			if (field is PropertyInfo)
 			{
 				PropertyInfo info = (PropertyInfo)field;
@@ -175,7 +181,7 @@ namespace Paril.Settings
 			{
 				var line = reader.ReadLine().Trim();
 
-				if (string.IsNullOrWhiteSpace(line))
+				if (string.IsNullOrEmpty(line))
 					continue;
 
 				if (line.StartsWith("[") && line.EndsWith("]"))

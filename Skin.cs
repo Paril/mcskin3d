@@ -4,30 +4,41 @@ using Paril.Components;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
 using DevCIL;
+using System.Windows.Forms;
 
 namespace MCSkin3D
 {
-	public class Skin
+	public class Skin : TreeNode
 	{
-		public string Name;
+		public new string Name;
 		public Bitmap Image;
 		public Bitmap Head;
 		public int GLImage;
-		public string FileName;
 		public UndoBuffer Undo;
 		public bool Dirty;
 		public Size Size;
 
 		public int Width { get { return Size.Width; } }
-		public int Height { get { return Size.Height; } } 
+		public int Height { get { return Size.Height; } }
+
+		public FileInfo File;
+		public DirectoryInfo Directory;
 
 		public Skin(string fileName)
 		{
 			Undo = new UndoBuffer(this);
-			FileName = fileName;
-			Name = Path.GetFileNameWithoutExtension(FileName);
+	
+			File = new FileInfo(fileName);
+			Directory = File.Directory;
+
+			Name = Path.GetFileNameWithoutExtension(File.Name);
 
 			SetImages();
+		}
+
+		public Skin(FileInfo file) :
+			this(file.FullName)
+		{
 		}
 
 		void SetImages()
@@ -38,7 +49,7 @@ namespace MCSkin3D
 				GL.DeleteTexture(GLImage);
 			}
 
-			Image = new Bitmap(FileName);
+			Image = new Bitmap(File.FullName);
 
 			Size = Image.Size;
 
@@ -51,7 +62,7 @@ namespace MCSkin3D
 
 			Image.Dispose();
 			Image = null;
-			GLImage = ImageUtilities.LoadImage(FileName);
+			GLImage = ImageUtilities.LoadImage(File.FullName);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 		}
@@ -77,8 +88,8 @@ namespace MCSkin3D
 				uint ilim = IL.ilGenImage();
 				IL.ilBindImage(ilim);
 				IL.ilLoadDataL(data, (uint)data.Length, (uint)Width, (uint)Height, 1, 4);
-				File.Delete(FileName);
-				IL.ilSave(IL.ImageType.PNG, FileName);
+				File.Delete();
+				IL.ilSave(IL.ImageType.PNG, File.FullName);
 
 				SetImages();
 

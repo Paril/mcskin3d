@@ -29,29 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Hey");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode(":D");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("I am a skin.");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Males", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3});
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Wat");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Templates", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Char");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Node0");
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Node1");
-			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Node2");
-			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Node3");
-			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Node4");
-			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Node5");
-			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Node6");
-			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Node7");
-			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Node8");
-			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Node9");
-			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node10");
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.skinsListBox = new System.Windows.Forms.ListBox();
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
@@ -107,15 +84,17 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+			this.splitContainer1 = new Paril.Controls.VisibleSplitContainer();
+			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
+			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.treeView1 = new MCSkin3D.Form1.DoubleBufferedTreeView();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.rgbTabPage = new System.Windows.Forms.TabPage();
-			this.colorPanel = new System.Windows.Forms.Panel();
-			this.panel1 = new System.Windows.Forms.PictureBox();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
+			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
 			this.redNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
 			this.greenNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -140,7 +119,7 @@
 			this.saturationColorSlider = new MB.Controls.ColorSlider();
 			this.lightnessColorSlider = new MB.Controls.ColorSlider();
 			this.hueColorSlider = new MB.Controls.ColorSlider();
-			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+			this.splitContainer2 = new Paril.Controls.VisibleSplitContainer();
 			this.glControl1 = new OpenTK.GLControl();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -160,6 +139,14 @@
 			this.orthographicToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.screenshotToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.toggleHeadToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleHelmetToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleChestToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleLeftArmToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.uploadButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -167,19 +154,15 @@
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
 			this.splitContainer3.Panel1.SuspendLayout();
 			this.splitContainer3.Panel2.SuspendLayout();
 			this.splitContainer3.SuspendLayout();
 			this.colorTabControl.SuspendLayout();
 			this.swatchTabPage.SuspendLayout();
 			this.rgbTabPage.SuspendLayout();
-			this.colorPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.panel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.redNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.greenNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.blueNumericUpDown)).BeginInit();
@@ -188,7 +171,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.luminanceNumericUpDown)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
@@ -205,14 +187,9 @@
 			this.skinsListBox.ItemHeight = 25;
 			this.skinsListBox.Location = new System.Drawing.Point(0, 0);
 			this.skinsListBox.Name = "skinsListBox";
-			this.skinsListBox.Size = new System.Drawing.Size(274, 388);
+			this.skinsListBox.Size = new System.Drawing.Size(294, 388);
 			this.skinsListBox.Sorted = true;
 			this.skinsListBox.TabIndex = 0;
-			this.skinsListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.skinsListBox_DrawItem);
-			this.skinsListBox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.skinsListBox_MeasureItem);
-			this.skinsListBox.SelectedIndexChanged += new System.EventHandler(this.skinsListBox_SelectedIndexChanged);
-			this.skinsListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.skinsListBox_MouseDoubleClick);
-			this.skinsListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.skinsListBox_MouseUp);
 			// 
 			// mainMenuStrip
 			// 
@@ -689,7 +666,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
 			this.splitContainer1.Size = new System.Drawing.Size(939, 638);
-			this.splitContainer1.SplitterDistance = 274;
+			this.splitContainer1.SplitterDistance = 294;
 			this.splitContainer1.TabIndex = 4;
 			// 
 			// splitContainer3
@@ -702,73 +679,37 @@
 			// 
 			// splitContainer3.Panel1
 			// 
+			this.splitContainer3.Panel1.Controls.Add(this.labelEditTextBox);
 			this.splitContainer3.Panel1.Controls.Add(this.treeView1);
 			this.splitContainer3.Panel1.Controls.Add(this.skinsListBox);
 			// 
 			// splitContainer3.Panel2
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.colorTabControl);
-			this.splitContainer3.Size = new System.Drawing.Size(274, 638);
+			this.splitContainer3.Size = new System.Drawing.Size(294, 638);
 			this.splitContainer3.SplitterDistance = 388;
 			this.splitContainer3.TabIndex = 1;
+			// 
+			// labelEditTextBox
+			// 
+			this.labelEditTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+			this.labelEditTextBox.Location = new System.Drawing.Point(187, 365);
+			this.labelEditTextBox.Name = "labelEditTextBox";
+			this.labelEditTextBox.Size = new System.Drawing.Size(100, 20);
+			this.labelEditTextBox.TabIndex = 5;
+			this.labelEditTextBox.Visible = false;
+			this.labelEditTextBox.Leave += new System.EventHandler(this.labelEditTextBox_Leave);
 			// 
 			// treeView1
 			// 
 			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.treeView1.Location = new System.Drawing.Point(0, 0);
 			this.treeView1.Name = "treeView1";
-			treeNode1.Name = "Node3";
-			treeNode1.Text = "Hey";
-			treeNode2.Name = "Node4";
-			treeNode2.Text = ":D";
-			treeNode3.Name = "Node5";
-			treeNode3.Text = "I am a skin.";
-			treeNode4.Name = "Node2";
-			treeNode4.Text = "Males";
-			treeNode5.Name = "Node6";
-			treeNode5.Text = "Wat";
-			treeNode6.Name = "Node0";
-			treeNode6.Text = "Templates";
-			treeNode7.Name = "Node1";
-			treeNode7.Text = "Char";
-			treeNode8.Name = "Node0";
-			treeNode8.Text = "Node0";
-			treeNode9.Name = "Node1";
-			treeNode9.Text = "Node1";
-			treeNode10.Name = "Node2";
-			treeNode10.Text = "Node2";
-			treeNode11.Name = "Node3";
-			treeNode11.Text = "Node3";
-			treeNode12.Name = "Node4";
-			treeNode12.Text = "Node4";
-			treeNode13.Name = "Node5";
-			treeNode13.Text = "Node5";
-			treeNode14.Name = "Node6";
-			treeNode14.Text = "Node6";
-			treeNode15.Name = "Node7";
-			treeNode15.Text = "Node7";
-			treeNode16.Name = "Node8";
-			treeNode16.Text = "Node8";
-			treeNode17.Name = "Node9";
-			treeNode17.Text = "Node9";
-			treeNode18.Name = "Node10";
-			treeNode18.Text = "Node10";
-			this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode6,
-            treeNode7,
-            treeNode8,
-            treeNode9,
-            treeNode10,
-            treeNode11,
-            treeNode12,
-            treeNode13,
-            treeNode14,
-            treeNode15,
-            treeNode16,
-            treeNode17,
-            treeNode18});
-			this.treeView1.Size = new System.Drawing.Size(274, 388);
+			this.treeView1.Size = new System.Drawing.Size(294, 388);
 			this.treeView1.TabIndex = 1;
+			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+			this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
+			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
 			// 
 			// colorTabControl
 			// 
@@ -779,7 +720,7 @@
 			this.colorTabControl.Location = new System.Drawing.Point(0, 0);
 			this.colorTabControl.Name = "colorTabControl";
 			this.colorTabControl.SelectedIndex = 0;
-			this.colorTabControl.Size = new System.Drawing.Size(274, 246);
+			this.colorTabControl.Size = new System.Drawing.Size(294, 246);
 			this.colorTabControl.TabIndex = 1;
 			this.colorTabControl.SelectedIndexChanged += new System.EventHandler(this.colorTabControl_SelectedIndexChanged);
 			// 
@@ -789,7 +730,7 @@
 			this.swatchTabPage.Location = new System.Drawing.Point(4, 22);
 			this.swatchTabPage.Name = "swatchTabPage";
 			this.swatchTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.swatchTabPage.Size = new System.Drawing.Size(266, 220);
+			this.swatchTabPage.Size = new System.Drawing.Size(286, 220);
 			this.swatchTabPage.TabIndex = 0;
 			this.swatchTabPage.Text = "Swatches";
 			this.swatchTabPage.UseVisualStyleBackColor = true;
@@ -799,13 +740,15 @@
 			this.swatchContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.swatchContainer.Location = new System.Drawing.Point(3, 3);
 			this.swatchContainer.Name = "swatchContainer";
-			this.swatchContainer.Size = new System.Drawing.Size(260, 214);
+			this.swatchContainer.Size = new System.Drawing.Size(280, 214);
 			this.swatchContainer.TabIndex = 0;
 			this.swatchContainer.SwatchChanged += new System.EventHandler<MCSkin3D.SwatchChangedEventArgs>(this.swatchContainer_SwatchChanged);
 			// 
 			// rgbTabPage
 			// 
-			this.rgbTabPage.Controls.Add(this.colorPanel);
+			this.rgbTabPage.Controls.Add(this.textBox1);
+			this.rgbTabPage.Controls.Add(this.label9);
+			this.rgbTabPage.Controls.Add(this.colorPreview1);
 			this.rgbTabPage.Controls.Add(this.redNumericUpDown);
 			this.rgbTabPage.Controls.Add(this.label2);
 			this.rgbTabPage.Controls.Add(this.greenNumericUpDown);
@@ -823,33 +766,41 @@
 			this.rgbTabPage.Location = new System.Drawing.Point(4, 22);
 			this.rgbTabPage.Name = "rgbTabPage";
 			this.rgbTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.rgbTabPage.Size = new System.Drawing.Size(266, 220);
+			this.rgbTabPage.Size = new System.Drawing.Size(286, 220);
 			this.rgbTabPage.TabIndex = 1;
 			this.rgbTabPage.Text = "RGBA";
 			this.rgbTabPage.UseVisualStyleBackColor = true;
 			// 
-			// colorPanel
+			// textBox1
 			// 
-			this.colorPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.colorPanel.Controls.Add(this.panel1);
-			this.colorPanel.Location = new System.Drawing.Point(200, 49);
-			this.colorPanel.Name = "colorPanel";
-			this.colorPanel.Size = new System.Drawing.Size(32, 32);
-			this.colorPanel.TabIndex = 16;
+			this.textBox1.Location = new System.Drawing.Point(225, 118);
+			this.textBox1.MaxLength = 9;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(58, 20);
+			this.textBox1.TabIndex = 19;
+			this.textBox1.Text = "FFFFFFFF";
+			this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
 			// 
-			// panel1
+			// label9
 			// 
-			this.panel1.BackColor = System.Drawing.Color.Black;
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(0, 0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(28, 28);
-			this.panel1.TabIndex = 0;
-			this.panel1.TabStop = false;
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(209, 121);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(14, 13);
+			this.label9.TabIndex = 18;
+			this.label9.Text = "#";
+			// 
+			// colorPreview1
+			// 
+			this.colorPreview1.Location = new System.Drawing.Point(183, 15);
+			this.colorPreview1.Name = "colorPreview1";
+			this.colorPreview1.Size = new System.Drawing.Size(36, 36);
+			this.colorPreview1.TabIndex = 17;
+			this.colorPreview1.Text = "colorPreview1";
 			// 
 			// redNumericUpDown
 			// 
-			this.redNumericUpDown.Location = new System.Drawing.Point(213, 141);
+			this.redNumericUpDown.Location = new System.Drawing.Point(234, 141);
 			this.redNumericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -876,7 +827,7 @@
 			// 
 			// greenNumericUpDown
 			// 
-			this.greenNumericUpDown.Location = new System.Drawing.Point(213, 161);
+			this.greenNumericUpDown.Location = new System.Drawing.Point(234, 161);
 			this.greenNumericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -903,7 +854,7 @@
 			// 
 			// blueNumericUpDown
 			// 
-			this.blueNumericUpDown.Location = new System.Drawing.Point(213, 181);
+			this.blueNumericUpDown.Location = new System.Drawing.Point(234, 181);
 			this.blueNumericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -939,7 +890,7 @@
 			// 
 			// alphaNumericUpDown
 			// 
-			this.alphaNumericUpDown.Location = new System.Drawing.Point(213, 201);
+			this.alphaNumericUpDown.Location = new System.Drawing.Point(234, 201);
 			this.alphaNumericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -962,7 +913,7 @@
 			this.alphaColorSlider.Location = new System.Drawing.Point(24, 201);
 			this.alphaColorSlider.Maximum = 255;
 			this.alphaColorSlider.Name = "alphaColorSlider";
-			this.alphaColorSlider.Size = new System.Drawing.Size(183, 20);
+			this.alphaColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.alphaColorSlider.SmallChange = ((uint)(1u));
 			this.alphaColorSlider.TabIndex = 15;
 			this.alphaColorSlider.Text = "colorSlider2";
@@ -975,7 +926,7 @@
 			this.greenColorSlider.Location = new System.Drawing.Point(25, 161);
 			this.greenColorSlider.Maximum = 255;
 			this.greenColorSlider.Name = "greenColorSlider";
-			this.greenColorSlider.Size = new System.Drawing.Size(182, 20);
+			this.greenColorSlider.Size = new System.Drawing.Size(203, 20);
 			this.greenColorSlider.SmallChange = ((uint)(1u));
 			this.greenColorSlider.TabIndex = 14;
 			this.greenColorSlider.Text = "colorSlider3";
@@ -988,7 +939,7 @@
 			this.blueColorSlider.Location = new System.Drawing.Point(24, 181);
 			this.blueColorSlider.Maximum = 255;
 			this.blueColorSlider.Name = "blueColorSlider";
-			this.blueColorSlider.Size = new System.Drawing.Size(183, 20);
+			this.blueColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.blueColorSlider.SmallChange = ((uint)(1u));
 			this.blueColorSlider.TabIndex = 13;
 			this.blueColorSlider.Text = "colorSlider2";
@@ -1001,7 +952,7 @@
 			this.redColorSlider.Location = new System.Drawing.Point(25, 141);
 			this.redColorSlider.Maximum = 255;
 			this.redColorSlider.Name = "redColorSlider";
-			this.redColorSlider.Size = new System.Drawing.Size(182, 20);
+			this.redColorSlider.Size = new System.Drawing.Size(203, 20);
 			this.redColorSlider.SmallChange = ((uint)(1u));
 			this.redColorSlider.TabIndex = 12;
 			this.redColorSlider.Text = "colorSlider1";
@@ -1045,14 +996,14 @@
 			this.hslTabPage.Location = new System.Drawing.Point(4, 22);
 			this.hslTabPage.Name = "hslTabPage";
 			this.hslTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.hslTabPage.Size = new System.Drawing.Size(266, 220);
+			this.hslTabPage.Size = new System.Drawing.Size(286, 220);
 			this.hslTabPage.TabIndex = 2;
 			this.hslTabPage.Text = "HSLA";
 			this.hslTabPage.UseVisualStyleBackColor = true;
 			// 
 			// hueNumericUpDown
 			// 
-			this.hueNumericUpDown.Location = new System.Drawing.Point(213, 141);
+			this.hueNumericUpDown.Location = new System.Drawing.Point(234, 141);
 			this.hueNumericUpDown.Maximum = new decimal(new int[] {
             360,
             0,
@@ -1079,7 +1030,7 @@
 			// 
 			// saturationNumericUpDown
 			// 
-			this.saturationNumericUpDown.Location = new System.Drawing.Point(213, 161);
+			this.saturationNumericUpDown.Location = new System.Drawing.Point(234, 161);
 			this.saturationNumericUpDown.Maximum = new decimal(new int[] {
             240,
             0,
@@ -1106,7 +1057,7 @@
 			// 
 			// luminanceNumericUpDown
 			// 
-			this.luminanceNumericUpDown.Location = new System.Drawing.Point(213, 181);
+			this.luminanceNumericUpDown.Location = new System.Drawing.Point(234, 181);
 			this.luminanceNumericUpDown.Maximum = new decimal(new int[] {
             240,
             0,
@@ -1138,7 +1089,7 @@
 			this.saturationColorSlider.Location = new System.Drawing.Point(25, 161);
 			this.saturationColorSlider.Maximum = 240;
 			this.saturationColorSlider.Name = "saturationColorSlider";
-			this.saturationColorSlider.Size = new System.Drawing.Size(182, 20);
+			this.saturationColorSlider.Size = new System.Drawing.Size(203, 20);
 			this.saturationColorSlider.SmallChange = ((uint)(1u));
 			this.saturationColorSlider.TabIndex = 26;
 			this.saturationColorSlider.Text = "colorSlider3";
@@ -1151,7 +1102,7 @@
 			this.lightnessColorSlider.Location = new System.Drawing.Point(24, 181);
 			this.lightnessColorSlider.Maximum = 240;
 			this.lightnessColorSlider.Name = "lightnessColorSlider";
-			this.lightnessColorSlider.Size = new System.Drawing.Size(183, 20);
+			this.lightnessColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.lightnessColorSlider.SmallChange = ((uint)(1u));
 			this.lightnessColorSlider.TabIndex = 25;
 			this.lightnessColorSlider.Text = "colorSlider2";
@@ -1164,7 +1115,7 @@
 			this.hueColorSlider.Location = new System.Drawing.Point(25, 141);
 			this.hueColorSlider.Maximum = 360;
 			this.hueColorSlider.Name = "hueColorSlider";
-			this.hueColorSlider.Size = new System.Drawing.Size(182, 20);
+			this.hueColorSlider.Size = new System.Drawing.Size(203, 20);
 			this.hueColorSlider.SmallChange = ((uint)(1u));
 			this.hueColorSlider.TabIndex = 24;
 			this.hueColorSlider.Text = "colorSlider1";
@@ -1187,7 +1138,7 @@
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.uploadButton);
 			this.splitContainer2.Panel2.Controls.Add(this.label1);
-			this.splitContainer2.Size = new System.Drawing.Size(661, 638);
+			this.splitContainer2.Size = new System.Drawing.Size(641, 638);
 			this.splitContainer2.SplitterDistance = 605;
 			this.splitContainer2.TabIndex = 6;
 			// 
@@ -1197,7 +1148,7 @@
 			this.glControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.glControl1.Location = new System.Drawing.Point(0, 25);
 			this.glControl1.Name = "glControl1";
-			this.glControl1.Size = new System.Drawing.Size(661, 580);
+			this.glControl1.Size = new System.Drawing.Size(641, 580);
 			this.glControl1.TabIndex = 4;
 			this.glControl1.VSync = true;
 			this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
@@ -1226,10 +1177,18 @@
             this.perspectiveToolStripButton,
             this.orthographicToolStripButton,
             this.toolStripSeparator4,
-            this.screenshotToolStripButton});
+            this.screenshotToolStripButton,
+            this.toolStripSeparator9,
+            this.toggleHeadToolStripButton,
+            this.toggleHelmetToolStripButton,
+            this.toggleChestToolStripButton,
+            this.toggleLeftArmToolStripButton,
+            this.toggleRightArmToolStripButton,
+            this.toggleLeftLegToolStripButton,
+            this.toggleRightLegToolStripButton});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(661, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(641, 25);
 			this.toolStrip1.TabIndex = 5;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1384,10 +1343,86 @@
 			this.screenshotToolStripButton.ToolTipText = "Screenshot (hold shift to save)";
 			this.screenshotToolStripButton.Click += new System.EventHandler(this.screenshotToolStripButton_Click);
 			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toggleHeadToolStripButton
+			// 
+			this.toggleHeadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleHeadToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_head;
+			this.toggleHeadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleHeadToolStripButton.Name = "toggleHeadToolStripButton";
+			this.toggleHeadToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleHeadToolStripButton.Text = "Toggle Head";
+			this.toggleHeadToolStripButton.Click += new System.EventHandler(this.toggleHeadToolStripButton_Click);
+			// 
+			// toggleHelmetToolStripButton
+			// 
+			this.toggleHelmetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleHelmetToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_helmet;
+			this.toggleHelmetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleHelmetToolStripButton.Name = "toggleHelmetToolStripButton";
+			this.toggleHelmetToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleHelmetToolStripButton.Text = "Toggle Helmet";
+			this.toggleHelmetToolStripButton.Click += new System.EventHandler(this.toggleHelmetToolStripButton_Click);
+			// 
+			// toggleChestToolStripButton
+			// 
+			this.toggleChestToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleChestToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_chest;
+			this.toggleChestToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleChestToolStripButton.Name = "toggleChestToolStripButton";
+			this.toggleChestToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleChestToolStripButton.Text = "Toggle Chest";
+			this.toggleChestToolStripButton.Click += new System.EventHandler(this.toggleChestToolStripButton_Click);
+			// 
+			// toggleLeftArmToolStripButton
+			// 
+			this.toggleLeftArmToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleLeftArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_arm;
+			this.toggleLeftArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleLeftArmToolStripButton.Name = "toggleLeftArmToolStripButton";
+			this.toggleLeftArmToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleLeftArmToolStripButton.Text = "Toggle Left Arm";
+			this.toggleLeftArmToolStripButton.Click += new System.EventHandler(this.toggleLeftArmToolStripButton_Click);
+			// 
+			// toggleRightArmToolStripButton
+			// 
+			this.toggleRightArmToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleRightArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_arm;
+			this.toggleRightArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleRightArmToolStripButton.Name = "toggleRightArmToolStripButton";
+			this.toggleRightArmToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleRightArmToolStripButton.Text = "toolStripButton5";
+			this.toggleRightArmToolStripButton.ToolTipText = "Toggle Right Arm";
+			this.toggleRightArmToolStripButton.Click += new System.EventHandler(this.toggleRightArmToolStripButton_Click);
+			// 
+			// toggleLeftLegToolStripButton
+			// 
+			this.toggleLeftLegToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleLeftLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_leg;
+			this.toggleLeftLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleLeftLegToolStripButton.Name = "toggleLeftLegToolStripButton";
+			this.toggleLeftLegToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleLeftLegToolStripButton.Text = "Toggle Left Leg";
+			this.toggleLeftLegToolStripButton.Click += new System.EventHandler(this.toggleLeftLegToolStripButton_Click);
+			// 
+			// toggleRightLegToolStripButton
+			// 
+			this.toggleRightLegToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleRightLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_leg;
+			this.toggleRightLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleRightLegToolStripButton.Name = "toggleRightLegToolStripButton";
+			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
+			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
+			// 
 			// uploadButton
 			// 
 			this.uploadButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.uploadButton.Location = new System.Drawing.Point(184, 3);
+			this.uploadButton.Location = new System.Drawing.Point(174, 3);
 			this.uploadButton.Name = "uploadButton";
 			this.uploadButton.Size = new System.Drawing.Size(95, 23);
 			this.uploadButton.TabIndex = 3;
@@ -1399,7 +1434,7 @@
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(285, 8);
+			this.label1.Location = new System.Drawing.Point(275, 8);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(191, 13);
 			this.label1.TabIndex = 5;
@@ -1450,18 +1485,15 @@
 			this.mainMenuStrip.PerformLayout();
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.splitContainer3.Panel1.ResumeLayout(false);
+			this.splitContainer3.Panel1.PerformLayout();
 			this.splitContainer3.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
 			this.splitContainer3.ResumeLayout(false);
 			this.colorTabControl.ResumeLayout(false);
 			this.swatchTabPage.ResumeLayout(false);
 			this.rgbTabPage.ResumeLayout(false);
 			this.rgbTabPage.PerformLayout();
-			this.colorPanel.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.panel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.redNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.greenNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.blueNumericUpDown)).EndInit();
@@ -1475,7 +1507,6 @@
 			this.splitContainer2.Panel1.PerformLayout();
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
@@ -1559,7 +1590,6 @@
 		private MB.Controls.ColorSlider redColorSlider;
 		private MB.Controls.ColorSlider greenColorSlider;
 		private MB.Controls.ColorSlider alphaColorSlider;
-		private System.Windows.Forms.Panel colorPanel;
 		private System.Windows.Forms.TabControl colorTabControl;
 		private System.Windows.Forms.TabPage swatchTabPage;
 		private System.Windows.Forms.TabPage rgbTabPage;
@@ -1567,7 +1597,6 @@
 		private System.Windows.Forms.ToolStripButton eraserToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem eraserToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem textureOverlayToolStripMenuItem;
-		private System.Windows.Forms.PictureBox panel1;
 		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem keyboardShortcutsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton dodgeToolStripButton;
@@ -1600,6 +1629,18 @@
 		private MB.Controls.ColorSlider hueColorSlider;
 		private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
 		private DoubleBufferedTreeView treeView1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripButton toggleHeadToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleChestToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftArmToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
+		private System.Windows.Forms.TextBox labelEditTextBox;
+		private Paril.Controls.Color.ColorPreview colorPreview1;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Label label9;
 	}
 }
 

@@ -29,22 +29,29 @@ namespace Paril.Components.Update
 		{
 			Updater updater = (Updater)parameter;
 
-			HttpWebRequest request = (HttpWebRequest)FileWebRequest.Create(updater.URL);
+			try
+			{
+				HttpWebRequest request = (HttpWebRequest)FileWebRequest.Create(updater.URL);
 
-			request.Timeout = 10000;
+				request.Timeout = 20000;
 
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-			bool succeeded = false;
+				bool succeeded = false;
 
-			if (response.StatusCode == HttpStatusCode.OK)
-				using (var stream = response.GetResponseStream())
-				{
-					using (StreamReader reader = new StreamReader(stream))
-						succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
-				}
+				if (response.StatusCode == HttpStatusCode.OK)
+					using (var stream = response.GetResponseStream())
+					{
+						using (StreamReader reader = new StreamReader(stream))
+							succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
+					}
 
-			updater.Done(succeeded);
+				updater.Done(succeeded);
+			}
+			catch
+			{
+				updater.Done(false);
+			}
 		}
 
 		void Done(bool succeeded)
@@ -91,7 +98,13 @@ namespace Paril.Components.Update
 	{
 		public bool IsNewerVersion(string myVersion, string siteVersion)
 		{
-			return Version.Parse(siteVersion) > Version.Parse(myVersion);
+			int myMajor = int.Parse(myVersion[0].ToString());
+			int myMinor = int.Parse(myVersion[2].ToString());
+			int siteMajor = int.Parse(siteVersion[0].ToString());
+			int siteMinor = int.Parse(siteVersion[2].ToString());
+
+			return (siteMajor > myMajor || (siteMajor == myMajor && siteMinor > myMinor));
+			//return Version.Parse(siteVersion) > Version.Parse(myVersion);
 		}
 	}
 }
