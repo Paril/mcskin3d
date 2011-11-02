@@ -2748,7 +2748,6 @@ namespace MCSkin3D
 
 		private void labelEditTextBox_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
-
 			if (e.KeyChar == '\r' || e.KeyChar == '\n')
 				e.Handled = true;
 		}
