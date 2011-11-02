@@ -12,6 +12,6 @@ namespace MCSkin3D
 		LeftLegFlag = 32,
 		RightLegFlag = 64,
 
-		Default = HeadFlag | ChestFlag | LeftArmFlag | RightArmFlag | LeftLegFlag | RightLegFlag,
+		Default = HeadFlag | HelmetFlag | ChestFlag | LeftArmFlag | RightArmFlag | LeftLegFlag | RightLegFlag,
 	}
 }

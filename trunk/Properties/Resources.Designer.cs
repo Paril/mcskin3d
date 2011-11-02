@@ -22,7 +22,7 @@ namespace MCSkin3D.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace MCSkin3D.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MCSkin3D.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace MCSkin3D.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,147 +60,196 @@ namespace MCSkin3D.Properties {
             }
         }
         
-        public static System.Drawing.Bitmap _109_AllAnnotations_Error_16x16_72 {
+        internal static System.Drawing.Bitmap _109_AllAnnotations_Error_16x16_72 {
             get {
-                object obj = ResourceManager.GetObject("109_AllAnnotations_Error_16x16_72", resourceCulture);
+                object obj = ResourceManager.GetObject("_109_AllAnnotations_Error_16x16_72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap arrow_state_blue_expanded {
+        internal static System.Drawing.Bitmap arrow_state_blue_expanded {
             get {
                 object obj = ResourceManager.GetObject("arrow_state_blue_expanded", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap arrow_state_blue_right {
+        internal static System.Drawing.Bitmap arrow_state_blue_right {
             get {
                 object obj = ResourceManager.GetObject("arrow_state_blue_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap arrow_state_grey_expanded {
+        internal static System.Drawing.Bitmap arrow_state_grey_expanded {
             get {
                 object obj = ResourceManager.GetObject("arrow_state_grey_expanded", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap arrow_state_grey_right {
+        internal static System.Drawing.Bitmap arrow_state_grey_right {
             get {
                 object obj = ResourceManager.GetObject("arrow_state_grey_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap burn {
+        internal static System.Drawing.Bitmap burn {
             get {
                 object obj = ResourceManager.GetObject("burn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap camera {
+        internal static System.Drawing.Bitmap camera {
             get {
                 object obj = ResourceManager.GetObject("camera", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap dodge {
+        internal static System.Drawing.Bitmap dodge {
             get {
                 object obj = ResourceManager.GetObject("dodge", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap Edit_RedoHS {
+        internal static System.Drawing.Bitmap Edit_RedoHS {
             get {
                 object obj = ResourceManager.GetObject("Edit_RedoHS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap Edit_UndoHS {
+        internal static System.Drawing.Bitmap Edit_UndoHS {
             get {
                 object obj = ResourceManager.GetObject("Edit_UndoHS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap erase {
+        internal static System.Drawing.Bitmap erase {
             get {
                 object obj = ResourceManager.GetObject("erase", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap eye__1_ {
+        internal static System.Drawing.Bitmap eye__1_ {
             get {
                 object obj = ResourceManager.GetObject("eye__1_", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap Folder_32x32 {
+        internal static System.Drawing.Bitmap Folder_32x32 {
             get {
                 object obj = ResourceManager.GetObject("Folder_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap FolderOpen_32x32_72 {
+        internal static System.Drawing.Bitmap FolderOpen_32x32_72 {
             get {
                 object obj = ResourceManager.GetObject("FolderOpen_32x32_72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap image {
+        internal static System.Drawing.Bitmap image {
             get {
                 object obj = ResourceManager.GetObject("image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap pen {
+        internal static System.Drawing.Bitmap pen {
             get {
                 object obj = ResourceManager.GetObject("pen", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap pipette {
+        internal static System.Drawing.Bitmap pipette {
             get {
                 object obj = ResourceManager.GetObject("pipette", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap Save {
+        internal static System.Drawing.Bitmap Save {
             get {
                 object obj = ResourceManager.GetObject("Save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap SaveAllHS {
+        internal static System.Drawing.Bitmap SaveAllHS {
             get {
                 object obj = ResourceManager.GetObject("SaveAllHS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap saveHS {
+        internal static System.Drawing.Bitmap saveHS {
             get {
                 object obj = ResourceManager.GetObject("saveHS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap Video {
+        internal static System.Drawing.Bitmap show_chest {
+            get {
+                object obj = ResourceManager.GetObject("show_chest", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap show_head {
+            get {
+                object obj = ResourceManager.GetObject("show_head", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap show_helmet {
+            get {
+                object obj = ResourceManager.GetObject("show_helmet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap show_left_arm {
+            get {
+                object obj = ResourceManager.GetObject("show_left_arm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap show_left_leg {
+            get {
+                object obj = ResourceManager.GetObject("show_left_leg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap show_right_arm {
+            get {
+                object obj = ResourceManager.GetObject("show_right_arm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap show_right_leg {
+            get {
+                object obj = ResourceManager.GetObject("show_right_leg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Video {
             get {
                 object obj = ResourceManager.GetObject("Video", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

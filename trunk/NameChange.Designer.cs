@@ -28,12 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
 			this.SuspendLayout();
 			// 
 			// label1
@@ -78,14 +76,6 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
-			// toolTipController1
-			// 
-			this.toolTipController1.CloseOnClick = DevExpress.Utils.DefaultBoolean.True;
-			this.toolTipController1.Rounded = true;
-			this.toolTipController1.ShowBeak = true;
-			this.toolTipController1.ToolTipLocation = DevExpress.Utils.ToolTipLocation.TopCenter;
-			this.toolTipController1.ToolTipType = DevExpress.Utils.ToolTipType.SuperTip;
-			// 
 			// NameChange
 			// 
 			this.AcceptButton = this.button2;
@@ -113,6 +103,5 @@
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button2;
-		private DevExpress.Utils.ToolTipController toolTipController1;
 	}
 }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MCSkin3D</RootNamespace>
     <AssemblyName>MCSkin3D</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -39,31 +39,6 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevCIL, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\DevCIL.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.Data.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DevExpress.Data.v11.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DevExpress.Printing.v11.1.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DevExpress.Utils.v11.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DevExpress.XtraEditors.v11.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\OpenTK.dll</HintPath>
@@ -80,19 +55,8 @@
     <Reference Include="System.Core">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Data">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -107,9 +71,22 @@
     <Compile Include="ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="IL.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
+    <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Update\Updater.cs" />
+    <Compile Include="Paril\Controls\Color\ColorPreview.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Paril\Controls\VisibleSplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Paril\Drawing\Color.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SaturationSliderRenderer.cs" />
     <Compile Include="HueSliderRenderer.cs" />
     <Compile Include="GlobalDirtiness.cs" />
@@ -228,18 +205,12 @@
       <DependentUpon>PleaseWait.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Paril\Components\Shortcuts\ShortcutEditor.resx">
       <DependentUpon>ShortcutEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SwatchContainer.resx">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
@@ -274,35 +245,9 @@
     <None Include="Resources\Video.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\DevCIL.dll" />
+    <Folder Include="bin\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\DevExpress.Data.v11.1.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\DevExpress.Printing.v11.1.Core.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\DevExpress.Utils.v11.1.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\DevExpress.XtraEditors.v11.1.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\OpenTK.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\OpenTK.GLControl.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Release\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\DevCIL.dll" />
-    <EmbeddedResource Include="Resources\DevExpress.Data.v11.1.dll" />
-    <EmbeddedResource Include="Resources\DevExpress.Printing.v11.1.Core.dll" />
-    <EmbeddedResource Include="Resources\DevExpress.Utils.v11.1.dll" />
-    <EmbeddedResource Include="Resources\DevExpress.XtraEditors.v11.1.dll" />
     <EmbeddedResource Include="Resources\OpenTK.dll" />
     <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
   </ItemGroup>
@@ -350,6 +295,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\arrow_state_grey_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_chest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_head.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_helmet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_left_arm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_left_leg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_right_arm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\show_right_leg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

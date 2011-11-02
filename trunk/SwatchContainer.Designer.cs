@@ -30,7 +30,7 @@
 		{
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.vScrollBar1 = new DevExpress.XtraEditors.VScrollBar();
+			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
 			this.swatchDisplayer1 = new MCSkin3D.SwatchDisplayer();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
@@ -62,8 +62,6 @@
 			// 
 			this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
 			this.vScrollBar1.Location = new System.Drawing.Point(251, 0);
-			this.vScrollBar1.LookAndFeel.UseDefaultLookAndFeel = false;
-			this.vScrollBar1.LookAndFeel.UseWindowsXPTheme = true;
 			this.vScrollBar1.Maximum = 0;
 			this.vScrollBar1.Name = "vScrollBar1";
 			this.vScrollBar1.Size = new System.Drawing.Size(17, 167);
@@ -98,7 +96,7 @@
 
 		private System.Windows.Forms.ComboBox comboBox1;
 		private System.Windows.Forms.Panel panel1;
-		private DevExpress.XtraEditors.VScrollBar vScrollBar1;
+		private System.Windows.Forms.VScrollBar vScrollBar1;
 		private SwatchDisplayer swatchDisplayer1;
 	}
 }

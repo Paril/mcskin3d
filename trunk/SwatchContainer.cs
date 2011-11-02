@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -37,7 +36,7 @@ namespace MCSkin3D
 
 		public void AddDirectory(string dir)
 		{
-			foreach (var swatchFile in Directory.EnumerateFiles(dir, "*.swc"))
+			foreach (var swatchFile in Directory.GetFiles(dir, "*.swc"))
 			{
 				using (StreamReader sr = new StreamReader(swatchFile))
 				{
@@ -45,7 +44,12 @@ namespace MCSkin3D
 					
 					while (!sr.EndOfStream)
 					{
-						var split = sr.ReadLine().Split();
+						var line = sr.ReadLine();
+
+						if (string.IsNullOrEmpty(line))
+							continue;
+
+						var split = line.Split();
 
 						colors.Add(Color.FromArgb(byte.Parse(split[3]), byte.Parse(split[0]), byte.Parse(split[1]), byte.Parse(split[2])));
 					}
@@ -101,8 +105,8 @@ namespace MCSkin3D
 
 	public class SwatchDisplayer : Control
 	{
-		DevExpress.XtraEditors.VScrollBar _sb;
-		public DevExpress.XtraEditors.VScrollBar ScrollBar
+		System.Windows.Forms.VScrollBar _sb;
+		public System.Windows.Forms.VScrollBar ScrollBar
 		{
 			get { return _sb; }
 			set { _sb = value; if (_sb != null) _sb.Scroll += new ScrollEventHandler(_sb_Scroll); }

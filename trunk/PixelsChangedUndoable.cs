@@ -3,6 +3,7 @@ using Paril.Components;
 using System.Drawing;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
+using Paril.Compatibility;
 
 namespace MCSkin3D
 {

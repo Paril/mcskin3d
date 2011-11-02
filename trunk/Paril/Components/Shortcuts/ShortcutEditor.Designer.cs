@@ -33,17 +33,14 @@
 			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
-			this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-			this.textBox1 = new DevExpress.XtraEditors.TextEdit();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+			this.labelControl1 = new System.Windows.Forms.Label();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.textBox1.Properties)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -124,10 +121,9 @@
 			// 
 			// labelControl1
 			// 
-			this.labelControl1.Appearance.BackColor = System.Drawing.SystemColors.Window;
-			this.labelControl1.Appearance.Image = global::MCSkin3D.Properties.Resources._109_AllAnnotations_Error_16x16_72;
-			this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Horizontal;
-			this.labelControl1.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+			this.labelControl1.BackColor = System.Drawing.SystemColors.Window;
+			this.labelControl1.Image = global::MCSkin3D.Properties.Resources._109_AllAnnotations_Error_16x16_72;
+			this.labelControl1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.labelControl1.Location = new System.Drawing.Point(203, 166);
 			this.labelControl1.Name = "labelControl1";
 			this.labelControl1.Size = new System.Drawing.Size(84, 20);
@@ -140,7 +136,7 @@
 			this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.textBox1.Location = new System.Drawing.Point(37, 140);
 			this.textBox1.Name = "textBox1";
-			this.textBox1.Properties.ReadOnly = true;
+			this.textBox1.ReadOnly = true;
 			this.textBox1.Size = new System.Drawing.Size(194, 20);
 			this.textBox1.TabIndex = 1;
 			// 
@@ -159,14 +155,11 @@
 			this.Load += new System.EventHandler(this.ShortcutEditor_Load);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.splitContainer2.Panel1.ResumeLayout(false);
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.textBox1.Properties)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -179,7 +172,7 @@
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.ListBox listBox1;
 		private System.Windows.Forms.Label label1;
-		private DevExpress.XtraEditors.TextEdit textBox1;
-		private DevExpress.XtraEditors.LabelControl labelControl1;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Label labelControl1;
 	}
 }

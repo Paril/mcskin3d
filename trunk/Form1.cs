@@ -22,6 +22,8 @@ using Paril.Components;
 using Paril.Components.Shortcuts;
 using Paril.Components.Update;
 using System.Runtime.InteropServices;
+using System.Collections;
+using Paril.Compatibility;
 
 namespace MCSkin3D
 {
@@ -118,6 +120,11 @@ namespace MCSkin3D
 			KeyPreview = true;
 			Text = "MCSkin3D v" + ProductVersion[0] + '.' + ProductVersion[2];
 
+			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
+				MessageBox.Show("The swatches and/or skins directory was missing - usually this is because you didn't extract the program. While not a critical issue, you will be missing any included templates or swatches.");
+
+			Directory.CreateDirectory("Swatches");
+			Directory.CreateDirectory("Skins");
 			swatchContainer.AddDirectory("Swatches");
 
 			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", "" + ProductVersion[0] + '.' + ProductVersion[2]);
@@ -325,6 +332,58 @@ namespace MCSkin3D
 			GlobalSettings.Save();
 		}
 
+		void RecurseAddDirectories(string path, TreeNodeCollection nodes)
+		{
+			var di = new DirectoryInfo(path);
+
+			foreach (var file in di.GetFiles("*.png", SearchOption.TopDirectoryOnly))
+			{
+				var skin = new Skin(file);
+				nodes.Add(skin);
+
+				if (treeView1.SelectedNode == null)
+					treeView1.SelectedNode = skin;
+				else if (GlobalSettings.LastSkin == skin.Name)
+					treeView1.SelectedNode = skin;
+			}
+
+			foreach (var dir in di.GetDirectories())
+			{
+				if ((dir.Attributes & FileAttributes.Hidden) != 0)
+					continue;
+
+				TreeNode folderNode = new TreeNode(dir.Name);
+				RecurseAddDirectories(dir.FullName, folderNode.Nodes);
+				nodes.Add(folderNode);
+			}
+		}
+
+		// Summary:
+		//     Exposes a method that compares two objects.
+		[ComVisible(true)]
+		public class SkinNodeSorter : IComparer
+		{
+			public int Compare(object x, object y)
+			{
+				TreeNode l = (TreeNode)x;
+				TreeNode r = (TreeNode)y;
+
+				string ls, lr;
+
+				if (l is Skin)
+					ls = ((Skin)l).Name;
+				else
+					ls = l.Text;
+
+				if (r is Skin)
+					lr = ((Skin)r).Name;
+				else
+					lr = r.Text;
+
+				return ls.CompareTo(lr);
+			}
+		}
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -338,28 +397,33 @@ namespace MCSkin3D
 
 			glControl1.MakeCurrent();
 
-			foreach (var file in Directory.EnumerateFiles("./Skins/", "*.png"))
-				skinsListBox.Items.Add(new Skin(file));
+			/*foreach (var file in Directory.EnumerateFiles("./Skins/", "*.png"))
+				treeView1.Items.Add(new Skin(file));
 
-			skinsListBox.SelectedIndex = 0;
-			foreach (var skin in skinsListBox.Items)
+			treeView1.SelectedIndex = 0;
+			foreach (var skin in treeView1.Items)
 			{
 				Skin s = (Skin)skin;
 
 				if (s.FileName.Equals(GlobalSettings.LastSkin, StringComparison.CurrentCultureIgnoreCase))
 				{
-					skinsListBox.SelectedItem = s;
+					treeView1.SelectedNode = s;
 					break;
 				}
-			}
+			}*/
+
+			RecurseAddDirectories("Skins", treeView1.Nodes);
 
 			SetColor(Color.White);
 
 			treeView1.DrawMode = TreeViewDrawMode.OwnerDrawAll;
-			treeView1.ItemHeight = 31;
+			treeView1.ItemHeight = 23;
 			treeView1.DrawNode += new DrawTreeNodeEventHandler(treeView1_DrawNode);
 			treeView1.FullRowSelect = true;
 			treeView1.HotTracking = true;
+			treeView1.TreeViewNodeSorter = new SkinNodeSorter();
+
+			SetVisibleParts();
 		}
 
 		class DoubleBufferedTreeView : TreeView
@@ -393,16 +457,6 @@ namespace MCSkin3D
 					SetScrollPos((IntPtr)Handle, SB_HORZ, value.X, true);
 					SetScrollPos((IntPtr)Handle, SB_VERT, value.Y, true);
 				}
-			}
-
-			void RecursiveDrawCheck(PaintEventArgs args, TreeNode node, ref int currentIndex)
-			{
-				OnDrawNode(new DrawTreeNodeEventArgs(args.Graphics, node, new Rectangle(0, node.Bounds.Y, Width, ItemHeight), 0));
-				currentIndex++;
-
-				if (node.IsExpanded)
-				foreach (TreeNode child in node.Nodes)
-					RecursiveDrawCheck(args, child, ref currentIndex);
 			}
 
 			int _numVisible = 0;
@@ -444,9 +498,9 @@ namespace MCSkin3D
 					lastClick.Toggle();
 			}
 
-			protected override void OnMouseClick(MouseEventArgs e)
+			protected override void OnMouseDown(MouseEventArgs e)
 			{
-				base.OnMouseClick(e);
+				base.OnMouseDown(e);
 
 				var node = GetSelectedNodeAt(e.Location);
 
@@ -454,7 +508,26 @@ namespace MCSkin3D
 					SelectedNode = node;
 
 				lastClick = SelectedNode;
-				lastOpened = lastClick.IsExpanded;
+				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
+			}
+
+			protected override void OnMouseClick(MouseEventArgs e)
+			{
+				base.OnMouseClick(e);
+			}
+
+			TreeNode _hoverNode;
+			Point _hoverPoint;
+			protected override void OnMouseMove(MouseEventArgs e)
+			{
+				_hoverPoint = e.Location;
+				var hover = GetSelectedNodeAt(e.Location);
+				if (_hoverNode == null || _hoverNode != hover)
+					_hoverNode = hover;
+
+				Invalidate();
+
+				base.OnMouseMove(e);
 			}
 
 			private TreeNode GetSelectedNodeAt(Point p)
@@ -471,6 +544,21 @@ namespace MCSkin3D
 				}
 
 				return node;
+			}
+
+			void RecursiveDrawCheck(PaintEventArgs args, TreeNode node, ref int currentIndex)
+			{
+				TreeNodeStates state = 0;
+
+				if (_hoverNode == node)
+					state |= TreeNodeStates.Hot;
+
+				OnDrawNode(new DrawTreeNodeEventArgs(args.Graphics, node, new Rectangle(0, node.Bounds.Y, Width, ItemHeight), state));
+				currentIndex++;
+
+				if (node.IsExpanded)
+				foreach (TreeNode child in node.Nodes)
+					RecursiveDrawCheck(args, child, ref currentIndex);
 			}
 
 			protected override void OnPaint(PaintEventArgs e)
@@ -492,39 +580,46 @@ namespace MCSkin3D
 		
 			if (e.Node.IsSelected)
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, treeView1.Width, e.Bounds.Height);
+		
+			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
 
-			if (e.Node.Nodes.Count != 0)
+			if (skin == null)
 			{
 				if (e.Node.IsExpanded)
-					e.Graphics.DrawImage(Properties.Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, 32, 32);
+					e.Graphics.DrawImage(Properties.Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, treeView1.ItemHeight, treeView1.ItemHeight);
 				else
-					e.Graphics.DrawImage(Properties.Resources.Folder_32x32, realX, e.Bounds.Y, 32, 32);
+					e.Graphics.DrawImage(Properties.Resources.Folder_32x32, realX, e.Bounds.Y, treeView1.ItemHeight, treeView1.ItemHeight);
 			}
 			else
 			{
 				e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				e.Graphics.DrawImage(((Skin)skinsListBox.SelectedItem).Head, realX, e.Bounds.Y, 32, 32);
+				e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+				e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+
+				e.Graphics.DrawImage(skin.Head, realX, e.Bounds.Y, treeView1.ItemHeight, treeView1.ItemHeight);
 			}
 
-			if (e.Node.Nodes.Count != 0)
+			if (skin == null)
 			{
 				if (e.Node.IsExpanded)
 				{
 					if ((e.State & TreeNodeStates.Hot) != 0)
-						e.Graphics.DrawImage(Properties.Resources.arrow_state_blue_expanded, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_blue_expanded, new Rectangle(realX - 13, e.Bounds.Y + (treeView1.ItemHeight / 2) - (16 / 2), 16, 16));
 					else
-						e.Graphics.DrawImage(Properties.Resources.arrow_state_grey_expanded, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_grey_expanded, new Rectangle(realX - 13, e.Bounds.Y + (treeView1.ItemHeight / 2) - (16 / 2), 16, 16));
 				}
 				else
 				{
 					if ((e.State & TreeNodeStates.Hot) != 0)
-						e.Graphics.DrawImage(Properties.Resources.arrow_state_blue_right, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_blue_right, new Rectangle(realX - 13, e.Bounds.Y + (treeView1.ItemHeight / 2) - (16 / 2), 16, 16));
 					else
-						e.Graphics.DrawImage(Properties.Resources.arrow_state_grey_right, new Rectangle(realX - 18, e.Bounds.Y + (Properties.Resources.arrow_state_blue_right.Height / 2), Properties.Resources.arrow_state_blue_right.Width, Properties.Resources.arrow_state_blue_right.Height));
+						e.Graphics.DrawImage(Properties.Resources.arrow_state_grey_right, new Rectangle(realX - 13, e.Bounds.Y + (treeView1.ItemHeight / 2) - (16 / 2), 16, 16));
 				}
 			}
 
-			TextRenderer.DrawText(e.Graphics, e.Node.Text, treeView1.Font, new Rectangle(realX + 36, e.Bounds.Y, treeView1.Width, e.Bounds.Height), (e.Node.IsSelected) ? Color.White : Color.Black, TextFormatFlags.VerticalCenter);
+			string text = (skin == null) ? e.Node.Text : skin.ToString();
+
+			TextRenderer.DrawText(e.Graphics, text, treeView1.Font, new Rectangle(realX + treeView1.ItemHeight + 1, e.Bounds.Y, treeView1.Width, e.Bounds.Height), (e.Node.IsSelected) ? Color.White : Color.Black, TextFormatFlags.VerticalCenter);
 		}
 		#endregion
 
@@ -926,7 +1021,7 @@ namespace MCSkin3D
 
 		void SetPreview()
 		{
-			if (skinsListBox.SelectedItem == null)
+			if (_lastSkin == null)
 			{
 				int[] array = new int[64 * 32];
 				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
@@ -963,7 +1058,7 @@ namespace MCSkin3D
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
-			var skin = (Skin)skinsListBox.SelectedItem;
+			var skin = _lastSkin;
 
 			DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin.Width, skin.Height, false, true);
 
@@ -1007,14 +1102,14 @@ namespace MCSkin3D
 
 		void UseToolOnViewport(int x, int y)
 		{
-			if (skinsListBox.SelectedItem == null)
+			if (_lastSkin == null)
 				return;
 
 			Point p = Point.Empty;
 
 			if (GetPick(x, y, ref p))
 			{
-				Skin skin = (Skin)skinsListBox.SelectedItem;
+				Skin skin = _lastSkin;
 
 				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 				int[] array = new int[skin.Width * skin.Height];
@@ -1031,7 +1126,7 @@ namespace MCSkin3D
 					{
 						var c = array[p.X + (skin.Width * p.Y)];
 						var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-						_changedPixels.Points[new Point(p.X, p.Y)] = new Tuple<Color, Color>
+						_changedPixels.Points[new Point(p.X, p.Y)] = Tuple.MakeTuple
 							(oldColor,
 							UseToolOnPixel(array, skin, p.X, p.Y));
 
@@ -1218,7 +1313,7 @@ namespace MCSkin3D
 
 		void PerformUpload()
 		{
-			if (skinsListBox.SelectedItem == null)
+			if (_lastSkin == null)
 				return;
 
 			using (Login login = new Login())
@@ -1244,7 +1339,7 @@ namespace MCSkin3D
 
 				Thread thread = new Thread(UploadThread);
 				ErrorReturn ret = new ErrorReturn();
-				thread.Start(new object[] { login.Username, login.Password, ((Skin)skinsListBox.SelectedItem).FileName, ret });
+				thread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
 
 				_pleaseWaitForm.ShowDialog();
 				_pleaseWaitForm.Dispose();
@@ -1256,8 +1351,8 @@ namespace MCSkin3D
 				else
 				{
 					MessageBox.Show("Skin upload success! Enjoy!", "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					GlobalSettings.LastSkin = ((Skin)skinsListBox.SelectedItem).FileName;
-					skinsListBox.Invalidate();
+					GlobalSettings.LastSkin = _lastSkin.File.FullName;
+					treeView1.Invalidate();
 				}
 
 				if (didShowDialog)
@@ -1321,34 +1416,34 @@ namespace MCSkin3D
 						File.Copy(f, "./Skins/" + name + ".png");
 
 						Skin skin = new Skin("./Skins/" + name + ".png");
-						skinsListBox.Items.Add(skin);
-						skinsListBox.SelectedItem = skin;
+						//treeView1.Items.Add(skin);
+						//treeView1.SelectedNode = skin;
 					}
 				}
 
-				skinsListBox.Sorted = false;
-				skinsListBox.Sorted = true;
+				//treeView1.Sorted = false;
+				//treeView1.Sorted = true;
 			}
 		}
 
 		void PerformDeleteSkin()
 		{
-			if (skinsListBox.SelectedItem == null)
+			if (_lastSkin == null)
 				return;
 
 			if (MessageBox.Show("Delete this skin perminently?\r\nThis will delete the skin from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 			{
-				Skin skin = ((Skin)skinsListBox.SelectedItem);
-				if (skinsListBox.Items.Count != 1)
+				Skin skin = _lastSkin;
+				/*if (treeView1.Items.Count != 1)
 				{
-					if (skinsListBox.SelectedIndex == skinsListBox.Items.Count - 1)
-						skinsListBox.SelectedIndex--;
+					if (treeView1.SelectedIndex == treeView1.Items.Count - 1)
+						treeView1.SelectedIndex--;
 					else
-						skinsListBox.SelectedIndex++;
+						treeView1.SelectedIndex++;
 				}
-				skinsListBox.Items.Remove(skin);
+				treeView1.Items.Remove(skin);*/
 
-				File.Delete(skin.FileName);
+				_lastSkin.File.Delete();
 
 				Invalidate();
 			}
@@ -1356,30 +1451,46 @@ namespace MCSkin3D
 
 		void PerformCloneSkin()
 		{
-			if (skinsListBox.SelectedItem == null)
+			if (_lastSkin == null)
 				return;
 
-			Skin skin = ((Skin)skinsListBox.SelectedItem);
+			Skin skin = _lastSkin;
 			string newName = skin.Name;
 			string newFileName;
 
 			do
 			{
 				newName += " - Copy";
-				newFileName = Path.GetDirectoryName(skin.FileName) + '/' + newName + ".png";
+				newFileName = skin.Directory.FullName + '\\' + newName + ".png";
 			} while (File.Exists(newFileName));
 
-			File.Copy(skin.FileName, newFileName);
+			File.Copy(skin.File.FullName, newFileName);
 			Skin newSkin = new Skin(newFileName);
-			skinsListBox.Items.Add(newSkin);
+			//treeView1.Items.Add(newSkin);
 		}
 
+		TreeNode _currentlyEditing = null;
 		void PerformNameChange()
 		{
-			if (skinsListBox.SelectedItem == null)
+			if (treeView1.SelectedNode != null)
+			{
+				//treeView1.SelectedNode.BeginEdit();
+
+				_currentlyEditing = treeView1.SelectedNode;
+
+				if (_currentlyEditing is Skin)
+					labelEditTextBox.Text = ((Skin)_currentlyEditing).Name;
+
+				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 26, treeView1.SelectedNode.Bounds.Location.Y + 4);
+				labelEditTextBox.BringToFront();
+				labelEditTextBox.Show();
+				labelEditTextBox.Focus();
+			}
+
+/*			if (_lastSkin == null)
 				return;
 
-			var skin = ((Skin)skinsListBox.SelectedItem);
+			var skin = _lastSkin;
 
 			using (NameChange nc = new NameChange())
 			{
@@ -1391,10 +1502,12 @@ namespace MCSkin3D
 					{
 						string newName = Path.GetDirectoryName(skin.FileName) + '/' + nc.SkinName + ".png";
 
-						if (skin.FileName == newName ||
-							File.Exists(newName))
+						if (skin.FileName == newName)
+							return;
+
+						if (File.Exists(newName))
 						{
-							MessageBox.Show("Either that skin exists already or you used the same name...?");
+							MessageBox.Show("Skin name already exists");
 							continue;
 						}
 
@@ -1403,17 +1516,22 @@ namespace MCSkin3D
 						skin.FileName = newName;
 						skin.Name = nc.SkinName;
 
-						skinsListBox.Sorted = false;
-						skinsListBox.Sorted = true;
+						treeView1.Sorted = false;
+						treeView1.Sorted = true;
 
 						break;
 					}
 
 					break;
 				}
-			}
+			}*/
 		}
 		#endregion
+
+		private void DoneEditingNode(string p, TreeNode _currentlyEditing)
+		{
+			labelEditTextBox.Hide();
+		}
 
 		void SetTool(Tools tool)
 		{
@@ -1447,7 +1565,7 @@ namespace MCSkin3D
 
 		void PerformSaveAs()
 		{
-			var skin = (Skin)skinsListBox.SelectedItem;
+			var skin = _lastSkin;
 
 			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
 			int[] pixels = new int[skin.Width * skin.Height];
@@ -1495,34 +1613,41 @@ namespace MCSkin3D
 		{
 			glControl1.MakeCurrent();
 
-			s.CommitChanges((s == skinsListBox.SelectedItem) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
+			s.CommitChanges((s == _lastSkin) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
+		}
+
+		void RecursiveNodeSave(TreeNodeCollection nodes)
+		{
+			foreach (TreeNode node in nodes)
+			{
+				if (node is Skin)
+				{
+					Skin skin = (Skin)node;
+
+					if (skin.Dirty)
+						PerformSaveSkin(skin);
+				}
+				else
+					RecursiveNodeSave(node.Nodes);
+			}
 		}
 
 		void PerformSaveAll()
 		{
-			foreach (var item in skinsListBox.Items)
-			{
-				Skin skin = (Skin)item;
-
-				if (!skin.Dirty)
-					continue;
-
-				PerformSaveSkin(skin);
-			}
-
-			skinsListBox.Invalidate();
+			RecursiveNodeSave(treeView1.Nodes);
+			treeView1.Invalidate();
 		}
 
 		void PerformSave()
 		{
-			Skin skin = (Skin)skinsListBox.SelectedItem;
+			Skin skin = _lastSkin;
 
 			if (!skin.Dirty)
 				return;
 
 			SetCanSave(false);
 			PerformSaveSkin(skin);
-			skinsListBox.Invalidate();
+			treeView1.Invalidate();
 		}
 		#endregion
 
@@ -1538,7 +1663,7 @@ namespace MCSkin3D
 			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
 			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 
-			Skin current = (Skin)skinsListBox.SelectedItem;
+			Skin current = _lastSkin;
 			SetCanSave(current.Dirty = true);
 
 			glControl1.Invalidate();
@@ -1553,7 +1678,7 @@ namespace MCSkin3D
 
 			_currentUndoBuffer.Redo();
 
-			Skin current = (Skin)skinsListBox.SelectedItem;
+			Skin current = _lastSkin;
 			SetCanSave(current.Dirty = true);
 
 			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
@@ -1565,7 +1690,7 @@ namespace MCSkin3D
 		void SetColor(Color c)
 		{
 			_currentColor = c;
-			panel1.BackColor = _currentColor;
+			colorPreview1.ForeColor = _currentColor;
 
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(c);
 
@@ -1608,6 +1733,11 @@ namespace MCSkin3D
 			hueColorSlider.Value = colorSquare.CurrentHue;
 			saturationColorSlider.Value = colorSquare.CurrentSat;
 			lightnessColorSlider.Value = saturationSlider.CurrentLum;
+
+			if (!_editingHex)
+			{
+				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", c.R, c.G, c.B, c.A);
+			}
 
 			_skipColors = false;
 		}
@@ -1654,6 +1784,20 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
+		ToolStripMenuItem[] _toggleMenuItems;
+		ToolStripButton[] _toggleButtons;
+		void SetVisibleParts()
+		{
+			if (_toggleMenuItems == null)
+			{
+				_toggleMenuItems = new ToolStripMenuItem[] { headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem };
+				_toggleButtons = new ToolStripButton[] { toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
+			}
+
+			for (int i = 0; i < _toggleButtons.Length; ++i)
+				_toggleMenuItems[i].Checked = _toggleButtons[i].Checked = ((GlobalSettings.ViewFlags & (VisiblePartFlags)(1 << i)) != 0);
+		}
+
 		void ToggleVisiblePart(VisiblePartFlags flag)
 		{
 			GlobalSettings.ViewFlags ^= flag;
@@ -1661,34 +1805,43 @@ namespace MCSkin3D
 			bool hasNow = (GlobalSettings.ViewFlags & flag) != 0;
 
 			ToolStripMenuItem item = null;
+			ToolStripButton itemButton = null;
 
 			// TODO: ugly
 			switch (flag)
 			{
 			case VisiblePartFlags.HeadFlag:
 				item = headToolStripMenuItem;
+				itemButton = toggleHeadToolStripButton;
 				break;
 			case VisiblePartFlags.HelmetFlag:
 				item = helmetToolStripMenuItem;
+				itemButton = toggleHelmetToolStripButton;
 				break;
 			case VisiblePartFlags.ChestFlag:
 				item = chestToolStripMenuItem;
+				itemButton = toggleChestToolStripButton;
 				break;
 			case VisiblePartFlags.LeftArmFlag:
 				item = leftArmToolStripMenuItem;
+				itemButton = toggleLeftArmToolStripButton;
 				break;
 			case VisiblePartFlags.RightArmFlag:
 				item = rightArmToolStripMenuItem;
+				itemButton = toggleRightArmToolStripButton;
 				break;
 			case VisiblePartFlags.LeftLegFlag:
 				item = leftLegToolStripMenuItem;
+				itemButton = toggleLeftLegToolStripButton;
 				break;
 			case VisiblePartFlags.RightLegFlag:
 				item = rightLegToolStripMenuItem;
+				itemButton = toggleRightLegToolStripButton;
 				break;
 			}
 
 			item.Checked = hasNow;
+			itemButton.Checked = hasNow;
 
 			glControl1.Invalidate();
 		}
@@ -1794,33 +1947,6 @@ namespace MCSkin3D
 		}
 		#endregion
 		#endregion
-
-
-		// =====================================================================
-		// Events
-		// =====================================================================
-		void skinsListBox_DrawItem(object sender, DrawItemEventArgs e)
-		{
-			if (e.Index == -1)
-				return;
-
-			e.DrawBackground();
-			e.DrawFocusRectangle();
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-			Skin skin = (Skin)skinsListBox.Items[e.Index];
-
-			if ((e.State & DrawItemState.Selected) == 0 && skin.FileName.Equals(GlobalSettings.LastSkin, StringComparison.CurrentCultureIgnoreCase))
-				e.Graphics.FillRectangle(new SolidBrush(System.Drawing.Color.Yellow), e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height);
-
-			TextRenderer.DrawText(e.Graphics, skin.ToString(), skinsListBox.Font, new Rectangle(e.Bounds.X + 24, e.Bounds.Y, e.Bounds.Width - 1 - 24, e.Bounds.Height - 1), System.Drawing.Color.Black, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
-			e.Graphics.DrawImage(skin.Head, new Rectangle(e.Bounds.X + 1, e.Bounds.Y + 1, 24, 24));
-		}
-
-		void skinsListBox_MeasureItem(object sender, MeasureItemEventArgs e)
-		{
-			e.ItemHeight = 24;
-		}
 
 		void glControl1_Load(object sender, EventArgs e)
 		{
@@ -1928,8 +2054,9 @@ namespace MCSkin3D
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
 
-			var skin = (Skin)skinsListBox.SelectedItem;
+			var skin = (Skin)_lastSkin;
 
+			if (skin != null)
 			DrawPlayer(_previewPaint, skin.Width, skin.Height, grassToolStripMenuItem.Checked, false);
 
 			glControl1.SwapBuffers();
@@ -2019,12 +2146,13 @@ namespace MCSkin3D
 			_mouseIsDown = false;
 		}
 
-		void skinsListBox_SelectedIndexChanged(object sender, EventArgs e)
+		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			if (_skipListbox || skinsListBox.SelectedItem == _lastSkin)
+			if (_skipListbox || treeView1.SelectedNode == _lastSkin ||
+				!(e.Node is Skin))
 				return;
 
-			if (_lastSkin != null && skinsListBox.SelectedItem != _lastSkin)
+			if (_lastSkin != null && treeView1.SelectedNode != _lastSkin)
 			{
 				// Copy over the current changes to the tex stored in the skin.
 				// This allows us to pick up where we left off later, without undoing any work.
@@ -2036,7 +2164,7 @@ namespace MCSkin3D
 
 			glControl1.MakeCurrent();
 
-			Skin skin = (Skin)skinsListBox.SelectedItem;
+			Skin skin = (Skin)treeView1.SelectedNode;
 			SetCanSave(skin.Dirty);
 
 			if (skin == null)
@@ -2065,7 +2193,7 @@ namespace MCSkin3D
 			}
 
 			glControl1.Invalidate();
-			_lastSkin = (Skin)skinsListBox.SelectedItem;
+			_lastSkin = (Skin)treeView1.SelectedNode;
 		}
 
 		void uploadButton_Click(object sender, EventArgs e)
@@ -2114,9 +2242,15 @@ namespace MCSkin3D
 			PerformCloneSkin();
 		}
 
-		void skinsListBox_MouseDoubleClick(object sender, MouseEventArgs e)
+		private void treeView1_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			PerformNameChange();
+			//PerformNameChange();
+		}
+
+		private void treeView1_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (_lastSkin != null && e.Button == MouseButtons.Right)
+				contextMenuStrip1.Show(Cursor.Position);
 		}
 
 		void cameraToolStripButton_Click(object sender, EventArgs e)
@@ -2488,17 +2622,6 @@ namespace MCSkin3D
 			PerformSaveAll();
 		}
 
-		void skinsListBox_MouseUp(object sender, MouseEventArgs e)
-		{
-			int l = skinsListBox.IndexFromPoint(e.Location);
-
-			if (l != -1)
-				skinsListBox.SelectedIndex = l;
-
-			if (skinsListBox.SelectedItem != null && e.Button == MouseButtons.Right)
-				contextMenuStrip1.Show(Cursor.Position);
-		}
-
 		void changeNameToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformNameChange();
@@ -2520,7 +2643,7 @@ namespace MCSkin3D
 			{
 				colorTabControl.SelectedTab.Controls.Add(colorSquare);
 				colorTabControl.SelectedTab.Controls.Add(saturationSlider);
-				colorTabControl.SelectedTab.Controls.Add(colorPanel);
+				colorTabControl.SelectedTab.Controls.Add(colorPreview1);
 				colorTabControl.SelectedTab.Controls.Add(label5);
 				colorTabControl.SelectedTab.Controls.Add(alphaColorSlider);
 				colorTabControl.SelectedTab.Controls.Add(alphaNumericUpDown);
@@ -2535,6 +2658,67 @@ namespace MCSkin3D
 		private void Form1_Load(object sender, EventArgs e)
 		{
 
+		}
+
+		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.HeadFlag);
+		}
+
+		private void toggleHelmetToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.HelmetFlag);
+		}
+
+		private void toggleChestToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.ChestFlag);
+		}
+
+		private void toggleLeftArmToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.LeftArmFlag);
+		}
+
+		private void toggleRightArmToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.RightArmFlag);
+		}
+
+		private void toggleLeftLegToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.LeftLegFlag);
+		}
+
+		private void toggleRightLegToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(VisiblePartFlags.RightLegFlag);
+		}
+
+		private void labelEditTextBox_Leave(object sender, EventArgs e)
+		{
+			DoneEditingNode(labelEditTextBox.Text, _currentlyEditing);
+		}
+
+		bool _editingHex = false;
+		private void textBox1_TextChanged(object sender, EventArgs e)
+		{
+			if (textBox1.Text.Contains('#'))
+				textBox1.Text = textBox1.Text.Replace("#", "");
+
+			string realHex = textBox1.Text;
+
+			while (realHex.Length != 8)
+				realHex += 'F';
+
+			byte r = byte.Parse(realHex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+			byte g = byte.Parse(realHex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+			byte b = byte.Parse(realHex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+			byte a = byte.Parse(realHex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+
+			_editingHex = true;
+			SetColor(Color.FromArgb(a, r, g, b));
+			_editingHex = false;
 		}
 	}
 }

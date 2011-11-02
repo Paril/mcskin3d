@@ -1,3 +1,13 @@
+Version 1.3
+- Treeview skin selector
+- Removed DevExpress dependencies
+- Replaced public domain icons (minus VS ones) with ones made for this app
+- Fixed a string serialization issue
+- Downgraded to .NET 3.5 (more support)
+- Color preview is better
+- Code cleanup relating to paths
+- Added grips so people can easily see the split containers
+
 Version 1.2
 - Bug fixes relating to importing and naming skins
 - Controllable 2D zoom and translate

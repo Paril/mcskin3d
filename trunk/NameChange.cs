@@ -54,11 +54,8 @@ namespace MCSkin3D
 			if (!char.IsControl(e.KeyChar) && Path.GetInvalidFileNameChars().Contains(e.KeyChar))
 			{
 				e.Handled = true;
-
-				//toolTip1.Show("A skin can't contain the following characters:\r\n    " + string.Join(" ", Path.GetInvalidFileNameChars()), textBox1, textBox1.Width / 2, 0, 2000);
-				toolTipController1.ShowHint("A skin can't contain the following characters:\r\n           \\ / : * ? < > |", textBox1, DevExpress.Utils.ToolTipLocation.TopCenter);
-				System.Media.SystemSounds.Beep.Play();
-			
+				//toolTipController1.ShowHint("A skin can't contain the following characters:\r\n           \\ / : * ? < > |", textBox1, DevExpress.Utils.ToolTipLocation.TopCenter);
+				System.Media.SystemSounds.Beep.Play();		
 			}
 		}
 
