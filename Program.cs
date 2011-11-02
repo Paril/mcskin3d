@@ -37,7 +37,7 @@ namespace MCSkin3D
 
 			};
 
-			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.Automatic);
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
 
 			try

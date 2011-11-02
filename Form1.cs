@@ -760,7 +760,7 @@ namespace MCSkin3D
 			GL.End();
 		}
 
-		void DrawPlayer(int tex, int skinWidth, int skinHeight, bool grass, bool pickView)
+		void DrawPlayer(int tex, Skin skin, bool grass, bool pickView)
 		{
 			if (_currentViewMode == ViewMode.Orthographic)
 			{
@@ -776,7 +776,8 @@ namespace MCSkin3D
 					GL.End();
 				}
 
-				GL.BindTexture(TextureTarget.Texture2D, tex);
+				if (skin != null)
+					GL.BindTexture(TextureTarget.Texture2D, tex);
 
 				GL.PushMatrix();
 
@@ -785,26 +786,29 @@ namespace MCSkin3D
 
 				GL.Enable(EnableCap.Blend);
 
-				float w = skinWidth;
-				float h = skinHeight;
-				GL.PushMatrix();
-				GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
-				GL.Begin(BeginMode.Quads);
-				GL.TexCoord2(0, 0); GL.Vertex2(-(w / 2), -(h / 2));
-				GL.TexCoord2(1, 0); GL.Vertex2((w / 2), -(h / 2));
-				GL.TexCoord2(1, 1); GL.Vertex2((w / 2), (h / 2));
-				GL.TexCoord2(0, 1); GL.Vertex2(-(w / 2), (h / 2));
-				GL.End();
+				if (skin != null)
+				{
+					float w = skin.Width;
+					float h = skin.Height;
+					GL.PushMatrix();
+					GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
+					GL.Begin(BeginMode.Quads);
+					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
+					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
+					GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
+					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
+					GL.End();
+				}
 
 				if (!pickView && GlobalSettings.TextureOverlay)
 				{
 					GL.BindTexture(TextureTarget.Texture2D, _backgroundTex);
 
 					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(-(w / 2), -(h / 2));
-					GL.TexCoord2(1, 0); GL.Vertex2((w / 2), -(h / 2));
-					GL.TexCoord2(1, 1); GL.Vertex2((w / 2), (h / 2));
-					GL.TexCoord2(0, 1); GL.Vertex2(-(w / 2), (h / 2));
+					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
+					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
+					GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
+					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
 					GL.End();
 				}
 				GL.PopMatrix();
@@ -874,8 +878,6 @@ namespace MCSkin3D
 			var x = clPt.X - (glControl1.Width / 2);
 			var y = clPt.Y - (glControl1.Height / 2);
 
-			GL.PushMatrix();
-
 			if (!pickView && GlobalSettings.Transparency == TransparencyMode.All)
 				GL.Enable(EnableCap.Blend);
 			else
@@ -883,115 +885,11 @@ namespace MCSkin3D
 
 			if (grass)
 				DrawSkinnedRectangle(0, -20, 0, 1024, 4, 1024, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _grassTop, 16, 16);
-
-			if (followCursorToolStripMenuItem.Checked)
-			{
-				GL.Translate(0, 4, 0);
-				GL.Rotate((float)x / 25, 0, 1, 0);
-				GL.Rotate((float)y / 25, 1, 0, 0);
-				GL.Translate(0, -4, 0);
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HeadFlag) != 0)
-				DrawSkinnedRectangle(0, 10, 0, 8, 8, 8,
-				8, 8, 8, 8,
-				24, 8, 8, 8,
-				8, 0, 8, 8,
-				16, 0, 8, 8,
-				0, 8, 8, 8,
-				16, 8, 8, 8,
-				tex);
-			GL.PopMatrix();
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
-				DrawSkinnedRectangle(0, 0, 0, 8, 12, 4,
-				20, 20, 8, 12,
-				32, 20, 8, 12,
-				20, 16, 8, 4,
-				28, 16, 8, 4,
-				16, 20, 4, 12,
-				28, 20, 4, 12,
-				tex);
-
-			// right
+		
 			GL.PushMatrix();
-			if (animateToolStripMenuItem.Checked)
-			{
-				GL.Translate(0, -6, 0);
-				GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
-				GL.Translate(0, 6, 0);
-			}
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
-				DrawSkinnedRectangle(-2, -12, 0, 4, 12, 4,
-				4, 20, 4, 12,
-				12, 20, 4, 12,
-				4, 16, 4, 4,
-				8, 16, 4, 4,
-				0, 20, 4, 12,
-				8, 20, 4, 12,
-				tex);
-			GL.PopMatrix();
 
-			// left
-			GL.PushMatrix();
-			if (animateToolStripMenuItem.Checked)
+			if (skin != null)
 			{
-				GL.Translate(0, -6, 0);
-				GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
-				GL.Translate(0, 6, 0);
-			}
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
-				DrawSkinnedRectangle(2, -12, 0, 4, 12, 4,
-				8, 20, -4, 12,
-				16, 20, -4, 12,
-				8, 16, -4, 4,
-				12, 16, -4, 4,
-				12, 20, -4, 12,
-				4, 20, -4, 12,
-				tex);
-			GL.PopMatrix();
-
-			// right arm
-			GL.PushMatrix();
-			if (animateToolStripMenuItem.Checked)
-			{
-				GL.Translate(0, 5, 0);
-				GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
-				GL.Translate(0, -5, 0);
-			}
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
-				DrawSkinnedRectangle(-6, 0, 0, 4, 12, 4,
-				44, 20, 4, 12,
-				52, 20, 4, 12,
-				44, 16, 4, 4,
-				48, 16, 4, 4,
-				40, 20, 4, 12,
-				48, 20, 4, 12,
-				tex);
-			GL.PopMatrix();
-
-			GL.PushMatrix();
-			if (animateToolStripMenuItem.Checked)
-			{
-				GL.Translate(0, 5, 0);
-				GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
-				GL.Translate(0, -5, 0);
-			}
-			// left arm
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftArmFlag) != 0)
-				DrawSkinnedRectangle(6, 0, 0, 4, 12, 4,
-				48, 20, -4, 12,
-				56, 20, -4, 12,
-				48, 16, -4, 4,
-				52, 16, -4, 4,
-				52, 20, -4, 12,
-				44, 20, -4, 12,
-				tex);
-			GL.PopMatrix();
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HelmetFlag) != 0)
-			{
-				GL.PushMatrix();
 				if (followCursorToolStripMenuItem.Checked)
 				{
 					GL.Translate(0, 4, 0);
@@ -1000,20 +898,129 @@ namespace MCSkin3D
 					GL.Translate(0, -4, 0);
 				}
 
-				if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
-					GL.Enable(EnableCap.Blend);
-				else
-					GL.Disable(EnableCap.Blend);
-
-				DrawSkinnedRectangle(0, 10, 0, 9, 9, 9,
-									32 + 8, 8, 8, 8,
-									32 + 24, 8, 8, 8,
-									32 + 8, 0, 8, 8,
-									32 + 16, 0, 8, 8,
-									32 + 0, 8, 8, 8,
-									32 + 16, 8, 8, 8,
-									tex);
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.HeadFlag) != 0)
+					DrawSkinnedRectangle(0, 10, 0, 8, 8, 8,
+					8, 8, 8, 8,
+					24, 8, 8, 8,
+					8, 0, 8, 8,
+					16, 0, 8, 8,
+					0, 8, 8, 8,
+					16, 8, 8, 8,
+					tex);
 				GL.PopMatrix();
+
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
+					DrawSkinnedRectangle(0, 0, 0, 8, 12, 4,
+					20, 20, 8, 12,
+					32, 20, 8, 12,
+					20, 16, 8, 4,
+					28, 16, 8, 4,
+					16, 20, 4, 12,
+					28, 20, 4, 12,
+					tex);
+
+				// right
+				GL.PushMatrix();
+				if (animateToolStripMenuItem.Checked)
+				{
+					GL.Translate(0, -6, 0);
+					GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
+					GL.Translate(0, 6, 0);
+				}
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
+					DrawSkinnedRectangle(-2, -12, 0, 4, 12, 4,
+					4, 20, 4, 12,
+					12, 20, 4, 12,
+					4, 16, 4, 4,
+					8, 16, 4, 4,
+					0, 20, 4, 12,
+					8, 20, 4, 12,
+					tex);
+				GL.PopMatrix();
+
+				// left
+				GL.PushMatrix();
+				if (animateToolStripMenuItem.Checked)
+				{
+					GL.Translate(0, -6, 0);
+					GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
+					GL.Translate(0, 6, 0);
+				}
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
+					DrawSkinnedRectangle(2, -12, 0, 4, 12, 4,
+					8, 20, -4, 12,
+					16, 20, -4, 12,
+					8, 16, -4, 4,
+					12, 16, -4, 4,
+					12, 20, -4, 12,
+					4, 20, -4, 12,
+					tex);
+				GL.PopMatrix();
+
+				// right arm
+				GL.PushMatrix();
+				if (animateToolStripMenuItem.Checked)
+				{
+					GL.Translate(0, 5, 0);
+					GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
+					GL.Translate(0, -5, 0);
+				}
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
+					DrawSkinnedRectangle(-6, 0, 0, 4, 12, 4,
+					44, 20, 4, 12,
+					52, 20, 4, 12,
+					44, 16, 4, 4,
+					48, 16, 4, 4,
+					40, 20, 4, 12,
+					48, 20, 4, 12,
+					tex);
+				GL.PopMatrix();
+
+				GL.PushMatrix();
+				if (animateToolStripMenuItem.Checked)
+				{
+					GL.Translate(0, 5, 0);
+					GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
+					GL.Translate(0, -5, 0);
+				}
+				// left arm
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftArmFlag) != 0)
+					DrawSkinnedRectangle(6, 0, 0, 4, 12, 4,
+					48, 20, -4, 12,
+					56, 20, -4, 12,
+					48, 16, -4, 4,
+					52, 16, -4, 4,
+					52, 20, -4, 12,
+					44, 20, -4, 12,
+					tex);
+				GL.PopMatrix();
+
+				if ((GlobalSettings.ViewFlags & VisiblePartFlags.HelmetFlag) != 0)
+				{
+					GL.PushMatrix();
+					if (followCursorToolStripMenuItem.Checked)
+					{
+						GL.Translate(0, 4, 0);
+						GL.Rotate((float)x / 25, 0, 1, 0);
+						GL.Rotate((float)y / 25, 1, 0, 0);
+						GL.Translate(0, -4, 0);
+					}
+
+					if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
+						GL.Enable(EnableCap.Blend);
+					else
+						GL.Disable(EnableCap.Blend);
+
+					DrawSkinnedRectangle(0, 10, 0, 9, 9, 9,
+										32 + 8, 8, 8, 8,
+										32 + 24, 8, 8, 8,
+										32 + 8, 0, 8, 8,
+										32 + 16, 0, 8, 8,
+										32 + 0, 8, 8, 8,
+										32 + 16, 8, 8, 8,
+										tex);
+					GL.PopMatrix();
+				}
 			}
 
 			GL.PopMatrix();
@@ -1060,7 +1067,7 @@ namespace MCSkin3D
 
 			var skin = _lastSkin;
 
-			DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin.Width, skin.Height, false, true);
+			DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, false, true);
 
 			int[] viewport = new int[4];
 			byte[] pixel = new byte[3];
@@ -2056,8 +2063,7 @@ namespace MCSkin3D
 
 			var skin = (Skin)_lastSkin;
 
-			if (skin != null)
-			DrawPlayer(_previewPaint, skin.Width, skin.Height, grassToolStripMenuItem.Checked, false);
+			DrawPlayer(_previewPaint, skin, grassToolStripMenuItem.Checked, false);
 
 			glControl1.SwapBuffers();
 		}
