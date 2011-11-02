@@ -698,6 +698,9 @@
 			this.labelEditTextBox.Size = new System.Drawing.Size(100, 20);
 			this.labelEditTextBox.TabIndex = 5;
 			this.labelEditTextBox.Visible = false;
+			this.labelEditTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.labelEditTextBox_KeyDown);
+			this.labelEditTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.labelEditTextBox_KeyPress);
+			this.labelEditTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.labelEditTextBox_KeyUp);
 			this.labelEditTextBox.Leave += new System.EventHandler(this.labelEditTextBox_Leave);
 			// 
 			// treeView1
@@ -1125,6 +1128,7 @@
 			// 
 			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+			this.splitContainer2.IsSplitterFixed = true;
 			this.splitContainer2.Location = new System.Drawing.Point(0, 0);
 			this.splitContainer2.Name = "splitContainer2";
 			this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -1524,17 +1528,14 @@
 		private System.Windows.Forms.ToolStripMenuItem skinsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.Button uploadButton;
-		private System.Windows.Forms.SplitContainer splitContainer1;
 		private OpenTK.GLControl glControl1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem addNewSkinToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem deleteSelectedSkinToolStripMenuItem;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton cameraToolStripButton;
 		private System.Windows.Forms.ToolStripButton pencilToolStripButton;
-		private System.Windows.Forms.SplitContainer splitContainer3;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.NumericUpDown alphaNumericUpDown;
 		private System.Windows.Forms.Label label4;
@@ -1641,6 +1642,9 @@
 		private Paril.Controls.Color.ColorPreview colorPreview1;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Label label9;
+		private Paril.Controls.VisibleSplitContainer splitContainer1;
+		private Paril.Controls.VisibleSplitContainer splitContainer2;
+		private Paril.Controls.VisibleSplitContainer splitContainer3;
 	}
 }
 

@@ -865,7 +865,8 @@ namespace MCSkin3D
 				count++;
 			}
 
-			vec = Vector3.Divide(vec, count);
+			if (count != 0)
+				vec = Vector3.Divide(vec, count);
 
 			GL.Translate(0, 0, _3dZoom);
 			GL.Rotate(_3dRotationX, 1, 0, 0);
@@ -1481,8 +1482,6 @@ namespace MCSkin3D
 		{
 			if (treeView1.SelectedNode != null)
 			{
-				//treeView1.SelectedNode.BeginEdit();
-
 				_currentlyEditing = treeView1.SelectedNode;
 
 				if (_currentlyEditing is Skin)
@@ -1535,9 +1534,20 @@ namespace MCSkin3D
 		}
 		#endregion
 
-		private void DoneEditingNode(string p, TreeNode _currentlyEditing)
+		private void DoneEditingNode(string newName, TreeNode _currentlyEditing)
 		{
 			labelEditTextBox.Hide();
+
+			if (_currentlyEditing is Skin)
+			{
+				Skin skin = (Skin)_currentlyEditing;
+
+				if (skin.Name == newName)
+					return;
+
+				if (skin.ChangeName(newName) == false)
+					System.Media.SystemSounds.Question.Play();
+			}
 		}
 
 		void SetTool(Tools tool)
@@ -2725,6 +2735,28 @@ namespace MCSkin3D
 			_editingHex = true;
 			SetColor(Color.FromArgb(a, r, g, b));
 			_editingHex = false;
+		}
+
+		private void labelEditTextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
+			{
+				treeView1.Focus();
+				e.Handled = true;
+			}
+		}
+
+		private void labelEditTextBox_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+
+			if (e.KeyChar == '\r' || e.KeyChar == '\n')
+				e.Handled = true;
+		}
+
+		private void labelEditTextBox_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+				e.Handled = true;
 		}
 	}
 }

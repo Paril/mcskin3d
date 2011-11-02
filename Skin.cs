@@ -5,6 +5,7 @@ using System.IO;
 using OpenTK.Graphics.OpenGL;
 using DevCIL;
 using System.Windows.Forms;
+using Paril.Extensions;
 
 namespace MCSkin3D
 {
@@ -96,6 +97,19 @@ namespace MCSkin3D
 				IL.ilDeleteImage(ilim);
 				Dirty = false;
 			}
+		}
+
+		public bool ChangeName(string newName)
+		{
+			if (Directory.GetFiles(newName + ".png", SearchOption.TopDirectoryOnly).Length != 0)
+				return false;
+
+			Name = newName;
+			var oldFile = File;
+			File = File.CopyToParent(newName + ".png");
+			oldFile.Delete();
+
+			return true;
 		}
 	}
 }
