@@ -8,5 +8,7 @@ namespace Paril.Components.Shortcuts
 		string Name { get; }
 		Keys Keys { get; set; }
 		Action Pressed { get; set; }
+
+		bool CanEvaluate();
 	}
 }

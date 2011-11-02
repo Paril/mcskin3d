@@ -13,6 +13,7 @@ namespace Paril.Components.Shortcuts
 
 		public Keys Keys { get; set; }
 		public Action Pressed { get; set; }
+		public bool CanEvaluate() { return true; }
 
 		public ShortcutBase(string name, Keys keys)
 		{

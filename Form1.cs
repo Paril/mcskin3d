@@ -250,6 +250,14 @@ namespace MCSkin3D
 			_shortcutEditor.AddShortcut(shortcut);
 		}
 
+		void InitControlShortcut(string name, Control control, Keys defaultKeys, Action callback)
+		{
+			ControlShortcut shortcut = new ControlShortcut(name, defaultKeys, control);
+			shortcut.Pressed = callback;
+
+			_shortcutEditor.AddShortcut(shortcut);
+		}
+
 		void InitShortcuts()
 		{
 			// shortcut menus
@@ -291,13 +299,25 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("Toggle view mode", Keys.Control | Keys.V, ToggleViewMode);
 			InitUnlinkedShortcut("Screenshot (clipboard)", Keys.Control | Keys.H, TakeScreenshot);
 			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.H, SaveScreenshot);
+			InitControlShortcut("Swatchlist zoom in", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
+			InitControlShortcut("Swatchlist zoom out", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
+		}
+
+		void PerformSwatchZoomOut()
+		{
+			swatchContainer.ZoomOut();
+		}
+
+		void PerformSwatchZoomIn()
+		{
+			swatchContainer.ZoomIn();
 		}
 
 		bool PerformShortcut(Keys key, Keys modifiers)
 		{
 			foreach (var shortcut in _shortcutEditor.Shortcuts)
 			{
-				if ((shortcut.Keys & ~Keys.Modifiers) == key &&
+				if (shortcut.CanEvaluate() && (shortcut.Keys & ~Keys.Modifiers) == key &&
 					(shortcut.Keys & ~(shortcut.Keys & ~Keys.Modifiers)) == modifiers)
 				{
 					shortcut.Pressed();
@@ -1488,49 +1508,11 @@ namespace MCSkin3D
 					labelEditTextBox.Text = ((Skin)_currentlyEditing).Name;
 
 				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 26, treeView1.SelectedNode.Bounds.Location.Y + 4);
+				labelEditTextBox.Size = new System.Drawing.Size(treeView1.Width - labelEditTextBox.Location.X - 4, labelEditTextBox.Height);
 				labelEditTextBox.BringToFront();
 				labelEditTextBox.Show();
 				labelEditTextBox.Focus();
 			}
-
-/*			if (_lastSkin == null)
-				return;
-
-			var skin = _lastSkin;
-
-			using (NameChange nc = new NameChange())
-			{
-				while (true)
-				{
-					nc.SkinName = skin.Name;
-
-					if (nc.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-					{
-						string newName = Path.GetDirectoryName(skin.FileName) + '/' + nc.SkinName + ".png";
-
-						if (skin.FileName == newName)
-							return;
-
-						if (File.Exists(newName))
-						{
-							MessageBox.Show("Skin name already exists");
-							continue;
-						}
-
-						File.Copy(skin.FileName, newName);
-						File.Delete(skin.FileName);
-						skin.FileName = newName;
-						skin.Name = nc.SkinName;
-
-						treeView1.Sorted = false;
-						treeView1.Sorted = true;
-
-						break;
-					}
-
-					break;
-				}
-			}*/
 		}
 		#endregion
 

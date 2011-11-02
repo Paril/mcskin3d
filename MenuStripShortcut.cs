@@ -23,6 +23,8 @@ namespace MCSkin3D
 
 		public Action Pressed { get; set; }
 
+		public bool CanEvaluate() { return true; }
+
 		public MenuStripShortcut(ToolStripMenuItem item)
 		{
 			_menuItem = item;

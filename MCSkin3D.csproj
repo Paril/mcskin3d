@@ -74,6 +74,7 @@
     <Compile Include="IL.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
+    <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
     <Compile Include="Paril\Components\Update\Updater.cs" />
     <Compile Include="Paril\Controls\Color\ColorPreview.cs">
       <SubType>Component</SubType>
@@ -317,6 +318,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\show_right_leg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2391_ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomInHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOutHS.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
