@@ -23,15 +23,22 @@ namespace MCSkin3D
 		public int Height { get { return Size.Height; } }
 
 		public FileInfo File;
-		public DirectoryInfo Directory;
+		
+		public DirectoryInfo Directory
+		{
+			get
+			{
+				if (Level == 0)
+					return new DirectoryInfo("Skins");
+
+				return new DirectoryInfo("Skins\\" + this.FullPath);
+			}
+		}
 
 		public Skin(string fileName)
 		{
 			Undo = new UndoBuffer(this);
-	
 			File = new FileInfo(fileName);
-			Directory = File.Directory;
-
 			Name = Path.GetFileNameWithoutExtension(File.Name);
 
 			SetImages();
