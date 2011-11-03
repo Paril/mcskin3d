@@ -2,6 +2,7 @@
 using MB.Controls;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace MCSkin3D
 {
@@ -21,6 +22,8 @@ namespace MCSkin3D
 
 			float lum = Luminance / 240.0f;
 			float satIncrease = 240.0f / (float)colorRect.Width;
+
+            LinearGradientBrush gradBrush = new LinearGradientBrush(new Rectangle(0, 0, colorRect.Width, colorRect.Height), 
 
 			for (int y = colorRect.Y; y < colorRect.Y + colorRect.Height; ++y)
 				for (int x = colorRect.X; x < colorRect.X + colorRect.Width; ++x)
