@@ -9,7 +9,7 @@ using Paril.Extensions;
 
 namespace MCSkin3D
 {
-	public class Skin : TreeNode
+	public class Skin : TreeNode, IDisposable
 	{
 		public new string Name;
 		public Bitmap Image;
@@ -21,8 +21,6 @@ namespace MCSkin3D
 
 		public int Width { get { return Size.Width; } }
 		public int Height { get { return Size.Height; } }
-
-		public FileInfo File;
 		
 		public DirectoryInfo Directory
 		{
@@ -35,13 +33,18 @@ namespace MCSkin3D
 			}
 		}
 
+		public FileInfo File
+		{
+			get
+			{
+				return new FileInfo(Directory.FullName + '\\' + Name + ".png");
+			}
+		}
+
 		public Skin(string fileName)
 		{
 			Undo = new UndoBuffer(this);
-			File = new FileInfo(fileName);
-			Name = Path.GetFileNameWithoutExtension(File.Name);
-
-			SetImages();
+			Name = Path.GetFileNameWithoutExtension(fileName);
 		}
 
 		public Skin(FileInfo file) :
@@ -49,7 +52,28 @@ namespace MCSkin3D
 		{
 		}
 
-		void SetImages()
+		public void Dispose()
+		{
+			if (GLImage != 0)
+			{
+				GL.DeleteTexture(GLImage);
+				GLImage = 0;
+			}
+
+			if (Head != null)
+			{
+				Head.Dispose();
+				Head = null;
+			}
+
+			if (Image != null)
+			{
+				Image.Dispose();
+				Image = null;
+			}
+		}
+
+		public void SetImages()
 		{
 			if (Head != null)
 			{
@@ -111,10 +135,9 @@ namespace MCSkin3D
 			if (Directory.GetFiles(newName + ".png", SearchOption.TopDirectoryOnly).Length != 0)
 				return false;
 
+			File.CopyToParent(newName + ".png");
+			File.Delete();
 			Name = newName;
-			var oldFile = File;
-			File = File.CopyToParent(newName + ".png");
-			oldFile.Delete();
 
 			return true;
 		}
