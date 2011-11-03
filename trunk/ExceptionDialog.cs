@@ -17,6 +17,9 @@ namespace Paril.Windows.Dialogs
 
 		public static string FormatMethodBase(MethodBase method)
 		{
+			if (method == null)
+				return "Unknown";
+
 			string str = "[" + method.Module.Name + "]" + " " + method.ToString();
 
 			str += "(";
