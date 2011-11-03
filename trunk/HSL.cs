@@ -11,6 +11,7 @@ namespace Devcorp.Controls.Design
 		/// <summary>
 		/// Gets an empty HSL structure;
 		/// </summary>
+        // hello 
 		public static readonly HSL Empty = new HSL();
 
 		#region Fields
