@@ -2924,5 +2924,66 @@ namespace MCSkin3D
 		{
 			ToggleGhosting();
 		}
+
+        // Hello
+
+        private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void treeView1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void treeView1_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
+            {
+                if (!e.Data.GetDataPresent(DataFormats.Text))
+                {
+                    e.Effect = DragDropEffects.None;
+                    return;
+                }
+                Point cp = treeView1.PointToClient(new Point(e.X, e.Y));
+                TreeNode hoverItem = treeView1.GetNodeAt(cp.X, cp.Y);
+                if (hoverItem == null)
+                {
+                    e.Effect = DragDropEffects.None;
+                    return;
+                }
+                if (treeView1.SelectedNode.Index == hoverItem.Index)
+                {
+                    e.Effect = DragDropEffects.None;
+                    hoverItem.EnsureVisible();
+                    return;
+                }
+                String text = (String)e.Data.GetData("Reorder".GetType());
+                if (text.CompareTo("Reorder") == 0)
+                {
+                    e.Effect = DragDropEffects.Move;
+                    hoverItem.EnsureVisible();
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+        }
+
+        private void treeView1_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            Point cp = base.PointToClient(new Point(e.X, e.Y));
+            TreeNode dragToItem = treeView1.GetNodeAt(cp.X, cp.Y);
+            TreeNode selectedNode = treeView1.SelectedNode;
+            if (dragToItem == null)
+            {
+                return;
+            }
+            int dropIndex = dragToItem.Index;
+            selectedNode.Nodes.Remove(selectedNode);
+            selectedNode.Nodes.Insert(dropIndex, selectedNode);
+        }
 	}
 }
