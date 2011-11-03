@@ -10,6 +10,8 @@ Version 1.3
 - Fixed the strange one-pixel lip on selected swatch
 - Fixed OpenGL texture memory leak (derp)
 - 3D ghosting
+- Made the overlay power of two (whoops!)
+- Checkmarked toolstrip items no longer auto-close
 
 Version 1.2
 - Bug fixes relating to importing and naming skins

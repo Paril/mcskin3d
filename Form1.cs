@@ -443,6 +443,21 @@ namespace MCSkin3D
 			treeView1.TreeViewNodeSorter = new SkinNodeSorter();
 
 			SetVisibleParts();
+
+			toolToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			modeToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			threeDToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			twoDToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			
+		}
+
+		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
+		{
+			if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked ||
+				e.CloseReason == ToolStripDropDownCloseReason.Keyboard)
+				e.Cancel = true;
 		}
 
 		class DoubleBufferedTreeView : TreeView
@@ -834,12 +849,11 @@ namespace MCSkin3D
 
 				GL.Enable(EnableCap.Blend);
 
+				GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
 				if (skin != null)
 				{
 					float w = skin.Width;
 					float h = skin.Height;
-					GL.PushMatrix();
-					GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
 					GL.Begin(BeginMode.Quads);
 					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
 					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
@@ -859,8 +873,6 @@ namespace MCSkin3D
 					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
 					GL.End();
 				}
-				GL.PopMatrix();
-
 				GL.PopMatrix();
 
 				GL.Disable(EnableCap.Blend);
@@ -921,7 +933,6 @@ namespace MCSkin3D
 			GL.Rotate(_3dRotationY, 0, 1, 0);
 
 			GL.Translate(-vec.X, -vec.Y, 0);
-			GL.PushMatrix();
 
 			var clPt = glControl1.PointToClient(Cursor.Position);
 			var x = clPt.X - (glControl1.Width / 2);
@@ -934,11 +945,10 @@ namespace MCSkin3D
 
 			if (grass)
 				DrawSkinnedRectangle(0, -20, 0, 1024, 4, 1024, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _grassTop, 16, 16);
-		
-			GL.PushMatrix();
 
 			if (skin != null)
 			{
+				GL.PushMatrix();
 				if (followCursorToolStripMenuItem.Checked)
 				{
 					GL.Translate(0, 4, 0);
@@ -1071,8 +1081,6 @@ namespace MCSkin3D
 					GL.PopMatrix();
 				}
 			}
-
-			GL.PopMatrix();
 		}
 
 		void SetPreview()
@@ -2815,7 +2823,6 @@ namespace MCSkin3D
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-
 		}
 
 		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)

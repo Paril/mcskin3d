@@ -56,11 +56,11 @@ namespace MCSkin3D
 					}
 
 					comboBox1.Items.Add(new SwatchFile(Path.GetFileNameWithoutExtension(swatchFile), colors));
+
+					if (comboBox1.SelectedItem == null)
+						comboBox1.SelectedIndex = 0;
 				}
 			}
-
-			if (comboBox1.SelectedItem == null)
-				comboBox1.SelectedIndex = 0;
 		}
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
