@@ -429,6 +429,7 @@
 						| System.Windows.Forms.Keys.G)));
 			this.ghostHiddenPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
 			this.ghostHiddenPartsToolStripMenuItem.Text = "Ghost Hidden Parts";
+			this.ghostHiddenPartsToolStripMenuItem.Click += new System.EventHandler(this.ghostHiddenPartsToolStripMenuItem_Click);
 			// 
 			// twoDToolStripMenuItem
 			// 

@@ -13,22 +13,21 @@ namespace MCSkin3D
 		{
 		}
 
-		public int Hue { get; set; }
-		public int Luminance { get; set; }
+		public double Hue { get; set; }
+		public double Luminance { get; set; }
 
 		public override void Render(Graphics g)
 		{
 			var colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
 
-			float lum = Luminance / 240.0f;
-			float satIncrease = 240.0f / (float)colorRect.Width;
+			Color c1 = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(Hue, 0.0f, Luminance / 240.0f));
+			Color c2 = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(Hue, 1, Luminance / 240.0f));
+			LinearGradientBrush brush = new LinearGradientBrush(colorRect, c1, c2, LinearGradientMode.Horizontal);
 
-            LinearGradientBrush gradBrush = new LinearGradientBrush(new Rectangle(0, 0, colorRect.Width, colorRect.Height), 
+			//Draw color
+			g.FillRectangle(brush, colorRect);
 
-			for (int y = colorRect.Y; y < colorRect.Y + colorRect.Height; ++y)
-				for (int x = colorRect.X; x < colorRect.X + colorRect.Width; ++x)
-					g.FillRectangle(new SolidBrush(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(new Devcorp.Controls.Design.HSL(Hue, (x * satIncrease) / 240.0f, lum)).ToColor()), x, y, 1, 1);
-
+			//Draw border
 			g.DrawRectangle(Pens.Black, colorRect);
 
 			TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
