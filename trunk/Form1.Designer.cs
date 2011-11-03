@@ -124,9 +124,26 @@
 			this.lightnessColorSlider = new MB.Controls.ColorSlider();
 			this.hueColorSlider = new MB.Controls.ColorSlider();
 			this.splitContainer2 = new Paril.Controls.VisibleSplitContainer();
-			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.glControl1 = new OpenTK.GLControl();
-			this.toolStrip6 = new System.Windows.Forms.ToolStrip();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.undoToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.redoToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.cameraToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.pencilToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.pipetteToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.eraserToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.dodgeToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.burnToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.perspectiveToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.orthographicToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.screenshotToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.toggleHeadToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleHelmetToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleChestToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -134,24 +151,6 @@
 			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStrip4 = new System.Windows.Forms.ToolStrip();
-			this.perspectiveToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.orthographicToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStrip5 = new System.Windows.Forms.ToolStrip();
-			this.screenshotToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.undoToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.redoToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStrip3 = new System.Windows.Forms.ToolStrip();
-			this.cameraToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.pencilToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.pipetteToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.eraserToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.dodgeToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.burnToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.uploadButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.mainMenuStrip.SuspendLayout();
@@ -176,14 +175,7 @@
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			this.toolStripContainer1.ContentPanel.SuspendLayout();
-			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
-			this.toolStripContainer1.SuspendLayout();
-			this.toolStrip6.SuspendLayout();
-			this.toolStrip4.SuspendLayout();
-			this.toolStrip5.SuspendLayout();
-			this.toolStrip2.SuspendLayout();
-			this.toolStrip3.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainMenuStrip
@@ -1170,7 +1162,8 @@
 			// 
 			// splitContainer2.Panel1
 			// 
-			this.splitContainer2.Panel1.Controls.Add(this.toolStripContainer1);
+			this.splitContainer2.Panel1.Controls.Add(this.glControl1);
+			this.splitContainer2.Panel1.Controls.Add(this.toolStrip1);
 			// 
 			// splitContainer2.Panel2
 			// 
@@ -1180,37 +1173,11 @@
 			this.splitContainer2.SplitterDistance = 605;
 			this.splitContainer2.TabIndex = 6;
 			// 
-			// toolStripContainer1
-			// 
-			this.toolStripContainer1.BottomToolStripPanelVisible = false;
-			// 
-			// toolStripContainer1.ContentPanel
-			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.glControl1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(641, 580);
-			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.toolStripContainer1.LeftToolStripPanelVisible = false;
-			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.RightToolStripPanelVisible = false;
-			this.toolStripContainer1.Size = new System.Drawing.Size(641, 605);
-			this.toolStripContainer1.TabIndex = 6;
-			this.toolStripContainer1.Text = "toolStripContainer1";
-			// 
-			// toolStripContainer1.TopToolStripPanel
-			// 
-			this.toolStripContainer1.TopToolStripPanel.BackColor = System.Drawing.SystemColors.Window;
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip6);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip4);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip5);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip2);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip3);
-			// 
 			// glControl1
 			// 
 			this.glControl1.BackColor = System.Drawing.Color.Black;
 			this.glControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.glControl1.Location = new System.Drawing.Point(0, 0);
+			this.glControl1.Location = new System.Drawing.Point(0, 25);
 			this.glControl1.Name = "glControl1";
 			this.glControl1.Size = new System.Drawing.Size(641, 580);
 			this.glControl1.TabIndex = 4;
@@ -1222,12 +1189,27 @@
 			this.glControl1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.glControl1_MouseUp);
 			this.glControl1.Resize += new System.EventHandler(this.glControl1_Resize);
 			// 
-			// toolStrip6
+			// toolStrip1
 			// 
-			this.toolStrip6.AllowMerge = false;
-			this.toolStrip6.CanOverflow = false;
-			this.toolStrip6.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip6.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripButton,
+            this.saveAlltoolStripButton,
+            this.toolStripSeparator6,
+            this.undoToolStripButton,
+            this.redoToolStripButton,
+            this.toolStripSeparator1,
+            this.cameraToolStripButton,
+            this.pencilToolStripButton,
+            this.pipetteToolStripButton,
+            this.eraserToolStripButton,
+            this.dodgeToolStripButton,
+            this.burnToolStripButton,
+            this.toolStripSeparator2,
+            this.perspectiveToolStripButton,
+            this.orthographicToolStripButton,
+            this.toolStripSeparator4,
+            this.screenshotToolStripButton,
+            this.toolStripSeparator9,
             this.toggleHeadToolStripButton,
             this.toggleHelmetToolStripButton,
             this.toggleChestToolStripButton,
@@ -1235,143 +1217,11 @@
             this.toggleRightArmToolStripButton,
             this.toggleLeftLegToolStripButton,
             this.toggleRightLegToolStripButton});
-			this.toolStrip6.Location = new System.Drawing.Point(356, 0);
-			this.toolStrip6.Name = "toolStrip6";
-			this.toolStrip6.Size = new System.Drawing.Size(173, 25);
-			this.toolStrip6.TabIndex = 4;
-			// 
-			// toggleHeadToolStripButton
-			// 
-			this.toggleHeadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleHeadToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_head;
-			this.toggleHeadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleHeadToolStripButton.Name = "toggleHeadToolStripButton";
-			this.toggleHeadToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleHeadToolStripButton.Text = "Toggle Head";
-			// 
-			// toggleHelmetToolStripButton
-			// 
-			this.toggleHelmetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleHelmetToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_helmet;
-			this.toggleHelmetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleHelmetToolStripButton.Name = "toggleHelmetToolStripButton";
-			this.toggleHelmetToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleHelmetToolStripButton.Text = "Toggle Helmet";
-			// 
-			// toggleChestToolStripButton
-			// 
-			this.toggleChestToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleChestToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_chest;
-			this.toggleChestToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleChestToolStripButton.Name = "toggleChestToolStripButton";
-			this.toggleChestToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleChestToolStripButton.Text = "Toggle Chest";
-			// 
-			// toggleLeftArmToolStripButton
-			// 
-			this.toggleLeftArmToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleLeftArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_arm;
-			this.toggleLeftArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleLeftArmToolStripButton.Name = "toggleLeftArmToolStripButton";
-			this.toggleLeftArmToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleLeftArmToolStripButton.Text = "Toggle Left Arm";
-			// 
-			// toggleRightArmToolStripButton
-			// 
-			this.toggleRightArmToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleRightArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_arm;
-			this.toggleRightArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleRightArmToolStripButton.Name = "toggleRightArmToolStripButton";
-			this.toggleRightArmToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleRightArmToolStripButton.Text = "toolStripButton5";
-			this.toggleRightArmToolStripButton.ToolTipText = "Toggle Right Arm";
-			// 
-			// toggleLeftLegToolStripButton
-			// 
-			this.toggleLeftLegToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleLeftLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_leg;
-			this.toggleLeftLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleLeftLegToolStripButton.Name = "toggleLeftLegToolStripButton";
-			this.toggleLeftLegToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleLeftLegToolStripButton.Text = "Toggle Left Leg";
-			// 
-			// toggleRightLegToolStripButton
-			// 
-			this.toggleRightLegToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleRightLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_leg;
-			this.toggleRightLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleRightLegToolStripButton.Name = "toggleRightLegToolStripButton";
-			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
-			// 
-			// toolStrip4
-			// 
-			this.toolStrip4.AllowMerge = false;
-			this.toolStrip4.CanOverflow = false;
-			this.toolStrip4.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.perspectiveToolStripButton,
-            this.orthographicToolStripButton});
-			this.toolStrip4.Location = new System.Drawing.Point(263, 0);
-			this.toolStrip4.Name = "toolStrip4";
-			this.toolStrip4.Size = new System.Drawing.Size(58, 25);
-			this.toolStrip4.TabIndex = 2;
-			// 
-			// perspectiveToolStripButton
-			// 
-			this.perspectiveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.perspectiveToolStripButton.Image = global::MCSkin3D.Properties.Resources.Video;
-			this.perspectiveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.perspectiveToolStripButton.Name = "perspectiveToolStripButton";
-			this.perspectiveToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.perspectiveToolStripButton.Text = "Perspective/Camera";
-			// 
-			// orthographicToolStripButton
-			// 
-			this.orthographicToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.orthographicToolStripButton.Image = global::MCSkin3D.Properties.Resources.image;
-			this.orthographicToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.orthographicToolStripButton.Name = "orthographicToolStripButton";
-			this.orthographicToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.orthographicToolStripButton.Text = "Skin View";
-			// 
-			// toolStrip5
-			// 
-			this.toolStrip5.AllowMerge = false;
-			this.toolStrip5.CanOverflow = false;
-			this.toolStrip5.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.screenshotToolStripButton});
-			this.toolStrip5.Location = new System.Drawing.Point(321, 0);
-			this.toolStrip5.Name = "toolStrip5";
-			this.toolStrip5.Size = new System.Drawing.Size(35, 25);
-			this.toolStrip5.TabIndex = 3;
-			// 
-			// screenshotToolStripButton
-			// 
-			this.screenshotToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.screenshotToolStripButton.Image = global::MCSkin3D.Properties.Resources.camera;
-			this.screenshotToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.screenshotToolStripButton.Name = "screenshotToolStripButton";
-			this.screenshotToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.screenshotToolStripButton.Text = "Screenshot";
-			this.screenshotToolStripButton.ToolTipText = "Screenshot (hold shift to save)";
-			// 
-			// toolStrip2
-			// 
-			this.toolStrip2.AllowMerge = false;
-			this.toolStrip2.CanOverflow = false;
-			this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToolStripButton,
-            this.saveAlltoolStripButton,
-            this.toolStripSeparator6,
-            this.undoToolStripButton,
-            this.redoToolStripButton});
-			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
-			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(110, 25);
-			this.toolStrip2.TabIndex = 0;
+			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(641, 25);
+			this.toolStrip1.TabIndex = 5;
+			this.toolStrip1.Text = "toolStrip1";
 			// 
 			// saveToolStripButton
 			// 
@@ -1381,6 +1231,7 @@
 			this.saveToolStripButton.Name = "saveToolStripButton";
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveToolStripButton.Text = "Save";
+			this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
 			// 
 			// saveAlltoolStripButton
 			// 
@@ -1390,6 +1241,7 @@
 			this.saveAlltoolStripButton.Name = "saveAlltoolStripButton";
 			this.saveAlltoolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveAlltoolStripButton.Text = "Save All";
+			this.saveAlltoolStripButton.Click += new System.EventHandler(this.saveAlltoolStripButton_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -1404,6 +1256,7 @@
 			this.undoToolStripButton.Name = "undoToolStripButton";
 			this.undoToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.undoToolStripButton.Text = "Undo";
+			this.undoToolStripButton.Click += new System.EventHandler(this.undoToolStripButton_Click);
 			// 
 			// redoToolStripButton
 			// 
@@ -1413,23 +1266,12 @@
 			this.redoToolStripButton.Name = "redoToolStripButton";
 			this.redoToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.redoToolStripButton.Text = "Redo";
+			this.redoToolStripButton.Click += new System.EventHandler(this.redoToolStripButton_Click);
 			// 
-			// toolStrip3
+			// toolStripSeparator1
 			// 
-			this.toolStrip3.AllowMerge = false;
-			this.toolStrip3.CanOverflow = false;
-			this.toolStrip3.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cameraToolStripButton,
-            this.pencilToolStripButton,
-            this.pipetteToolStripButton,
-            this.eraserToolStripButton,
-            this.dodgeToolStripButton,
-            this.burnToolStripButton});
-			this.toolStrip3.Location = new System.Drawing.Point(113, 0);
-			this.toolStrip3.Name = "toolStrip3";
-			this.toolStrip3.Size = new System.Drawing.Size(150, 25);
-			this.toolStrip3.TabIndex = 1;
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
 			// 
 			// cameraToolStripButton
 			// 
@@ -1439,6 +1281,7 @@
 			this.cameraToolStripButton.Name = "cameraToolStripButton";
 			this.cameraToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.cameraToolStripButton.Text = "Camera";
+			this.cameraToolStripButton.Click += new System.EventHandler(this.cameraToolStripButton_Click);
 			// 
 			// pencilToolStripButton
 			// 
@@ -1448,6 +1291,7 @@
 			this.pencilToolStripButton.Name = "pencilToolStripButton";
 			this.pencilToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.pencilToolStripButton.Text = "Pencil";
+			this.pencilToolStripButton.Click += new System.EventHandler(this.pencilToolStripButton_Click);
 			// 
 			// pipetteToolStripButton
 			// 
@@ -1457,6 +1301,7 @@
 			this.pipetteToolStripButton.Name = "pipetteToolStripButton";
 			this.pipetteToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.pipetteToolStripButton.Text = "Dropper";
+			this.pipetteToolStripButton.Click += new System.EventHandler(this.pipetteToolStripButton_Click);
 			// 
 			// eraserToolStripButton
 			// 
@@ -1466,6 +1311,7 @@
 			this.eraserToolStripButton.Name = "eraserToolStripButton";
 			this.eraserToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.eraserToolStripButton.Text = "Eraser";
+			this.eraserToolStripButton.Click += new System.EventHandler(this.eraserToolStripButton_Click);
 			// 
 			// dodgeToolStripButton
 			// 
@@ -1475,6 +1321,7 @@
 			this.dodgeToolStripButton.Name = "dodgeToolStripButton";
 			this.dodgeToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.dodgeToolStripButton.Text = "Dodge";
+			this.dodgeToolStripButton.Click += new System.EventHandler(this.dodgeToolStripButton_Click);
 			// 
 			// burnToolStripButton
 			// 
@@ -1484,6 +1331,124 @@
 			this.burnToolStripButton.Name = "burnToolStripButton";
 			this.burnToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.burnToolStripButton.Text = "Burn";
+			this.burnToolStripButton.Click += new System.EventHandler(this.burnToolStripButton_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// perspectiveToolStripButton
+			// 
+			this.perspectiveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.perspectiveToolStripButton.Image = global::MCSkin3D.Properties.Resources.Video;
+			this.perspectiveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.perspectiveToolStripButton.Name = "perspectiveToolStripButton";
+			this.perspectiveToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.perspectiveToolStripButton.Text = "Perspective/Camera";
+			this.perspectiveToolStripButton.Click += new System.EventHandler(this.perspectiveToolStripButton_Click);
+			// 
+			// orthographicToolStripButton
+			// 
+			this.orthographicToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.orthographicToolStripButton.Image = global::MCSkin3D.Properties.Resources.image;
+			this.orthographicToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.orthographicToolStripButton.Name = "orthographicToolStripButton";
+			this.orthographicToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.orthographicToolStripButton.Text = "Skin View";
+			this.orthographicToolStripButton.Click += new System.EventHandler(this.orthographicToolStripButton_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
+			// screenshotToolStripButton
+			// 
+			this.screenshotToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.screenshotToolStripButton.Image = global::MCSkin3D.Properties.Resources.camera;
+			this.screenshotToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.screenshotToolStripButton.Name = "screenshotToolStripButton";
+			this.screenshotToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.screenshotToolStripButton.Text = "Screenshot";
+			this.screenshotToolStripButton.ToolTipText = "Screenshot (hold shift to save)";
+			this.screenshotToolStripButton.Click += new System.EventHandler(this.screenshotToolStripButton_Click);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toggleHeadToolStripButton
+			// 
+			this.toggleHeadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleHeadToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_head;
+			this.toggleHeadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleHeadToolStripButton.Name = "toggleHeadToolStripButton";
+			this.toggleHeadToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleHeadToolStripButton.Text = "Toggle Head";
+			this.toggleHeadToolStripButton.Click += new System.EventHandler(this.toggleHeadToolStripButton_Click);
+			// 
+			// toggleHelmetToolStripButton
+			// 
+			this.toggleHelmetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleHelmetToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_helmet;
+			this.toggleHelmetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleHelmetToolStripButton.Name = "toggleHelmetToolStripButton";
+			this.toggleHelmetToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleHelmetToolStripButton.Text = "Toggle Helmet";
+			this.toggleHelmetToolStripButton.Click += new System.EventHandler(this.toggleHelmetToolStripButton_Click);
+			// 
+			// toggleChestToolStripButton
+			// 
+			this.toggleChestToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleChestToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_chest;
+			this.toggleChestToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleChestToolStripButton.Name = "toggleChestToolStripButton";
+			this.toggleChestToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleChestToolStripButton.Text = "Toggle Chest";
+			this.toggleChestToolStripButton.Click += new System.EventHandler(this.toggleChestToolStripButton_Click);
+			// 
+			// toggleLeftArmToolStripButton
+			// 
+			this.toggleLeftArmToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleLeftArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_arm;
+			this.toggleLeftArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleLeftArmToolStripButton.Name = "toggleLeftArmToolStripButton";
+			this.toggleLeftArmToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleLeftArmToolStripButton.Text = "Toggle Left Arm";
+			this.toggleLeftArmToolStripButton.Click += new System.EventHandler(this.toggleLeftArmToolStripButton_Click);
+			// 
+			// toggleRightArmToolStripButton
+			// 
+			this.toggleRightArmToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleRightArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_arm;
+			this.toggleRightArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleRightArmToolStripButton.Name = "toggleRightArmToolStripButton";
+			this.toggleRightArmToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleRightArmToolStripButton.Text = "toolStripButton5";
+			this.toggleRightArmToolStripButton.ToolTipText = "Toggle Right Arm";
+			this.toggleRightArmToolStripButton.Click += new System.EventHandler(this.toggleRightArmToolStripButton_Click);
+			// 
+			// toggleLeftLegToolStripButton
+			// 
+			this.toggleLeftLegToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleLeftLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_leg;
+			this.toggleLeftLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleLeftLegToolStripButton.Name = "toggleLeftLegToolStripButton";
+			this.toggleLeftLegToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleLeftLegToolStripButton.Text = "Toggle Left Leg";
+			this.toggleLeftLegToolStripButton.Click += new System.EventHandler(this.toggleLeftLegToolStripButton_Click);
+			// 
+			// toggleRightLegToolStripButton
+			// 
+			this.toggleRightLegToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleRightLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_leg;
+			this.toggleRightLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleRightLegToolStripButton.Name = "toggleRightLegToolStripButton";
+			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
+			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
 			// uploadButton
 			// 
@@ -1541,24 +1506,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.luminanceNumericUpDown)).EndInit();
 			this.splitContainer2.Panel1.ResumeLayout(false);
+			this.splitContainer2.Panel1.PerformLayout();
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
 			this.splitContainer2.ResumeLayout(false);
-			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
-			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
-			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
-			this.toolStripContainer1.ResumeLayout(false);
-			this.toolStripContainer1.PerformLayout();
-			this.toolStrip6.ResumeLayout(false);
-			this.toolStrip6.PerformLayout();
-			this.toolStrip4.ResumeLayout(false);
-			this.toolStrip4.PerformLayout();
-			this.toolStrip5.ResumeLayout(false);
-			this.toolStrip5.PerformLayout();
-			this.toolStrip2.ResumeLayout(false);
-			this.toolStrip2.PerformLayout();
-			this.toolStrip3.ResumeLayout(false);
-			this.toolStrip3.PerformLayout();
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1574,6 +1527,9 @@
 		private OpenTK.GLControl glControl1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripButton cameraToolStripButton;
+		private System.Windows.Forms.ToolStripButton pencilToolStripButton;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.NumericUpDown alphaNumericUpDown;
 		private System.Windows.Forms.Label label4;
@@ -1582,8 +1538,15 @@
 		private System.Windows.Forms.NumericUpDown greenNumericUpDown;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown redNumericUpDown;
+		private System.Windows.Forms.ToolStripButton pipetteToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripButton redoToolStripButton;
+		private System.Windows.Forms.ToolStripButton undoToolStripButton;
 		private Paril.Controls.Color.ColorSquare colorSquare;
 		private Paril.Controls.Color.SaturationSlider saturationSlider;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripButton perspectiveToolStripButton;
+		private System.Windows.Forms.ToolStripButton orthographicToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem threeDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem animateToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem followCursorToolStripMenuItem;
@@ -1625,17 +1588,25 @@
 		private System.Windows.Forms.TabPage swatchTabPage;
 		private System.Windows.Forms.TabPage rgbTabPage;
 		private SwatchContainer swatchContainer;
+		private System.Windows.Forms.ToolStripButton eraserToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem eraserToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem textureOverlayToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem keyboardShortcutsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton dodgeToolStripButton;
+		private System.Windows.Forms.ToolStripButton burnToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem dodgeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem burnToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem backgroundColorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripButton screenshotToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.ToolStripButton saveToolStripButton;
+		private System.Windows.Forms.ToolStripButton saveAlltoolStripButton;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem changeNameToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
@@ -1652,6 +1623,14 @@
 		private MB.Controls.ColorSlider hueColorSlider;
 		private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
 		private DoubleBufferedTreeView treeView1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripButton toggleHeadToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleChestToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftArmToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
 		private System.Windows.Forms.TextBox labelEditTextBox;
 		private Paril.Controls.Color.ColorPreview colorPreview1;
 		private System.Windows.Forms.TextBox textBox1;
@@ -1663,33 +1642,6 @@
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
 		private System.Windows.Forms.ToolStripMenuItem ghostHiddenPartsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-		private System.Windows.Forms.ToolStrip toolStrip2;
-		private System.Windows.Forms.ToolStripButton saveToolStripButton;
-		private System.Windows.Forms.ToolStripButton saveAlltoolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripButton undoToolStripButton;
-		private System.Windows.Forms.ToolStripButton redoToolStripButton;
-		private System.Windows.Forms.ToolStrip toolStrip3;
-		private System.Windows.Forms.ToolStripButton cameraToolStripButton;
-		private System.Windows.Forms.ToolStripButton pencilToolStripButton;
-		private System.Windows.Forms.ToolStripButton pipetteToolStripButton;
-		private System.Windows.Forms.ToolStripButton eraserToolStripButton;
-		private System.Windows.Forms.ToolStripButton dodgeToolStripButton;
-		private System.Windows.Forms.ToolStripButton burnToolStripButton;
-		private System.Windows.Forms.ToolStrip toolStrip4;
-		private System.Windows.Forms.ToolStripButton orthographicToolStripButton;
-		private System.Windows.Forms.ToolStripButton perspectiveToolStripButton;
-		private System.Windows.Forms.ToolStrip toolStrip5;
-		private System.Windows.Forms.ToolStripButton screenshotToolStripButton;
-		private System.Windows.Forms.ToolStrip toolStrip6;
-		private System.Windows.Forms.ToolStripButton toggleHeadToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleChestToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleLeftArmToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
 	}
 }
 

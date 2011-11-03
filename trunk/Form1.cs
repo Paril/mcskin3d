@@ -75,14 +75,6 @@ namespace MCSkin3D
 		{
 			InitializeComponent();
 
-			toolStripContainer1.TopToolStripPanel.SuspendLayout();
-			toolStrip2.Location = new Point(3, 0);
-			toolStrip3.Location = new Point(113, 0);
-			toolStrip4.Location = new Point(263, 0);
-			toolStrip5.Location = new Point(298, 0);
-			toolStrip6.Location = new Point(356, 0);
-			toolStripContainer1.TopToolStripPanel.ResumeLayout();
-
 			System.Timers.Timer animTimer = new System.Timers.Timer();
 			animTimer.Interval = 22;
 			animTimer.Elapsed += new System.Timers.ElapsedEventHandler(animTimer_Elapsed);
@@ -114,12 +106,7 @@ namespace MCSkin3D
 			}
 
 			mainMenuStrip.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
-			toolStrip2.Renderer = mainMenuStrip.Renderer;
-			toolStrip3.Renderer = mainMenuStrip.Renderer;
-			toolStrip4.Renderer = mainMenuStrip.Renderer;
-			toolStrip5.Renderer = mainMenuStrip.Renderer;
-			toolStrip6.Renderer = mainMenuStrip.Renderer;
-			toolStripContainer1.TopToolStripPanel.Renderer = mainMenuStrip.Renderer;
+			toolStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
 
 			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
 			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
@@ -462,7 +449,8 @@ namespace MCSkin3D
 			threeDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			twoDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
-			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;	
+			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
