@@ -24,6 +24,7 @@ using Paril.Components.Update;
 using System.Runtime.InteropServices;
 using System.Collections;
 using Paril.Compatibility;
+using System.Drawing.Drawing2D;
 
 namespace MCSkin3D
 {
@@ -761,6 +762,7 @@ namespace MCSkin3D
 				GL.TexCoord2(fsX + fsW - 0.00005, fsY + fsH - 0.00005); GL.Vertex3(x + width, y - length, z + height);  // Top Right Of The Texture and Quad
 				GL.TexCoord2(fsX, fsY + fsH - 0.00005); GL.Vertex3(x - width, y - length, z + height);  // Top Left Of The Texture and Quad
 			}
+
 			GL.TexCoord2(tsX, tsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Top)
 			GL.TexCoord2(tsX + tsW - 0.00005, tsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Top)
 			GL.TexCoord2(tsX + tsW - 0.00005, tsY + tsH - 0.00005); GL.Vertex3(x + width, y + length, z + height);          // Bottom Left Of The Quad (Top)
@@ -1078,6 +1080,7 @@ namespace MCSkin3D
 										32 + 0, 8, 8, 8,
 										32 + 16, 8, 8, 8,
 										tex);
+
 					GL.PopMatrix();
 				}
 			}
@@ -2915,6 +2918,11 @@ namespace MCSkin3D
 		private void toolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			PerformNewFolder();
+		}
+
+		private void ghostHiddenPartsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleGhosting();
 		}
 	}
 }
