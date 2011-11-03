@@ -1,6 +1,4 @@
 using System;
-//HELLO PARIL! :D
-// ewewe
 namespace Devcorp.Controls.Design
 {
 	/// <summary>
