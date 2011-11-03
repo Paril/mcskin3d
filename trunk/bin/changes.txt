@@ -12,6 +12,7 @@ Version 1.3
 - 3D ghosting
 - Made the overlay power of two (whoops!)
 - Checkmarked toolstrip items no longer auto-close
+- Changed toolbar into a ToolStripManager, so they can be moved separately.
 
 Version 1.2
 - Bug fixes relating to importing and naming skins
