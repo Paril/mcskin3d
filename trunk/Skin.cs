@@ -29,7 +29,7 @@ namespace MCSkin3D
 				if (Level == 0)
 					return new DirectoryInfo("Skins");
 
-				return new DirectoryInfo("Skins\\" + this.FullPath);
+				return new DirectoryInfo("Skins\\" + ((this.Parent != null) ? this.Parent.FullPath : ""));
 			}
 		}
 
@@ -45,6 +45,7 @@ namespace MCSkin3D
 		{
 			Undo = new UndoBuffer(this);
 			Name = Path.GetFileNameWithoutExtension(fileName);
+			Text = "Not really any text";
 		}
 
 		public Skin(FileInfo file) :
