@@ -25,6 +25,24 @@ namespace Paril.Components.Update
 			CurrentVersion = currentVersion;
 		}
 
+		static void CallbackAsync(IAsyncResult ar)
+		{
+			var objs = ar.AsyncState as object[];
+			bool succeeded = false;
+			HttpWebRequest request = objs[0] as HttpWebRequest;
+			var response = (HttpWebResponse)request.GetResponse();
+			var updater = (Updater)objs[1];
+
+			if (response.StatusCode == HttpStatusCode.OK)
+				using (var stream = response.GetResponseStream())
+				{
+					using (StreamReader reader = new StreamReader(stream))
+						succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
+				}
+
+			updater.Done(succeeded);
+		}
+
 		static void UpdaterThread(object parameter)
 		{
 			Updater updater = (Updater)parameter;
@@ -35,18 +53,8 @@ namespace Paril.Components.Update
 
 				request.Timeout = -1;
 
-				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-				bool succeeded = false;
-
-				if (response.StatusCode == HttpStatusCode.OK)
-					using (var stream = response.GetResponseStream())
-					{
-						using (StreamReader reader = new StreamReader(stream))
-							succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
-					}
-
-				updater.Done(succeeded);
+				IAsyncResult response = (IAsyncResult)request.BeginGetResponse(CallbackAsync, new object[] { request, updater });
+				response.AsyncWaitHandle.WaitOne();
 			}
 			catch
 			{
