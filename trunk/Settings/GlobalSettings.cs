@@ -23,6 +23,10 @@ namespace MCSkin3D
 		public static bool Grass { get; set; }
 
 		[Savable]
+		[DefaultValue(true)]
+		public static bool Ghost { get; set; }
+
+		[Savable]
 		[DefaultValue("")]
 		public static string LastSkin { get; set; }
 

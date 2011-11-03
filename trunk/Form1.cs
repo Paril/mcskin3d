@@ -269,14 +269,12 @@ namespace MCSkin3D
 			InitMenuShortcut(eraserToolStripMenuItem, () => SetTool(Tools.Eraser));
 			InitMenuShortcut(dodgeToolStripMenuItem, () => SetTool(Tools.Dodge));
 			InitMenuShortcut(burnToolStripMenuItem, () => SetTool(Tools.Burn));
-			InitMenuShortcut(addNewSkinToolStripMenuItem, PerformImportSkin);
-			InitMenuShortcut(deleteSelectedSkinToolStripMenuItem, PerformDeleteSkin);
-			InitMenuShortcut(cloneSkinToolStripMenuItem, PerformCloneSkin);
 			InitMenuShortcut(perspectiveToolStripMenuItem, () => SetViewMode(ViewMode.Perspective));
 			InitMenuShortcut(textureToolStripMenuItem, () => SetViewMode(ViewMode.Orthographic));
 			InitMenuShortcut(animateToolStripMenuItem, ToggleAnimation);
 			InitMenuShortcut(followCursorToolStripMenuItem, ToggleFollowCursor);
 			InitMenuShortcut(grassToolStripMenuItem, ToggleGrass);
+			InitMenuShortcut(ghostHiddenPartsToolStripMenuItem, ToggleGhosting);
 			InitMenuShortcut(alphaCheckerboardToolStripMenuItem, ToggleAlphaCheckerboard);
 			InitMenuShortcut(textureOverlayToolStripMenuItem, ToggleOverlay);
 			InitMenuShortcut(offToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Off));
@@ -352,7 +350,7 @@ namespace MCSkin3D
 			GlobalSettings.Save();
 		}
 
-		void RecurseAddDirectories(string path, TreeNodeCollection nodes)
+		void RecurseAddDirectories(string path, TreeNodeCollection nodes, List<Skin> skins)
 		{
 			var di = new DirectoryInfo(path);
 
@@ -365,6 +363,8 @@ namespace MCSkin3D
 					treeView1.SelectedNode = skin;
 				else if (GlobalSettings.LastSkin == skin.Name)
 					treeView1.SelectedNode = skin;
+
+				skins.Add(skin);
 			}
 
 			foreach (var dir in di.GetDirectories())
@@ -373,7 +373,7 @@ namespace MCSkin3D
 					continue;
 
 				TreeNode folderNode = new TreeNode(dir.Name);
-				RecurseAddDirectories(dir.FullName, folderNode.Nodes);
+				RecurseAddDirectories(dir.FullName, folderNode.Nodes, skins);
 				nodes.Add(folderNode);
 			}
 		}
@@ -388,19 +388,14 @@ namespace MCSkin3D
 				TreeNode l = (TreeNode)x;
 				TreeNode r = (TreeNode)y;
 
-				string ls, lr;
+				if (l is Skin && !(r is Skin))
+					return 1;
+				else if (!(l is Skin) && r is Skin)
+					return -1;
+				else if (l is Skin && r is Skin)
+					return ((Skin)l).Name.CompareTo(((Skin)r).Name);
 
-				if (l is Skin)
-					ls = ((Skin)l).Name;
-				else
-					ls = l.Text;
-
-				if (r is Skin)
-					lr = ((Skin)r).Name;
-				else
-					lr = r.Text;
-
-				return ls.CompareTo(lr);
+				return l.Text.CompareTo(r.Text);
 			}
 		}
 
@@ -432,7 +427,11 @@ namespace MCSkin3D
 				}
 			}*/
 
-			RecurseAddDirectories("Skins", treeView1.Nodes);
+			List<Skin> skins = new List<Skin>();
+			RecurseAddDirectories("Skins", treeView1.Nodes, skins);
+
+			foreach (var s in skins)
+				s.SetImages();
 
 			SetColor(Color.White);
 
@@ -486,7 +485,7 @@ namespace MCSkin3D
 				base.OnSizeChanged(e);
 			}
 
-			TreeNode GetSelectedNodeAt(int y, TreeNode node, ref int currentIndex)
+			public TreeNode GetSelectedNodeAt(int y, TreeNode node, ref int currentIndex)
 			{
 				if (currentIndex >= ScrollPosition.Y + _numVisible)
 					return null;
@@ -523,9 +522,7 @@ namespace MCSkin3D
 				base.OnMouseDown(e);
 
 				var node = GetSelectedNodeAt(e.Location);
-
-				if (node != null)
-					SelectedNode = node;
+				SelectedNode = node;
 
 				lastClick = SelectedNode;
 				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
@@ -550,7 +547,7 @@ namespace MCSkin3D
 				base.OnMouseMove(e);
 			}
 
-			private TreeNode GetSelectedNodeAt(Point p)
+			public TreeNode GetSelectedNodeAt(Point p)
 			{
 				int currentIndex = 0;
 
@@ -780,6 +777,37 @@ namespace MCSkin3D
 			GL.End();
 		}
 
+		void DrawPart
+			(VisiblePartFlags flag, float x, float y, float z, float width, float length, float height,
+			int frontSkinX, int frontSkinY, int frontSkinW, int frontSkinH,
+			int backSkinX, int backSkinY, int backSkinW, int backSkinH,
+			int topSkinX, int topSkinY, int topSkinW, int topSkinH,
+			int bottomSkinX, int bottomSkinY, int bottomSkinW, int bottomSkinH,
+			int leftSkinX, int leftSkinY, int leftSkinW, int leftSkinH,
+			int rightSkinX, int rightSkinY, int rightSkinW, int rightSkinH,
+			int texture, int skinW = 64, int skinH = 32)
+		{
+			bool didGhost = false;
+
+			if ((GlobalSettings.ViewFlags & flag) == 0)
+			{
+				if (!GlobalSettings.Ghost)
+					return;
+
+				didGhost = true;
+				GL.Enable(EnableCap.Blend);
+			}
+
+			GL.Color4((byte)255, (byte)255, (byte)255, (byte)86);
+
+			DrawSkinnedRectangle(x, y, z, width, length, height, frontSkinX, frontSkinY, frontSkinW, frontSkinH, backSkinX, backSkinY, backSkinW, backSkinH, topSkinX, topSkinY, topSkinW, topSkinH, bottomSkinX, bottomSkinY, bottomSkinW, bottomSkinH, leftSkinX, leftSkinY, leftSkinW, leftSkinH, rightSkinX, rightSkinY, rightSkinW, rightSkinH, texture, skinW, skinH);
+
+			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
+
+			if (didGhost)
+				GL.Disable(EnableCap.Blend);
+		}
+
 		void DrawPlayer(int tex, Skin skin, bool grass, bool pickView)
 		{
 			if (_currentViewMode == ViewMode.Orthographic)
@@ -820,7 +848,7 @@ namespace MCSkin3D
 					GL.End();
 				}
 
-				if (!pickView && GlobalSettings.TextureOverlay)
+				if (!pickView && GlobalSettings.TextureOverlay && skin != null)
 				{
 					GL.BindTexture(TextureTarget.Texture2D, _backgroundTex);
 
@@ -919,8 +947,7 @@ namespace MCSkin3D
 					GL.Translate(0, -4, 0);
 				}
 
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.HeadFlag) != 0)
-					DrawSkinnedRectangle(0, 10, 0, 8, 8, 8,
+				DrawPart(VisiblePartFlags.HeadFlag, 0, 10, 0, 8, 8, 8,
 					8, 8, 8, 8,
 					24, 8, 8, 8,
 					8, 0, 8, 8,
@@ -928,6 +955,7 @@ namespace MCSkin3D
 					0, 8, 8, 8,
 					16, 8, 8, 8,
 					tex);
+
 				GL.PopMatrix();
 
 				if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
@@ -1424,6 +1452,14 @@ namespace MCSkin3D
 			glControl1.Invalidate();
 		}
 
+		void ToggleGhosting()
+		{
+			ghostHiddenPartsToolStripMenuItem.Checked = !ghostHiddenPartsToolStripMenuItem.Checked;
+			GlobalSettings.Ghost = ghostHiddenPartsToolStripMenuItem.Checked;
+
+			glControl1.Invalidate();
+		}
+
 		#region Skin Management
 		void PerformImportSkin()
 		{
@@ -1434,46 +1470,138 @@ namespace MCSkin3D
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
+					string folderLocation;
+
+					if (_rightClickedNode != null)
+					{
+						if (!(_rightClickedNode is Skin))
+							folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
+						else if (_rightClickedNode.Parent != null)
+							folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
+						else
+							folderLocation = "Skins\\";
+					}
+					else
+						folderLocation = "Skins\\";
+
 					foreach (var f in ofd.FileNames)
 					{
 						var name = Path.GetFileNameWithoutExtension(f);
 
-						while (File.Exists("./Skins/" + name + ".png"))
+						while (File.Exists(folderLocation + name + ".png"))
 							name += " (New)";
 
-						File.Copy(f, "./Skins/" + name + ".png");
+						File.Copy(f, folderLocation + name + ".png");
 
-						Skin skin = new Skin("./Skins/" + name + ".png");
-						//treeView1.Items.Add(skin);
-						//treeView1.SelectedNode = skin;
+						Skin skin = new Skin(folderLocation + name + ".png");
+
+						if (_rightClickedNode != null)
+						{
+							if (!(_rightClickedNode is Skin))
+								_rightClickedNode.Nodes.Add(skin);
+							else
+								_rightClickedNode.Parent.Nodes.Add(skin);
+						}
+						else
+							treeView1.Nodes.Add(skin);
+
+						skin.SetImages();
 					}
 				}
-
-				//treeView1.Sorted = false;
-				//treeView1.Sorted = true;
 			}
+		}
+
+		void PerformNewFolder()
+		{
+			string folderLocation;
+			TreeNodeCollection collection;
+
+			if (_rightClickedNode != null)
+			{
+				if (!(_rightClickedNode is Skin))
+				{
+					folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
+					collection = _rightClickedNode.Nodes;
+				}
+				else if (_rightClickedNode.Parent != null)
+				{
+					folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
+					collection = _rightClickedNode.Parent.Nodes;
+				}
+				else
+				{
+					folderLocation = "Skins\\";
+					collection = treeView1.Nodes;
+				}
+			}
+			else
+			{
+				folderLocation = "Skins\\";
+				collection = treeView1.Nodes;
+			}
+
+			string newFolderName = "New Folder";
+
+			while (Directory.Exists(folderLocation + newFolderName))
+				newFolderName += " (New)";
+
+			Directory.CreateDirectory(folderLocation + newFolderName);
+			var newNode = new TreeNode(newFolderName);
+			collection.Add(newNode);
+
+			newNode.EnsureVisible();
+			treeView1.SelectedNode = newNode;
+			treeView1.Invalidate();
+
+			PerformNameChange();
+		}
+
+		void RecursiveDeleteSkins(TreeNode node)
+		{
+			foreach (TreeNode sub in node.Nodes)
+			{
+				if (!(sub is Skin))
+					RecursiveDeleteSkins(sub);
+				else
+				{
+					Skin skin = (Skin)sub;
+
+					if (_lastSkin == skin)
+						_lastSkin = null;
+
+					skin.Dispose();
+				}
+			}
+
+			Directory.Delete("Skins\\" + node.FullPath, true);
 		}
 
 		void PerformDeleteSkin()
 		{
-			if (_lastSkin == null)
-				return;
-
-			if (MessageBox.Show("Delete this skin perminently?\r\nThis will delete the skin from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+			if (treeView1.SelectedNode is Skin)
 			{
-				Skin skin = _lastSkin;
-				/*if (treeView1.Items.Count != 1)
+				if (MessageBox.Show("Delete this skin perminently?\r\nThis will delete the skin from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 				{
-					if (treeView1.SelectedIndex == treeView1.Items.Count - 1)
-						treeView1.SelectedIndex--;
-					else
-						treeView1.SelectedIndex++;
+					Skin skin = (Skin)treeView1.SelectedNode;
+
+					skin.File.Delete();
+					skin.Remove();
+					skin.Dispose();
+
+					Invalidate();
 				}
-				treeView1.Items.Remove(skin);*/
+			}
+			else
+			{
+				if (MessageBox.Show("Delete this folder perminently?\r\nThis will delete the folder, along with any and all files in this folder, from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
+				{
+					DirectoryInfo folder = new DirectoryInfo("Skins\\" + treeView1.SelectedNode.FullPath);
 
-				_lastSkin.File.Delete();
+					RecursiveDeleteSkins(treeView1.SelectedNode);
 
-				Invalidate();
+					treeView1.SelectedNode.Remove();
+					Invalidate();
+				}
 			}
 		}
 
@@ -1494,7 +1622,8 @@ namespace MCSkin3D
 
 			File.Copy(skin.File.FullName, newFileName);
 			Skin newSkin = new Skin(newFileName);
-			//treeView1.Items.Add(newSkin);
+			_lastSkin.Parent.Nodes.Add(newSkin);
+			newSkin.SetImages();
 		}
 
 		TreeNode _currentlyEditing = null;
@@ -1506,8 +1635,10 @@ namespace MCSkin3D
 
 				if (_currentlyEditing is Skin)
 					labelEditTextBox.Text = ((Skin)_currentlyEditing).Name;
+				else
+					labelEditTextBox.Text = _currentlyEditing.Text;
 
-				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 26, treeView1.SelectedNode.Bounds.Location.Y + 4);
+				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 43, treeView1.SelectedNode.Bounds.Location.Y + 4);
 				labelEditTextBox.Size = new System.Drawing.Size(treeView1.Width - labelEditTextBox.Location.X - 4, labelEditTextBox.Height);
 				labelEditTextBox.BringToFront();
 				labelEditTextBox.Show();
@@ -1529,6 +1660,24 @@ namespace MCSkin3D
 
 				if (skin.ChangeName(newName) == false)
 					System.Media.SystemSounds.Question.Play();
+			}
+			else
+			{
+				string folderName = _currentlyEditing.Text;
+				var folder = new DirectoryInfo("skins\\" + _currentlyEditing.FullPath);
+				var newFolder = new DirectoryInfo("skins\\" + ((_currentlyEditing.Parent != null) ? (_currentlyEditing.Parent.FullPath + '\\' + newName) : newName));
+
+				if (folderName == newName)
+					return;
+
+				if (Directory.Exists(newFolder.FullName))
+				{
+					System.Media.SystemSounds.Question.Play();
+					return;
+				}
+
+				folder.MoveTo(newFolder.FullName);
+				_currentlyEditing.Text = newFolder.Name;
 			}
 		}
 
@@ -2245,10 +2394,21 @@ namespace MCSkin3D
 			//PerformNameChange();
 		}
 
+		TreeNode _rightClickedNode = null;
 		private void treeView1_MouseUp(object sender, MouseEventArgs e)
 		{
-			if (_lastSkin != null && e.Button == MouseButtons.Right)
+			if (/*_lastSkin != null && */e.Button == MouseButtons.Right)
+			{
+				_rightClickedNode = treeView1.GetSelectedNodeAt(e.Location);
+				changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = true;
+
+				if (treeView1.SelectedNode == null)
+					changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = false;
+				else if (!(treeView1.SelectedNode is Skin))
+					cloneToolStripMenuItem.Enabled = false;
+
 				contextMenuStrip1.Show(Cursor.Position);
+			}
 		}
 
 		void cameraToolStripButton_Click(object sender, EventArgs e)
@@ -2738,6 +2898,16 @@ namespace MCSkin3D
 		{
 			if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
 				e.Handled = true;
+		}
+
+		private void importHereToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformImportSkin();
+		}
+
+		private void toolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			PerformNewFolder();
 		}
 	}
 }

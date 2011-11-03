@@ -8,8 +8,6 @@ Default shortcut keys:
 - Ctrl+Q		Switch to 3D view
 - Ctrl+W		Switch to 2D view
 - Ctrl+I		Import skin
-- Ctrl+D		Delete selected skin
-- Ctrl+C		Clone skin
 - Ctrl+A		Alpha checkerboard
 - Ctrl+O		2D texture overlay
 - Ctrl+M		Animate

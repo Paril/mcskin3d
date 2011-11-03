@@ -8,7 +8,8 @@ Version 1.3
 - Code cleanup relating to paths
 - Added grips so people can easily see the split containers
 - Fixed the strange one-pixel lip on selected swatch
-- 
+- Fixed OpenGL texture memory leak (derp)
+- 3D ghosting
 
 Version 1.2
 - Bug fixes relating to importing and naming skins

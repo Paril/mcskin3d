@@ -9,6 +9,9 @@ namespace MCSkin3D
 		// Function load a image, turn it into a texture, and return the texture ID as a GLuint for use
 		public static int LoadImage(string fileName)
 		{
+			if (!System.IO.File.Exists(fileName))
+				throw new System.IO.FileNotFoundException("Not found!", fileName);
+
 			uint imageID = IL.ilGenImage(); 		// Generate the image ID
 
 			IL.ilBindImage(imageID); 			// Bind the image
