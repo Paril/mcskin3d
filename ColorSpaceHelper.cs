@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
 
+// Weee
 namespace Devcorp.Controls.Design
 {
 	/// <summary>
