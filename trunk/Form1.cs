@@ -155,7 +155,7 @@ namespace MCSkin3D
 			rendererControl.Resize += new System.EventHandler(this.rendererControl_Resize);
 			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
 
-			splitContainer2.Panel1.Controls.Add(rendererControl);
+			splitContainer4.Panel2.Controls.Add(rendererControl);
 
 			System.Timers.Timer animTimer = new System.Timers.Timer();
 			animTimer.Interval = 22;
@@ -326,6 +326,18 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.H, SaveScreenshot);
 			InitControlShortcut("Swatchlist zoom in", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("Swatchlist zoom out", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
+			InitControlShortcut("Treeview zoom in", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
+			InitControlShortcut("Treeview zoom out", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
+		}
+
+		void PerformTreeViewZoomIn()
+		{
+			treeView1.ZoomIn();
+		}
+
+		void PerformTreeViewZoomOut()
+		{
+			treeView1.ZoomOut();
 		}
 
 		void PerformSwatchZoomOut()
@@ -600,6 +612,22 @@ namespace MCSkin3D
 				}
 
 				base.OnMouseMove(e);
+			}
+
+			protected override void OnKeyDown(KeyEventArgs e)
+			{
+				base.OnKeyDown(e);
+			}
+
+			public void ZoomOut()
+			{
+				if (ItemHeight > 12)
+					ItemHeight--;
+			}
+
+			public void ZoomIn()
+			{
+				ItemHeight++;
 			}
 
 			public TreeNode GetSelectedNodeAt(Point p)
@@ -3138,6 +3166,11 @@ namespace MCSkin3D
 		{
 			SetSampleMenuItem(8);
 			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			splitContainer4.Panel1Collapsed = !splitContainer4.Panel1Collapsed;
 		}
 	}
 }
