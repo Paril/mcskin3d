@@ -64,6 +64,10 @@ namespace MCSkin3D
 		public static bool TextureOverlay { get; set; }
 
 		[Savable]
+		[DefaultValue("None")]
+		public static string LastBackground { get; set; }
+
+		[Savable]
 		[DefaultValue("")]
 		public static string ShortcutKeys { get; set; }
 
@@ -75,6 +79,10 @@ namespace MCSkin3D
 		[Savable]
 		[DefaultValue(true)]
 		public static bool AutoUpdate { get; set; }
+
+		[Savable]
+		[DefaultValue(0)]
+		public static int Multisamples { get; set; }
 
 		static Settings Settings = null;
 		
