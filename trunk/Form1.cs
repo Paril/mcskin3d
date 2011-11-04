@@ -81,11 +81,6 @@ namespace MCSkin3D
 		{
 			InitializeComponent();
 
-			System.Timers.Timer animTimer = new System.Timers.Timer();
-			animTimer.Interval = 22;
-			animTimer.Elapsed += new System.Timers.ElapsedEventHandler(animTimer_Elapsed);
-			animTimer.Start();
-
 			GlobalSettings.Load();
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
@@ -161,7 +156,11 @@ namespace MCSkin3D
 			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
 
 			splitContainer2.Panel1.Controls.Add(rendererControl);
-		
+
+			System.Timers.Timer animTimer = new System.Timers.Timer();
+			animTimer.Interval = 22;
+			animTimer.Elapsed += new System.Timers.ElapsedEventHandler(animTimer_Elapsed);
+			animTimer.Start();
 		}
 		#endregion
 
