@@ -2,6 +2,7 @@
 using MB.Controls;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace MCSkin3D
 {
@@ -15,20 +16,31 @@ namespace MCSkin3D
 		public int Hue { get; set; }
 		public int Saturation { get; set; }
 
-		public override void Render(Graphics g)
-		{
-			var colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
-
-			float sat = Saturation / 240.0f;
-			float lumIncrease = 240.0f / (float)colorRect.Width;
-
-			for (int y = colorRect.Y; y < colorRect.Y + colorRect.Height; ++y)
-				for (int x = colorRect.X; x < colorRect.X + colorRect.Width; ++x)
-					g.FillRectangle(new SolidBrush(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(new Devcorp.Controls.Design.HSL(Hue, sat, (x * lumIncrease) / 240.0f)).ToColor()), x, y, 1, 1);
-
-			g.DrawRectangle(Pens.Black, colorRect);
-
-			TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
-		}
+        public override void Render(Graphics g)
+        {
+            //theCode, love theVariableNames :D [Xylem]
+            //Set the hue shades with the correct saturation and hue
+            Color[] theColors = {Color.Black,
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(Hue, Saturation/240.0f, 0.5f)),
+                           Color.White};
+            //Calculate positions
+            float[] thePositions = { 0.0f, 0.5f, 1.0f };
+            //Set blend
+            ColorBlend theBlend = new ColorBlend();
+            theBlend.Colors = theColors;
+            theBlend.Positions = thePositions;
+            //Get rectangle
+            Rectangle colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
+            //Make the linear brush and assign the custom blend to it
+            LinearGradientBrush theBrush = new LinearGradientBrush(colorRect,
+                                                              Color.Black,
+                                                              Color.White, 0, false);
+            theBrush.InterpolationColors = theBlend;
+            //Draw rectangle
+            g.FillRectangle(theBrush, colorRect);
+            //Draw border and trackbar
+            g.DrawRectangle(Pens.Black, new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4));
+            TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
+        }
 	}
 }
