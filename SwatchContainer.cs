@@ -37,7 +37,7 @@ namespace MCSkin3D
 
 		public void AddDirectory(string dir)
 		{
-			foreach (var swatchFile in Directory.GetFiles(dir, "*.swc"))
+			foreach (var swatchFile in Directory.GetFiles(dir, "*.swtch"))
 			{
 				using (StreamReader sr = new StreamReader(swatchFile))
 				{
