@@ -1875,9 +1875,9 @@ namespace MCSkin3D
 			saturationNumericUpDown.Value = colorSquare.CurrentSat;
 			luminanceNumericUpDown.Value = saturationSlider.CurrentLum;
 
-			redRenderer.StartColor =
-				greenRenderer.StartColor =
-				blueRenderer.StartColor = _currentColor;
+            redRenderer.StartColor = Color.FromArgb(255, 0, _currentColor.G, _currentColor.B);
+            greenRenderer.StartColor = Color.FromArgb(255, _currentColor.R, 0, _currentColor.B);
+            blueRenderer.StartColor = Color.FromArgb(255, _currentColor.R, _currentColor.G, 0);
 
 			redRenderer.EndColor = Color.FromArgb(255, 255, _currentColor.G, _currentColor.B);
 			greenRenderer.EndColor = Color.FromArgb(255, _currentColor.R, 255, _currentColor.B);
