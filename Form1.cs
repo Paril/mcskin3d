@@ -26,6 +26,7 @@ using Paril.Compatibility;
 using System.Drawing.Drawing2D;
 using Paril.OpenGL;
 using OpenTK.Graphics;
+using System.Windows.Forms.VisualStyles;
 
 namespace MCSkin3D
 {
@@ -86,6 +87,7 @@ namespace MCSkin3D
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
 			grassToolStripMenuItem.Checked = GlobalSettings.Grass;
+			ghostHiddenPartsToolStripMenuItem.Checked = GlobalSettings.Ghost;
 
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
@@ -104,8 +106,13 @@ namespace MCSkin3D
 				Application.Exit();
 			}
 
-			mainMenuStrip.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
-			toolStrip1.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
+			if (VisualStyleInformation.IsEnabledByUser &&
+				VisualStyleInformation.IsSupportedByOS)
+			{
+				mainMenuStrip.Renderer = new Szotar.WindowsForms.ToolStripAeroRenderer(Szotar.WindowsForms.ToolbarTheme.Toolbar);
+				toolStrip1.Renderer = mainMenuStrip.Renderer;
+				contextMenuStrip1.Renderer = mainMenuStrip.Renderer;
+			}
 
 			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
 			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
@@ -155,7 +162,7 @@ namespace MCSkin3D
 			rendererControl.Resize += new System.EventHandler(this.rendererControl_Resize);
 			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
 
-			splitContainer4.Panel2.Controls.Add(rendererControl);
+			splitContainer2.Panel1.Controls.Add(rendererControl);
 
 			System.Timers.Timer animTimer = new System.Timers.Timer();
 			animTimer.Interval = 22;
@@ -3170,12 +3177,8 @@ namespace MCSkin3D
 			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
 		}
 
-		private void button1_Click_1(object sender, EventArgs e)
+		private void treeView1_DragOver(object sender, DragEventArgs e)
 		{
-			if (splitContainer4.SplitterDistance != 86)
-				splitContainer4.SplitterDistance = 86;
-			else
-				splitContainer4.SplitterDistance = 12;
 
 		}
 	}
