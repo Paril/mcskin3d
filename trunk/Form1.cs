@@ -640,7 +640,7 @@ namespace MCSkin3D
 				e.Graphics.DrawImage(skin.Head, realX, e.Bounds.Y, treeView1.ItemHeight, treeView1.ItemHeight);
 			}
 
-			if (skin == null)
+			if (skin == null && e.Node.Nodes.Count != 0)
 			{
 				if (e.Node.IsExpanded)
 				{
