@@ -169,15 +169,40 @@ namespace Paril.Controls.Color
 		public static Bitmap GenerateColorSquare(int width, int height)
 		{
 			Bitmap colorSquare = new Bitmap(width, height);
-			float satIncrease = 240.0f / (float)height;
-			float hueIncrease = 360.0f / (float)width;
+            // START HUE DRAW
+            Graphics g = Graphics.FromImage(colorSquare);
+            //Set the hue shades with the correct saturation and luminance
+            System.Drawing.Color[] theColors = {Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(0, 1, 0.5f)),
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(60, 1, 0.5f)),
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(120, 1, 0.5f)),
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(180, 1, 0.5f)),
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(240, 1, 0.5f)),
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(300, 1, 0.5f)),
+                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(360, 1, 0.5f))};
+            //Calculate positions
+            float percent = 1.0f / 6;
+            float[] thePositions = { 0.0f, percent, percent * 2, percent * 3, percent * 4, percent * 5, 1.0f };
+            //Set blend
+            ColorBlend theBlend = new ColorBlend();
+            theBlend.Colors = theColors;
+            theBlend.Positions = thePositions;
+            //Get rectangle
+            Rectangle colorRect = new Rectangle(0, 0, width, height);
+            //Make the linear brush and assign the custom blend to it
+            LinearGradientBrush theBrush = new LinearGradientBrush(colorRect,
+                                                              System.Drawing.Color.Red,
+                                                              System.Drawing.Color.Red, 0, false);
+            theBrush.InterpolationColors = theBlend;
+            //Draw rectangle
+            g.FillRectangle(theBrush, colorRect);
+            //END HUE
+            //START SATURATION
+            //--- 0% sat 50% lum = 128 r, g and b
+            System.Drawing.Color halfSatColor = System.Drawing.Color.FromArgb(128, 128, 128);
+            System.Drawing.Color halfSatColorNoAlpha = System.Drawing.Color.FromArgb(0, 128, 128, 128);
 
-			using (Paril.Drawing.FastPixel fp = new Paril.Drawing.FastPixel(colorSquare, true))
-			{
-				for (int y = 0; y < height; ++y)
-					for (int x = 0; x < width; ++x)
-						fp.SetPixel(x, y, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(new Devcorp.Controls.Design.HSL(x * hueIncrease, 1 - ((y * satIncrease) / 240), 0.5f)).ToColor());
-			}
+            g.FillRectangle(new LinearGradientBrush(colorRect, halfSatColorNoAlpha, halfSatColor, 90, false), colorRect);
+            //END SATURATION
 
 			return colorSquare;
 		}
@@ -187,8 +212,8 @@ namespace Paril.Controls.Color
 			var top = new RectangleF(rect.X, rect.Y, rect.Width, (float)rect.Height / 2.0f);
 			var bottom = new RectangleF(rect.X, (float)rect.Y + ((float)rect.Height / 2.0f), rect.Width, (float)rect.Height / 2.0f);
 			
-			var top2 = new RectangleF(rect.X, rect.Y - 1, rect.Width, (float)rect.Height / 2.0f);
-			var bottom2 = new RectangleF(rect.X, (float)rect.Y - 1 + ((float)rect.Height / 2.0f), rect.Width, (float)rect.Height / 2.0f);
+			var top2 = new RectangleF(rect.X, rect.Y, rect.Width, (float)rect.Height / 2.0f);
+			var bottom2 = new RectangleF(rect.X, (float)rect.Y + ((float)rect.Height / 2.0f), rect.Width, (float)rect.Height / 2.0f);
 
 			g.FillRectangle(new LinearGradientBrush(top2, System.Drawing.Color.White, midColor, LinearGradientMode.Vertical), top);
 			g.FillRectangle(new LinearGradientBrush(bottom2, midColor, System.Drawing.Color.Black, LinearGradientMode.Vertical), bottom);
