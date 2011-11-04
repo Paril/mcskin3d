@@ -331,6 +331,9 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("Toggle view mode", Keys.Control | Keys.V, ToggleViewMode);
 			InitUnlinkedShortcut("Screenshot (clipboard)", Keys.Control | Keys.H, TakeScreenshot);
 			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.H, SaveScreenshot);
+			InitUnlinkedShortcut("Delete node", Keys.Delete, PerformDeleteSkin);
+			InitUnlinkedShortcut("Clone node", Keys.Control | Keys.C, PerformCloneSkin);
+			InitUnlinkedShortcut("Change Name", Keys.Control | Keys.N, PerformNameChange);
 			InitControlShortcut("Swatchlist zoom in", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("Swatchlist zoom out", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
 			InitControlShortcut("Treeview zoom in", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
