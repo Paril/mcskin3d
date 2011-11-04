@@ -1,0 +1,11 @@
+1.3:
+- Mouse shortcuts (left-click x action, right-click x action, etc)
+- Secondary color
+- Merge Dodge and Burn into one tool
+- Darken/Lighten tool
+- Tool options (perhaps expandable panel below the toolbar?)
+-- Modifyable Brush Size for pencil/eraser/dodge/burn/darken/lighten, exposure for Dodge/Burn/Darken/Lighten, "feather" for pencil/eraser/dodge/burn/darken/lighten
+- Finish the treeview
+- Hopefully, get an optimized color class (not super-high priority)
+- Add "Backgrounds" folder, customizable background image
+- Hidden part "ghosting"
