@@ -526,7 +526,6 @@ namespace MCSkin3D
 
 			private const int SB_HORZ = 0x0;
 			private const int SB_VERT = 0x1;
-            //private bool down = false;
 
 			Point ScrollPosition
 			{
@@ -543,6 +542,12 @@ namespace MCSkin3D
 					SetScrollPos((IntPtr)Handle, SB_VERT, value.Y, true);
 				}
 			}
+
+            //private bool scrollBarsVisible()
+            //{
+            //
+            //}
+
 
 			int _numVisible = 0;
 			protected override void OnSizeChanged(EventArgs e)
@@ -586,23 +591,13 @@ namespace MCSkin3D
 			protected override void OnMouseDown(MouseEventArgs e)
 			{
 				base.OnMouseDown(e);
-                //down = true;
+                base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
 				var node = GetSelectedNodeAt(e.Location);
 				SelectedNode = node;
 
 				lastClick = SelectedNode;
 				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
 			}
-
-            //protected override void OnMouseUp(MouseEventArgs e)
-            //{
-            //    base.OnMouseUp(e);
-            //    if (down)
-            //    {
-            //        down = !down;
-            //        base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
-            //    }
-            //}
 
 			protected override void OnMouseClick(MouseEventArgs e)
 			{
@@ -620,7 +615,10 @@ namespace MCSkin3D
 					_hoverNode = hover;
 					Invalidate();
 				}
-
+                //if (scrollBarsVisible())
+                //{
+                //
+                //}
 				base.OnMouseMove(e);
 			}
 
@@ -2155,8 +2153,8 @@ namespace MCSkin3D
 				try
 				{
 					var image = ImageUtilities.LoadImage(file);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
@@ -3100,6 +3098,10 @@ namespace MCSkin3D
                 }
                 else if (!(dragToItem is Skin) && !(selectedNode is Skin))
                 {
+                    if (dragToItem.FullPath == selectedNode.FullPath)
+                    {
+                        return;
+                    }
                     if (dragToItem == null)
                     {
                         string oldPath = "Skins\\" + selectedNode.FullPath;
