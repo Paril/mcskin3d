@@ -3022,70 +3022,46 @@ namespace MCSkin3D
 
             if (dragToItem is Skin && selectedNode is Skin)
             {
-                int i = dragToItem.Index + 1;
                 if (!(dragToItem.Parent == null))
                 {
-                    if (i >= dragToItem.Parent.Nodes.Count - 1)
-                    {
-                        i = dragToItem.Parent.Nodes.Count;
-                    }
-                    if (dragToItem.Parent == selectedNode.Parent)
-                    {
-                        string oldPath = ((Skin)selectedNode).File.FullName;
-                        selectedNode.Remove();
-                        dragToItem.Parent.Nodes.Insert(i - 2, selectedNode);
-                        string newPath = ((Skin)selectedNode).File.FullName;
-                        try
-                        {
-                            File.Move(oldPath, newPath);
-                        }
-                        catch { }
-                        //MessageBox.Show("IDENTICAL PARENTS :)");
-                    }
-                    else
+                    if (!(dragToItem.Parent == selectedNode.Parent))
                     {
                         string oldPath = ((Skin)selectedNode).File.FullName;
                         selectedNode.Remove();
                         if (!(dragToItem.Parent == null))
                         {
-                            dragToItem.Parent.Nodes.Insert(i, selectedNode);
+                            dragToItem.Parent.Nodes.Add(selectedNode);
                         }
                         else
                         {
-                            dragToItem.Nodes.Insert(i, selectedNode);
+                            dragToItem.Nodes.Add(selectedNode);
                         }
 
                         string newPath = ((Skin)selectedNode).File.FullName;
-                        try
+                        if (!File.Exists(newPath))
                         {
                             File.Move(oldPath, newPath);
                         }
-                        catch { }
                     }
                 }
                 else
                 {
-                    if (i >= dragToItem.Nodes.Count - 1)
-                    {
-                        i = dragToItem.Nodes.Count;
-                    }
                     string oldPath = ((Skin)selectedNode).File.FullName;
                     selectedNode.Remove();
                     if (!(dragToItem.Parent == null))
                     {
-                        dragToItem.Parent.Nodes.Insert(i, selectedNode);
+                        dragToItem.Parent.Nodes.Add(selectedNode);
                     }
                     else
                     {
-                        dragToItem.Nodes.Insert(i, selectedNode);
+                        dragToItem.Nodes.Add(selectedNode);
                     }
 
                     string newPath = ((Skin)selectedNode).File.FullName;
-                    try
+                    if (!File.Exists(newPath))
                     {
                         File.Move(oldPath, newPath);
                     }
-                    catch { }
                 }
             }
             else if (!(dragToItem is Skin) && selectedNode is Skin)
@@ -3094,12 +3070,22 @@ namespace MCSkin3D
                 selectedNode.Remove();
                 dragToItem.Nodes.Add(selectedNode);
                 string newPath = ((Skin)selectedNode).File.FullName;
-                try
+                if (!File.Exists(newPath))
                 {
                     File.Move(oldPath, newPath);
                 }
-                catch { }
-            } 
+            }
+            else if (!(dragToItem is Skin) && !(selectedNode is Skin))
+            {
+                string oldPath = "Skins\\" + selectedNode.FullPath;
+                selectedNode.Remove();
+                dragToItem.Nodes.Add(selectedNode);
+                string newPath = "Skins\\" + selectedNode.FullPath;
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.Move(oldPath, newPath);
+                }
+            }
 			treeView1.SelectedNode = selectedNode;
 		}
 
