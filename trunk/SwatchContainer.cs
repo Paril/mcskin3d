@@ -191,7 +191,7 @@ namespace MCSkin3D
 
 			Location = new Point(0, 0);
 
-			Size = new Size(Parent.Width - 16, Parent.Height);
+			Size = new Size(Parent.Width - 18, Parent.Height);
 
 			if (_colors == null || _colors.Count == 0)
 			{
