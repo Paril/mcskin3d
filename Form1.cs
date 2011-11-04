@@ -2150,7 +2150,7 @@ namespace MCSkin3D
 
 			_backgrounds.Add(new BackgroundImage("None", 0));
 
-			foreach (var file in Directory.GetFiles("Backgrounds"))
+			foreach (var file in Directory.GetFiles("Overlays"))
 			{
 				try
 				{
@@ -2164,7 +2164,7 @@ namespace MCSkin3D
 				}
 				catch
 				{
-					MessageBox.Show("Unable to load background image: " + file + "; is it power of two?");
+					MessageBox.Show("Unable to load overlay image: " + file + "; is the resolution a power of two?");
 				}
 			}
 
