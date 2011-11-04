@@ -22,6 +22,7 @@ Version 1.3
 - Fixed a render bug for the swatches [Xylem]
 - Made the color sliders faster [Xylem]
 - Removed DevIL dependency
+- Added Drag/Drop for skins to the file list.
 
 Version 1.2
 - Bug fixes relating to importing and naming skins
