@@ -166,9 +166,9 @@ namespace Paril.Controls.Color
 
 	public class ColorSpaceRenderer
 	{
-		public static Bitmap GenerateColorSquare(int width, int height)
-		{
-			Bitmap colorSquare = new Bitmap(width, height);
+        public static Bitmap GenerateColorSquare(int width, int height)
+        {
+            Bitmap colorSquare = new Bitmap(width, height);
             // START HUE DRAW
             Graphics g = Graphics.FromImage(colorSquare);
             //Set the hue shades with the correct saturation and luminance
@@ -204,16 +204,16 @@ namespace Paril.Controls.Color
             g.FillRectangle(new LinearGradientBrush(colorRect, halfSatColorNoAlpha, halfSatColor, 90, false), colorRect);
             //END SATURATION
 
-			return colorSquare;
-		}
+            return colorSquare;
+        }
 
 		public static void GenerateColorSlider(Graphics g, System.Drawing.Color midColor, Rectangle rect)
 		{
 			var top = new RectangleF(rect.X, rect.Y, rect.Width, (float)rect.Height / 2.0f);
 			var bottom = new RectangleF(rect.X, (float)rect.Y + ((float)rect.Height / 2.0f), rect.Width, (float)rect.Height / 2.0f);
 			
-			var top2 = new RectangleF(rect.X, rect.Y, rect.Width, (float)rect.Height / 2.0f);
-			var bottom2 = new RectangleF(rect.X, (float)rect.Y + ((float)rect.Height / 2.0f), rect.Width, (float)rect.Height / 2.0f);
+			var top2 = new RectangleF(rect.X, rect.Y - 1, rect.Width, (float)rect.Height / 2.0f);
+			var bottom2 = new RectangleF(rect.X, (float)rect.Y - 1 + ((float)rect.Height / 2.0f), rect.Width, (float)rect.Height / 2.0f);
 
 			g.FillRectangle(new LinearGradientBrush(top2, System.Drawing.Color.White, midColor, LinearGradientMode.Vertical), top);
 			g.FillRectangle(new LinearGradientBrush(bottom2, midColor, System.Drawing.Color.Black, LinearGradientMode.Vertical), bottom);
