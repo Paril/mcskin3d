@@ -2983,41 +2983,16 @@ namespace MCSkin3D
             e.Effect = DragDropEffects.Move;
         }
 
-        private void treeView1_DragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
-            {
-                if (!e.Data.GetDataPresent(DataFormats.Text))
-                {
-                    e.Effect = DragDropEffects.None;
-                    return;
-                }
-                Point cp = treeView1.PointToClient(new Point(e.X, e.Y));
-                TreeNode hoverItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
-                if (hoverItem == null)
-                {
-                    e.Effect = DragDropEffects.None;
-                    return;
-                }
-                if (treeView1.SelectedNode.Index == hoverItem.Index)
-                {
-                    e.Effect = DragDropEffects.None;
-                    hoverItem.EnsureVisible();
-                    return;
-                }
-
-                e.Effect = DragDropEffects.Move;
-                hoverItem.EnsureVisible();
-            }
-        }
-
         private void treeView1_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
+            //
+            //If you get any problems with this, ask GoVisualTeam.. :)
+            //
             Point cp = treeView1.PointToClient(new Point(e.X, e.Y));
             TreeNode dragToItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
             TreeNode selectedNode = treeView1.SelectedNode;
 
-            if (dragToItem == selectedNode || dragToItem == null)
+            if (dragToItem == selectedNode)
                 return;
 
             if (dragToItem is Skin && selectedNode is Skin)
@@ -3044,6 +3019,18 @@ namespace MCSkin3D
                         }
                     }
                 }
+                else if (dragToItem == null)
+                {
+                    string oldPath = ((Skin)selectedNode).File.FullName;
+                    selectedNode.Remove();
+                    treeView1.Nodes.Add(selectedNode);
+
+                    string newPath = ((Skin)selectedNode).File.FullName;
+                    if (!File.Exists(newPath))
+                    {
+                        File.Move(oldPath, newPath);
+                    }
+                }
                 else
                 {
                     string oldPath = ((Skin)selectedNode).File.FullName;
@@ -3066,24 +3053,53 @@ namespace MCSkin3D
             }
             else if (!(dragToItem is Skin) && selectedNode is Skin)
             {
-                string oldPath = ((Skin)selectedNode).File.FullName;
-                selectedNode.Remove();
-                dragToItem.Nodes.Add(selectedNode);
-                string newPath = ((Skin)selectedNode).File.FullName;
-                if (!File.Exists(newPath))
+                if (dragToItem == null)
                 {
-                    File.Move(oldPath, newPath);
+                    string oldPath = ((Skin)selectedNode).File.FullName;
+                    selectedNode.Remove();
+                    treeView1.Nodes.Add(selectedNode);
+
+                    string newPath = ((Skin)selectedNode).File.FullName;
+                    if (!File.Exists(newPath))
+                    {
+                        File.Move(oldPath, newPath);
+                    }
+                }
+                else
+                {
+                    string oldPath = ((Skin)selectedNode).File.FullName;
+                    selectedNode.Remove();
+                    dragToItem.Nodes.Add(selectedNode);
+                    string newPath = ((Skin)selectedNode).File.FullName;
+                    if (!File.Exists(newPath))
+                    {
+                        File.Move(oldPath, newPath);
+                    }
                 }
             }
             else if (!(dragToItem is Skin) && !(selectedNode is Skin))
             {
-                string oldPath = "Skins\\" + selectedNode.FullPath;
-                selectedNode.Remove();
-                dragToItem.Nodes.Add(selectedNode);
-                string newPath = "Skins\\" + selectedNode.FullPath;
-                if (!Directory.Exists(newPath))
+                if (dragToItem == null)
                 {
-                    Directory.Move(oldPath, newPath);
+                    string oldPath = "Skins\\" + selectedNode.FullPath;
+                    selectedNode.Remove();
+                    treeView1.Nodes.Add(selectedNode);
+                    string newPath = "Skins\\" + selectedNode.FullPath;
+                    if (!Directory.Exists(newPath))
+                    {
+                        Directory.Move(oldPath, newPath);
+                    }
+                }
+                else
+                {
+                    string oldPath = "Skins\\" + selectedNode.FullPath;
+                    selectedNode.Remove();
+                    dragToItem.Nodes.Add(selectedNode);
+                    string newPath = "Skins\\" + selectedNode.FullPath;
+                    if (!Directory.Exists(newPath))
+                    {
+                        Directory.Move(oldPath, newPath);
+                    }
                 }
             }
 			treeView1.SelectedNode = selectedNode;
