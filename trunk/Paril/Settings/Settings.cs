@@ -41,11 +41,11 @@ namespace Paril.Settings
 	{
 		public virtual string Serialize(object field, object obj)
 		{
-			if (obj.GetType() == typeof(string))
-				return (string)obj;
-
 			try
 			{
+				if (obj.GetType() == typeof(string))
+				return (string)obj;
+
 				if (field is PropertyInfo)
 				{
 					PropertyInfo info = (PropertyInfo)field;
@@ -67,7 +67,10 @@ namespace Paril.Settings
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Failed to serialize member " + ((MemberInfo)field).Name + " [" + ((MemberInfo)field).MemberType.ToString() + "]", ex);
+				if (field == null)
+					throw new Exception("Wat, field is null");
+				else
+					throw new Exception("Failed to serialize member " + ((MemberInfo)field).Name + " [" + ((MemberInfo)field).MemberType.ToString() + "]", ex);
 			}
 		}
 

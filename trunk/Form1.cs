@@ -10,7 +10,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using DevCIL;
 using Devcorp.Controls.Design;
 using MB.Controls;
 using OpenTK;
@@ -894,50 +893,17 @@ namespace MCSkin3D
 			Vector3 vec = new Vector3();
 			int count = 0;
 
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HeadFlag) != 0)
+			foreach (var mesh in PlayerModel.HumanModel.Meshes)
 			{
-				vec = Vector3.Add(vec, new Vector3(0, 10, 0));
-				count++;
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
-			{
-				vec = Vector3.Add(vec, new Vector3(0, 0, 0));
-				count++;
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
-			{
-				vec = Vector3.Add(vec, new Vector3(-2, -12, 0));
-				count++;
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
-			{
-				vec = Vector3.Add(vec, new Vector3(2, -12, 0));
-				count++;
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
-			{
-				vec = Vector3.Add(vec, new Vector3(-6, 0, 0));
-				count++;
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftArmFlag) != 0)
-			{
-				vec = Vector3.Add(vec, new Vector3(6, 0, 0));
-				count++;
-			}
-
-			if ((GlobalSettings.ViewFlags & VisiblePartFlags.HelmetFlag) != 0)
-			{
-				vec = Vector3.Add(vec, new Vector3(0, 10, 0));
-				count++;
+				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+				{
+					vec += mesh.Translate;
+					count++;
+				}
 			}
 
 			if (count != 0)
-				vec = Vector3.Divide(vec, count);
+				vec /= count;
 
 			GL.Translate(0, 0, _3dZoom);
 			GL.Rotate(_3dRotationX, 1, 0, 0);
@@ -964,6 +930,8 @@ namespace MCSkin3D
 			foreach (var mesh in PlayerModel.HumanModel.Meshes)
 			{
 				if (mesh.Helmet)
+					continue;
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0)
 					continue;
 
 				var newMesh = mesh;
@@ -994,6 +962,8 @@ namespace MCSkin3D
 			foreach (var mesh in PlayerModel.HumanModel.Meshes)
 			{
 				if (!mesh.Helmet)
+					continue;
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0)
 					continue;
 
 				var newMesh = mesh;
@@ -2065,8 +2035,6 @@ namespace MCSkin3D
 			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvMode.Modulate);
 			GL.Enable(EnableCap.CullFace);
 			GL.CullFace(CullFaceMode.Front);
-
-			IL.ilInit();
 
 			_grassTop = ImageUtilities.LoadImage("grass.png");
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);

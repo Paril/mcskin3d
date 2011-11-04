@@ -72,7 +72,6 @@
     <Compile Include="ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="IL.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
