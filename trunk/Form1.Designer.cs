@@ -132,8 +132,6 @@
 			this.lightnessColorSlider = new MB.Controls.ColorSlider();
 			this.hueColorSlider = new MB.Controls.ColorSlider();
 			this.splitContainer2 = new Paril.Controls.VisibleSplitContainer();
-			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-			this.button1 = new System.Windows.Forms.Button();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -184,8 +182,6 @@
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			this.splitContainer4.Panel1.SuspendLayout();
-			this.splitContainer4.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -1240,7 +1236,6 @@
 			// 
 			// splitContainer2.Panel1
 			// 
-			this.splitContainer2.Panel1.Controls.Add(this.splitContainer4);
 			this.splitContainer2.Panel1.Controls.Add(this.toolStrip1);
 			// 
 			// splitContainer2.Panel2
@@ -1250,34 +1245,6 @@
 			this.splitContainer2.Size = new System.Drawing.Size(641, 638);
 			this.splitContainer2.SplitterDistance = 605;
 			this.splitContainer2.TabIndex = 6;
-			// 
-			// splitContainer4
-			// 
-			this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer4.IsSplitterFixed = true;
-			this.splitContainer4.Location = new System.Drawing.Point(0, 25);
-			this.splitContainer4.Name = "splitContainer4";
-			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			// 
-			// splitContainer4.Panel1
-			// 
-			this.splitContainer4.Panel1.Controls.Add(this.button1);
-			this.splitContainer4.Panel1MinSize = 12;
-			this.splitContainer4.Size = new System.Drawing.Size(641, 580);
-			this.splitContainer4.SplitterDistance = 12;
-			this.splitContainer4.SplitterWidth = 1;
-			this.splitContainer4.TabIndex = 6;
-			// 
-			// button1
-			// 
-			this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.button1.Location = new System.Drawing.Point(298, -1);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(44, 14);
-			this.button1.TabIndex = 1;
-			this.button1.Text = "...";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click_1);
 			// 
 			// toolStrip1
 			// 
@@ -1599,8 +1566,6 @@
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
 			this.splitContainer2.ResumeLayout(false);
-			this.splitContainer4.Panel1.ResumeLayout(false);
-			this.splitContainer4.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -1740,8 +1705,6 @@
 		private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem4;
-		private System.Windows.Forms.SplitContainer splitContainer4;
-		private System.Windows.Forms.Button button1;
 	}
 }
 
