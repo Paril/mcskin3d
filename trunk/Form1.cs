@@ -3168,9 +3168,13 @@ namespace MCSkin3D
 			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void button1_Click_1(object sender, EventArgs e)
 		{
-			splitContainer4.Panel1Collapsed = !splitContainer4.Panel1Collapsed;
+			if (splitContainer4.SplitterDistance != 86)
+				splitContainer4.SplitterDistance = 86;
+			else
+				splitContainer4.SplitterDistance = 12;
+
 		}
 	}
 }

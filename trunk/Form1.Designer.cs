@@ -184,7 +184,7 @@
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			this.splitContainer4.Panel2.SuspendLayout();
+			this.splitContainer4.Panel1.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -1255,27 +1255,30 @@
 			// splitContainer4
 			// 
 			this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer4.IsSplitterFixed = true;
 			this.splitContainer4.Location = new System.Drawing.Point(0, 25);
 			this.splitContainer4.Name = "splitContainer4";
 			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			this.splitContainer4.Panel1Collapsed = true;
 			// 
-			// splitContainer4.Panel2
+			// splitContainer4.Panel1
 			// 
-			this.splitContainer4.Panel2.Controls.Add(this.button1);
+			this.splitContainer4.Panel1.Controls.Add(this.button1);
+			this.splitContainer4.Panel1MinSize = 12;
 			this.splitContainer4.Size = new System.Drawing.Size(641, 580);
-			this.splitContainer4.SplitterDistance = 25;
+			this.splitContainer4.SplitterDistance = 12;
+			this.splitContainer4.SplitterWidth = 1;
 			this.splitContainer4.TabIndex = 6;
 			// 
 			// button1
 			// 
+			this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.button1.Location = new System.Drawing.Point(298, -1);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(44, 14);
-			this.button1.TabIndex = 0;
+			this.button1.TabIndex = 1;
 			this.button1.Text = "...";
 			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.button1.Click += new System.EventHandler(this.button1_Click_1);
 			// 
 			// toolStrip1
 			// 
@@ -1597,7 +1600,7 @@
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
 			this.splitContainer2.ResumeLayout(false);
-			this.splitContainer4.Panel2.ResumeLayout(false);
+			this.splitContainer4.Panel1.ResumeLayout(false);
 			this.splitContainer4.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
