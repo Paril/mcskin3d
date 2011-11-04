@@ -93,6 +93,12 @@ namespace MCSkin3D
 
 			b.Dispose();
 
+			if (GL.GetError() != ErrorCode.NoError)
+			{
+				GL.DeleteTexture(glImage);
+				throw new Exception();
+			}
+
 			return glImage;
 		}
 	}

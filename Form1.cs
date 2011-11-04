@@ -44,7 +44,7 @@ namespace MCSkin3D
 
 		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
 		int _grassTop;
-		int _alphaTex, _backgroundTex;
+		int _alphaTex;
 		int _previewPaint;
 		Dictionary<Size, int> _charPaintSizes = new Dictionary<Size, int>();
 
@@ -68,6 +68,9 @@ namespace MCSkin3D
 		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
 		Renderer _renderer;
+		List<BackgroundImage> _backgrounds = new List<BackgroundImage>();
+		int _selectedBackground = 0;
+		GLControl rendererControl;
 		#endregion
 
 		// ===============================================
@@ -84,8 +87,6 @@ namespace MCSkin3D
 			animTimer.Start();
 
 			GlobalSettings.Load();
-
-			glControl1.MouseWheel += new MouseEventHandler(glControl1_MouseWheel);
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -139,6 +140,28 @@ namespace MCSkin3D
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 
 			PlayerModel.LoadModel();
+
+			SetSampleMenuItem(GlobalSettings.Multisamples);
+
+			// set up the GL control
+			rendererControl = new GLControl(new GraphicsMode(new ColorFormat(32), 16, 0, GlobalSettings.Multisamples));
+			rendererControl.BackColor = System.Drawing.Color.Black;
+			rendererControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			rendererControl.Location = new System.Drawing.Point(0, 25);
+			rendererControl.Name = "rendererControl";
+			rendererControl.Size = new System.Drawing.Size(641, 580);
+			rendererControl.TabIndex = 4;
+			rendererControl.VSync = true;
+			rendererControl.Load += new System.EventHandler(this.rendererControl_Load);
+			rendererControl.Paint += new System.Windows.Forms.PaintEventHandler(this.rendererControl_Paint);
+			rendererControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseDown);
+			rendererControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseMove);
+			rendererControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseUp);
+			rendererControl.Resize += new System.EventHandler(this.rendererControl_Resize);
+			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
+
+			splitContainer2.Panel1.Controls.Add(rendererControl);
+		
 		}
 		#endregion
 
@@ -416,7 +439,7 @@ namespace MCSkin3D
 			SetTransparencyMode(GlobalSettings.Transparency);
 			SetViewMode(_currentViewMode);
 
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 
 			/*foreach (var file in Directory.EnumerateFiles("./Skins/", "*.png"))
 				treeView1.Items.Add(new Skin(file));
@@ -506,7 +529,7 @@ namespace MCSkin3D
 				base.OnSizeChanged(e);
 			}
 
-			public TreeNode GetSelectedNodeAt(int y, TreeNode node, ref int currentIndex)
+			private TreeNode GetSelectedNodeAt(int y, TreeNode node, ref int currentIndex)
 			{
 				if (currentIndex >= ScrollPosition.Y + _numVisible)
 					return null;
@@ -802,37 +825,6 @@ namespace MCSkin3D
 			GL.End();
 		}
 
-		void DrawPart
-			(VisiblePartFlags flag, float x, float y, float z, float width, float length, float height,
-			int frontSkinX, int frontSkinY, int frontSkinW, int frontSkinH,
-			int backSkinX, int backSkinY, int backSkinW, int backSkinH,
-			int topSkinX, int topSkinY, int topSkinW, int topSkinH,
-			int bottomSkinX, int bottomSkinY, int bottomSkinW, int bottomSkinH,
-			int leftSkinX, int leftSkinY, int leftSkinW, int leftSkinH,
-			int rightSkinX, int rightSkinY, int rightSkinW, int rightSkinH,
-			int texture, int skinW = 64, int skinH = 32)
-		{
-			bool didGhost = false;
-
-			if ((GlobalSettings.ViewFlags & flag) == 0)
-			{
-				if (!GlobalSettings.Ghost)
-					return;
-
-				didGhost = true;
-				GL.Enable(EnableCap.Blend);
-			}
-
-			GL.Color4((byte)255, (byte)255, (byte)255, (byte)86);
-
-			DrawSkinnedRectangle(x, y, z, width, length, height, frontSkinX, frontSkinY, frontSkinW, frontSkinH, backSkinX, backSkinY, backSkinW, backSkinH, topSkinX, topSkinY, topSkinW, topSkinH, bottomSkinX, bottomSkinY, bottomSkinW, bottomSkinH, leftSkinX, leftSkinY, leftSkinW, leftSkinH, rightSkinX, rightSkinY, rightSkinW, rightSkinH, texture, skinW, skinH);
-
-			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
-
-			if (didGhost)
-				GL.Disable(EnableCap.Blend);
-		}
-
 		void DrawPlayer(int tex, Skin skin, bool grass, bool pickView)
 		{
 			if (_currentViewMode == ViewMode.Orthographic)
@@ -843,9 +835,9 @@ namespace MCSkin3D
 
 					GL.Begin(BeginMode.Quads);
 					GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
-					GL.TexCoord2(glControl1.Width / 32.0f, 0); GL.Vertex2(glControl1.Width, 0);
-					GL.TexCoord2(glControl1.Width / 32.0f, glControl1.Height / 32.0f); GL.Vertex2(glControl1.Width, glControl1.Height);
-					GL.TexCoord2(0, glControl1.Height / 32.0f); GL.Vertex2(0, glControl1.Height);
+					GL.TexCoord2(rendererControl.Width / 32.0f, 0); GL.Vertex2(rendererControl.Width, 0);
+					GL.TexCoord2(rendererControl.Width / 32.0f, rendererControl.Height / 32.0f); GL.Vertex2(rendererControl.Width, rendererControl.Height);
+					GL.TexCoord2(0, rendererControl.Height / 32.0f); GL.Vertex2(0, rendererControl.Height);
 					GL.End();
 				}
 
@@ -854,7 +846,7 @@ namespace MCSkin3D
 
 				GL.PushMatrix();
 
-				GL.Translate((glControl1.Width / 2) + -_2dCamOffsetX, (glControl1.Height / 2) + -_2dCamOffsetY, 0);
+				GL.Translate((rendererControl.Width / 2) + -_2dCamOffsetX, (rendererControl.Height / 2) + -_2dCamOffsetY, 0);
 				GL.Scale(_2dZoom, _2dZoom, 1);
 
 				GL.Enable(EnableCap.Blend);
@@ -872,9 +864,10 @@ namespace MCSkin3D
 					GL.End();
 				}
 
-				if (!pickView && GlobalSettings.TextureOverlay && skin != null)
+				if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
+					_backgrounds[_selectedBackground].GLImage != 0)
 				{
-					RenderState.BindTexture(_backgroundTex);
+					RenderState.BindTexture(_backgrounds[_selectedBackground].GLImage);
 
 					GL.Begin(BeginMode.Quads);
 					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
@@ -911,9 +904,9 @@ namespace MCSkin3D
 
 			GL.Translate(-vec.X, -vec.Y, 0);
 
-			var clPt = glControl1.PointToClient(Cursor.Position);
-			var x = clPt.X - (glControl1.Width / 2);
-			var y = clPt.Y - (glControl1.Height / 2);
+			var clPt = rendererControl.PointToClient(Cursor.Position);
+			var x = clPt.X - (rendererControl.Width / 2);
+			var y = clPt.Y - (rendererControl.Height / 2);
 
 			if (!pickView && GlobalSettings.Transparency == TransparencyMode.All)
 				GL.Enable(EnableCap.Blend);
@@ -953,6 +946,38 @@ namespace MCSkin3D
 
 			_renderer.Render();
 
+			// Draw ghosted parts
+			if (GlobalSettings.Ghost)
+			{
+				foreach (var mesh in PlayerModel.HumanModel.Meshes)
+				{
+					if (mesh.Helmet)
+						continue;
+					if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+						continue;
+
+					var newMesh = mesh;
+
+					newMesh.Texture = tex;
+
+					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
+						newMesh.Rotate = helmetRotate;
+
+					foreach (var f in mesh.Faces)
+						for (int i = 0; i < f.Colors.Length; ++i)
+							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
+
+					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+						newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+
+					_renderer.Meshes.Add(newMesh);
+				}
+
+				GL.Enable(EnableCap.Blend);
+				_renderer.Render();
+				GL.Disable(EnableCap.Blend);
+			}
+
 			if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
 				GL.Enable(EnableCap.Blend);
 			else
@@ -984,6 +1009,39 @@ namespace MCSkin3D
 			}
 
 			_renderer.Render();
+
+			// Draw ghosted parts
+			if (GlobalSettings.Ghost)
+			{
+				foreach (var mesh in PlayerModel.HumanModel.Meshes)
+				{
+					if (!mesh.Helmet)
+						continue;
+					if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+						continue;
+
+					var newMesh = mesh;
+
+					newMesh.Texture = tex;
+
+					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
+						newMesh.Rotate = helmetRotate;
+
+					foreach (var f in mesh.Faces)
+						for (int i = 0; i < f.Colors.Length; ++i)
+							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
+
+					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+						newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+
+					_renderer.Meshes.Add(newMesh);
+				}
+
+				GL.Enable(EnableCap.Blend);
+				_renderer.Render();
+				GL.Disable(EnableCap.Blend);
+			}
+
 		}
 
 		void SetPreview()
@@ -1017,7 +1075,7 @@ namespace MCSkin3D
 
 		bool GetPick(int x, int y, ref Point hitPixel)
 		{
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
 
@@ -1109,7 +1167,7 @@ namespace MCSkin3D
 				}
 			}
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		#region File uploading (FIXME: REMOVE)
@@ -1372,7 +1430,7 @@ namespace MCSkin3D
 			grassToolStripMenuItem.Checked = !grassToolStripMenuItem.Checked;
 			GlobalSettings.Grass = grassToolStripMenuItem.Checked;
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void ToggleGhosting()
@@ -1380,7 +1438,7 @@ namespace MCSkin3D
 			ghostHiddenPartsToolStripMenuItem.Checked = !ghostHiddenPartsToolStripMenuItem.Checked;
 			GlobalSettings.Ghost = ghostHiddenPartsToolStripMenuItem.Checked;
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		#region Skin Management
@@ -1682,7 +1740,7 @@ namespace MCSkin3D
 
 		void PerformSaveSkin(Skin s)
 		{
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 
 			s.CommitChanges((s == _lastSkin) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
 		}
@@ -1727,7 +1785,7 @@ namespace MCSkin3D
 			if (!_currentUndoBuffer.CanUndo)
 				return;
 
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 
 			_currentUndoBuffer.Undo();
 
@@ -1737,7 +1795,7 @@ namespace MCSkin3D
 			Skin current = _lastSkin;
 			SetCanSave(current.Dirty = true);
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void PerformRedo()
@@ -1745,7 +1803,7 @@ namespace MCSkin3D
 			if (!_currentUndoBuffer.CanRedo)
 				return;
 
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 
 			_currentUndoBuffer.Redo();
 
@@ -1755,7 +1813,7 @@ namespace MCSkin3D
 			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
 			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void SetColor(Color c)
@@ -1831,7 +1889,7 @@ namespace MCSkin3D
 				break;
 			}
 
-			glControl1_Resize(glControl1, null);
+			rendererControl_Resize(rendererControl, null);
 		}
 
 		void SetTransparencyMode(TransparencyMode trans)
@@ -1852,7 +1910,7 @@ namespace MCSkin3D
 				break;
 			}
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		ToolStripMenuItem[] _toggleMenuItems;
@@ -1914,21 +1972,21 @@ namespace MCSkin3D
 			item.Checked = hasNow;
 			itemButton.Checked = hasNow;
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void ToggleAlphaCheckerboard()
 		{
 			GlobalSettings.AlphaCheckerboard = !GlobalSettings.AlphaCheckerboard;
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void ToggleOverlay()
 		{
 			GlobalSettings.TextureOverlay = !GlobalSettings.TextureOverlay;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void ToggleTransparencyMode()
@@ -1963,11 +2021,11 @@ namespace MCSkin3D
 		#region Screenshots
 		Bitmap CopyScreenToBitmap()
 		{
-			glControl1.MakeCurrent();
-			Bitmap b = new Bitmap(glControl1.Width, glControl1.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			rendererControl.MakeCurrent();
+			Bitmap b = new Bitmap(rendererControl.Width, rendererControl.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-			int[] pixels = new int[glControl1.Width * glControl1.Height];
-			GL.ReadPixels(0, 0, glControl1.Width, glControl1.Height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+			int[] pixels = new int[rendererControl.Width * rendererControl.Height];
+			GL.ReadPixels(0, 0, rendererControl.Width, rendererControl.Height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
 
 			var locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
@@ -2019,9 +2077,9 @@ namespace MCSkin3D
 		#endregion
 		#endregion
 
-		void glControl1_Load(object sender, EventArgs e)
+		void rendererControl_Load(object sender, EventArgs e)
 		{
-			glControl1_Resize(this, EventArgs.Empty);   // Ensure the Viewport is set up correctly
+			rendererControl_Resize(this, EventArgs.Empty);   // Ensure the Viewport is set up correctly
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			GL.Enable(EnableCap.Texture2D);
@@ -2042,11 +2100,43 @@ namespace MCSkin3D
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-			_backgroundTex = ImageUtilities.LoadImage("inverted.png");
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+			_backgrounds.Add(new BackgroundImage("None", 0));
+
+			foreach (var file in Directory.GetFiles("Backgrounds"))
+			{
+				try
+				{
+					var image = ImageUtilities.LoadImage(file);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+
+					_backgrounds.Add(new BackgroundImage(Path.GetFileNameWithoutExtension(file), image));
+				}
+				catch
+				{
+					MessageBox.Show("Unable to load background image: " + file + "; is it power of two?");
+				}
+			}
+
+			int index = 0;
+			foreach (var b in _backgrounds)
+			{
+				ToolStripMenuItem item = new ToolStripMenuItem(b.Name);
+				b.Item = item;
+
+				if (b.Name == GlobalSettings.LastBackground)
+				{
+					item.Checked = true;
+					_selectedBackground = index;
+				}
+
+				item.Click += item_Clicked;
+				item.Tag = index++;
+
+				backgroundsToolStripMenuItem.DropDownItems.Add(item);
+			}
 
 			_previewPaint = GL.GenTexture();
 			GlobalDirtiness.CurrentSkin = GL.GenTexture();
@@ -2101,25 +2191,34 @@ namespace MCSkin3D
 				_renderer = new ImmediateRenderer();
 		}
 
+		void item_Clicked(object sender, EventArgs e)
+		{
+			var item = (ToolStripMenuItem)sender;
+			GlobalSettings.LastBackground = item.Text;
+			_backgrounds[_selectedBackground].Item.Checked = false;
+			_selectedBackground = (int)item.Tag;
+			item.Checked = true;
+		}
+
 		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			_animationTime += 0.24f;
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
-		void glControl1_MouseWheel(object sender, MouseEventArgs e)
+		void rendererControl_MouseWheel(object sender, MouseEventArgs e)
 		{
 			if (_currentViewMode == ViewMode.Perspective)
 				_3dZoom += e.Delta / 50;
 			else
 				_2dZoom += e.Delta / 50;
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
-		void glControl1_Paint(object sender, PaintEventArgs e)
+		void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 			SetPreview();
 
 			GL.ClearColor(GlobalSettings.BackgroundColor);
@@ -2132,33 +2231,33 @@ namespace MCSkin3D
 
 			DrawPlayer(_previewPaint, skin, grassToolStripMenuItem.Checked, false);
 
-			glControl1.SwapBuffers();
+			rendererControl.SwapBuffers();
 		}
 
-		void glControl1_Resize(object sender, EventArgs e)
+		void rendererControl_Resize(object sender, EventArgs e)
 		{
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
 
-			GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
+			GL.Viewport(0, 0, rendererControl.Width, rendererControl.Height);
 
 			if (_currentViewMode == ViewMode.Perspective)
 			{
-				var mat = OpenTK.Matrix4d.Perspective(45, (double)glControl1.Width / (double)glControl1.Height, 0.01, 100000);
+				var mat = OpenTK.Matrix4d.Perspective(45, (double)rendererControl.Width / (double)rendererControl.Height, 0.01, 100000);
 				GL.MultMatrix(ref mat);
 			}
 			else
-				GL.Ortho(0, glControl1.Width, glControl1.Height, 0, -1, 1);
+				GL.Ortho(0, rendererControl.Width, rendererControl.Height, 0, -1, 1);
 
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 		}
 
-		void glControl1_MouseDown(object sender, MouseEventArgs e)
+		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			_mouseIsDown = true;
 			_mousePoint = e.Location;
@@ -2167,7 +2266,7 @@ namespace MCSkin3D
 				UseToolOnViewport(e.X, e.Y);
 		}
 
-		void glControl1_MouseMove(object sender, MouseEventArgs e)
+		void rendererControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (_mouseIsDown)
 			{
@@ -2199,13 +2298,13 @@ namespace MCSkin3D
 				if ((_currentTool != Tools.Camera) && e.Button == MouseButtons.Left)
 					UseToolOnViewport(e.X, e.Y);
 
-				glControl1.Invalidate();
+				rendererControl.Invalidate();
 			}
 
 			_mousePoint = e.Location;
 		}
 
-		void glControl1_MouseUp(object sender, MouseEventArgs e)
+		void rendererControl_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (_currentUndoBuffer != null && _changedPixels != null)
 			{
@@ -2235,7 +2334,7 @@ namespace MCSkin3D
 			//if (_lastSkin != null)
 			//	_lastSkin.Undo.Clear();
 
-			glControl1.MakeCurrent();
+			rendererControl.MakeCurrent();
 
 			Skin skin = (Skin)treeView1.SelectedNode;
 			SetCanSave(skin.Dirty);
@@ -2265,7 +2364,7 @@ namespace MCSkin3D
 				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 			}
 
-			glControl1.Invalidate();
+			rendererControl.Invalidate();
 			_lastSkin = (Skin)treeView1.SelectedNode;
 		}
 
@@ -2668,7 +2767,7 @@ namespace MCSkin3D
 				{
 					GlobalSettings.BackgroundColor = picker.CurrentColor;
 
-					glControl1.Invalidate();
+					rendererControl.Invalidate();
 				}
 			}
 		}
@@ -2939,6 +3038,71 @@ namespace MCSkin3D
                 catch { }
             } 
 			treeView1.SelectedNode = selectedNode;
+		}
+
+		static ToolStripMenuItem[] _antialiasOpts;
+		void SetSampleMenuItem(int samples)
+		{
+			if (_antialiasOpts == null)
+				_antialiasOpts = new ToolStripMenuItem[] { xToolStripMenuItem4, xToolStripMenuItem, xToolStripMenuItem1, xToolStripMenuItem2, xToolStripMenuItem3 };
+
+			int index = 0;
+
+			switch (samples)
+			{
+			case 0:
+			default:
+				index = 0;
+				break;
+			case 1:
+				index = 1;
+				break;
+			case 2:
+				index = 2;
+				break;
+			case 4:
+				index = 3;
+				break;
+			case 8:
+				index = 4;
+				break;
+			}
+
+			foreach (var item in _antialiasOpts)
+				item.Checked = false;
+
+			GlobalSettings.Multisamples = samples;
+			_antialiasOpts[index].Checked = true;
+		}
+		
+		private void xToolStripMenuItem4_Click(object sender, EventArgs e)
+		{
+			SetSampleMenuItem(0);
+			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+		}
+
+		private void xToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetSampleMenuItem(1);
+			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+		}
+
+		private void xToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			SetSampleMenuItem(2);
+			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+		}
+
+		private void xToolStripMenuItem2_Click(object sender, EventArgs e)
+		{
+			SetSampleMenuItem(4);
+			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+		}
+
+		private void xToolStripMenuItem3_Click(object sender, EventArgs e)
+		{
+			SetSampleMenuItem(8);
+			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
 		}
 	}
 }

@@ -175,7 +175,13 @@ namespace MCSkin3D
 
 			HelmetMesh = new Mesh("Helmet");
 			HelmetMesh.Mode = BeginMode.Quads;
-			var faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
+			frontFace.Indices =
+			topFace.Indices =
+			bottomFace.Indices =
+			backFace.Indices =
+			leftFace.Indices =
+			rightFace.Indices = ccw;
+
 			HelmetMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
 	
 			frontFace.Indices =
@@ -183,7 +189,7 @@ namespace MCSkin3D
 			bottomFace.Indices =
 			backFace.Indices =
 			leftFace.Indices =
-			rightFace.Indices = ccw;
+			rightFace.Indices = cw;
 
 			HelmetMesh.Faces.AddRange(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
 

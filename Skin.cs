@@ -46,7 +46,7 @@ namespace MCSkin3D
 		{
 			Undo = new UndoBuffer(this);
 			Name = Path.GetFileNameWithoutExtension(fileName);
-			Text = "Not really any text";
+			Text = Name;
 		}
 
 		public Skin(FileInfo file) :

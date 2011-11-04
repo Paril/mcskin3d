@@ -62,6 +62,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundImage.cs" />
     <Compile Include="CIELab.cs" />
     <Compile Include="CIEXYZ.cs" />
     <Compile Include="CMYK.cs" />
