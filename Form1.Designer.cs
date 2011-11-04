@@ -510,7 +510,7 @@
             this.toolStripMenuItem2});
 			this.backgroundsToolStripMenuItem.Name = "backgroundsToolStripMenuItem";
 			this.backgroundsToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
-			this.backgroundsToolStripMenuItem.Text = "Backgrounds";
+			this.backgroundsToolStripMenuItem.Text = "Overlay";
 			// 
 			// textureOverlayToolStripMenuItem
 			// 
