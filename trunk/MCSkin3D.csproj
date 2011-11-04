@@ -59,6 +59,7 @@
     <Reference Include="System.Windows.Forms">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CIELab.cs" />
@@ -84,6 +85,10 @@
     </Compile>
     <Compile Include="Paril\Drawing\Color.cs" />
     <Compile Include="Paril\Extensions\Extensions.cs" />
+    <Compile Include="Paril\OpenGL\ClientArrayRenderer.cs" />
+    <Compile Include="Paril\OpenGL\ImmediateRenderer.cs" />
+    <Compile Include="Paril\OpenGL\Renderer.cs" />
+    <Compile Include="PlayerModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

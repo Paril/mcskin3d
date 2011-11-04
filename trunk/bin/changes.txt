@@ -11,8 +11,13 @@ Version 1.3
 - Fixed OpenGL texture memory leak (derp)
 - 3D ghosting
 - Made the overlay power of two (whoops!)
+- Removed Skins menu (made redundant by right-clicking)
 - Checkmarked toolstrip items no longer auto-close
 - Changed toolbar into a ToolStripManager, so they can be moved separately.
+- Fixed helmets not rendering the inside
+- Optimized model drawing code
+-- Added GL_EXT_vertex_array and GL_EXT_compiled_vertex_array renderers
+- Fixed a bug on aborting uploading
 
 Version 1.2
 - Bug fixes relating to importing and naming skins

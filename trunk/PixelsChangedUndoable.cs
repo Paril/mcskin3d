@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 using Paril.Compatibility;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -15,7 +16,7 @@ namespace MCSkin3D
 		{
 			Skin skin = (Skin)obj;
 
-			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 			int[] array = new int[skin.Width * skin.Height];
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
@@ -33,7 +34,7 @@ namespace MCSkin3D
 		{
 			Skin skin = (Skin)obj;
 
-			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 			int[] array = new int[skin.Width * skin.Height];
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 

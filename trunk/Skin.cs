@@ -6,6 +6,7 @@ using OpenTK.Graphics.OpenGL;
 using DevCIL;
 using System.Windows.Forms;
 using Paril.Extensions;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -110,10 +111,10 @@ namespace MCSkin3D
 		public void CommitChanges(int currentSkin, bool save)
 		{
 			byte[] data = new byte[Width * Height * 4];
-			GL.BindTexture(TextureTarget.Texture2D, currentSkin);
+			RenderState.BindTexture(currentSkin);
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
-			GL.BindTexture(TextureTarget.Texture2D, GLImage);
+			RenderState.BindTexture(GLImage);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
 			if (save)
