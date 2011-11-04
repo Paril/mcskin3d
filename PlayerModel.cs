@@ -121,7 +121,7 @@ namespace MCSkin3D
 
 		public static void LoadModel()
 		{
-			try
+			/*try
 			{
 				if ((HumanModel = Model.Load("Models\\human.xml")) != null)
 					return;
@@ -131,7 +131,7 @@ namespace MCSkin3D
 			}
 
 			MessageBox.Show("Human model missing - did you forget to extract first? (creating...)");
-			Directory.CreateDirectory("Models");
+			Directory.CreateDirectory("Models");*/
 
 			var box = CreateBox(8);
 			var allWhite = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
@@ -151,6 +151,7 @@ namespace MCSkin3D
 			HeadMesh.Translate = new Vector3(0, 10, 0);
 			HeadMesh.Pivot = new Vector3(0, 4, 0);
 			HeadMesh.FollowCursor = true;
+			HeadMesh.Part = VisiblePartFlags.HeadFlag;
 
 			box = CreateBox(9.0f);
 
@@ -174,12 +175,9 @@ namespace MCSkin3D
 
 			HelmetMesh = new Mesh("Helmet");
 			HelmetMesh.Mode = BeginMode.Quads;
+			var faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
 			HelmetMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
-			HelmetMesh.Translate = new Vector3(0, 10, 0);
-			HelmetMesh.Pivot = new Vector3(0, 4, 0);
-			HelmetMesh.FollowCursor = true;
-			HelmetMesh.Helmet = true;
-
+	
 			frontFace.Indices =
 			topFace.Indices =
 			bottomFace.Indices =
@@ -187,13 +185,13 @@ namespace MCSkin3D
 			leftFace.Indices =
 			rightFace.Indices = ccw;
 
-			InsideHelmetMesh = new Mesh("Inside Helmet");
-			InsideHelmetMesh.Mode = BeginMode.Quads;
-			InsideHelmetMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
-			InsideHelmetMesh.Translate = new Vector3(0, 10, 0);
-			InsideHelmetMesh.Pivot = new Vector3(0, 4, 0);
-			InsideHelmetMesh.FollowCursor = true;
-			InsideHelmetMesh.Helmet = true;
+			HelmetMesh.Faces.AddRange(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
+
+			HelmetMesh.Translate = new Vector3(0, 10, 0);
+			HelmetMesh.Pivot = new Vector3(0, 4, 0);
+			HelmetMesh.FollowCursor = true;
+			HelmetMesh.Helmet = true;
+			HelmetMesh.Part = VisiblePartFlags.HelmetFlag;
 
 			frontFace.Indices =
 			topFace.Indices =
@@ -226,6 +224,7 @@ namespace MCSkin3D
 			ChestMesh.Mode = BeginMode.Quads;
 			ChestMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
 			ChestMesh.Translate = new Vector3(0, 0, 0);
+			ChestMesh.Part = VisiblePartFlags.ChestFlag;
 
 			box = CreateBox(4, 12, 4);
 
@@ -253,6 +252,7 @@ namespace MCSkin3D
 			RightLegMesh.Translate = new Vector3(-2, -12, 0);
 			RightLegMesh.Pivot = new Vector3(0, -6, 0);
 			RightLegMesh.RotateFactor = 37;
+			RightLegMesh.Part = VisiblePartFlags.RightLegFlag;
 
 			frontFace.Vertices = GetFace(FaceLocation.Front, box);
 			frontFace.TexCoords = TexCoordBox(8, 20, -4, 12);
@@ -278,6 +278,7 @@ namespace MCSkin3D
 			LeftLegMesh.Translate = new Vector3(2, -12, 0);
 			LeftLegMesh.Pivot = new Vector3(0, -6, 0);
 			LeftLegMesh.RotateFactor = -37;
+			LeftLegMesh.Part = VisiblePartFlags.LeftLegFlag;
 
 			frontFace.Vertices = GetFace(FaceLocation.Front, box);
 			frontFace.TexCoords = TexCoordBox(44, 20, 4, 12);
@@ -303,6 +304,7 @@ namespace MCSkin3D
 			RightArmMesh.Translate = new Vector3(-6, 0, 0);
 			RightArmMesh.Pivot = new Vector3(0, 5, 0);
 			RightArmMesh.RotateFactor = 37;
+			RightArmMesh.Part = VisiblePartFlags.RightArmFlag;
 
 			frontFace.Vertices = GetFace(FaceLocation.Front, box);
 			frontFace.TexCoords = TexCoordBox(48, 20, -4, 12);
@@ -328,6 +330,7 @@ namespace MCSkin3D
 			LeftArmMesh.Translate = new Vector3(6, 0, 0);
 			LeftArmMesh.Pivot = new Vector3(0, 5, 0);
 			LeftArmMesh.RotateFactor = -37;
+			LeftArmMesh.Part = VisiblePartFlags.LeftArmFlag;
 
 			HumanModel = new Model();
 			HumanModel.Name = "Human";
@@ -337,7 +340,6 @@ namespace MCSkin3D
 			HumanModel.Meshes.Add(LeftArmMesh);
 			HumanModel.Meshes.Add(RightLegMesh);
 			HumanModel.Meshes.Add(LeftLegMesh);
-			HumanModel.Meshes.Add(InsideHelmetMesh);
 			HumanModel.Meshes.Add(HelmetMesh);
 
 			HumanModel.Save("Models\\human.xml");

@@ -92,6 +92,7 @@ namespace Paril.OpenGL
 			writer.WriteAttributeString("IsHelmet", Helmet.ToString());
 			writer.WriteAttributeString("FollowCursor", FollowCursor.ToString());
 			writer.WriteAttributeString("RotateFactor", RotateFactor.ToString());
+			writer.WriteAttributeString("Part", Part.ToString());
 
 			foreach (var f in Faces)
 			{
@@ -117,6 +118,8 @@ namespace Paril.OpenGL
 
 			writer.WriteEndElement();
 		}
+
+		public MCSkin3D.VisiblePartFlags Part;
 	}
 
 	public class Model
@@ -172,6 +175,8 @@ namespace Paril.OpenGL
 					mesh.FollowCursor = bool.Parse(n.Attributes["FollowCursor"].InnerText);
 				if (n.Attributes["RotateFactor"] != null)
 					mesh.RotateFactor = float.Parse(n.Attributes["RotateFactor"].InnerText);
+				if (n.Attributes["Part"] != null)
+					mesh.Part = (MCSkin3D.VisiblePartFlags)Enum.Parse(typeof(MCSkin3D.VisiblePartFlags), n.Attributes["Part"].InnerText);
 
 				mesh.Faces = new List<Face>();
 

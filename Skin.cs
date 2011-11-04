@@ -3,10 +3,10 @@ using System.Drawing;
 using Paril.Components;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
-using DevCIL;
 using System.Windows.Forms;
 using Paril.Extensions;
 using Paril.OpenGL;
+using Paril.Drawing;
 
 namespace MCSkin3D
 {
@@ -110,7 +110,7 @@ namespace MCSkin3D
 
 		public void CommitChanges(int currentSkin, bool save)
 		{
-			byte[] data = new byte[Width * Height * 4];
+			int[] data = new int[Width * Height];
 			RenderState.BindTexture(currentSkin);
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
@@ -119,15 +119,30 @@ namespace MCSkin3D
 
 			if (save)
 			{
-				uint ilim = IL.ilGenImage();
+				Bitmap newBitmap = new Bitmap(Width, Height);
+
+				using (FastPixel fp = new FastPixel(newBitmap, true))
+				{
+					for (int y = 0; y < Height; ++y)
+						for (int x = 0; x < Width; ++x)
+						{
+							var c = data[x + (y * Width)];
+							fp.SetPixel(x, y, System.Drawing.Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF));
+						}
+				}
+
+				newBitmap.Save(File.FullName);
+				newBitmap.Dispose();
+
+				/*uint ilim = IL.ilGenImage();
 				IL.ilBindImage(ilim);
 				IL.ilLoadDataL(data, (uint)data.Length, (uint)Width, (uint)Height, 1, 4);
 				File.Delete();
 				IL.ilSave(IL.ImageType.PNG, File.FullName);
+				IL.ilDeleteImage(ilim);*/
 
 				SetImages();
 
-				IL.ilDeleteImage(ilim);
 				Dirty = false;
 			}
 		}
