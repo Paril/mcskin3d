@@ -8,13 +8,13 @@
 *- Finish the treeview
 ?- Hopefully, get an optimized color class (not super-high priority)
 *- Add "Overlays" folder, customizable background image
-?- Hidden part "ghosting"
+*- Hidden part "ghosting"
 
 
 -------------------------------------------------------------
 -							    -
--	"?-" means that it is under progress.		    -
--	"*-" means that it is implemented for this version. -
--	"!-" means that it is high-priority.		    -
+-	?- means that it is under progress.		    -
+-	*- means that it is implemented for this version. -
+-	!- means that it is high-priority.		    -
 -							    -
 -------------------------------------------------------------
