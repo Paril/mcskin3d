@@ -2257,6 +2257,7 @@ namespace MCSkin3D
 				_3dZoom += e.Delta / 50;
 			else
 				_2dZoom += e.Delta / 50;
+            if (_2dZoom < 1) _2dZoom = 1;
 
 			rendererControl.Invalidate();
 		}
@@ -2338,6 +2339,7 @@ namespace MCSkin3D
 						_3dZoom += (float)-delta.Y;
 					else
 						_2dZoom += -delta.Y / 25.0f;
+                    if (_2dZoom < 1) _2dZoom = 1;
 				}
 
 				if ((_currentTool != Tools.Camera) && e.Button == MouseButtons.Left)
@@ -3181,5 +3183,10 @@ namespace MCSkin3D
 		{
 
 		}
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
 	}
 }
