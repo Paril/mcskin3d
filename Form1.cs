@@ -504,6 +504,7 @@ namespace MCSkin3D
 
 			private const int SB_HORZ = 0x0;
 			private const int SB_VERT = 0x1;
+            //private bool down = false;
 
 			Point ScrollPosition
 			{
@@ -563,13 +564,23 @@ namespace MCSkin3D
 			protected override void OnMouseDown(MouseEventArgs e)
 			{
 				base.OnMouseDown(e);
-
+                //down = true;
 				var node = GetSelectedNodeAt(e.Location);
 				SelectedNode = node;
 
 				lastClick = SelectedNode;
 				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
 			}
+
+            //protected override void OnMouseUp(MouseEventArgs e)
+            //{
+            //    base.OnMouseUp(e);
+            //    if (down)
+            //    {
+            //        down = !down;
+            //        base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
+            //    }
+            //}
 
 			protected override void OnMouseClick(MouseEventArgs e)
 			{
@@ -2835,11 +2846,7 @@ namespace MCSkin3D
 		void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			GlobalSettings.AutoUpdate = automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
-		}
-
-		private void Form1_Load(object sender, EventArgs e)
-		{
-		}
+        }
 
 		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)
 		{
@@ -2938,8 +2945,6 @@ namespace MCSkin3D
 			ToggleGhosting();
 		}
 
-        // Hello
-
         private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
         {
             DoDragDrop(e.Item, DragDropEffects.Move);
@@ -2960,7 +2965,7 @@ namespace MCSkin3D
                     return;
                 }
                 Point cp = treeView1.PointToClient(new Point(e.X, e.Y));
-                TreeNode hoverItem = treeView1.GetNodeAt(cp.X, cp.Y);
+                TreeNode hoverItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
                 if (hoverItem == null)
                 {
                     e.Effect = DragDropEffects.None;
@@ -2984,45 +2989,76 @@ namespace MCSkin3D
             TreeNode dragToItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
             TreeNode selectedNode = treeView1.SelectedNode;
 
-            MessageBox.Show((dragToItem is Skin).ToString());
-
-            if (dragToItem == null)
-            {
+            if (dragToItem == selectedNode || dragToItem == null)
                 return;
-            }
-            else if (dragToItem is Skin && selectedNode is Skin)
+
+            if (dragToItem is Skin && selectedNode is Skin)
             {
                 int i = dragToItem.Index + 1;
                 if (!(dragToItem.Parent == null))
                 {
                     if (i >= dragToItem.Parent.Nodes.Count - 1)
                     {
-                        i = dragToItem.Parent.Nodes.Count - 1;
+                        i = dragToItem.Parent.Nodes.Count;
+                    }
+                    if (dragToItem.Parent == selectedNode.Parent)
+                    {
+                        string oldPath = ((Skin)selectedNode).File.FullName;
+                        selectedNode.Remove();
+                        dragToItem.Parent.Nodes.Insert(i - 2, selectedNode);
+                        string newPath = ((Skin)selectedNode).File.FullName;
+                        try
+                        {
+                            File.Move(oldPath, newPath);
+                        }
+                        catch { }
+                        //MessageBox.Show("IDENTICAL PARENTS :)");
+                    }
+                    else
+                    {
+                        string oldPath = ((Skin)selectedNode).File.FullName;
+                        selectedNode.Remove();
+                        if (!(dragToItem.Parent == null))
+                        {
+                            dragToItem.Parent.Nodes.Insert(i, selectedNode);
+                        }
+                        else
+                        {
+                            dragToItem.Nodes.Insert(i, selectedNode);
+                        }
+
+                        string newPath = ((Skin)selectedNode).File.FullName;
+                        try
+                        {
+                            File.Move(oldPath, newPath);
+                        }
+                        catch { }
                     }
                 }
                 else
                 {
                     if (i >= dragToItem.Nodes.Count - 1)
                     {
-                        i = dragToItem.Nodes.Count - 1;
+                        i = dragToItem.Nodes.Count;
                     }
+                    string oldPath = ((Skin)selectedNode).File.FullName;
+                    selectedNode.Remove();
+                    if (!(dragToItem.Parent == null))
+                    {
+                        dragToItem.Parent.Nodes.Insert(i, selectedNode);
+                    }
+                    else
+                    {
+                        dragToItem.Nodes.Insert(i, selectedNode);
+                    }
+
+                    string newPath = ((Skin)selectedNode).File.FullName;
+                    try
+                    {
+                        File.Move(oldPath, newPath);
+                    }
+                    catch { }
                 }
-                string oldPath = ((Skin)selectedNode).File.FullName;
-                selectedNode.Remove();
-                if (!(dragToItem.Parent == null))
-                {
-                    dragToItem.Parent.Nodes.Insert(i, selectedNode);
-                }
-                else
-                {
-                    dragToItem.Nodes.Insert(i, selectedNode);
-                }
-                
-                string newPath = ((Skin)selectedNode).File.FullName;
-                try
-                {
-                    File.Move(oldPath, newPath);
-                }catch{}
             }
             else if (!(dragToItem is Skin) && selectedNode is Skin)
             {
