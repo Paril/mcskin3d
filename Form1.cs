@@ -25,6 +25,8 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using Paril.Compatibility;
 using System.Drawing.Drawing2D;
+using Paril.OpenGL;
+using OpenTK.Graphics;
 
 namespace MCSkin3D
 {
@@ -66,6 +68,7 @@ namespace MCSkin3D
 		Color _currentColor = Color.FromArgb(255, 255, 255, 255);
 		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
+		Renderer _renderer;
 		#endregion
 
 		// ===============================================
@@ -102,7 +105,7 @@ namespace MCSkin3D
 
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
-				MessageBox.Show("Sorry, but apparently your video mode doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Sorry, but apparently your video card doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Application.Exit();
 			}
 
@@ -135,6 +138,8 @@ namespace MCSkin3D
 			_updater.CheckForUpdate();
 
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
+
+			PlayerModel.LoadModel();
 		}
 		#endregion
 
@@ -351,6 +356,7 @@ namespace MCSkin3D
 			GlobalSettings.Save();
 		}
 
+		TreeNode _tempToSelect;
 		void RecurseAddDirectories(string path, TreeNodeCollection nodes, List<Skin> skins)
 		{
 			var di = new DirectoryInfo(path);
@@ -360,10 +366,10 @@ namespace MCSkin3D
 				var skin = new Skin(file);
 				nodes.Add(skin);
 
-				if (treeView1.SelectedNode == null)
-					treeView1.SelectedNode = skin;
+				if (_tempToSelect == null)
+					_tempToSelect = skin;
 				else if (GlobalSettings.LastSkin == skin.Name)
-					treeView1.SelectedNode = skin;
+					_tempToSelect = skin;
 
 				skins.Add(skin);
 			}
@@ -442,6 +448,7 @@ namespace MCSkin3D
 			treeView1.FullRowSelect = true;
 			treeView1.HotTracking = true;
 			treeView1.TreeViewNodeSorter = new SkinNodeSorter();
+			treeView1.SelectedNode = _tempToSelect;
 
 			SetVisibleParts();
 
@@ -450,8 +457,7 @@ namespace MCSkin3D
 			threeDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			twoDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
-			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
-			
+			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;		
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -556,9 +562,10 @@ namespace MCSkin3D
 				_hoverPoint = e.Location;
 				var hover = GetSelectedNodeAt(e.Location);
 				if (_hoverNode == null || _hoverNode != hover)
+				{
 					_hoverNode = hover;
-
-				Invalidate();
+					Invalidate();
+				}
 
 				base.OnMouseMove(e);
 			}
@@ -585,6 +592,8 @@ namespace MCSkin3D
 
 				if (_hoverNode == node)
 					state |= TreeNodeStates.Hot;
+				else if (node == SelectedNode)
+					state |= TreeNodeStates.Selected;
 
 				OnDrawNode(new DrawTreeNodeEventArgs(args.Graphics, node, new Rectangle(0, node.Bounds.Y, Width, ItemHeight), state));
 				currentIndex++;
@@ -691,7 +700,7 @@ namespace MCSkin3D
 					}
 				}
 
-				GL.BindTexture(TextureTarget.Texture2D, id);
+				RenderState.BindTexture(id);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -716,7 +725,7 @@ namespace MCSkin3D
 			int rightSkinX, int rightSkinY, int rightSkinW, int rightSkinH,
 			int texture, int skinW = 64, int skinH = 32)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, texture);
+			RenderState.BindTexture(texture);
 
 			GL.Begin(BeginMode.Quads);
 
@@ -831,7 +840,7 @@ namespace MCSkin3D
 			{
 				if (!pickView && GlobalSettings.AlphaCheckerboard)
 				{
-					GL.BindTexture(TextureTarget.Texture2D, _alphaTex);
+					RenderState.BindTexture(_alphaTex);
 
 					GL.Begin(BeginMode.Quads);
 					GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
@@ -842,7 +851,7 @@ namespace MCSkin3D
 				}
 
 				if (skin != null)
-					GL.BindTexture(TextureTarget.Texture2D, tex);
+					RenderState.BindTexture(tex);
 
 				GL.PushMatrix();
 
@@ -866,7 +875,7 @@ namespace MCSkin3D
 
 				if (!pickView && GlobalSettings.TextureOverlay && skin != null)
 				{
-					GL.BindTexture(TextureTarget.Texture2D, _backgroundTex);
+					RenderState.BindTexture(_backgroundTex);
 
 					GL.Begin(BeginMode.Quads);
 					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
@@ -948,142 +957,63 @@ namespace MCSkin3D
 			if (grass)
 				DrawSkinnedRectangle(0, -20, 0, 1024, 4, 1024, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _grassTop, 16, 16);
 
-			if (skin != null)
+			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
+			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
+
+			// draw non-transparent meshes
+			foreach (var mesh in PlayerModel.HumanModel.Meshes)
 			{
-				GL.PushMatrix();
-				if (followCursorToolStripMenuItem.Checked)
-				{
-					GL.Translate(0, 4, 0);
-					GL.Rotate((float)x / 25, 0, 1, 0);
-					GL.Rotate((float)y / 25, 1, 0, 0);
-					GL.Translate(0, -4, 0);
-				}
+				if (mesh.Helmet)
+					continue;
 
-				DrawPart(VisiblePartFlags.HeadFlag, 0, 10, 0, 8, 8, 8,
-					8, 8, 8, 8,
-					24, 8, 8, 8,
-					8, 0, 8, 8,
-					16, 0, 8, 8,
-					0, 8, 8, 8,
-					16, 8, 8, 8,
-					tex);
+				var newMesh = mesh;
 
-				GL.PopMatrix();
+				newMesh.Texture = tex;
 
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.ChestFlag) != 0)
-					DrawSkinnedRectangle(0, 0, 0, 8, 12, 4,
-					20, 20, 8, 12,
-					32, 20, 8, 12,
-					20, 16, 8, 4,
-					28, 16, 8, 4,
-					16, 20, 4, 12,
-					28, 20, 4, 12,
-					tex);
+				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
+					newMesh.Rotate = helmetRotate;
 
-				// right
-				GL.PushMatrix();
-				if (animateToolStripMenuItem.Checked)
-				{
-					GL.Translate(0, -6, 0);
-					GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
-					GL.Translate(0, 6, 0);
-				}
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightLegFlag) != 0)
-					DrawSkinnedRectangle(-2, -12, 0, 4, 12, 4,
-					4, 20, 4, 12,
-					12, 20, 4, 12,
-					4, 16, 4, 4,
-					8, 16, 4, 4,
-					0, 20, 4, 12,
-					8, 20, 4, 12,
-					tex);
-				GL.PopMatrix();
+				foreach (var f in mesh.Faces)
+					for (int i = 0; i < f.Colors.Length; ++i)
+						f.Colors[i] = Color4.White;
 
-				// left
-				GL.PushMatrix();
-				if (animateToolStripMenuItem.Checked)
-				{
-					GL.Translate(0, -6, 0);
-					GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
-					GL.Translate(0, 6, 0);
-				}
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftLegFlag) != 0)
-					DrawSkinnedRectangle(2, -12, 0, 4, 12, 4,
-					8, 20, -4, 12,
-					16, 20, -4, 12,
-					8, 16, -4, 4,
-					12, 16, -4, 4,
-					12, 20, -4, 12,
-					4, 20, -4, 12,
-					tex);
-				GL.PopMatrix();
+				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
 
-				// right arm
-				GL.PushMatrix();
-				if (animateToolStripMenuItem.Checked)
-				{
-					GL.Translate(0, 5, 0);
-					GL.Rotate(Math.Sin(_animationTime) * -37, 1, 0, 0);
-					GL.Translate(0, -5, 0);
-				}
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.RightArmFlag) != 0)
-					DrawSkinnedRectangle(-6, 0, 0, 4, 12, 4,
-					44, 20, 4, 12,
-					52, 20, 4, 12,
-					44, 16, 4, 4,
-					48, 16, 4, 4,
-					40, 20, 4, 12,
-					48, 20, 4, 12,
-					tex);
-				GL.PopMatrix();
-
-				GL.PushMatrix();
-				if (animateToolStripMenuItem.Checked)
-				{
-					GL.Translate(0, 5, 0);
-					GL.Rotate(Math.Sin(_animationTime) * 37, 1, 0, 0);
-					GL.Translate(0, -5, 0);
-				}
-				// left arm
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.LeftArmFlag) != 0)
-					DrawSkinnedRectangle(6, 0, 0, 4, 12, 4,
-					48, 20, -4, 12,
-					56, 20, -4, 12,
-					48, 16, -4, 4,
-					52, 16, -4, 4,
-					52, 20, -4, 12,
-					44, 20, -4, 12,
-					tex);
-				GL.PopMatrix();
-
-				if ((GlobalSettings.ViewFlags & VisiblePartFlags.HelmetFlag) != 0)
-				{
-					GL.PushMatrix();
-					if (followCursorToolStripMenuItem.Checked)
-					{
-						GL.Translate(0, 4, 0);
-						GL.Rotate((float)x / 25, 0, 1, 0);
-						GL.Rotate((float)y / 25, 1, 0, 0);
-						GL.Translate(0, -4, 0);
-					}
-
-					if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
-						GL.Enable(EnableCap.Blend);
-					else
-						GL.Disable(EnableCap.Blend);
-
-					DrawSkinnedRectangle(0, 10, 0, 9, 9, 9,
-										32 + 8, 8, 8, 8,
-										32 + 24, 8, 8, 8,
-										32 + 8, 0, 8, 8,
-										32 + 16, 0, 8, 8,
-										32 + 0, 8, 8, 8,
-										32 + 16, 8, 8, 8,
-										tex);
-
-					GL.PopMatrix();
-				}
+				_renderer.Meshes.Add(newMesh);
 			}
+
+			_renderer.Render();
+
+			if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
+				GL.Enable(EnableCap.Blend);
+			else
+				GL.Disable(EnableCap.Blend);
+
+			// draw transparent meshes
+			foreach (var mesh in PlayerModel.HumanModel.Meshes)
+			{
+				if (!mesh.Helmet)
+					continue;
+
+				var newMesh = mesh;
+
+				newMesh.Texture = tex;
+
+				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
+					newMesh.Rotate = helmetRotate;
+
+				foreach (var f in mesh.Faces)
+					for (int i = 0; i < f.Colors.Length; ++i)
+						f.Colors[i] = Color4.White;
+
+				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+
+				_renderer.Meshes.Add(newMesh);
+			}
+
+			_renderer.Render();
 		}
 
 		void SetPreview()
@@ -1091,14 +1021,14 @@ namespace MCSkin3D
 			if (_lastSkin == null)
 			{
 				int[] array = new int[64 * 32];
-				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
+				RenderState.BindTexture(_previewPaint);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 			}
 			else
 			{
 				Skin skin = _lastSkin;
 
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
@@ -1110,7 +1040,7 @@ namespace MCSkin3D
 						UseToolOnPixel(array, skin, p.X, p.Y);
 				}
 
-				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
+				RenderState.BindTexture(_previewPaint);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 			}
 		}
@@ -1178,7 +1108,7 @@ namespace MCSkin3D
 			{
 				Skin skin = _lastSkin;
 
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
@@ -1378,6 +1308,9 @@ namespace MCSkin3D
 			}
 		}
 
+		Thread _uploadThread;
+		bool _wasClosed;
+
 		void PerformUpload()
 		{
 			if (_lastSkin == null)
@@ -1402,20 +1335,23 @@ namespace MCSkin3D
 				if (!dialogRes)
 					return;
 
+				_wasClosed = false;
 				_pleaseWaitForm = new PleaseWait();
+				_pleaseWaitForm.FormClosed += new FormClosedEventHandler(_pleaseWaitForm_FormClosed);
 
-				Thread thread = new Thread(UploadThread);
+				_uploadThread = new Thread(UploadThread);
 				ErrorReturn ret = new ErrorReturn();
-				thread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
+				_uploadThread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
 
 				_pleaseWaitForm.ShowDialog();
 				_pleaseWaitForm.Dispose();
+				_uploadThread = null;
 
 				if (ret.ReportedError != null)
 					MessageBox.Show("Error uploading skin:\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				else if (ret.Exception != null)
 					MessageBox.Show("Error uploading skin:\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				else
+				else if (!_wasClosed)
 				{
 					MessageBox.Show("Skin upload success! Enjoy!", "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					GlobalSettings.LastSkin = _lastSkin.File.FullName;
@@ -1436,6 +1372,12 @@ namespace MCSkin3D
 					}
 				}
 			}
+		}
+
+		void _pleaseWaitForm_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			_wasClosed = true;
+			_uploadThread.Abort();
 		}
 		#endregion
 
@@ -1649,8 +1591,8 @@ namespace MCSkin3D
 				else
 					labelEditTextBox.Text = _currentlyEditing.Text;
 
-				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 43, treeView1.SelectedNode.Bounds.Location.Y + 4);
-				labelEditTextBox.Size = new System.Drawing.Size(treeView1.Width - labelEditTextBox.Location.X - 4, labelEditTextBox.Height);
+				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 24 + (treeView1.SelectedNode.Level * 1), treeView1.SelectedNode.Bounds.Location.Y + 4);
+				labelEditTextBox.Size = new System.Drawing.Size(treeView1.Width - labelEditTextBox.Location.X - 20, labelEditTextBox.Height);
 				labelEditTextBox.BringToFront();
 				labelEditTextBox.Show();
 				labelEditTextBox.Focus();
@@ -1726,7 +1668,7 @@ namespace MCSkin3D
 		{
 			var skin = _lastSkin;
 
-			GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 			int[] pixels = new int[skin.Width * skin.Height];
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
 
@@ -2145,14 +2087,14 @@ namespace MCSkin3D
 			unsafe
 			{
 				byte[] arra = new byte[64 * 32];
-				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
+				RenderState.BindTexture(_previewPaint);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -2177,13 +2119,18 @@ namespace MCSkin3D
 						}
 				}
 
-				GL.BindTexture(TextureTarget.Texture2D, _alphaTex);
+				RenderState.BindTexture(_alphaTex);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 4, 4, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 			}
+
+			if (GL.GetString(StringName.Extensions).Contains("GL_EXT_vertex_array"))
+				_renderer = new ClientArrayRenderer();
+			else
+				_renderer = new ImmediateRenderer();
 		}
 
 		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -2328,21 +2275,21 @@ namespace MCSkin3D
 			if (skin == null)
 			{
 				_currentUndoBuffer = null;
-				GL.BindTexture(TextureTarget.Texture2D, 0);
+				RenderState.BindTexture(0);
 				int[] array = new int[64 * 32];
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = false;
 				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = false;
 			}
 			else
 			{
-				GL.BindTexture(TextureTarget.Texture2D, skin.GLImage);
+				RenderState.BindTexture(skin.GLImage);
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				GL.BindTexture(TextureTarget.Texture2D, GlobalDirtiness.CurrentSkin);
+				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				GL.BindTexture(TextureTarget.Texture2D, _previewPaint);
+				RenderState.BindTexture(_previewPaint);
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 				_currentUndoBuffer = skin.Undo;
@@ -2959,31 +2906,30 @@ namespace MCSkin3D
                     hoverItem.EnsureVisible();
                     return;
                 }
-                String text = (String)e.Data.GetData("Reorder".GetType());
-                if (text.CompareTo("Reorder") == 0)
-                {
-                    e.Effect = DragDropEffects.Move;
-                    hoverItem.EnsureVisible();
-                }
-                else
-                {
-                    e.Effect = DragDropEffects.None;
-                }
+
+                e.Effect = DragDropEffects.Move;
+                hoverItem.EnsureVisible();
             }
         }
 
         private void treeView1_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            Point cp = base.PointToClient(new Point(e.X, e.Y));
-            TreeNode dragToItem = treeView1.GetNodeAt(cp.X, cp.Y);
+            Point cp = treeView1.PointToClient(new Point(e.X, e.Y));
+            TreeNode dragToItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
             TreeNode selectedNode = treeView1.SelectedNode;
-            if (dragToItem == null)
-            {
-                return;
-            }
-            int dropIndex = dragToItem.Index;
-            selectedNode.Nodes.Remove(selectedNode);
-            selectedNode.Nodes.Insert(dropIndex, selectedNode);
-        }
+
+			if (dragToItem == null)
+				return;
+			else if (dragToItem is Skin || !(selectedNode is Skin)) // TODO: drop-to-skin support and move-folder support
+				return;
+
+			string oldPath = ((Skin)selectedNode).File.FullName;
+            selectedNode.Remove();
+			dragToItem.Nodes.Add(selectedNode);
+			string newPath = ((Skin)selectedNode).File.FullName;
+
+			File.Move(oldPath, newPath);
+			treeView1.SelectedNode = selectedNode;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using DevCIL;
 using OpenTK.Graphics.OpenGL;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -33,7 +34,7 @@ namespace MCSkin3D
 				int textureID = GL.GenTexture();
 
 				// Bind the texture to a name
-				GL.BindTexture(TextureTarget.Texture2D, textureID);
+				RenderState.BindTexture(textureID);
 
 				// Set texture interpolation method to use linear interpolation (no MIPMAPS)
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
