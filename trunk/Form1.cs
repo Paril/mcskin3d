@@ -2886,17 +2886,58 @@ namespace MCSkin3D
             TreeNode dragToItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
             TreeNode selectedNode = treeView1.SelectedNode;
 
-			if (dragToItem == null)
-				return;
-			else if (dragToItem is Skin || !(selectedNode is Skin)) // TODO: drop-to-skin support and move-folder support
-				return;
+            MessageBox.Show((dragToItem is Skin).ToString());
 
-			string oldPath = ((Skin)selectedNode).File.FullName;
-            selectedNode.Remove();
-			dragToItem.Nodes.Add(selectedNode);
-			string newPath = ((Skin)selectedNode).File.FullName;
-
-			File.Move(oldPath, newPath);
+            if (dragToItem == null)
+            {
+                return;
+            }
+            else if (dragToItem is Skin && selectedNode is Skin)
+            {
+                int i = dragToItem.Index + 1;
+                if (!(dragToItem.Parent == null))
+                {
+                    if (i >= dragToItem.Parent.Nodes.Count - 1)
+                    {
+                        i = dragToItem.Parent.Nodes.Count - 1;
+                    }
+                }
+                else
+                {
+                    if (i >= dragToItem.Nodes.Count - 1)
+                    {
+                        i = dragToItem.Nodes.Count - 1;
+                    }
+                }
+                string oldPath = ((Skin)selectedNode).File.FullName;
+                selectedNode.Remove();
+                if (!(dragToItem.Parent == null))
+                {
+                    dragToItem.Parent.Nodes.Insert(i, selectedNode);
+                }
+                else
+                {
+                    dragToItem.Nodes.Insert(i, selectedNode);
+                }
+                
+                string newPath = ((Skin)selectedNode).File.FullName;
+                try
+                {
+                    File.Move(oldPath, newPath);
+                }catch{}
+            }
+            else if (!(dragToItem is Skin) && selectedNode is Skin)
+            {
+                string oldPath = ((Skin)selectedNode).File.FullName;
+                selectedNode.Remove();
+                dragToItem.Nodes.Add(selectedNode);
+                string newPath = ((Skin)selectedNode).File.FullName;
+                try
+                {
+                    File.Move(oldPath, newPath);
+                }
+                catch { }
+            } 
 			treeView1.SelectedNode = selectedNode;
 		}
 	}
