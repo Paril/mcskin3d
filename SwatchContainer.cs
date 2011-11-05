@@ -226,7 +226,7 @@ namespace MCSkin3D
 				Scale--;
 		}
 
-		int _lastSwatch = -1;
+		int _lastLeftSwatch = -1, _lastRightSwatch = -1;
 
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
@@ -242,13 +242,18 @@ namespace MCSkin3D
 			if (row + (col * _fitPerRow) >= Colors.Count)
 				return;
 
-			_lastSwatch = row + (col * _fitPerRow);
+			var lastSwatch = row + (col * _fitPerRow);
+			if (e.Button == MouseButtons.Left)
+				_lastLeftSwatch = lastSwatch;
+			else
+				_lastRightSwatch = lastSwatch;
+
 			Invalidate();
 
 			if (SwatchChanged == null)
 				return;
 
-			SwatchChanged(this, new SwatchChangedEventArgs(Colors[_lastSwatch], e.Button));
+			SwatchChanged(this, new SwatchChangedEventArgs(Colors[lastSwatch], e.Button));
 		}
 
 		protected override void OnMouseDoubleClick(MouseEventArgs e)
@@ -272,10 +277,12 @@ namespace MCSkin3D
 
 					e.Graphics.FillRectangle(new SolidBrush(Colors[index]), new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize, SwatchSize));
 
-					if (_lastSwatch != index)
-						e.Graphics.DrawRectangle(Pens.Black, new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1, SwatchSize - 1));
-					else
+					if (_lastLeftSwatch == index)
 						e.Graphics.DrawRectangle(new Pen(Color.Yellow, 1), new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1, SwatchSize - 1));
+					else if (_lastRightSwatch == index)
+						e.Graphics.DrawRectangle(new Pen(Color.Red, 1), new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1, SwatchSize - 1));
+					else
+						e.Graphics.DrawRectangle(Pens.Black, new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1, SwatchSize - 1));
 					index++;
 				}
 
@@ -288,7 +295,7 @@ namespace MCSkin3D
 		public IList<Color> Colors
 		{
 			get { return _colors; }
-			set { _colors = value; _lastSwatch = -1;  RecalculateSize(); }
+			set { _colors = value; _lastLeftSwatch = _lastRightSwatch = -1;  RecalculateSize(); }
 		}
 	}
 }

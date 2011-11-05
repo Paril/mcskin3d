@@ -55,6 +55,7 @@
     <Reference Include="System.Core">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms">
       <Private>False</Private>
@@ -63,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
+    <Compile Include="CameraTool.cs" />
     <Compile Include="CIELab.cs" />
     <Compile Include="CIEXYZ.cs" />
     <Compile Include="CMYK.cs" />
@@ -73,6 +75,15 @@
     <Compile Include="ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="DodgeBurnOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DodgeBurnOptions.Designer.cs">
+      <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DodgeBurnTool.cs" />
+    <Compile Include="DropperTool.cs" />
+    <Compile Include="EraserTool.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
@@ -88,6 +99,7 @@
     <Compile Include="Paril\OpenGL\ClientArrayRenderer.cs" />
     <Compile Include="Paril\OpenGL\ImmediateRenderer.cs" />
     <Compile Include="Paril\OpenGL\Renderer.cs" />
+    <Compile Include="PencilTool.cs" />
     <Compile Include="PlayerModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -182,13 +194,24 @@
     <Compile Include="SwatchContainer.Designer.cs">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="ITool.cs" />
+    <Compile Include="ToolIndex.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="TransparencyMode.cs" />
+    <Compile Include="PencilOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PencilOptions.Designer.cs">
+      <DependentUpon>PencilOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="YUV.cs" />
     <EmbeddedResource Include="ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DodgeBurnOptions.resx">
+      <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Paril\Controls\Color\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
@@ -220,6 +243,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SwatchContainer.resx">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PencilOptions.resx">
+      <DependentUpon>PencilOptions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
