@@ -132,6 +132,7 @@
 			this.lightnessColorSlider = new MB.Controls.ColorSlider();
 			this.hueColorSlider = new MB.Controls.ColorSlider();
 			this.splitContainer2 = new Paril.Controls.VisibleSplitContainer();
+			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -160,7 +161,6 @@
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.uploadButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
-			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -183,8 +183,8 @@
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			this.toolStrip1.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainMenuStrip
@@ -1249,6 +1249,22 @@
 			this.splitContainer2.SplitterDistance = 605;
 			this.splitContainer2.TabIndex = 6;
 			// 
+			// splitContainer4
+			// 
+			this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+			this.splitContainer4.IsSplitterFixed = true;
+			this.splitContainer4.Location = new System.Drawing.Point(0, 25);
+			this.splitContainer4.Name = "splitContainer4";
+			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.splitContainer4.Panel1MinSize = 0;
+			this.splitContainer4.Size = new System.Drawing.Size(641, 580);
+			this.splitContainer4.SplitterDistance = 0;
+			this.splitContainer4.SplitterIncrement = 4;
+			this.splitContainer4.SplitterWidth = 1;
+			this.splitContainer4.TabIndex = 6;
+			// 
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1531,20 +1547,6 @@
 			this.label1.TabIndex = 5;
 			this.label1.Text = "(Hold shift to open Login dialog always)";
 			// 
-			// splitContainer4
-			// 
-			this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-			this.splitContainer4.IsSplitterFixed = true;
-			this.splitContainer4.Location = new System.Drawing.Point(0, 25);
-			this.splitContainer4.Name = "splitContainer4";
-			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			this.splitContainer4.Panel1Collapsed = true;
-			this.splitContainer4.Size = new System.Drawing.Size(641, 580);
-			this.splitContainer4.SplitterDistance = 66;
-			this.splitContainer4.SplitterWidth = 1;
-			this.splitContainer4.TabIndex = 6;
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1583,9 +1585,9 @@
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
 			this.splitContainer2.ResumeLayout(false);
+			this.splitContainer4.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			this.splitContainer4.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -170,6 +170,9 @@ namespace MCSkin3D
 			animTimer.Interval = 22;
 			animTimer.Elapsed += new System.Timers.ElapsedEventHandler(animTimer_Elapsed);
 			animTimer.Start();
+
+			_animTimer.Elapsed += new System.Timers.ElapsedEventHandler(_animTimer_Elapsed);
+			_animTimer.SynchronizingObject = this;
 		}
 		#endregion
 
@@ -2295,7 +2298,7 @@ namespace MCSkin3D
 
 			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
 
-			int img = (splitContainer4.Panel1Collapsed) ? _toolboxDownNormal : _toolboxUpNormal;
+			int img = (splitContainer4.SplitterDistance == 0) ? _toolboxDownNormal : _toolboxUpNormal;
 
 			if (rect.Contains(_mousePoint))
 			{
@@ -2355,6 +2358,34 @@ namespace MCSkin3D
 			rendererControl.Invalidate();
 		}
 
+		System.Timers.Timer _animTimer = new System.Timers.Timer(25);
+		bool _opening = false;
+
+		void _animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			if (_opening)
+			{
+				splitContainer4.SplitterDistance += splitContainer4.SplitterIncrement;
+
+				if (splitContainer4.SplitterDistance >= 35)
+				{
+					splitContainer4.SplitterDistance = 35;
+					_animTimer.Stop();
+				}
+			}
+			else
+			{
+				if ((splitContainer4.SplitterDistance - splitContainer4.SplitterIncrement) <= splitContainer4.Panel1MinSize)
+				{
+					splitContainer4.SplitterDistance = splitContainer4.Panel1MinSize;
+					_animTimer.Stop();
+					return;
+				}
+
+				splitContainer4.SplitterDistance -= splitContainer4.SplitterIncrement;
+			}
+		}
+
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			float halfWidth = rendererControl.Width / 2.0f;
@@ -2366,7 +2397,12 @@ namespace MCSkin3D
 
 			if (rect.Contains(e.Location))
 			{
-				splitContainer4.Panel1Collapsed = !splitContainer4.Panel1Collapsed;
+				if (splitContainer4.SplitterDistance == 0)
+					_opening = true;
+				else
+					_opening = false;
+
+				_animTimer.Start();
 				return;
 			}
 				
@@ -3331,15 +3367,5 @@ namespace MCSkin3D
 			SetSampleMenuItem(8);
 			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
 		}
-
-		private void treeView1_DragOver(object sender, DragEventArgs e)
-		{
-
-		}
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
 	}
 }
