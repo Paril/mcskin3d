@@ -523,7 +523,7 @@ namespace MCSkin3D
                 t.SynchronizingObject = this;
                 t.Interval = 200;
                 t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
-				SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+				SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.UserMouse, true);
 				DoubleBuffered = true;
 			}
 
@@ -541,9 +541,8 @@ namespace MCSkin3D
             private const int WS_VSCROLL = 0x200000;
 			private const int SB_HORZ = 0x0;
 			private const int SB_VERT = 0x1;
-            private bool mouseDown = false;
             private Point mouseDownPoint;
-            private int mouseDownMargin = 10;
+            private int mouseDownMargin = 5;
             public int scrollMargin = 20;
             System.Timers.Timer t = new System.Timers.Timer();
             private bool negativeTimer = false;
@@ -664,13 +663,9 @@ namespace MCSkin3D
 
 			protected override void OnMouseDown(MouseEventArgs e)
 			{
-                if (!mouseDown)
-                {
-                    mouseDown = true;
-                    mouseDownPoint = e.Location;
-                }
-                Console.WriteLine(mouseDown.ToString());
-                if (verticalScrollBarVisible())
+                mouseDownPoint = e.Location;
+
+				if (verticalScrollBarVisible())
                 {
                     if (e.Y <= scrollMargin)
                     {
@@ -696,10 +691,9 @@ namespace MCSkin3D
 				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
 			}
 
-			protected override void OnMouseClick(MouseEventArgs e)
+			protected override void OnMouseUp(MouseEventArgs e)
 			{
-                mouseDown = false;
-				base.OnMouseClick(e);
+				base.OnMouseUp(e);
 			}
 
 			TreeNode _hoverNode;
@@ -714,12 +708,14 @@ namespace MCSkin3D
 					Invalidate();
 				}
 				base.OnMouseMove(e);
+
+				if ((MouseButtons & MouseButtons.Left) == 0)
+					return;
+
                 Point diff = pointDifference(e.Location, mouseDownPoint);
                 Console.WriteLine(diff.X + ", " + diff.Y);
                 if ((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin))
-                {
-                    base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
-                }
+                    base.OnItemDrag(new ItemDragEventArgs(e.Button, new object[] { SelectedNode, true }));
 			}
 
             protected override void OnMouseLeave(EventArgs e)
@@ -2470,9 +2466,9 @@ namespace MCSkin3D
 			{
 				splitContainer4.SplitterDistance += splitContainer4.SplitterIncrement;
 
-				if (splitContainer4.SplitterDistance >= 35)
+				if (splitContainer4.SplitterDistance >= 55)
 				{
-					splitContainer4.SplitterDistance = 35;
+					splitContainer4.SplitterDistance = 55;
 					_animTimer.Stop();
 				}
 			}
@@ -3187,9 +3183,10 @@ namespace MCSkin3D
 
         private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left &&
+				e.Item is object[])
             {
-                DoDragDrop(e.Item, DragDropEffects.Move);
+                DoDragDrop(((object[])e.Item)[0], DragDropEffects.Move);
             }
         }
 

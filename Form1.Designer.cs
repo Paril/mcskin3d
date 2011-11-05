@@ -1261,7 +1261,7 @@
 			this.splitContainer4.Panel1MinSize = 0;
 			this.splitContainer4.Size = new System.Drawing.Size(641, 580);
 			this.splitContainer4.SplitterDistance = 0;
-			this.splitContainer4.SplitterIncrement = 4;
+			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
 			this.splitContainer4.TabIndex = 6;
 			// 
