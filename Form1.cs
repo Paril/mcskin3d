@@ -543,8 +543,7 @@ namespace MCSkin3D
 			private const int SB_VERT = 0x1;
             private bool mouseDown = false;
             private Point mouseDownPoint;
-            private int mouseDownMargin = 5;
-            private int mouseDownTimes = 0;
+            private int mouseDownMargin = 10;
             public int scrollMargin = 20;
             System.Timers.Timer t = new System.Timers.Timer();
             private bool negativeTimer = false;
@@ -669,12 +668,30 @@ namespace MCSkin3D
                 {
                     mouseDown = true;
                     mouseDownPoint = e.Location;
-                    mouseDownTimes = 0;
+                }
+                Console.WriteLine(mouseDown.ToString());
+                if (verticalScrollBarVisible())
+                {
+                    if (e.Y <= scrollMargin)
+                    {
+                        negativeTimer = true;
+                        t.Start();
+                    }
+                    else if (e.Y >= (this.Height - scrollMargin))
+                    {
+                        negativeTimer = false;
+                        t.Start();
+                    }
+                    else
+                    {
+                        t.Stop();
+                        negativeTimer = false;
+                        prevValue = 0;
+                    }
                 }
 				base.OnMouseDown(e);
 				var node = GetSelectedNodeAt(e.Location);
-				SelectedNode = node;
-
+                SelectedNode = node;
 				lastClick = SelectedNode;
 				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
 			}
@@ -697,32 +714,11 @@ namespace MCSkin3D
 					Invalidate();
 				}
 				base.OnMouseMove(e);
-                Console.WriteLine(mouseDown.ToString());
-                if (verticalScrollBarVisible())
-                {
-                    if (e.Y <= scrollMargin)
-                    {
-                        negativeTimer = true;
-                        t.Start();
-                    }
-                    else if (e.Y >= (this.Height - scrollMargin))
-                    {
-                        negativeTimer = false;
-                        t.Start();
-                    }
-                    else
-                    {
-                        t.Stop();
-                        negativeTimer = false;
-                        prevValue = 0;
-                    }
-                }
                 Point diff = pointDifference(e.Location, mouseDownPoint);
                 Console.WriteLine(diff.X + ", " + diff.Y);
-                if (((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin)) || mouseDownTimes > 0)
+                if ((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin))
                 {
                     base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
-                    mouseDownTimes++;
                 }
 			}
 
