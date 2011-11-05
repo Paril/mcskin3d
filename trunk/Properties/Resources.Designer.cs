@@ -137,6 +137,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static byte[] copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap dodge {
             get {
                 object obj = ResourceManager.GetObject("dodge", resourceCulture);
@@ -190,6 +197,20 @@ namespace MCSkin3D.Properties {
             get {
                 object obj = ResourceManager.GetObject("image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static byte[] move {
+            get {
+                object obj = ResourceManager.GetObject("move", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] no {
+            get {
+                object obj = ResourceManager.GetObject("no", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
