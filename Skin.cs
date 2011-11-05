@@ -22,7 +22,27 @@ namespace MCSkin3D
 
 		public int Width { get { return Size.Width; } }
 		public int Height { get { return Size.Height; } }
-		
+
+        public static Image getHeadFromFile(String str, Size s)
+        {
+            Image img = new Bitmap(str);
+
+            float scale = img.Size.Width / 64.0f;
+            int headSize = (int)(8.0f * scale);
+
+            Image head = new Bitmap(32, 32);
+            using (Graphics g = Graphics.FromImage(head))
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                g.DrawImage(img, new Rectangle(0, 0, head.Width, head.Height), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
+            }
+
+            img.Dispose();
+            img = null;
+            return head;
+        }
+
 		public DirectoryInfo Directory
 		{
 			get

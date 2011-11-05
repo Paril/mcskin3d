@@ -692,40 +692,25 @@ namespace MCSkin3D
 
             private Image getSkinHead(Size s)
             {
-                if (dragDropPaths != null)
+                if (skinHeadImageNode != SelectedNode)
                 {
-                    MessageBox.Show(dragDropPaths[0]);
-                    skinHeadImageNode = new Skin(dragDropPaths[0]);
-                    Bitmap img = ((Skin)skinHeadImageNode).Head;
-                    using (Graphics g = Graphics.FromImage(skinHeadImage))
+                    skinHeadImageNode = SelectedNode;
+                    if (SelectedNode is Skin)
                     {
-                        g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                        g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
+                        Bitmap img = ((Skin)SelectedNode).Head;
+                        using (Graphics g = Graphics.FromImage(skinHeadImage))
+                        {
+                            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                            g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
+                        }
                     }
-                }
-                else
-                {
-                    if (skinHeadImageNode != SelectedNode)
+                    else
                     {
-                        skinHeadImageNode = SelectedNode;
-                        if (SelectedNode is Skin)
-                        {
-                            Bitmap img = ((Skin)SelectedNode).Head;
-                            using (Graphics g = Graphics.FromImage(skinHeadImage))
-                            {
-                                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                                g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
-                            }
-                        }
+                        if (SelectedNode.IsExpanded)
+                            skinHeadImage = Properties.Resources.FolderOpen_32x32_72;
                         else
-                        {
-                            if (SelectedNode.IsExpanded)
-                                skinHeadImage = Properties.Resources.FolderOpen_32x32_72;
-                            else
-                                skinHeadImage = Properties.Resources.Folder_32x32;
-                        }
+                            skinHeadImage = Properties.Resources.Folder_32x32;
                     }
                 }
                 return skinHeadImage;
@@ -3333,6 +3318,8 @@ namespace MCSkin3D
             {
                 dragDropPaths = (String[])e.Data.GetData(DataFormats.FileDrop);
                 e.Effect = DragDropEffects.Copy;
+                (Skin.getHeadFromFile(dragDropPaths[0], new Size(32, 32))).Save("C:\\Users\\Jonas\\Desktop\\twewe.png");
+                treeView1.Cursor = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.copy, Skin.getHeadFromFile(dragDropPaths[0], new Size(32, 32)));
             }
         }
 
