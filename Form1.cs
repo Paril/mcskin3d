@@ -814,7 +814,6 @@ namespace MCSkin3D
 				base.OnMouseUp(e);
                 t.Stop();
                 mouseDown = false;
-                this.Cursor = Cursors.Default;
 			}
 
 			TreeNode _hoverNode;
@@ -3322,6 +3321,7 @@ namespace MCSkin3D
 
         private void treeView1_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
+            treeView1.Cursor = Cursors.Default;
             //
             //If you get any problems with this, ask GoVisualTeam (aka Jonas Triki) ... :)
             //
