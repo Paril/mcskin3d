@@ -525,6 +525,7 @@ namespace MCSkin3D
                 t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
 				SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.UserMouse, true);
 				DoubleBuffered = true;
+                skinHeadImage = new Bitmap(32, 32);
 			}
 
 			[DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -547,6 +548,9 @@ namespace MCSkin3D
             System.Timers.Timer t = new System.Timers.Timer();
             private bool negativeTimer = false;
             private int prevValue = 0;
+            private bool mouseDown;
+            static Image skinHeadImage;
+            private TreeNode skinHeadImageNode;
            
             public void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
             {
@@ -615,6 +619,32 @@ namespace MCSkin3D
                 return new Point(x, y);
             }
 
+            private Image getSkinHead(Size s)
+            {
+                if(skinHeadImageNode != SelectedNode)
+                {
+                    skinHeadImageNode = SelectedNode;
+                    if (SelectedNode is Skin)
+                    {
+                        Bitmap img = ((Skin)SelectedNode).Head;
+                        using (Graphics g = Graphics.FromImage(skinHeadImage))
+                        {
+                            g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, s.Width, s.Height), GraphicsUnit.Pixel);
+                        }
+                        img.Dispose();
+                        img = null;
+                    }
+                    else
+                    {
+                        if (SelectedNode.IsExpanded)
+                            skinHeadImage = global::MCSkin3D.Properties.Resources.Folder_32x32;
+                        else 
+                            skinHeadImage = global::MCSkin3D.Properties.Resources.FolderOpen_32x32_72;
+                    }
+                }
+                return skinHeadImage;
+            }
+
             private bool verticalScrollBarVisible()
             {
                 long wndStyle = wndStyle = GetWindowLong((IntPtr)Handle, GWL_STYLE);
@@ -664,8 +694,13 @@ namespace MCSkin3D
 			protected override void OnMouseDown(MouseEventArgs e)
 			{
                 mouseDownPoint = e.Location;
-
-				if (verticalScrollBarVisible())
+                mouseDown = true;
+                base.OnMouseDown(e);
+				var node = GetSelectedNodeAt(e.Location);
+                SelectedNode = node;
+				lastClick = SelectedNode;
+				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
+                if (verticalScrollBarVisible())
                 {
                     if (e.Y <= scrollMargin)
                     {
@@ -684,16 +719,13 @@ namespace MCSkin3D
                         prevValue = 0;
                     }
                 }
-				base.OnMouseDown(e);
-				var node = GetSelectedNodeAt(e.Location);
-                SelectedNode = node;
-				lastClick = SelectedNode;
-				lastOpened = lastClick == null ? false : lastClick.IsExpanded;
 			}
 
 			protected override void OnMouseUp(MouseEventArgs e)
 			{
 				base.OnMouseUp(e);
+                t.Stop();
+                mouseDown = false;
 			}
 
 			TreeNode _hoverNode;
@@ -711,16 +743,42 @@ namespace MCSkin3D
 
 				if ((MouseButtons & MouseButtons.Left) == 0)
 					return;
-
+                if (mouseDown)
+                {
+                    if (verticalScrollBarVisible())
+                    {
+                        if (e.Y <= scrollMargin)
+                        {
+                            negativeTimer = true;
+                            t.Start();
+                        }
+                        else if (e.Y >= (this.Height - scrollMargin))
+                        {
+                            negativeTimer = false;
+                            t.Start();
+                        }
+                        else
+                        {
+                            t.Stop();
+                            negativeTimer = false;
+                            prevValue = 0;
+                        }
+                    }
+                }
                 Point diff = pointDifference(e.Location, mouseDownPoint);
                 Console.WriteLine(diff.X + ", " + diff.Y);
                 if ((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin))
+                {
+                    this.Cursor = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.move, getSkinHead(new Size(32, 32)));
                     base.OnItemDrag(new ItemDragEventArgs(e.Button, new object[] { SelectedNode, true }));
+                }
+                    
 			}
 
             protected override void OnMouseLeave(EventArgs e)
             {
                 t.Stop();
+                mouseDown = false;
                 negativeTimer = false;
                 prevValue = 0;
                 base.OnMouseLeave(e);
