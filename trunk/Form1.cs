@@ -517,8 +517,12 @@ namespace MCSkin3D
 
 		class DoubleBufferedTreeView : TreeView
 		{
+
 			public DoubleBufferedTreeView()
 			{
+                t.SynchronizingObject = this;
+                t.Interval = 200;
+                t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
 				SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 				DoubleBuffered = true;
 			}
@@ -529,8 +533,58 @@ namespace MCSkin3D
 			[DllImport("user32.dll")]
 			static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
 
+            [DllImport("user32.dll", ExactSpelling = false, CharSet = CharSet.Auto)]
+            private static extern long GetWindowLong(IntPtr hwnd, int nIndex);
+
+            private const int GWL_STYLE = (-16);
+            private const int WS_HSCROLL = 0x100000;
+            private const int WS_VSCROLL = 0x200000;
 			private const int SB_HORZ = 0x0;
 			private const int SB_VERT = 0x1;
+            private bool mouseDown = false;
+            private Point mouseDownPoint;
+            private int mouseDownMargin = 5;
+            private int mouseDownTimes = 0;
+            public int scrollMargin = 20;
+            System.Timers.Timer t = new System.Timers.Timer();
+            private bool negativeTimer = false;
+            private int prevValue = 0;
+           
+            public void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                if (negativeTimer)
+                {
+                    this.BeginUpdate();
+                    ScrollPosition = new Point(ScrollPosition.X, ScrollPosition.Y - 1);
+                    if (!(prevValue == ScrollPosition.Y))
+                    {
+                        prevValue = ScrollPosition.Y;
+                    }
+                    else
+                    {
+                        t.Stop();
+                        negativeTimer = false;
+                        prevValue = 0;
+                    }
+                    this.EndUpdate();
+                }
+                else
+                {
+                    this.BeginUpdate();
+                    ScrollPosition = new Point(ScrollPosition.X, ScrollPosition.Y + 1);
+                    if (!(prevValue == ScrollPosition.Y))
+                    {
+                        prevValue = ScrollPosition.Y;
+                    }
+                    else
+                    {
+                        t.Stop();
+                        negativeTimer = false;
+                        prevValue = 0;
+                    }
+                    this.EndUpdate();
+                }
+            }
 
 			Point ScrollPosition
 			{
@@ -540,7 +594,7 @@ namespace MCSkin3D
 						GetScrollPos((int)Handle, SB_HORZ),
 						GetScrollPos((int)Handle, SB_VERT));
 				}
-
+                
 				set
 				{
 					SetScrollPos((IntPtr)Handle, SB_HORZ, value.X, true);
@@ -548,10 +602,26 @@ namespace MCSkin3D
 				}
 			}
 
-            //private bool scrollBarsVisible()
-            //{
-            //
-            //}
+            private Point pointDifference(Point p1, Point p2)
+            {
+                int x = p1.X - p2.X;
+                if (x < 0)
+                {
+                    x *= -1;
+                }
+                int y = p1.Y - p2.Y;
+                if (y < 0)
+                {
+                    y *= -1;
+                }
+                return new Point(x, y);
+            }
+
+            private bool verticalScrollBarVisible()
+            {
+                long wndStyle = wndStyle = GetWindowLong((IntPtr)Handle, GWL_STYLE);
+                return ((wndStyle & WS_VSCROLL) != 0);
+            }
 
 
 			int _numVisible = 0;
@@ -595,8 +665,13 @@ namespace MCSkin3D
 
 			protected override void OnMouseDown(MouseEventArgs e)
 			{
+                if (!mouseDown)
+                {
+                    mouseDown = true;
+                    mouseDownPoint = e.Location;
+                    mouseDownTimes = 0;
+                }
 				base.OnMouseDown(e);
-                base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
 				var node = GetSelectedNodeAt(e.Location);
 				SelectedNode = node;
 
@@ -606,6 +681,7 @@ namespace MCSkin3D
 
 			protected override void OnMouseClick(MouseEventArgs e)
 			{
+                mouseDown = false;
 				base.OnMouseClick(e);
 			}
 
@@ -620,12 +696,43 @@ namespace MCSkin3D
 					_hoverNode = hover;
 					Invalidate();
 				}
-                //if (scrollBarsVisible())
-                //{
-                //
-                //}
 				base.OnMouseMove(e);
+                Console.WriteLine(mouseDown.ToString());
+                if (verticalScrollBarVisible())
+                {
+                    if (e.Y <= scrollMargin)
+                    {
+                        negativeTimer = true;
+                        t.Start();
+                    }
+                    else if (e.Y >= (this.Height - scrollMargin))
+                    {
+                        negativeTimer = false;
+                        t.Start();
+                    }
+                    else
+                    {
+                        t.Stop();
+                        negativeTimer = false;
+                        prevValue = 0;
+                    }
+                }
+                Point diff = pointDifference(e.Location, mouseDownPoint);
+                Console.WriteLine(diff.X + ", " + diff.Y);
+                if (((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin)) || mouseDownTimes > 0)
+                {
+                    base.OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
+                    mouseDownTimes++;
+                }
 			}
+
+            protected override void OnMouseLeave(EventArgs e)
+            {
+                t.Stop();
+                negativeTimer = false;
+                prevValue = 0;
+                base.OnMouseLeave(e);
+            }
 
 			protected override void OnKeyDown(KeyEventArgs e)
 			{
@@ -3084,7 +3191,10 @@ namespace MCSkin3D
 
         private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            DoDragDrop(e.Item, DragDropEffects.Move);
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                DoDragDrop(e.Item, DragDropEffects.Move);
+            }
         }
 
         private void treeView1_DragEnter(object sender, DragEventArgs e)
@@ -3108,6 +3218,20 @@ namespace MCSkin3D
             TreeNode dragToItem = treeView1.GetSelectedNodeAt(new Point(cp.X, cp.Y));
             TreeNode selectedNode = treeView1.SelectedNode;
 
+            if (dragToItem == null)
+            {
+                if ("\\" == selectedNode.FullPath)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (dragToItem.FullPath == selectedNode.FullPath)
+                {
+                    return;
+                }
+            }
             if (e.Data.GetDataPresent("System.Windows.Forms.TreeNode") || e.Data.GetDataPresent("MCSkin3D.Skin"))
             {
                 if (dragToItem == selectedNode)
@@ -3197,10 +3321,6 @@ namespace MCSkin3D
                 }
                 else if (!(dragToItem is Skin) && !(selectedNode is Skin))
                 {
-                    if (dragToItem.FullPath == selectedNode.FullPath)
-                    {
-                        return;
-                    }
                     if (dragToItem == null)
                     {
                         string oldPath = "Skins\\" + selectedNode.FullPath;
@@ -3270,14 +3390,15 @@ namespace MCSkin3D
                                     }
                                     else
                                     {
-                                        string treePath = ((Skin)dragToItem).Parent.FullPath;
+
+                                        string treePath = "Skins\\" + ((Skin)dragToItem).Parent.FullPath;
                                         string newPath = treePath + "\\" + System.IO.Path.GetFileName(fileDrop[i]);
                                         if (!File.Exists(newPath))
                                         {
                                             File.Copy(fileDrop[i], newPath);
                                         }
                                         Skin newSkin = new Skin(newPath);
-                                        dragToItem.Nodes.Add(newSkin);
+                                        dragToItem.Parent.Nodes.Add(newSkin);
                                         newSkin.SetImages();
                                         treeView1.SelectedNode = newSkin;
                                     }
