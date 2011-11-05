@@ -699,7 +699,9 @@ namespace MCSkin3D
                         Bitmap img = ((Skin)SelectedNode).Head;
                         using (Graphics g = Graphics.FromImage(skinHeadImage))
                         {
-                            g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, s.Width, s.Height), GraphicsUnit.Pixel);
+							g.InterpolationMode = InterpolationMode.NearestNeighbor;
+							g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                            g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
                         }
                         img.Dispose();
                         img = null;
@@ -3286,7 +3288,7 @@ namespace MCSkin3D
             if (e.Button == System.Windows.Forms.MouseButtons.Left &&
 				e.Item is object[])
             {
-                DoDragDrop(((object[])e.Item)[0], DragDropEffects.Move);
+                treeView1.DoDragDrop(((object[])e.Item)[0], DragDropEffects.Move);
             }
         }
 

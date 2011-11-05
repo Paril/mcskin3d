@@ -98,9 +98,10 @@
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.rgbTabPage = new System.Windows.Forms.TabPage();
+			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
+			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
-			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
 			this.redNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
 			this.greenNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -149,7 +150,6 @@
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.uploadButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
-			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -256,7 +256,7 @@
 			// 
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
 			this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-			this.undoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.undoToolStripMenuItem.Text = "&Undo";
 			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
 			// 
@@ -264,19 +264,19 @@
 			// 
 			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
 			this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.redoToolStripMenuItem.Text = "&Redo";
 			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(141, 6);
 			// 
 			// toolToolStripMenuItem
 			// 
 			this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-			this.toolToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.toolToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.toolToolStripMenuItem.Text = "&Tool";
 			// 
 			// viewToolStripMenuItem
@@ -807,6 +807,24 @@
 			this.rgbTabPage.Text = "RGBA";
 			this.rgbTabPage.UseVisualStyleBackColor = true;
 			// 
+			// colorPreview1
+			// 
+			this.colorPreview1.Location = new System.Drawing.Point(203, 35);
+			this.colorPreview1.Name = "colorPreview1";
+			this.colorPreview1.Size = new System.Drawing.Size(36, 36);
+			this.colorPreview1.TabIndex = 17;
+			this.colorPreview1.Text = "colorPreview1";
+			this.colorPreview1.Click += new System.EventHandler(this.colorPreview1_Click);
+			// 
+			// colorPreview2
+			// 
+			this.colorPreview2.Location = new System.Drawing.Point(218, 50);
+			this.colorPreview2.Name = "colorPreview2";
+			this.colorPreview2.Size = new System.Drawing.Size(36, 36);
+			this.colorPreview2.TabIndex = 20;
+			this.colorPreview2.Text = "colorPreview2";
+			this.colorPreview2.Click += new System.EventHandler(this.colorPreview2_Click);
+			// 
 			// textBox1
 			// 
 			this.textBox1.Location = new System.Drawing.Point(225, 118);
@@ -825,15 +843,6 @@
 			this.label9.Size = new System.Drawing.Size(14, 13);
 			this.label9.TabIndex = 18;
 			this.label9.Text = "#";
-			// 
-			// colorPreview1
-			// 
-			this.colorPreview1.Location = new System.Drawing.Point(203, 35);
-			this.colorPreview1.Name = "colorPreview1";
-			this.colorPreview1.Size = new System.Drawing.Size(36, 36);
-			this.colorPreview1.TabIndex = 17;
-			this.colorPreview1.Text = "colorPreview1";
-			this.colorPreview1.Click += new System.EventHandler(this.colorPreview1_Click);
 			// 
 			// redNumericUpDown
 			// 
@@ -1411,15 +1420,6 @@
 			this.label1.Size = new System.Drawing.Size(191, 13);
 			this.label1.TabIndex = 5;
 			this.label1.Text = "(Hold shift to open Login dialog always)";
-			// 
-			// colorPreview2
-			// 
-			this.colorPreview2.Location = new System.Drawing.Point(218, 50);
-			this.colorPreview2.Name = "colorPreview2";
-			this.colorPreview2.Size = new System.Drawing.Size(36, 36);
-			this.colorPreview2.TabIndex = 20;
-			this.colorPreview2.Text = "colorPreview2";
-			this.colorPreview2.Click += new System.EventHandler(this.colorPreview2_Click);
 			// 
 			// Form1
 			// 

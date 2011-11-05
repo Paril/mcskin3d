@@ -84,6 +84,7 @@
     <Compile Include="DodgeBurnTool.cs" />
     <Compile Include="DropperTool.cs" />
     <Compile Include="EraserTool.cs" />
+    <Compile Include="Jonas\McSkinCursor.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
@@ -369,6 +370,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\buttong-down2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\move.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\no.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
