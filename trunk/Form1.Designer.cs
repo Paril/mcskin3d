@@ -42,12 +42,6 @@
 			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.cameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.pencilToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.dropperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.eraserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.dodgeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.burnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.perspectiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,12 +134,6 @@
 			this.undoToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.redoToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.cameraToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.pencilToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.pipetteToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.eraserToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.dodgeToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.burnToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.perspectiveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.orthographicToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -161,6 +149,7 @@
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.uploadButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
+			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -267,7 +256,7 @@
 			// 
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
 			this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-			this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.undoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.undoToolStripMenuItem.Text = "&Undo";
 			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
 			// 
@@ -275,80 +264,20 @@
 			// 
 			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
 			this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.redoToolStripMenuItem.Text = "&Redo";
 			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(141, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(149, 6);
 			// 
 			// toolToolStripMenuItem
 			// 
-			this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cameraToolStripMenuItem,
-            this.pencilToolStripMenuItem,
-            this.dropperToolStripMenuItem,
-            this.eraserToolStripMenuItem,
-            this.dodgeToolStripMenuItem,
-            this.burnToolStripMenuItem});
 			this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-			this.toolToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.toolToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.toolToolStripMenuItem.Text = "&Tool";
-			// 
-			// cameraToolStripMenuItem
-			// 
-			this.cameraToolStripMenuItem.Name = "cameraToolStripMenuItem";
-			this.cameraToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.Q)));
-			this.cameraToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.cameraToolStripMenuItem.Text = "&Camera";
-			this.cameraToolStripMenuItem.Click += new System.EventHandler(this.cameraToolStripMenuItem_Click);
-			// 
-			// pencilToolStripMenuItem
-			// 
-			this.pencilToolStripMenuItem.Name = "pencilToolStripMenuItem";
-			this.pencilToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.W)));
-			this.pencilToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.pencilToolStripMenuItem.Text = "&Pencil";
-			this.pencilToolStripMenuItem.Click += new System.EventHandler(this.pencilToolStripMenuItem_Click);
-			// 
-			// dropperToolStripMenuItem
-			// 
-			this.dropperToolStripMenuItem.Name = "dropperToolStripMenuItem";
-			this.dropperToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.E)));
-			this.dropperToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.dropperToolStripMenuItem.Text = "&Dropper";
-			this.dropperToolStripMenuItem.Click += new System.EventHandler(this.dropperToolStripMenuItem_Click);
-			// 
-			// eraserToolStripMenuItem
-			// 
-			this.eraserToolStripMenuItem.Name = "eraserToolStripMenuItem";
-			this.eraserToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.R)));
-			this.eraserToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.eraserToolStripMenuItem.Text = "&Eraser";
-			// 
-			// dodgeToolStripMenuItem
-			// 
-			this.dodgeToolStripMenuItem.Name = "dodgeToolStripMenuItem";
-			this.dodgeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.T)));
-			this.dodgeToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.dodgeToolStripMenuItem.Text = "Dodge";
-			this.dodgeToolStripMenuItem.Click += new System.EventHandler(this.dodgeToolStripMenuItem_Click);
-			// 
-			// burnToolStripMenuItem
-			// 
-			this.burnToolStripMenuItem.Name = "burnToolStripMenuItem";
-			this.burnToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.Y)));
-			this.burnToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.burnToolStripMenuItem.Text = "Burn";
-			this.burnToolStripMenuItem.Click += new System.EventHandler(this.burnToolStripMenuItem_Click);
 			// 
 			// viewToolStripMenuItem
 			// 
@@ -852,9 +781,10 @@
 			// 
 			// rgbTabPage
 			// 
+			this.rgbTabPage.Controls.Add(this.colorPreview1);
+			this.rgbTabPage.Controls.Add(this.colorPreview2);
 			this.rgbTabPage.Controls.Add(this.textBox1);
 			this.rgbTabPage.Controls.Add(this.label9);
-			this.rgbTabPage.Controls.Add(this.colorPreview1);
 			this.rgbTabPage.Controls.Add(this.redNumericUpDown);
 			this.rgbTabPage.Controls.Add(this.label2);
 			this.rgbTabPage.Controls.Add(this.greenNumericUpDown);
@@ -898,11 +828,12 @@
 			// 
 			// colorPreview1
 			// 
-			this.colorPreview1.Location = new System.Drawing.Point(183, 15);
+			this.colorPreview1.Location = new System.Drawing.Point(203, 35);
 			this.colorPreview1.Name = "colorPreview1";
 			this.colorPreview1.Size = new System.Drawing.Size(36, 36);
 			this.colorPreview1.TabIndex = 17;
 			this.colorPreview1.Text = "colorPreview1";
+			this.colorPreview1.Click += new System.EventHandler(this.colorPreview1_Click);
 			// 
 			// redNumericUpDown
 			// 
@@ -1274,12 +1205,6 @@
             this.undoToolStripButton,
             this.redoToolStripButton,
             this.toolStripSeparator1,
-            this.cameraToolStripButton,
-            this.pencilToolStripButton,
-            this.pipetteToolStripButton,
-            this.eraserToolStripButton,
-            this.dodgeToolStripButton,
-            this.burnToolStripButton,
             this.toolStripSeparator2,
             this.perspectiveToolStripButton,
             this.orthographicToolStripButton,
@@ -1348,66 +1273,6 @@
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-			// 
-			// cameraToolStripButton
-			// 
-			this.cameraToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.cameraToolStripButton.Image = global::MCSkin3D.Properties.Resources.eye__1_;
-			this.cameraToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.cameraToolStripButton.Name = "cameraToolStripButton";
-			this.cameraToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.cameraToolStripButton.Text = "Camera";
-			this.cameraToolStripButton.Click += new System.EventHandler(this.cameraToolStripButton_Click);
-			// 
-			// pencilToolStripButton
-			// 
-			this.pencilToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.pencilToolStripButton.Image = global::MCSkin3D.Properties.Resources.pen;
-			this.pencilToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.pencilToolStripButton.Name = "pencilToolStripButton";
-			this.pencilToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.pencilToolStripButton.Text = "Pencil";
-			this.pencilToolStripButton.Click += new System.EventHandler(this.pencilToolStripButton_Click);
-			// 
-			// pipetteToolStripButton
-			// 
-			this.pipetteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.pipetteToolStripButton.Image = global::MCSkin3D.Properties.Resources.pipette;
-			this.pipetteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.pipetteToolStripButton.Name = "pipetteToolStripButton";
-			this.pipetteToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.pipetteToolStripButton.Text = "Dropper";
-			this.pipetteToolStripButton.Click += new System.EventHandler(this.pipetteToolStripButton_Click);
-			// 
-			// eraserToolStripButton
-			// 
-			this.eraserToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.eraserToolStripButton.Image = global::MCSkin3D.Properties.Resources.erase;
-			this.eraserToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.eraserToolStripButton.Name = "eraserToolStripButton";
-			this.eraserToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.eraserToolStripButton.Text = "Eraser";
-			this.eraserToolStripButton.Click += new System.EventHandler(this.eraserToolStripButton_Click);
-			// 
-			// dodgeToolStripButton
-			// 
-			this.dodgeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.dodgeToolStripButton.Image = global::MCSkin3D.Properties.Resources.dodge;
-			this.dodgeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.dodgeToolStripButton.Name = "dodgeToolStripButton";
-			this.dodgeToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.dodgeToolStripButton.Text = "Dodge";
-			this.dodgeToolStripButton.Click += new System.EventHandler(this.dodgeToolStripButton_Click);
-			// 
-			// burnToolStripButton
-			// 
-			this.burnToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.burnToolStripButton.Image = global::MCSkin3D.Properties.Resources.burn;
-			this.burnToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.burnToolStripButton.Name = "burnToolStripButton";
-			this.burnToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.burnToolStripButton.Text = "Burn";
-			this.burnToolStripButton.Click += new System.EventHandler(this.burnToolStripButton_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -1547,6 +1412,15 @@
 			this.label1.TabIndex = 5;
 			this.label1.Text = "(Hold shift to open Login dialog always)";
 			// 
+			// colorPreview2
+			// 
+			this.colorPreview2.Location = new System.Drawing.Point(218, 50);
+			this.colorPreview2.Name = "colorPreview2";
+			this.colorPreview2.Size = new System.Drawing.Size(36, 36);
+			this.colorPreview2.TabIndex = 20;
+			this.colorPreview2.Text = "colorPreview2";
+			this.colorPreview2.Click += new System.EventHandler(this.colorPreview2_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1557,6 +1431,7 @@
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.Name = "Form1";
 			this.Text = "MCSkin3D";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			this.mainMenuStrip.ResumeLayout(false);
 			this.mainMenuStrip.PerformLayout();
 			this.contextMenuStrip1.ResumeLayout(false);
@@ -1603,8 +1478,6 @@
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ToolStrip toolStrip1;
-		private System.Windows.Forms.ToolStripButton cameraToolStripButton;
-		private System.Windows.Forms.ToolStripButton pencilToolStripButton;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.NumericUpDown alphaNumericUpDown;
 		private System.Windows.Forms.Label label4;
@@ -1613,7 +1486,6 @@
 		private System.Windows.Forms.NumericUpDown greenNumericUpDown;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown redNumericUpDown;
-		private System.Windows.Forms.ToolStripButton pipetteToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton redoToolStripButton;
 		private System.Windows.Forms.ToolStripButton undoToolStripButton;
@@ -1652,9 +1524,6 @@
 		private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem cameraToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem pencilToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem dropperToolStripMenuItem;
 		private MB.Controls.ColorSlider blueColorSlider;
 		private MB.Controls.ColorSlider redColorSlider;
 		private MB.Controls.ColorSlider greenColorSlider;
@@ -1663,14 +1532,8 @@
 		private System.Windows.Forms.TabPage swatchTabPage;
 		private System.Windows.Forms.TabPage rgbTabPage;
 		private SwatchContainer swatchContainer;
-		private System.Windows.Forms.ToolStripButton eraserToolStripButton;
-		private System.Windows.Forms.ToolStripMenuItem eraserToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem keyboardShortcutsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripButton dodgeToolStripButton;
-		private System.Windows.Forms.ToolStripButton burnToolStripButton;
-		private System.Windows.Forms.ToolStripMenuItem dodgeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem burnToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem backgroundColorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripButton screenshotToolStripButton;
@@ -1726,6 +1589,7 @@
 		private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem4;
 		private System.Windows.Forms.SplitContainer splitContainer4;
+		private Paril.Controls.Color.ColorPreview colorPreview2;
 	}
 }
 

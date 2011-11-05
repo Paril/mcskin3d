@@ -55,17 +55,14 @@ namespace MCSkin3D
 		float _2dCamOffsetY = 0;
 		float _2dZoom = 8;
 		float _3dRotationX = 0, _3dRotationY = 0;
-		PixelsChangedUndoable _changedPixels = null;
 		bool _mouseIsDown = false;
 		Point _mousePoint;
 		UndoBuffer _currentUndoBuffer = null;
 		Skin _lastSkin = null;
 		bool _skipListbox = false;
 		internal PleaseWait _pleaseWaitForm;
-		ToolStripButton[] _toolButtons = null;
-		ToolStripMenuItem[] _toolMenus = null;
 		Tools _currentTool = Tools.Camera;
-		Color _currentColor = Color.FromArgb(255, 255, 255, 255);
+		Color _primaryColor = Color.FromArgb(255, 255, 255, 255), _secondaryColor = Color.FromArgb(255, 0, 0, 0);
 		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
 		Renderer _renderer;
@@ -73,7 +70,16 @@ namespace MCSkin3D
 		int _selectedBackground = 0;
 		GLControl rendererControl;
 		int _toolboxUpNormal, _toolboxUpHover, _toolboxDownNormal, _toolboxDownHover;
+
+		List<ToolIndex> _tools = new List<ToolIndex>();
+		ToolIndex _selectedTool;
 		#endregion
+
+		public DodgeBurnOptions DodgeBurnOptions
+		{
+			get;
+			private set;
+		}
 
 		// ===============================================
 		// Constructor
@@ -84,6 +90,22 @@ namespace MCSkin3D
 			InitializeComponent();
 
 			GlobalSettings.Load();
+
+			_tools.Add(new ToolIndex(new CameraTool(), null, "Camera", Properties.Resources.eye__1_, Keys.C));
+			_tools.Add(new ToolIndex(new PencilTool(), new PencilOptions(), "Pencil", Properties.Resources.pen, Keys.P));
+			_tools.Add(new ToolIndex(new EraserTool(), null, "Eraser", Properties.Resources.erase, Keys.E));
+			_tools.Add(new ToolIndex(new DropperTool(), null, "Dropper", Properties.Resources.pipette, Keys.D));
+			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "Dodge/Burn", Properties.Resources.dodge, Keys.B));
+
+			for (int i = _tools.Count - 1; i >= 0; --i)
+			{
+				toolToolStripMenuItem.DropDownItems.Insert(0, _tools[i].MenuItem);
+				_tools[i].MenuItem.Click += ToolMenuItemClicked;
+				toolStrip1.Items.Insert(6, _tools[i].Button);
+				_tools[i].Button.Click += ToolMenuItemClicked;
+			}
+
+			SetSelectedTool(_tools[0]);
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -160,6 +182,7 @@ namespace MCSkin3D
 			rendererControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseDown);
 			rendererControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseMove);
 			rendererControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseUp);
+			rendererControl.MouseLeave += new EventHandler(rendererControl_MouseLeave);
 			rendererControl.Resize += new System.EventHandler(this.rendererControl_Resize);
 			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
 
@@ -175,6 +198,28 @@ namespace MCSkin3D
 			_animTimer.SynchronizingObject = this;
 		}
 		#endregion
+
+		public MouseButtons CameraRotate
+		{
+			get
+			{
+				if (_selectedTool == _tools[(int)Tools.Camera])
+					return MouseButtons.Left;
+				else
+					return MouseButtons.Right;
+			}
+		}
+
+		public MouseButtons CameraZoom
+		{
+			get
+			{
+				if (_selectedTool == _tools[(int)Tools.Camera])
+					return MouseButtons.Right;
+				else
+					return MouseButtons.Middle;
+			}
+		}
 
 		// =====================================================================
 		// Updating
@@ -281,6 +326,14 @@ namespace MCSkin3D
 			_shortcutEditor.AddShortcut(shortcut);
 		}
 
+		void InitMenuShortcut(ToolStripMenuItem item, Keys keys, Action callback)
+		{
+			MenuStripShortcut shortcut = new MenuStripShortcut(item, keys);
+			shortcut.Pressed = callback;
+
+			_shortcutEditor.AddShortcut(shortcut);
+		}
+
 		void InitUnlinkedShortcut(string name, Keys defaultKeys, Action callback)
 		{
 			ShortcutBase shortcut = new ShortcutBase(name, defaultKeys);
@@ -302,12 +355,6 @@ namespace MCSkin3D
 			// shortcut menus
 			InitMenuShortcut(undoToolStripMenuItem, PerformUndo);
 			InitMenuShortcut(redoToolStripMenuItem, PerformRedo);
-			InitMenuShortcut(cameraToolStripMenuItem, () => SetTool(Tools.Camera));
-			InitMenuShortcut(pencilToolStripMenuItem, () => SetTool(Tools.Pencil));
-			InitMenuShortcut(dropperToolStripMenuItem, () => SetTool(Tools.Dropper));
-			InitMenuShortcut(eraserToolStripMenuItem, () => SetTool(Tools.Eraser));
-			InitMenuShortcut(dodgeToolStripMenuItem, () => SetTool(Tools.Dodge));
-			InitMenuShortcut(burnToolStripMenuItem, () => SetTool(Tools.Burn));
 			InitMenuShortcut(perspectiveToolStripMenuItem, () => SetViewMode(ViewMode.Perspective));
 			InitMenuShortcut(textureToolStripMenuItem, () => SetViewMode(ViewMode.Orthographic));
 			InitMenuShortcut(animateToolStripMenuItem, ToggleAnimation);
@@ -330,6 +377,12 @@ namespace MCSkin3D
 			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
 
+			InitMenuShortcut(_tools[(int)Tools.Camera].MenuItem, _tools[(int)Tools.Camera].DefaultKeys, PerformCamera);
+			InitMenuShortcut(_tools[(int)Tools.Pencil].MenuItem, _tools[(int)Tools.Pencil].DefaultKeys, PerformCamera);
+			InitMenuShortcut(_tools[(int)Tools.Eraser].MenuItem, _tools[(int)Tools.Eraser].DefaultKeys, PerformCamera);
+			InitMenuShortcut(_tools[(int)Tools.Dropper].MenuItem, _tools[(int)Tools.Dropper].DefaultKeys, PerformCamera);
+			InitMenuShortcut(_tools[(int)Tools.DodgeBurn].MenuItem, _tools[(int)Tools.DodgeBurn].DefaultKeys, PerformCamera);
+
 			// not in the menu
 			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
 			InitUnlinkedShortcut("Upload skin", Keys.Control | Keys.U, PerformUpload);
@@ -339,10 +392,43 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("Delete node", Keys.Delete, PerformDeleteSkin);
 			InitUnlinkedShortcut("Clone node", Keys.Control | Keys.C, PerformCloneSkin);
 			InitUnlinkedShortcut("Change Name", Keys.Control | Keys.N, PerformNameChange);
+			InitUnlinkedShortcut("Switch Foreground/Background", Keys.S, PerformSwitchColor);
 			InitControlShortcut("Swatchlist zoom in", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("Swatchlist zoom out", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
 			InitControlShortcut("Treeview zoom in", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
 			InitControlShortcut("Treeview zoom out", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
+		}
+
+		void PerformSwitchColor()
+		{
+			if (_secondaryIsFront)
+				colorPreview1_Click(null, null);
+			else
+				colorPreview2_Click(null, null);
+		}
+
+		void SetSelectedTool(ToolIndex index)
+		{
+			if (_selectedTool != null)
+				_selectedTool.MenuItem.Checked = _selectedTool.Button.Checked = false;
+
+			_selectedTool = index;
+			index.MenuItem.Checked = index.Button.Checked = true;
+
+			splitContainer4.Panel1.Controls.Clear();
+
+			if (_selectedTool.OptionsPanel != null)
+				splitContainer4.Panel1.Controls.Add(_selectedTool.OptionsPanel);
+		}
+
+		void ToolMenuItemClicked(object sender, EventArgs e)
+		{
+			ToolStripItem item = (ToolStripItem)sender;
+			SetSelectedTool((ToolIndex)item.Tag);
+		}
+
+		void PerformCamera()
+		{
 		}
 
 		void PerformTreeViewZoomIn()
@@ -461,26 +547,10 @@ namespace MCSkin3D
 			InitShortcuts();
 			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 
-			SetTool(Tools.Camera);
 			SetTransparencyMode(GlobalSettings.Transparency);
 			SetViewMode(_currentViewMode);
 
 			rendererControl.MakeCurrent();
-
-			/*foreach (var file in Directory.EnumerateFiles("./Skins/", "*.png"))
-				treeView1.Items.Add(new Skin(file));
-
-			treeView1.SelectedIndex = 0;
-			foreach (var skin in treeView1.Items)
-			{
-				Skin s = (Skin)skin;
-
-				if (s.FileName.Equals(GlobalSettings.LastSkin, stringComparison.CurrentCultureIgnoreCase))
-				{
-					treeView1.SelectedNode = s;
-					break;
-				}
-			}*/
 
 			List<Skin> skins = new List<Skin>();
 			RecurseAddDirectories("Skins", treeView1.Nodes, skins);
@@ -1155,7 +1225,7 @@ namespace MCSkin3D
 			_renderer.Render();
 
 			// Draw ghosted parts
-			if (GlobalSettings.Ghost)
+			if (GlobalSettings.Ghost && !pickView)
 			{
 				foreach (var mesh in PlayerModel.HumanModel.Meshes)
 				{
@@ -1219,7 +1289,7 @@ namespace MCSkin3D
 			_renderer.Render();
 
 			// Draw ghosted parts
-			if (GlobalSettings.Ghost)
+			if (GlobalSettings.Ghost && !pickView)
 			{
 				foreach (var mesh in PlayerModel.HumanModel.Meshes)
 				{
@@ -1268,16 +1338,21 @@ namespace MCSkin3D
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
-				if (_currentTool == Tools.Pencil || _currentTool == Tools.Eraser || _currentTool == Tools.Burn || _currentTool == Tools.Dodge)
+				Point p = Point.Empty;
+
+				if (GetPick(_mousePoint.X, _mousePoint.Y, ref p))
 				{
-					Point p = Point.Empty;
-
-					if (GetPick(_mousePoint.X, _mousePoint.Y, ref p))
-						UseToolOnPixel(array, skin, p.X, p.Y);
+					if (_selectedTool.Tool.RequestPreview(array, skin, p.X, p.Y))
+					{
+						RenderState.BindTexture(_previewPaint);
+						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					}
 				}
-
-				RenderState.BindTexture(_previewPaint);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				else
+				{
+					RenderState.BindTexture(_previewPaint);
+					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				}
 			}
 		}
 
@@ -1311,25 +1386,15 @@ namespace MCSkin3D
 			return false;
 		}
 
-		Color UseToolOnPixel(int[] pixels, Skin skin, int x, int y)
+		public Color SelectedColor
 		{
-			int pixNum = x + (skin.Width * y);
-			var c = pixels[pixNum];
-			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-			Color newColor = Color.White;
+			get { return (_secondaryIsFront) ? _secondaryColor : _primaryColor; }
+			set { SetColor(value); }
+		}
 
-			// blend
-			if (_currentTool == Tools.Pencil)
-				newColor = Color.FromArgb(ColorBlending.AlphaBlend(_currentColor, oldColor).ToArgb());
-			else if (_currentTool == Tools.Burn)
-				newColor = Color.FromArgb(ColorBlending.Burn(oldColor, 0.75f).ToArgb());
-			else if (_currentTool == Tools.Dodge)
-				newColor = Color.FromArgb(ColorBlending.Dodge(oldColor, 0.25f).ToArgb());
-			else if (_currentTool == Tools.Eraser)
-				newColor = Color.FromArgb(0);
-
-			pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
-			return newColor;
+		public Color UnselectedColor
+		{
+			get { return (!_secondaryIsFront) ? _secondaryColor : _primaryColor; }
 		}
 
 		void UseToolOnViewport(int x, int y)
@@ -1347,30 +1412,11 @@ namespace MCSkin3D
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
-				if (_currentTool == Tools.Pencil || _currentTool == Tools.Eraser || _currentTool == Tools.Burn || _currentTool == Tools.Dodge)
+				if (_selectedTool.Tool.MouseMoveOnSkin(array, skin, p.X, p.Y))
 				{
-					if (_changedPixels == null)
-					{
-						_changedPixels = new PixelsChangedUndoable();
-					}
-
-					if (!_changedPixels.Points.ContainsKey(new Point(p.X, p.Y)))
-					{
-						var c = array[p.X + (skin.Width * p.Y)];
-						var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-						_changedPixels.Points[new Point(p.X, p.Y)] = Tuple.MakeTuple
-							(oldColor,
-							UseToolOnPixel(array, skin, p.X, p.Y));
-
-						SetCanSave(true);
-						skin.Dirty = true;
-						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-					}
-				}
-				else if (_currentTool == Tools.Dropper)
-				{
-					var c = array[p.X + (skin.Width * p.Y)];
-					SetColor(Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF));
+					SetCanSave(true);
+					skin.Dirty = true;
+					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 				}
 			}
 
@@ -1869,30 +1915,6 @@ namespace MCSkin3D
 			}
 		}
 
-		void SetTool(Tools tool)
-		{
-			_currentTool = tool;
-
-			if (_toolButtons == null)
-				_toolButtons = new ToolStripButton[] { cameraToolStripButton, pencilToolStripButton, pipetteToolStripButton, eraserToolStripButton, dodgeToolStripButton, burnToolStripButton };
-			if (_toolMenus == null)
-				_toolMenus = new ToolStripMenuItem[] { cameraToolStripMenuItem, pencilToolStripMenuItem, dropperToolStripMenuItem, eraserToolStripMenuItem, dodgeToolStripMenuItem, burnToolStripMenuItem };
-
-			for (int i = 0; i < _toolButtons.Length; ++i)
-			{
-				if (i == (int)tool)
-				{
-					_toolButtons[i].Checked = true;
-					_toolMenus[i].Checked = true;
-				}
-				else
-				{
-					_toolButtons[i].Checked = false;
-					_toolMenus[i].Checked = false;
-				}
-			}
-		}
-
 		#region Saving
 		void SetCanSave(bool value)
 		{
@@ -2023,18 +2045,26 @@ namespace MCSkin3D
 			rendererControl.Invalidate();
 		}
 
-		void SetColor(Color c)
+		Paril.Controls.Color.ColorPreview SelectedColorPreview
 		{
-			_currentColor = c;
-			colorPreview1.ForeColor = _currentColor;
+			get { return (_secondaryIsFront) ? colorPreview2 : colorPreview1; }
+		}
 
-			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(c);
+		void SetColor(Control colorPreview, ref Color currentColor, Color newColor)
+		{
+			currentColor = newColor;
+			colorPreview.ForeColor = currentColor;
+
+			if (colorPreview != SelectedColorPreview)
+				return;
+
+			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(newColor);
 
 			_skipColors = true;
-			redNumericUpDown.Value = c.R;
-			greenNumericUpDown.Value = c.G;
-			blueNumericUpDown.Value = c.B;
-			alphaNumericUpDown.Value = c.A;
+			redNumericUpDown.Value = newColor.R;
+			greenNumericUpDown.Value = newColor.G;
+			blueNumericUpDown.Value = newColor.B;
+			alphaNumericUpDown.Value = newColor.A;
 
 			colorSquare.CurrentHue = (int)hsl.Hue;
 			colorSquare.CurrentSat = (int)(hsl.Saturation * 240);
@@ -2044,13 +2074,13 @@ namespace MCSkin3D
 			saturationNumericUpDown.Value = colorSquare.CurrentSat;
 			luminanceNumericUpDown.Value = saturationSlider.CurrentLum;
 
-            redRenderer.StartColor = Color.FromArgb(255, 0, _currentColor.G, _currentColor.B);
-            greenRenderer.StartColor = Color.FromArgb(255, _currentColor.R, 0, _currentColor.B);
-            blueRenderer.StartColor = Color.FromArgb(255, _currentColor.R, _currentColor.G, 0);
+			redRenderer.StartColor = Color.FromArgb(255, 0, currentColor.G, currentColor.B);
+			greenRenderer.StartColor = Color.FromArgb(255, currentColor.R, 0, currentColor.B);
+			blueRenderer.StartColor = Color.FromArgb(255, currentColor.R, currentColor.G, 0);
 
-			redRenderer.EndColor = Color.FromArgb(255, 255, _currentColor.G, _currentColor.B);
-			greenRenderer.EndColor = Color.FromArgb(255, _currentColor.R, 255, _currentColor.B);
-			blueRenderer.EndColor = Color.FromArgb(255, _currentColor.R, _currentColor.G, 255);
+			redRenderer.EndColor = Color.FromArgb(255, 255, currentColor.G, currentColor.B);
+			greenRenderer.EndColor = Color.FromArgb(255, currentColor.R, 255, currentColor.B);
+			blueRenderer.EndColor = Color.FromArgb(255, currentColor.R, currentColor.G, 255);
 
 			hueRenderer.Saturation = colorSquare.CurrentSat;
 			hueRenderer.Luminance = saturationSlider.CurrentLum;
@@ -2061,21 +2091,27 @@ namespace MCSkin3D
 			lightnessRenderer.Hue = colorSquare.CurrentHue;
 			lightnessRenderer.Saturation = colorSquare.CurrentSat;
 
-			redColorSlider.Value = _currentColor.R;
-			greenColorSlider.Value = _currentColor.G;
-			blueColorSlider.Value = _currentColor.B;
-			alphaColorSlider.Value = _currentColor.A;
+			redColorSlider.Value = currentColor.R;
+			greenColorSlider.Value = currentColor.G;
+			blueColorSlider.Value = currentColor.B;
+			alphaColorSlider.Value = currentColor.A;
 
 			hueColorSlider.Value = colorSquare.CurrentHue;
 			saturationColorSlider.Value = colorSquare.CurrentSat;
 			lightnessColorSlider.Value = saturationSlider.CurrentLum;
 
 			if (!_editingHex)
-			{
-				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", c.R, c.G, c.B, c.A);
-			}
+				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", newColor.R, newColor.G, newColor.B, newColor.A);
 
 			_skipColors = false;
+		}
+
+		void SetColor(Color c)
+		{
+			if (_secondaryIsFront)
+				SetColor(colorPreview2, ref _secondaryColor, c);
+			else
+				SetColor(colorPreview1, ref _primaryColor, c);
 		}
 
 		void SetViewMode(ViewMode newMode)
@@ -2435,6 +2471,7 @@ namespace MCSkin3D
 			SetPreview();
 
 			GL.ClearColor(GlobalSettings.BackgroundColor);
+			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			SetupMainMode();
@@ -2543,6 +2580,43 @@ namespace MCSkin3D
 			}
 		}
 
+		public float ToolScale
+		{
+			get
+			{
+				const float baseSize = 200.0f;
+
+				return baseSize / rendererControl.Size.Width;
+			}
+		}
+
+		public void RotateView(Point delta, float factor)
+		{
+			if (_currentViewMode == ViewMode.Perspective)
+			{
+				_3dRotationY += (float)(delta.X * ToolScale) * factor;
+				_3dRotationX += (float)(delta.Y * ToolScale) * factor;
+			}
+			else
+			{
+				_2dCamOffsetX += delta.X / _2dZoom;
+				_2dCamOffsetY += delta.Y / _2dZoom;
+			}
+		}
+
+		public void ScaleView(Point delta, float factor)
+		{
+			if (_currentViewMode == ViewMode.Perspective)
+				_3dZoom += (float)(-delta.Y * ToolScale) * factor;
+			else
+			{
+				_2dZoom += -delta.Y / 25.0f;
+
+				if (_2dZoom < 1)
+					_2dZoom = 1;
+			}
+		}
+
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			float halfWidth = rendererControl.Width / 2.0f;
@@ -2562,45 +2636,30 @@ namespace MCSkin3D
 				_animTimer.Start();
 				return;
 			}
-				
+
 			_mouseIsDown = true;
 
 			if (e.Button == MouseButtons.Left)
+			{
+				_selectedTool.Tool.BeginClick(_lastSkin, e);
 				UseToolOnViewport(e.X, e.Y);
+			}
+			else
+				_tools[(int)Tools.Camera].Tool.BeginClick(_lastSkin, e);
 		}
 
 		void rendererControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (_mouseIsDown)
 			{
-				var delta = new Point(e.X - _mousePoint.X, e.Y - _mousePoint.Y);
-
-				if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Left) ||
-					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Right))
+				if (e.Button == MouseButtons.Left)
 				{
-					if (_currentViewMode == ViewMode.Perspective)
-					{
-						_3dRotationY += (float)delta.X;
-						_3dRotationX += (float)delta.Y;
-					}
-					else
-					{
-						_2dCamOffsetX += delta.X / _2dZoom;
-						_2dCamOffsetY += delta.Y / _2dZoom;
-					}
-				}
-				else if ((_currentTool == Tools.Camera && e.Button == MouseButtons.Right) ||
-					((_currentTool != Tools.Camera) && e.Button == MouseButtons.Middle))
-				{
-					if (_currentViewMode == ViewMode.Perspective)
-						_3dZoom += (float)-delta.Y;
-					else
-						_2dZoom += -delta.Y / 25.0f;
-                    if (_2dZoom < 1) _2dZoom = 1;
-				}
-
-				if ((_currentTool != Tools.Camera) && e.Button == MouseButtons.Left)
+					_selectedTool.Tool.MouseMove(_lastSkin, e);
 					UseToolOnViewport(e.X, e.Y);
+				}
+				else
+					_tools[(int)Tools.Camera].Tool.MouseMove(_lastSkin, e);
+
 
 				rendererControl.Invalidate();
 			}
@@ -2608,18 +2667,28 @@ namespace MCSkin3D
 			_mousePoint = e.Location;
 		}
 
+		public void CheckUndo()
+		{
+			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+		}
+
 		void rendererControl_MouseUp(object sender, MouseEventArgs e)
 		{
-			if (_currentUndoBuffer != null && _changedPixels != null)
+			if (_mouseIsDown)
 			{
-				_currentUndoBuffer.AddBuffer(_changedPixels);
-				_changedPixels = null;
-
-				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
-				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+				if (e.Button == MouseButtons.Left)
+					_selectedTool.Tool.EndClick(_lastSkin, e);
+				else
+					_tools[(int)Tools.Camera].Tool.EndClick(_lastSkin, e);
 			}
 
 			_mouseIsDown = false;
+		}
+
+
+		void rendererControl_MouseLeave(object sender, EventArgs e)
+		{
 		}
 
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -2726,7 +2795,7 @@ namespace MCSkin3D
 		TreeNode _rightClickedNode = null;
 		private void treeView1_MouseUp(object sender, MouseEventArgs e)
 		{
-			if (/*_lastSkin != null && */e.Button == MouseButtons.Right)
+			if (e.Button == MouseButtons.Right)
 			{
 				_rightClickedNode = treeView1.GetSelectedNodeAt(e.Location);
 				changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = true;
@@ -2738,26 +2807,6 @@ namespace MCSkin3D
 
 				contextMenuStrip1.Show(Cursor.Position);
 			}
-		}
-
-		void cameraToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Camera);
-		}
-
-		void pencilToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Pencil);
-		}
-
-		void pipetteToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dropper);
-		}
-
-		void eraserToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Eraser);
 		}
 
 		void undoToolStripButton_Click(object sender, EventArgs e)
@@ -2775,7 +2824,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(_currentColor.A, (byte)redNumericUpDown.Value, _currentColor.G, _currentColor.B));
+			SetColor(Color.FromArgb(SelectedColor.A, (byte)redNumericUpDown.Value, SelectedColor.G, SelectedColor.B));
 		}
 
 		void greenNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -2783,7 +2832,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, (byte)greenNumericUpDown.Value, _currentColor.B));
+			SetColor(Color.FromArgb(SelectedColor.A, SelectedColor.R, (byte)greenNumericUpDown.Value, SelectedColor.B));
 		}
 
 		void blueNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -2791,7 +2840,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, _currentColor.G, (byte)blueNumericUpDown.Value));
+			SetColor(Color.FromArgb(SelectedColor.A, SelectedColor.R, SelectedColor.G, (byte)blueNumericUpDown.Value));
 		}
 
 		void alphaNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -2799,7 +2848,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb((byte)alphaNumericUpDown.Value, _currentColor.R, _currentColor.G, _currentColor.B));
+			SetColor(Color.FromArgb((byte)alphaNumericUpDown.Value, SelectedColor.R, SelectedColor.G, SelectedColor.B));
 		}
 
 		const float oneDivTwoFourty = 1.0f / 240.0f;
@@ -2984,27 +3033,12 @@ namespace MCSkin3D
 			PerformRedo();
 		}
 
-		void cameraToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Camera);
-		}
-
-		void pencilToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Pencil);
-		}
-
-		void dropperToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dropper);
-		}
-
 		void redColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(_currentColor.A, e.NewValue, _currentColor.G, _currentColor.B));
+			SetColor(Color.FromArgb(SelectedColor.A, e.NewValue, SelectedColor.G, SelectedColor.B));
 		}
 
 		void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -3012,7 +3046,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, e.NewValue, _currentColor.B));
+			SetColor(Color.FromArgb(SelectedColor.A, SelectedColor.R, e.NewValue, SelectedColor.B));
 		}
 
 		void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -3020,12 +3054,25 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(_currentColor.A, _currentColor.R, _currentColor.G, e.NewValue));
+			SetColor(Color.FromArgb(SelectedColor.A, SelectedColor.R, SelectedColor.G, e.NewValue));
 		}
 
 		void swatchContainer_SwatchChanged(object sender, SwatchChangedEventArgs e)
 		{
-			SetColor(e.Swatch);
+			if (e.Button == MouseButtons.Left)
+			{
+				if (_secondaryIsFront)
+					SetColor(colorPreview2, ref _secondaryColor, e.Swatch);
+				else
+					SetColor(colorPreview1, ref _primaryColor, e.Swatch);
+			}
+			else
+			{
+				if (!_secondaryIsFront)
+					SetColor(colorPreview2, ref _secondaryColor, e.Swatch);
+				else
+					SetColor(colorPreview1, ref _primaryColor, e.Swatch);
+			}
 		}
 
 		void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -3033,27 +3080,7 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			SetColor(Color.FromArgb(e.NewValue, _currentColor.R, _currentColor.G, _currentColor.B));
-		}
-
-		void dodgeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dodge);
-		}
-
-		void burnToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Burn);
-		}
-
-		void dodgeToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Dodge);
-		}
-
-		void burnToolStripButton_Click(object sender, EventArgs e)
-		{
-			SetTool(Tools.Burn);
+			SetColor(Color.FromArgb(e.NewValue, SelectedColor.R, SelectedColor.G, SelectedColor.B));
 		}
 
 		void keyboardShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3131,9 +3158,21 @@ namespace MCSkin3D
 				colorTabControl.SelectedTab.Controls.Add(colorSquare);
 				colorTabControl.SelectedTab.Controls.Add(saturationSlider);
 				colorTabControl.SelectedTab.Controls.Add(colorPreview1);
+				colorTabControl.SelectedTab.Controls.Add(colorPreview2);
 				colorTabControl.SelectedTab.Controls.Add(label5);
 				colorTabControl.SelectedTab.Controls.Add(alphaColorSlider);
 				colorTabControl.SelectedTab.Controls.Add(alphaNumericUpDown);
+
+				if (_secondaryIsFront)
+				{
+					colorPreview2.BringToFront();
+					colorPreview1.SendToBack();
+				}
+				else
+				{
+					colorPreview2.SendToBack();
+					colorPreview1.BringToFront();
+				}
 			}
 		}
 
@@ -3185,6 +3224,9 @@ namespace MCSkin3D
 		bool _editingHex = false;
 		private void textBox1_TextChanged(object sender, EventArgs e)
 		{
+			if (_skipColors)
+				return;
+
 			if (textBox1.Text.Contains('#'))
 				textBox1.Text = textBox1.Text.Replace("#", "");
 
@@ -3460,7 +3502,7 @@ namespace MCSkin3D
                                 MessageBox.Show("Skin is not valid!", "Error!");
                             }
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             MessageBox.Show("Skin is not valid!", "Error!");
                             return;
@@ -3538,6 +3580,29 @@ namespace MCSkin3D
 		{
 			SetSampleMenuItem(8);
 			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		bool _secondaryIsFront = false;
+
+		private void colorPreview1_Click(object sender, EventArgs e)
+		{
+			_secondaryIsFront = false;
+			colorPreview1.BringToFront();
+
+			SetColor(_primaryColor);
+		}
+
+		private void colorPreview2_Click(object sender, EventArgs e)
+		{
+			_secondaryIsFront = true;
+			colorPreview2.BringToFront();
+
+			SetColor(_secondaryColor);
 		}
 	}
 }

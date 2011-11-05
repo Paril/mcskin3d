@@ -25,12 +25,17 @@ namespace MCSkin3D
 
 		public bool CanEvaluate() { return true; }
 
-		public MenuStripShortcut(ToolStripMenuItem item)
+		public MenuStripShortcut(ToolStripMenuItem item) :
+			this(item, item.ShortcutKeys)
+		{
+			_menuItem.ShortcutKeys = 0;
+		}
+
+		public MenuStripShortcut(ToolStripMenuItem item, Keys keys)
 		{
 			_menuItem = item;
 			_name = _menuItem.Text.Replace("&", "");
-			Keys = item.ShortcutKeys;
-			_menuItem.ShortcutKeys = 0;
+			Keys = keys;
 		}
 
 		public override string ToString()

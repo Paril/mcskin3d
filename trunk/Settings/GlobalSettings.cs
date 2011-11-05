@@ -23,7 +23,7 @@ namespace MCSkin3D
 		public static bool Grass { get; set; }
 
 		[Savable]
-		[DefaultValue(true)]
+		[DefaultValue(false)]
 		public static bool Ghost { get; set; }
 
 		[Savable]
@@ -83,6 +83,16 @@ namespace MCSkin3D
 		[Savable]
 		[DefaultValue(0)]
 		public static int Multisamples { get; set; }
+
+		[Savable]
+		public static bool PencilIncremental { get; set; }
+
+		[Savable]
+		public static bool DodgeBurnIncremental { get; set; }
+
+		[Savable]
+		[DefaultValue(0.25f)]
+		public static float DodgeBurnExposure { get; set; }
 
 		static Settings Settings = null;
 		

@@ -8,6 +8,8 @@ namespace MCSkin3D
 {
 	static class Program
 	{
+		public static Form1 MainForm { get; set; }
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -44,7 +46,7 @@ namespace MCSkin3D
 			{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new Form1());
+				Application.Run(MainForm = new Form1());
 			}
 			catch (Exception ex)
 			{

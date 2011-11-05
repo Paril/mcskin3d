@@ -4,9 +4,8 @@
 	{
 		Camera,
 		Pencil,
-		Dropper,
 		Eraser,
-		Dodge,
-		Burn
+		Dropper,
+		DodgeBurn,
 	}
 }
