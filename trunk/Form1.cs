@@ -703,15 +703,13 @@ namespace MCSkin3D
 							g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                             g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
                         }
-                        img.Dispose();
-                        img = null;
                     }
                     else
                     {
                         if (SelectedNode.IsExpanded)
-                            skinHeadImage = global::MCSkin3D.Properties.Resources.Folder_32x32;
-                        else 
-                            skinHeadImage = global::MCSkin3D.Properties.Resources.FolderOpen_32x32_72;
+                            skinHeadImage = Properties.Resources.FolderOpen_32x32_72;
+                        else
+                            skinHeadImage = Properties.Resources.Folder_32x32;
                     }
                 }
                 return skinHeadImage;
@@ -752,6 +750,27 @@ namespace MCSkin3D
 
 				return null;
 			}
+
+            protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent)
+            {
+                if (mouseDown)
+                {
+                    gfbevent.UseDefaultCursors = false;
+                    if (gfbevent.Effect == DragDropEffects.Copy)
+                    {
+                        Cursor.Current = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.copy, getSkinHead(new Size(32, 32)));
+                    }
+                    else if (gfbevent.Effect == DragDropEffects.Move)
+                    {
+                        Cursor.Current = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.move, getSkinHead(new Size(32, 32)));
+                    }
+                    else if (gfbevent.Effect == DragDropEffects.None)
+                    {
+                        Cursor.Current = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.no, getSkinHead(new Size(32, 32)));
+                    }
+                }
+                base.OnGiveFeedback(gfbevent);
+            }
 
 			TreeNode lastClick = null;
 			bool lastOpened = false;
@@ -798,6 +817,7 @@ namespace MCSkin3D
 				base.OnMouseUp(e);
                 t.Stop();
                 mouseDown = false;
+                Cursor.Current = Cursors.Default;
 			}
 
 			TreeNode _hoverNode;
