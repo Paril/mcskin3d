@@ -73,6 +73,7 @@ namespace MCSkin3D
 
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
+        static string[] dragDropPaths;
 		#endregion
 
 		public DodgeBurnOptions DodgeBurnOptions
@@ -691,25 +692,40 @@ namespace MCSkin3D
 
             private Image getSkinHead(Size s)
             {
-                if(skinHeadImageNode != SelectedNode)
+                if (dragDropPaths != null)
                 {
-                    skinHeadImageNode = SelectedNode;
-                    if (SelectedNode is Skin)
+                    MessageBox.Show(dragDropPaths[0]);
+                    skinHeadImageNode = new Skin(dragDropPaths[0]);
+                    Bitmap img = ((Skin)skinHeadImageNode).Head;
+                    using (Graphics g = Graphics.FromImage(skinHeadImage))
                     {
-                        Bitmap img = ((Skin)SelectedNode).Head;
-                        using (Graphics g = Graphics.FromImage(skinHeadImage))
-                        {
-							g.InterpolationMode = InterpolationMode.NearestNeighbor;
-							g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                            g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
-                        }
+                        g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
                     }
-                    else
+                }
+                else
+                {
+                    if (skinHeadImageNode != SelectedNode)
                     {
-                        if (SelectedNode.IsExpanded)
-                            skinHeadImage = Properties.Resources.FolderOpen_32x32_72;
+                        skinHeadImageNode = SelectedNode;
+                        if (SelectedNode is Skin)
+                        {
+                            Bitmap img = ((Skin)SelectedNode).Head;
+                            using (Graphics g = Graphics.FromImage(skinHeadImage))
+                            {
+                                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                                g.DrawImage(img, new Rectangle(0, 0, s.Width, s.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
+                            }
+                        }
                         else
-                            skinHeadImage = Properties.Resources.Folder_32x32;
+                        {
+                            if (SelectedNode.IsExpanded)
+                                skinHeadImage = Properties.Resources.FolderOpen_32x32_72;
+                            else
+                                skinHeadImage = Properties.Resources.Folder_32x32;
+                        }
                     }
                 }
                 return skinHeadImage;
@@ -3315,6 +3331,7 @@ namespace MCSkin3D
             }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
+                dragDropPaths = (String[])e.Data.GetData(DataFormats.FileDrop);
                 e.Effect = DragDropEffects.Copy;
             }
         }

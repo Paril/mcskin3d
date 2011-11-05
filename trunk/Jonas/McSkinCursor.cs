@@ -10,6 +10,20 @@ using System.IO;
 class McSkinCursor
 {
 
+    static Cursor copyCur;
+    static Cursor moveCur;
+    static Cursor noCur;
+
+    private static void setCursors()
+    {
+        using (Stream stream = new MemoryStream(MCSkin3D.Properties.Resources.copy))
+            copyCur = new Cursor(stream);
+        using (Stream stream = new MemoryStream(MCSkin3D.Properties.Resources.move))
+            moveCur = new Cursor(stream);
+        using (Stream stream = new MemoryStream(MCSkin3D.Properties.Resources.no))
+            noCur = new Cursor(stream);
+    }
+
     public enum CursorModes { copy, move, no }
 
     public struct IconInfo
@@ -28,6 +42,12 @@ class McSkinCursor
     [DllImport("user32.dll")]
     public static extern IntPtr CreateIconIndirect(ref IconInfo icon);
 
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern bool DestroyIcon(IntPtr handle);
+
+    [DllImport("gdi32.dll")]
+    public static extern bool DeleteObject(IntPtr hObject);
+
     public static Cursor CreateCursor(Bitmap bmp, int xHotSpot, int yHotSpot)
     {
         IntPtr ptr = bmp.GetHicon();
@@ -42,17 +62,19 @@ class McSkinCursor
 
     public static Cursor createHeadCursor(CursorModes cursorMode, Image skinHead)
     {
+        if ((copyCur == null) || (moveCur == null) || (noCur == null))
+            setCursors();
         Cursor drawToCursor;
         switch (cursorMode)
         {
             case CursorModes.copy:
-                drawToCursor = new Cursor(new MemoryStream(global::MCSkin3D.Properties.Resources.copy));
+                drawToCursor = copyCur;
                 break;
             case CursorModes.move:
-                drawToCursor = new Cursor(new MemoryStream(global::MCSkin3D.Properties.Resources.move));
+                drawToCursor = moveCur;
                 break;
             default:
-                drawToCursor = new Cursor(new MemoryStream(global::MCSkin3D.Properties.Resources.no));
+                drawToCursor = noCur;
                 break;
         }
         Bitmap bmp = new Bitmap(64, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
