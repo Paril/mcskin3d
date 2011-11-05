@@ -72,6 +72,7 @@ namespace MCSkin3D
 		List<BackgroundImage> _backgrounds = new List<BackgroundImage>();
 		int _selectedBackground = 0;
 		GLControl rendererControl;
+		int _toolboxUpNormal, _toolboxUpHover, _toolboxDownNormal, _toolboxDownHover;
 		#endregion
 
 		// ===============================================
@@ -102,7 +103,7 @@ namespace MCSkin3D
 
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
-				MessageBox.Show("Sorry, but apparently your video card doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Sorry, but apparently your video card doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16/24-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Application.Exit();
 			}
 
@@ -162,7 +163,8 @@ namespace MCSkin3D
 			rendererControl.Resize += new System.EventHandler(this.rendererControl_Resize);
 			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
 
-			splitContainer2.Panel1.Controls.Add(rendererControl);
+			splitContainer4.Panel2.Controls.Add(rendererControl);
+			rendererControl.BringToFront();
 
 			System.Timers.Timer animTimer = new System.Timers.Timer();
 			animTimer.Interval = 22;
@@ -1122,8 +1124,7 @@ namespace MCSkin3D
 		bool GetPick(int x, int y, ref Point hitPixel)
 		{
 			rendererControl.MakeCurrent();
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
+			SetupMainMode();
 
 			GL.ClearColor(Color.White);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -2140,6 +2141,11 @@ namespace MCSkin3D
 			GL.Enable(EnableCap.CullFace);
 			GL.CullFace(CullFaceMode.Front);
 
+			_toolboxUpNormal = ImageUtilities.LoadImage(Properties.Resources.buttong);
+			_toolboxUpHover = ImageUtilities.LoadImage(Properties.Resources.buttong_2);
+			_toolboxDownNormal = ImageUtilities.LoadImage(Properties.Resources.buttong_down);
+			_toolboxDownHover = ImageUtilities.LoadImage(Properties.Resources.buttong_down2);
+
 			_grassTop = ImageUtilities.LoadImage("grass.png");
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -2271,20 +2277,49 @@ namespace MCSkin3D
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
+			SetupMainMode();
 
 			var skin = (Skin)_lastSkin;
 
+			GL.PushMatrix();
 			DrawPlayer(_previewPaint, skin, grassToolStripMenuItem.Checked, false);
+			GL.PopMatrix();
+
+			// 2D
+			Setup2D();
+			RenderState.BindTexture(0);
+			GL.Enable(EnableCap.Blend);
+
+			float halfWidth = rendererControl.Width / 2.0f;
+			float halfImgWidth = 56.0f / 2.0f;
+
+			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
+
+			int img = (splitContainer4.Panel1Collapsed) ? _toolboxDownNormal : _toolboxUpNormal;
+
+			if (rect.Contains(_mousePoint))
+			{
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
+				RenderState.BindTexture(img);
+			}
+			else
+			{
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)64);
+				RenderState.BindTexture(img);
+			}
+			
+			GL.Begin(BeginMode.Quads);
+			GL.TexCoord2(0, 0); GL.Vertex2(halfWidth - halfImgWidth, -1);
+			GL.TexCoord2(1, 0); GL.Vertex2(halfWidth + halfImgWidth, -1);
+			GL.TexCoord2(1, 1); GL.Vertex2(halfWidth + halfImgWidth, 21);
+			GL.TexCoord2(0, 1); GL.Vertex2(halfWidth - halfImgWidth, 21);
+			GL.End();
 
 			rendererControl.SwapBuffers();
 		}
 
-		void rendererControl_Resize(object sender, EventArgs e)
+		void SetupMainMode()
 		{
-			rendererControl.MakeCurrent();
-
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
 
@@ -2300,14 +2335,42 @@ namespace MCSkin3D
 
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
+		}
+
+		void Setup2D()
+		{
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+
+			GL.Viewport(0, 0, rendererControl.Width, rendererControl.Height);
+			GL.Ortho(0, rendererControl.Width, rendererControl.Height, 0, -1, 1);
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+		}
+
+		void rendererControl_Resize(object sender, EventArgs e)
+		{
+			rendererControl.MakeCurrent();
 
 			rendererControl.Invalidate();
 		}
 
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
-			_mouseIsDown = true;
+			float halfWidth = rendererControl.Width / 2.0f;
+			float halfImgWidth = 56.0f / 2.0f;
+
+			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
+
 			_mousePoint = e.Location;
+
+			if (rect.Contains(e.Location))
+			{
+				splitContainer4.Panel1Collapsed = !splitContainer4.Panel1Collapsed;
+				return;
+			}
+				
+			_mouseIsDown = true;
 
 			if (e.Button == MouseButtons.Left)
 				UseToolOnViewport(e.X, e.Y);
