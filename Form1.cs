@@ -753,21 +753,18 @@ namespace MCSkin3D
 
             protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent)
             {
-                if (mouseDown)
+                gfbevent.UseDefaultCursors = false;
+                if (gfbevent.Effect == DragDropEffects.Copy)
                 {
-                    gfbevent.UseDefaultCursors = false;
-                    if (gfbevent.Effect == DragDropEffects.Copy)
-                    {
-                        Cursor.Current = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.copy, getSkinHead(new Size(32, 32)));
-                    }
-                    else if (gfbevent.Effect == DragDropEffects.Move)
-                    {
-                        Cursor.Current = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.move, getSkinHead(new Size(32, 32)));
-                    }
-                    else if (gfbevent.Effect == DragDropEffects.None)
-                    {
-                        Cursor.Current = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.no, getSkinHead(new Size(32, 32)));
-                    }
+                    this.Cursor = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.copy, getSkinHead(new Size(32, 32)));
+                }
+                else if (gfbevent.Effect == DragDropEffects.Move)
+                {
+                    this.Cursor = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.move, getSkinHead(new Size(32, 32)));
+                }
+                else if (gfbevent.Effect == DragDropEffects.None)
+                {
+                    this.Cursor = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.no, getSkinHead(new Size(32, 32)));
                 }
                 base.OnGiveFeedback(gfbevent);
             }
@@ -817,7 +814,7 @@ namespace MCSkin3D
 				base.OnMouseUp(e);
                 t.Stop();
                 mouseDown = false;
-                Cursor.Current = Cursors.Default;
+                this.Cursor = Cursors.Default;
 			}
 
 			TreeNode _hoverNode;
@@ -861,7 +858,6 @@ namespace MCSkin3D
                 Console.WriteLine(diff.X + ", " + diff.Y);
                 if ((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin))
                 {
-                    this.Cursor = McSkinCursor.createHeadCursor(McSkinCursor.CursorModes.move, getSkinHead(new Size(32, 32)));
                     base.OnItemDrag(new ItemDragEventArgs(e.Button, new object[] { SelectedNode, true }));
                 }
                     
