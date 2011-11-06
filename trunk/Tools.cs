@@ -7,5 +7,6 @@
 		Eraser,
 		Dropper,
 		DodgeBurn,
+		DarkenLighten,
 	}
 }

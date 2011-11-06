@@ -27,6 +27,7 @@ using System.Drawing.Drawing2D;
 using Paril.OpenGL;
 using OpenTK.Graphics;
 using System.Windows.Forms.VisualStyles;
+using DragDropLib;
 
 namespace MCSkin3D
 {
@@ -80,6 +81,12 @@ namespace MCSkin3D
 			private set;
 		}
 
+		public DarkenLightenOptions DarkenLightenOptions
+		{
+			get;
+			private set;
+		}
+
 		// ===============================================
 		// Constructor
 		// ===============================================
@@ -96,6 +103,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DropperTool(), null, "Dropper", Properties.Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "Dodge/Burn", Properties.Resources.dodge, Keys.B));
             //_tools.Add(new ToolIndex(new FloodFillTool(), null, "Fill-bucket", Properties.Resources.fill_bucket, Keys.F));
+			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions = new DarkenLightenOptions(), "Darken/Lighten", Properties.Resources.darkenlighten, Keys.L));
 
 			for (int i = _tools.Count - 1; i >= 0; --i)
 			{
@@ -375,6 +383,7 @@ namespace MCSkin3D
 			InitMenuShortcut(_tools[(int)Tools.Eraser].MenuItem, _tools[(int)Tools.Eraser].DefaultKeys, SwitchToEraser);
 			InitMenuShortcut(_tools[(int)Tools.Dropper].MenuItem, _tools[(int)Tools.Dropper].DefaultKeys, SwitchToDropper);
 			InitMenuShortcut(_tools[(int)Tools.DodgeBurn].MenuItem, _tools[(int)Tools.DodgeBurn].DefaultKeys, SwitchToDodgeBurn);
+			InitMenuShortcut(_tools[(int)Tools.DarkenLighten].MenuItem, _tools[(int)Tools.DarkenLighten].DefaultKeys, SwitchToDarkenLighten);
 
 			// not in the menu
 			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
@@ -414,6 +423,11 @@ namespace MCSkin3D
 		void SwitchToDodgeBurn()
 		{
 			SetSelectedTool(_tools[(int)Tools.DodgeBurn]);
+		}
+
+		void SwitchToDarkenLighten()
+		{
+			SetSelectedTool(_tools[(int)Tools.DarkenLighten]);
 		}
 
 		void PerformSwitchColor()
@@ -2072,8 +2086,15 @@ namespace MCSkin3D
 			item.Checked = true;
 		}
 
+		static bool _ddh = false;
 		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
+			if (!_ddh)
+			{
+				new DragDropHelper();
+				_ddh = true;
+			}
+
 			_animationTime += 0.24f;
 			rendererControl.Invalidate();
 		}

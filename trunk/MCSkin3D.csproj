@@ -78,6 +78,13 @@
     <Compile Include="ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="DarkenLightenOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DarkenLightenOptions.Designer.cs">
+      <DependentUpon>DarkenLightenOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DarkenLightenTool.cs" />
     <Compile Include="DodgeBurnOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -231,6 +238,9 @@
     <Compile Include="YUV.cs" />
     <EmbeddedResource Include="ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DarkenLightenOptions.resx">
+      <DependentUpon>DarkenLightenOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DodgeBurnOptions.resx">
       <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
@@ -421,6 +431,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\darkenlighten.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

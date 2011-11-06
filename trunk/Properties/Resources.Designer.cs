@@ -158,6 +158,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap darkenlighten {
+            get {
+                object obj = ResourceManager.GetObject("darkenlighten", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap delete {
             get {
                 object obj = ResourceManager.GetObject("delete", resourceCulture);
@@ -196,13 +203,6 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap eye__1_ {
             get {
                 object obj = ResourceManager.GetObject("eye__1_", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap fill_bucket {
-            get {
-                object obj = ResourceManager.GetObject("fill_bucket", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
