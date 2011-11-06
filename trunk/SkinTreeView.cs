@@ -401,12 +401,12 @@ namespace MCSkin3D
 			int realX = e.Bounds.X + ((e.Node.Level + 1) * 20);
 
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
-                
+  			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
+              
 			if (e.Node.IsSelected)
                 e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height);
-
-
-			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
+			else if (skin != null && skin.Name == GlobalSettings.LastSkin)
+				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width, e.Bounds.Height);
 
 			if (skin == null)
 			{

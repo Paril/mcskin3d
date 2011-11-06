@@ -95,7 +95,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new EraserTool(), null, "Eraser", Properties.Resources.erase, Keys.E));
 			_tools.Add(new ToolIndex(new DropperTool(), null, "Dropper", Properties.Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "Dodge/Burn", Properties.Resources.dodge, Keys.B));
-            _tools.Add(new ToolIndex(new FloodFillTool(), null, "Fill-bucket", Properties.Resources.fill_bucket, Keys.F));
+            //_tools.Add(new ToolIndex(new FloodFillTool(), null, "Fill-bucket", Properties.Resources.fill_bucket, Keys.F));
 
 			for (int i = _tools.Count - 1; i >= 0; --i)
 			{
@@ -1211,7 +1211,6 @@ namespace MCSkin3D
 		}
 
 		Thread _uploadThread;
-		bool _wasClosed;
 
 		void PerformUpload()
 		{
@@ -1237,7 +1236,6 @@ namespace MCSkin3D
 				if (!dialogRes)
 					return;
 
-				_wasClosed = false;
 				_pleaseWaitForm = new PleaseWait();
 				_pleaseWaitForm.FormClosed += new FormClosedEventHandler(_pleaseWaitForm_FormClosed);
 
@@ -1245,6 +1243,7 @@ namespace MCSkin3D
 				ErrorReturn ret = new ErrorReturn();
 				_uploadThread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
 
+				_pleaseWaitForm.DialogResult = DialogResult.OK;
 				_pleaseWaitForm.ShowDialog();
 				_pleaseWaitForm.Dispose();
 				_uploadThread = null;
@@ -1253,10 +1252,10 @@ namespace MCSkin3D
 					MessageBox.Show("Error uploading skin:\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				else if (ret.Exception != null)
 					MessageBox.Show("Error uploading skin:\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				else if (!_wasClosed)
+				else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
 				{
 					MessageBox.Show("Skin upload success! Enjoy!", "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					GlobalSettings.LastSkin = _lastSkin.File.FullName;
+					GlobalSettings.LastSkin = _lastSkin.Name;
 					treeView1.Invalidate();
 				}
 
@@ -1266,7 +1265,7 @@ namespace MCSkin3D
 					GlobalSettings.AutoLogin = login.AutoLogin;
 
 					if (GlobalSettings.RememberMe == false)
-						GlobalSettings.LastUsername = GlobalSettings.LastPassword = null;
+						GlobalSettings.LastUsername = GlobalSettings.LastPassword = "";
 					else
 					{
 						GlobalSettings.LastUsername = login.Username;
@@ -1278,7 +1277,6 @@ namespace MCSkin3D
 
 		void _pleaseWaitForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			_wasClosed = true;
 			_uploadThread.Abort();
 		}
 		#endregion
@@ -2974,7 +2972,7 @@ namespace MCSkin3D
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-
+			Icon = Properties.Resources.Icon;
 		}
 
 		bool _secondaryIsFront = false;
