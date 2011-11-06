@@ -30,11 +30,12 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
+			this.mainMenuStrip = new Paril.Controls.NativeMenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,8 +93,15 @@
 			this.splitContainer1 = new Paril.Controls.VisibleSplitContainer();
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
-			this.treeView1 = new MCSkin3D.Form1.DoubleBufferedTreeView();
+			this.treeView1 = new MCSkin3D.SkinTreeView();
 			this.skinsListBox = new System.Windows.Forms.ListBox();
+			this.toolStrip2 = new Paril.Controls.NativeToolStrip();
+			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.newFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.renameToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.deleteToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.cloneToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
@@ -126,9 +134,8 @@
 			this.saturationColorSlider = new MB.Controls.ColorSlider();
 			this.lightnessColorSlider = new MB.Controls.ColorSlider();
 			this.hueColorSlider = new MB.Controls.ColorSlider();
-			this.splitContainer2 = new Paril.Controls.VisibleSplitContainer();
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStrip1 = new Paril.Controls.NativeToolStrip();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -148,8 +155,6 @@
 			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.uploadButton = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -158,6 +163,7 @@
 			this.splitContainer3.Panel1.SuspendLayout();
 			this.splitContainer3.Panel2.SuspendLayout();
 			this.splitContainer3.SuspendLayout();
+			this.toolStrip2.SuspendLayout();
 			this.colorTabControl.SuspendLayout();
 			this.swatchTabPage.SuspendLayout();
 			this.rgbTabPage.SuspendLayout();
@@ -169,9 +175,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.luminanceNumericUpDown)).BeginInit();
-			this.splitContainer2.Panel1.SuspendLayout();
-			this.splitContainer2.Panel2.SuspendLayout();
-			this.splitContainer2.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -197,6 +200,7 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.saveAllToolStripMenuItem,
+            this.uploadToolStripMenuItem,
             this.toolStripSeparator5,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -228,6 +232,14 @@
 			this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.saveAllToolStripMenuItem.Text = "Save All";
 			this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAllToolStripMenuItem_Click);
+			// 
+			// uploadToolStripMenuItem
+			// 
+			this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
+			this.uploadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+			this.uploadToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+			this.uploadToolStripMenuItem.Text = "Upload...";
+			this.uploadToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -624,7 +636,7 @@
             this.deleteToolStripMenuItem,
             this.cloneToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(172, 120);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(172, 142);
 			// 
 			// importHereToolStripMenuItem
 			// 
@@ -649,7 +661,7 @@
 			// 
 			this.changeNameToolStripMenuItem.Name = "changeNameToolStripMenuItem";
 			this.changeNameToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-			this.changeNameToolStripMenuItem.Text = "Change &Name...";
+			this.changeNameToolStripMenuItem.Text = "Re&name...";
 			this.changeNameToolStripMenuItem.Click += new System.EventHandler(this.changeNameToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
@@ -679,7 +691,8 @@
 			// 
 			// splitContainer1.Panel2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+			this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
+			this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
 			this.splitContainer1.Size = new System.Drawing.Size(939, 638);
 			this.splitContainer1.SplitterDistance = 294;
 			this.splitContainer1.TabIndex = 4;
@@ -697,6 +710,7 @@
 			this.splitContainer3.Panel1.Controls.Add(this.labelEditTextBox);
 			this.splitContainer3.Panel1.Controls.Add(this.treeView1);
 			this.splitContainer3.Panel1.Controls.Add(this.skinsListBox);
+			this.splitContainer3.Panel1.Controls.Add(this.toolStrip2);
 			// 
 			// splitContainer3.Panel2
 			// 
@@ -722,14 +736,16 @@
 			// 
 			this.treeView1.AllowDrop = true;
 			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.treeView1.Location = new System.Drawing.Point(0, 0);
+			this.treeView1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
+			this.treeView1.FullRowSelect = true;
+			this.treeView1.HotTracking = true;
+			this.treeView1.ItemHeight = 23;
+			this.treeView1.Location = new System.Drawing.Point(0, 25);
 			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(294, 388);
+			this.treeView1.Size = new System.Drawing.Size(294, 363);
+			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
-			this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-			this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
-			this.treeView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView1_DragEnter);
 			this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
 			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
 			// 
@@ -740,11 +756,82 @@
 			this.skinsListBox.FormattingEnabled = true;
 			this.skinsListBox.IntegralHeight = false;
 			this.skinsListBox.ItemHeight = 25;
-			this.skinsListBox.Location = new System.Drawing.Point(0, 0);
+			this.skinsListBox.Location = new System.Drawing.Point(0, 25);
 			this.skinsListBox.Name = "skinsListBox";
-			this.skinsListBox.Size = new System.Drawing.Size(294, 388);
+			this.skinsListBox.Size = new System.Drawing.Size(294, 363);
 			this.skinsListBox.Sorted = true;
 			this.skinsListBox.TabIndex = 0;
+			// 
+			// toolStrip2
+			// 
+			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uploadToolStripButton,
+            this.newFolderToolStripButton,
+            this.toolStripSeparator11,
+            this.renameToolStripButton,
+            this.deleteToolStripButton,
+            this.cloneToolStripButton});
+			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip2.Name = "toolStrip2";
+			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
+			this.toolStrip2.TabIndex = 6;
+			this.toolStrip2.Text = "toolStrip2";
+			// 
+			// uploadToolStripButton
+			// 
+			this.uploadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.uploadToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
+			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.uploadToolStripButton.Name = "uploadToolStripButton";
+			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.uploadToolStripButton.Text = "Import Here...";
+			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
+			// 
+			// newFolderToolStripButton
+			// 
+			this.newFolderToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.newFolderToolStripButton.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
+			this.newFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.newFolderToolStripButton.Name = "newFolderToolStripButton";
+			this.newFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.newFolderToolStripButton.Text = "New Folder Here...";
+			this.newFolderToolStripButton.Click += new System.EventHandler(this.newFolderToolStripButton_Click);
+			// 
+			// toolStripSeparator11
+			// 
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+			// 
+			// renameToolStripButton
+			// 
+			this.renameToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.renameToolStripButton.Image = global::MCSkin3D.Properties.Resources.Rename;
+			this.renameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.renameToolStripButton.Name = "renameToolStripButton";
+			this.renameToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.renameToolStripButton.Text = "Rename...";
+			this.renameToolStripButton.Click += new System.EventHandler(this.renameToolStripButton_Click);
+			// 
+			// deleteToolStripButton
+			// 
+			this.deleteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.deleteToolStripButton.Image = global::MCSkin3D.Properties.Resources.delete;
+			this.deleteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.deleteToolStripButton.Name = "deleteToolStripButton";
+			this.deleteToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.deleteToolStripButton.Text = "Delete...";
+			this.deleteToolStripButton.Click += new System.EventHandler(this.deleteToolStripButton_Click);
+			// 
+			// cloneToolStripButton
+			// 
+			this.cloneToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.cloneToolStripButton.Image = global::MCSkin3D.Properties.Resources.clone;
+			this.cloneToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.cloneToolStripButton.Name = "cloneToolStripButton";
+			this.cloneToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.cloneToolStripButton.Text = "Clone";
+			this.cloneToolStripButton.Click += new System.EventHandler(this.cloneToolStripButton_Click);
 			// 
 			// colorTabControl
 			// 
@@ -1167,28 +1254,6 @@
 			this.hueColorSlider.Text = "colorSlider1";
 			this.hueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hueColorSlider_Scroll);
 			// 
-			// splitContainer2
-			// 
-			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-			this.splitContainer2.IsSplitterFixed = true;
-			this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-			this.splitContainer2.Name = "splitContainer2";
-			this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			// 
-			// splitContainer2.Panel1
-			// 
-			this.splitContainer2.Panel1.Controls.Add(this.splitContainer4);
-			this.splitContainer2.Panel1.Controls.Add(this.toolStrip1);
-			// 
-			// splitContainer2.Panel2
-			// 
-			this.splitContainer2.Panel2.Controls.Add(this.uploadButton);
-			this.splitContainer2.Panel2.Controls.Add(this.label1);
-			this.splitContainer2.Size = new System.Drawing.Size(641, 638);
-			this.splitContainer2.SplitterDistance = 605;
-			this.splitContainer2.TabIndex = 6;
-			// 
 			// splitContainer4
 			// 
 			this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1199,7 +1264,7 @@
 			this.splitContainer4.Name = "splitContainer4";
 			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.splitContainer4.Panel1MinSize = 0;
-			this.splitContainer4.Size = new System.Drawing.Size(641, 580);
+			this.splitContainer4.Size = new System.Drawing.Size(641, 613);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
@@ -1207,6 +1272,7 @@
 			// 
 			// toolStrip1
 			// 
+			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripButton,
             this.saveAlltoolStripButton,
@@ -1400,27 +1466,6 @@
 			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
-			// uploadButton
-			// 
-			this.uploadButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.uploadButton.Location = new System.Drawing.Point(174, 3);
-			this.uploadButton.Name = "uploadButton";
-			this.uploadButton.Size = new System.Drawing.Size(95, 23);
-			this.uploadButton.TabIndex = 3;
-			this.uploadButton.Text = "Use This Skin!";
-			this.uploadButton.UseVisualStyleBackColor = true;
-			this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
-			// 
-			// label1
-			// 
-			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(275, 8);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(191, 13);
-			this.label1.TabIndex = 5;
-			this.label1.Text = "(Hold shift to open Login dialog always)";
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1437,11 +1482,14 @@
 			this.contextMenuStrip1.ResumeLayout(false);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
+			this.splitContainer1.Panel2.PerformLayout();
 			this.splitContainer1.ResumeLayout(false);
 			this.splitContainer3.Panel1.ResumeLayout(false);
 			this.splitContainer3.Panel1.PerformLayout();
 			this.splitContainer3.Panel2.ResumeLayout(false);
 			this.splitContainer3.ResumeLayout(false);
+			this.toolStrip2.ResumeLayout(false);
+			this.toolStrip2.PerformLayout();
 			this.colorTabControl.ResumeLayout(false);
 			this.swatchTabPage.ResumeLayout(false);
 			this.rgbTabPage.ResumeLayout(false);
@@ -1455,11 +1503,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.luminanceNumericUpDown)).EndInit();
-			this.splitContainer2.Panel1.ResumeLayout(false);
-			this.splitContainer2.Panel1.PerformLayout();
-			this.splitContainer2.Panel2.ResumeLayout(false);
-			this.splitContainer2.Panel2.PerformLayout();
-			this.splitContainer2.ResumeLayout(false);
 			this.splitContainer4.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
@@ -1471,13 +1514,10 @@
 		#endregion
 
 		private System.Windows.Forms.ListBox skinsListBox;
-		private System.Windows.Forms.MenuStrip mainMenuStrip;
+		private Paril.Controls.NativeMenuStrip mainMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-		private System.Windows.Forms.Button uploadButton;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.NumericUpDown alphaNumericUpDown;
 		private System.Windows.Forms.Label label4;
@@ -1486,14 +1526,8 @@
 		private System.Windows.Forms.NumericUpDown greenNumericUpDown;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown redNumericUpDown;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripButton redoToolStripButton;
-		private System.Windows.Forms.ToolStripButton undoToolStripButton;
 		private Paril.Controls.Color.ColorSquare colorSquare;
 		private Paril.Controls.Color.SaturationSlider saturationSlider;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripButton perspectiveToolStripButton;
-		private System.Windows.Forms.ToolStripButton orthographicToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem threeDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem animateToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem followCursorToolStripMenuItem;
@@ -1535,15 +1569,10 @@
 		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem keyboardShortcutsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem backgroundColorToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripButton screenshotToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripButton saveToolStripButton;
-		private System.Windows.Forms.ToolStripButton saveAlltoolStripButton;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem changeNameToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
@@ -1559,21 +1588,12 @@
 		private MB.Controls.ColorSlider lightnessColorSlider;
 		private MB.Controls.ColorSlider hueColorSlider;
 		private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
-		private DoubleBufferedTreeView treeView1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-		private System.Windows.Forms.ToolStripButton toggleHeadToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleChestToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleLeftArmToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
+		private SkinTreeView treeView1;
 		private System.Windows.Forms.TextBox labelEditTextBox;
 		private Paril.Controls.Color.ColorPreview colorPreview1;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Label label9;
 		private Paril.Controls.VisibleSplitContainer splitContainer1;
-		private Paril.Controls.VisibleSplitContainer splitContainer2;
 		private Paril.Controls.VisibleSplitContainer splitContainer3;
 		private System.Windows.Forms.ToolStripMenuItem importHereToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
@@ -1590,6 +1610,34 @@
 		private System.Windows.Forms.ToolStripMenuItem xToolStripMenuItem4;
 		private System.Windows.Forms.SplitContainer splitContainer4;
 		private Paril.Controls.Color.ColorPreview colorPreview2;
+		private Paril.Controls.NativeToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripButton saveToolStripButton;
+		private System.Windows.Forms.ToolStripButton saveAlltoolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.ToolStripButton undoToolStripButton;
+		private System.Windows.Forms.ToolStripButton redoToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripButton perspectiveToolStripButton;
+		private System.Windows.Forms.ToolStripButton orthographicToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripButton screenshotToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripButton toggleHeadToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleChestToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftArmToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
+		private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
+		private Paril.Controls.NativeToolStrip toolStrip2;
+		private System.Windows.Forms.ToolStripButton uploadToolStripButton;
+		private System.Windows.Forms.ToolStripButton newFolderToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+		private System.Windows.Forms.ToolStripButton renameToolStripButton;
+		private System.Windows.Forms.ToolStripButton deleteToolStripButton;
+		private System.Windows.Forms.ToolStripButton cloneToolStripButton;
 	}
 }
 

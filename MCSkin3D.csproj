@@ -82,14 +82,29 @@
       <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="DodgeBurnTool.cs" />
+    <Compile Include="DragDropLib\DataObject.cs" />
+    <Compile Include="DragDropLib\DataObjectExtensions.cs" />
+    <Compile Include="DragDropLib\DragDropHelper.cs" />
+    <Compile Include="DragDropLib\IDragSourceHelper.cs" />
+    <Compile Include="DragDropLib\IDropTargetHelper.cs" />
+    <Compile Include="DragDropLib\NativeStructures.cs" />
+    <Compile Include="DragDropLib\SwfDataObjectExtensions.cs" />
+    <Compile Include="DragDropLib\SwfDragDropLibExtensions.cs" />
+    <Compile Include="DragDropLib\SwfDragSourceHelper.cs" />
+    <Compile Include="DragDropLib\SwfDropTargetHelper.cs" />
+    <Compile Include="DragDropLib\SwfDropTargetHelperExtensions.cs" />
     <Compile Include="DropperTool.cs" />
     <Compile Include="EraserTool.cs" />
+    <Compile Include="FolderNode.cs" />
     <Compile Include="Jonas\McSkinCursor.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
     <Compile Include="Paril\Components\Update\Updater.cs" />
     <Compile Include="Paril\Controls\Color\ColorPreview.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Paril\Controls\NativeToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Paril\Controls\VisibleSplitContainer.cs">
@@ -189,6 +204,9 @@
       <DependentUpon>ShortcutEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Skin.cs" />
+    <Compile Include="SkinTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SwatchContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -351,9 +369,6 @@
     <None Include="Resources\show_right_leg.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\2391_ZoomOut.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ZoomInHS.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +394,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\no.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\112_ArrowCurve_Blue_Left_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewFolderHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Rename.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderOpen_32x32_72_image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder_32x32_image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -67,6 +67,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap _112_ArrowCurve_Blue_Left_16x16_72 {
+            get {
+                object obj = ResourceManager.GetObject("112_ArrowCurve_Blue_Left_16x16_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap arrow_state_blue_expanded {
             get {
                 object obj = ResourceManager.GetObject("arrow_state_blue_expanded", resourceCulture);
@@ -137,10 +144,24 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap clone {
+            get {
+                object obj = ResourceManager.GetObject("clone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static byte[] copy {
             get {
                 object obj = ResourceManager.GetObject("copy", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap delete {
+            get {
+                object obj = ResourceManager.GetObject("delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -186,9 +207,23 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Folder_32x32_image {
+            get {
+                object obj = ResourceManager.GetObject("Folder_32x32_image", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap FolderOpen_32x32_72 {
             get {
                 object obj = ResourceManager.GetObject("FolderOpen_32x32_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap FolderOpen_32x32_72_image {
+            get {
+                object obj = ResourceManager.GetObject("FolderOpen_32x32_72_image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -204,6 +239,13 @@ namespace MCSkin3D.Properties {
             get {
                 object obj = ResourceManager.GetObject("move", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap NewFolderHS {
+            get {
+                object obj = ResourceManager.GetObject("NewFolderHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -224,6 +266,13 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap pipette {
             get {
                 object obj = ResourceManager.GetObject("pipette", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Rename {
+            get {
+                object obj = ResourceManager.GetObject("Rename", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

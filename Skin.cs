@@ -10,6 +10,7 @@ using Paril.Drawing;
 
 namespace MCSkin3D
 {
+	[Serializable]
 	public class Skin : TreeNode, IDisposable
 	{
 		public new string Name;
@@ -109,10 +110,14 @@ namespace MCSkin3D
 
 			float scale = Size.Width / 64.0f;
 			int headSize = (int)(8.0f * scale);
+			int helmetLoc = (int)(40.0f * scale);
 
 			Head = new Bitmap(headSize, headSize);
 			using (Graphics g = Graphics.FromImage(Head))
+			{
 				g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
+				g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize), GraphicsUnit.Pixel);
+			}
 
 			Image.Dispose();
 			Image = null;
@@ -172,8 +177,7 @@ namespace MCSkin3D
 			if (Directory.GetFiles(newName + ".png", SearchOption.TopDirectoryOnly).Length != 0)
 				return false;
 
-			File.CopyToParent(newName + ".png");
-			File.Delete();
+			File.MoveToParent(newName + ".png");
 			Name = newName;
 
 			return true;

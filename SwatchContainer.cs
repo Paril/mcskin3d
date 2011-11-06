@@ -57,7 +57,7 @@ namespace MCSkin3D
 
 					comboBox1.Items.Add(new SwatchFile(Path.GetFileNameWithoutExtension(swatchFile), colors));
 
-					if (comboBox1.SelectedItem == null)
+					if (comboBox1.SelectedItem == null && comboBox1.Items.Count != 0)
 						comboBox1.SelectedIndex = 0;
 				}
 			}
