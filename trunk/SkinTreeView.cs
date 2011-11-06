@@ -41,6 +41,9 @@ namespace MCSkin3D
 			t.SynchronizingObject = this;
 			t.Interval = 200;
 			t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
+            dragTimer.SynchronizingObject = this;
+            dragTimer.Interval = 1000;
+            dragTimer.Elapsed += new System.Timers.ElapsedEventHandler(dragTimer_Elapsed);
 			SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.UserMouse, true);
 			DoubleBuffered = true;
 			skinHeadImage = new Bitmap(32, 32);
@@ -71,6 +74,9 @@ namespace MCSkin3D
 		private int mouseDownMargin = 5;
 		public int scrollMargin = 20;
 		System.Timers.Timer t = new System.Timers.Timer();
+        System.Timers.Timer dragTimer = new System.Timers.Timer();
+        private int dragDropOverFolder = 0;
+        private TreeNode dragDropNode;
 		private bool negativeTimer = false;
 		private int prevValue = 0;
 		private bool mouseDown;
@@ -112,6 +118,22 @@ namespace MCSkin3D
 				this.EndUpdate();
 			}
 		}
+
+        public void dragTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            dragDropOverFolder++;
+            if (dragDropOverFolder == 1)
+            {
+                Point cp = this.PointToClient(new Point(Cursor.Position.X, Cursor.Position.Y));
+                TreeNode dragToItem = GetSelectedNodeAt(new Point(cp.X, cp.Y));
+                if (!(dragToItem is Skin))
+                    if (dragToItem.Nodes.Count > 0)
+                    {
+                        dragToItem.Expand();
+                    }
+                dragTimer.Stop();
+            }
+        }
 
 		Point ScrollPosition
 		{
@@ -379,7 +401,7 @@ namespace MCSkin3D
 			int realX = e.Bounds.X + ((e.Node.Level + 1) * 20);
 
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
-
+                
 			if (e.Node.IsSelected)
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height);
 
@@ -531,6 +553,15 @@ namespace MCSkin3D
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
 			else if (e.Data.GetDataPresent("MCSkin3D.Skin") && _dragNode != null)
 			{
+                Point cp = this.PointToClient(new Point(e.X, e.Y));
+                TreeNode dragToItem = GetSelectedNodeAt(new Point(cp.X, cp.Y));
+                if (dragDropNode != dragToItem)
+                {
+                    dragDropNode = dragToItem;
+                    dragDropOverFolder = 0;
+                }
+                dragTimer.Start();
+                this.SelectedNode = dragToItem;
 				var node = _dragNode;
 				var selectedNode = GetSelectedNodeAt(PointToClient(Cursor.Position));
 
@@ -740,7 +771,8 @@ namespace MCSkin3D
 					}
 				}
 			}*/
-
+            dragDropOverFolder = 0;
+            dragTimer.Stop();
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
 			else
