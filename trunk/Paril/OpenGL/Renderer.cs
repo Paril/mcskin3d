@@ -61,12 +61,12 @@ namespace Paril.OpenGL
 
 		internal static string VertexToString(Vector3 v)
 		{
-			return v.X + " " + v.Y + " " + v.Z;
+			return v.X.ToString(CultureInfo.InvariantCulture) + " " + v.Y.ToString(CultureInfo.InvariantCulture) + " " + v.Z.ToString(CultureInfo.InvariantCulture);
 		}
 
 		internal static string VertexToString(Vector2 v)
 		{
-			return v.X + " " + v.Y;
+			return v.X.ToString(CultureInfo.InvariantCulture) + " " + v.Y.ToString(CultureInfo.InvariantCulture);
 		}
 
 		internal static Vector3 StringToVertex3(string s)
