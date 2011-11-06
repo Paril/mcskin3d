@@ -5,6 +5,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using System.IO;
 using System.Xml;
+using System.Globalization;
 
 namespace Paril.OpenGL
 {
@@ -72,14 +73,14 @@ namespace Paril.OpenGL
 		{
 			var spl = s.Split();
 
-			return new Vector3(float.Parse(spl[0]), float.Parse(spl[1]), float.Parse(spl[2]));
+            return new Vector3(float.Parse(spl[0], CultureInfo.InvariantCulture), float.Parse(spl[1], CultureInfo.InvariantCulture), float.Parse(spl[2], CultureInfo.InvariantCulture));
 		}
 
 		internal static Vector2 StringToVertex2(string s)
 		{
 			var spl = s.Split();
 
-			return new Vector2(float.Parse(spl[0]), float.Parse(spl[1]));
+            return new Vector2(float.Parse(spl[0], CultureInfo.InvariantCulture), float.Parse(spl[1], CultureInfo.InvariantCulture));
 		}
 
 		public void Write(XmlWriter writer)
