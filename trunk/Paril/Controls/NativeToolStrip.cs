@@ -25,8 +25,8 @@ namespace Paril.Controls
 		{
 			Renderer = NativeStripInternals.Renderer;
 		}
-	}
 
+	}
 	class NativeToolStripContainer : ToolStripContainer
 	{
 		public NativeToolStripContainer()
