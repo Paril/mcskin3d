@@ -9,6 +9,7 @@ using DragDropLib;
 using ComIDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 using DataObject = System.Windows.Forms.DataObject;
 using System.Collections.Generic;
+using Paril.Extensions;
 
 namespace MCSkin3D
 {
@@ -35,7 +36,6 @@ namespace MCSkin3D
 
 	public class SkinTreeView : TreeView
 	{
-		internal static IDropTargetHelper dropHelper = (IDropTargetHelper)new DragDropHelper();
 		public SkinTreeView()
 		{
 			t.SynchronizingObject = this;
@@ -54,6 +54,11 @@ namespace MCSkin3D
 			HotTracking = true;
 			TreeViewNodeSorter = new SkinNodeSorter();
 			AllowDrop = true;
+		}
+
+		protected override void OnCreateControl()
+		{
+			base.OnCreateControl();
 		}
 
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -121,12 +126,18 @@ namespace MCSkin3D
 
         public void dragTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+			if (_dragNode == null)
+			{
+				dragTimer.Stop();
+				return;
+			}
+
             dragDropOverFolder++;
             if (dragDropOverFolder == 1)
             {
                 Point cp = this.PointToClient(new Point(Cursor.Position.X, Cursor.Position.Y));
                 TreeNode dragToItem = GetSelectedNodeAt(new Point(cp.X, cp.Y));
-                if (!(dragToItem is Skin))
+				if (!(dragToItem is Skin) && dragToItem != null)
                     if (dragToItem.Nodes.Count > 0)
                     {
                         dragToItem.Expand();
@@ -290,7 +301,11 @@ namespace MCSkin3D
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
+
+			dragDropOverFolder = 0;
+			dragTimer.Stop();
 			t.Stop();
+			_dragNode = null;
 			mouseDown = false;
 		}
 
@@ -402,8 +417,8 @@ namespace MCSkin3D
 
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
   			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
-              
-			if (e.Node.IsSelected)
+
+			if (e.Node.IsSelected || e.Node == _overNode)
                 e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height);
 			else if (skin != null && skin.Name == GlobalSettings.LastSkin)
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width, e.Bounds.Height);
@@ -444,7 +459,7 @@ namespace MCSkin3D
 
 			string text = (skin == null) ? e.Node.Text : skin.ToString();
 
-			TextRenderer.DrawText(e.Graphics, text, Font, new Rectangle(realX + ItemHeight + 1, e.Bounds.Y, Width, e.Bounds.Height), (e.Node.IsSelected) ? Color.White : Color.Black, TextFormatFlags.VerticalCenter);
+			TextRenderer.DrawText(e.Graphics, text, Font, new Rectangle(realX + ItemHeight + 1, e.Bounds.Y, Width, e.Bounds.Height), (e.Node.IsSelected || e.Node == _overNode) ? Color.White : Color.Black, TextFormatFlags.VerticalCenter);
 		}
 
 		public TreeNode GetSelectedNodeAt(Point p)
@@ -508,7 +523,7 @@ namespace MCSkin3D
 				var selectedNode = GetSelectedNodeAt(PointToClient(Cursor.Position));
 				string location = "";
 
-				if (selectedNode != null && (node == selectedNode || (node.Parent != null && node.Parent == selectedNode) || node.Parent == selectedNode.Parent))
+				if (!DropValid(node, selectedNode))
 					e.Effect = DragDropEffects.None;
 				else if ((ModifierKeys & Keys.Control) != 0)
 				{
@@ -546,6 +561,7 @@ namespace MCSkin3D
 
 			_oldEffects = effect;
 			_overNode = node;
+			Invalidate();
 		}
 
 		protected override void OnDragOver(DragEventArgs e)
@@ -562,11 +578,10 @@ namespace MCSkin3D
                     dragDropOverFolder = 0;
                 }
                 dragTimer.Start();
-                this.SelectedNode = dragToItem;
 				var node = _dragNode;
 				var selectedNode = GetSelectedNodeAt(PointToClient(Cursor.Position));
 
-				if (selectedNode != null && (node == selectedNode || (node.Parent != null && node.Parent == selectedNode) || node.Parent == selectedNode.Parent))
+				if (!DropValid(node, selectedNode))
 					e.Effect = DragDropEffects.None;
 				else if ((ModifierKeys & Keys.Control) != 0)
 					e.Effect = DragDropEffects.Copy;
@@ -580,13 +595,49 @@ namespace MCSkin3D
 			DropTargetHelper.DragOver(new Point(e.X, e.Y), e.Effect);
 		}
 
+		bool DropValid(TreeNode node, TreeNode selectedNode)
+		{
+			if (node is Skin && selectedNode is Skin)
+			{
+				if (node.GetParentCollection() == selectedNode.GetParentCollection())
+					return false;
+			}
+			else if (node is Skin && selectedNode is FolderNode)
+			{
+				if (node.Parent == selectedNode)
+					return false;
+			}
+			else if (node is FolderNode && selectedNode is Skin)
+			{
+				if (selectedNode.GetNodeChain().Contains(node))
+					return false;
+			}
+			else if (node is FolderNode && selectedNode is FolderNode)
+			{
+				if (selectedNode.GetNodeChain().Contains(node))
+					return false;
+			}
+			else if ((node is Skin || node is FolderNode) && selectedNode == null)
+			{
+				if (node.Parent == null)
+					return false;
+			}
+
+			return true;
+		}
+
 		protected override void OnDragLeave(EventArgs e)
 		{
 			DropTargetHelper.DragLeave(this);
+			dragDropOverFolder = 0;
+			dragTimer.Stop();
+			_dragNode = null;
+			_overNode = null;
 		}
 
 		protected override void OnDragDrop(DragEventArgs e)
 		{
+			_overNode = null;
 			/*
 			Cursor = Cursors.Default;
 			//

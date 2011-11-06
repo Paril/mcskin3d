@@ -94,7 +94,6 @@
             this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
             this.labelEditTextBox = new System.Windows.Forms.TextBox();
             this.treeView1 = new MCSkin3D.SkinTreeView();
-            this.skinsListBox = new System.Windows.Forms.ListBox();
             this.toolStrip2 = new Paril.Controls.NativeToolStrip();
             this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.newFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -134,7 +133,6 @@
             this.saturationColorSlider = new MB.Controls.ColorSlider();
             this.lightnessColorSlider = new MB.Controls.ColorSlider();
             this.hueColorSlider = new MB.Controls.ColorSlider();
-            this.btnFill = new System.Windows.Forms.Button();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1 = new Paril.Controls.NativeToolStrip();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -692,7 +690,6 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnFill);
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
             this.splitContainer1.Size = new System.Drawing.Size(939, 638);
@@ -711,7 +708,6 @@
             // 
             this.splitContainer3.Panel1.Controls.Add(this.labelEditTextBox);
             this.splitContainer3.Panel1.Controls.Add(this.treeView1);
-            this.splitContainer3.Panel1.Controls.Add(this.skinsListBox);
             this.splitContainer3.Panel1.Controls.Add(this.toolStrip2);
             // 
             // splitContainer3.Panel2
@@ -750,19 +746,6 @@
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
             this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
-            // 
-            // skinsListBox
-            // 
-            this.skinsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skinsListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.skinsListBox.FormattingEnabled = true;
-            this.skinsListBox.IntegralHeight = false;
-            this.skinsListBox.ItemHeight = 25;
-            this.skinsListBox.Location = new System.Drawing.Point(0, 25);
-            this.skinsListBox.Name = "skinsListBox";
-            this.skinsListBox.Size = new System.Drawing.Size(294, 363);
-            this.skinsListBox.Sorted = true;
-            this.skinsListBox.TabIndex = 0;
             // 
             // toolStrip2
             // 
@@ -1256,17 +1239,6 @@
             this.hueColorSlider.Text = "colorSlider1";
             this.hueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hueColorSlider_Scroll);
             // 
-            // btnFill
-            // 
-            this.btnFill.Image = global::MCSkin3D.Properties.Resources.fill_bucket;
-            this.btnFill.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFill.Location = new System.Drawing.Point(554, 2);
-            this.btnFill.Name = "btnFill";
-            this.btnFill.Size = new System.Drawing.Size(75, 23);
-            this.btnFill.TabIndex = 7;
-            this.btnFill.Text = "Fill";
-            this.btnFill.UseVisualStyleBackColor = true;
-            // 
             // splitContainer4
             // 
             this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1526,7 +1498,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.ListBox skinsListBox;
 		private Paril.Controls.NativeMenuStrip mainMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
@@ -1651,7 +1622,6 @@
 		private System.Windows.Forms.ToolStripButton renameToolStripButton;
 		private System.Windows.Forms.ToolStripButton deleteToolStripButton;
 		private System.Windows.Forms.ToolStripButton cloneToolStripButton;
-        private System.Windows.Forms.Button btnFill;
 	}
 }
 

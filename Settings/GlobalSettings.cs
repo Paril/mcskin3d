@@ -94,6 +94,13 @@ namespace MCSkin3D
 		[DefaultValue(0.25f)]
 		public static float DodgeBurnExposure { get; set; }
 
+		[Savable]
+		public static bool DarkenLightenIncremental { get; set; }
+
+		[Savable]
+		[DefaultValue(0.05f)]
+		public static float DarkenLightenExposure { get; set; }
+
 		static Settings Settings = null;
 		
 		public static void Load()
