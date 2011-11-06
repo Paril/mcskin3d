@@ -38,6 +38,9 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,7 +98,6 @@
     <Compile Include="DragDropLib\SwfDropTargetHelperExtensions.cs" />
     <Compile Include="DropperTool.cs" />
     <Compile Include="EraserTool.cs" />
-    <Compile Include="FloodFillTool.cs" />
     <Compile Include="FolderNode.cs" />
     <Compile Include="Jonas\McSkinCursor.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
@@ -418,7 +420,7 @@
     <None Include="Resources\Folder_32x32_image.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\fill-bucket.png" />
+    <None Include="Resources\Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
