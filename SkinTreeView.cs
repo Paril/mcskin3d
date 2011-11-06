@@ -403,7 +403,8 @@ namespace MCSkin3D
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
                 
 			if (e.Node.IsSelected)
-				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height);
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height);
+
 
 			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
 
