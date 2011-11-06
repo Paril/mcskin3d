@@ -23,7 +23,11 @@ namespace MCSkin3D
 			var pixNum = x + (skin.Width * y);
 			var c = pixels[pixNum];
 			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-			Program.MainForm.SelectedColor = oldColor;
+
+			if ((Control.ModifierKeys & Keys.Shift) != 0)
+				Program.MainForm.UnselectedColor = oldColor;
+			else
+				Program.MainForm.SelectedColor = oldColor;
 			return false;
 		}
 

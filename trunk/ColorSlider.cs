@@ -532,7 +532,7 @@ namespace MB.Controls
 			}
 			catch (Exception Err)
 			{
-				Console.WriteLine("DrawBackGround Error in " + Slider.Name + ":" + Err.Message);
+			//	Console.WriteLine("DrawBackGround Error in " + Slider.Name + ":" + Err.Message);
 			}
 			finally
 			{

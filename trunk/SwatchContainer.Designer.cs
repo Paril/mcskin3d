@@ -32,7 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.swatchDisplayer1 = new MCSkin3D.SwatchDisplayer();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStrip1 = new Paril.Controls.NativeToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
@@ -139,7 +139,7 @@
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.VScrollBar vScrollBar1;
 		private SwatchDisplayer swatchDisplayer1;
-		private System.Windows.Forms.ToolStrip toolStrip1;
+		private Paril.Controls.NativeToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.ToolStripButton toolStripButton2;
 	}

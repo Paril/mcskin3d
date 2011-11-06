@@ -121,7 +121,7 @@ namespace MCSkin3D
 
 		public static void LoadModel()
 		{
-			/*try
+			try
 			{
 				if ((HumanModel = Model.Load("Models\\human.xml")) != null)
 					return;
@@ -131,7 +131,7 @@ namespace MCSkin3D
 			}
 
 			MessageBox.Show("Human model missing - did you forget to extract first? (creating...)");
-			Directory.CreateDirectory("Models");*/
+			Directory.CreateDirectory("Models");
 
 			var box = CreateBox(8);
 			var allWhite = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };

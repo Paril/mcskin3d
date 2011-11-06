@@ -133,6 +133,7 @@ namespace Paril.OpenGL
 			settings.ConformanceLevel = ConformanceLevel.Fragment;
 			settings.Indent = true;
 			settings.NewLineOnAttributes = false;
+			settings.IndentChars = "\t";
 
 			using (XmlWriter writer = XmlWriter.Create(fileName, settings))
 			{
