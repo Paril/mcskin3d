@@ -1461,10 +1461,11 @@ namespace MCSkin3D
 
 		void PerformCloneSkin()
 		{
-			if (_lastSkin == null)
+			if (treeView1.SelectedNode == null ||
+				treeView1.SelectedNode is Skin)
 				return;
 
-			Skin skin = _lastSkin;
+			Skin skin = (Skin)treeView1.SelectedNode;
 			string newName = skin.Name;
 			string newFileName;
 
@@ -1476,7 +1477,11 @@ namespace MCSkin3D
 
 			File.Copy(skin.File.FullName, newFileName);
 			Skin newSkin = new Skin(newFileName);
-			_lastSkin.Parent.Nodes.Add(newSkin);
+
+			if (skin.Parent.Nodes != null)
+				skin.Parent.Nodes.Add(newSkin);
+			else
+				treeView1.Nodes.Add(newSkin);
 			newSkin.SetImages();
 		}
 
@@ -2418,12 +2423,12 @@ namespace MCSkin3D
 			if (e.Button == MouseButtons.Right)
 			{
 				_rightClickedNode = treeView1.GetSelectedNodeAt(e.Location);
-				changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = true;
+				changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = true;
 
 				if (treeView1.SelectedNode == null)
-					changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = false;
+					changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = false;
 				else if (!(treeView1.SelectedNode is Skin))
-					cloneToolStripMenuItem.Enabled = false;
+					cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = false;
 
 				contextMenuStrip1.Show(Cursor.Position);
 			}
