@@ -29,6 +29,8 @@ Version 1.3
 -- Tool button is at the top of the render view
 -- Probably won't have time to do mouse shortcuts... sorry :(
 - Secondary color
+- Hybrid 2D/3D view
+- Darken/Lighten
 
 Version 1.2
 - Bug fixes relating to importing and naming skins

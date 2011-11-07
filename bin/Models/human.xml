@@ -487,7 +487,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Right Leg" Mode="Quads" Translate="-2 -12 0" Pivot="0 -6 0" IsHelmet="False" FollowCursor="False" RotateFactor="37" Part="RightLegFlag">
+	<Mesh Name="Right Leg" Mode="Quads" Translate="-2 -12 0" Pivot="0 -6 0" IsHelmet="False" FollowCursor="False" RotateFactor="-37" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 6 2</Vertex>
@@ -609,7 +609,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Left Leg" Mode="Quads" Translate="2 -12 0" Pivot="0 -6 0" IsHelmet="False" FollowCursor="False" RotateFactor="-37" Part="LeftLegFlag">
+	<Mesh Name="Left Leg" Mode="Quads" Translate="2 -12 0" Pivot="0 -6 0" IsHelmet="False" FollowCursor="False" RotateFactor="37" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 6 2</Vertex>

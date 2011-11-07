@@ -49,12 +49,15 @@ namespace Paril.Components.Update
 
 			try
 			{
-				HttpWebRequest request = (HttpWebRequest)FileWebRequest.Create(updater.URL);
+				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(updater.URL);
 
 				request.Timeout = -1;
 
 				IAsyncResult response = (IAsyncResult)request.BeginGetResponse(CallbackAsync, new object[] { request, updater });
-				response.AsyncWaitHandle.WaitOne();
+				Thread.Sleep(20000);
+
+				request.Abort();
+				throw new TimeoutException();
 			}
 			catch
 			{

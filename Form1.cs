@@ -738,9 +738,9 @@ namespace MCSkin3D
 
 				GL.Begin(BeginMode.Quads);
 				GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
-				GL.TexCoord2(rendererControl.Width / 32.0f, 0); GL.Vertex2(rendererControl.Width, 0);
-				GL.TexCoord2(rendererControl.Width / 32.0f, rendererControl.Height / 32.0f); GL.Vertex2(rendererControl.Width, rendererControl.Height);
-				GL.TexCoord2(0, rendererControl.Height / 32.0f); GL.Vertex2(0, rendererControl.Height);
+				GL.TexCoord2(_currentViewport.Width / 32.0f, 0); GL.Vertex2(_currentViewport.Width, 0);
+				GL.TexCoord2(_currentViewport.Width / 32.0f, _currentViewport.Height / 32.0f); GL.Vertex2(_currentViewport.Width, _currentViewport.Height);
+				GL.TexCoord2(0, _currentViewport.Height / 32.0f); GL.Vertex2(0, _currentViewport.Height);
 				GL.End();
 			}
 
@@ -749,7 +749,7 @@ namespace MCSkin3D
 
 			GL.PushMatrix();
 
-			GL.Translate((rendererControl.Width / 2) + -_2dCamOffsetX, (rendererControl.Height / 2) + -_2dCamOffsetY, 0);
+			GL.Translate((_currentViewport.Width / 2) + -_2dCamOffsetX, (_currentViewport.Height / 2) + -_2dCamOffsetY, 0);
 			GL.Scale(_2dZoom, _2dZoom, 1);
 
 			if (pickView)
@@ -787,10 +787,11 @@ namespace MCSkin3D
 			GL.Disable(EnableCap.Blend);
 		}
 
-		void DrawPlayer(int tex, Skin skin, bool grass, bool pickView)
+		void DrawPlayer(int tex, Skin skin, bool pickView)
 		{
 			Vector3 vec = new Vector3();
 			int count = 0;
+			bool grass = !pickView && grassToolStripMenuItem.Checked;
 
 			foreach (var mesh in PlayerModel.HumanModel.Meshes)
 			{
@@ -811,8 +812,8 @@ namespace MCSkin3D
 			GL.Translate(-vec.X, -vec.Y, 0);
 
 			var clPt = rendererControl.PointToClient(Cursor.Position);
-			var x = clPt.X - (rendererControl.Width / 2);
-			var y = clPt.Y - (rendererControl.Height / 2);
+			var x = clPt.X - (_currentViewport.Width / 2);
+			var y = clPt.Y - (_currentViewport.Height / 2);
 
 			if (!pickView && GlobalSettings.Transparency == TransparencyMode.All)
 				GL.Enable(EnableCap.Blend);
@@ -987,7 +988,6 @@ namespace MCSkin3D
 		bool GetPick(int x, int y, ref Point hitPixel)
 		{
 			rendererControl.MakeCurrent();
-			SetupMainMode();
 
 			GL.ClearColor(Color.White);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -996,16 +996,31 @@ namespace MCSkin3D
 			var skin = _lastSkin;
 
 			if (_currentViewMode == ViewMode.Perspective)
-				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, false, true);
+			{
+				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
+			}
 			else if (_currentViewMode == ViewMode.Orthographic)
+			{
+				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
 				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
+			}
+			else
+			{
+				int halfHeight = rendererControl.Height / 2;
 
-			int[] viewport = new int[4];
-			byte[] pixel = new byte[3];
+				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
+				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
 
-			GL.GetInteger(GetPName.Viewport, viewport);
+				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
+				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
+			}
 
-			GL.ReadPixels(x, viewport[3] - y, 1, 1,
+			GL.Flush();
+
+			byte[] pixel = new byte[4];
+
+			GL.ReadPixels(x, rendererControl.Height - y, 1, 1,
 				PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
 
 			if (pixel[2] == 0)
@@ -2109,7 +2124,9 @@ namespace MCSkin3D
 
 		void rendererControl_MouseWheel(object sender, MouseEventArgs e)
 		{
-			if (_currentViewMode == ViewMode.Perspective)
+			CheckMouse(e.Y);
+
+			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
 				_3dZoom += e.Delta / 50;
 			else
 				_2dZoom += e.Delta / 50;
@@ -2121,7 +2138,7 @@ namespace MCSkin3D
 		void DrawGLToolbar()
 		{
 			// 2D
-			Setup2D();
+			Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
 			RenderState.BindTexture(0);
 			GL.Enable(EnableCap.Blend);
 
@@ -2160,16 +2177,32 @@ namespace MCSkin3D
 			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			SetupMainMode();
 
 			var skin = (Skin)_lastSkin;
 
 			GL.PushMatrix();
 
 			if (_currentViewMode == ViewMode.Perspective)
-				DrawPlayer(_previewPaint, skin, grassToolStripMenuItem.Checked, false);
+			{
+				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				DrawPlayer(_previewPaint, skin, false);
+			}
 			else if (_currentViewMode == ViewMode.Orthographic)
+			{
+				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
 				DrawPlayer2D(_previewPaint, skin, false);
+			}
+			else
+			{
+				int halfHeight = rendererControl.Height / 2;
+
+				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
+				DrawPlayer(_previewPaint, skin, false);
+
+				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
+				DrawPlayer2D(_previewPaint, skin, false);
+			}
+			
 			GL.PopMatrix();
 
 			DrawGLToolbar();
@@ -2177,34 +2210,34 @@ namespace MCSkin3D
 			rendererControl.SwapBuffers();
 		}
 
-		void SetupMainMode()
+		Rectangle _currentViewport;
+
+		void Setup3D(Rectangle viewport)
 		{
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
 
-			GL.Viewport(0, 0, rendererControl.Width, rendererControl.Height);
-
-			if (_currentViewMode == ViewMode.Perspective)
-			{
-				var mat = OpenTK.Matrix4d.Perspective(45, (double)rendererControl.Width / (double)rendererControl.Height, 0.01, 100000);
-				GL.MultMatrix(ref mat);
-			}
-			else
-				GL.Ortho(0, rendererControl.Width, rendererControl.Height, 0, -1, 1);
+			GL.Viewport(viewport);
+			var mat = OpenTK.Matrix4d.Perspective(45, (double)viewport.Width / (double)viewport.Height, 0.01, 100000);
+			GL.MultMatrix(ref mat);
 
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
+
+			_currentViewport = viewport;
 		}
 
-		void Setup2D()
+		void Setup2D(Rectangle viewport)
 		{
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
 
-			GL.Viewport(0, 0, rendererControl.Width, rendererControl.Height);
-			GL.Ortho(0, rendererControl.Width, rendererControl.Height, 0, -1, 1);
+			GL.Viewport(viewport);
+			GL.Ortho(0, viewport.Width, viewport.Height, 0, -1, 1);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
+
+			_currentViewport = viewport;
 		}
 
 		void rendererControl_Resize(object sender, EventArgs e)
@@ -2254,7 +2287,7 @@ namespace MCSkin3D
 
 		public void RotateView(Point delta, float factor)
 		{
-			if (_currentViewMode == ViewMode.Perspective)
+			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
 			{
 				_3dRotationY += (float)(delta.X * ToolScale) * factor;
 				_3dRotationX += (float)(delta.Y * ToolScale) * factor;
@@ -2268,8 +2301,10 @@ namespace MCSkin3D
 
 		public void ScaleView(Point delta, float factor)
 		{
-			if (_currentViewMode == ViewMode.Perspective)
+			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
+			{
 				_3dZoom += (float)(-delta.Y * ToolScale) * factor;
+			}
 			else
 			{
 				_2dZoom += -delta.Y / 25.0f;
@@ -2279,8 +2314,19 @@ namespace MCSkin3D
 			}
 		}
 
+		void CheckMouse(int y)
+		{
+			if (y > (rendererControl.Height / 2))
+				_mouseIn3D = true;
+			else
+				_mouseIn3D = false;
+		}
+
+		bool _mouseIn3D = false;
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
+			CheckMouse(e.Y);
+
 			float halfWidth = rendererControl.Width / 2.0f;
 			float halfImgWidth = 56.0f / 2.0f;
 
@@ -2321,7 +2367,6 @@ namespace MCSkin3D
 				}
 				else
 					_tools[(int)Tools.Camera].Tool.MouseMove(_lastSkin, e);
-
 
 				rendererControl.Invalidate();
 			}
