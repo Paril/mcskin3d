@@ -47,6 +47,7 @@
 			this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.perspectiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.textureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.hybridViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.threeDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.animateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,12 +96,14 @@
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.treeView1 = new MCSkin3D.SkinTreeView();
 			this.toolStrip2 = new Paril.Controls.NativeToolStrip();
-			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.importToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.newFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.renameToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.deleteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.cloneToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
@@ -155,7 +158,6 @@
 			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.hybridViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -269,7 +271,7 @@
 			// 
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
 			this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-			this.undoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.undoToolStripMenuItem.Text = "&Undo";
 			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
 			// 
@@ -277,19 +279,19 @@
 			// 
 			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
 			this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.redoToolStripMenuItem.Text = "&Redo";
 			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(141, 6);
 			// 
 			// toolToolStripMenuItem
 			// 
 			this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-			this.toolToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.toolToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.toolToolStripMenuItem.Text = "&Tool";
 			// 
 			// viewToolStripMenuItem
@@ -331,6 +333,14 @@
 			this.textureToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
 			this.textureToolStripMenuItem.Text = "&2D (Texture)";
 			this.textureToolStripMenuItem.Click += new System.EventHandler(this.textureToolStripMenuItem_Click);
+			// 
+			// hybridViewToolStripMenuItem
+			// 
+			this.hybridViewToolStripMenuItem.Name = "hybridViewToolStripMenuItem";
+			this.hybridViewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+			this.hybridViewToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+			this.hybridViewToolStripMenuItem.Text = "Hybrid View";
+			this.hybridViewToolStripMenuItem.Click += new System.EventHandler(this.hybridViewToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -754,27 +764,29 @@
 			// 
 			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.uploadToolStripButton,
+            this.importToolStripButton,
             this.newFolderToolStripButton,
             this.toolStripSeparator11,
             this.renameToolStripButton,
             this.deleteToolStripButton,
-            this.cloneToolStripButton});
+            this.cloneToolStripButton,
+            this.toolStripSeparator12,
+            this.uploadToolStripButton});
 			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip2.Name = "toolStrip2";
 			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
 			this.toolStrip2.TabIndex = 6;
 			this.toolStrip2.Text = "toolStrip2";
 			// 
-			// uploadToolStripButton
+			// importToolStripButton
 			// 
-			this.uploadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uploadToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
-			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.uploadToolStripButton.Name = "uploadToolStripButton";
-			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uploadToolStripButton.Text = "Import Here...";
-			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
+			this.importToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.importToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
+			this.importToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.importToolStripButton.Name = "importToolStripButton";
+			this.importToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.importToolStripButton.Text = "Import Here...";
+			this.importToolStripButton.Click += new System.EventHandler(this.importToolStripButton_Click);
 			// 
 			// newFolderToolStripButton
 			// 
@@ -820,6 +832,21 @@
 			this.cloneToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.cloneToolStripButton.Text = "Clone";
 			this.cloneToolStripButton.Click += new System.EventHandler(this.cloneToolStripButton_Click);
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
+			// 
+			// uploadToolStripButton
+			// 
+			this.uploadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.uploadToolStripButton.Image = global::MCSkin3D.Properties.Resources.upload;
+			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.uploadToolStripButton.Name = "uploadToolStripButton";
+			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.uploadToolStripButton.Text = "Upload";
+			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
 			// 
 			// colorTabControl
 			// 
@@ -1465,14 +1492,6 @@
 			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
-			// hybridViewToolStripMenuItem
-			// 
-			this.hybridViewToolStripMenuItem.Name = "hybridViewToolStripMenuItem";
-			this.hybridViewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-			this.hybridViewToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-			this.hybridViewToolStripMenuItem.Text = "Hybrid View";
-			this.hybridViewToolStripMenuItem.Click += new System.EventHandler(this.hybridViewToolStripMenuItem_Click);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1638,7 +1657,7 @@
 		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
 		private Paril.Controls.NativeToolStrip toolStrip2;
-		private System.Windows.Forms.ToolStripButton uploadToolStripButton;
+		private System.Windows.Forms.ToolStripButton importToolStripButton;
 		private System.Windows.Forms.ToolStripButton newFolderToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
 		private System.Windows.Forms.ToolStripButton renameToolStripButton;
@@ -1646,6 +1665,8 @@
 		private System.Windows.Forms.ToolStripButton cloneToolStripButton;
 		private System.Windows.Forms.ToolStripButton hybridToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem hybridViewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripButton uploadToolStripButton;
 	}
 }
 

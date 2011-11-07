@@ -237,7 +237,7 @@ namespace MCSkin3D
 			if (row >= _fitPerRow)
 				return;
 
-			int col = e.Y / (SwatchSize + 1);
+			int col = (e.Y / (SwatchSize + 1)) + ScrollBar.Value;
 
 			if (row + (col * _fitPerRow) >= Colors.Count)
 				return;
