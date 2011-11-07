@@ -103,7 +103,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new EraserTool(), null, "Eraser", Properties.Resources.erase, Keys.E));
 			_tools.Add(new ToolIndex(new DropperTool(), null, "Dropper", Properties.Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "Dodge/Burn", Properties.Resources.dodge, Keys.B));
-            //_tools.Add(new ToolIndex(new FloodFillTool(), null, "Fill-bucket", Properties.Resources.fill_bucket, Keys.F));
+            _tools.Add(new ToolIndex(new FloodFillTool(), null, "Fill-bucket", Properties.Resources.fill_bucket, Keys.F));
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions = new DarkenLightenOptions(), "Darken/Lighten", Properties.Resources.darkenlighten, Keys.L));
 
 			for (int i = _tools.Count - 1; i >= 0; --i)

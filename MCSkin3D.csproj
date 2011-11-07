@@ -105,6 +105,7 @@
     <Compile Include="DragDropLib\SwfDropTargetHelperExtensions.cs" />
     <Compile Include="DropperTool.cs" />
     <Compile Include="EraserTool.cs" />
+    <Compile Include="FloodFillTool.cs" />
     <Compile Include="FolderNode.cs" />
     <Compile Include="Jonas\McSkinCursor.cs" />
     <Compile Include="LuminanceSliderRenderer.cs" />
@@ -443,6 +444,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fill-bucket.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

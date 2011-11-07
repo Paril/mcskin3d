@@ -207,6 +207,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap fill_bucket {
+            get {
+                object obj = ResourceManager.GetObject("fill_bucket", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Folder_32x32 {
             get {
                 object obj = ResourceManager.GetObject("Folder_32x32", resourceCulture);
