@@ -3063,13 +3063,24 @@ namespace MCSkin3D
 			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
 		}
 
+        private void SetLanguage(string filename)
+        {
+
+        }
+
+        private void ReloadLanguage()
+        {
+
+        }
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			Icon = Properties.Resources.Icon_new;
             System.IO.DirectoryInfo di = new DirectoryInfo(Path.GetFullPath("Languages"));
-            
+            bool ext = false;
             foreach (FileInfo f in di.GetFiles("*.lang"))
             {
+               
                 using (StreamReader sr = new StreamReader(f.FullName))
                 {
                     if (sr.EndOfStream)
@@ -3077,12 +3088,21 @@ namespace MCSkin3D
 
                     if (sr.ReadLine() == "LANG.MCSKINNER")
                     {
+                        if (GlobalSettings.LanguageFile == f.Name)
+                        {
+                            ext = true;
+                        }
                         ToolStripMenuItem _x = new ToolStripMenuItem();
                         _x.Text = sr.ReadLine();
                         _x.Tag = f.FullName;
                         languageToolStripMenuItem.DropDownItems.Add(_x);
                     }
                 }
+            }
+
+            if ((GlobalSettings.LanguageFile != "") && ext)
+            {
+                SetLanguage(GlobalSettings.LanguageFile);
             }
 		}
 

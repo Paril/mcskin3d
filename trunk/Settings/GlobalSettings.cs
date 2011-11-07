@@ -101,6 +101,10 @@ namespace MCSkin3D
 		[DefaultValue(0.25f)]
 		public static float DarkenLightenExposure { get; set; }
 
+        [Savable]
+        [DefaultValue("")]
+        public static string LanguageFile { get; set; }
+
 		static Settings Settings = null;
 		
 		public static void Load()
