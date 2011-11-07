@@ -37,9 +37,9 @@ namespace MCSkin3D
 			bool switchTools = (!Program.MainForm.DodgeBurnOptions.Inverted && ctrlIng) || (Program.MainForm.DodgeBurnOptions.Inverted && !ctrlIng);
 
 			if (switchTools)
-				return Color.FromArgb(ColorBlending.Burn(old, 1 - Exposure).ToArgb());
+				return Color.FromArgb(ColorBlending.Burn(old, 1 - (Exposure / 10.0f)).ToArgb());
 			else
-				return Color.FromArgb(ColorBlending.Dodge(old, Exposure).ToArgb());
+				return Color.FromArgb(ColorBlending.Dodge(old, Exposure / 10.0f).ToArgb());
 		}
 
 		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)

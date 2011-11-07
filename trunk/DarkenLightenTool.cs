@@ -38,9 +38,9 @@ namespace MCSkin3D
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(old);
 
 			if (switchTools)
-				hsl.Luminance -= Exposure;
+				hsl.Luminance -= Exposure / 5.0f;
 			else
-				hsl.Luminance += Exposure;
+				hsl.Luminance += Exposure / 5.0f;
 
 			if (hsl.Luminance < 0)
 				hsl.Luminance = 0;

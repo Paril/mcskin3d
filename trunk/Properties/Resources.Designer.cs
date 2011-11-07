@@ -235,9 +235,16 @@ namespace MCSkin3D.Properties {
             }
         }
         
-        internal static System.Drawing.Icon Icon {
+        internal static System.Drawing.Bitmap hybrid {
             get {
-                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("hybrid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon Icon_new {
+            get {
+                object obj = ResourceManager.GetObject("Icon_new", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
