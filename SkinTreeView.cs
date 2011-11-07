@@ -637,204 +637,103 @@ namespace MCSkin3D
 
 		protected override void OnDragDrop(DragEventArgs e)
 		{
-			_overNode = null;
-			/*
-			Cursor = Cursors.Default;
-			//
-			//If you get any problems with this, ask GoVisualTeam (aka Jonas Triki) ... :)
-			//
-			Point cp = PointToClient(new Point(e.X, e.Y));
-			TreeNode dragToItem = GetSelectedNodeAt(new Point(cp.X, cp.Y));
-			TreeNode selectedNode = SelectedNode;
-
-			if (dragToItem == null)
-			{
-				if ("\\" == selectedNode.FullPath)
-					return;
-			}
-			else
-			{
-				if (dragToItem.FullPath == selectedNode.FullPath)
-					return;
-			}
-
-			if (e.Data.GetDataPresent("System.Windows.Forms.TreeNode") || e.Data.GetDataPresent("MCSkin3D.Skin"))
-			{
-				if (dragToItem == selectedNode)
-					return;
-
-				if (dragToItem is Skin && selectedNode is Skin)
-				{
-					if (!(dragToItem.Parent == null))
-					{
-						if (!(dragToItem.Parent == selectedNode.Parent))
-						{
-							string oldPath = ((Skin)selectedNode).File.FullName;
-							selectedNode.Remove();
-							if (!(dragToItem.Parent == null))
-								dragToItem.Parent.Nodes.Add(selectedNode);
-							else
-								dragToItem.Nodes.Add(selectedNode);
-
-							string newPath = ((Skin)selectedNode).File.FullName;
-							if (!File.Exists(newPath))
-								File.Move(oldPath, newPath);
-						}
-					}
-					else if (dragToItem == null)
-					{
-						string oldPath = ((Skin)selectedNode).File.FullName;
-						selectedNode.Remove();
-						Nodes.Add(selectedNode);
-
-						string newPath = ((Skin)selectedNode).File.FullName;
-						if (!File.Exists(newPath))
-							File.Move(oldPath, newPath);
-					}
-					else
-					{
-						string oldPath = ((Skin)selectedNode).File.FullName;
-						selectedNode.Remove();
-
-						if (!(dragToItem.Parent == null))
-							dragToItem.Parent.Nodes.Add(selectedNode);
-						else
-							dragToItem.Nodes.Add(selectedNode);
-
-						string newPath = ((Skin)selectedNode).File.FullName;
-						if (!File.Exists(newPath))
-							File.Move(oldPath, newPath);
-					}
-				}
-				else if (!(dragToItem is Skin) && selectedNode is Skin)
-				{
-					if (dragToItem == null)
-					{
-						string oldPath = ((Skin)selectedNode).File.FullName;
-						selectedNode.Remove();
-						Nodes.Add(selectedNode);
-
-						string newPath = ((Skin)selectedNode).File.FullName;
-						if (!File.Exists(newPath))
-							File.Move(oldPath, newPath);
-					}
-					else
-					{
-						string oldPath = ((Skin)selectedNode).File.FullName;
-						selectedNode.Remove();
-						dragToItem.Nodes.Add(selectedNode);
-						string newPath = ((Skin)selectedNode).File.FullName;
-						if (!File.Exists(newPath))
-							File.Move(oldPath, newPath);
-					}
-				}
-				else if (!(dragToItem is Skin) && !(selectedNode is Skin))
-				{
-					if (dragToItem == null)
-					{
-						string oldPath = "Skins\\" + selectedNode.FullPath;
-						selectedNode.Remove();
-						Nodes.Add(selectedNode);
-						string newPath = "Skins\\" + selectedNode.FullPath;
-						if (!Directory.Exists(newPath))
-							Directory.Move(oldPath, newPath);
-					}
-					else
-					{
-						string oldPath = "Skins\\" + selectedNode.FullPath;
-						selectedNode.Remove();
-						dragToItem.Nodes.Add(selectedNode);
-						string newPath = "Skins\\" + selectedNode.FullPath;
-						if (!Directory.Exists(newPath))
-							Directory.Move(oldPath, newPath);
-					}
-				}
-				SelectedNode = selectedNode;
-			}
-			else if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				string[] fileDrop = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-				//Check if the image is valid, and check if the image's width and height is correctly set. If it is valid, then add it. l0l
-				for (int i = 0; i < fileDrop.Length; i++)
-				{
-					if (fileDrop[i].ToLower().EndsWith(".png"))
-					{
-						try
-						{
-							Image img = Image.FromFile(fileDrop[i]);
-							if ((img.Width / img.Height) == 2)
-							{
-								if (dragToItem == null)
-								{
-									string treePath = "Skins\\";
-									string newPath = treePath + "\\" + System.IO.Path.GetFileName(fileDrop[i]);
-									if (!File.Exists(newPath))
-										File.Copy(fileDrop[i], newPath);
-
-									Skin newSkin = new Skin(newPath);
-									Nodes.Add(newSkin);
-									newSkin.SetImages();
-									SelectedNode = newSkin;
-								}
-								else
-								{
-									if (!(dragToItem is Skin))
-									{
-										string treePath = "Skins\\" + dragToItem.FullPath;
-										string newPath = treePath + "\\" + System.IO.Path.GetFileName(fileDrop[i]);
-										if (!File.Exists(newPath))
-										{
-											File.Copy(fileDrop[i], newPath);
-										}
-										Skin newSkin = new Skin(newPath);
-										dragToItem.Nodes.Add(newSkin);
-										newSkin.SetImages();
-										SelectedNode = newSkin;
-									}
-									else
-									{
-
-										string treePath = "Skins\\" + ((Skin)dragToItem).Parent.FullPath;
-										string newPath = treePath + "\\" + System.IO.Path.GetFileName(fileDrop[i]);
-										if (!File.Exists(newPath))
-											File.Copy(fileDrop[i], newPath);
-
-										Skin newSkin = new Skin(newPath);
-										dragToItem.Parent.Nodes.Add(newSkin);
-										newSkin.SetImages();
-										SelectedNode = newSkin;
-									}
-								}
-							}
-							else
-								MessageBox.Show("Skin is not valid!", "Error!");
-						}
-						catch
-						{
-							MessageBox.Show("Skin is not valid!", "Error!");
-							return;
-						}
-					}
-					else
-					{
-						MessageBox.Show("Skin is not valid!", "Error!");
-						return;
-					}
-				}
-			}*/
             dragDropOverFolder = 0;
             dragTimer.Stop();
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				string folderLocation;
+
+				if (_overNode != null)
+				{
+					if (!(_overNode is Skin))
+						folderLocation = "Skins\\" + _overNode.FullPath + '\\';
+					else if (_overNode.Parent != null)
+						folderLocation = "Skins\\" + _overNode.Parent.FullPath + '\\';
+					else
+						folderLocation = "Skins\\";
+				}
+				else
+					folderLocation = "Skins\\";
+
+				foreach (var f in files)
+				{
+					var name = Path.GetFileNameWithoutExtension(f);
+
+					while (File.Exists(folderLocation + name + ".png"))
+						name += " (New)";
+
+					File.Copy(f, folderLocation + name + ".png");
+
+					Skin skin = new Skin(folderLocation + name + ".png");
+
+					if (_overNode != null)
+					{
+						if (!(_overNode is Skin))
+							_overNode.Nodes.Add(skin);
+						else
+							_overNode.Parent.Nodes.Add(skin);
+					}
+					else
+						Nodes.Add(skin);
+
+					skin.SetImages();
+				}
+			}
 			else
-				e.Effect = DragDropEffects.None;
+			{
+				if (!DropValid(SelectedNode, _overNode))
+					e.Effect = DragDropEffects.None;
+				else
+				{
+					if (e.Effect == DragDropEffects.Move)
+						MoveNode(SelectedNode, _overNode);
+				}
+			}
+			
 			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
 
 			_dragNode = null;
+			_overNode = null;
+		}
 
-			//if (e.Effect == DragDropEffects.Copy)
-			//	AcceptFileDrop(this, e.Data);
+		void MoveNode(TreeNode from, TreeNodeCollection to)
+		{
+			string oldPath, newPath;
+
+			if (from is Skin)
+				oldPath = ((Skin)from).File.FullName;
+			else
+				oldPath = ((FolderNode)from).Directory.FullName;
+
+			from.Remove();
+			to.Add(from);
+
+			if (from is Skin)
+				newPath = ((Skin)from).File.FullName;
+			else
+				newPath = ((FolderNode)from).Directory.FullName;
+
+			if (from is Skin)
+				File.Move(oldPath, newPath);
+			else
+				Directory.Move(oldPath, newPath);
+		}
+
+		void MoveNode(TreeNode from, TreeNode to)
+		{
+			if (from is Skin && to is Skin)
+				MoveNode(from, to.GetParentCollection());
+			else if (from is Skin && to is FolderNode)
+				MoveNode(from, to.Nodes);
+			else if (from is FolderNode && to is Skin)
+				MoveNode(from, to.GetParentCollection());
+			else if (from is FolderNode && to is FolderNode)
+				MoveNode(from, to.Nodes);
+			else if ((from is Skin || from is FolderNode) && to == null)
+				MoveNode(from, Nodes);
 		}
 	}
 }
