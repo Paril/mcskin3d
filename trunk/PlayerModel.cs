@@ -121,7 +121,7 @@ namespace MCSkin3D
 
 		public static void LoadModel()
 		{
-			try
+			/*try
 			{
 				if ((HumanModel = Model.Load("Models\\human.xml")) != null)
 					return;
@@ -130,7 +130,7 @@ namespace MCSkin3D
 			{
 			}
 
-			MessageBox.Show("Human model missing - did you forget to extract first? (creating...)");
+			MessageBox.Show("Human model missing - did you forget to extract first? (creating...)");*/
 			Directory.CreateDirectory("Models");
 
 			var box = CreateBox(8);
@@ -257,7 +257,7 @@ namespace MCSkin3D
 			RightLegMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
 			RightLegMesh.Translate = new Vector3(-2, -12, 0);
 			RightLegMesh.Pivot = new Vector3(0, -6, 0);
-			RightLegMesh.RotateFactor = 37;
+			RightLegMesh.RotateFactor = -37;
 			RightLegMesh.Part = VisiblePartFlags.RightLegFlag;
 
 			frontFace.Vertices = GetFace(FaceLocation.Front, box);
@@ -283,7 +283,7 @@ namespace MCSkin3D
 			LeftLegMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
 			LeftLegMesh.Translate = new Vector3(2, -12, 0);
 			LeftLegMesh.Pivot = new Vector3(0, -6, 0);
-			LeftLegMesh.RotateFactor = -37;
+			LeftLegMesh.RotateFactor = 37;
 			LeftLegMesh.Part = VisiblePartFlags.LeftLegFlag;
 
 			frontFace.Vertices = GetFace(FaceLocation.Front, box);
