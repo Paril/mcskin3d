@@ -3066,6 +3066,24 @@ namespace MCSkin3D
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			Icon = Properties.Resources.Icon_new;
+            System.IO.DirectoryInfo di = new DirectoryInfo(Path.GetFullPath("Languages"));
+            
+            foreach (FileInfo f in di.GetFiles("*.lang"))
+            {
+                using (StreamReader sr = new StreamReader(f.FullName))
+                {
+                    if (sr.EndOfStream)
+                        break;
+
+                    if (sr.ReadLine() == "LANG.MCSKINNER")
+                    {
+                        ToolStripMenuItem _x = new ToolStripMenuItem();
+                        _x.Text = sr.ReadLine();
+                        _x.Tag = f.FullName;
+                        languageToolStripMenuItem.DropDownItems.Add(_x);
+                    }
+                }
+            }
 		}
 
 		bool _secondaryIsFront = false;
