@@ -1,0 +1,12 @@
+#summary About new feature introduced by djmati11.
+#labels Featured
+
+= Introduction =
+
+Language file should look as this example:
+
+{{{
+LANG.MCSKINNER
+[NAME]
+Strings....
+}}}
