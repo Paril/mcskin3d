@@ -3091,7 +3091,7 @@ namespace MCSkin3D
 			PerformUpload();
 		}
 
-		private void uploadToolStripButton_Click(object sender, EventArgs e)
+		private void importToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformImportSkin();
 		}
@@ -3114,6 +3114,11 @@ namespace MCSkin3D
 		private void cloneToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformCloneSkin();
+		}
+
+		private void uploadToolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformUpload();
 		}
 	}
 }
