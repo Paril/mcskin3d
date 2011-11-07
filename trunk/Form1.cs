@@ -386,6 +386,7 @@ namespace MCSkin3D
 			InitMenuShortcut(_tools[(int)Tools.Dropper].MenuItem, _tools[(int)Tools.Dropper].DefaultKeys, SwitchToDropper);
 			InitMenuShortcut(_tools[(int)Tools.DodgeBurn].MenuItem, _tools[(int)Tools.DodgeBurn].DefaultKeys, SwitchToDodgeBurn);
 			InitMenuShortcut(_tools[(int)Tools.DarkenLighten].MenuItem, _tools[(int)Tools.DarkenLighten].DefaultKeys, SwitchToDarkenLighten);
+			InitMenuShortcut(_tools[(int)Tools.FillBucket].MenuItem, _tools[(int)Tools.FillBucket].DefaultKeys, SwitchToFillBucket);
 
 			// not in the menu
 			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
@@ -430,6 +431,11 @@ namespace MCSkin3D
 		void SwitchToDarkenLighten()
 		{
 			SetSelectedTool(_tools[(int)Tools.DarkenLighten]);
+		}
+
+		void SwitchToFillBucket()
+		{
+			SetSelectedTool(_tools[(int)Tools.FillBucket]);
 		}
 
 		void PerformSwitchColor()
@@ -3157,6 +3163,16 @@ namespace MCSkin3D
 		private void uploadToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformUpload();
+		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			PerformTreeViewZoomOut();
+		}
+
+		private void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			PerformTreeViewZoomIn();
 		}
 	}
 }

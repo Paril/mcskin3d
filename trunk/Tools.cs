@@ -8,5 +8,6 @@
 		Dropper,
 		DodgeBurn,
 		DarkenLighten,
+		FillBucket,
 	}
 }
