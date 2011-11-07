@@ -28,6 +28,7 @@ using Paril.OpenGL;
 using OpenTK.Graphics;
 using System.Windows.Forms.VisualStyles;
 using DragDropLib;
+using Paril.Extensions;
 
 namespace MCSkin3D
 {
@@ -357,6 +358,7 @@ namespace MCSkin3D
 			InitMenuShortcut(redoToolStripMenuItem, PerformRedo);
 			InitMenuShortcut(perspectiveToolStripMenuItem, () => SetViewMode(ViewMode.Perspective));
 			InitMenuShortcut(textureToolStripMenuItem, () => SetViewMode(ViewMode.Orthographic));
+			InitMenuShortcut(hybridViewToolStripMenuItem, () => SetViewMode(ViewMode.Hybrid));
 			InitMenuShortcut(animateToolStripMenuItem, ToggleAnimation);
 			InitMenuShortcut(followCursorToolStripMenuItem, ToggleFollowCursor);
 			InitMenuShortcut(grassToolStripMenuItem, ToggleGrass);
@@ -388,8 +390,8 @@ namespace MCSkin3D
 			// not in the menu
 			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
 			InitUnlinkedShortcut("Toggle view mode", Keys.Control | Keys.V, ToggleViewMode);
-			InitUnlinkedShortcut("Screenshot (clipboard)", Keys.Control | Keys.H, TakeScreenshot);
-			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.H, SaveScreenshot);
+			InitUnlinkedShortcut("Screenshot (clipboard)", Keys.Control | Keys.B, TakeScreenshot);
+			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.B, SaveScreenshot);
 			InitUnlinkedShortcut("Delete node", Keys.Delete, PerformDeleteSkin);
 			InitUnlinkedShortcut("Clone node", Keys.Control | Keys.C, PerformCloneSkin);
 			InitUnlinkedShortcut("Change Name", Keys.Control | Keys.N, PerformNameChange);
@@ -728,67 +730,65 @@ namespace MCSkin3D
 			GL.End();
 		}
 
-		void DrawPlayer(int tex, Skin skin, bool grass, bool pickView)
+		void DrawPlayer2D(int tex, Skin skin, bool pickView)
 		{
-			if (_currentViewMode == ViewMode.Orthographic)
+			if (!pickView && GlobalSettings.AlphaCheckerboard)
 			{
-				if (!pickView && GlobalSettings.AlphaCheckerboard)
-				{
-					RenderState.BindTexture(_alphaTex);
+				RenderState.BindTexture(_alphaTex);
 
-					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
-					GL.TexCoord2(rendererControl.Width / 32.0f, 0); GL.Vertex2(rendererControl.Width, 0);
-					GL.TexCoord2(rendererControl.Width / 32.0f, rendererControl.Height / 32.0f); GL.Vertex2(rendererControl.Width, rendererControl.Height);
-					GL.TexCoord2(0, rendererControl.Height / 32.0f); GL.Vertex2(0, rendererControl.Height);
-					GL.End();
-				}
-
-				if (skin != null)
-					RenderState.BindTexture(tex);
-
-				GL.PushMatrix();
-
-				GL.Translate((rendererControl.Width / 2) + -_2dCamOffsetX, (rendererControl.Height / 2) + -_2dCamOffsetY, 0);
-				GL.Scale(_2dZoom, _2dZoom, 1);
-
-				if (pickView)
-					GL.Disable(EnableCap.Blend);
-				else
-					GL.Enable(EnableCap.Blend);
-
-				GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
-				if (skin != null)
-				{
-					float w = skin.Width;
-					float h = skin.Height;
-					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
-					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
-					GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
-					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
-					GL.End();
-				}
-
-				if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
-					_backgrounds[_selectedBackground].GLImage != 0)
-				{
-					RenderState.BindTexture(_backgrounds[_selectedBackground].GLImage);
-
-					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
-					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
-					GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
-					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
-					GL.End();
-				}
-				GL.PopMatrix();
-
-				GL.Disable(EnableCap.Blend);
-
-				return;
+				GL.Begin(BeginMode.Quads);
+				GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
+				GL.TexCoord2(rendererControl.Width / 32.0f, 0); GL.Vertex2(rendererControl.Width, 0);
+				GL.TexCoord2(rendererControl.Width / 32.0f, rendererControl.Height / 32.0f); GL.Vertex2(rendererControl.Width, rendererControl.Height);
+				GL.TexCoord2(0, rendererControl.Height / 32.0f); GL.Vertex2(0, rendererControl.Height);
+				GL.End();
 			}
 
+			if (skin != null)
+				RenderState.BindTexture(tex);
+
+			GL.PushMatrix();
+
+			GL.Translate((rendererControl.Width / 2) + -_2dCamOffsetX, (rendererControl.Height / 2) + -_2dCamOffsetY, 0);
+			GL.Scale(_2dZoom, _2dZoom, 1);
+
+			if (pickView)
+				GL.Disable(EnableCap.Blend);
+			else
+				GL.Enable(EnableCap.Blend);
+
+			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
+			if (skin != null)
+			{
+				float w = skin.Width;
+				float h = skin.Height;
+				GL.Begin(BeginMode.Quads);
+				GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
+				GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
+				GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
+				GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
+				GL.End();
+			}
+
+			if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
+				_backgrounds[_selectedBackground].GLImage != 0)
+			{
+				RenderState.BindTexture(_backgrounds[_selectedBackground].GLImage);
+
+				GL.Begin(BeginMode.Quads);
+				GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
+				GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
+				GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
+				GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
+				GL.End();
+			}
+			GL.PopMatrix();
+
+			GL.Disable(EnableCap.Blend);
+		}
+
+		void DrawPlayer(int tex, Skin skin, bool grass, bool pickView)
+		{
 			Vector3 vec = new Vector3();
 			int count = 0;
 
@@ -995,7 +995,10 @@ namespace MCSkin3D
 
 			var skin = _lastSkin;
 
-			DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, false, true);
+			if (_currentViewMode == ViewMode.Perspective)
+				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, false, true);
+			else if (_currentViewMode == ViewMode.Orthographic)
+				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
 
 			int[] viewport = new int[4];
 			byte[] pixel = new byte[3];
@@ -1475,7 +1478,7 @@ namespace MCSkin3D
 		void PerformCloneSkin()
 		{
 			if (treeView1.SelectedNode == null ||
-				treeView1.SelectedNode is Skin)
+				!(treeView1.SelectedNode is Skin))
 				return;
 
 			Skin skin = (Skin)treeView1.SelectedNode;
@@ -1491,10 +1494,8 @@ namespace MCSkin3D
 			File.Copy(skin.File.FullName, newFileName);
 			Skin newSkin = new Skin(newFileName);
 
-			if (skin.Parent.Nodes != null)
-				skin.Parent.Nodes.Add(newSkin);
-			else
-				treeView1.Nodes.Add(newSkin);
+			skin.GetParentCollection().Add(newSkin);
+
 			newSkin.SetImages();
 		}
 
@@ -1754,8 +1755,8 @@ namespace MCSkin3D
 
 		void SetViewMode(ViewMode newMode)
 		{
-			perspectiveToolStripButton.Checked = orthographicToolStripButton.Checked = false;
-			perspectiveToolStripMenuItem.Checked = textureToolStripMenuItem.Checked = false;
+			perspectiveToolStripButton.Checked = orthographicToolStripButton.Checked = hybridToolStripButton.Checked = false;
+			perspectiveToolStripMenuItem.Checked = textureToolStripMenuItem.Checked = hybridViewToolStripMenuItem.Checked = false;
 			_currentViewMode = newMode;
 
 			switch (_currentViewMode)
@@ -1767,6 +1768,10 @@ namespace MCSkin3D
 			case ViewMode.Perspective:
 				perspectiveToolStripButton.Checked = true;
 				perspectiveToolStripMenuItem.Checked = true;
+				break;
+			case ViewMode.Hybrid:
+				hybridToolStripButton.Checked = true;
+				hybridViewToolStripMenuItem.Checked = true;
 				break;
 			}
 
@@ -1894,6 +1899,9 @@ namespace MCSkin3D
 				SetViewMode(ViewMode.Perspective);
 				break;
 			case ViewMode.Perspective:
+				SetViewMode(ViewMode.Hybrid);
+				break;
+			case ViewMode.Hybrid:
 				SetViewMode(ViewMode.Orthographic);
 				break;
 			}
@@ -2110,23 +2118,8 @@ namespace MCSkin3D
 			rendererControl.Invalidate();
 		}
 
-		void rendererControl_Paint(object sender, PaintEventArgs e)
+		void DrawGLToolbar()
 		{
-			rendererControl.MakeCurrent();
-			SetPreview();
-
-			GL.ClearColor(GlobalSettings.BackgroundColor);
-			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
-
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			SetupMainMode();
-
-			var skin = (Skin)_lastSkin;
-
-			GL.PushMatrix();
-			DrawPlayer(_previewPaint, skin, grassToolStripMenuItem.Checked, false);
-			GL.PopMatrix();
-
 			// 2D
 			Setup2D();
 			RenderState.BindTexture(0);
@@ -2149,13 +2142,37 @@ namespace MCSkin3D
 				GL.Color4((byte)255, (byte)255, (byte)255, (byte)64);
 				RenderState.BindTexture(img);
 			}
-			
+
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(halfWidth - halfImgWidth, -1);
 			GL.TexCoord2(1, 0); GL.Vertex2(halfWidth + halfImgWidth, -1);
 			GL.TexCoord2(1, 1); GL.Vertex2(halfWidth + halfImgWidth, 21);
 			GL.TexCoord2(0, 1); GL.Vertex2(halfWidth - halfImgWidth, 21);
 			GL.End();
+		}
+
+		void rendererControl_Paint(object sender, PaintEventArgs e)
+		{
+			rendererControl.MakeCurrent();
+			SetPreview();
+
+			GL.ClearColor(GlobalSettings.BackgroundColor);
+			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
+
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			SetupMainMode();
+
+			var skin = (Skin)_lastSkin;
+
+			GL.PushMatrix();
+
+			if (_currentViewMode == ViewMode.Perspective)
+				DrawPlayer(_previewPaint, skin, grassToolStripMenuItem.Checked, false);
+			else if (_currentViewMode == ViewMode.Orthographic)
+				DrawPlayer2D(_previewPaint, skin, false);
+			GL.PopMatrix();
+
+			DrawGLToolbar();
 
 			rendererControl.SwapBuffers();
 		}
@@ -2599,6 +2616,16 @@ namespace MCSkin3D
 			SetViewMode(ViewMode.Orthographic);
 		}
 
+		private void hybridToolStripButton_Click(object sender, EventArgs e)
+		{
+			SetViewMode(ViewMode.Hybrid);
+		}
+
+		private void hybridViewToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SetViewMode(ViewMode.Hybrid);
+		}
+
 		void offToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetTransparencyMode(TransparencyMode.Off);
@@ -2993,7 +3020,7 @@ namespace MCSkin3D
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			Icon = Properties.Resources.Icon;
+			Icon = Properties.Resources.Icon_new;
 		}
 
 		bool _secondaryIsFront = false;

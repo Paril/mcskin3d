@@ -84,10 +84,10 @@
 			this.radioButton1.Checked = true;
 			this.radioButton1.Location = new System.Drawing.Point(259, 19);
 			this.radioButton1.Name = "radioButton1";
-			this.radioButton1.Size = new System.Drawing.Size(57, 17);
+			this.radioButton1.Size = new System.Drawing.Size(60, 17);
 			this.radioButton1.TabIndex = 4;
 			this.radioButton1.TabStop = true;
-			this.radioButton1.Text = "Dodge";
+			this.radioButton1.Text = "Lighten";
 			this.radioButton1.UseVisualStyleBackColor = true;
 			// 
 			// radioButton2
@@ -95,9 +95,9 @@
 			this.radioButton2.AutoSize = true;
 			this.radioButton2.Location = new System.Drawing.Point(259, 35);
 			this.radioButton2.Name = "radioButton2";
-			this.radioButton2.Size = new System.Drawing.Size(47, 17);
+			this.radioButton2.Size = new System.Drawing.Size(60, 17);
 			this.radioButton2.TabIndex = 5;
-			this.radioButton2.Text = "Burn";
+			this.radioButton2.Text = "Darken";
 			this.radioButton2.UseVisualStyleBackColor = true;
 			// 
 			// label2
@@ -109,7 +109,7 @@
 			this.label2.TabIndex = 6;
 			this.label2.Text = "(Hold Shift to use other tool)";
 			// 
-			// DodgeBurnOptions
+			// DarkenLightenOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -120,7 +120,7 @@
 			this.Controls.Add(this.trackBar1);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.checkBox1);
-			this.Name = "DodgeBurnOptions";
+			this.Name = "DarkenLightenOptions";
 			this.Size = new System.Drawing.Size(407, 55);
 			this.Load += new System.EventHandler(this.DodgeBurnOptions_Load);
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();

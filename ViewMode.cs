@@ -3,6 +3,7 @@
 	public enum ViewMode
 	{
 		Perspective,
-		Orthographic
+		Orthographic,
+		Hybrid
 	}
 }

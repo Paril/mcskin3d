@@ -39,7 +39,7 @@
     </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon_new.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -434,6 +434,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\darkenlighten.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hybrid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon_new.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
