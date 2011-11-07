@@ -680,6 +680,7 @@ namespace MCSkin3D
 						Nodes.Add(skin);
 
 					skin.SetImages();
+                    this.SelectedNode = skin;
 				}
 			}
 			else
@@ -688,8 +689,10 @@ namespace MCSkin3D
 					e.Effect = DragDropEffects.None;
 				else
 				{
+                    TreeNode selNode = SelectedNode;
 					if (e.Effect == DragDropEffects.Move)
 						MoveNode(SelectedNode, _overNode);
+                    this.SelectedNode = selNode;
 				}
 			}
 			
