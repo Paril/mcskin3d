@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace MCSkin3D
 {
-	public partial class DodgeBurnOptions : UserControl
+	public partial class DodgeBurnOptions : ToolOptionBase
 	{
 		public DodgeBurnOptions()
 		{

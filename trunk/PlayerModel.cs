@@ -143,7 +143,7 @@ namespace MCSkin3D
 			var bottomFace = new Face(GetFace(FaceLocation.Bottom, box), TexCoordBoxPrecise(24, 0, -8, 8, 3, 2, 1, 0), allWhite, cw);
 			var backFace = new Face(GetFace(FaceLocation.Back, box), TexCoordBoxPrecise(32, 8, -8, 8, 3, 2, 1, 0), allWhite, cw);
 			var leftFace = new Face(GetFace(FaceLocation.Left, box), TexCoordBoxPrecise(0, 8, 8, 8, 0, 1, 2, 3), allWhite, cw);
-			var rightFace = new Face(GetFace(FaceLocation.Right, box), TexCoordBox(8, 8, -8, 8), allWhite, cw);
+			var rightFace = new Face(GetFace(FaceLocation.Right, box), TexCoordBox(16, 8, 8, 8), allWhite, cw);
 
 			HeadMesh = new Mesh("Head");
 			HeadMesh.Mode = BeginMode.Quads;
@@ -224,7 +224,7 @@ namespace MCSkin3D
 			leftFace.TexCoords = TexCoordBox(16, 20, 4, 12);
 
 			rightFace.Vertices = GetFace(FaceLocation.Right, box);
-			rightFace.TexCoords = TexCoordBox(20, 20, -4, 12);
+			rightFace.TexCoords = TexCoordBox(28, 20, 4, 12);
 
 			ChestMesh = new Mesh("Chest");
 			ChestMesh.Mode = BeginMode.Quads;

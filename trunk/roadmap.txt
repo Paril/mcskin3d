@@ -1,15 +1,18 @@
 1.3:
-\- Mouse shortcuts (left-click x action, right-click x action, etc)
 *- Secondary color
 *- Merge Dodge and Burn into one tool
 *- Darken/Lighten tool
 *- Tool options (perhaps expandable panel below the toolbar?)
-!- Modifyable Brush Size for pencil/eraser/dodge/burn/darken/lighten, exposure for Dodge/Burn/Darken/Lighten, "feather" for pencil/eraser/dodge/burn/darken/lighten.
 *- Finish the treeview #Done, I guess? Anything more?
-?- Hopefully, get an optimized color class (not super-high priority)
 *- Add "Overlays" folder, customizable background image
 *- Hidden part "ghosting"
-
+?- Modifyable Brush Size for pencil/eraser/dodge/burn/darken/lighten, exposure for Dodge/Burn/Darken/Lighten, "feather" for pencil/eraser/dodge/burn/darken/lighten.
+?- Hopefully, get an optimized color class (not super-high priority)
+?- Noise tool
+?- Circle brushes
+?- Verify all undo buffers
+?- Feathering on brushes
+?- Part lock for fill bucket/noise tool
 
 -------------------------------------------------------------
 -							    -

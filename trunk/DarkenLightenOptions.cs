@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace MCSkin3D
 {
-	public partial class DarkenLightenOptions : UserControl
+	public partial class DarkenLightenOptions : ToolOptionBase
 	{
 		public DarkenLightenOptions()
 		{
