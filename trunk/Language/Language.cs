@@ -28,7 +28,7 @@ namespace MCSkin3D.Language
 			Language lang = new Language();
 			bool headerFound = false;
 
-			using (StreamReader sr = new StreamReader(file))
+			using (StreamReader sr = new StreamReader(file, Encoding.Unicode))
 			{
 				while (!sr.EndOfStream)
 				{
