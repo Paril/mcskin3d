@@ -87,34 +87,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
-    <Compile Include="Brushes.cs">
+    <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CameraTool.cs" />
-    <Compile Include="CIELab.cs" />
-    <Compile Include="CIEXYZ.cs" />
-    <Compile Include="CMYK.cs" />
-    <Compile Include="ColorBlending.cs" />
-    <Compile Include="ColorPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ColorPicker.designer.cs">
-      <DependentUpon>ColorPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DarkenLightenOptions.cs">
+    <Compile Include="Tools\CameraTool.cs" />
+    <Compile Include="Devcorp\CIELab.cs" />
+    <Compile Include="Devcorp\CIEXYZ.cs" />
+    <Compile Include="Devcorp\CMYK.cs" />
+    <Compile Include="Paril\Drawing\ColorBlending.cs" />
+    <Compile Include="Controls\Tools\DarkenLightenOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DarkenLightenOptions.Designer.cs">
+    <Compile Include="Controls\Tools\DarkenLightenOptions.Designer.cs">
       <DependentUpon>DarkenLightenOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="DarkenLightenTool.cs" />
-    <Compile Include="DodgeBurnOptions.cs">
+    <Compile Include="Tools\DarkenLightenTool.cs" />
+    <Compile Include="Controls\Tools\DodgeBurnOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DodgeBurnOptions.Designer.cs">
+    <Compile Include="Controls\Tools\DodgeBurnOptions.Designer.cs">
       <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="DodgeBurnTool.cs" />
+    <Compile Include="Tools\DodgeBurnTool.cs" />
     <Compile Include="DragDropLib\DataObject.cs" />
     <Compile Include="DragDropLib\DataObjectExtensions.cs" />
     <Compile Include="DragDropLib\DragDropHelper.cs" />
@@ -126,17 +120,23 @@
     <Compile Include="DragDropLib\SwfDragSourceHelper.cs" />
     <Compile Include="DragDropLib\SwfDropTargetHelper.cs" />
     <Compile Include="DragDropLib\SwfDropTargetHelperExtensions.cs" />
-    <Compile Include="DropperTool.cs" />
-    <Compile Include="EraserTool.cs" />
-    <Compile Include="FloodFillTool.cs" />
+    <Compile Include="Tools\DropperTool.cs" />
+    <Compile Include="Tools\EraserTool.cs" />
+    <Compile Include="Tools\FloodFillTool.cs" />
     <Compile Include="FolderNode.cs" />
+    <Compile Include="Forms\ColorPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPicker.designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Jonas\McSkinCursor.cs" />
     <Compile Include="Language\Language.cs" />
     <Compile Include="Language\LanguageLoader.cs" />
     <Compile Include="Language\LanguageProvider.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="LuminanceSliderRenderer.cs" />
+    <Compile Include="Controls\LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
     <Compile Include="Paril\Components\Update\Updater.cs" />
@@ -157,15 +157,15 @@
     <Compile Include="Paril\OpenGL\ClientArrayRenderer.cs" />
     <Compile Include="Paril\OpenGL\ImmediateRenderer.cs" />
     <Compile Include="Paril\OpenGL\Renderer.cs" />
-    <Compile Include="PencilTool.cs" />
-    <Compile Include="PlayerModel.cs" />
+    <Compile Include="Tools\PencilTool.cs" />
+    <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SaturationSliderRenderer.cs" />
-    <Compile Include="HueSliderRenderer.cs" />
+    <Compile Include="Controls\SaturationSliderRenderer.cs" />
+    <Compile Include="Controls\HueSliderRenderer.cs" />
     <Compile Include="GlobalDirtiness.cs" />
     <Compile Include="MenuStripShortcut.cs" />
     <Compile Include="Paril\Components\Shortcuts\IShortcutImplementor.cs" />
@@ -176,46 +176,40 @@
     <Compile Include="Paril\Controls\Color\ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="ColorSlider.cs">
+    <Compile Include="Controls\ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorSlider.designer.cs">
+    <Compile Include="Controls\ColorSlider.designer.cs">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
-    <Compile Include="ColorSliderRenderer.cs" />
-    <Compile Include="ColorSpaceHelper.cs" />
+    <Compile Include="Controls\ColorSliderRenderer.cs" />
+    <Compile Include="Devcorp\ColorSpaceHelper.cs" />
     <Compile Include="Paril\Controls\Color\ColorSquare.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ExceptionDialog.cs">
+    <Compile Include="Forms\ExceptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExceptionDialog.designer.cs">
+    <Compile Include="Forms\ExceptionDialog.designer.cs">
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="FastPixel.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Paril\Drawing\FastPixel.cs" />
+    <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="HSB.cs" />
-    <Compile Include="HSL.cs" />
+    <Compile Include="Devcorp\HSB.cs" />
+    <Compile Include="Devcorp\HSL.cs" />
     <Compile Include="ImageUtilities.cs" />
-    <Compile Include="Login.cs">
+    <Compile Include="Forms\Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login.Designer.cs">
+    <Compile Include="Forms\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="NameChange.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NameChange.Designer.cs">
-      <DependentUpon>NameChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NativeToolStrip.cs">
+    <Compile Include="Controls\NativeToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Paril\Components\Undo\Undoable.cs" />
@@ -223,16 +217,16 @@
     <Compile Include="Paril\Settings\Serializers\ColorSerializer.cs" />
     <Compile Include="Paril\Settings\Serializers\EnumSerializer.cs" />
     <Compile Include="PixelsChangedUndoable.cs" />
-    <Compile Include="PleaseWait.cs">
+    <Compile Include="Forms\PleaseWait.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PleaseWait.Designer.cs">
+    <Compile Include="Forms\PleaseWait.Designer.cs">
       <DependentUpon>PleaseWait.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RGB.cs" />
-    <Compile Include="SaturationSlider.cs">
+    <Compile Include="Devcorp\RGB.cs" />
+    <Compile Include="Controls\SaturationSlider.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Paril\Settings\Serializers\HexSerializer.cs" />
@@ -246,59 +240,56 @@
       <DependentUpon>ShortcutEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Skin.cs" />
-    <Compile Include="SkinTreeView.cs">
+    <Compile Include="Controls\SkinTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SwatchContainer.cs">
+    <Compile Include="Controls\SwatchContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SwatchContainer.Designer.cs">
+    <Compile Include="Controls\SwatchContainer.Designer.cs">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="ITool.cs" />
-    <Compile Include="ToolIndex.cs" />
-    <Compile Include="ToolOptionBase.cs">
+    <Compile Include="Tools\ITool.cs" />
+    <Compile Include="Tools\ToolIndex.cs" />
+    <Compile Include="Controls\Tools\ToolOptionBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tools.cs" />
+    <Compile Include="Tools\Tools.cs" />
     <Compile Include="TransparencyMode.cs" />
-    <Compile Include="PencilOptions.cs">
+    <Compile Include="Controls\Tools\PencilOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PencilOptions.Designer.cs">
+    <Compile Include="Controls\Tools\PencilOptions.Designer.cs">
       <DependentUpon>PencilOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
-    <Compile Include="YUV.cs" />
-    <EmbeddedResource Include="ColorPicker.resx">
-      <DependentUpon>ColorPicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DarkenLightenOptions.resx">
+    <Compile Include="Devcorp\YUV.cs" />
+    <EmbeddedResource Include="Controls\Tools\DarkenLightenOptions.resx">
       <DependentUpon>DarkenLightenOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DodgeBurnOptions.resx">
+    <EmbeddedResource Include="Controls\Tools\DodgeBurnOptions.resx">
       <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Paril\Controls\Color\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ColorSlider.resx">
+    <EmbeddedResource Include="Controls\ColorSlider.resx">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExceptionDialog.resx">
+    <EmbeddedResource Include="Forms\ExceptionDialog.resx">
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
+    <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NameChange.resx">
-      <DependentUpon>NameChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PleaseWait.resx">
+    <EmbeddedResource Include="Forms\PleaseWait.resx">
       <DependentUpon>PleaseWait.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Paril\Components\Shortcuts\ShortcutEditor.resx">
@@ -308,10 +299,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SwatchContainer.resx">
+    <EmbeddedResource Include="Controls\SwatchContainer.resx">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PencilOptions.resx">
+    <EmbeddedResource Include="Controls\Tools\PencilOptions.resx">
       <DependentUpon>PencilOptions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />

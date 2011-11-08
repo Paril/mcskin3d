@@ -22,9 +22,11 @@ namespace MCSkin3D
 			OptionsPanel = options;
 			Tool = tool;
 			MenuItem = new ToolStripMenuItem(Name, image);
+			MenuItem.Text = name;
 			MenuItem.Tag = this;
 			Button = new ToolStripButton(image);
-			Button.ToolTipText = name;
+			Button.Text = name;
+			Button.DisplayStyle = ToolStripItemDisplayStyle.Image;
 			Button.Tag = this;
 		}
 	}

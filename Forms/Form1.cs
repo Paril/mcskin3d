@@ -95,17 +95,33 @@ namespace MCSkin3D
 		#region Constructor
 		public Form1()
 		{
+			Program.MainForm = this;
 			InitializeComponent();
 
 			GlobalSettings.Load();
 
-			_tools.Add(new ToolIndex(new CameraTool(), null, "Camera", Properties.Resources.eye__1_, Keys.C));
-			_tools.Add(new ToolIndex(new PencilTool(), new PencilOptions(), "Pencil", Properties.Resources.pen, Keys.P));
-			_tools.Add(new ToolIndex(new EraserTool(), null, "Eraser", Properties.Resources.erase, Keys.E));
-			_tools.Add(new ToolIndex(new DropperTool(), null, "Dropper", Properties.Resources.pipette, Keys.D));
-			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "Dodge/Burn", Properties.Resources.dodge, Keys.B));
-			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions = new DarkenLightenOptions(), "Darken/Lighten", Properties.Resources.darkenlighten, Keys.L));
-			_tools.Add(new ToolIndex(new FloodFillTool(), null, "Fill-bucket", Properties.Resources.fill_bucket, Keys.F));
+			Icon = Properties.Resources.Icon_new;
+
+			LanguageLoader.LoadLanguages("Languages");
+
+			foreach (var lang in LanguageLoader.Languages)
+			{
+				lang.Item = new ToolStripMenuItem((lang.Culture != null) ? (char.ToUpper(lang.Culture.NativeName[0]) + lang.Culture.NativeName.Substring(1)) : lang.Name);
+				lang.Item.Tag = lang;
+				lang.Item.Click += new EventHandler(languageToolStripMenuItem_Click);
+				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
+			}
+
+			if (CurrentLanguage == null)
+				CurrentLanguage = LanguageLoader.FindLanguage("English");
+
+			_tools.Add(new ToolIndex(new CameraTool(), null, "T_TOOL_CAMERA", Properties.Resources.eye__1_, Keys.C));
+			_tools.Add(new ToolIndex(new PencilTool(), new PencilOptions(), "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
+			_tools.Add(new ToolIndex(new EraserTool(), null, "T_TOOL_ERASER", Properties.Resources.erase, Keys.E));
+			_tools.Add(new ToolIndex(new DropperTool(), null, "T_TOOL_DROPPER", Properties.Resources.pipette, Keys.D));
+			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
+			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions = new DarkenLightenOptions(), "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
+			_tools.Add(new ToolIndex(new FloodFillTool(), null, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
 
 			for (int i = _tools.Count - 1; i >= 0; --i)
 			{
@@ -113,6 +129,9 @@ namespace MCSkin3D
 				_tools[i].MenuItem.Click += ToolMenuItemClicked;
 				toolStrip1.Items.Insert(6, _tools[i].Button);
 				_tools[i].Button.Click += ToolMenuItemClicked;
+
+				languageProvider1.SetPropertyNames(_tools[i].MenuItem, "Text");
+				languageProvider1.SetPropertyNames(_tools[i].Button, "Text");
 			}
 
 			SetSelectedTool(_tools[0]);
@@ -133,11 +152,11 @@ namespace MCSkin3D
 			SetCheckbox(VisiblePartFlags.LeftLegFlag, leftLegToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
 
-			/*if (Screen.PrimaryScreen.BitsPerPixel != 32)
+			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
-				MessageBox.Show("Sorry, but apparently your video card doesn't support a 32-bit pixel format - this is required, at the moment, for proper functionality of MCSkin3D. 16/24-bit support will be implemented at a later date, if it is asked for.", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(GetLanguageString("B_MSG_PIXELFORMAT"), GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Application.Exit();
-			}*/
+			}
 
 			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
 			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
@@ -152,7 +171,7 @@ namespace MCSkin3D
 			Text = "MCSkin3D v" + ProductVersion[0] + '.' + ProductVersion[2];
 
 			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
-				MessageBox.Show("The swatches and/or skins directory was missing - usually this is because you didn't extract the program. While not a critical issue, you will be missing any included templates or swatches.");
+				MessageBox.Show(GetLanguageString("B_MSG_DIRMISSING"));
 
 			Directory.CreateDirectory("Swatches");
 			Directory.CreateDirectory("Skins");
@@ -199,7 +218,14 @@ namespace MCSkin3D
 			_animTimer.Elapsed += new System.Timers.ElapsedEventHandler(_animTimer_Elapsed);
 			_animTimer.SynchronizingObject = this;
 
+			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
+
 			Brushes.LoadBrushes();
+		}
+
+		void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)
+		{
+			MessageBox.Show(string.Format(GetLanguageString("B_MSG_SHORTCUTEXISTS"), e.ShortcutName, e.OtherName));
 		}
 		#endregion
 
@@ -236,14 +262,14 @@ namespace MCSkin3D
 
 		void _updater_SameVersion(object sender, EventArgs e)
 		{
-			this.Invoke(() => MessageBox.Show("You have the latest and greatest."));
+			this.Invoke(() => MessageBox.Show(GetLanguageString("B_MSG_UPTODATE")));
 		}
 
 		void _updater_NewVersionAvailable(object sender, EventArgs e)
 		{
 			this.Invoke(delegate()
 			{
-				if (MessageBox.Show("A new version is available! Would you like to go to the forum post?", "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+				if (MessageBox.Show(GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
 					Process.Start("http://www.minecraftforum.net/topic/746941-mcskin3d-new-skinning-program/");
 			});
 		}
@@ -383,13 +409,8 @@ namespace MCSkin3D
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
 			InitMenuShortcut(uploadToolStripMenuItem, PerformUpload);
 
-			InitMenuShortcut(_tools[(int)Tools.Camera].MenuItem, _tools[(int)Tools.Camera].DefaultKeys, SwitchToCamera);
-			InitMenuShortcut(_tools[(int)Tools.Pencil].MenuItem, _tools[(int)Tools.Pencil].DefaultKeys, SwitchToPencil);
-			InitMenuShortcut(_tools[(int)Tools.Eraser].MenuItem, _tools[(int)Tools.Eraser].DefaultKeys, SwitchToEraser);
-			InitMenuShortcut(_tools[(int)Tools.Dropper].MenuItem, _tools[(int)Tools.Dropper].DefaultKeys, SwitchToDropper);
-			InitMenuShortcut(_tools[(int)Tools.DodgeBurn].MenuItem, _tools[(int)Tools.DodgeBurn].DefaultKeys, SwitchToDodgeBurn);
-			InitMenuShortcut(_tools[(int)Tools.DarkenLighten].MenuItem, _tools[(int)Tools.DarkenLighten].DefaultKeys, SwitchToDarkenLighten);
-			InitMenuShortcut(_tools[(int)Tools.FillBucket].MenuItem, _tools[(int)Tools.FillBucket].DefaultKeys, SwitchToFillBucket);
+			foreach (var item in _tools)
+				InitMenuShortcut(item.MenuItem, item.DefaultKeys, () => SetSelectedTool(item));
 
 			// not in the menu
 			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
@@ -404,41 +425,6 @@ namespace MCSkin3D
 			InitControlShortcut("Swatchlist zoom out", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
 			InitControlShortcut("Treeview zoom in", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
 			InitControlShortcut("Treeview zoom out", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
-		}
-
-		void SwitchToCamera()
-		{
-			SetSelectedTool(_tools[(int)Tools.Camera]);
-		}
-
-		void SwitchToPencil()
-		{
-			SetSelectedTool(_tools[(int)Tools.Pencil]);
-		}
-
-		void SwitchToEraser()
-		{
-			SetSelectedTool(_tools[(int)Tools.Eraser]);
-		}
-
-		void SwitchToDropper()
-		{
-			SetSelectedTool(_tools[(int)Tools.Dropper]);
-		}
-
-		void SwitchToDodgeBurn()
-		{
-			SetSelectedTool(_tools[(int)Tools.DodgeBurn]);
-		}
-
-		void SwitchToDarkenLighten()
-		{
-			SetSelectedTool(_tools[(int)Tools.DarkenLighten]);
-		}
-
-		void SwitchToFillBucket()
-		{
-			SetSelectedTool(_tools[(int)Tools.FillBucket]);
 		}
 
 		void PerformSwitchColor()
@@ -1296,12 +1282,12 @@ namespace MCSkin3D
 				_uploadThread = null;
 
 				if (ret.ReportedError != null)
-					MessageBox.Show("Error uploading skin:\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				else if (ret.Exception != null)
-					MessageBox.Show("Error uploading skin:\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
 				{
-					MessageBox.Show("Skin upload success! Enjoy!", "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show(GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					GlobalSettings.LastSkin = _lastSkin.Name;
 					treeView1.Invalidate();
 				}
@@ -1480,7 +1466,7 @@ namespace MCSkin3D
 		{
 			if (treeView1.SelectedNode is Skin)
 			{
-				if (MessageBox.Show("Delete this skin perminently?\r\nThis will delete the skin from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+				if (MessageBox.Show(GetLanguageString("B_MSG_DELETESKIN"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 				{
 					Skin skin = (Skin)treeView1.SelectedNode;
 
@@ -1493,7 +1479,7 @@ namespace MCSkin3D
 			}
 			else
 			{
-				if (MessageBox.Show("Delete this folder perminently?\r\nThis will delete the folder, along with any and all files in this folder, from the Skins directory!", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
+				if (MessageBox.Show(GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
 				{
 					DirectoryInfo folder = new DirectoryInfo("Skins\\" + treeView1.SelectedNode.FullPath);
 
@@ -2040,7 +2026,7 @@ namespace MCSkin3D
 				}
 				catch
 				{
-					MessageBox.Show("Unable to load overlay image: " + file + "; is the resolution a power of two?");
+					MessageBox.Show(string.Format(GetLanguageString("B_MSG_OVERLAYERROR"), file));
 				}
 			}
 
@@ -2467,7 +2453,7 @@ namespace MCSkin3D
 		{
 			if (_lastSkin.Width != 64 || _lastSkin.Height != 32)
 			{
-				MessageBox.Show("While you can edit high resolution textures with MCSkin3D, you cannot upload them to your Minecraft profile.");
+				MessageBox.Show(GetLanguageString("B_MSG_UPLOADRES"));
 				return;
 			}
 
@@ -3051,31 +3037,31 @@ namespace MCSkin3D
 		private void xToolStripMenuItem4_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(0);
-			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(1);
-			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(2);
-			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(4);
-			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem3_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(8);
-			MessageBox.Show("Restart MCSkin3D to apply antialiasing settings.");
+			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
         private void SetLanguage(string filename)
@@ -3103,22 +3089,15 @@ namespace MCSkin3D
 			}
 		}
 
+		public static string GetLanguageString(string id)
+		{
+			if (!_currentLanguage.StringTable.ContainsKey(id))
+				return id;
+			return _currentLanguage.StringTable[id];
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			Icon = Properties.Resources.Icon_new;
-
-			LanguageLoader.LoadLanguages("Languages");
-
-			foreach (var lang in LanguageLoader.Languages)
-			{
-				lang.Item = new ToolStripMenuItem(lang.Name);
-				lang.Item.Tag = lang;
-				lang.Item.Click += new EventHandler(languageToolStripMenuItem_Click);
-				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
-			}
-
-			if (CurrentLanguage == null)
-				CurrentLanguage = LanguageLoader.FindLanguage("English");
 		}
 
 		void languageToolStripMenuItem_Click(object sender, EventArgs e)
