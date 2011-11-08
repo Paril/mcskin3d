@@ -1,0 +1,70 @@
+// C-style comments.
+// First non-comment line must be the following:
+MCSkin3D Language File
+// Following lines are key-value pairs, stored by the program.
+// A line beginning with the pound/sharp/hash sign # are
+// used internally and are not actual language pieces.
+// Name is the visual name of the language.
+#Name=Norwegian
+// Version is the version of the language file - it does not
+// have any effect other than identification, and does not
+// need to be present.
+#Version=1.1
+// SuppVersion is short for Supported Version, and denotes the version in which this
+// language file was made for. Any other version running this file will throw an error.
+#SuppVersion=1.3
+// Below this are the key-value pairs; ID=String
+// Note that the quotes are not required, but may be used for readability purposes.
+// Language developers should use this file, and not other languages, to determine the
+// context in which the string is deriving - otherwise, you may lose accuracy of your
+// translation over time (see TranslationParty).
+C_OK="OK"
+C_CANCEL="Avbryt"
+// Note: M_ entries stand for "menu", and as such can include
+// an ampersand (&); the ampersand denotes which character is
+// the keyboard accelerator for this item.
+M_FILE="&Fil"
+	M_SAVE="&Lagre"
+	M_SAVEAS="Lagre &Som"
+	M_SAVEALL="Lagre A&lt"
+	M_UPLOAD="&Opplast skin..."
+	M_EXIT="A&vslutt"
+M_EDIT="&Rediger"
+	M_UNDO="&Angre"
+	M_REDO="&Gjenta"
+	M_TOOL="&Verktøy"
+M_VIEW="&Vis"
+	M_MODE="Visnings&modus"
+		M_PERSPECTIVE="&Perspektiv (3D)"
+		M_TEXTURE="&Tekstur (2D)"
+		M_HYBRID="&Hybrid"
+	M_3D="&3D Instillinger"
+		M_ANIMATE="&Animer"
+		M_FOLLOWCUR="&Følg markør"
+		M_GRASS="&Gress"
+		M_GHOST="S&jul sjulte deler"
+		M_MULTISAMPLING="&Kantutjevning (Anti-alias)"
+	M_2D="&2D Instillinger"
+		M_ALPHACHECKER="&Alfa Sjakkbrett"
+		M_OVERLAY="&Overlegg"
+			M_ENABLEOVERLAY="&Aktiver"
+	M_TRANSMODE="&Gjennomsiktighets modus"
+		M_OFF="&Av"
+		M_HELMETONLY="&Kun hjelm"
+		M_ALL="&Alt"
+	M_VISIBLEPARTS="&Synlige deler"
+M_OPTIONS="&Alternativer"
+	M_KEYSHORTCUTS="&Tastatursnarveier"
+	M_BGCOLOR="&Bakgrunnsfarge"
+M_LANGUAGE="&Språk"
+M_HELP="&Hjelp"
+	M_CHECKUPDATES="&Se etter &oppdateringer"
+	M_AUTOUPDATE="S&e etter oppdateringer automatisk"
+
+P_HEAD="&Hode"
+P_HELMET="H&jelm"
+P_CHEST="&Bryst"
+P_LEFTARM="&Venstre Arm"
+P_RIGHTARM="&Høyre Arm"
+P_LEFTLEG="Venstre &Leg"
+P_RIGHTLEG="Høyre &Leg"
