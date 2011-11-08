@@ -78,11 +78,10 @@
 			this.rightArmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.leftLegToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rightLegToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.englishdefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.keyboardShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,6 +162,7 @@
 			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -195,6 +195,7 @@
             this.editToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.optionsToolStripMenuItem,
+            this.languageToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
@@ -212,8 +213,9 @@
             this.toolStripSeparator5,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-			this.fileToolStripMenuItem.Text = "&File";
+			this.languageProvider1.SetPropertyNames(this.fileToolStripMenuItem, "Text");
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+			this.fileToolStripMenuItem.Text = "M_FILE";
 			// 
 			// saveToolStripMenuItem
 			// 
@@ -308,8 +310,7 @@
             this.twoDToolStripMenuItem,
             this.toolStripSeparator8,
             this.transparencyModeToolStripMenuItem,
-            this.visiblePartsToolStripMenuItem,
-            this.languageToolStripMenuItem});
+            this.visiblePartsToolStripMenuItem});
 			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
 			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.viewToolStripMenuItem.Text = "&View";
@@ -598,20 +599,6 @@
 			this.rightLegToolStripMenuItem.Text = "Ri&ght Leg";
 			this.rightLegToolStripMenuItem.Click += new System.EventHandler(this.rightLegToolStripMenuItem_Click);
 			// 
-			// languageToolStripMenuItem
-			// 
-			this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.englishdefaultToolStripMenuItem});
-			this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
-			this.languageToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-			this.languageToolStripMenuItem.Text = "Language";
-			// 
-			// englishdefaultToolStripMenuItem
-			// 
-			this.englishdefaultToolStripMenuItem.Name = "englishdefaultToolStripMenuItem";
-			this.englishdefaultToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-			this.englishdefaultToolStripMenuItem.Text = "English (default)";
-			// 
 			// optionsToolStripMenuItem
 			// 
 			this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -634,6 +621,12 @@
 			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
 			this.backgroundColorToolStripMenuItem.Text = "Background Color...";
 			this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
+			// 
+			// languageToolStripMenuItem
+			// 
+			this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+			this.languageToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+			this.languageToolStripMenuItem.Text = "Language";
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -1536,6 +1529,7 @@
 			this.toggleRightLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_leg;
 			this.toggleRightLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleRightLegToolStripButton.Name = "toggleRightLegToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleRightLegToolStripButton, "Text");
 			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
@@ -1715,11 +1709,11 @@
 		private System.Windows.Forms.ToolStripMenuItem hybridViewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
 		private System.Windows.Forms.ToolStripButton uploadToolStripButton;
-        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem englishdefaultToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton toolStripButton2;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+		private Language.LanguageProvider languageProvider1;
 	}
 }
 

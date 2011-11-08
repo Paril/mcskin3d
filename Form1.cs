@@ -29,6 +29,7 @@ using OpenTK.Graphics;
 using System.Windows.Forms.VisualStyles;
 using DragDropLib;
 using Paril.Extensions;
+using MCSkin3D.Language;
 
 namespace MCSkin3D
 {
@@ -3084,40 +3085,29 @@ namespace MCSkin3D
 
         private void ReloadLanguage()
         {
-
         }
+
+		static Language.Language _currentLanguage;
+		public static Language.Language CurrentLanguage
+		{
+			get { return _currentLanguage; }
+			set { _currentLanguage = value; Program.MainForm.languageProvider1.LanguageChanged(value); }
+		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			Icon = Properties.Resources.Icon_new;
-            System.IO.DirectoryInfo di = new DirectoryInfo(Path.GetFullPath("Languages"));
-            bool ext = false;
-            foreach (FileInfo f in di.GetFiles("*.lang"))
-            {
-               
-                using (StreamReader sr = new StreamReader(f.FullName))
-                {
-                    if (sr.EndOfStream)
-                        break;
 
-                    if (sr.ReadLine() == "LANG.MCSKINNER")
-                    {
-                        if (GlobalSettings.LanguageFile == f.Name)
-                        {
-                            ext = true;
-                        }
-                        ToolStripMenuItem _x = new ToolStripMenuItem();
-                        _x.Text = sr.ReadLine();
-                        _x.Tag = f.FullName;
-                        languageToolStripMenuItem.DropDownItems.Add(_x);
-                    }
-                }
-            }
+			LanguageLoader.LoadLanguages("Languages");
 
-            if ((GlobalSettings.LanguageFile != "") && ext)
-            {
-                SetLanguage(GlobalSettings.LanguageFile);
-            }
+			foreach (var lang in LanguageLoader.Languages)
+			{
+				lang.Item = new ToolStripMenuItem(lang.Name);
+				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
+			}
+
+			if (CurrentLanguage == null)
+				CurrentLanguage = LanguageLoader.FindLanguage("English");
 		}
 
 		bool _secondaryIsFront = false;
