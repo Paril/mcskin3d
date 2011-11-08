@@ -31,12 +31,15 @@ namespace Paril.Components.Shortcuts
 			return null;
 		}
 
+		public event EventHandler<ShortcutExistsEventArgs> ShortcutExists;
+
 		public void AddShortcut(IShortcutImplementor shortcut)
 		{
 			IShortcutImplementor already;
 			if ((already = ShortcutInUse(shortcut.Keys)) != null)
 			{
-				MessageBox.Show("Shortcut " + shortcut.Name + " has the same key as " + already.Name + " - blanking it.");
+				if (ShortcutExists != null)
+					ShortcutExists(this, new ShortcutExistsEventArgs(shortcut.Name, already.Name));
 				shortcut.Keys = 0;
 			}
 
@@ -218,6 +221,18 @@ namespace Paril.Components.Shortcuts
 		private void button2_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+	}
+
+	public class ShortcutExistsEventArgs : EventArgs
+	{
+		public string ShortcutName { get; set; }
+		public string OtherName { get; set; }
+
+		public ShortcutExistsEventArgs(string shortcut, string other)
+		{
+			ShortcutName = shortcut;
+			OtherName = other;
 		}
 	}
 }

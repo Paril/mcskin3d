@@ -436,35 +436,35 @@
 			// xToolStripMenuItem4
 			// 
 			this.xToolStripMenuItem4.Name = "xToolStripMenuItem4";
-			this.xToolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+			this.xToolStripMenuItem4.Size = new System.Drawing.Size(85, 22);
 			this.xToolStripMenuItem4.Text = "0x";
 			this.xToolStripMenuItem4.Click += new System.EventHandler(this.xToolStripMenuItem4_Click);
 			// 
 			// xToolStripMenuItem
 			// 
 			this.xToolStripMenuItem.Name = "xToolStripMenuItem";
-			this.xToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.xToolStripMenuItem.Size = new System.Drawing.Size(85, 22);
 			this.xToolStripMenuItem.Text = "1x";
 			this.xToolStripMenuItem.Click += new System.EventHandler(this.xToolStripMenuItem_Click);
 			// 
 			// xToolStripMenuItem1
 			// 
 			this.xToolStripMenuItem1.Name = "xToolStripMenuItem1";
-			this.xToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.xToolStripMenuItem1.Size = new System.Drawing.Size(85, 22);
 			this.xToolStripMenuItem1.Text = "2x";
 			this.xToolStripMenuItem1.Click += new System.EventHandler(this.xToolStripMenuItem1_Click);
 			// 
 			// xToolStripMenuItem2
 			// 
 			this.xToolStripMenuItem2.Name = "xToolStripMenuItem2";
-			this.xToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+			this.xToolStripMenuItem2.Size = new System.Drawing.Size(85, 22);
 			this.xToolStripMenuItem2.Text = "4x";
 			this.xToolStripMenuItem2.Click += new System.EventHandler(this.xToolStripMenuItem2_Click);
 			// 
 			// xToolStripMenuItem3
 			// 
 			this.xToolStripMenuItem3.Name = "xToolStripMenuItem3";
-			this.xToolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+			this.xToolStripMenuItem3.Size = new System.Drawing.Size(85, 22);
 			this.xToolStripMenuItem3.Text = "8x";
 			this.xToolStripMenuItem3.Click += new System.EventHandler(this.xToolStripMenuItem3_Click);
 			// 
@@ -704,20 +704,22 @@
             this.deleteToolStripMenuItem,
             this.cloneToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(172, 120);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 120);
 			// 
 			// importHereToolStripMenuItem
 			// 
 			this.importHereToolStripMenuItem.Name = "importHereToolStripMenuItem";
-			this.importHereToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-			this.importHereToolStripMenuItem.Text = "Import Here...";
+			this.languageProvider1.SetPropertyNames(this.importHereToolStripMenuItem, "Text");
+			this.importHereToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.importHereToolStripMenuItem.Text = "M_IMPORT_HERE";
 			this.importHereToolStripMenuItem.Click += new System.EventHandler(this.importHereToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
-			this.toolStripMenuItem1.Text = "New Folder Here...";
+			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem1, "Text");
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
+			this.toolStripMenuItem1.Text = "M_NEWFOLDER_HERE";
 			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
 			// 
 			// toolStripSeparator10
@@ -728,22 +730,25 @@
 			// changeNameToolStripMenuItem
 			// 
 			this.changeNameToolStripMenuItem.Name = "changeNameToolStripMenuItem";
-			this.changeNameToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-			this.changeNameToolStripMenuItem.Text = "Re&name...";
+			this.languageProvider1.SetPropertyNames(this.changeNameToolStripMenuItem, "Text");
+			this.changeNameToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.changeNameToolStripMenuItem.Text = "M_RENAME";
 			this.changeNameToolStripMenuItem.Click += new System.EventHandler(this.changeNameToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
 			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-			this.deleteToolStripMenuItem.Text = "&Delete";
+			this.languageProvider1.SetPropertyNames(this.deleteToolStripMenuItem, "Text");
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.deleteToolStripMenuItem.Text = "M_DELETE";
 			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
 			// cloneToolStripMenuItem
 			// 
 			this.cloneToolStripMenuItem.Name = "cloneToolStripMenuItem";
-			this.cloneToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-			this.cloneToolStripMenuItem.Text = "&Clone";
+			this.languageProvider1.SetPropertyNames(this.cloneToolStripMenuItem, "Text");
+			this.cloneToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.cloneToolStripMenuItem.Text = "M_CLONE";
 			this.cloneToolStripMenuItem.Click += new System.EventHandler(this.cloneToolStripMenuItem_Click);
 			// 
 			// splitContainer1
@@ -843,8 +848,9 @@
 			this.toolStripButton2.Image = global::MCSkin3D.Properties.Resources.ZoomOutHS;
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Black;
 			this.toolStripButton2.Name = "toolStripButton2";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton2, "Text");
 			this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton2.Text = "toolStripButton2";
+			this.toolStripButton2.Text = "T_TREE_ZOOMOUT";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
 			// toolStripButton1
@@ -853,8 +859,9 @@
 			this.toolStripButton1.Image = global::MCSkin3D.Properties.Resources.ZoomInHS;
 			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Black;
 			this.toolStripButton1.Name = "toolStripButton1";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton1, "Text");
 			this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton1.Text = "toolStripButton1";
+			this.toolStripButton1.Text = "T_TREE_ZOOMIN";
 			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
 			// 
 			// toolStripSeparator13
@@ -868,8 +875,9 @@
 			this.importToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
 			this.importToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.importToolStripButton.Name = "importToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.importToolStripButton, "Text");
 			this.importToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.importToolStripButton.Text = "Import Here...";
+			this.importToolStripButton.Text = "T_TREE_IMPORTHERE";
 			this.importToolStripButton.Click += new System.EventHandler(this.importToolStripButton_Click);
 			// 
 			// newFolderToolStripButton
@@ -878,8 +886,9 @@
 			this.newFolderToolStripButton.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
 			this.newFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newFolderToolStripButton.Name = "newFolderToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.newFolderToolStripButton, "Text");
 			this.newFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.newFolderToolStripButton.Text = "New Folder Here...";
+			this.newFolderToolStripButton.Text = "T_TREE_NEWFOLDER";
 			this.newFolderToolStripButton.Click += new System.EventHandler(this.newFolderToolStripButton_Click);
 			// 
 			// toolStripSeparator11
@@ -893,8 +902,9 @@
 			this.renameToolStripButton.Image = global::MCSkin3D.Properties.Resources.Rename;
 			this.renameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.renameToolStripButton.Name = "renameToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.renameToolStripButton, "Text");
 			this.renameToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.renameToolStripButton.Text = "Rename...";
+			this.renameToolStripButton.Text = "T_TREE_RENAME";
 			this.renameToolStripButton.Click += new System.EventHandler(this.renameToolStripButton_Click);
 			// 
 			// deleteToolStripButton
@@ -903,8 +913,9 @@
 			this.deleteToolStripButton.Image = global::MCSkin3D.Properties.Resources.delete;
 			this.deleteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.deleteToolStripButton.Name = "deleteToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.deleteToolStripButton, "Text");
 			this.deleteToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.deleteToolStripButton.Text = "Delete...";
+			this.deleteToolStripButton.Text = "T_TREE_DELETE";
 			this.deleteToolStripButton.Click += new System.EventHandler(this.deleteToolStripButton_Click);
 			// 
 			// cloneToolStripButton
@@ -913,8 +924,9 @@
 			this.cloneToolStripButton.Image = global::MCSkin3D.Properties.Resources.clone;
 			this.cloneToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cloneToolStripButton.Name = "cloneToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.cloneToolStripButton, "Text");
 			this.cloneToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.cloneToolStripButton.Text = "Clone";
+			this.cloneToolStripButton.Text = "T_TREE_CLONE";
 			this.cloneToolStripButton.Click += new System.EventHandler(this.cloneToolStripButton_Click);
 			// 
 			// toolStripSeparator12
@@ -928,8 +940,9 @@
 			this.uploadToolStripButton.Image = global::MCSkin3D.Properties.Resources.upload;
 			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.uploadToolStripButton.Name = "uploadToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.uploadToolStripButton, "Text");
 			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uploadToolStripButton.Text = "Upload";
+			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
 			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
 			// 
 			// colorTabControl
@@ -951,9 +964,10 @@
 			this.swatchTabPage.Location = new System.Drawing.Point(4, 22);
 			this.swatchTabPage.Name = "swatchTabPage";
 			this.swatchTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.languageProvider1.SetPropertyNames(this.swatchTabPage, "Text");
 			this.swatchTabPage.Size = new System.Drawing.Size(286, 220);
 			this.swatchTabPage.TabIndex = 0;
-			this.swatchTabPage.Text = "Swatches";
+			this.swatchTabPage.Text = "T_SWATCHES";
 			this.swatchTabPage.UseVisualStyleBackColor = true;
 			// 
 			// swatchContainer
@@ -1405,8 +1419,9 @@
 			this.saveToolStripButton.Image = global::MCSkin3D.Properties.Resources.saveHS;
 			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripButton.Name = "saveToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.saveToolStripButton, "Text");
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.saveToolStripButton.Text = "Save";
+			this.saveToolStripButton.Text = "T_SAVE";
 			this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
 			// 
 			// saveAlltoolStripButton
@@ -1415,8 +1430,9 @@
 			this.saveAlltoolStripButton.Image = global::MCSkin3D.Properties.Resources.SaveAllHS;
 			this.saveAlltoolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveAlltoolStripButton.Name = "saveAlltoolStripButton";
+			this.languageProvider1.SetPropertyNames(this.saveAlltoolStripButton, "Text");
 			this.saveAlltoolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.saveAlltoolStripButton.Text = "Save All";
+			this.saveAlltoolStripButton.Text = "T_SAVEALL";
 			this.saveAlltoolStripButton.Click += new System.EventHandler(this.saveAlltoolStripButton_Click);
 			// 
 			// toolStripSeparator6
@@ -1430,8 +1446,9 @@
 			this.undoToolStripButton.Image = global::MCSkin3D.Properties.Resources.Edit_UndoHS;
 			this.undoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.undoToolStripButton.Name = "undoToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.undoToolStripButton, "Text");
 			this.undoToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.undoToolStripButton.Text = "Undo";
+			this.undoToolStripButton.Text = "T_UNDO";
 			this.undoToolStripButton.Click += new System.EventHandler(this.undoToolStripButton_Click);
 			// 
 			// redoToolStripButton
@@ -1440,8 +1457,9 @@
 			this.redoToolStripButton.Image = global::MCSkin3D.Properties.Resources.Edit_RedoHS;
 			this.redoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.redoToolStripButton.Name = "redoToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.redoToolStripButton, "Text");
 			this.redoToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.redoToolStripButton.Text = "Redo";
+			this.redoToolStripButton.Text = "T_REDO";
 			this.redoToolStripButton.Click += new System.EventHandler(this.redoToolStripButton_Click);
 			// 
 			// toolStripSeparator1
@@ -1460,8 +1478,9 @@
 			this.perspectiveToolStripButton.Image = global::MCSkin3D.Properties.Resources.Video;
 			this.perspectiveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.perspectiveToolStripButton.Name = "perspectiveToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.perspectiveToolStripButton, "Text");
 			this.perspectiveToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.perspectiveToolStripButton.Text = "Perspective/Camera";
+			this.perspectiveToolStripButton.Text = "T_PERSPECTIVE";
 			this.perspectiveToolStripButton.Click += new System.EventHandler(this.perspectiveToolStripButton_Click);
 			// 
 			// orthographicToolStripButton
@@ -1470,8 +1489,9 @@
 			this.orthographicToolStripButton.Image = global::MCSkin3D.Properties.Resources.image;
 			this.orthographicToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.orthographicToolStripButton.Name = "orthographicToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.orthographicToolStripButton, "Text");
 			this.orthographicToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.orthographicToolStripButton.Text = "Skin View";
+			this.orthographicToolStripButton.Text = "T_TEXTURE";
 			this.orthographicToolStripButton.Click += new System.EventHandler(this.orthographicToolStripButton_Click);
 			// 
 			// hybridToolStripButton
@@ -1480,8 +1500,9 @@
 			this.hybridToolStripButton.Image = global::MCSkin3D.Properties.Resources.hybrid;
 			this.hybridToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.hybridToolStripButton.Name = "hybridToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.hybridToolStripButton, "Text");
 			this.hybridToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.hybridToolStripButton.Text = "Hybrid View";
+			this.hybridToolStripButton.Text = "T_HYBRID";
 			this.hybridToolStripButton.Click += new System.EventHandler(this.hybridToolStripButton_Click);
 			// 
 			// toolStripSeparator4
@@ -1495,9 +1516,9 @@
 			this.screenshotToolStripButton.Image = global::MCSkin3D.Properties.Resources.camera;
 			this.screenshotToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.screenshotToolStripButton.Name = "screenshotToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.screenshotToolStripButton, "Text");
 			this.screenshotToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.screenshotToolStripButton.Text = "Screenshot";
-			this.screenshotToolStripButton.ToolTipText = "Screenshot (hold shift to save)";
+			this.screenshotToolStripButton.Text = "T_SCREENSHOT";
 			this.screenshotToolStripButton.Click += new System.EventHandler(this.screenshotToolStripButton_Click);
 			// 
 			// toolStripSeparator9
@@ -1511,8 +1532,9 @@
 			this.toggleHeadToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_head;
 			this.toggleHeadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleHeadToolStripButton.Name = "toggleHeadToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleHeadToolStripButton, "Text");
 			this.toggleHeadToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleHeadToolStripButton.Text = "Toggle Head";
+			this.toggleHeadToolStripButton.Text = "T_TOGGLEHEAD";
 			this.toggleHeadToolStripButton.Click += new System.EventHandler(this.toggleHeadToolStripButton_Click);
 			// 
 			// toggleHelmetToolStripButton
@@ -1521,8 +1543,9 @@
 			this.toggleHelmetToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_helmet;
 			this.toggleHelmetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleHelmetToolStripButton.Name = "toggleHelmetToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleHelmetToolStripButton, "Text");
 			this.toggleHelmetToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleHelmetToolStripButton.Text = "Toggle Helmet";
+			this.toggleHelmetToolStripButton.Text = "T_TOGGLEHELMET";
 			this.toggleHelmetToolStripButton.Click += new System.EventHandler(this.toggleHelmetToolStripButton_Click);
 			// 
 			// toggleChestToolStripButton
@@ -1531,8 +1554,9 @@
 			this.toggleChestToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_chest;
 			this.toggleChestToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleChestToolStripButton.Name = "toggleChestToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleChestToolStripButton, "Text");
 			this.toggleChestToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleChestToolStripButton.Text = "Toggle Chest";
+			this.toggleChestToolStripButton.Text = "T_TOGGLECHEST";
 			this.toggleChestToolStripButton.Click += new System.EventHandler(this.toggleChestToolStripButton_Click);
 			// 
 			// toggleLeftArmToolStripButton
@@ -1541,8 +1565,9 @@
 			this.toggleLeftArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_arm;
 			this.toggleLeftArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleLeftArmToolStripButton.Name = "toggleLeftArmToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleLeftArmToolStripButton, "Text");
 			this.toggleLeftArmToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleLeftArmToolStripButton.Text = "Toggle Left Arm";
+			this.toggleLeftArmToolStripButton.Text = "T_TOGGLELEFTARM";
 			this.toggleLeftArmToolStripButton.Click += new System.EventHandler(this.toggleLeftArmToolStripButton_Click);
 			// 
 			// toggleRightArmToolStripButton
@@ -1551,9 +1576,9 @@
 			this.toggleRightArmToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_arm;
 			this.toggleRightArmToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleRightArmToolStripButton.Name = "toggleRightArmToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleRightArmToolStripButton, "Text");
 			this.toggleRightArmToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleRightArmToolStripButton.Text = "toolStripButton5";
-			this.toggleRightArmToolStripButton.ToolTipText = "Toggle Right Arm";
+			this.toggleRightArmToolStripButton.Text = "Toggle Right Arm";
 			this.toggleRightArmToolStripButton.Click += new System.EventHandler(this.toggleRightArmToolStripButton_Click);
 			// 
 			// toggleLeftLegToolStripButton
@@ -1562,8 +1587,9 @@
 			this.toggleLeftLegToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_leg;
 			this.toggleLeftLegToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleLeftLegToolStripButton.Name = "toggleLeftLegToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleLeftLegToolStripButton, "Text");
 			this.toggleLeftLegToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleLeftLegToolStripButton.Text = "Toggle Left Leg";
+			this.toggleLeftLegToolStripButton.Text = "T_TOGGLELEFTLEG";
 			this.toggleLeftLegToolStripButton.Click += new System.EventHandler(this.toggleLeftLegToolStripButton_Click);
 			// 
 			// toggleRightLegToolStripButton
@@ -1574,7 +1600,7 @@
 			this.toggleRightLegToolStripButton.Name = "toggleRightLegToolStripButton";
 			this.languageProvider1.SetPropertyNames(this.toggleRightLegToolStripButton, "Text");
 			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleRightLegToolStripButton.Text = "Toggle Right Leg";
+			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
 			// Form1
