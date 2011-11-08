@@ -34,7 +34,7 @@ namespace MCSkin3D.Language
 				{
 					string line = sr.ReadLine();
 
-					if (line.StartsWith("//"))
+					if (line.StartsWith("//") || string.IsNullOrEmpty(line))
 						continue;
 
 					if (line == "MCSkin3D Language File")
@@ -49,7 +49,7 @@ namespace MCSkin3D.Language
 					if (!line.Contains('='))
 						throw new Exception("Parse error");
 
-					var left = line.Substring(0, line.IndexOf('='));
+					var left = line.Substring(0, line.IndexOf('=')).Trim();
 					var right = line.Substring(line.IndexOf('=') + 1).Trim(' ', '\t', '\"', '\'');
 					lang.StringTable.Add(left, right);
 

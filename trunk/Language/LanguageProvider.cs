@@ -12,7 +12,7 @@ using System.IO;
 
 namespace MCSkin3D.Language
 {
-	struct LanguageControlLink
+	class LanguageControlLink
 	{
 		public bool TextNamesSet;
 		public string[] TextNames;
@@ -20,8 +20,7 @@ namespace MCSkin3D.Language
 		public PropertyInfo[] PropertyNames;
 		public string OriginalString;
 
-		public LanguageControlLink(string names, object obj) :
-			this()
+		public LanguageControlLink(string names, object obj)
 		{
 			TextNamesSet = false;
 			Object = obj;
@@ -50,6 +49,8 @@ namespace MCSkin3D.Language
 		{
 			for (int i = 0; i < PropertyNames.Length; ++i)
 				TextNames[i] = (string)PropertyNames[i].GetValue(Object, null);
+
+			TextNamesSet = true;
 		}
 	}
 

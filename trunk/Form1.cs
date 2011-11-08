@@ -3091,7 +3091,16 @@ namespace MCSkin3D
 		public static Language.Language CurrentLanguage
 		{
 			get { return _currentLanguage; }
-			set { _currentLanguage = value; Program.MainForm.languageProvider1.LanguageChanged(value); }
+			set
+			{
+				if (_currentLanguage != null)
+					_currentLanguage.Item.Checked = false;
+				
+				_currentLanguage = value;
+				Program.MainForm.languageProvider1.LanguageChanged(value);
+
+				_currentLanguage.Item.Checked = true;
+			}
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -3103,11 +3112,18 @@ namespace MCSkin3D
 			foreach (var lang in LanguageLoader.Languages)
 			{
 				lang.Item = new ToolStripMenuItem(lang.Name);
+				lang.Item.Tag = lang;
+				lang.Item.Click += new EventHandler(languageToolStripMenuItem_Click);
 				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
 			}
 
 			if (CurrentLanguage == null)
 				CurrentLanguage = LanguageLoader.FindLanguage("English");
+		}
+
+		void languageToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CurrentLanguage = (Language.Language)((ToolStripMenuItem)sender).Tag;
 		}
 
 		bool _secondaryIsFront = false;
