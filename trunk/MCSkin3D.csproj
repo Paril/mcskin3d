@@ -131,6 +131,11 @@
     <Compile Include="FloodFillTool.cs" />
     <Compile Include="FolderNode.cs" />
     <Compile Include="Jonas\McSkinCursor.cs" />
+    <Compile Include="Language\Language.cs" />
+    <Compile Include="Language\LanguageLoader.cs" />
+    <Compile Include="Language\LanguageProvider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
