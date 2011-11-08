@@ -197,6 +197,8 @@ namespace MCSkin3D
 
 			_animTimer.Elapsed += new System.Timers.ElapsedEventHandler(_animTimer_Elapsed);
 			_animTimer.SynchronizingObject = this;
+
+			Brushes.LoadBrushes();
 		}
 		#endregion
 
@@ -451,10 +453,16 @@ namespace MCSkin3D
 			if (_selectedTool != null)
 				_selectedTool.MenuItem.Checked = _selectedTool.Button.Checked = false;
 
+			var oldTool = _selectedTool;
 			_selectedTool = index;
 			index.MenuItem.Checked = index.Button.Checked = true;
 
 			splitContainer4.Panel1.Controls.Clear();
+
+			if (oldTool != null && oldTool.OptionsPanel != null)
+				oldTool.OptionsPanel.BoxHidden();
+			if (_selectedTool.OptionsPanel != null)
+				_selectedTool.OptionsPanel.BoxShown();
 
 			if (_selectedTool.OptionsPanel != null)
 				splitContainer4.Panel1.Controls.Add(_selectedTool.OptionsPanel);

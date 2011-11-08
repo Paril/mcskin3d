@@ -12,9 +12,9 @@ namespace MCSkin3D
 		public ToolStripMenuItem MenuItem;
 		public ToolStripButton Button;
 		public ITool Tool;
-		public Control OptionsPanel;
+		public ToolOptionBase OptionsPanel;
 
-		public ToolIndex(ITool tool, Control options, string name, Image image, Keys defaultKey)
+		public ToolIndex(ITool tool, ToolOptionBase options, string name, Image image, Keys defaultKey)
 		{
 			Name = name;
 			DefaultKeys = defaultKey;
