@@ -66,11 +66,11 @@ namespace MCSkin3D
 			if (_undo.Points.ContainsKey(new Point(x, y)))
 			{
 				var tupl = _undo.Points[new Point(x, y)];
-				tupl.Item2 = newColor;
+				tupl.Item2 = new ColorAlpha(newColor, 0);
 				_undo.Points[new Point(x, y)] = tupl;
 			}
 			else
-				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(oldColor, newColor));
+				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(oldColor, new ColorAlpha(newColor, 0)));
 
 			pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
 			return true;
