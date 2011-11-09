@@ -28,13 +28,14 @@ namespace MCSkin3D
 				return;
 
 			int i = x + (y * skin.Width);
-			if (pixels[i] != (oldColor.R | (oldColor.G << 8) | (oldColor.B << 16) | (oldColor.A << 24)))
-				return;
 			if (hitPixels[i])
 				return;
 
 			var c = pixels[i];
 			var real = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+
+			if (real != oldColor)
+				return;
 
 			if (!_undo.Points.ContainsKey(new Point(x, y)))
 				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor, 0)));
