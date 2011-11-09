@@ -21,6 +21,13 @@ namespace Paril.Components.Shortcuts
 		public string Name
 		{
 			get { return _name; }
+			set { _name = value; }
+		}
+
+		string _saveName;
+		public string SaveName
+		{
+			get { return _saveName; }
 		}
 
 		Keys _keys;
@@ -40,7 +47,7 @@ namespace Paril.Components.Shortcuts
 		public ControlShortcut(string name, Keys keys, Control owner)
 		{
 			_owner = owner;
-			_name = name;
+			_name = _saveName = name;
 			Keys = keys;
 		}
 

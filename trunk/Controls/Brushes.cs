@@ -83,7 +83,7 @@ namespace MCSkin3D
 			{
 				for (int j = 0; j < size; j++)
 				{
-					if (Math.Pow((i - radius), 2) + Math.Pow((j - radius), 2) < Math.Pow(radius, 2))
+					if (Math.Pow((i - radius), 2) + Math.Pow((j - radius), 2) <= Math.Pow(radius, 2))
 						brush.Luminance[i, j] = 1;
 				}
 			}

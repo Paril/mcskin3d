@@ -12,7 +12,7 @@ namespace MCSkin3D
 		public static int LoadImage(string fileName)
 		{
 			if (!System.IO.File.Exists(fileName))
-				throw new System.IO.FileNotFoundException("Not found!", fileName);
+				throw new System.IO.FileNotFoundException(fileName);
 
 			using (Bitmap b = new Bitmap(fileName))
 				return LoadImage(b);

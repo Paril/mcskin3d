@@ -5,7 +5,8 @@ namespace Paril.Components.Shortcuts
 {
 	public interface IShortcutImplementor
 	{
-		string Name { get; }
+		string Name { get; set; }
+		string SaveName { get; }
 		Keys Keys { get; set; }
 		Action Pressed { get; set; }
 

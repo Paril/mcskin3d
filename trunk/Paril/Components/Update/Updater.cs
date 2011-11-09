@@ -46,11 +46,10 @@ namespace Paril.Components.Update
 		static void UpdaterThread(object parameter)
 		{
 			Updater updater = (Updater)parameter;
+			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(updater.URL);
 
 			try
 			{
-				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(updater.URL);
-
 				request.Timeout = -1;
 
 				IAsyncResult response = (IAsyncResult)request.BeginGetResponse(CallbackAsync, new object[] { request, updater });
@@ -63,6 +62,7 @@ namespace Paril.Components.Update
 			}
 			finally
 			{
+				request.Abort();
 				updater.Done(false);
 			}
 		}

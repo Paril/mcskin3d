@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MCSkin3D;
 
 namespace Paril.Components.Shortcuts
 {
@@ -44,6 +45,7 @@ namespace Paril.Components.Shortcuts
 			}
 
 			_shortcuts.Add(shortcut);
+			Program.MainForm.languageProvider1.SetPropertyNames(shortcut, "Name");
 		}
 
 		public int ShortcutCount
@@ -184,13 +186,14 @@ namespace Paril.Components.Shortcuts
 					if ((already = ShortcutInUse(key | ModifierKeys)) != null)
 					{
 						textBox1.Text = KeysToString(key | ModifierKeys);
-						labelControl1.Text = "Shortcut already in use by \"" + already.Name + "\"";
-						labelControl1.Visible = true;
+						labelControl1.TextAlign = ContentAlignment.MiddleLeft;
+						labelControl1.Text = Form1.GetLanguageString("C_SHORTCUTINUSE") + " \"" + already.Name + "\"";
+						labelControl1.Visible = pictureBox1.Visible = true;
 						SelectedShortcut.Keys = oldCut;
 					}
 					else
 					{
-						labelControl1.Visible = false;
+						labelControl1.Visible = pictureBox1.Visible = false;
 						SelectedShortcut.Keys = key | ModifierKeys;
 						textBox1.Text = KeysToString(key | ModifierKeys);
 						listBox1.Invalidate();
@@ -203,6 +206,13 @@ namespace Paril.Components.Shortcuts
 
 		private void ShortcutEditor_Load(object sender, EventArgs e)
 		{
+		}
+
+		protected override void OnShown(EventArgs e)
+		{
+			base.OnShown(e);
+
+			label1.Text = Form1.GetLanguageString("M_SHORTCUTS");
 		}
 
 		private void listBox1_DrawItem(object sender, DrawItemEventArgs e)

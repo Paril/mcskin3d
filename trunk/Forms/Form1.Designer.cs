@@ -578,7 +578,7 @@
 			this.languageProvider1.SetPropertyNames(this.headToolStripMenuItem, "Text");
 			this.headToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
 			this.headToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.headToolStripMenuItem.Text = "P_HEAD";
+			this.headToolStripMenuItem.Text = "M_HEAD";
 			this.headToolStripMenuItem.Click += new System.EventHandler(this.headToolStripMenuItem_Click);
 			// 
 			// helmetToolStripMenuItem
@@ -587,7 +587,7 @@
 			this.languageProvider1.SetPropertyNames(this.helmetToolStripMenuItem, "Text");
 			this.helmetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
 			this.helmetToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.helmetToolStripMenuItem.Text = "P_HELMET";
+			this.helmetToolStripMenuItem.Text = "M_HELMET";
 			this.helmetToolStripMenuItem.Click += new System.EventHandler(this.helmetToolStripMenuItem_Click);
 			// 
 			// chestToolStripMenuItem
@@ -596,7 +596,7 @@
 			this.languageProvider1.SetPropertyNames(this.chestToolStripMenuItem, "Text");
 			this.chestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
 			this.chestToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.chestToolStripMenuItem.Text = "P_CHEST";
+			this.chestToolStripMenuItem.Text = "M_CHEST";
 			this.chestToolStripMenuItem.Click += new System.EventHandler(this.chestToolStripMenuItem_Click);
 			// 
 			// leftArmToolStripMenuItem
@@ -605,7 +605,7 @@
 			this.languageProvider1.SetPropertyNames(this.leftArmToolStripMenuItem, "Text");
 			this.leftArmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
 			this.leftArmToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.leftArmToolStripMenuItem.Text = "P_LEFTARM";
+			this.leftArmToolStripMenuItem.Text = "M_LEFTARM";
 			this.leftArmToolStripMenuItem.Click += new System.EventHandler(this.leftArmToolStripMenuItem_Click);
 			// 
 			// rightArmToolStripMenuItem
@@ -614,7 +614,7 @@
 			this.languageProvider1.SetPropertyNames(this.rightArmToolStripMenuItem, "Text");
 			this.rightArmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
 			this.rightArmToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.rightArmToolStripMenuItem.Text = "P_RIGHTARM";
+			this.rightArmToolStripMenuItem.Text = "M_RIGHTARM";
 			this.rightArmToolStripMenuItem.Click += new System.EventHandler(this.rightArmToolStripMenuItem_Click);
 			// 
 			// leftLegToolStripMenuItem
@@ -623,7 +623,7 @@
 			this.languageProvider1.SetPropertyNames(this.leftLegToolStripMenuItem, "Text");
 			this.leftLegToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
 			this.leftLegToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.leftLegToolStripMenuItem.Text = "P_LEFTLEG";
+			this.leftLegToolStripMenuItem.Text = "M_LEFTLEG";
 			this.leftLegToolStripMenuItem.Click += new System.EventHandler(this.leftLegToolStripMenuItem_Click);
 			// 
 			// rightLegToolStripMenuItem
@@ -632,7 +632,7 @@
 			this.languageProvider1.SetPropertyNames(this.rightLegToolStripMenuItem, "Text");
 			this.rightLegToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
 			this.rightLegToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-			this.rightLegToolStripMenuItem.Text = "P_RIGHTLEG";
+			this.rightLegToolStripMenuItem.Text = "M_RIGHTLEG";
 			this.rightLegToolStripMenuItem.Click += new System.EventHandler(this.rightLegToolStripMenuItem_Click);
 			// 
 			// optionsToolStripMenuItem

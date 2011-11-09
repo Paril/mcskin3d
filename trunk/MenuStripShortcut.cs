@@ -12,6 +12,13 @@ namespace MCSkin3D
 		public string Name
 		{
 			get { return _name; }
+			set { _name = value; }
+		}
+
+		string _saveName;
+		public string SaveName
+		{
+			get { return _saveName; }
 		}
 
 		Keys _keys;
@@ -34,7 +41,7 @@ namespace MCSkin3D
 		public MenuStripShortcut(ToolStripMenuItem item, Keys keys)
 		{
 			_menuItem = item;
-			_name = _menuItem.Text.Replace("&", "");
+			_name = _saveName = _menuItem.Text.Replace("&", "");
 			Keys = keys;
 		}
 

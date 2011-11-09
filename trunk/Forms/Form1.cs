@@ -63,7 +63,7 @@ namespace MCSkin3D
 		UndoBuffer _currentUndoBuffer = null;
 		Skin _lastSkin = null;
 		bool _skipListbox = false;
-		internal PleaseWait _pleaseWaitForm;
+		internal PleaseWait _pleaseWaitForm = new PleaseWait();
 		Color _primaryColor = Color.FromArgb(255, 255, 255, 255), _secondaryColor = Color.FromArgb(255, 0, 0, 0);
 		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
@@ -90,7 +90,7 @@ namespace MCSkin3D
 			Program.MainForm = this;
 			InitializeComponent();
 
-			GlobalSettings.Load();
+			bool settingsLoaded = GlobalSettings.Load();
 
 			Icon = Properties.Resources.Icon_new;
 
@@ -146,6 +146,9 @@ namespace MCSkin3D
 			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
 
 			Brushes.LoadBrushes();
+
+			InitShortcuts();
+			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 
 			if (CurrentLanguage == null)
 				CurrentLanguage = LanguageLoader.FindLanguage("English");
@@ -217,6 +220,11 @@ namespace MCSkin3D
 			_animTimer.SynchronizingObject = this;
 
 			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
+
+			if (!settingsLoaded)
+				MessageBox.Show(Form1.GetLanguageString("C_SETTINGSFAILED"));
+
+			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
 		}
 
 		void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)
@@ -291,9 +299,9 @@ namespace MCSkin3D
 				Keys modifiers = (Keys)((int)shortcut.Keys - (int)key);
 
 				if (modifiers != 0)
-					c += shortcut.Name + "=" + key + "+" + modifiers;
+					c += shortcut.SaveName + "=" + key + "+" + modifiers;
 				else
-					c += shortcut.Name + "=" + key;
+					c += shortcut.SaveName + "=" + key;
 			}
 
 			return c;
@@ -303,7 +311,7 @@ namespace MCSkin3D
 		{
 			foreach (var s in _shortcutEditor.Shortcuts)
 			{
-				if (s.Name == name)
+				if (s.SaveName == name)
 					return s;
 			}
 
@@ -409,18 +417,18 @@ namespace MCSkin3D
 				InitMenuShortcut(item.MenuItem, item.DefaultKeys, () => SetSelectedTool(item));
 
 			// not in the menu
-			InitUnlinkedShortcut("Toggle transparency mode", Keys.Shift | Keys.U, ToggleTransparencyMode);
-			InitUnlinkedShortcut("Toggle view mode", Keys.Control | Keys.V, ToggleViewMode);
-			InitUnlinkedShortcut("Screenshot (clipboard)", Keys.Control | Keys.B, TakeScreenshot);
-			InitUnlinkedShortcut("Screenshot (save)", Keys.Control | Keys.Shift | Keys.B, SaveScreenshot);
-			InitUnlinkedShortcut("Delete node", Keys.Delete, PerformDeleteSkin);
-			InitUnlinkedShortcut("Clone node", Keys.Control | Keys.C, PerformCloneSkin);
-			InitUnlinkedShortcut("Change Name", Keys.Control | Keys.N, PerformNameChange);
-			InitUnlinkedShortcut("Switch Foreground/Background", Keys.S, PerformSwitchColor);
-			InitControlShortcut("Swatchlist zoom in", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
-			InitControlShortcut("Swatchlist zoom out", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
-			InitControlShortcut("Treeview zoom in", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
-			InitControlShortcut("Treeview zoom out", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
+			InitUnlinkedShortcut("S_TOGGLETRANS", Keys.Shift | Keys.U, ToggleTransparencyMode);
+			InitUnlinkedShortcut("S_TOGGLEVIEW", Keys.Control | Keys.V, ToggleViewMode);
+			InitUnlinkedShortcut("S_SCREENSHOT_CLIP", Keys.Control | Keys.B, TakeScreenshot);
+			InitUnlinkedShortcut("S_SCREENSHOT_SAVE", Keys.Control | Keys.Shift | Keys.B, SaveScreenshot);
+			InitUnlinkedShortcut("S_DELETE", Keys.Delete, PerformDeleteSkin);
+			InitUnlinkedShortcut("S_CLONE", Keys.Control | Keys.C, PerformCloneSkin);
+			InitUnlinkedShortcut("S_RENAME", Keys.Control | Keys.N, PerformNameChange);
+			InitUnlinkedShortcut("S_COLORSWAP", Keys.S, PerformSwitchColor);
+			InitControlShortcut("S_SWATCH_ZOOMIN", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
+			InitControlShortcut("S_SWATCH_ZOOMOUT", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
+			InitControlShortcut("S_TREEVIEW_ZOOMIN", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
+			InitControlShortcut("S_TREEVIEW_ZOOMOUT", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
 		}
 
 		void PerformSwitchColor()
@@ -552,9 +560,6 @@ namespace MCSkin3D
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-
-			InitShortcuts();
-			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 
 			SetTransparencyMode(GlobalSettings.Transparency);
 			SetViewMode(_currentViewMode);
@@ -1240,66 +1245,62 @@ namespace MCSkin3D
 		}
 
 		Thread _uploadThread;
+		Login login = new Login();
 
 		void PerformUpload()
 		{
 			if (_lastSkin == null)
 				return;
 
-			using (Login login = new Login())
+			login.Username = GlobalSettings.LastUsername;
+			login.Password = GlobalSettings.LastPassword;
+
+			bool dialogRes = true;
+			bool didShowDialog = false;
+
+			if ((ModifierKeys & Keys.Shift) != 0 || !GlobalSettings.RememberMe || !GlobalSettings.AutoLogin)
 			{
-				login.Username = GlobalSettings.LastUsername;
-				login.Password = GlobalSettings.LastPassword;
+				login.Remember = GlobalSettings.RememberMe;
+				login.AutoLogin = GlobalSettings.AutoLogin;
+				dialogRes = login.ShowDialog() == System.Windows.Forms.DialogResult.OK;
+				didShowDialog = true;
+			}
 
-				bool dialogRes = true;
-				bool didShowDialog = false;
+			if (!dialogRes)
+				return;
 
-				if ((ModifierKeys & Keys.Shift) != 0 || !GlobalSettings.RememberMe || !GlobalSettings.AutoLogin)
+			_pleaseWaitForm.FormClosed += new FormClosedEventHandler(_pleaseWaitForm_FormClosed);
+
+			_uploadThread = new Thread(UploadThread);
+			ErrorReturn ret = new ErrorReturn();
+			_uploadThread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
+
+			_pleaseWaitForm.DialogResult = DialogResult.OK;
+			_pleaseWaitForm.ShowDialog();
+			_uploadThread = null;
+
+			if (ret.ReportedError != null)
+				MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			else if (ret.Exception != null)
+				MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
+			{
+				MessageBox.Show(GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				GlobalSettings.LastSkin = _lastSkin.Name;
+				treeView1.Invalidate();
+			}
+
+			if (didShowDialog)
+			{
+				GlobalSettings.RememberMe = login.Remember;
+				GlobalSettings.AutoLogin = login.AutoLogin;
+
+				if (GlobalSettings.RememberMe == false)
+					GlobalSettings.LastUsername = GlobalSettings.LastPassword = "";
+				else
 				{
-					login.Remember = GlobalSettings.RememberMe;
-					login.AutoLogin = GlobalSettings.AutoLogin;
-					dialogRes = login.ShowDialog() == System.Windows.Forms.DialogResult.OK;
-					didShowDialog = true;
-				}
-
-				if (!dialogRes)
-					return;
-
-				_pleaseWaitForm = new PleaseWait();
-				_pleaseWaitForm.FormClosed += new FormClosedEventHandler(_pleaseWaitForm_FormClosed);
-
-				_uploadThread = new Thread(UploadThread);
-				ErrorReturn ret = new ErrorReturn();
-				_uploadThread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
-
-				_pleaseWaitForm.DialogResult = DialogResult.OK;
-				_pleaseWaitForm.ShowDialog();
-				_pleaseWaitForm.Dispose();
-				_uploadThread = null;
-
-				if (ret.ReportedError != null)
-					MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				else if (ret.Exception != null)
-					MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
-				{
-					MessageBox.Show(GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					GlobalSettings.LastSkin = _lastSkin.Name;
-					treeView1.Invalidate();
-				}
-
-				if (didShowDialog)
-				{
-					GlobalSettings.RememberMe = login.Remember;
-					GlobalSettings.AutoLogin = login.AutoLogin;
-
-					if (GlobalSettings.RememberMe == false)
-						GlobalSettings.LastUsername = GlobalSettings.LastPassword = "";
-					else
-					{
-						GlobalSettings.LastUsername = login.Username;
-						GlobalSettings.LastPassword = login.Password;
-					}
+					GlobalSettings.LastUsername = login.Username;
+					GlobalSettings.LastPassword = login.Password;
 				}
 			}
 		}
@@ -3086,6 +3087,9 @@ namespace MCSkin3D
 				Program.MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
+				Program.MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
+				Program.MainForm.login.languageProvider1.LanguageChanged(value);
+				Program.MainForm._pleaseWaitForm.languageProvider1.LanguageChanged(value);
 
 				_currentLanguage.Item.Checked = true;
 			}

@@ -137,7 +137,6 @@
     <Compile Include="Forms\ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Jonas\McSkinCursor.cs" />
     <Compile Include="Language\Language.cs" />
     <Compile Include="Language\LanguageLoader.cs" />
     <Compile Include="Language\LanguageProvider.cs">
@@ -346,6 +345,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="Jonas\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\OpenTK.dll" />
