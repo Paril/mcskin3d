@@ -9,6 +9,13 @@ namespace Paril.Components.Shortcuts
 		public string Name
 		{
 			get { return _name; }
+			set { _name = value; }
+		}
+
+		string _saveName;
+		public string SaveName
+		{
+			get { return _saveName; }
 		}
 
 		public Keys Keys { get; set; }
@@ -17,7 +24,7 @@ namespace Paril.Components.Shortcuts
 
 		public ShortcutBase(string name, Keys keys)
 		{
-			_name = name;
+			_name = _saveName = name;
 			Keys = keys;
 		}
 

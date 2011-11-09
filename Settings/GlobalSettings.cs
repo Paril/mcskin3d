@@ -7,6 +7,7 @@ using System.ComponentModel;
 using Paril.Settings.Serializers;
 using System.Security.Cryptography;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace MCSkin3D
 {
@@ -105,13 +106,26 @@ namespace MCSkin3D
         [DefaultValue("")]
         public static string LanguageFile { get; set; }
 
+		[Savable]
+		[DefaultValue(23)]
+		public static int TreeViewHeight { get; set; }
+
 		static Settings Settings = null;
-		
-		public static void Load()
+
+		public static bool Load()
 		{
-			Settings = new Settings();
-			Settings.Structures.Add(typeof(GlobalSettings));
-			Settings.Load("settings.ini");
+			try
+			{
+				Settings = new Settings();
+				Settings.Structures.Add(typeof(GlobalSettings));
+				Settings.Load("settings.ini");
+				return true;
+			}
+			catch
+			{
+				Settings.LoadDefaults();
+				return false;
+			}
 		}
 
 		public static void Save()

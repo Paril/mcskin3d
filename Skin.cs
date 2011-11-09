@@ -159,13 +159,6 @@ namespace MCSkin3D
 				newBitmap.Save(File.FullName);
 				newBitmap.Dispose();
 
-				/*uint ilim = IL.ilGenImage();
-				IL.ilBindImage(ilim);
-				IL.ilLoadDataL(data, (uint)data.Length, (uint)Width, (uint)Height, 1, 4);
-				File.Delete();
-				IL.ilSave(IL.ImageType.PNG, File.FullName);
-				IL.ilDeleteImage(ilim);*/
-
 				SetImages();
 
 				Dirty = false;

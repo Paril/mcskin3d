@@ -31,16 +31,18 @@
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.labelControl1 = new System.Windows.Forms.Label();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
-			this.labelControl1 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -77,6 +79,8 @@
 			// 
 			// splitContainer2.Panel2
 			// 
+			this.splitContainer2.Panel2.Controls.Add(this.labelControl1);
+			this.splitContainer2.Panel2.Controls.Add(this.pictureBox1);
 			this.splitContainer2.Panel2.Controls.Add(this.textBox1);
 			this.splitContainer2.Panel2.Controls.Add(this.label1);
 			this.splitContainer2.Size = new System.Drawing.Size(434, 264);
@@ -96,16 +100,50 @@
 			this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
 			this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
+			// labelControl1
+			// 
+			this.labelControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.labelControl1.BackColor = System.Drawing.SystemColors.Window;
+			this.labelControl1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+			this.labelControl1.Location = new System.Drawing.Point(31, 165);
+			this.labelControl1.Name = "labelControl1";
+			this.labelControl1.Size = new System.Drawing.Size(225, 55);
+			this.labelControl1.TabIndex = 2;
+			this.labelControl1.Text = "Watt";
+			this.labelControl1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.labelControl1.Visible = false;
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.pictureBox1.ErrorImage = null;
+			this.pictureBox1.Image = global::MCSkin3D.Properties.Resources._109_AllAnnotations_Error_16x16_72;
+			this.pictureBox1.Location = new System.Drawing.Point(14, 185);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.pictureBox1.TabIndex = 2;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Visible = false;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.textBox1.Location = new System.Drawing.Point(14, 140);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.ReadOnly = true;
+			this.textBox1.Size = new System.Drawing.Size(242, 20);
+			this.textBox1.TabIndex = 1;
+			// 
 			// label1
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(59, 89);
+			this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.label1.Location = new System.Drawing.Point(14, 56);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(150, 39);
+			this.label1.Size = new System.Drawing.Size(242, 72);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Click in the textbox below and\r\nhit the keys you wish to assign\r\nto this shortcut" +
-				".";
+			this.label1.Text = "M_SHORTCUTS";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
 			// button2
@@ -119,34 +157,12 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
-			// labelControl1
-			// 
-			this.labelControl1.BackColor = System.Drawing.SystemColors.Window;
-			this.labelControl1.Image = global::MCSkin3D.Properties.Resources._109_AllAnnotations_Error_16x16_72;
-			this.labelControl1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.labelControl1.Location = new System.Drawing.Point(203, 166);
-			this.labelControl1.Name = "labelControl1";
-			this.labelControl1.Size = new System.Drawing.Size(84, 20);
-			this.labelControl1.TabIndex = 2;
-			this.labelControl1.Text = "labelControl1";
-			this.labelControl1.Visible = false;
-			// 
-			// textBox1
-			// 
-			this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.textBox1.Location = new System.Drawing.Point(37, 140);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(194, 20);
-			this.textBox1.TabIndex = 1;
-			// 
 			// ShortcutEditor
 			// 
 			this.AcceptButton = this.button2;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(434, 297);
-			this.Controls.Add(this.labelControl1);
 			this.Controls.Add(this.splitContainer1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "ShortcutEditor";
@@ -160,8 +176,8 @@
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			this.splitContainer2.Panel2.PerformLayout();
 			this.splitContainer2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -174,5 +190,6 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Label labelControl1;
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }
