@@ -324,8 +324,10 @@ namespace MCSkin3D
 			}
 			base.OnMouseMove(e);
 
-			if ((MouseButtons & MouseButtons.Left) == 0)
+			if ((MouseButtons & MouseButtons.Left) == 0 ||
+				SelectedNode == null)
 				return;
+
 			if (mouseDown)
 			{
 				if (verticalScrollBarVisible())
@@ -348,11 +350,11 @@ namespace MCSkin3D
 					}
 				}
 			}
+
 			Point diff = pointDifference(e.Location, mouseDownPoint);
 
 			if ((diff.X >= mouseDownMargin) || (diff.Y >= mouseDownMargin))
 			{
-				//OnItemDrag(new ItemDragEventArgs(e.Button, SelectedNode));
 				using (Graphics g = Graphics.FromImage(_dragBitmap))
 				{
 					g.Clear(Color.Magenta);
