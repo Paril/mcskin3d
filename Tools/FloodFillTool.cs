@@ -37,7 +37,7 @@ namespace MCSkin3D
 			var real = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 
 			if (!_undo.Points.ContainsKey(new Point(x, y)))
-				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, newColor));
+				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor, 0)));
 
 			pixels[i] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
 			hitPixels[i] = true;

@@ -30,7 +30,7 @@ namespace MCSkin3D
 			var c = pixels[pixNum];
 			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 
-			_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(oldColor, Color.FromArgb(0)));
+			_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(oldColor, new ColorAlpha(Color.FromArgb(0), 0)));
 
 			pixels[pixNum] = 0;
 			return true;

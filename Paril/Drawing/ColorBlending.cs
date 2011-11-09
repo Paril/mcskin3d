@@ -77,7 +77,13 @@ namespace MCSkin3D
 
 		public static Color4 AlphaBlend(Color4 source, Color4 dest)
 		{
-			return Add(source, ColorBlendMode.SourceAlpha, dest, ColorBlendMode.InverseSourceAlpha);
+			if (dest.A == 0)
+				return source;
+
+			var alpha = Math.Min(source.A + dest.A, 1);
+			var val = Add(source, ColorBlendMode.SourceAlpha, dest, ColorBlendMode.InverseSourceAlpha);
+			val.A = alpha;
+			return val;
 		}
 
 		public static Color4 MultiplyByte(Color4 l, Color4 r)

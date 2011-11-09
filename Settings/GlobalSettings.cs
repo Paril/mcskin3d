@@ -85,9 +85,11 @@ namespace MCSkin3D
 		public static int Multisamples { get; set; }
 
 		[Savable]
+		[DefaultValue(true)]
 		public static bool PencilIncremental { get; set; }
 
 		[Savable]
+		[DefaultValue(true)]
 		public static bool DodgeBurnIncremental { get; set; }
 
 		[Savable]
@@ -95,6 +97,7 @@ namespace MCSkin3D
 		public static float DodgeBurnExposure { get; set; }
 
 		[Savable]
+		[DefaultValue(true)]
 		public static bool DarkenLightenIncremental { get; set; }
 
 		[Savable]

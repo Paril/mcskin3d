@@ -17,14 +17,12 @@ namespace MCSkin3D
 			get { return GlobalSettings.PencilIncremental; }
 		}
 
-		public bool Feather
-		{
-			get { return true; }
-		}
-
+		Point _oldPixel = new Point(-1, -1);
 		public void BeginClick(Skin skin, MouseEventArgs e)
 		{
 			_undo = new PixelsChangedUndoable();
+			skin.Undo.AddBuffer(_undo);
+			Program.MainForm.CheckUndo();
 		}
 
 		public void MouseMove(Skin skin, MouseEventArgs e)
@@ -33,6 +31,9 @@ namespace MCSkin3D
 		
 		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
 		{
+			if (x == _oldPixel.X && y == _oldPixel.Y)
+				return false;
+
 			var brush = Brushes.SelectedBrush;
 			int startX = x - (brush.Width / 2);
 			int startY = y - (brush.Height / 2);
@@ -41,9 +42,6 @@ namespace MCSkin3D
 			{
 				for (int rx = 0; rx < brush.Width; ++rx)
 				{
-					if (!Incremental && _undo.Points.ContainsKey(new Point(rx, ry)))
-						continue;
-
 					int xx = startX + rx;
 					int yy = startY + ry;
 
@@ -51,13 +49,28 @@ namespace MCSkin3D
 						yy < 0 || yy >= skin.Height)
 						continue;
 
-					if (!Feather && brush[xx, yy] <= 0.5f)
+					if (brush[rx, ry] == 0.0f)
 						continue;
 
 					var pixNum = xx + (skin.Width * yy);
 					var c = pixels[pixNum];
 					var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-					var newColor = Color.FromArgb(ColorBlending.AlphaBlend(((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor, oldColor).ToArgb());
+					var color = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
+
+					var maxAlpha = color.A;
+					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Program.MainForm.SelectedColor.A / 255.0f));
+
+					if (!Incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
+						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
+						continue;
+
+					if (!Incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
+						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha + alphaToAdd >= maxAlpha)
+						alphaToAdd = maxAlpha - _undo.Points[new Point(xx, yy)].Item2.TotalAlpha;
+
+					color = Color.FromArgb((byte)(alphaToAdd), color);
+
+					var newColor = Color.FromArgb(ColorBlending.AlphaBlend(color, oldColor).ToArgb());
 
 					if (oldColor == newColor)
 						continue;
@@ -65,15 +78,18 @@ namespace MCSkin3D
 					if (_undo.Points.ContainsKey(new Point(xx, yy)))
 					{
 						var tupl = _undo.Points[new Point(xx, yy)];
-						tupl.Item2 = newColor;
+
+						tupl.Item2 = new ColorAlpha(newColor, tupl.Item2.TotalAlpha + alphaToAdd);
 						_undo.Points[new Point(xx, yy)] = tupl;
 					}
 					else
-						_undo.Points.Add(new Point(xx, yy), Tuple.MakeTuple(oldColor, newColor));
+						_undo.Points.Add(new Point(xx, yy), Tuple.MakeTuple(oldColor, new ColorAlpha(newColor, alphaToAdd)));
 
 					pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
 				}
 			}
+
+			_oldPixel = new Point(x, y);
 
 			return true;
 		}
@@ -95,16 +111,14 @@ namespace MCSkin3D
 						yy < 0 || yy >= skin.Height)
 						continue;
 
-					if (!Feather && brush[rx, ry] <= 0.5f)
+					if (brush[rx, ry] == 0.0f)
 						continue;
 
 					var pixNum = xx + (skin.Width * yy);
 					var c = pixels[pixNum];
 					var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 					var color = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
-
-					if (Feather)
-						color = Color.FromArgb((byte)(brush[rx, ry] * 255), color);
+					color = Color.FromArgb((byte)(brush[rx, ry] * 255 * (Program.MainForm.SelectedColor.A / 255.0f)), color);
 
 					var newColor = Color.FromArgb(ColorBlending.AlphaBlend(color, oldColor).ToArgb());
 					pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
@@ -116,12 +130,7 @@ namespace MCSkin3D
 
 		public void EndClick(Skin skin, MouseEventArgs e)
 		{
-			if (_undo.Points.Count != 0)
-			{
-				skin.Undo.AddBuffer(_undo);
-				Program.MainForm.CheckUndo();
-			}
-
+			_oldPixel = new Point(-1, -1);
 			_undo = null;
 		}
 	}

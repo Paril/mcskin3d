@@ -9,6 +9,7 @@ using Paril.Drawing.Filters;
 using System.Drawing.Imaging;
 using Paril.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace MCSkin3D
 {
@@ -64,10 +65,84 @@ namespace MCSkin3D
 		{
 			Brush brush = new Brush("Square [" + size + "]", size, size);
 
-			// TODO: feather edges
 			for (int y = 0; y < brush.Height; ++y)
 				for (int x = 0; x < brush.Width; ++x)
 					brush.Luminance[x, y] = 1;
+
+			return brush;
+		}
+
+		static Brush GenerateCircle(int size)
+		{
+			Brush brush = new Brush("Circle [" + size + "]", size, size);
+			int radius = (int)Math.Floor(size / 2.0);
+
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (Math.Pow((i - radius), 2) + Math.Pow((j - radius), 2) <= Math.Pow(radius, 2))
+						brush.Luminance[i, j] = 1;
+				}
+			}
+
+			return brush;
+		}
+
+		static Brush GenerateFeatheredSquare(int size)
+		{
+			Brush brush = new Brush("Smooth Square [" + size + "]", size + 4, size + 4);
+
+			for (int y = 2; y < brush.Height - 2; ++y)
+				for (int x = 2; x < brush.Width - 2; ++x)
+				{
+					brush.Luminance[x, y] = 1;
+				}
+
+			GaussianBlurFilter filter = new GaussianBlurFilter(4);
+			var op = new FloatMatrixOperand();
+			op.Value = brush.Luminance;
+			filter.Apply(op);
+
+			float scale = brush.Luminance[(brush.Width - 1) / 2, (brush.Height - 1) / 2];
+			
+			for (int y = 0; y < brush.Height; ++y)
+				for (int x = 0; x < brush.Width; ++x)
+				{
+					if (brush.Luminance[x, y] != 0)
+						brush.Luminance[x, y] /= scale;
+				}
+
+			return brush;
+		}
+
+		static Brush GenerateSmoothCircle(int size)
+		{
+			Brush brush = new Brush("Smooth Circle [" + size + "]", size + 4, size + 4);
+			int radius = (int)Math.Floor((size) / 2.0);
+
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (Math.Pow((i - radius), 2) + Math.Pow((j - radius), 2) <= Math.Pow(radius, 2))
+						brush.Luminance[i + 2, j + 2] = 1;
+				}
+			}
+
+			GaussianBlurFilter filter = new GaussianBlurFilter(4);
+			var op = new FloatMatrixOperand();
+			op.Value = brush.Luminance;
+			filter.Apply(op);
+
+			float scale = brush.Luminance[(brush.Width - 1) / 2, (brush.Height - 1) / 2];
+
+			for (int y = 0; y < brush.Height; ++y)
+				for (int x = 0; x < brush.Width; ++x)
+				{
+					if (brush.Luminance[x, y] != 0)
+						brush.Luminance[x, y] /= scale;
+				}
 
 			return brush;
 		}
@@ -76,6 +151,12 @@ namespace MCSkin3D
 		{
 			for (int i = 0; i < NumBrushes; ++i)
 				BrushList.Add(GenerateSquare((i * 2) + 1));
+			for (int i = 0; i < NumBrushes; ++i)
+				BrushList.Add(GenerateFeatheredSquare((i * 2) + 1));
+			for (int i = 0; i < NumBrushes; ++i)
+				BrushList.Add(GenerateCircle((i * 2) + 1));
+			for (int i = 0; i < NumBrushes; ++i)
+				BrushList.Add(GenerateSmoothCircle((i * 2) + 1));
 
 			foreach (var b in BrushList)
 			{
@@ -85,6 +166,12 @@ namespace MCSkin3D
 
 			BrushBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			BrushBox.SelectedIndex = 0;
+
+			GaussianBlurFilter filter = new GaussianBlurFilter(8);
+			FloatMatrixOperand op = new FloatMatrixOperand();
+			op.Value = new float[5, 5];
+			op.Value[2, 2] = 1;
+			filter.Apply(op);
 		}
 	}
 
