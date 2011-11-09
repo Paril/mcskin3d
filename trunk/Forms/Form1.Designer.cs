@@ -1782,7 +1782,7 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
 		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
-		private Language.LanguageProvider languageProvider1;
+		public Language.LanguageProvider languageProvider1;
 	}
 }
 

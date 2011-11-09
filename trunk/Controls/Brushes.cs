@@ -15,7 +15,7 @@ namespace MCSkin3D
 {
 	public class Brush
 	{
-		public string Name;
+		public string Name { get; set; }
 		public float[,] Luminance;
 
 		public int Width { get { return Luminance.GetLength(0); } }
@@ -63,7 +63,8 @@ namespace MCSkin3D
 
 		static Brush GenerateSquare(int size)
 		{
-			Brush brush = new Brush("Square [" + size + "]", size, size);
+			Brush brush = new Brush("C_SQUARE", size, size);
+			Program.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
 
 			for (int y = 0; y < brush.Height; ++y)
 				for (int x = 0; x < brush.Width; ++x)
@@ -74,7 +75,8 @@ namespace MCSkin3D
 
 		static Brush GenerateCircle(int size)
 		{
-			Brush brush = new Brush("Circle [" + size + "]", size, size);
+			Brush brush = new Brush("C_CIRCLE", size, size);
+			Program.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
 			int radius = (int)Math.Floor(size / 2.0);
 
 			for (int i = 0; i < size; i++)
@@ -151,12 +153,12 @@ namespace MCSkin3D
 		{
 			for (int i = 0; i < NumBrushes; ++i)
 				BrushList.Add(GenerateSquare((i * 2) + 1));
-			for (int i = 0; i < NumBrushes; ++i)
-				BrushList.Add(GenerateFeatheredSquare((i * 2) + 1));
+			//for (int i = 0; i < NumBrushes; ++i)
+			//	BrushList.Add(GenerateFeatheredSquare((i * 2) + 1));
 			for (int i = 0; i < NumBrushes; ++i)
 				BrushList.Add(GenerateCircle((i * 2) + 1));
-			for (int i = 0; i < NumBrushes; ++i)
-				BrushList.Add(GenerateSmoothCircle((i * 2) + 1));
+			//for (int i = 0; i < NumBrushes; ++i)
+			//	BrushList.Add(GenerateSmoothCircle((i * 2) + 1));
 
 			foreach (var b in BrushList)
 			{
@@ -200,7 +202,7 @@ namespace MCSkin3D
 
 				e.Graphics.DrawRectangle(Pens.Black, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height));
 
-				TextRenderer.DrawText(e.Graphics, brush.Name, Font, new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText, TextFormatFlags.VerticalCenter);
+				TextRenderer.DrawText(e.Graphics, brush.Name + " [" + brush.Height + "]", Font, new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText, TextFormatFlags.VerticalCenter);
 			}
 
 			e.DrawFocusRectangle();

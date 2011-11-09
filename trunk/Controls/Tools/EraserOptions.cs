@@ -9,21 +9,11 @@ using System.Windows.Forms;
 
 namespace MCSkin3D
 {
-	public partial class PencilOptions : ToolOptionBase
+	public partial class EraserOptions : ToolOptionBase
 	{
-		public PencilOptions()
+		public EraserOptions()
 		{
 			InitializeComponent();
-		}
-
-		private void PencilOptions_Load(object sender, EventArgs e)
-		{
-			checkBox1.Checked = GlobalSettings.PencilIncremental;
-		}
-
-		private void checkBox1_CheckedChanged(object sender, EventArgs e)
-		{
-			GlobalSettings.PencilIncremental = checkBox1.Checked;
 		}
 
 		public override void BoxShown()

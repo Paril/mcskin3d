@@ -1,6 +1,6 @@
 ﻿namespace MCSkin3D
 {
-	partial class PencilOptions
+	partial class EraserOptions
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -28,38 +28,19 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.SuspendLayout();
 			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(135, 3);
-			this.checkBox1.Name = "checkBox1";
-			this.languageProvider1.SetPropertyNames(this.checkBox1, "Text");
-			this.checkBox1.Size = new System.Drawing.Size(117, 17);
-			this.checkBox1.TabIndex = 0;
-			this.checkBox1.Text = "O_INCREMENTAL";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-			// 
-			// PencilOptions
+			// EraserOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.checkBox1);
-			this.Name = "PencilOptions";
+			this.Name = "EraserOptions";
 			this.Size = new System.Drawing.Size(407, 55);
-			this.Load += new System.EventHandler(this.PencilOptions_Load);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.CheckBox checkBox1;
-		public Language.LanguageProvider languageProvider1;
 	}
 }
