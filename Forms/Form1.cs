@@ -2161,11 +2161,14 @@ namespace MCSkin3D
 				RenderState.BindTexture(img);
 			}
 
+			const float widSep = 56.0f / 64.0f;
+			const float heiSep = 22.0f / 32.0f;
+
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(halfWidth - halfImgWidth, -1);
-			GL.TexCoord2(1, 0); GL.Vertex2(halfWidth + halfImgWidth, -1);
-			GL.TexCoord2(1, 1); GL.Vertex2(halfWidth + halfImgWidth, 21);
-			GL.TexCoord2(0, 1); GL.Vertex2(halfWidth - halfImgWidth, 21);
+			GL.TexCoord2(widSep, 0); GL.Vertex2(halfWidth + halfImgWidth, -1);
+			GL.TexCoord2(widSep, heiSep); GL.Vertex2(halfWidth + halfImgWidth, 21);
+			GL.TexCoord2(0, heiSep); GL.Vertex2(halfWidth - halfImgWidth, 21);
 			GL.End();
 		}
 

@@ -13,6 +13,7 @@
 ?- Verify all undo buffers
 ?- Feathering on brushes
 ?- Part lock for fill bucket/noise tool
+\- Grid for 2d view?
 
 -------------------------------------------------------------
 -							    -

@@ -49,10 +49,11 @@ namespace MCSkin3D
 							PixelType.UnsignedByte,		// Image data type
 							goodData);			// The actual image data itself
 
-			if (GL.GetError() != ErrorCode.NoError)
+			var err = GL.GetError();
+			if (err != ErrorCode.NoError)
 			{
 				GL.DeleteTexture(glImage);
-				throw new Exception();
+				throw new Exception(err.ToString());
 			}
 
 			return glImage;
