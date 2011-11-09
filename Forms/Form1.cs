@@ -77,17 +77,9 @@ namespace MCSkin3D
 		ToolIndex _selectedTool;
 		#endregion
 
-		public DodgeBurnOptions DodgeBurnOptions
-		{
-			get;
-			private set;
-		}
-
-		public DarkenLightenOptions DarkenLightenOptions
-		{
-			get;
-			private set;
-		}
+		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
+		public DarkenLightenOptions DarkenLightenOptions { get; private set; }
+		public PencilOptions PencilOptions { get; private set; }
 
 		// ===============================================
 		// Constructor
@@ -112,15 +104,16 @@ namespace MCSkin3D
 				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
 			}
 
-			if (CurrentLanguage == null)
-				CurrentLanguage = LanguageLoader.FindLanguage("English");
+			DodgeBurnOptions = new DodgeBurnOptions();
+			DarkenLightenOptions = new DarkenLightenOptions();
+			PencilOptions = new PencilOptions();
 
 			_tools.Add(new ToolIndex(new CameraTool(), null, "T_TOOL_CAMERA", Properties.Resources.eye__1_, Keys.C));
-			_tools.Add(new ToolIndex(new PencilTool(), new PencilOptions(), "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
-			_tools.Add(new ToolIndex(new EraserTool(), null, "T_TOOL_ERASER", Properties.Resources.erase, Keys.E));
+			_tools.Add(new ToolIndex(new PencilTool(), PencilOptions, "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
+			_tools.Add(new ToolIndex(new EraserTool(), new EraserOptions(), "T_TOOL_ERASER", Properties.Resources.erase, Keys.E));
 			_tools.Add(new ToolIndex(new DropperTool(), null, "T_TOOL_DROPPER", Properties.Resources.pipette, Keys.D));
-			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions = new DodgeBurnOptions(), "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
-			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions = new DarkenLightenOptions(), "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
+			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
+			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), null, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
 
 			for (int i = _tools.Count - 1; i >= 0; --i)
@@ -151,6 +144,11 @@ namespace MCSkin3D
 			SetCheckbox(VisiblePartFlags.HelmetFlag, helmetToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.LeftLegFlag, leftLegToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
+
+			Brushes.LoadBrushes();
+
+			if (CurrentLanguage == null)
+				CurrentLanguage = LanguageLoader.FindLanguage("English");
 
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
@@ -219,8 +217,6 @@ namespace MCSkin3D
 			_animTimer.SynchronizingObject = this;
 
 			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
-
-			Brushes.LoadBrushes();
 		}
 
 		void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)
@@ -3087,6 +3083,9 @@ namespace MCSkin3D
 				
 				_currentLanguage = value;
 				Program.MainForm.languageProvider1.LanguageChanged(value);
+				Program.MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
+				Program.MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
+				Program.MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
 
 				_currentLanguage.Item.Checked = true;
 			}

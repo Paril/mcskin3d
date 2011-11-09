@@ -57,9 +57,11 @@ namespace Paril.Components.Update
 				Thread.Sleep(20000);
 
 				request.Abort();
-				throw new TimeoutException();
 			}
 			catch
+			{
+			}
+			finally
 			{
 				updater.Done(false);
 			}

@@ -58,5 +58,16 @@ namespace MCSkin3D
 
 			SetExposure((float)trackBar1.Value / 100.0f);
 		}
+
+		public override void BoxShown()
+		{
+			Controls.Add(Brushes.BrushBox);
+			Brushes.BrushBox.Location = new Point(2, 2);
+		}
+
+		public override void BoxHidden()
+		{
+			Controls.Remove(Brushes.BrushBox);
+		}
 	}
 }

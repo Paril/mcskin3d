@@ -90,6 +90,13 @@
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Tools\EraserOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\EraserOptions.Designer.cs">
+      <DependentUpon>EraserOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
     <Compile Include="Devcorp\CIELab.cs" />
     <Compile Include="Devcorp\CIEXYZ.cs" />
@@ -265,6 +272,9 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <EmbeddedResource Include="Controls\Tools\EraserOptions.resx">
+      <DependentUpon>EraserOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Tools\DarkenLightenOptions.resx">
       <DependentUpon>DarkenLightenOptions.cs</DependentUpon>
     </EmbeddedResource>
