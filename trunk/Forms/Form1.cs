@@ -1004,7 +1004,7 @@ namespace MCSkin3D
 			}
 			else
 			{
-				int halfHeight = rendererControl.Height / 2;
+				int halfHeight = (int)Math.Ceiling(rendererControl.Height / 2.0f);
 
 				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
 				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
@@ -2194,7 +2194,7 @@ namespace MCSkin3D
 			}
 			else
 			{
-				int halfHeight = rendererControl.Height / 2;
+				int halfHeight = (int)Math.Ceiling(rendererControl.Height / 2.0f);
 
 				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
 				DrawPlayer(_previewPaint, skin, false);
