@@ -34,6 +34,7 @@ Version 1.3
 - Fixed swatch issue
 - Modified Dodge/Burn/Darken/Lighten exposure calculations to be a bit easier
 - Toolbar changes
+- Multilingual support
 
 Version 1.2
 - Bug fixes relating to importing and naming skins
