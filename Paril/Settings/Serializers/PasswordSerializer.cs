@@ -243,8 +243,8 @@ namespace Paril.Settings.Serializers
 			return plainText;
 		}
 
-		static string   passPhrase         = Environment.UserName;        // can be any string
-		static string   saltValue          = Environment.MachineName;        // can be any string
+		static string   passPhrase         = Environment.UserName + Environment.CurrentDirectory;        // can be any string
+		static string   saltValue          = Environment.MachineName + Environment.SystemDirectory + Environment.UserDomainName;        // can be any string
 		static string   hashAlgorithm      = "SHA1";             // can be "MD5"
 		static int      passwordIterations = 2;                  // can be any number
 		static string   initVector         = "@1B2c3D4e5F6g7H8"; // must be 16 bytes

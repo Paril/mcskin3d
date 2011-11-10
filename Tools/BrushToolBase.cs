@@ -16,7 +16,7 @@ namespace MCSkin3D
 		PixelsChangedUndoable _undo;
 
 		Point _oldPixel = new Point(-1, -1);
-		public void BeginClick(Skin skin, MouseEventArgs e)
+		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_undo = new PixelsChangedUndoable();
 		}
@@ -135,5 +135,7 @@ namespace MCSkin3D
 		public abstract bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y);
 		public abstract Color BlendColor(Color l, Color r);
 		public abstract Color GetLeftColor();
+
+		public abstract string GetStatusLabelText();
 	}
 }

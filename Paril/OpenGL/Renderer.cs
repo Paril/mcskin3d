@@ -6,6 +6,8 @@ using OpenTK.Graphics;
 using System.IO;
 using System.Xml;
 using System.Globalization;
+using System.Drawing;
+using MCSkin3D;
 
 namespace Paril.OpenGL
 {
@@ -123,10 +125,74 @@ namespace Paril.OpenGL
 		public MCSkin3D.VisiblePartFlags Part;
 	}
 
+	public struct Bounds
+	{
+		Point _mins, _maxs;
+		public Point Mins { get { return _mins; } set { _mins = value; } }
+		public Point Maxs { get { return _maxs; } set { _maxs = value; } }
+
+		public Bounds(Point mins, Point maxs) :
+			this()
+		{
+			_mins = mins;
+			_maxs = maxs;
+		}
+
+		public void AddPoint(Point p)
+		{
+			if (p.X < _mins.X)
+				_mins.X = p.X;
+			if (p.Y < _mins.Y)
+				_mins.Y = p.Y;
+
+			if (p.X > _maxs.X)
+				_maxs.X = p.X;
+			if (p.Y > _maxs.Y)
+				_maxs.Y = p.Y;
+		}
+
+		public Rectangle ToRectangle()
+		{
+			Rectangle r = new Rectangle();
+
+			r.X = _mins.X;
+			r.Y = _mins.Y;
+			r.Width = _maxs.X - _mins.X;
+			r.Height = _maxs.Y - _mins.Y;
+
+			return r;
+		}
+	}
+
 	public class Model
 	{
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
+
+		// P: polygon support required? used bounds 'n stuff but, you know...
+		public Rectangle GetTextureFaceBounds(Point p, Skin skin)
+		{
+			Rectangle b = new Rectangle();
+
+			foreach (var m in Meshes)
+			{
+				foreach (var f in m.Faces)
+				{
+					Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+
+					foreach (var c in f.TexCoords)
+					{
+						var coord = new Vector2(c.X * skin.Width, c.Y * skin.Height);
+						bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+					}
+
+					if (bounds.ToRectangle().Contains(p))
+						return bounds.ToRectangle();
+				}
+			}
+
+			return b;
+		}
 
 		public void Save(string fileName)
 		{

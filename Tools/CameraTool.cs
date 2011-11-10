@@ -10,7 +10,7 @@ namespace MCSkin3D
 {
 	public class CameraTool : ITool
 	{
-		public void BeginClick(Skin skin, MouseEventArgs e)
+		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_oldMouse = e.Location;
 		}
@@ -40,6 +40,11 @@ namespace MCSkin3D
 
 		public void EndClick(Skin skin, MouseEventArgs e)
 		{
+		}
+
+		public string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_CAMERA");
 		}
 	}
 }

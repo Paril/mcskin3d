@@ -193,6 +193,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static byte[] English {
+            get {
+                object obj = ResourceManager.GetObject("English", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap erase {
             get {
                 object obj = ResourceManager.GetObject("erase", resourceCulture);
@@ -281,6 +288,13 @@ namespace MCSkin3D.Properties {
             get {
                 object obj = ResourceManager.GetObject("no", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap noise {
+            get {
+                object obj = ResourceManager.GetObject("noise", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

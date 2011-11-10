@@ -22,50 +22,44 @@ namespace MCSkin3D.Language
 			StringTable = new Dictionary<string, string>();
 		}
 
-		public static Language Parse(string file)
+		public static Language Parse(StreamReader sr)
 		{
-			if (!File.Exists(file))
-				throw new FileNotFoundException();
-
 			Language lang = new Language();
 			bool headerFound = false;
 
-			using (StreamReader sr = new StreamReader(file, Encoding.Unicode))
+			while (!sr.EndOfStream)
 			{
-				while (!sr.EndOfStream)
+				string line = sr.ReadLine();
+
+				if (line.StartsWith("//") || string.IsNullOrEmpty(line))
+					continue;
+
+				if (line == "MCSkin3D Language File")
 				{
-					string line = sr.ReadLine();
+					headerFound = true;
+					continue;
+				}
 
-					if (line.StartsWith("//") || string.IsNullOrEmpty(line))
-						continue;
+				if (!headerFound)
+					throw new Exception("No header");
 
-					if (line == "MCSkin3D Language File")
-					{
-						headerFound = true;
-						continue;
-					}
+				if (!line.Contains('='))
+					throw new Exception("Parse error");
 
-					if (!headerFound)
-						throw new Exception("No header");
+				var left = line.Substring(0, line.IndexOf('=')).Trim();
+				var right = line.Substring(line.IndexOf('=') + 1).Trim(' ', '\t', '\"', '\'').Replace("\\r", "\r").Replace("\\n", "\n");
+				lang.StringTable.Add(left, right);
 
-					if (!line.Contains('='))
-						throw new Exception("Parse error");
-
-					var left = line.Substring(0, line.IndexOf('=')).Trim();
-					var right = line.Substring(line.IndexOf('=') + 1).Trim(' ', '\t', '\"', '\'').Replace("\\r", "\r").Replace("\\n", "\n");
-					lang.StringTable.Add(left, right);
-
-					if (left[0] == '#')
-					{
-						if (left == "#Name")
-							lang.Name = right;
-						else if (left == "#Version")
-							lang.Version = right;
-						else if (left == "#SuppVersion")
-							lang.SupportedVersion = new Version(right);
-						else if (left == "#Culture")
-							lang.Culture = CultureInfo.GetCultureInfo(right);
-					}
+				if (left[0] == '#')
+				{
+					if (left == "#Name")
+						lang.Name = right;
+					else if (left == "#Version")
+						lang.Version = right;
+					else if (left == "#SuppVersion")
+						lang.SupportedVersion = new Version(right);
+					else if (left == "#Culture")
+						lang.Culture = CultureInfo.GetCultureInfo(right);
 				}
 			}
 

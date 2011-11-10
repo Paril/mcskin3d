@@ -43,9 +43,6 @@ namespace Paril.Settings
 		{
 			try
 			{
-				if (obj.GetType() == typeof(string))
-				return (string)obj;
-
 				if (field is PropertyInfo)
 				{
 					PropertyInfo info = (PropertyInfo)field;
@@ -76,9 +73,6 @@ namespace Paril.Settings
 
 		public virtual object Deserialize(object field, string str, Type t)
 		{
-			if (t == typeof(string))
-				return str;
-
 			if (field is PropertyInfo)
 			{
 				PropertyInfo info = (PropertyInfo)field;

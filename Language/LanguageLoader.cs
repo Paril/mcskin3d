@@ -16,7 +16,8 @@ namespace MCSkin3D.Language
 			{
 				try
 				{
-					Languages.Add(Language.Parse(file));
+					using (var sr = new StreamReader(file, Encoding.Unicode))
+						Languages.Add(Language.Parse(sr));
 				}
 				catch
 				{
@@ -27,10 +28,24 @@ namespace MCSkin3D.Language
 		public static Language FindLanguage(string p)
 		{
 			foreach (var l in Languages)
-				if (l.Name == p)
+				if (l.Name == p ||
+					l.Culture.TwoLetterISOLanguageName == p)
 					return l;
 
 			return null;
+		}
+
+		public static Language LoadDefault()
+		{
+			using (var writer = new FileStream("Languages\\English.lang", FileMode.Create))
+				writer.Write(Properties.Resources.English, 0, Properties.Resources.English.Length);
+
+			using (var reader = new StreamReader(new MemoryStream(Properties.Resources.English), Encoding.Unicode))
+			{
+				var lang = Language.Parse(reader);
+				Languages.Add(lang);
+				return lang;
+			}
 		}
 	}
 }

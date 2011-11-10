@@ -13,46 +13,59 @@ namespace MCSkin3D
 	{
         public float Threshold //[0-1]
         {
-            get { return 0.2f; }
+            get { return GlobalSettings.FloodFillThreshold; }
         }
 
 		PixelsChangedUndoable _undo;
 		private bool[] hitPixels;
+		Rectangle _boundBox;
+		bool _done = false;
 
-		public void BeginClick(Skin skin, MouseEventArgs e)
+		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_undo = new PixelsChangedUndoable();
+			_boundBox = new Rectangle(0, 0, skin.Width, skin.Height);
+
+			if ((Control.ModifierKeys & Keys.Control) != 0)
+				_boundBox = PlayerModel.HumanModel.GetTextureFaceBounds(new Point(p.X, p.Y), skin);
+
+			_done = false;
 		}
 
 		public void MouseMove(Skin skin, MouseEventArgs e)
 		{
 		}
 
-        private byte fixValue(int v)
-        {
-            //fix f-ed up (out of bounds) values in isCloseColor function
-            if (v < 0)
-                return 0;
-
-            if (v > 255)
-                return 255;
-
-            return (byte)v;
-        }
-        private bool isCloseColor(Color c, Color c2, float threshold)
-        {
-            //c is origin color, c2 is color to compare to, t is the threshold converted from percent to byte
-            byte t = (byte)(threshold * 255 /2);
-            bool isR, isG, isB;
-            isR = ((fixValue(c.R - t) <= c2.R) && (fixValue(c.R + t) >= c2.R));
-            isG = ((fixValue(c.G - t) <= c2.G) && (fixValue(c.G + t) >= c2.G));
-            isB = ((fixValue(c.B - t) <= c2.B) && (fixValue(c.B + t) >= c2.B));
-            return isR && isG && isB;
-        }
+		static bool similarColor(Color color1, Color color2, byte threshold)
+		{
+			return
+					Math.Abs((int)color1.R - (int)color2.R) <= threshold &&
+					Math.Abs((int)color1.G - (int)color2.G) <= threshold &&
+					Math.Abs((int)color1.B - (int)color2.B) <= threshold &&
+					Math.Abs((int)color1.A - (int)color2.A) <= threshold
+					;
+		}
+		//Same as similarColor, but avoids some calculations if it can; use this if threshold may be 255 or 0
+		static bool similarColor2(Color color1, Color color2, byte threshold)
+		{
+			if (threshold == 255)
+				return true;
+			else if (threshold == 0)
+			{
+				return
+						color1.R == color2.R &&
+						color1.G == color2.G &&
+						color1.B == color2.B &&
+						color1.A == color2.A
+						;
+			}
+			else
+				return similarColor(color1, color2, threshold);
+		}
 
 		private void recursiveFill(int x, int y, Color oldColor, Color newColor, int[] pixels, bool[] hitPixels, Skin skin)
 		{
-			if (x < 0 || y < 0 || x >= skin.Width || y >= skin.Height)
+			if (!_boundBox.Contains(x, y))
 				return;
 
 			int i = x + (y * skin.Width);
@@ -62,7 +75,7 @@ namespace MCSkin3D
 			var c = pixels[i];
 			var real = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 
-            if (!isCloseColor(oldColor, real, Threshold))
+			if (!similarColor2(oldColor, real, (byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255)))
 				return;
 
 			if (!_undo.Points.ContainsKey(new Point(x, y)))
@@ -83,32 +96,41 @@ namespace MCSkin3D
 
 		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
 		{
+			if (_done)
+				return false;
+
 			hitPixels = new bool[skin.Width * skin.Height];
 			var pixNum = x + (skin.Width * y);
 			var c = pixels[pixNum];
 			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-			var newColor = Program.MainForm.SelectedColor;
+			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
 
             recursiveFill(x, y, oldColor, newColor, pixels, hitPixels, skin);
+			_done = true;
 			return true;
 		}
 
 		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
 		{
 			var pixNum = x + (skin.Width * y);
-			var c = pixels[pixNum];
-			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
-			var newColor = Color.FromArgb(ColorBlending.AlphaBlend(((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor, oldColor).ToArgb());
+			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
 			pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
 			return true;
 		}
 
 		public void EndClick(Skin skin, MouseEventArgs e)
 		{
-			skin.Undo.AddBuffer(_undo);
+			_done = false;
+			if (_undo.Points.Count != 0)
+				skin.Undo.AddBuffer(_undo);
 			_undo = null;
 
 			Program.MainForm.CheckUndo();
+		}
+
+		public string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_FILL");
 		}
 	}
 }

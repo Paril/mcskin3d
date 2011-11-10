@@ -187,7 +187,7 @@ namespace Paril.Components.Shortcuts
 					{
 						textBox1.Text = KeysToString(key | ModifierKeys);
 						labelControl1.TextAlign = ContentAlignment.MiddleLeft;
-						labelControl1.Text = Form1.GetLanguageString("C_SHORTCUTINUSE") + " \"" + already.Name + "\"";
+						labelControl1.Text = Editor.GetLanguageString("C_SHORTCUTINUSE") + " \"" + already.Name + "\"";
 						labelControl1.Visible = pictureBox1.Visible = true;
 						SelectedShortcut.Keys = oldCut;
 					}
@@ -212,7 +212,7 @@ namespace Paril.Components.Shortcuts
 		{
 			base.OnShown(e);
 
-			label1.Text = Form1.GetLanguageString("M_SHORTCUTS");
+			label1.Text = Editor.GetLanguageString("M_SHORTCUTS");
 		}
 
 		private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
