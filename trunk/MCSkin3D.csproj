@@ -79,7 +79,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms">
       <Private>False</Private>
     </Reference>
@@ -89,6 +91,12 @@
     <Compile Include="BackgroundImage.cs" />
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\FloodFillOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\FloodFillOptions.Designer.cs">
+      <DependentUpon>FloodFillOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\EraserOptions.cs">
       <SubType>UserControl</SubType>
@@ -108,6 +116,7 @@
     <Compile Include="Controls\Tools\DarkenLightenOptions.Designer.cs">
       <DependentUpon>DarkenLightenOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\NoiseTool.cs" />
     <Compile Include="Tools\DarkenLightenTool.cs" />
     <Compile Include="Controls\Tools\DodgeBurnOptions.cs">
       <SubType>UserControl</SubType>
@@ -200,11 +209,11 @@
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Paril\Drawing\FastPixel.cs" />
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="Forms\Editor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\Editor.Designer.cs">
+      <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Devcorp\HSB.cs" />
     <Compile Include="Devcorp\HSL.cs" />
@@ -271,6 +280,10 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\noise.png" />
+    <EmbeddedResource Include="Controls\Tools\FloodFillOptions.resx">
+      <DependentUpon>FloodFillOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Tools\EraserOptions.resx">
       <DependentUpon>EraserOptions.cs</DependentUpon>
     </EmbeddedResource>
@@ -292,8 +305,8 @@
     <EmbeddedResource Include="Forms\ExceptionDialog.resx">
       <DependentUpon>ExceptionDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editor.resx">
+      <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -315,6 +328,7 @@
       <DependentUpon>PencilOptions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="bin\Languages\English.lang" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -344,7 +358,6 @@
     <None Include="Resources\Video.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\" />
     <Folder Include="Jonas\" />
   </ItemGroup>
   <ItemGroup>

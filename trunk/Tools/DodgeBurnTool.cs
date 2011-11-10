@@ -31,5 +31,10 @@ namespace MCSkin3D
 		{
 			return Color.FromArgb(255, 0, 0, 0);
 		}
+
+		public override string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_DODGEBURN");
+		}
 	}
 }

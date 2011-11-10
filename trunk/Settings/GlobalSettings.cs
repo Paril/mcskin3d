@@ -103,12 +103,16 @@ namespace MCSkin3D
 		public static float DarkenLightenExposure { get; set; }
 
         [Savable]
-        [DefaultValue("")]
+        [DefaultValue("en")]
         public static string LanguageFile { get; set; }
 
 		[Savable]
 		[DefaultValue(23)]
 		public static int TreeViewHeight { get; set; }
+
+		[Savable]
+		[DefaultValue(0)]
+		public static float FloodFillThreshold { get; set; }
 
 		static Settings Settings = null;
 

@@ -10,7 +10,7 @@ namespace MCSkin3D
 {
 	public class DropperTool : ITool
 	{
-		public void BeginClick(Skin skin, MouseEventArgs e)
+		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 		}
 
@@ -38,6 +38,11 @@ namespace MCSkin3D
 
 		public void EndClick(Skin skin, MouseEventArgs e)
 		{
+		}
+
+		public string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_DROPPER");
 		}
 	}
 }

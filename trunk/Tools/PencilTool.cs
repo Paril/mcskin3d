@@ -24,5 +24,10 @@ namespace MCSkin3D
 		{
 			return ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
 		}
+
+		public override string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_PENCIL");
+		}
 	}
 }

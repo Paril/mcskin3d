@@ -33,7 +33,7 @@ using MCSkin3D.Language;
 
 namespace MCSkin3D
 {
-	public partial class Form1 : Form
+	public partial class Editor : Form
 	{
 		// ===============================================
 		// Private/Static variables
@@ -63,7 +63,7 @@ namespace MCSkin3D
 		UndoBuffer _currentUndoBuffer = null;
 		Skin _lastSkin = null;
 		bool _skipListbox = false;
-		internal PleaseWait _pleaseWaitForm = new PleaseWait();
+		internal PleaseWait _pleaseWaitForm;
 		Color _primaryColor = Color.FromArgb(255, 255, 255, 255), _secondaryColor = Color.FromArgb(255, 0, 0, 0);
 		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
@@ -80,12 +80,13 @@ namespace MCSkin3D
 		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
 		public DarkenLightenOptions DarkenLightenOptions { get; private set; }
 		public PencilOptions PencilOptions { get; private set; }
+		public FloodFillOptions FloodFillOptions { get; private set; }
 
 		// ===============================================
 		// Constructor
 		// ===============================================
 		#region Constructor
-		public Form1()
+		public Editor()
 		{
 			Program.MainForm = this;
 			InitializeComponent();
@@ -96,17 +97,10 @@ namespace MCSkin3D
 
 			LanguageLoader.LoadLanguages("Languages");
 
-			foreach (var lang in LanguageLoader.Languages)
-			{
-				lang.Item = new ToolStripMenuItem((lang.Culture != null) ? (char.ToUpper(lang.Culture.NativeName[0]) + lang.Culture.NativeName.Substring(1)) : lang.Name);
-				lang.Item.Tag = lang;
-				lang.Item.Click += new EventHandler(languageToolStripMenuItem_Click);
-				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
-			}
-
 			DodgeBurnOptions = new DodgeBurnOptions();
 			DarkenLightenOptions = new DarkenLightenOptions();
 			PencilOptions = new PencilOptions();
+			FloodFillOptions = new FloodFillOptions();
 
 			_tools.Add(new ToolIndex(new CameraTool(), null, "T_TOOL_CAMERA", Properties.Resources.eye__1_, Keys.C));
 			_tools.Add(new ToolIndex(new PencilTool(), PencilOptions, "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
@@ -114,20 +108,8 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DropperTool(), null, "T_TOOL_DROPPER", Properties.Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
-			_tools.Add(new ToolIndex(new FloodFillTool(), null, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
-
-			for (int i = _tools.Count - 1; i >= 0; --i)
-			{
-				toolToolStripMenuItem.DropDownItems.Insert(0, _tools[i].MenuItem);
-				_tools[i].MenuItem.Click += ToolMenuItemClicked;
-				toolStrip1.Items.Insert(6, _tools[i].Button);
-				_tools[i].Button.Click += ToolMenuItemClicked;
-
-				languageProvider1.SetPropertyNames(_tools[i].MenuItem, "Text");
-				languageProvider1.SetPropertyNames(_tools[i].Button, "Text");
-			}
-
-			SetSelectedTool(_tools[0]);
+			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
+			_tools.Add(new ToolIndex(new NoiseTool(), null, "T_TOOL_NOISE", Properties.Resources.noise, Keys.F));
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -150,8 +132,41 @@ namespace MCSkin3D
 			InitShortcuts();
 			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 
-			if (CurrentLanguage == null)
-				CurrentLanguage = LanguageLoader.FindLanguage("English");
+			Language.Language useLanguage = null;
+			// stage 1: load from last used language
+			useLanguage = LanguageLoader.FindLanguage(GlobalSettings.LanguageFile);
+			// stage 2: use English file, if it exists
+			if (useLanguage == null)
+				useLanguage = LanguageLoader.FindLanguage("English");
+			// stage 3: fallback to built-in English file
+			if (useLanguage == null)
+			{
+				MessageBox.Show("For some reason, the default language files were missing (did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");				
+				useLanguage = LanguageLoader.LoadDefault();
+			}
+
+			foreach (var lang in LanguageLoader.Languages)
+			{
+				lang.Item = new ToolStripMenuItem((lang.Culture != null) ? (char.ToUpper(lang.Culture.NativeName[0]) + lang.Culture.NativeName.Substring(1)) : lang.Name);
+				lang.Item.Tag = lang;
+				lang.Item.Click += new EventHandler(languageToolStripMenuItem_Click);
+				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
+			}
+
+			for (int i = _tools.Count - 1; i >= 0; --i)
+			{
+				toolToolStripMenuItem.DropDownItems.Insert(0, _tools[i].MenuItem);
+				_tools[i].MenuItem.Click += ToolMenuItemClicked;
+				toolStrip1.Items.Insert(6, _tools[i].Button);
+				_tools[i].Button.Click += ToolMenuItemClicked;
+
+				languageProvider1.SetPropertyNames(_tools[i].MenuItem, "Text");
+				languageProvider1.SetPropertyNames(_tools[i].Button, "Text");
+			}
+
+			CurrentLanguage = useLanguage;
+
+			SetSelectedTool(_tools[0]);
 
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
@@ -222,7 +237,7 @@ namespace MCSkin3D
 			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
 
 			if (!settingsLoaded)
-				MessageBox.Show(Form1.GetLanguageString("C_SETTINGSFAILED"));
+				MessageBox.Show(GetLanguageString("C_SETTINGSFAILED"));
 
 			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
 		}
@@ -232,6 +247,11 @@ namespace MCSkin3D
 			MessageBox.Show(string.Format(GetLanguageString("B_MSG_SHORTCUTEXISTS"), e.ShortcutName, e.OtherName));
 		}
 		#endregion
+
+		public GLControl Renderer
+		{
+			get { return rendererControl; }
+		}
 
 		public MouseButtons CameraRotate
 		{
@@ -457,6 +477,8 @@ namespace MCSkin3D
 
 			if (_selectedTool.OptionsPanel != null)
 				splitContainer4.Panel1.Controls.Add(_selectedTool.OptionsPanel);
+
+			toolStripStatusLabel1.Text = index.Tool.GetStatusLabelText();
 		}
 
 		void ToolMenuItemClicked(object sender, EventArgs e)
@@ -971,18 +993,18 @@ namespace MCSkin3D
 
 				Point p = Point.Empty;
 
-				if (GetPick(_mousePoint.X, _mousePoint.Y, ref p))
+				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref p);
 				{
 					if (_selectedTool.Tool.RequestPreview(array, skin, p.X, p.Y))
 					{
 						RenderState.BindTexture(_previewPaint);
 						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 					}
-				}
-				else
-				{
-					RenderState.BindTexture(_previewPaint);
-					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					else
+					{
+						RenderState.BindTexture(_previewPaint);
+						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					}
 				}
 			}
 		}
@@ -1052,7 +1074,7 @@ namespace MCSkin3D
 			}
 		}
 
-		void UseToolOnViewport(int x, int y)
+		void UseToolOnViewport(int x, int y, bool begin = false)
 		{
 			if (_lastSkin == null)
 				return;
@@ -1269,6 +1291,7 @@ namespace MCSkin3D
 			if (!dialogRes)
 				return;
 
+			_pleaseWaitForm = new PleaseWait();
 			_pleaseWaitForm.FormClosed += new FormClosedEventHandler(_pleaseWaitForm_FormClosed);
 
 			_uploadThread = new Thread(UploadThread);
@@ -1276,6 +1299,7 @@ namespace MCSkin3D
 			_uploadThread.Start(new object[] { login.Username, login.Password, _lastSkin.File.FullName, ret });
 
 			_pleaseWaitForm.DialogResult = DialogResult.OK;
+			_pleaseWaitForm.languageProvider1.LanguageChanged(CurrentLanguage);
 			_pleaseWaitForm.ShowDialog();
 			_uploadThread = null;
 
@@ -2350,11 +2374,16 @@ namespace MCSkin3D
 
 			if (e.Button == MouseButtons.Left)
 			{
-				_selectedTool.Tool.BeginClick(_lastSkin, e);
+				Point p = Point.Empty;
+
+				if (GetPick(e.X, e.Y, ref p))
+					_selectedTool.Tool.BeginClick(_lastSkin, p, e);
+				else
+					_selectedTool.Tool.BeginClick(_lastSkin, new Point(-1, -1), e);
 				UseToolOnViewport(e.X, e.Y);
 			}
 			else
-				_tools[(int)Tools.Camera].Tool.BeginClick(_lastSkin, e);
+				_tools[(int)Tools.Camera].Tool.BeginClick(_lastSkin, Point.Empty, e);
 		}
 
 		void rendererControl_MouseMove(object sender, MouseEventArgs e)
@@ -3087,9 +3116,9 @@ namespace MCSkin3D
 				Program.MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
+				Program.MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
 				Program.MainForm.login.languageProvider1.LanguageChanged(value);
-				Program.MainForm._pleaseWaitForm.languageProvider1.LanguageChanged(value);
 
 				_currentLanguage.Item.Checked = true;
 			}
@@ -3102,7 +3131,7 @@ namespace MCSkin3D
 			return _currentLanguage.StringTable[id];
 		}
 
-		private void Form1_Load(object sender, EventArgs e)
+		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
 		}
 

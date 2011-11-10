@@ -502,7 +502,7 @@ namespace MCSkin3D
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
-				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect, Form1.GetLanguageString("C_IMPORTTO") + " %1", "MCSkin3D");
+				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect, Editor.GetLanguageString("C_IMPORTTO") + " %1", "MCSkin3D");
 			}
 			else if (e.Data.GetDataPresent("MCSkin3D.Skin") && _dragNode != null)
 			{
@@ -540,11 +540,11 @@ namespace MCSkin3D
 			string nodeName = (node == null) ? "Skins" : (node is Skin) ? (node.Parent != null) ? node.Parent.Text : "Skins" : node.Text;
 
 			if (effect == DragDropEffects.None)
-				DropTargetHelper.DragEnter(this, data, p, effect, Form1.GetLanguageString("C_CANTMOVE") + " %1", nodeName);
+				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_CANTMOVE") + " %1", nodeName);
 			else if (effect == DragDropEffects.Copy)
-				DropTargetHelper.DragEnter(this, data, p, effect, Form1.GetLanguageString("C_COPYTO") + " %1", nodeName);
+				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_COPYTO") + " %1", nodeName);
 			else if (effect == DragDropEffects.Move)
-				DropTargetHelper.DragEnter(this, data, p, effect, Form1.GetLanguageString("C_MOVETO") + " %1", nodeName);
+				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_MOVETO") + " %1", nodeName);
 
 			_oldEffects = effect;
 			_overNode = node;
@@ -650,7 +650,7 @@ namespace MCSkin3D
 					var name = Path.GetFileNameWithoutExtension(f);
 
 					while (File.Exists(folderLocation + name + ".png"))
-						name += " (" + Form1.GetLanguageString("C_NEW") + ")";
+						name += " (" + Editor.GetLanguageString("C_NEW") + ")";
 
 					File.Copy(f, folderLocation + name + ".png");
 
