@@ -124,12 +124,14 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public void EndClick(Skin skin, MouseEventArgs e)
+		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
 		{
 			skin.Undo.AddBuffer(_undo);
 			Program.MainForm.CheckUndo();
 			_oldPixel = new Point(-1, -1);
 			_undo = null;
+
+			return false;
 		}
 
 		public abstract bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y);
