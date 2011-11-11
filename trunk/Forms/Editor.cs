@@ -1009,7 +1009,7 @@ namespace MCSkin3D
 			}
 		}
 
-		bool GetPick(int x, int y, ref Point hitPixel)
+		public bool GetPick(int x, int y, ref Point hitPixel)
 		{
 			rendererControl.MakeCurrent();
 
@@ -2415,9 +2415,22 @@ namespace MCSkin3D
 			if (_mouseIsDown)
 			{
 				if (e.Button == MouseButtons.Left)
-					_selectedTool.Tool.EndClick(_lastSkin, e);
+				{
+					Skin skin = _lastSkin;
+
+					RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
+					int[] array = new int[skin.Width * skin.Height];
+					GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+
+					if (_selectedTool.Tool.EndClick(array, skin, e))
+					{
+						SetCanSave(true);
+						skin.Dirty = true;
+						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					}
+				}
 				else
-					_tools[(int)Tools.Camera].Tool.EndClick(_lastSkin, e);
+					_tools[(int)Tools.Camera].Tool.EndClick(null, _lastSkin, e);
 			}
 
 			_mouseIsDown = false;

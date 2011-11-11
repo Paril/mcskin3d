@@ -118,7 +118,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public void EndClick(Skin skin, MouseEventArgs e)
+		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
 		{
 			_done = false;
 			if (_undo.Points.Count != 0)
@@ -126,6 +126,7 @@ namespace MCSkin3D
 			_undo = null;
 
 			Program.MainForm.CheckUndo();
+			return false;
 		}
 
 		public string GetStatusLabelText()

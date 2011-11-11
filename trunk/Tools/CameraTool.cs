@@ -38,8 +38,9 @@ namespace MCSkin3D
 			return false;
 		}
 
-		public void EndClick(Skin skin, MouseEventArgs e)
+		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
 		{
+			return false;
 		}
 
 		public string GetStatusLabelText()
