@@ -30,6 +30,7 @@ using System.Windows.Forms.VisualStyles;
 using DragDropLib;
 using Paril.Extensions;
 using MCSkin3D.Language;
+using System.Globalization;
 
 namespace MCSkin3D
 {
@@ -133,16 +134,29 @@ namespace MCSkin3D
 			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 
 			Language.Language useLanguage = null;
-			// stage 1: load from last used language
-			useLanguage = LanguageLoader.FindLanguage(GlobalSettings.LanguageFile);
-			// stage 2: use English file, if it exists
-			if (useLanguage == null)
-				useLanguage = LanguageLoader.FindLanguage("English");
-			// stage 3: fallback to built-in English file
-			if (useLanguage == null)
+			try
 			{
-				MessageBox.Show("For some reason, the default language files were missing (did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");				
-				useLanguage = LanguageLoader.LoadDefault();
+				// stage 1 (prelim): if no language, see if our languages contain it
+				if (string.IsNullOrEmpty(GlobalSettings.LanguageFile))
+					useLanguage = LanguageLoader.FindLanguage((CultureInfo.CurrentUICulture.IsNeutralCulture == false) ? CultureInfo.CurrentUICulture.Parent.Name : CultureInfo.CurrentUICulture.Name);
+				// stage 2: load from last used language
+				if (useLanguage == null)
+					useLanguage = LanguageLoader.FindLanguage(GlobalSettings.LanguageFile);
+				// stage 3: use English file, if it exists
+				if (useLanguage == null)
+					useLanguage = LanguageLoader.FindLanguage("English");
+			}
+			catch
+			{
+			}
+			finally
+			{
+				// stage 4: fallback to built-in English file
+				if (useLanguage == null)
+				{
+					MessageBox.Show("For some reason, the default language files were missing or failed to load(did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
+					useLanguage = LanguageLoader.LoadDefault();
+				}
 			}
 
 			foreach (var lang in LanguageLoader.Languages)
@@ -3125,6 +3139,7 @@ namespace MCSkin3D
 					_currentLanguage.Item.Checked = false;
 				
 				_currentLanguage = value;
+				GlobalSettings.LanguageFile = _currentLanguage.Culture.Name;
 				Program.MainForm.languageProvider1.LanguageChanged(value);
 				Program.MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
@@ -3132,6 +3147,9 @@ namespace MCSkin3D
 				Program.MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
 				Program.MainForm.login.languageProvider1.LanguageChanged(value);
+
+				if (Program.MainForm._selectedTool != null)
+				Program.MainForm.toolStripStatusLabel1.Text = Program.MainForm._selectedTool.Tool.GetStatusLabelText();
 
 				_currentLanguage.Item.Checked = true;
 			}

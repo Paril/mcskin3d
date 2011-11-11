@@ -60,6 +60,9 @@ namespace Paril.Settings
 					}
 				}
 
+				if (obj == null)
+					return "";
+
 				return TypeDescriptor.GetConverter(obj.GetType()).ConvertToString(obj);
 			}
 			catch (Exception ex)
