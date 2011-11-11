@@ -19,7 +19,10 @@ namespace MCSkin3D
 			_percentageApply = 0;
 			seed = _random.Next();
 
-			_applyRect = PlayerModel.HumanModel.GetTextureFaceBounds(p, skin);
+			if ((Control.ModifierKeys & Keys.Shift) != 0)
+				_applyRect = PlayerModel.HumanModel.GetTextureFaceBounds(p, skin);
+			else
+				_applyRect = new Rectangle(0, 0, skin.Width, skin.Height);
 		}
 
 		Point _startPoint = new Point(-1, -1);
