@@ -103,7 +103,6 @@ namespace MCSkin3D
 		public static float DarkenLightenExposure { get; set; }
 
         [Savable]
-        [DefaultValue("en")]
         public static string LanguageFile { get; set; }
 
 		[Savable]

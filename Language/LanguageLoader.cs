@@ -29,7 +29,7 @@ namespace MCSkin3D.Language
 		{
 			foreach (var l in Languages)
 				if (l.Name == p ||
-					l.Culture.TwoLetterISOLanguageName == p)
+					l.Culture.Name == p)
 					return l;
 
 			return null;
