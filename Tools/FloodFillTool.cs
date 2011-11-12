@@ -117,8 +117,32 @@ namespace MCSkin3D
 
 		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
 		{
+			if (x == -1)
+				return false;
+
+			Point highlightPoint = new Point(x, y);
+			bool doHighlight = ((Control.ModifierKeys & Keys.Control) != 0);
+
+			Color newColor;
+			if (doHighlight)
+			{
+				var part = PlayerModel.HumanModel.GetTextureFaceBounds(highlightPoint, skin);
+
+				for (int ry = part.Y; ry < part.Y + part.Height; ++ry)
+					for (int rx = part.X; rx < part.X + part.Width; ++rx)
+					{
+						var px = rx + (ry * skin.Width);
+						Color c = Color.FromArgb((pixels[px] >> 24) & 0xFF, (pixels[px] >> 0) & 0xFF, (pixels[px] >> 8) & 0xFF, (pixels[px] >> 16) & 0xFF);
+						Color blendMe = Color.FromArgb(64, Color.Green);
+						newColor = (Color)ColorBlending.AlphaBlend(blendMe, c);
+
+						pixels[px] = (newColor.R << 0) | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
+					}
+
+			}
+
 			var pixNum = x + (skin.Width * y);
-			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
+			newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
 			pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
 			return true;
 		}

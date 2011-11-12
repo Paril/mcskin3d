@@ -1005,7 +1005,7 @@ namespace MCSkin3D
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
-				Point p = Point.Empty;
+				Point p = new Point(-1, -1);
 
 				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref p);
 				{
@@ -1025,6 +1025,9 @@ namespace MCSkin3D
 
 		public bool GetPick(int x, int y, ref Point hitPixel)
 		{
+			if (x == -1 || y == -1)
+				return false;
+
 			rendererControl.MakeCurrent();
 
 			GL.ClearColor(Color.White);
@@ -2453,6 +2456,7 @@ namespace MCSkin3D
 
 		void rendererControl_MouseLeave(object sender, EventArgs e)
 		{
+			_mousePoint = new Point(-1, -1);
 		}
 
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
