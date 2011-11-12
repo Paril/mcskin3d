@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using Paril.Compatibility;
 using System.Windows.Forms;
+using OpenTK;
 
 namespace MCSkin3D
 {
@@ -63,6 +64,7 @@ namespace MCSkin3D
 				return similarColor(color1, color2, threshold);
 		}
 
+		byte _threshold;
 		private void recursiveFill(int x, int y, Color oldColor, Color newColor, int[] pixels, bool[] hitPixels, Skin skin)
 		{
 			if (!_boundBox.Contains(x, y))
@@ -75,7 +77,7 @@ namespace MCSkin3D
 			var c = pixels[i];
 			var real = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
 
-			if (!similarColor2(oldColor, real, (byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255)))
+			if (!similarColor2(oldColor, real, _threshold))
 				return;
 
 			if (!_undo.Points.ContainsKey(new Point(x, y)))
@@ -98,6 +100,9 @@ namespace MCSkin3D
 		{
 			if (_done)
 				return false;
+
+			var curve = new BezierCurveQuadric(new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 2));
+			_threshold = (byte)((1 - (curve.CalculatePoint(Threshold)).X) * 255);//(byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255);
 
 			hitPixels = new bool[skin.Width * skin.Height];
 			var pixNum = x + (skin.Width * y);
