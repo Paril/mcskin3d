@@ -110,7 +110,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
-			_tools.Add(new ToolIndex(new NoiseTool(), null, "T_TOOL_NOISE", Properties.Resources.noise, Keys.F));
+			_tools.Add(new ToolIndex(new NoiseTool(), null, "T_TOOL_NOISE", Properties.Resources.noise, Keys.N));
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -448,7 +448,7 @@ namespace MCSkin3D
 			InitMenuShortcut(uploadToolStripMenuItem, PerformUpload);
 
 			foreach (var item in _tools)
-				InitMenuShortcut(item.MenuItem, item.DefaultKeys, () => SetSelectedTool(item));
+				InitMenuShortcut(item.MenuItem, item.DefaultKeys, item.SetMeAsTool);
 
 			// not in the menu
 			InitUnlinkedShortcut("S_TOGGLETRANS", Keys.Shift | Keys.U, ToggleTransparencyMode);
@@ -473,7 +473,7 @@ namespace MCSkin3D
 				colorPreview2_Click(null, null);
 		}
 
-		void SetSelectedTool(ToolIndex index)
+		public void SetSelectedTool(ToolIndex index)
 		{
 			if (_selectedTool != null)
 				_selectedTool.MenuItem.Checked = _selectedTool.Button.Checked = false;
@@ -2933,13 +2933,15 @@ namespace MCSkin3D
 		{
 			if (colorTabControl.SelectedIndex == 1 || colorTabControl.SelectedIndex == 2)
 			{
-				colorTabControl.SelectedTab.Controls.Add(colorSquare);
-				colorTabControl.SelectedTab.Controls.Add(saturationSlider);
-				colorTabControl.SelectedTab.Controls.Add(colorPreview1);
-				colorTabControl.SelectedTab.Controls.Add(colorPreview2);
-				colorTabControl.SelectedTab.Controls.Add(label5);
-				colorTabControl.SelectedTab.Controls.Add(alphaColorSlider);
-				colorTabControl.SelectedTab.Controls.Add(alphaNumericUpDown);
+				var panel = (Panel)colorTabControl.SelectedTab.Controls[0];
+
+				panel.Controls.Add(colorSquare);
+				panel.Controls.Add(saturationSlider);
+				panel.Controls.Add(colorPreview1);
+				panel.Controls.Add(colorPreview2);
+				panel.Controls.Add(label5);
+				panel.Controls.Add(alphaColorSlider);
+				panel.Controls.Add(alphaNumericUpDown);
 
 				if (_secondaryIsFront)
 				{
@@ -3236,6 +3238,15 @@ namespace MCSkin3D
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
 			PerformTreeViewZoomIn();
+		}
+
+		private void colorTabControl_Resize(object sender, EventArgs e)
+		{
+		}
+
+		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+		{
+
 		}
 	}
 }

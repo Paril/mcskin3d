@@ -48,9 +48,6 @@ namespace MCSkin3D
 
 		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
 		{
-			if (x == -1)
-				return false;
-
 			Point highlightPoint = new Point(x, y);
 			bool doHighlight = ((Control.ModifierKeys & Keys.Control) != 0);
 

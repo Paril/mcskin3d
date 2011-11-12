@@ -75,6 +75,9 @@ namespace Paril.Components.Shortcuts
 
 			if (listBox1.Items.Count > 0)
 				listBox1.SelectedIndex = 0;
+
+			labelControl1.Visible = false;
+			pictureBox1.Visible = false;
 		}
 
 		private static string KeyToString(Keys keys)
