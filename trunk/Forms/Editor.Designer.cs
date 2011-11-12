@@ -1620,7 +1620,7 @@
 			this.toggleRightArmToolStripButton.Name = "toggleRightArmToolStripButton";
 			this.languageProvider1.SetPropertyNames(this.toggleRightArmToolStripButton, "Text");
 			this.toggleRightArmToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleRightArmToolStripButton.Text = "Toggle Right Arm";
+			this.toggleRightArmToolStripButton.Text = "T_TOGGLERIGHTARM";
 			this.toggleRightArmToolStripButton.Click += new System.EventHandler(this.toggleRightArmToolStripButton_Click);
 			// 
 			// toggleLeftLegToolStripButton
@@ -1645,7 +1645,7 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
-			// MCSkin3D
+			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1653,7 +1653,7 @@
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
 			this.MainMenuStrip = this.mainMenuStrip;
-			this.Name = "MCSkin3D";
+			this.Name = "Editor";
 			this.Text = "MCSkin3D";
 			this.Load += new System.EventHandler(this.MCSkin3D_Load);
 			this.mainMenuStrip.ResumeLayout(false);

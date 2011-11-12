@@ -92,6 +92,9 @@ namespace MCSkin3D
 
 		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
 		{
+			if (x == -1)
+				return false;
+
 			var brush = Brushes.SelectedBrush;
 			int startX = x - (brush.Width / 2);
 			int startY = y - (brush.Height / 2);
@@ -126,9 +129,13 @@ namespace MCSkin3D
 
 		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
 		{
-			skin.Undo.AddBuffer(_undo);
-			Program.MainForm.CheckUndo();
-			_oldPixel = new Point(-1, -1);
+			if (_undo.Points.Count != 0)
+			{
+				skin.Undo.AddBuffer(_undo);
+				Program.MainForm.CheckUndo();
+				_oldPixel = new Point(-1, -1);
+			}
+			
 			_undo = null;
 
 			return false;
