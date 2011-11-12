@@ -29,5 +29,10 @@ namespace MCSkin3D
 			Button.DisplayStyle = ToolStripItemDisplayStyle.Image;
 			Button.Tag = this;
 		}
+
+		public void SetMeAsTool()
+		{
+			Program.MainForm.SetSelectedTool(this);
+		}
 	}
 }
