@@ -35,6 +35,10 @@ Version 1.3
 - Modified Dodge/Burn/Darken/Lighten exposure calculations to be a bit easier
 - Toolbar changes
 - Multilingual support
+- Added save check at exit
+- Toolbar visual changes
+- Fill tool [Jonas]
+- Noise tool as a brush
 
 Version 1.2
 - Bug fixes relating to importing and naming skins
