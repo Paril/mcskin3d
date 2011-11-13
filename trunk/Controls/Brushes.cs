@@ -155,9 +155,9 @@ namespace MCSkin3D
 				BrushList.Add(GenerateSquare((i * 2) + 1));
 			//for (int i = 0; i < NumBrushes; ++i)
 			//	BrushList.Add(GenerateFeatheredSquare((i * 2) + 1));
-			for (int i = 0; i < NumBrushes; ++i)
+			for (int i = 1; i < NumBrushes; ++i)
 				BrushList.Add(GenerateCircle((i * 2) + 1));
-			//for (int i = 0; i < NumBrushes; ++i)
+			//for (int i = 1; i < NumBrushes; ++i)
 			//	BrushList.Add(GenerateSmoothCircle((i * 2) + 1));
 
 			foreach (var b in BrushList)
@@ -168,6 +168,7 @@ namespace MCSkin3D
 
 			BrushBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			BrushBox.SelectedIndex = 0;
+			BrushBox.Width = 44;
 
 			GaussianBlurFilter filter = new GaussianBlurFilter(8);
 			FloatMatrixOperand op = new FloatMatrixOperand();
@@ -183,6 +184,7 @@ namespace MCSkin3D
 		{
 			DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
 			ItemHeight = 20;
+			DropDownWidth = 35;
 		}
 
 		protected override void OnDrawItem(DrawItemEventArgs e)
@@ -200,7 +202,7 @@ namespace MCSkin3D
 				else
 					e.Graphics.DrawImage(brush.Image, e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
 
-				e.Graphics.DrawRectangle(Pens.Black, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height));
+				//e.Graphics.DrawRectangle(Pens.Black, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height));
 
 				TextRenderer.DrawText(e.Graphics, brush.Name + " [" + brush.Height + "]", Font, new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText, TextFormatFlags.VerticalCenter);
 			}

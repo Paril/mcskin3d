@@ -13,7 +13,6 @@ namespace MCSkin3D
 	[Serializable]
 	public class Skin : TreeNode, IDisposable
 	{
-		public new string Name;
 		public Bitmap Image;
 		public Bitmap Head;
 		public int GLImage;
@@ -23,6 +22,12 @@ namespace MCSkin3D
 
 		public int Width { get { return Size.Width; } }
 		public int Height { get { return Size.Height; } }
+
+		public new string Name
+		{
+			get { return base.Name; }
+			set { base.Name = value; base.Text = value; }
+		}
 
         public static Image getHeadFromFile(String str, Size s)
         {
@@ -67,7 +72,6 @@ namespace MCSkin3D
 		{
 			Undo = new UndoBuffer(this);
 			Name = Path.GetFileNameWithoutExtension(fileName);
-			Text = Name;
 		}
 
 		public Skin(FileInfo file) :

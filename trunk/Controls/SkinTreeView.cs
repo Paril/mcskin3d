@@ -54,6 +54,11 @@ namespace MCSkin3D
 			HotTracking = true;
 			TreeViewNodeSorter = new SkinNodeSorter();
 			AllowDrop = true;
+
+			var style = GetWindowLong(Handle, GWL_STYLE);
+			style |= 0x8000;
+
+			SetWindowLong(Handle, GWL_STYLE, style);
 		}
 
 		protected override void OnCreateControl()
@@ -69,6 +74,9 @@ namespace MCSkin3D
 
 		[DllImport("user32.dll", ExactSpelling = false, CharSet = CharSet.Auto)]
 		private static extern long GetWindowLong(IntPtr hwnd, int nIndex);
+
+		[DllImport("user32.dll", ExactSpelling = false, CharSet = CharSet.Auto)]
+		private static extern void SetWindowLong(IntPtr hwnd, int nIndex, long value);
 
 		private const int GWL_STYLE = (-16);
 		private const int WS_HSCROLL = 0x100000;
@@ -95,9 +103,7 @@ namespace MCSkin3D
 				this.BeginUpdate();
 				ScrollPosition = new Point(ScrollPosition.X, ScrollPosition.Y - 1);
 				if (!(prevValue == ScrollPosition.Y))
-				{
 					prevValue = ScrollPosition.Y;
-				}
 				else
 				{
 					t.Stop();
@@ -111,9 +117,7 @@ namespace MCSkin3D
 				this.BeginUpdate();
 				ScrollPosition = new Point(ScrollPosition.X, ScrollPosition.Y + 1);
 				if (!(prevValue == ScrollPosition.Y))
-				{
 					prevValue = ScrollPosition.Y;
-				}
 				else
 				{
 					t.Stop();
@@ -139,26 +143,28 @@ namespace MCSkin3D
                 TreeNode dragToItem = GetSelectedNodeAt(new Point(cp.X, cp.Y));
 				if (!(dragToItem is Skin) && dragToItem != null)
                     if (dragToItem.Nodes.Count > 0)
-                    {
                         dragToItem.Expand();
-                    }
-                dragTimer.Stop();
+
+				dragTimer.Stop();
             }
         }
 
-		Point ScrollPosition
+		int _scrollX;
+		public Point ScrollPosition
 		{
 			get
 			{
 				return new Point(
-					GetScrollPos((int)Handle, SB_HORZ),
+					_scrollX,
 					GetScrollPos((int)Handle, SB_VERT));
 			}
 
 			set
 			{
-				SetScrollPos((IntPtr)Handle, SB_HORZ, value.X, true);
+				_scrollX = value.X;// SetScrollPos((IntPtr)Handle, SB_HORZ, value.X, true);
 				SetScrollPos((IntPtr)Handle, SB_VERT, value.Y, true);
+
+				Invalidate();
 			}
 		}
 
@@ -166,14 +172,12 @@ namespace MCSkin3D
 		{
 			int x = p1.X - p2.X;
 			if (x < 0)
-			{
 				x *= -1;
-			}
+
 			int y = p1.Y - p2.Y;
 			if (y < 0)
-			{
 				y *= -1;
-			}
+
 			return new Point(x, y);
 		}
 
@@ -209,12 +213,16 @@ namespace MCSkin3D
 			return ((wndStyle & WS_VSCROLL) != 0);
 		}
 
-
 		int _numVisible = 0;
 		protected override void OnSizeChanged(EventArgs e)
 		{
 			_numVisible = (int)Math.Ceiling((float)Height / (float)ItemHeight);
 			base.OnSizeChanged(e);
+		}
+
+		protected override void OnResize(EventArgs e)
+		{
+			base.OnResize(e);
 		}
 
 		private TreeNode GetSelectedNodeAt(int y, TreeNode node, ref int currentIndex)
@@ -249,8 +257,10 @@ namespace MCSkin3D
 				lastClick.Toggle();
 		}
 
+		bool _canTryDragDrop = false;
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
+			_canTryDragDrop = (e.Button == System.Windows.Forms.MouseButtons.Left);
 			mouseDownPoint = e.Location;
 			mouseDown = true;
 			base.OnMouseDown(e);
@@ -258,6 +268,7 @@ namespace MCSkin3D
 			SelectedNode = node;
 			lastClick = SelectedNode;
 			lastOpened = lastClick == null ? false : lastClick.IsExpanded;
+
 			if (verticalScrollBarVisible())
 			{
 				if (e.Y <= scrollMargin)
@@ -283,6 +294,7 @@ namespace MCSkin3D
 		{
 			base.OnMouseUp(e);
 
+			_canTryDragDrop = false;
 			dragDropOverFolder = 0;
 			dragTimer.Stop();
 			t.Stop();
@@ -306,7 +318,8 @@ namespace MCSkin3D
 			base.OnMouseMove(e);
 
 			if ((MouseButtons & MouseButtons.Left) == 0 ||
-				SelectedNode == null)
+				SelectedNode == null ||
+				!_canTryDragDrop)
 				return;
 
 			if (mouseDown)
@@ -363,7 +376,6 @@ namespace MCSkin3D
 				DragSourceHelper.DoDragDrop(Program.MainForm, _dragBitmap, new Point((_dragBitmap.Width / 2), _dragBitmap.Height), DragDropEffects.Move | DragDropEffects.Copy,
 					new KeyValuePair<string, object>("MCSkin3D.Skin", SelectedNode));
 			}
-
 		}
 
 		protected override void OnMouseLeave(EventArgs e)
@@ -402,13 +414,20 @@ namespace MCSkin3D
 
 			int realX = e.Bounds.X + ((e.Node.Level + 1) * 20);
 
+			var textLen = TextRenderer.MeasureText(e.Node.Text, Font);
+			if (realX + textLen.Width + ItemHeight + 15 > Width &&
+				_newMaximum < (realX + textLen.Width + ItemHeight + 15) - Width)
+				_newMaximum = (realX + textLen.Width + ItemHeight + 15) - Width;
+
+			realX -= _scrollX;
+
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
   			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
 
 			if (e.Node.IsSelected || e.Node == _overNode)
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height);
+				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height - 1);
 			else if (skin != null && skin.Name == GlobalSettings.LastSkin)
-				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width, e.Bounds.Height);
+				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width, e.Bounds.Height - 1);
 
 			if (skin == null)
 			{
@@ -482,11 +501,20 @@ namespace MCSkin3D
 					RecursiveDrawCheck(args, child, ref currentIndex);
 		}
 
+		int _oldScrollValue = 0, _newMaximum = 0;
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			_oldScrollValue = Program.MainForm.hScrollBar1.Value;
+			_newMaximum = 0;
+
 			int currentIndex = 0;
 			foreach (TreeNode n in Nodes)
 				RecursiveDrawCheck(e, n, ref currentIndex);
+
+			Program.MainForm.hScrollBar1.Maximum = _newMaximum;
+			Program.MainForm.hScrollBar1.Value = _oldScrollValue;
+
+			Program.MainForm.hScrollBar1.Visible = Program.MainForm.hScrollBar1.Maximum != 0;
 		}
 
 		protected override void OnItemDrag(ItemDragEventArgs e)

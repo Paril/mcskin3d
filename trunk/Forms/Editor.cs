@@ -82,6 +82,7 @@ namespace MCSkin3D
 		public DarkenLightenOptions DarkenLightenOptions { get; private set; }
 		public PencilOptions PencilOptions { get; private set; }
 		public FloodFillOptions FloodFillOptions { get; private set; }
+		public NoiseOptions NoiseOptions { get; private set; }
 
 		// ===============================================
 		// Constructor
@@ -102,6 +103,7 @@ namespace MCSkin3D
 			DarkenLightenOptions = new DarkenLightenOptions();
 			PencilOptions = new PencilOptions();
 			FloodFillOptions = new FloodFillOptions();
+			NoiseOptions = new NoiseOptions();
 
 			_tools.Add(new ToolIndex(new CameraTool(), null, "T_TOOL_CAMERA", Properties.Resources.eye__1_, Keys.C));
 			_tools.Add(new ToolIndex(new PencilTool(), PencilOptions, "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
@@ -110,7 +112,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
-			_tools.Add(new ToolIndex(new NoiseTool(), null, "T_TOOL_NOISE", Properties.Resources.noise, Keys.N));
+			_tools.Add(new ToolIndex(new NoiseTool(), NoiseOptions, "T_TOOL_NOISE", Properties.Resources.noise, Keys.N));
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -254,6 +256,8 @@ namespace MCSkin3D
 				MessageBox.Show(GetLanguageString("C_SETTINGSFAILED"));
 
 			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
+			treeView1.Scrollable = true;
+			splitContainer4.SplitterDistance = 74;
 		}
 
 		void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)
@@ -490,7 +494,10 @@ namespace MCSkin3D
 				_selectedTool.OptionsPanel.BoxShown();
 
 			if (_selectedTool.OptionsPanel != null)
+			{
+				_selectedTool.OptionsPanel.Dock = DockStyle.Fill;
 				splitContainer4.Panel1.Controls.Add(_selectedTool.OptionsPanel);
+			}
 
 			toolStripStatusLabel1.Text = index.Tool.GetStatusLabelText();
 		}
@@ -547,6 +554,7 @@ namespace MCSkin3D
 		#region Overrides
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
+			if (textBox1.ContainsFocus == false && labelEditTextBox.ContainsFocus == false)
 			if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
 			{
 				e.Handled = true;
@@ -558,6 +566,15 @@ namespace MCSkin3D
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
+			if (RecursiveNodeIsDirty(treeView1.Nodes))
+			{
+				if (MessageBox.Show(GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+				{
+					e.Cancel = true;
+					return;
+				}
+			}
+
 			_updater.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
@@ -1036,6 +1053,9 @@ namespace MCSkin3D
 
 			var skin = _lastSkin;
 
+			if (skin == null)
+				return false;
+
 			if (_currentViewMode == ViewMode.Perspective)
 			{
 				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
@@ -1424,7 +1444,7 @@ namespace MCSkin3D
 							if (!(_rightClickedNode is Skin))
 								_rightClickedNode.Nodes.Add(skin);
 							else
-								_rightClickedNode.Parent.Nodes.Add(skin);
+								_rightClickedNode.GetParentCollection().Add(skin);
 						}
 						else
 							treeView1.Nodes.Add(skin);
@@ -1511,6 +1531,8 @@ namespace MCSkin3D
 					skin.File.Delete();
 					skin.Remove();
 					skin.Dispose();
+
+					_lastSkin = null;
 
 					Invalidate();
 				}
@@ -1665,6 +1687,24 @@ namespace MCSkin3D
 			rendererControl.MakeCurrent();
 
 			s.CommitChanges((s == _lastSkin) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
+		}
+
+		bool RecursiveNodeIsDirty(TreeNodeCollection nodes)
+		{
+			foreach (TreeNode node in nodes)
+			{
+				if (node is Skin)
+				{
+					Skin skin = (Skin)node;
+
+					if (skin.Dirty)
+						return true;
+				}
+				else
+					return RecursiveNodeIsDirty(node.Nodes);
+			}
+
+			return false;
 		}
 
 		void RecursiveNodeSave(TreeNodeCollection nodes)
@@ -2298,9 +2338,9 @@ namespace MCSkin3D
 			{
 				splitContainer4.SplitterDistance += splitContainer4.SplitterIncrement;
 
-				if (splitContainer4.SplitterDistance >= 55)
+				if (splitContainer4.SplitterDistance >= 74)
 				{
-					splitContainer4.SplitterDistance = 55;
+					splitContainer4.SplitterDistance = 74;
 					_animTimer.Stop();
 				}
 			}
@@ -3153,6 +3193,7 @@ namespace MCSkin3D
 				Program.MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
 				Program.MainForm.login.languageProvider1.LanguageChanged(value);
+				Program.MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
 
 				if (Program.MainForm._selectedTool != null)
 				Program.MainForm.toolStripStatusLabel1.Text = Program.MainForm._selectedTool.Tool.GetStatusLabelText();
@@ -3247,6 +3288,11 @@ namespace MCSkin3D
 		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
 		{
 
+		}
+
+		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+		{
+			treeView1.ScrollPosition = new Point(hScrollBar1.Value, treeView1.ScrollPosition.Y);
 		}
 	}
 }

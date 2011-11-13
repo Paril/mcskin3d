@@ -92,6 +92,12 @@
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Tools\NoiseOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\NoiseOptions.Designer.cs">
+      <DependentUpon>NoiseOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Tools\FloodFillOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -281,6 +287,9 @@
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
     <None Include="Resources\noise.png" />
+    <EmbeddedResource Include="Controls\Tools\NoiseOptions.resx">
+      <DependentUpon>NoiseOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Tools\FloodFillOptions.resx">
       <DependentUpon>FloodFillOptions.cs</DependentUpon>
     </EmbeddedResource>
