@@ -28,7 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
 			this.mainMenuStrip = new Paril.Controls.NativeMenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +84,7 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
 			this.importHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
@@ -108,6 +107,7 @@
 			this.cloneToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.panel1 = new System.Windows.Forms.Panel();
@@ -792,7 +792,7 @@
 			this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
 			this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
 			this.splitContainer1.Size = new System.Drawing.Size(987, 655);
-			this.splitContainer1.SplitterDistance = 299;
+			this.splitContainer1.SplitterDistance = 292;
 			this.splitContainer1.TabIndex = 4;
 			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
 			// 
@@ -809,11 +809,12 @@
 			this.splitContainer3.Panel1.Controls.Add(this.labelEditTextBox);
 			this.splitContainer3.Panel1.Controls.Add(this.treeView1);
 			this.splitContainer3.Panel1.Controls.Add(this.toolStrip2);
+			this.splitContainer3.Panel1.Controls.Add(this.hScrollBar1);
 			// 
 			// splitContainer3.Panel2
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.colorTabControl);
-			this.splitContainer3.Size = new System.Drawing.Size(299, 655);
+			this.splitContainer3.Size = new System.Drawing.Size(292, 655);
 			this.splitContainer3.SplitterDistance = 389;
 			this.splitContainer3.TabIndex = 1;
 			// 
@@ -840,7 +841,8 @@
 			this.treeView1.ItemHeight = 23;
 			this.treeView1.Location = new System.Drawing.Point(0, 25);
 			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(299, 364);
+			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
+			this.treeView1.Size = new System.Drawing.Size(292, 347);
 			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -864,7 +866,7 @@
             this.uploadToolStripButton});
 			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(299, 25);
+			this.toolStrip2.Size = new System.Drawing.Size(292, 25);
 			this.toolStrip2.TabIndex = 6;
 			this.toolStrip2.Text = "toolStrip2";
 			// 
@@ -971,6 +973,17 @@
 			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
 			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
 			// 
+			// hScrollBar1
+			// 
+			this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.hScrollBar1.LargeChange = 1;
+			this.hScrollBar1.Location = new System.Drawing.Point(0, 372);
+			this.hScrollBar1.Maximum = 0;
+			this.hScrollBar1.Name = "hScrollBar1";
+			this.hScrollBar1.Size = new System.Drawing.Size(292, 17);
+			this.hScrollBar1.TabIndex = 7;
+			this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
+			// 
 			// colorTabControl
 			// 
 			this.colorTabControl.Controls.Add(this.swatchTabPage);
@@ -980,7 +993,7 @@
 			this.colorTabControl.Location = new System.Drawing.Point(0, 0);
 			this.colorTabControl.Name = "colorTabControl";
 			this.colorTabControl.SelectedIndex = 0;
-			this.colorTabControl.Size = new System.Drawing.Size(299, 262);
+			this.colorTabControl.Size = new System.Drawing.Size(292, 262);
 			this.colorTabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
 			this.colorTabControl.TabIndex = 1;
 			this.colorTabControl.SelectedIndexChanged += new System.EventHandler(this.colorTabControl_SelectedIndexChanged);
@@ -993,7 +1006,7 @@
 			this.swatchTabPage.Name = "swatchTabPage";
 			this.swatchTabPage.Padding = new System.Windows.Forms.Padding(3);
 			this.languageProvider1.SetPropertyNames(this.swatchTabPage, "Text");
-			this.swatchTabPage.Size = new System.Drawing.Size(291, 228);
+			this.swatchTabPage.Size = new System.Drawing.Size(284, 236);
 			this.swatchTabPage.TabIndex = 0;
 			this.swatchTabPage.Text = "T_SWATCHES";
 			this.swatchTabPage.UseVisualStyleBackColor = true;
@@ -1004,7 +1017,7 @@
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(3, 3);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(285, 222);
+			this.panel1.Size = new System.Drawing.Size(278, 230);
 			this.panel1.TabIndex = 1;
 			// 
 			// swatchContainer
@@ -1012,7 +1025,7 @@
 			this.swatchContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.swatchContainer.Location = new System.Drawing.Point(0, 0);
 			this.swatchContainer.Name = "swatchContainer";
-			this.swatchContainer.Size = new System.Drawing.Size(285, 222);
+			this.swatchContainer.Size = new System.Drawing.Size(278, 230);
 			this.swatchContainer.TabIndex = 0;
 			this.swatchContainer.SwatchChanged += new System.EventHandler<MCSkin3D.SwatchChangedEventArgs>(this.swatchContainer_SwatchChanged);
 			// 
@@ -1022,7 +1035,7 @@
 			this.rgbTabPage.Location = new System.Drawing.Point(4, 22);
 			this.rgbTabPage.Name = "rgbTabPage";
 			this.rgbTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.rgbTabPage.Size = new System.Drawing.Size(291, 236);
+			this.rgbTabPage.Size = new System.Drawing.Size(284, 236);
 			this.rgbTabPage.TabIndex = 1;
 			this.rgbTabPage.Text = "RGBA";
 			this.rgbTabPage.UseVisualStyleBackColor = true;
@@ -1050,7 +1063,7 @@
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel2.Location = new System.Drawing.Point(3, 3);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(285, 230);
+			this.panel2.Size = new System.Drawing.Size(278, 230);
 			this.panel2.TabIndex = 1;
 			// 
 			// colorPreview1
@@ -1280,7 +1293,7 @@
 			this.hslTabPage.Location = new System.Drawing.Point(4, 22);
 			this.hslTabPage.Name = "hslTabPage";
 			this.hslTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.hslTabPage.Size = new System.Drawing.Size(291, 228);
+			this.hslTabPage.Size = new System.Drawing.Size(284, 236);
 			this.hslTabPage.TabIndex = 2;
 			this.hslTabPage.Text = "HSLA";
 			this.hslTabPage.UseVisualStyleBackColor = true;
@@ -1299,7 +1312,7 @@
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel3.Location = new System.Drawing.Point(3, 3);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(285, 222);
+			this.panel3.Size = new System.Drawing.Size(278, 230);
 			this.panel3.TabIndex = 27;
 			// 
 			// hueNumericUpDown
@@ -1436,7 +1449,7 @@
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.statusStrip1);
-			this.splitContainer4.Size = new System.Drawing.Size(684, 630);
+			this.splitContainer4.Size = new System.Drawing.Size(691, 630);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
@@ -1448,7 +1461,7 @@
             this.toolStripStatusLabel1});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 603);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(680, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(687, 22);
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
@@ -1486,7 +1499,7 @@
             this.toggleRightLegToolStripButton});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(684, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(691, 25);
 			this.toolStrip1.TabIndex = 5;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1873,6 +1886,7 @@
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Panel panel3;
+		public System.Windows.Forms.HScrollBar hScrollBar1;
 	}
 }
 

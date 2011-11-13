@@ -201,6 +201,14 @@ namespace MCSkin3D
 			}
 
 			_fitPerRow = (int)Math.Floor(((float)(Width - 3) / (float)(SwatchSize + 1)));
+
+			if (_fitPerRow == 0)
+			{
+				_rows = 0;
+				Invalidate();
+				return;
+			}
+
 			_rows = (_colors.Count / _fitPerRow) + 1;
 
 			if (((_rows) * (SwatchSize + 1)) + 1 > Height)

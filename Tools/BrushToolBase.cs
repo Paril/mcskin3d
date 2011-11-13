@@ -16,12 +16,12 @@ namespace MCSkin3D
 		PixelsChangedUndoable _undo;
 
 		Point _oldPixel = new Point(-1, -1);
-		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
+		public virtual void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_undo = new PixelsChangedUndoable();
 		}
 
-		public void MouseMove(Skin skin, MouseEventArgs e)
+		public virtual void MouseMove(Skin skin, MouseEventArgs e)
 		{
 		}
 
@@ -29,6 +29,7 @@ namespace MCSkin3D
 		{
 			if (x == _oldPixel.X && y == _oldPixel.Y)
 				return false;
+			IsPreview = false;
 
 			var brush = Brushes.SelectedBrush;
 			int startX = x - (brush.Width / 2);
@@ -90,7 +91,13 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
+		public bool IsPreview
+		{
+			get;
+			private set;
+		}
+
+		public virtual bool RequestPreview(int[] pixels, Skin skin, int x, int y)
 		{
 			if (x == -1)
 				return false;
@@ -98,6 +105,7 @@ namespace MCSkin3D
 			var brush = Brushes.SelectedBrush;
 			int startX = x - (brush.Width / 2);
 			int startY = y - (brush.Height / 2);
+			IsPreview = true;
 
 			for (int ry = 0; ry < brush.Height; ++ry)
 			{
@@ -127,7 +135,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
+		public virtual bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
 		{
 			if (_undo.Points.Count != 0)
 			{

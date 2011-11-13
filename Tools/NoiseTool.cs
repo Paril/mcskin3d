@@ -9,7 +9,69 @@ using Devcorp.Controls.Design;
 
 namespace MCSkin3D
 {
-	public class NoiseTool : ITool
+	public class NoiseTool : BrushToolBase
+	{
+		Random _noise, _noise2;
+		int _seed;
+		public NoiseTool()
+		{
+			_noise = new Random();
+			_seed = _noise.Next();
+			_noise = _noise2 = new Random(_seed);
+		}
+
+		public override Color BlendColor(Color l, Color r)
+		{
+			Color c = r;
+			var hsv = ColorSpaceHelper.RGBtoHSB(c);
+			hsv.Brightness += (((IsPreview ? _noise : _noise2).NextDouble() - 0.5f) * 2) * GlobalSettings.NoiseSaturation;
+
+			if (hsv.Brightness < 0)
+				hsv.Brightness = 0;
+			if (hsv.Brightness > 1)
+				hsv.Brightness = 1;
+
+			return Color.FromArgb(r.A, ColorSpaceHelper.HSBtoColor(hsv));
+		}
+
+		public override void BeginClick(Skin skin, Point p, MouseEventArgs e)
+		{
+			_noise2 = new Random(_seed);
+			base.BeginClick(skin, p, e);
+		}
+
+		public override Color GetLeftColor()
+		{
+			return Color.White;
+		}
+
+		public override bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
+		{
+			return MouseMoveOnSkin(pixels, skin, x, y, false);
+		}
+
+		public override string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_NOISE");
+		}
+
+		public override bool RequestPreview(int[] pixels, Skin skin, int x, int y)
+		{
+			_noise = new Random(_seed);
+			return base.RequestPreview(pixels, skin, x, y);
+		}
+
+		public override bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
+		{
+			base.EndClick(pixels, skin, e);
+			_seed = _noise.Next();
+			_noise = _noise2 = new Random(_seed);
+
+			return false;
+		}
+	}
+
+	public class NoiseTool_ : ITool
 	{
 		static Random _random = new Random();
 		Rectangle _applyRect;
