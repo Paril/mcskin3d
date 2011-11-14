@@ -6,7 +6,7 @@
 *- Merge Dodge and Burn into one tool
 *- Darken/Lighten tool
 *- Tool options (perhaps expandable panel below the toolbar?)
-*- Finish the treeview #Done, I guess? Anything more?
+*- Finish the treeview
 *- Add "Overlays" folder, customizable background image
 *- Hidden part "ghosting"
 *- Modifyable Brush Size for pencil/eraser/dodge/burn/darken/lighten, exposure for Dodge/Burn/Darken/Lighten, "feather" for pencil/eraser/dodge/burn/darken/lighten.
@@ -16,12 +16,10 @@
 \- Feathering on brushes
 \- Grid for 2d view?
 
--------------------------------------------------------------
--							    -
--	?- means that it is under progress.		    -
--	*- means that it is implemented for this version.   -
--	!- means that it is high-priority.		    -
--	#- is a comment					    -
--	\- not going to be done                             -
--							    -
--------------------------------------------------------------
+========== LEGEND ==========
+
+?- Not implemented/Being implemented
+!- High priority
+*- Finished
+#- Comment
+\- Not going to be implemented
