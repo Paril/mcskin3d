@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Paril.Extensions;
 using Paril.OpenGL;
 using Paril.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace MCSkin3D
 {
@@ -109,7 +110,6 @@ namespace MCSkin3D
 			}
 
 			Image = new Bitmap(File.FullName);
-
 			Size = Image.Size;
 
 			float scale = Size.Width / 64.0f;
@@ -125,6 +125,7 @@ namespace MCSkin3D
 
 			Image.Dispose();
 			Image = null;
+
 			GLImage = ImageUtilities.LoadImage(File.FullName);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
@@ -178,6 +179,26 @@ namespace MCSkin3D
 			Name = newName;
 
 			return true;
+		}
+
+		public void Resize(int width, int height)
+		{
+			using (var newBitmap = new Bitmap(width, height))
+			{
+				using (Graphics g = Graphics.FromImage(newBitmap))
+				{
+					g.SmoothingMode = SmoothingMode.None;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+					using (var temp = Bitmap.FromFile(File.FullName))
+						g.DrawImage(temp, 0, 0, newBitmap.Width, newBitmap.Height);
+				}
+
+				newBitmap.Save(File.FullName);
+			}
+
+			SetImages();
 		}
 	}
 }

@@ -504,17 +504,23 @@ namespace MCSkin3D
 		int _oldScrollValue = 0, _newMaximum = 0;
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			_oldScrollValue = Program.MainForm.hScrollBar1.Value;
-			_newMaximum = 0;
+			if (!DesignMode)
+			{
+				_oldScrollValue = Program.MainForm.hScrollBar1.Value;
+				_newMaximum = 0;
+			}
 
 			int currentIndex = 0;
 			foreach (TreeNode n in Nodes)
 				RecursiveDrawCheck(e, n, ref currentIndex);
 
-			Program.MainForm.hScrollBar1.Maximum = _newMaximum;
-			Program.MainForm.hScrollBar1.Value = _oldScrollValue;
+			if (!DesignMode)
+			{
+				Program.MainForm.hScrollBar1.Maximum = _newMaximum;
+				Program.MainForm.hScrollBar1.Value = _oldScrollValue;
 
-			Program.MainForm.hScrollBar1.Visible = Program.MainForm.hScrollBar1.Maximum != 0;
+				Program.MainForm.hScrollBar1.Visible = Program.MainForm.hScrollBar1.Maximum != 0;
+			}
 		}
 
 		protected override void OnItemDrag(ItemDragEventArgs e)

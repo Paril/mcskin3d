@@ -76,10 +76,11 @@
 			this.groupBox1.Controls.Add(this.label1);
 			this.groupBox1.Location = new System.Drawing.Point(3, 3);
 			this.groupBox1.Name = "groupBox1";
+			this.languageProvider1.SetPropertyNames(this.groupBox1, "Text");
 			this.groupBox1.Size = new System.Drawing.Size(234, 64);
 			this.groupBox1.TabIndex = 7;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Fill Options";
+			this.groupBox1.Text = "G_FILLOPTS";
 			// 
 			// FloodFillOptions
 			// 

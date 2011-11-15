@@ -19,7 +19,7 @@ namespace MCSkin3D
 		public override void BoxShown()
 		{
 			groupBox1.Controls.Add(Brushes.BrushBox);
-			Brushes.BrushBox.Location = new Point((groupBox1.Width / 2) - (Brushes.BrushBox.Width / 2), (groupBox1.Height / 2) - (Brushes.BrushBox.Height / 2));
+			Brushes.BrushBox.Location = new Point(9, 19);
 		}
 
 		public override void BoxHidden()
