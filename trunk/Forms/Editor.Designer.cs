@@ -87,6 +87,7 @@
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.importHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.changeNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -176,7 +177,7 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -218,7 +219,7 @@
             this.helpToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
-			this.mainMenuStrip.Size = new System.Drawing.Size(987, 24);
+			this.mainMenuStrip.Size = new System.Drawing.Size(999, 24);
 			this.mainMenuStrip.TabIndex = 1;
 			this.mainMenuStrip.Text = "mainMenuStrip";
 			// 
@@ -753,6 +754,14 @@
 			this.importHereToolStripMenuItem.Text = "M_IMPORT_HERE";
 			this.importHereToolStripMenuItem.Click += new System.EventHandler(this.importHereToolStripMenuItem_Click);
 			// 
+			// toolStripMenuItem4
+			// 
+			this.toolStripMenuItem4.Image = global::MCSkin3D.Properties.Resources.newskin;
+			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem4, "Text");
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(191, 22);
+			this.toolStripMenuItem4.Text = "M_NEWSKIN_HERE";
+			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
@@ -835,8 +844,8 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
 			this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
-			this.splitContainer1.Size = new System.Drawing.Size(987, 655);
-			this.splitContainer1.SplitterDistance = 292;
+			this.splitContainer1.Size = new System.Drawing.Size(999, 644);
+			this.splitContainer1.SplitterDistance = 302;
 			this.splitContainer1.TabIndex = 4;
 			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
 			// 
@@ -858,8 +867,8 @@
 			// splitContainer3.Panel2
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.colorTabControl);
-			this.splitContainer3.Size = new System.Drawing.Size(292, 655);
-			this.splitContainer3.SplitterDistance = 389;
+			this.splitContainer3.Size = new System.Drawing.Size(302, 644);
+			this.splitContainer3.SplitterDistance = 378;
 			this.splitContainer3.TabIndex = 1;
 			// 
 			// labelEditTextBox
@@ -886,7 +895,7 @@
 			this.treeView1.Location = new System.Drawing.Point(0, 25);
 			this.treeView1.Name = "treeView1";
 			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
-			this.treeView1.Size = new System.Drawing.Size(292, 347);
+			this.treeView1.Size = new System.Drawing.Size(302, 336);
 			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -912,10 +921,11 @@
             this.toolStripButton4,
             this.toolStripButton3,
             this.toolStripSeparator12,
-            this.uploadToolStripButton});
+            this.uploadToolStripButton,
+            this.toolStripButton6});
 			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(292, 25);
+			this.toolStrip2.Size = new System.Drawing.Size(302, 25);
 			this.toolStrip2.TabIndex = 6;
 			this.toolStrip2.Text = "toolStrip2";
 			// 
@@ -1054,7 +1064,7 @@
 			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.uploadToolStripButton.Name = "uploadToolStripButton";
 			this.languageProvider1.SetPropertyNames(this.uploadToolStripButton, "Text");
-			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 20);
+			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
 			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
 			// 
@@ -1062,10 +1072,10 @@
 			// 
 			this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.hScrollBar1.LargeChange = 1;
-			this.hScrollBar1.Location = new System.Drawing.Point(0, 372);
+			this.hScrollBar1.Location = new System.Drawing.Point(0, 361);
 			this.hScrollBar1.Maximum = 0;
 			this.hScrollBar1.Name = "hScrollBar1";
-			this.hScrollBar1.Size = new System.Drawing.Size(292, 17);
+			this.hScrollBar1.Size = new System.Drawing.Size(302, 17);
 			this.hScrollBar1.TabIndex = 7;
 			this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
 			// 
@@ -1078,7 +1088,7 @@
 			this.colorTabControl.Location = new System.Drawing.Point(0, 0);
 			this.colorTabControl.Name = "colorTabControl";
 			this.colorTabControl.SelectedIndex = 0;
-			this.colorTabControl.Size = new System.Drawing.Size(292, 262);
+			this.colorTabControl.Size = new System.Drawing.Size(302, 262);
 			this.colorTabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
 			this.colorTabControl.TabIndex = 1;
 			this.colorTabControl.SelectedIndexChanged += new System.EventHandler(this.colorTabControl_SelectedIndexChanged);
@@ -1091,7 +1101,7 @@
 			this.swatchTabPage.Name = "swatchTabPage";
 			this.swatchTabPage.Padding = new System.Windows.Forms.Padding(3);
 			this.languageProvider1.SetPropertyNames(this.swatchTabPage, "Text");
-			this.swatchTabPage.Size = new System.Drawing.Size(284, 236);
+			this.swatchTabPage.Size = new System.Drawing.Size(294, 236);
 			this.swatchTabPage.TabIndex = 0;
 			this.swatchTabPage.Text = "T_SWATCHES";
 			this.swatchTabPage.UseVisualStyleBackColor = true;
@@ -1102,7 +1112,7 @@
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(3, 3);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(278, 230);
+			this.panel1.Size = new System.Drawing.Size(288, 230);
 			this.panel1.TabIndex = 1;
 			// 
 			// swatchContainer
@@ -1110,7 +1120,7 @@
 			this.swatchContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.swatchContainer.Location = new System.Drawing.Point(0, 0);
 			this.swatchContainer.Name = "swatchContainer";
-			this.swatchContainer.Size = new System.Drawing.Size(278, 230);
+			this.swatchContainer.Size = new System.Drawing.Size(288, 230);
 			this.swatchContainer.TabIndex = 0;
 			this.swatchContainer.SwatchChanged += new System.EventHandler<MCSkin3D.SwatchChangedEventArgs>(this.swatchContainer_SwatchChanged);
 			// 
@@ -1534,7 +1544,7 @@
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.statusStrip1);
-			this.splitContainer4.Size = new System.Drawing.Size(691, 630);
+			this.splitContainer4.Size = new System.Drawing.Size(693, 619);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
@@ -1544,9 +1554,9 @@
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 603);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 592);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(687, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(689, 22);
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
@@ -1584,7 +1594,7 @@
             this.toggleRightLegToolStripButton});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(691, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(693, 25);
 			this.toolStrip1.TabIndex = 5;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1779,19 +1789,20 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
-			// toolStripMenuItem4
+			// toolStripButton6
 			// 
-			this.toolStripMenuItem4.Image = global::MCSkin3D.Properties.Resources.newskin;
-			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem4, "Text");
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(191, 22);
-			this.toolStripMenuItem4.Text = "M_NEWSKIN_HERE";
+			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
+			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton6.Name = "toolStripButton6";
+			this.toolStripButton6.Size = new System.Drawing.Size(23, 20);
+			this.toolStripButton6.Text = "toolStripButton6";
 			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(987, 679);
+			this.ClientSize = new System.Drawing.Size(999, 668);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
 			this.MainMenuStrip = this.mainMenuStrip;
@@ -1988,6 +1999,7 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton3;
 		private System.Windows.Forms.ToolStripButton toolStripButton5;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+		private System.Windows.Forms.ToolStripButton toolStripButton6;
 	}
 }
 
