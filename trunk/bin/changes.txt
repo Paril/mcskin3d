@@ -39,6 +39,7 @@ Version 1.3
 - Toolbar visual changes
 - Fill tool [Jonas]
 - Noise tool as a brush
+- Increase/Decrease Resolution
 
 Version 1.2
 - Bug fixes relating to importing and naming skins

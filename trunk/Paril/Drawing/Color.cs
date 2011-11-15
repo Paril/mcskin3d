@@ -2,32 +2,23 @@
 
 namespace Paril.Drawing
 {
-	internal static class ColorTables
-	{
-		public static float[] ByteToFloat;
-		public static byte[] LByteToRGBByte;
-
-		static ColorTables()
-		{
-			ByteToFloat = new float[256];
-
-			for (int i = 0; i < 256; ++i)
-				ByteToFloat[i] = (float)i / 255;
-
-			LByteToRGBByte = new byte[240];
-
-			for (int i = 0; i < 240; ++i)
-				LByteToRGBByte[i] = (byte)((i / 240.0f) * 256.0f);
-		}
-	}
-
 	public struct Color
 	{
-		byte _r, _g, _b, _a;
-		ushort _h;
-		byte _s, _l;
+		float _r, _g, _b, _a;
+		float _h, _s, _l;
 
 		public Color(byte r, byte g, byte b, byte a) :
+			this()
+		{
+			_r = r / 255.0f;
+			_g = g / 255.0f;
+			_b = b / 255.0f;
+			_a = a / 255.0f;
+
+			SetHSL();
+		}
+
+		public Color(float r, float g, float b, float a) :
 			this()
 		{
 			_r = r;
@@ -38,20 +29,32 @@ namespace Paril.Drawing
 			SetHSL();
 		}
 
-		public Color(ushort hue, byte saturation, byte lightness, byte alpha) :
+		public Color(Color c) :
+			this()
+		{
+			_r = c.R;
+			_g = c.G;
+			_b = c.B;
+			_a = c.A;
+			_h = c.Hue;
+			_s = c.Saturation;
+			_l = c.Luminance;
+		}
+
+		public Color(float hue, float saturation, float lightness, byte alpha) :
 			this()
 		{
 			_h = hue;
 			_s = saturation;
 			_l = lightness;
-			_a = alpha;
+			_a = alpha / 255.0f;
 
 			SetRGB();
 		}
 
 		public static implicit operator System.Drawing.Color(Color c)
 		{
-			return System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
+			return System.Drawing.Color.FromArgb((byte)(c.A * 255.0f), (byte)(c.R * 255.0f), (byte)(c.G * 255.0f), (byte)(c.B * 255.0f));
 		}
 
 		public static implicit operator Color(System.Drawing.Color c)
@@ -64,145 +67,104 @@ namespace Paril.Drawing
 			return new OpenTK.Graphics.Color4(c.R, c.G, c.B, c.A);
 		}
 
-		public byte R
+		public float R
 		{
 			get { return _r; }
 			set { _r = value; SetHSL(); }
 		}
 
-		public byte G
+		public float G
 		{
 			get { return _g; }
 			set { _g = value; SetHSL(); }
 		}
 
-		public byte B
+		public float B
 		{
 			get { return _b; }
 			set { _b = value; SetHSL(); }
 		}
 
-		public byte A
+		public float A
 		{
 			get { return _a; }
 			set { _a = value; }
 		}
 
-		public ushort Hue
+		public byte RByte { get { return (byte)(_r * 255.0f); } }
+		public byte GByte { get { return (byte)(_g * 255.0f); } }
+		public byte BByte { get { return (byte)(_b * 255.0f); } }
+		public byte AByte { get { return (byte)(_a * 255.0f); } }
+
+		public float Hue
 		{
 			get { return _h; }
 			set { _h = value; SetRGB(); }
 		}
 
-		public byte Saturation
+		public float Saturation
 		{
 			get { return _s; }
 			set { _s = value; SetRGB(); }
 		}
 
-		public byte Luminance
+		public float Luminance
 		{
 			get { return _l; }
 			set { _l = value; SetRGB(); }
 		}
 
-		const float oneDivSix = 1.0f / 6.0f;
-		const float oneDivThree = 1.0f / 3.0f;
-		const float twoDivThree = 2.0f / 3.0f;
+		float ComponentFromHue(float m1, float m2, float h)
+		{
+			h = (h + 1) % 1;
+			if ((h * 6) < 1)
+				return m1 + (m2 - m1) * 6 * h;
+			else if ((h * 2) < 1)
+				return m2;
+			else if ((h * 3) < 2)
+				return m1 + (m2 - m1) * ((2 / 3) - h) * 6;
+			else
+				return m1;
+		}
 
 		void SetRGB()
 		{
-			if (_l == 0)
-			{
-				_r = _g = _b = ColorTables.LByteToRGBByte[_l];
-				return;
-			}
-
-			float hF = _h / 360.0f;
-			float sF = _s / 240.0f;
-			float lF = _l / 240.0f;
-
-			float temp2;
-
-			if (lF < 0.5f)
-				temp2 = lF * (1.0f + sF);
+			if (_s == 0)
+				_r = _g = _b = _l;
 			else
-				temp2 = (lF + sF) - (lF * sF);
+			{
+				float min, max, h = _h / 360.0f;
 
-			float temp1 = 2.0f * lF - temp2;
+				max = _l < 0.5f ? _l * (1 + _s) : (_l + _s) - (_l * _s);
+				min = (_l * 2) - max;
 
-			float rF = RGBTest(ref temp1, ref temp2, hF + oneDivThree);
-			float gF = RGBTest(ref temp1, ref temp2, hF);
-			float bF = RGBTest(ref temp1, ref temp2, hF - oneDivThree);
-
-			_r = (byte)(rF * 256.0f);
-			_g = (byte)(gF * 256.0f);
-			_b = (byte)(bF * 256.0f);
-		}
-
-		float RGBTest(ref float temp1, ref float temp2, float temp3)
-		{
-			if (temp3 < 0)
-				temp3 += 1.0f;
-			else if (temp3 > 1)
-				temp3 -= 1.0f;
-
-			if ((6.0f * temp3) < 1)
-				return Math.Max(0.0f, Math.Min(1.0f, temp1 + (temp2 - temp1) * 6.0f * temp3));
-			else if ((2.0f * temp3) < 1)
-				return temp2;
-			else if ((3.0f * temp3) < 2)
-				return Math.Max(0.0f, Math.Min(1.0f, temp1 + (temp2 - temp1) * ((twoDivThree) - temp3) * 6.0f));
-
-			return temp1;
+				_r = ComponentFromHue(min, max, h + (1.0f / 3.0f));
+				_g = ComponentFromHue(min, max, h);
+				_b = ComponentFromHue(min, max, h - (1.0f / 3.0f));
+			}
 		}
 
 		void SetHSL()
 		{
-			float rF = ColorTables.ByteToFloat[_r];
-			float gF = ColorTables.ByteToFloat[_g];
-			float bF = ColorTables.ByteToFloat[_b];
+			var max = Math.Max(Math.Max(_r, _g), _b);
+			var min = Math.Min(Math.Min(_r, _g), _b);
+			var chroma = max - min;
 
-			float max = Math.Max(rF, Math.Max(gF, bF));
-			float min = Math.Min(rF, Math.Min(gF, bF));
-			float delta = max - min;
+			_l = (max + min) / 2.0f;
+			_s = 0;
 
-			float lF = (max + min) / 2.0f;
-			float sF = 0;
-
-			if (delta != 0)
+			if (chroma != 0)
 			{
-				if (lF < 0.5f)
-					sF = (max - min) / (max + min);
+				if (_r == max)
+					_h = ((_g - _b) / chroma);
+				else if (_g == max)
+					_h = ((_b - _r) / chroma) + 2;
 				else
-					sF = (max - min) / (2.0f - max - min);
-
-				float hF = 0;
-
-				float del_R = (((max - rF) * oneDivSix) + (delta * 0.5f)) / delta;
-				float del_G = (((max - gF) * oneDivSix) + (delta * 0.5f)) / delta;
-				float del_B = (((max - bF) * oneDivSix) + (delta * 0.5f)) / delta;
-
-				if (rF == max)
-					hF = del_B - del_G;
-				else if (gF == max)
-					hF = (oneDivThree) + del_R - del_B;
-				else if (bF == max)
-					hF = (twoDivThree) + del_G - del_R;
-
-				if (hF < 0)
-					hF += 1;
-
-				if (hF > 1)
-					hF -= 1;
-
-				_h = (ushort)(hF * 360);
+					_h = ((_r - _g) / chroma) + 4;
+				
+				_h = 60 * ((_h + 6) % 6);
+				_s = _l <= 0.5 ? (chroma / (_l * 2)) : (chroma / (2 - 2 * _l));
 			}
-
-			_s = (byte)(sF * 240);
-			_l = (byte)(lF * 240);
-
-			SetRGB();
 		}
 
 		public void SetRGBA(byte r, byte g, byte b, byte a)

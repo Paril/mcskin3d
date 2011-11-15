@@ -165,6 +165,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap decres {
+            get {
+                object obj = ResourceManager.GetObject("decres", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap delete {
             get {
                 object obj = ResourceManager.GetObject("delete", resourceCulture);
@@ -270,6 +277,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap incres {
+            get {
+                object obj = ResourceManager.GetObject("incres", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static byte[] move {
             get {
                 object obj = ResourceManager.GetObject("move", resourceCulture);
@@ -280,6 +294,13 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap NewFolderHS {
             get {
                 object obj = ResourceManager.GetObject("NewFolderHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap newskin {
+            get {
+                object obj = ResourceManager.GetObject("newskin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

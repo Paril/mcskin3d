@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MCSkin3D;
 
 namespace Paril.Components.Shortcuts
 {
@@ -24,8 +25,9 @@ namespace Paril.Components.Shortcuts
 
 		public ShortcutBase(string name, Keys keys)
 		{
-			_name = _saveName = name;
+			_saveName = name;
 			Keys = keys;
+			_name = Editor.GetLanguageString(_saveName);
 		}
 
 		public override string ToString()

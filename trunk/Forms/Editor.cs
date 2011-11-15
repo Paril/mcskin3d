@@ -83,6 +83,7 @@ namespace MCSkin3D
 		public PencilOptions PencilOptions { get; private set; }
 		public FloodFillOptions FloodFillOptions { get; private set; }
 		public NoiseOptions NoiseOptions { get; private set; }
+		public EraserOptions EraserOptions { get; private set; }
 
 		// ===============================================
 		// Constructor
@@ -104,10 +105,11 @@ namespace MCSkin3D
 			PencilOptions = new PencilOptions();
 			FloodFillOptions = new FloodFillOptions();
 			NoiseOptions = new NoiseOptions();
+			EraserOptions = new EraserOptions();
 
 			_tools.Add(new ToolIndex(new CameraTool(), null, "T_TOOL_CAMERA", Properties.Resources.eye__1_, Keys.C));
 			_tools.Add(new ToolIndex(new PencilTool(), PencilOptions, "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
-			_tools.Add(new ToolIndex(new EraserTool(), new EraserOptions(), "T_TOOL_ERASER", Properties.Resources.erase, Keys.E));
+			_tools.Add(new ToolIndex(new EraserTool(), EraserOptions, "T_TOOL_ERASER", Properties.Resources.erase, Keys.E));
 			_tools.Add(new ToolIndex(new DropperTool(), null, "T_TOOL_DROPPER", Properties.Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Properties.Resources.dodge, Keys.B));
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
@@ -131,9 +133,6 @@ namespace MCSkin3D
 			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
 
 			Brushes.LoadBrushes();
-
-			InitShortcuts();
-			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 
 			Language.Language useLanguage = null;
 			try
@@ -182,6 +181,10 @@ namespace MCSkin3D
 
 			CurrentLanguage = useLanguage;
 
+			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
+			InitShortcuts();
+			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
+
 			SetSelectedTool(_tools[0]);
 
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
@@ -201,6 +204,10 @@ namespace MCSkin3D
 
 			KeyPreview = true;
 			Text = "MCSkin3D v" + ProductVersion[0] + '.' + ProductVersion[2];
+
+#if BETA
+			Text += " [Beta]";
+#endif
 
 			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
 				MessageBox.Show(GetLanguageString("B_MSG_DIRMISSING"));
@@ -249,8 +256,6 @@ namespace MCSkin3D
 
 			_animTimer.Elapsed += new System.Timers.ElapsedEventHandler(_animTimer_Elapsed);
 			_animTimer.SynchronizingObject = this;
-
-			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
 
 			if (!settingsLoaded)
 				MessageBox.Show(GetLanguageString("C_SETTINGSFAILED"));
@@ -461,12 +466,17 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("S_SCREENSHOT_SAVE", Keys.Control | Keys.Shift | Keys.B, SaveScreenshot);
 			InitUnlinkedShortcut("S_DELETE", Keys.Delete, PerformDeleteSkin);
 			InitUnlinkedShortcut("S_CLONE", Keys.Control | Keys.C, PerformCloneSkin);
-			InitUnlinkedShortcut("S_RENAME", Keys.Control | Keys.N, PerformNameChange);
+			InitUnlinkedShortcut("S_RENAME", Keys.Control | Keys.R, PerformNameChange);
+			InitUnlinkedShortcut("T_TREE_IMPORTHERE", Keys.Control | Keys.I, PerformImportSkin);
+			InitUnlinkedShortcut("T_TREE_NEWFOLDER", Keys.Control | Keys.Shift | Keys.N, PerformNewFolder);
+			InitUnlinkedShortcut("T_TREE_NEWFILE", Keys.Control | Keys.Shift | Keys.M, PerformNewSkin);
 			InitUnlinkedShortcut("S_COLORSWAP", Keys.S, PerformSwitchColor);
 			InitControlShortcut("S_SWATCH_ZOOMIN", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("S_SWATCH_ZOOMOUT", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
 			InitControlShortcut("S_TREEVIEW_ZOOMIN", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
 			InitControlShortcut("S_TREEVIEW_ZOOMOUT", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
+			InitUnlinkedShortcut("T_DECRES", Keys.Control | Keys.Shift | Keys.D, PerformDecreaseResolution);
+			InitUnlinkedShortcut("T_INCRES", Keys.Control | Keys.Shift | Keys.I, PerformIncreaseResolution);
 		}
 
 		void PerformSwitchColor()
@@ -1130,6 +1140,7 @@ namespace MCSkin3D
 				{
 					SetCanSave(true);
 					skin.Dirty = true;
+					treeView1.Invalidate();
 					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 				}
 			}
@@ -1416,6 +1427,9 @@ namespace MCSkin3D
 				{
 					string folderLocation;
 
+					if (_rightClickedNode == null)
+						_rightClickedNode = treeView1.SelectedNode;
+
 					if (_rightClickedNode != null)
 					{
 						if (!(_rightClickedNode is Skin))
@@ -1460,6 +1474,9 @@ namespace MCSkin3D
 			string folderLocation;
 			TreeNodeCollection collection;
 
+			if (_rightClickedNode == null)
+				_rightClickedNode = treeView1.SelectedNode;
+
 			if (_rightClickedNode != null)
 			{
 				if (!(_rightClickedNode is Skin))
@@ -1487,7 +1504,7 @@ namespace MCSkin3D
 			string newFolderName = "New Folder";
 
 			while (Directory.Exists(folderLocation + newFolderName))
-				newFolderName += " (New)";
+				newFolderName = newFolderName.Insert(0, "New ");
 
 			Directory.CreateDirectory(folderLocation + newFolderName);
 			var newNode = new FolderNode(newFolderName);
@@ -1495,6 +1512,67 @@ namespace MCSkin3D
 
 			newNode.EnsureVisible();
 			treeView1.SelectedNode = newNode;
+			treeView1.Invalidate();
+
+			PerformNameChange();
+		}
+
+		void PerformNewSkin()
+		{
+			string folderLocation;
+			TreeNodeCollection collection;
+
+			if (_rightClickedNode == null)
+				_rightClickedNode = treeView1.SelectedNode;
+
+			if (_rightClickedNode != null)
+			{
+				if (!(_rightClickedNode is Skin))
+				{
+					folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
+					collection = _rightClickedNode.Nodes;
+				}
+				else if (_rightClickedNode.Parent != null)
+				{
+					folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
+					collection = _rightClickedNode.Parent.Nodes;
+				}
+				else
+				{
+					folderLocation = "Skins\\";
+					collection = treeView1.Nodes;
+				}
+			}
+			else
+			{
+				folderLocation = "Skins\\";
+				collection = treeView1.Nodes;
+			}
+
+			string newSkinName = "New Skin";
+
+			while (File.Exists(folderLocation + newSkinName + ".png"))
+				newSkinName = newSkinName.Insert(0, "New ");
+
+			using (Bitmap bmp = new Bitmap(64, 32))
+			{
+				using (Graphics g = Graphics.FromImage(bmp))
+				{
+					g.Clear(Color.FromArgb(0, 255, 255, 255));
+
+					g.FillRectangle(System.Drawing.Brushes.White, 0, 0, 32, 32);
+					g.FillRectangle(System.Drawing.Brushes.White, 32, 16, 32, 16);
+				}
+
+				bmp.Save(folderLocation + newSkinName + ".png");
+			}
+
+			Skin newSkin = new Skin(folderLocation + newSkinName + ".png");
+			collection.Add(newSkin);
+			newSkin.SetImages();
+
+			newSkin.EnsureVisible();
+			treeView1.SelectedNode = newSkin;
 			treeView1.Invalidate();
 
 			PerformNameChange();
@@ -1701,7 +1779,8 @@ namespace MCSkin3D
 						return true;
 				}
 				else
-					return RecursiveNodeIsDirty(node.Nodes);
+					if (RecursiveNodeIsDirty(node.Nodes))
+						return true;
 			}
 
 			return false;
@@ -2483,6 +2562,7 @@ namespace MCSkin3D
 					{
 						SetCanSave(true);
 						skin.Dirty = true;
+						treeView1.Invalidate();
 						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 					}
 				}
@@ -2603,17 +2683,41 @@ namespace MCSkin3D
 		TreeNode _rightClickedNode = null;
 		private void treeView1_MouseUp(object sender, MouseEventArgs e)
 		{
+			treeView1_MouseDown(sender, e);
 			if (e.Button == MouseButtons.Right)
-			{
-				_rightClickedNode = treeView1.GetSelectedNodeAt(e.Location);
-				changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = true;
-
-				if (treeView1.SelectedNode == null)
-					changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = false;
-				else if (!(treeView1.SelectedNode is Skin))
-					cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = false;
-
 				contextMenuStrip1.Show(Cursor.Position);
+		}
+
+		private void treeView1_MouseDown(object sender, MouseEventArgs e)
+		{
+			_rightClickedNode = treeView1.GetSelectedNodeAt(e.Location);
+			changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = true;
+			mDECRESToolStripMenuItem.Enabled = mINCRESToolStripMenuItem.Enabled = true;
+
+			if (treeView1.SelectedNode == null)
+			{
+				mDECRESToolStripMenuItem.Enabled =
+					mINCRESToolStripMenuItem.Enabled =
+					changeNameToolStripMenuItem.Enabled =
+					deleteToolStripMenuItem.Enabled =
+					cloneToolStripMenuItem.Enabled =
+					cloneToolStripButton.Enabled = false;
+			}
+			else if (!(treeView1.SelectedNode is Skin))
+			{
+				mDECRESToolStripMenuItem.Enabled =
+					mINCRESToolStripMenuItem.Enabled =
+					cloneToolStripMenuItem.Enabled =
+					cloneToolStripButton.Enabled = false;
+			}
+			else if (treeView1.SelectedNode is Skin)
+			{
+				var skin = treeView1.SelectedNode as Skin;
+
+				if (skin.Width == 8 || skin.Height == 4)
+					mDECRESToolStripMenuItem.Enabled = false;
+				else if (skin.Width == 256 || skin.Height == 128)
+					mINCRESToolStripMenuItem.Enabled = false;
 			}
 		}
 
@@ -3047,22 +3151,28 @@ namespace MCSkin3D
 			if (_skipColors)
 				return;
 
-			if (textBox1.Text.Contains('#'))
-				textBox1.Text = textBox1.Text.Replace("#", "");
+			try
+			{
+				if (textBox1.Text.Contains('#'))
+					textBox1.Text = textBox1.Text.Replace("#", "");
 
-			string realHex = textBox1.Text;
+				string realHex = textBox1.Text;
 
-			while (realHex.Length != 8)
-				realHex += 'F';
+				while (realHex.Length != 8)
+					realHex += 'F';
 
-			byte r = byte.Parse(realHex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-			byte g = byte.Parse(realHex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-			byte b = byte.Parse(realHex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-			byte a = byte.Parse(realHex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+				byte r = byte.Parse(realHex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+				byte g = byte.Parse(realHex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+				byte b = byte.Parse(realHex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+				byte a = byte.Parse(realHex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
 
-			_editingHex = true;
-			SetColor(Color.FromArgb(a, r, g, b));
-			_editingHex = false;
+				_editingHex = true;
+				SetColor(Color.FromArgb(a, r, g, b));
+				_editingHex = false;
+			}
+			catch
+			{
+			}
 		}
 
 		private void labelEditTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -3194,9 +3304,10 @@ namespace MCSkin3D
 				Program.MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
 				Program.MainForm.login.languageProvider1.LanguageChanged(value);
 				Program.MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
+				Program.MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
 
 				if (Program.MainForm._selectedTool != null)
-				Program.MainForm.toolStripStatusLabel1.Text = Program.MainForm._selectedTool.Tool.GetStatusLabelText();
+					Program.MainForm.toolStripStatusLabel1.Text = Program.MainForm._selectedTool.Tool.GetStatusLabelText();
 
 				_currentLanguage.Item.Checked = true;
 			}
@@ -3293,6 +3404,67 @@ namespace MCSkin3D
 		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
 		{
 			treeView1.ScrollPosition = new Point(hScrollBar1.Value, treeView1.ScrollPosition.Y);
+		}
+
+		void PerformDecreaseResolution()
+		{
+			if (_lastSkin == null)
+				return;
+			if (_lastSkin.Width == 8 || _lastSkin.Height == 4)
+				return;
+
+			_lastSkin.Resize(_lastSkin.Width / 2, _lastSkin.Height / 2);
+
+			RenderState.BindTexture(_lastSkin.GLImage);
+			int[] array = new int[_lastSkin.Width * _lastSkin.Height];
+			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			RenderState.BindTexture(_previewPaint);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+		}
+
+		void PerformIncreaseResolution()
+		{
+			if (_lastSkin == null)
+				return;
+			if (_lastSkin.Width == 256 || _lastSkin.Height == 128)
+				return;
+
+			_lastSkin.Resize(_lastSkin.Width * 2, _lastSkin.Height * 2);
+
+			RenderState.BindTexture(_lastSkin.GLImage);
+			int[] array = new int[_lastSkin.Width * _lastSkin.Height];
+			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			RenderState.BindTexture(_previewPaint);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+		}
+
+		private void mDECRESToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformDecreaseResolution();
+		}
+
+		private void mINCRESToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformIncreaseResolution();
+		}
+
+		private void toolStripButton4_Click(object sender, EventArgs e)
+		{
+			PerformDecreaseResolution();
+		}
+
+		private void toolStripButton3_Click(object sender, EventArgs e)
+		{
+			PerformIncreaseResolution();
+		}
+
+		private void toolStripButton5_Click(object sender, EventArgs e)
+		{
+			PerformNewSkin();
 		}
 	}
 }
