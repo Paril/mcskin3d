@@ -51,10 +51,10 @@
 			// trackBar1
 			// 
 			this.trackBar1.AutoSize = false;
-			this.trackBar1.Location = new System.Drawing.Point(66, 19);
+			this.trackBar1.Location = new System.Drawing.Point(83, 19);
 			this.trackBar1.Maximum = 100;
 			this.trackBar1.Name = "trackBar1";
-			this.trackBar1.Size = new System.Drawing.Size(124, 22);
+			this.trackBar1.Size = new System.Drawing.Size(107, 22);
 			this.trackBar1.TabIndex = 2;
 			this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
