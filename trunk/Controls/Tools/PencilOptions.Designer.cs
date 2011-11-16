@@ -67,7 +67,7 @@
 			this.groupBox2.Location = new System.Drawing.Point(71, 3);
 			this.groupBox2.Name = "groupBox2";
 			this.languageProvider1.SetPropertyNames(this.groupBox2, "Text");
-			this.groupBox2.Size = new System.Drawing.Size(92, 64);
+			this.groupBox2.Size = new System.Drawing.Size(123, 64);
 			this.groupBox2.TabIndex = 2;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "G_BRUSHOPTS";

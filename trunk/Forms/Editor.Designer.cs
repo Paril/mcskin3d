@@ -1056,6 +1056,7 @@
 			this.toolStripButton4.Image = global::MCSkin3D.Properties.Resources.decres;
 			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton4.Name = "toolStripButton4";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton4, "Text");
 			this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton4.Text = "T_DECRES";
 			this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
@@ -1066,6 +1067,7 @@
 			this.toolStripButton3.Image = global::MCSkin3D.Properties.Resources.incres;
 			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton3.Name = "toolStripButton3";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton3, "Text");
 			this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton3.Text = "T_INCRES";
 			this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
