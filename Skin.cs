@@ -199,6 +199,9 @@ namespace MCSkin3D
 			}
 
 			SetImages();
+
+			Undo.Clear();
+			Program.MainForm.CheckUndo();
 		}
 	}
 }

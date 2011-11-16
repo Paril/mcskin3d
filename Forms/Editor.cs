@@ -31,6 +31,7 @@ using DragDropLib;
 using Paril.Extensions;
 using MCSkin3D.Language;
 using System.Globalization;
+using MCSkin3D.Forms;
 
 namespace MCSkin3D
 {
@@ -3305,6 +3306,7 @@ namespace MCSkin3D
 				Program.MainForm.login.languageProvider1.LanguageChanged(value);
 				Program.MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
 				Program.MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
+				Program.MainForm._importFromSite.languageProvider1.LanguageChanged(value);
 
 				if (Program.MainForm._selectedTool != null)
 					Program.MainForm.toolStripStatusLabel1.Text = Program.MainForm._selectedTool.Tool.GetStatusLabelText();
@@ -3442,6 +3444,71 @@ namespace MCSkin3D
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 		}
 
+		ImportSite _importFromSite = new ImportSite();
+		public void PerformImportFromSite()
+		{
+			string accountName = _importFromSite.Show();
+
+			if (string.IsNullOrEmpty(accountName))
+				return;
+
+			var url = "http://s3.amazonaws.com/MinecraftSkins/" + accountName + ".png";
+
+			string folderLocation;
+			TreeNodeCollection collection;
+
+			if (_rightClickedNode == null)
+				_rightClickedNode = treeView1.SelectedNode;
+
+			if (_rightClickedNode != null)
+			{
+				if (!(_rightClickedNode is Skin))
+				{
+					folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
+					collection = _rightClickedNode.Nodes;
+				}
+				else if (_rightClickedNode.Parent != null)
+				{
+					folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
+					collection = _rightClickedNode.Parent.Nodes;
+				}
+				else
+				{
+					folderLocation = "Skins\\";
+					collection = treeView1.Nodes;
+				}
+			}
+			else
+			{
+				folderLocation = "Skins\\";
+				collection = treeView1.Nodes;
+			}
+
+			string newSkinName = accountName;
+
+			while (File.Exists(folderLocation + newSkinName + ".png"))
+				newSkinName += " - New";
+
+			try
+			{
+				byte[] pngData = Paril.Net.WebHelpers.DownloadFile(url);
+
+				using (var file = File.Create(folderLocation + newSkinName + ".png"))
+					file.Write(pngData, 0, pngData.Length);
+
+				var skin = new Skin(folderLocation + newSkinName + ".png");
+				collection.Add(skin);
+				skin.SetImages();
+
+				treeView1.Invalidate();
+			}
+			catch
+			{
+				MessageBox.Show(GetLanguageString("M_SKINERROR"));
+				return;
+			}
+		}
+
 		private void mDECRESToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformDecreaseResolution();
@@ -3465,6 +3532,16 @@ namespace MCSkin3D
 		private void toolStripButton5_Click(object sender, EventArgs e)
 		{
 			PerformNewSkin();
+		}
+
+		private void toolStripButton6_Click(object sender, EventArgs e)
+		{
+			PerformImportFromSite();
+		}
+
+		private void mFETCHNAMEToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformImportFromSite();
 		}
 	}
 }

@@ -96,6 +96,8 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.mDECRESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mINCRESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+			this.mFETCHNAMEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new Paril.Controls.VisibleSplitContainer();
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
@@ -116,6 +118,7 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
 			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
@@ -177,7 +180,6 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -741,9 +743,11 @@
             this.cloneToolStripMenuItem,
             this.toolStripMenuItem3,
             this.mDECRESToolStripMenuItem,
-            this.mINCRESToolStripMenuItem});
+            this.mINCRESToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.mFETCHNAMEToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 192);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 242);
 			// 
 			// importHereToolStripMenuItem
 			// 
@@ -828,6 +832,20 @@
 			this.mINCRESToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.mINCRESToolStripMenuItem.Text = "T_INCRES";
 			this.mINCRESToolStripMenuItem.Click += new System.EventHandler(this.mINCRESToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem5
+			// 
+			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(188, 6);
+			// 
+			// mFETCHNAMEToolStripMenuItem
+			// 
+			this.mFETCHNAMEToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
+			this.mFETCHNAMEToolStripMenuItem.Name = "mFETCHNAMEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mFETCHNAMEToolStripMenuItem, "Text");
+			this.mFETCHNAMEToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.mFETCHNAMEToolStripMenuItem.Text = "M_FETCH_NAME";
+			this.mFETCHNAMEToolStripMenuItem.Click += new System.EventHandler(this.mFETCHNAMEToolStripMenuItem_Click);
 			// 
 			// splitContainer1
 			// 
@@ -1068,6 +1086,17 @@
 			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
 			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
 			// 
+			// toolStripButton6
+			// 
+			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton6.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
+			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton6.Name = "toolStripButton6";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton6, "Text");
+			this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton6.Text = "M_FETCH_NAME";
+			this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+			// 
 			// hScrollBar1
 			// 
 			this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -1130,7 +1159,7 @@
 			this.rgbTabPage.Location = new System.Drawing.Point(4, 22);
 			this.rgbTabPage.Name = "rgbTabPage";
 			this.rgbTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.rgbTabPage.Size = new System.Drawing.Size(284, 236);
+			this.rgbTabPage.Size = new System.Drawing.Size(294, 236);
 			this.rgbTabPage.TabIndex = 1;
 			this.rgbTabPage.Text = "RGBA";
 			this.rgbTabPage.UseVisualStyleBackColor = true;
@@ -1158,7 +1187,7 @@
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel2.Location = new System.Drawing.Point(3, 3);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(278, 230);
+			this.panel2.Size = new System.Drawing.Size(288, 230);
 			this.panel2.TabIndex = 1;
 			// 
 			// colorPreview1
@@ -1388,7 +1417,7 @@
 			this.hslTabPage.Location = new System.Drawing.Point(4, 22);
 			this.hslTabPage.Name = "hslTabPage";
 			this.hslTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.hslTabPage.Size = new System.Drawing.Size(284, 236);
+			this.hslTabPage.Size = new System.Drawing.Size(294, 236);
 			this.hslTabPage.TabIndex = 2;
 			this.hslTabPage.Text = "HSLA";
 			this.hslTabPage.UseVisualStyleBackColor = true;
@@ -1407,7 +1436,7 @@
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel3.Location = new System.Drawing.Point(3, 3);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(278, 230);
+			this.panel3.Size = new System.Drawing.Size(288, 230);
 			this.panel3.TabIndex = 27;
 			// 
 			// hueNumericUpDown
@@ -1789,15 +1818,6 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
-			// toolStripButton6
-			// 
-			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
-			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton6.Name = "toolStripButton6";
-			this.toolStripButton6.Size = new System.Drawing.Size(23, 20);
-			this.toolStripButton6.Text = "toolStripButton6";
-			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2000,6 +2020,8 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton5;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
 		private System.Windows.Forms.ToolStripButton toolStripButton6;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
 	}
 }
 
