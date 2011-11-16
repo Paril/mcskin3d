@@ -40,6 +40,8 @@ Version 1.3
 - Fill tool [Jonas]
 - Noise tool as a brush
 - Increase/Decrease Resolution
+- New Skin button
+- Import from Minecraft button (fetches the skin from the Amazon storage for MC)
 
 Version 1.2
 - Bug fixes relating to importing and naming skins

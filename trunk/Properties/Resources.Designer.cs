@@ -277,6 +277,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap import_from_mc {
+            get {
+                object obj = ResourceManager.GetObject("import_from_mc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap incres {
             get {
                 object obj = ResourceManager.GetObject("incres", resourceCulture);

@@ -126,6 +126,13 @@
     <Compile Include="Controls\Tools\EraserOptions.Designer.cs">
       <DependentUpon>EraserOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Paril\Net\WebHelpers.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
     <Compile Include="Devcorp\CIELab.cs" />
@@ -302,6 +309,7 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\import_from_mc.png" />
     <None Include="Resources\newskin.png" />
     <None Include="Resources\incres.png" />
     <None Include="Resources\decres.png" />
@@ -323,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Paril\Controls\Color\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>

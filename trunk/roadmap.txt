@@ -1,3 +1,16 @@
+1.4:
+?- Custom model support
+?-- All blocks and mobs supported by 1.0 included
+?- Don't rely on OpenGL to store finalized image
+?- Port to C++/work on them side by side
+?- Swatch editor
+?- Cleanup moar
+?- Optimized color class
+?- Consider interface changes
+?- Part saver/picker (call it Mix'n'Match?)
+?- Fix smooth brushes
+?- Custom brushes
+
 1.3:
 ?- Hopefully, get an optimized color class (not super-high priority)
 *- Verify all undo buffers
