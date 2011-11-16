@@ -69,10 +69,10 @@
 			// trackBar1
 			// 
 			this.trackBar1.AutoSize = false;
-			this.trackBar1.Location = new System.Drawing.Point(66, 38);
+			this.trackBar1.Location = new System.Drawing.Point(84, 38);
 			this.trackBar1.Maximum = 100;
 			this.trackBar1.Name = "trackBar1";
-			this.trackBar1.Size = new System.Drawing.Size(102, 22);
+			this.trackBar1.Size = new System.Drawing.Size(84, 22);
 			this.trackBar1.TabIndex = 2;
 			this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -147,7 +147,7 @@
 			this.groupBox3.Location = new System.Drawing.Point(291, 3);
 			this.groupBox3.Name = "groupBox3";
 			this.languageProvider1.SetPropertyNames(this.groupBox3, "Text");
-			this.groupBox3.Size = new System.Drawing.Size(73, 64);
+			this.groupBox3.Size = new System.Drawing.Size(87, 64);
 			this.groupBox3.TabIndex = 7;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "G_TOOL";
