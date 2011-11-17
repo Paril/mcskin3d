@@ -65,7 +65,7 @@ namespace MCSkin3D
 		public static bool TextureOverlay { get; set; }
 
 		[Savable]
-		[DefaultValue("None")]
+		[DefaultValue("")]
 		public static string LastBackground { get; set; }
 
 		[Savable]
@@ -116,6 +116,9 @@ namespace MCSkin3D
 		[Savable]
 		[DefaultValue(0)]
 		public static float FloodFillThreshold { get; set; }
+
+		[Savable]
+		public static bool ResChangeDontShowAgain { get; set; }
 
 		static Settings Settings = null;
 
