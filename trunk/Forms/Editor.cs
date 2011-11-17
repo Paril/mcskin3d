@@ -180,11 +180,10 @@ namespace MCSkin3D
 				languageProvider1.SetPropertyNames(_tools[i].Button, "Text");
 			}
 
-			CurrentLanguage = useLanguage;
-
-			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
 			InitShortcuts();
 			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
+			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
+			CurrentLanguage = useLanguage;
 
 			SetSelectedTool(_tools[0]);
 
@@ -268,7 +267,7 @@ namespace MCSkin3D
 
 		void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)
 		{
-			MessageBox.Show(string.Format(GetLanguageString("B_MSG_SHORTCUTEXISTS"), e.ShortcutName, e.OtherName));
+			//MessageBox.Show(string.Format(GetLanguageString("B_MSG_SHORTCUTEXISTS"), e.ShortcutName, e.OtherName));
 		}
 		#endregion
 
@@ -470,7 +469,7 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("S_RENAME", Keys.Control | Keys.R, PerformNameChange);
 			InitUnlinkedShortcut("T_TREE_IMPORTHERE", Keys.Control | Keys.I, PerformImportSkin);
 			InitUnlinkedShortcut("T_TREE_NEWFOLDER", Keys.Control | Keys.Shift | Keys.N, PerformNewFolder);
-			InitUnlinkedShortcut("T_TREE_NEWFILE", Keys.Control | Keys.Shift | Keys.M, PerformNewSkin);
+			InitUnlinkedShortcut("M_NEWSKIN_HERE", Keys.Control | Keys.Shift | Keys.M, PerformNewSkin);
 			InitUnlinkedShortcut("S_COLORSWAP", Keys.S, PerformSwitchColor);
 			InitControlShortcut("S_SWATCH_ZOOMIN", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("S_SWATCH_ZOOMOUT", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
@@ -2168,8 +2167,6 @@ namespace MCSkin3D
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-			_backgrounds.Add(new BackgroundImage("None", 0));
-
 			foreach (var file in Directory.GetFiles("Overlays"))
 			{
 				try
@@ -3408,11 +3405,22 @@ namespace MCSkin3D
 			treeView1.ScrollPosition = new Point(hScrollBar1.Value, treeView1.ScrollPosition.Y);
 		}
 
+		bool ShowDontAskAgain()
+		{
+			bool againValue = GlobalSettings.ResChangeDontShowAgain;
+			bool ret = DontAskAgain.Show(CurrentLanguage, "M_IRREVERSIBLE", ref againValue);
+			GlobalSettings.ResChangeDontShowAgain = againValue;
+
+			return ret;
+		}
+
 		void PerformDecreaseResolution()
 		{
 			if (_lastSkin == null)
 				return;
 			if (_lastSkin.Width == 8 || _lastSkin.Height == 4)
+				return;
+			if (!ShowDontAskAgain())
 				return;
 
 			_lastSkin.Resize(_lastSkin.Width / 2, _lastSkin.Height / 2);
@@ -3431,6 +3439,8 @@ namespace MCSkin3D
 			if (_lastSkin == null)
 				return;
 			if (_lastSkin.Width == 256 || _lastSkin.Height == 128)
+				return;
+			if (!ShowDontAskAgain())
 				return;
 
 			_lastSkin.Resize(_lastSkin.Width * 2, _lastSkin.Height * 2);

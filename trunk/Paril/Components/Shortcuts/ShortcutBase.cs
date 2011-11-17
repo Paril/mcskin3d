@@ -25,9 +25,8 @@ namespace Paril.Components.Shortcuts
 
 		public ShortcutBase(string name, Keys keys)
 		{
-			_saveName = name;
+			_saveName = _name = name;
 			Keys = keys;
-			_name = Editor.GetLanguageString(_saveName);
 		}
 
 		public override string ToString()

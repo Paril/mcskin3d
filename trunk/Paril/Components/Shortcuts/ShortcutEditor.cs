@@ -228,12 +228,17 @@ namespace Paril.Components.Shortcuts
 
 			IShortcutImplementor shortcut = (IShortcutImplementor)listBox1.Items[e.Index];
 
-			TextRenderer.DrawText(e.Graphics, shortcut.ToString(), Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter);
+			TextRenderer.DrawText(e.Graphics, shortcut.ToString(), DefaultFont, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter);
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+
+		private void listBox1_MeasureItem(object sender, MeasureItemEventArgs e)
+		{
+			e.ItemHeight = 17;
 		}
 	}
 

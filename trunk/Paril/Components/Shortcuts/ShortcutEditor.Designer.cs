@@ -93,11 +93,13 @@
 			this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
 			this.listBox1.FormattingEnabled = true;
 			this.listBox1.IntegralHeight = false;
+			this.listBox1.ItemHeight = 16;
 			this.listBox1.Location = new System.Drawing.Point(0, 0);
 			this.listBox1.Name = "listBox1";
 			this.listBox1.Size = new System.Drawing.Size(162, 264);
 			this.listBox1.TabIndex = 0;
 			this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
+			this.listBox1.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.listBox1_MeasureItem);
 			this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
 			// labelControl1
