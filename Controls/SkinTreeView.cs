@@ -754,14 +754,25 @@ namespace MCSkin3D
 			to.Add(from);
 
 			if (from is Skin)
-				newPath = ((Skin)from).File.FullName;
-			else
-				newPath = ((FolderNode)from).Directory.FullName;
+			{
+				newPath = Path.GetFileNameWithoutExtension(((Skin)from).File.Name);
 
-			if (from is Skin)
-				File.Move(oldPath, newPath);
+				while (File.Exists(((Skin)from).File.Directory.FullName + "\\" + newPath + ".png"))
+					newPath += " - Moved";
+
+				File.Move(oldPath, ((Skin)from).File.Directory.FullName + "\\" + newPath + ".png");
+				((Skin)from).Name = newPath;
+			}
 			else
-				Directory.Move(oldPath, newPath);
+			{
+				newPath = ((FolderNode)from).Directory.Name;
+
+				while (Directory.Exists(((FolderNode)from).Directory.Parent.FullName + "\\" + newPath))
+					newPath += " - Moved";
+
+				Directory.Move(oldPath, ((FolderNode)from).Directory.Parent.FullName + "\\" + newPath);
+				((FolderNode)from).Text = newPath;
+			}
 		}
 
 		void MoveNode(TreeNode from, TreeNode to)

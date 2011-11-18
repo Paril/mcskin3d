@@ -190,11 +190,14 @@ namespace MCSkin3D
 
 		public bool ChangeName(string newName)
 		{
-			if (Directory.GetFiles(newName + ".png", SearchOption.TopDirectoryOnly).Length != 0)
+			if (!newName.EndsWith(".png"))
+				newName += ".png";
+
+			if (System.IO.File.Exists(Directory.FullName + "\\" + newName))
 				return false;
 
-			File.MoveToParent(newName + ".png");
-			Name = newName;
+			File.MoveToParent(newName);
+			Name = Path.GetFileNameWithoutExtension(newName);
 
 			return true;
 		}
