@@ -765,6 +765,7 @@
 			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem4, "Text");
 			this.toolStripMenuItem4.Size = new System.Drawing.Size(191, 22);
 			this.toolStripMenuItem4.Text = "M_NEWSKIN_HERE";
+			this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
 			// 
 			// toolStripMenuItem1
 			// 

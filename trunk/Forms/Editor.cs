@@ -174,7 +174,7 @@ namespace MCSkin3D
 				// stage 4: fallback to built-in English file
 				if (useLanguage == null)
 				{
-					MessageBox.Show("For some reason, the default language files were missing or failed to load(did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
+					MessageBox.Show(this, "For some reason, the default language files were missing or failed to load(did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
 					useLanguage = LanguageLoader.LoadDefault();
 				}
 			}
@@ -207,7 +207,7 @@ namespace MCSkin3D
 
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
-				MessageBox.Show(GetLanguageString("B_MSG_PIXELFORMAT"), GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(this, GetLanguageString("B_MSG_PIXELFORMAT"), GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Application.Exit();
 			}
 
@@ -228,7 +228,7 @@ namespace MCSkin3D
 #endif
 
 			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
-				MessageBox.Show(GetLanguageString("B_MSG_DIRMISSING"));
+				MessageBox.Show(this, GetLanguageString("B_MSG_DIRMISSING"));
 
 			Directory.CreateDirectory("Swatches");
 			Directory.CreateDirectory("Skins");
@@ -276,7 +276,7 @@ namespace MCSkin3D
 			_animTimer.SynchronizingObject = this;
 
 			if (!settingsLoaded)
-				MessageBox.Show(GetLanguageString("C_SETTINGSFAILED"));
+				MessageBox.Show(this, GetLanguageString("C_SETTINGSFAILED"));
 
 			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
 			treeView1.Scrollable = true;
@@ -327,14 +327,14 @@ namespace MCSkin3D
 
 		void _updater_SameVersion(object sender, EventArgs e)
 		{
-			this.Invoke(() => MessageBox.Show(GetLanguageString("B_MSG_UPTODATE")));
+			this.Invoke(() => MessageBox.Show(this, GetLanguageString("B_MSG_UPTODATE")));
 		}
 
 		void _updater_NewVersionAvailable(object sender, EventArgs e)
 		{
 			this.Invoke(delegate()
 			{
-				if (MessageBox.Show(GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+				if (MessageBox.Show(this, GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
 					Process.Start("http://www.minecraftforum.net/topic/746941-mcskin3d-new-skinning-program/");
 			});
 		}
@@ -596,7 +596,7 @@ namespace MCSkin3D
 		{
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
 			{
-				if (MessageBox.Show(GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+				if (MessageBox.Show(this, GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
 				{
 					e.Cancel = true;
 					return;
@@ -1370,12 +1370,12 @@ namespace MCSkin3D
 			_uploadThread = null;
 
 			if (ret.ReportedError != null)
-				MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.ReportedError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			else if (ret.Exception != null)
-				MessageBox.Show(GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
 			{
-				MessageBox.Show(GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				GlobalSettings.LastSkin = _lastSkin.Name;
 				treeView1.Invalidate();
 			}
@@ -1620,7 +1620,7 @@ namespace MCSkin3D
 		{
 			if (treeView1.SelectedNode is Skin)
 			{
-				if (MessageBox.Show(GetLanguageString("B_MSG_DELETESKIN"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+				if (MessageBox.Show(this, GetLanguageString("B_MSG_DELETESKIN"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 				{
 					Skin skin = (Skin)treeView1.SelectedNode;
 
@@ -1628,20 +1628,22 @@ namespace MCSkin3D
 					skin.Remove();
 					skin.Dispose();
 
-					_lastSkin = null;
+					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
+					//_lastSkin = null;
 
 					Invalidate();
 				}
 			}
 			else
 			{
-				if (MessageBox.Show(GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
+				if (MessageBox.Show(this, GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
 				{
 					DirectoryInfo folder = new DirectoryInfo("Skins\\" + treeView1.SelectedNode.FullPath);
 
 					RecursiveDeleteSkins(treeView1.SelectedNode);
 
 					treeView1.SelectedNode.Remove();
+					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
 					Invalidate();
 				}
 			}
@@ -2199,7 +2201,7 @@ namespace MCSkin3D
 				}
 				catch
 				{
-					MessageBox.Show(string.Format(GetLanguageString("B_MSG_OVERLAYERROR"), file));
+					MessageBox.Show(this, string.Format(GetLanguageString("B_MSG_OVERLAYERROR"), file));
 				}
 			}
 
@@ -2502,6 +2504,11 @@ namespace MCSkin3D
 		bool _mouseIn3D = false;
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
+			Skin skin = _lastSkin;
+
+			if (skin == null)
+				return;
+
 			CheckMouse(e.Y);
 
 			float halfWidth = rendererControl.Width / 2.0f;
@@ -2540,6 +2547,11 @@ namespace MCSkin3D
 
 		void rendererControl_MouseMove(object sender, MouseEventArgs e)
 		{
+			Skin skin = _lastSkin;
+
+			if (skin == null)
+				return;
+
 			if (_mouseIsDown)
 			{
 				if (e.Button == MouseButtons.Left)
@@ -2564,12 +2576,15 @@ namespace MCSkin3D
 
 		void rendererControl_MouseUp(object sender, MouseEventArgs e)
 		{
+			Skin skin = _lastSkin;
+
+			if (skin == null)
+				return;
+
 			if (_mouseIsDown)
 			{
 				if (e.Button == MouseButtons.Left)
 				{
-					Skin skin = _lastSkin;
-
 					RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 					int[] array = new int[skin.Width * skin.Height];
 					GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
@@ -2649,7 +2664,7 @@ namespace MCSkin3D
 		{
 			if (_lastSkin.Width != 64 || _lastSkin.Height != 32)
 			{
-				MessageBox.Show(GetLanguageString("B_MSG_UPLOADRES"));
+				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADRES"));
 				return;
 			}
 
@@ -3265,31 +3280,31 @@ namespace MCSkin3D
 		private void xToolStripMenuItem4_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(0);
-			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
+			MessageBox.Show(this, GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(1);
-			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
+			MessageBox.Show(this, GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(2);
-			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
+			MessageBox.Show(this, GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(4);
-			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
+			MessageBox.Show(this, GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
 		private void xToolStripMenuItem3_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(8);
-			MessageBox.Show(GetLanguageString("B_MSG_ANTIALIAS"));
+			MessageBox.Show(this, GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
         private void SetLanguage(string filename)
@@ -3532,7 +3547,7 @@ namespace MCSkin3D
 			}
 			catch
 			{
-				MessageBox.Show(GetLanguageString("M_SKINERROR"));
+				MessageBox.Show(this, GetLanguageString("M_SKINERROR"));
 				return;
 			}
 		}
@@ -3570,6 +3585,11 @@ namespace MCSkin3D
 		private void mFETCHNAMEToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformImportFromSite();
+		}
+
+		private void toolStripMenuItem4_Click(object sender, EventArgs e)
+		{
+			PerformNewSkin();
 		}
 	}
 }

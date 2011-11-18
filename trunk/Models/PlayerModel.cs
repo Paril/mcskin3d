@@ -148,7 +148,7 @@ namespace MCSkin3D
 			{
 			}
 
-			MessageBox.Show("Human model missing - did you forget to extract first? (creating...)");*/
+			MessageBox.Show(this, "Human model missing - did you forget to extract first? (creating...)");*/
 			Directory.CreateDirectory("Models");
 
 			var box = CreateBox(8);
