@@ -670,7 +670,7 @@ namespace MCSkin3D
 			DropTargetHelper.DragLeave(this);
 			dragDropOverFolder = 0;
 			dragTimer.Stop();
-			_dragNode = null;
+			//_dragNode = null;
 			_overNode = null;
 		}
 
