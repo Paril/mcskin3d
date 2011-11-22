@@ -1,0 +1,13 @@
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\bin\Debug\McSkin3DLanguageEditor.exe
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\bin\Debug\McSkin3DLanguageEditor.pdb
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\McSkin3DLanguageEditor.frmMain.resources
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\McSkin3DLanguageEditor.Properties.Resources.resources
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\ResGen.read.1.tlog
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\ResGen.write.1.tlog
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\McSkin3DLanguageEditor.exe
+C:\Users\Jonas\documents\visual studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\McSkin3DLanguageEditor.pdb
+C:\Users\Jonas\Documents\Visual Studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\MCSkin3DLanguageEditor.Forms.frmEdit.resources
+C:\Users\Jonas\Documents\Visual Studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\bin\Debug\af\MCSkin3DLanguageEditor.resources.dll
+C:\Users\Jonas\Documents\Visual Studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\MCSkin3DLanguageEditor.Forms.frmEdit.af.resources
+C:\Users\Jonas\Documents\Visual Studio 2010\Projects\McSkin3DLanguageEditor\McSkin3DLanguageEditor\obj\x86\Debug\af\MCSkin3DLanguageEditor.resources.dll
