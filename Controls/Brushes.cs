@@ -169,8 +169,8 @@ namespace MCSkin3D
 
 		public static void LoadBrushes()
 		{
-			for (int i = 0; i < NumBrushes; ++i)
-				BrushList.Add(GenerateSquare((i * 2) + 1));
+			for (int i = 0; i < NumBrushes * 2; ++i)
+				BrushList.Add(GenerateSquare(i + 1));
 			//for (int i = 0; i < NumBrushes; ++i)
 			//	BrushList.Add(GenerateFeatheredSquare((i * 2) + 1));
 			for (int i = 1; i < NumBrushes; ++i)
