@@ -1592,6 +1592,7 @@
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
+			this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
 			// 
 			// toolStripStatusLabel1
 			// 

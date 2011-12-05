@@ -73,6 +73,8 @@ namespace Paril.OpenGL
 		public bool FollowCursor;
 		public float RotateFactor;
 
+		public MCSkin3D.VisiblePartFlags Part;
+
 		public Mesh(string name) :
 			this()
 		{
@@ -139,8 +141,6 @@ namespace Paril.OpenGL
 
 			writer.WriteEndElement();
 		}
-
-		public MCSkin3D.VisiblePartFlags Part;
 	}
 
 	public struct Bounds
