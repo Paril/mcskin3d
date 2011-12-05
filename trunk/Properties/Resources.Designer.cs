@@ -69,7 +69,7 @@ namespace MCSkin3D.Properties {
         
         internal static System.Drawing.Bitmap _112_ArrowCurve_Blue_Left_16x16_72 {
             get {
-                object obj = ResourceManager.GetObject("112_ArrowCurve_Blue_Left_16x16_72", resourceCulture);
+                object obj = ResourceManager.GetObject("_112_ArrowCurve_Blue_Left_16x16_72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -343,13 +343,6 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap Rename {
             get {
                 object obj = ResourceManager.GetObject("Rename", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Save {
-            get {
-                object obj = ResourceManager.GetObject("Save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

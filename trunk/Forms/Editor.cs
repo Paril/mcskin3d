@@ -73,10 +73,10 @@ namespace MCSkin3D
 		Dictionary<Size, int> _charPaintSizes = new Dictionary<Size, int>();
 
 		float _animationTime = 0;
-		float _3dZoom = -80;
 		float _2dCamOffsetX = 0;
 		float _2dCamOffsetY = 0;
 		float _2dZoom = 8;
+		float _3dZoom = -80;
 		float _3dRotationX = 0, _3dRotationY = 0;
 		bool _mouseIsDown = false;
 		Point _mousePoint;
@@ -1031,7 +1031,6 @@ namespace MCSkin3D
 				_renderer.Render();
 				GL.Disable(EnableCap.Blend);
 			}
-
 		}
 
 		void SetPreview()
@@ -1968,7 +1967,7 @@ namespace MCSkin3D
 				break;
 			}
 
-			rendererControl_Resize(rendererControl, null);
+			rendererControl.Invalidate();
 		}
 
 		void SetTransparencyMode(TransparencyMode trans)
@@ -2161,7 +2160,7 @@ namespace MCSkin3D
 
 		void rendererControl_Load(object sender, EventArgs e)
 		{
-			rendererControl_Resize(this, EventArgs.Empty);   // Ensure the Viewport is set up correctly
+			rendererControl.Invalidate();
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			GL.Enable(EnableCap.Texture2D);
@@ -2493,6 +2492,7 @@ namespace MCSkin3D
 			}
 		}
 
+		bool _mouseIn3D = false;
 		void CheckMouse(int y)
 		{
 			if (y > (rendererControl.Height / 2))
@@ -2501,7 +2501,6 @@ namespace MCSkin3D
 				_mouseIn3D = false;
 		}
 
-		bool _mouseIn3D = false;
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			Skin skin = _lastSkin;
@@ -2568,12 +2567,6 @@ namespace MCSkin3D
 			_mousePoint = e.Location;
 		}
 
-		public void CheckUndo()
-		{
-			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
-			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
-		}
-
 		void rendererControl_MouseUp(object sender, MouseEventArgs e)
 		{
 			Skin skin = _lastSkin;
@@ -2604,6 +2597,11 @@ namespace MCSkin3D
 			_mouseIsDown = false;
 		}
 
+		public void CheckUndo()
+		{
+			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+		}
 
 		void rendererControl_MouseLeave(object sender, EventArgs e)
 		{
@@ -3590,6 +3588,11 @@ namespace MCSkin3D
 		private void toolStripMenuItem4_Click(object sender, EventArgs e)
 		{
 			PerformNewSkin();
+		}
+
+		private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+
 		}
 	}
 }

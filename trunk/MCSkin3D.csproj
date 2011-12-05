@@ -319,6 +319,14 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\buttong_down2.png" />
+    <None Include="Resources\buttong_down.png" />
+    <None Include="Resources\buttong_2.png" />
+    <None Include="Resources\ZoomOutHS.png" />
+    <None Include="Resources\ZoomInHS.png" />
+    <None Include="Resources\Rename.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\camera.png" />
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
