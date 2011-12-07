@@ -50,6 +50,7 @@ using Paril.Extensions;
 using MCSkin3D.Language;
 using System.Globalization;
 using MCSkin3D.Forms;
+using Version = Paril.Components.Update.Version;
 
 namespace MCSkin3D
 {
@@ -221,7 +222,7 @@ namespace MCSkin3D
 			lightnessColorSlider.Renderer = lightnessRenderer = new LuminanceSliderRenderer(lightnessColorSlider);
 
 			KeyPreview = true;
-			Text = "MCSkin3D v" + ProductVersion[0] + '.' + ProductVersion[2];
+			Text = "MCSkin3D v" + Program.Version.ToString();
 
 #if BETA
 			Text += " [Beta]";
@@ -234,7 +235,7 @@ namespace MCSkin3D
 			Directory.CreateDirectory("Skins");
 			swatchContainer.AddDirectory("Swatches");
 
-			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", "" + ProductVersion[0] + '.' + ProductVersion[2]);
+			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", Program.Version.ToString());
 			_updater.UpdateHandler = new AssemblyVersion();
 			_updater.NewVersionAvailable += _updater_NewVersionAvailable;
 			_updater.SameVersion += _updater_SameVersion;
@@ -247,7 +248,7 @@ namespace MCSkin3D
 			SetSampleMenuItem(GlobalSettings.Multisamples);
 
 			// set up the GL control
-			rendererControl = new GLControl(new GraphicsMode(new ColorFormat(32), 16, 0, GlobalSettings.Multisamples));
+			rendererControl = new GLControl(new GraphicsMode(new ColorFormat(32), 24, 8, GlobalSettings.Multisamples));
 			rendererControl.BackColor = System.Drawing.Color.Black;
 			rendererControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			rendererControl.Location = new System.Drawing.Point(0, 25);
@@ -1033,6 +1034,9 @@ namespace MCSkin3D
 			}
 		}
 
+		Point _pickPosition = new Point(-1, -1);
+		bool _isValidPick = false;
+
 		void SetPreview()
 		{
 			if (_lastSkin == null)
@@ -1049,11 +1053,9 @@ namespace MCSkin3D
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
-				Point p = new Point(-1, -1);
-
-				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref p);
+				//var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
 				{
-					if (_selectedTool.Tool.RequestPreview(array, skin, p.X, p.Y))
+					if (_selectedTool.Tool.RequestPreview(array, skin, _pickPosition.X, _pickPosition.Y))
 					{
 						RenderState.BindTexture(_previewPaint);
 						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
@@ -1143,9 +1145,7 @@ namespace MCSkin3D
 			if (_lastSkin == null)
 				return;
 
-			Point p = Point.Empty;
-
-			if (GetPick(x, y, ref p))
+			if (_isValidPick)
 			{
 				Skin skin = _lastSkin;
 
@@ -1153,7 +1153,7 @@ namespace MCSkin3D
 				int[] array = new int[skin.Width * skin.Height];
 				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
-				if (_selectedTool.Tool.MouseMoveOnSkin(array, skin, p.X, p.Y))
+				if (_selectedTool.Tool.MouseMoveOnSkin(array, skin, _pickPosition.X, _pickPosition.Y))
 				{
 					SetCanSave(true);
 					skin.Dirty = true;
@@ -2529,13 +2529,12 @@ namespace MCSkin3D
 			}
 
 			_mouseIsDown = true;
+			_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
 
 			if (e.Button == MouseButtons.Left)
 			{
-				Point p = Point.Empty;
-
-				if (GetPick(e.X, e.Y, ref p))
-					_selectedTool.Tool.BeginClick(_lastSkin, p, e);
+				if (_isValidPick)
+					_selectedTool.Tool.BeginClick(_lastSkin, _pickPosition, e);
 				else
 					_selectedTool.Tool.BeginClick(_lastSkin, new Point(-1, -1), e);
 				UseToolOnViewport(e.X, e.Y);
@@ -2550,6 +2549,8 @@ namespace MCSkin3D
 
 			if (skin == null)
 				return;
+
+			_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
 
 			if (_mouseIsDown)
 			{
