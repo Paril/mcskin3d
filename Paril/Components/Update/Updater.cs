@@ -129,13 +129,7 @@ namespace Paril.Components.Update
 	{
 		public bool IsNewerVersion(string myVersion, string siteVersion)
 		{
-			int myMajor = int.Parse(myVersion[0].ToString());
-			int myMinor = int.Parse(myVersion[2].ToString());
-			int siteMajor = int.Parse(siteVersion[0].ToString());
-			int siteMinor = int.Parse(siteVersion[2].ToString());
-
-			return (siteMajor > myMajor || (siteMajor == myMajor && siteMinor > myMinor));
-			//return Version.Parse(siteVersion) > Version.Parse(myVersion);
+			return new Version(siteVersion) > new Version(myVersion);
 		}
 	}
 }

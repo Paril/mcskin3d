@@ -21,12 +21,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
+using Version = Paril.Components.Update.Version;
 
 namespace MCSkin3D
 {
 	static class Program
 	{
 		public static Editor MainForm { get; set; }
+		public static Version Version;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -59,6 +61,9 @@ namespace MCSkin3D
 
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+
+			Version = new Version(Application.ProductVersion);
+			Version.Build = SVN.Repository.Revision;
 
 			try
 			{

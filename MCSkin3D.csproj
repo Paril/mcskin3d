@@ -142,7 +142,9 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Paril\Components\Update\Version.cs" />
     <Compile Include="Paril\Net\WebHelpers.cs" />
+    <Compile Include="SVN.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
     <Compile Include="Devcorp\CIELab.cs" />
@@ -610,6 +612,9 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)\versioning.exe $(ProjectDir) SVN.cs</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
