@@ -584,11 +584,11 @@ namespace MCSkin3D
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			if (textBox1.ContainsFocus == false && labelEditTextBox.ContainsFocus == false)
-			if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
-			{
-				e.Handled = true;
-				return;
-			}
+				if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
+				{
+					e.Handled = true;
+					return;
+				}
 
 			base.OnKeyDown(e);
 		}
@@ -664,7 +664,7 @@ namespace MCSkin3D
 			threeDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			twoDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
-			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;		
+			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -695,18 +695,18 @@ namespace MCSkin3D
 			{
 				int id = GL.GenTexture();
 
-				byte[] arra = new byte[width * height * 4];
+				int[] arra = new int[width * height];
 				unsafe
 				{
-					fixed (byte* texData = arra)
+					fixed (int* texData = arra)
 					{
-						byte *d = texData;
+						int *d = texData;
 
 						for (int y = 0; y < height; ++y)
 							for (int x = 0; x < width; ++x)
 							{
-								*((int*)d) = (x << 0) | (y << 8) | (0 << 16) | (255 << 24);
-								d += 4;
+								*d = ((y * width) + x) | (255 << 24);
+								d++;
 							}
 					}
 				}
@@ -833,6 +833,7 @@ namespace MCSkin3D
 
 			GL.PushMatrix();
 
+			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
 			GL.Translate((_currentViewport.Width / 2) + -_2dCamOffsetX, (_currentViewport.Height / 2) + -_2dCamOffsetY, 0);
 			GL.Scale(_2dZoom, _2dZoom, 1);
 
@@ -873,27 +874,7 @@ namespace MCSkin3D
 
 		void DrawPlayer(int tex, Skin skin, bool pickView)
 		{
-			Vector3 vec = new Vector3();
-			int count = 0;
 			bool grass = !pickView && grassToolStripMenuItem.Checked;
-
-			foreach (var mesh in PlayerModel.HumanModel.Meshes)
-			{
-				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
-				{
-					vec += mesh.Translate;
-					count++;
-				}
-			}
-
-			if (count != 0)
-				vec /= count;
-
-			GL.Translate(0, 0, _3dZoom);
-			GL.Rotate(_3dRotationX, 1, 0, 0);
-			GL.Rotate(_3dRotationY, 0, 1, 0);
-
-			GL.Translate(-vec.X, -vec.Y, 0);
 
 			var clPt = rendererControl.PointToClient(Cursor.Position);
 			var x = clPt.X - (_currentViewport.Width / 2);
@@ -1069,6 +1050,353 @@ namespace MCSkin3D
 			}
 		}
 
+		/*
+		** Invert 4x4 matrix.
+		** Contributed by David Moore (See Mesa bug #6748)
+		*/
+		static bool __gluInvertMatrixf(float[] m, float[] invOut)
+		{
+			float[] inv = new float[16];
+			float det;
+			int i;
+
+			inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15]
+					 + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10];
+			inv[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15]
+					 - m[8] * m[7] * m[14] - m[12] * m[6] * m[11] + m[12] * m[7] * m[10];
+			inv[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15]
+					 + m[8] * m[7] * m[13] + m[12] * m[5] * m[11] - m[12] * m[7] * m[9];
+			inv[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14]
+					 - m[8] * m[6] * m[13] - m[12] * m[5] * m[10] + m[12] * m[6] * m[9];
+			inv[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15]
+					 - m[9] * m[3] * m[14] - m[13] * m[2] * m[11] + m[13] * m[3] * m[10];
+			inv[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15]
+					 + m[8] * m[3] * m[14] + m[12] * m[2] * m[11] - m[12] * m[3] * m[10];
+			inv[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15]
+					 - m[8] * m[3] * m[13] - m[12] * m[1] * m[11] + m[12] * m[3] * m[9];
+			inv[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14]
+					 + m[8] * m[2] * m[13] + m[12] * m[1] * m[10] - m[12] * m[2] * m[9];
+			inv[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15]
+					 + m[5] * m[3] * m[14] + m[13] * m[2] * m[7] - m[13] * m[3] * m[6];
+			inv[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15]
+					 - m[4] * m[3] * m[14] - m[12] * m[2] * m[7] + m[12] * m[3] * m[6];
+			inv[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15]
+					 + m[4] * m[3] * m[13] + m[12] * m[1] * m[7] - m[12] * m[3] * m[5];
+			inv[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14]
+					 - m[4] * m[2] * m[13] - m[12] * m[1] * m[6] + m[12] * m[2] * m[5];
+			inv[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11]
+					 - m[5] * m[3] * m[10] - m[9] * m[2] * m[7] + m[9] * m[3] * m[6];
+			inv[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11]
+					 + m[4] * m[3] * m[10] + m[8] * m[2] * m[7] - m[8] * m[3] * m[6];
+			inv[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11]
+					 - m[4] * m[3] * m[9] - m[8] * m[1] * m[7] + m[8] * m[3] * m[5];
+			inv[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10]
+					 + m[4] * m[2] * m[9] + m[8] * m[1] * m[6] - m[8] * m[2] * m[5];
+
+			det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+			if (det == 0)
+				return false;
+
+			det = 1.0f / det;
+
+			for (i = 0; i < 16; i++)
+				invOut[i] = inv[i] * det;
+
+			return true;
+		}
+
+		static void __gluMultMatricesf(float[] a, float[] b,
+			float[] r)
+		{
+			int i, j;
+
+			for (i = 0; i < 4; i++)
+			{
+				for (j = 0; j < 4; j++)
+				{
+					r[i * 4 + j] =
+				 a[i * 4 + 0] * b[0 * 4 + j] +
+				 a[i * 4 + 1] * b[1 * 4 + j] +
+				 a[i * 4 + 2] * b[2 * 4 + j] +
+				 a[i * 4 + 3] * b[3 * 4 + j];
+				}
+			}
+		}
+
+		static void __gluMultMatrixVecf(float[] matrix, float[] inMatrix,
+				float[] outMatrix)
+		{
+			int i;
+
+			for (i = 0; i < 4; i++)
+			{
+				outMatrix[i] =
+			 inMatrix[0] * matrix[0 * 4 + i] +
+			 inMatrix[1] * matrix[1 * 4 + i] +
+			 inMatrix[2] * matrix[2 * 4 + i] +
+			 inMatrix[3] * matrix[3 * 4 + i];
+			}
+		}
+
+		static bool gluUnProject(float winx, float winy, float winz,
+		  float[] modelMatrix,
+		  float[] projMatrix, int[] viewport,
+				 out float objx, out float objy, out float objz)
+		{
+			objx = objy = objz = float.NaN;
+
+			float[] finalMatrix = new float[16];
+			float[] inMatrix = new float[4];
+			float[] outMatrix = new float[4];
+
+			__gluMultMatricesf(modelMatrix, projMatrix, finalMatrix);
+			if (!__gluInvertMatrixf(finalMatrix, finalMatrix))
+				return false;
+
+			inMatrix[0] = winx;
+			inMatrix[1] = winy;
+			inMatrix[2] = winz;
+			inMatrix[3] = 1.0f;
+
+			/* Map x and y from window coordinates */
+			inMatrix[0] = (inMatrix[0] - viewport[0]) / viewport[2];
+			inMatrix[1] = (inMatrix[1] - viewport[1]) / viewport[3];
+
+			/* Map to range -1 to 1 */
+			inMatrix[0] = inMatrix[0] * 2 - 1;
+			inMatrix[1] = inMatrix[1] * 2 - 1;
+			inMatrix[2] = inMatrix[2] * 2 - 1;
+
+			__gluMultMatrixVecf(finalMatrix, inMatrix, outMatrix);
+			if (outMatrix[3] == 0.0)
+				return false;
+			outMatrix[0] /= outMatrix[3];
+			outMatrix[1] /= outMatrix[3];
+			outMatrix[2] /= outMatrix[3];
+			objx = outMatrix[0];
+			objy = outMatrix[1];
+			objz = outMatrix[2];
+			return true;
+		}
+
+		/**
+			  *  Return true if triangle or quad intersects with segment and the distance is 
+			  *  stored in dist[0].
+			  * */
+
+		private static bool segmentAndPoly(Vector3d[] coordinates,
+				Vector3d start, Vector3d end, out double dist)
+		{
+			dist = float.NaN;
+			Vector3d vec0 = new Vector3d(); // Edge vector from point 0 to point 1;
+			Vector3d vec1 = new Vector3d(); // Edge vector from point 0 to point 2 or 3;
+			Vector3d pNrm = new Vector3d();
+			double absNrmX, absNrmY, absNrmZ, pD = 0.0;
+			Vector3d tempV3d = new Vector3d();
+			Vector3d direction = new Vector3d();
+			double pNrmDotrDir = 0.0;
+			int axis, nc, sh, nsh;
+
+			Vector3d iPnt = new Vector3d(); // Point of intersection.
+
+			double[] uCoor = new double[4]; // Only need to support up to quad.
+			double[] vCoor = new double[4];
+			double tempD;
+
+			int i, j;
+
+			// Compute plane normal.
+			for (i = 0; i < coordinates.Length - 1; )
+			{
+				vec0.X = coordinates[i + 1].X - coordinates[i].X;
+				vec0.Y = coordinates[i + 1].Y - coordinates[i].Y;
+				vec0.Z = coordinates[i + 1].Z - coordinates[i++].Z;
+				if (vec0.Length > 0.0)
+					break;
+			}
+
+			for (j = i; j < coordinates.Length - 1; j++)
+			{
+				vec1.X = coordinates[j + 1].X - coordinates[j].X;
+				vec1.Y = coordinates[j + 1].Y - coordinates[j].Y;
+				vec1.Z = coordinates[j + 1].Z - coordinates[j].Z;
+				if (vec1.Length > 0.0)
+					break;
+			}
+
+			if (j == (coordinates.Length - 1))
+			{
+				// System.out.println("(1) Degenerated polygon.");
+				return false; // Degenerated polygon.
+			}
+
+			/* 
+			   System.out.println("Triangle/Quad :");
+			   for(i=0; i<coordinates.length; i++) 
+			   System.out.println("P" + i + " " + coordinates[i]);
+			 */
+
+			pNrm = Vector3d.Cross(vec0, vec1);
+
+			if (pNrm.Length == 0.0)
+			{
+				// System.out.println("(2) Degenerated polygon.");
+				return false; // Degenerated polygon.
+			}
+			// Compute plane D.
+			tempV3d = new Vector3d(coordinates[0].X, coordinates[0].Y, coordinates[0].Z);
+			Vector3d.Dot(ref pNrm, ref tempV3d, out pD);
+
+			// System.out.println("Segment start : " + start + " end " + end);
+
+			direction.X = end.X - start.X;
+			direction.Y = end.Y - start.Y;
+			direction.Z = end.Z - start.Z;
+
+			Vector3d.Dot(ref pNrm, ref direction, out pNrmDotrDir);
+
+			// Segment is parallel to plane. 
+			if (pNrmDotrDir == 0.0)
+			{
+				// System.out.println("Segment is parallel to plane.");
+				return false;
+			}
+
+			tempV3d = new Vector3d(start.X, start.Y, start.Z);
+
+			dist = (pD - Vector3d.Dot(pNrm, tempV3d)) / pNrmDotrDir;
+
+			// Segment intersects the plane behind the segment's start.
+			// or exceed the segment's length.
+			if ((dist < 0.0) || (dist > 1.0))
+			{
+				// System.out.println("Segment intersects the plane behind the start or exceed end.");
+				return false;
+			}
+
+			// Now, one thing for sure the segment intersect the plane.
+			// Find the intersection point.
+			iPnt.X = start.X + direction.X * dist;
+			iPnt.Y = start.Y + direction.Y * dist;
+			iPnt.Z = start.Z + direction.Z * dist;
+
+			// System.out.println("dist " + dist[0] + " iPnt : " + iPnt);
+
+			// Project 3d points onto 2d plane and apply Jordan curve theorem. 
+			// Note : Area of polygon is not preserve in this projection, but
+			// it doesn't matter here. 
+
+			// Find the axis of projection.
+			absNrmX = Math.Abs(pNrm.X);
+			absNrmY = Math.Abs(pNrm.Y);
+			absNrmZ = Math.Abs(pNrm.Z);
+
+			if (absNrmX > absNrmY)
+				axis = 0;
+			else
+				axis = 1;
+
+			if (axis == 0)
+			{
+				if (absNrmX < absNrmZ)
+					axis = 2;
+			}
+			else if (axis == 1)
+			{
+				if (absNrmY < absNrmZ)
+					axis = 2;
+			}
+
+			// System.out.println("Normal " + pNrm + " axis " + axis );
+
+			for (i = 0; i < coordinates.Length; i++)
+			{
+				switch (axis)
+				{
+				case 0:
+					uCoor[i] = coordinates[i].Y - iPnt.Y;
+					vCoor[i] = coordinates[i].Z - iPnt.Z;
+					break;
+
+				case 1:
+					uCoor[i] = coordinates[i].X - iPnt.X;
+					vCoor[i] = coordinates[i].Z - iPnt.Z;
+					break;
+
+				case 2:
+					uCoor[i] = coordinates[i].X - iPnt.X;
+					vCoor[i] = coordinates[i].Y - iPnt.Y;
+					break;
+				}
+
+				// System.out.println("i " + i + " u " + uCoor[i] + " v " + vCoor[i]); 
+			}
+
+			// initialize number of crossing, nc.
+			nc = 0;
+
+			if (vCoor[0] < 0.0)
+				sh = -1;
+			else
+				sh = 1;
+
+			for (i = 0; i < coordinates.Length; i++)
+			{
+				j = i + 1;
+				if (j == coordinates.Length)
+					j = 0;
+
+				if (vCoor[j] < 0.0)
+					nsh = -1;
+				else
+					nsh = 1;
+
+				if (sh != nsh)
+				{
+					if ((uCoor[i] > 0.0) && (uCoor[j] > 0.0))
+					{
+						// This line must cross U+.
+						nc++;
+					}
+					else if ((uCoor[i] > 0.0) || (uCoor[j] > 0.0))
+					{
+						// This line might cross U+. We need to compute intersection on U azis.
+						tempD = uCoor[i] - vCoor[i] * (uCoor[j] - uCoor[i])
+								/ (vCoor[j] - vCoor[i]);
+						if (tempD > 0)
+							// This line cross U+.
+							nc++;
+					}
+					sh = nsh;
+				} // sh != nsh
+			}
+
+			// System.out.println("nc " + nc);
+
+			if ((nc % 2) == 1)
+			{
+
+				// calculate the distance
+				dist *= direction.Length;
+
+				// System.out.println("Segment Intersected!");	
+				/* 
+				   System.out.println("Segment orgin : " + start + " dir " + direction);
+				   System.out.println("Triangle/Quad :");
+				   for(i=0; i<coordinates.length; i++) 
+				   System.out.println("P" + i + " " + coordinates[i]);
+				   System.out.println("dist " + dist[0] + " iPnt : " + iPnt);
+				 */
+				return true;
+			}
+			else
+			{
+				// System.out.println("Segment Not Intersected!");
+				return false;
+			}
+		}
+
+
 		public bool GetPick(int x, int y, ref Point hitPixel)
 		{
 			if (x == -1 || y == -1)
@@ -1113,9 +1441,11 @@ namespace MCSkin3D
 			GL.ReadPixels(x, rendererControl.Height - y, 1, 1,
 				PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
 
-			if (pixel[2] == 0)
+			uint pixVal = BitConverter.ToUInt32(pixel, 0);
+
+			if (pixVal != 0xFFFFFF)
 			{
-				hitPixel = new Point(pixel[0], pixel[1]);
+				hitPixel = new Point((int)(pixVal % skin.Width), (int)(pixVal / skin.Width));
 				return true;
 			}
 
@@ -1157,7 +1487,7 @@ namespace MCSkin3D
 				{
 					SetCanSave(true);
 					skin.Dirty = true;
-					treeView1.Invalidate();
+					//treeView1.Invalidate();
 					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 				}
 			}
@@ -2192,7 +2522,7 @@ namespace MCSkin3D
 				{
 					var image = ImageUtilities.LoadImage(file);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
@@ -2305,7 +2635,7 @@ namespace MCSkin3D
 				_3dZoom += e.Delta / 50;
 			else
 				_2dZoom += e.Delta / 50;
-            if (_2dZoom < 1) _2dZoom = 1;
+			if (_2dZoom < 0.25f) _2dZoom = 0.25f;
 
 			rendererControl.Invalidate();
 		}
@@ -2380,7 +2710,7 @@ namespace MCSkin3D
 				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
 				DrawPlayer2D(_previewPaint, skin, false);
 			}
-			
+
 			GL.PopMatrix();
 
 			DrawGLToolbar();
@@ -2403,6 +2733,26 @@ namespace MCSkin3D
 			GL.LoadIdentity();
 
 			_currentViewport = viewport;
+
+			Vector3 vec = new Vector3();
+			int count = 0;
+			foreach (var mesh in PlayerModel.HumanModel.Meshes)
+			{
+				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+				{
+					vec += mesh.Translate;
+					count++;
+				}
+			}
+
+			if (count != 0)
+				vec /= count;
+
+			GL.Translate(0, 0, _3dZoom);
+			GL.Rotate(_3dRotationX, 1, 0, 0);
+			GL.Rotate(_3dRotationY, 0, 1, 0);
+
+			GL.Translate(-vec.X, -vec.Y, 0);
 		}
 
 		void Setup2D(Rectangle viewport)
@@ -2487,8 +2837,8 @@ namespace MCSkin3D
 			{
 				_2dZoom += -delta.Y / 25.0f;
 
-				if (_2dZoom < 1)
-					_2dZoom = 1;
+				if (_2dZoom < 0.25f)
+					_2dZoom = 0.25f;
 			}
 		}
 
@@ -2746,8 +3096,8 @@ namespace MCSkin3D
 
 				if (skin.Width == 8 || skin.Height == 4)
 					mDECRESToolStripMenuItem.Enabled = false;
-				else if (skin.Width == 256 || skin.Height == 128)
-					mINCRESToolStripMenuItem.Enabled = false;
+				//else if (skin.Width == 256 || skin.Height == 128)
+				//	mINCRESToolStripMenuItem.Enabled = false;
 			}
 		}
 
@@ -3133,7 +3483,7 @@ namespace MCSkin3D
 		void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			GlobalSettings.AutoUpdate = automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
-        }
+		}
 
 		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)
 		{
@@ -3275,7 +3625,7 @@ namespace MCSkin3D
 			GlobalSettings.Multisamples = samples;
 			_antialiasOpts[index].Checked = true;
 		}
-		
+
 		private void xToolStripMenuItem4_Click(object sender, EventArgs e)
 		{
 			SetSampleMenuItem(0);
@@ -3306,14 +3656,14 @@ namespace MCSkin3D
 			MessageBox.Show(this, GetLanguageString("B_MSG_ANTIALIAS"));
 		}
 
-        private void SetLanguage(string filename)
-        {
+		private void SetLanguage(string filename)
+		{
 
-        }
+		}
 
-        private void ReloadLanguage()
-        {
-        }
+		private void ReloadLanguage()
+		{
+		}
 
 		static Language.Language _currentLanguage;
 		public static Language.Language CurrentLanguage
@@ -3323,7 +3673,7 @@ namespace MCSkin3D
 			{
 				if (_currentLanguage != null)
 					_currentLanguage.Item.Checked = false;
-				
+
 				_currentLanguage = value;
 				GlobalSettings.LanguageFile = _currentLanguage.Culture.Name;
 				Program.MainForm.languageProvider1.LanguageChanged(value);
@@ -3470,8 +3820,8 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 				return;
-			if (_lastSkin.Width == 256 || _lastSkin.Height == 128)
-				return;
+			//if (_lastSkin.Width == 256 || _lastSkin.Height == 128)
+			//	return;
 			if (!ShowDontAskAgain())
 				return;
 
