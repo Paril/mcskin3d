@@ -63,7 +63,7 @@ namespace MCSkin3D
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
 
 			Version = new Version(Application.ProductVersion);
-			Version.Build = SVN.Repository.Revision;
+			Version.Revision = SVN.Repository.Revision;
 
 			try
 			{

@@ -1,3 +1,8 @@
+Version 1.4
+- New versioning system (Major.Minor.Build.SVN Revision)
+- Fixed a rendering CPU eater with mouse movement
+- Support for textures up to 4096x4096
+
 Version 1.3
 - Treeview skin selector
 - Removed DevExpress dependencies
