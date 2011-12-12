@@ -31,6 +31,7 @@ namespace MCSkin3D
 		public FolderNode(string name) :
 			base(name)
 		{
+			Name = name;
 		}
 
 		public DirectoryInfo Directory

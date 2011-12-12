@@ -45,7 +45,7 @@ namespace MCSkin3D
 		public new string Name
 		{
 			get { return base.Name; }
-			set { base.Name = value; base.Text = value; }
+			set { base.Name = value; base.Text = base.Name = value; }
 		}
 
         public static Image getHeadFromFile(String str, Size s)
@@ -127,7 +127,9 @@ namespace MCSkin3D
 				GL.DeleteTexture(GLImage);
 			}
 
-			Image = new Bitmap(File.FullName);
+			using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+				Image = new Bitmap(file);
+
 			Size = Image.Size;
 
 			float scale = Size.Width / 64.0f;
@@ -179,6 +181,7 @@ namespace MCSkin3D
 						}
 				}
 
+				Editor.AddIgnoreFile(File.FullName);
 				newBitmap.Save(File.FullName);
 				newBitmap.Dispose();
 
@@ -188,14 +191,21 @@ namespace MCSkin3D
 			}
 		}
 
-		public bool ChangeName(string newName)
+		public bool ChangeName(string newName, bool force = false)
 		{
 			if (!newName.EndsWith(".png"))
 				newName += ".png";
 
+			if (force)
+			{
+				Name = Path.GetFileNameWithoutExtension(newName);
+				return true;
+			}
+
 			if (System.IO.File.Exists(Directory.FullName + "\\" + newName))
 				return false;
 
+			Editor.AddIgnoreFile(Directory.FullName + "\\" + newName);
 			File.MoveToParent(newName);
 			Name = Path.GetFileNameWithoutExtension(newName);
 
@@ -216,6 +226,7 @@ namespace MCSkin3D
 						g.DrawImage(temp, 0, 0, newBitmap.Width, newBitmap.Height);
 				}
 
+				Editor.AddIgnoreFile(File.FullName);
 				newBitmap.Save(File.FullName);
 			}
 
@@ -223,6 +234,12 @@ namespace MCSkin3D
 
 			Undo.Clear();
 			Program.MainForm.CheckUndo();
+		}
+
+		public void Delete()
+		{
+			Editor.AddIgnoreFile(File.FullName);
+			File.Delete();
 		}
 	}
 }

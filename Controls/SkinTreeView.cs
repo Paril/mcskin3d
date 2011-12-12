@@ -704,6 +704,7 @@ namespace MCSkin3D
 					while (File.Exists(folderLocation + name + ".png"))
 						name += " (" + Editor.GetLanguageString("C_NEW") + ")";
 
+					Editor.AddIgnoreFile(folderLocation + name + ".png");
 					File.Copy(f, folderLocation + name + ".png");
 
 					Skin skin = new Skin(folderLocation + name + ".png");
@@ -760,6 +761,8 @@ namespace MCSkin3D
 				while (File.Exists(((Skin)from).File.Directory.FullName + "\\" + newPath + ".png"))
 					newPath += " - Moved";
 
+				Editor.AddIgnoreFile(oldPath);
+				Editor.AddIgnoreFile(((Skin)from).File.Directory.FullName + "\\" + newPath + ".png");
 				File.Move(oldPath, ((Skin)from).File.Directory.FullName + "\\" + newPath + ".png");
 				((Skin)from).Name = newPath;
 			}
@@ -770,8 +773,10 @@ namespace MCSkin3D
 				while (Directory.Exists(((FolderNode)from).Directory.Parent.FullName + "\\" + newPath))
 					newPath += " - Moved";
 
+				Editor.AddIgnoreFile(oldPath);
+				Editor.AddIgnoreFile(((FolderNode)from).Directory.Parent.FullName + "\\" + newPath);
 				Directory.Move(oldPath, ((FolderNode)from).Directory.Parent.FullName + "\\" + newPath);
-				((FolderNode)from).Text = newPath;
+				((FolderNode)from).Text = ((FolderNode)from).Name = newPath;
 			}
 		}
 
@@ -787,6 +792,33 @@ namespace MCSkin3D
 				MoveNode(from, to.Nodes);
 			else if ((from is Skin || from is FolderNode) && to == null)
 				MoveNode(from, Nodes);
+		}
+
+		/// <summary>
+		/// A non-recursive function which will return a node based on a path.
+		/// </summary>
+		/// <param name="path">The full path to the node</param>
+		/// <param name="returnClosest">Return the closest node found, if we didn't find the final node</param>
+		/// <returns>The node that was found, or null if not found.</returns>
+		public TreeNode NodeFromPath(string path, bool returnClosest = false)
+		{
+			string[] split = path.Split(new string[] { PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
+			int splitIndex = 0;
+			TreeNode closestNode = null;
+
+			while (true)
+			{
+				var nodes = ((closestNode == null ? Nodes : closestNode.Nodes)).Find(split[splitIndex], false);
+
+				if (nodes.Length == 0)
+					return returnClosest ? closestNode : null;
+
+				closestNode = nodes[0];
+				splitIndex++;
+
+				if (splitIndex == split.Length)
+					return closestNode;
+			}
 		}
 	}
 }
