@@ -28,10 +28,84 @@ using System.Drawing.Imaging;
 using Paril.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Collections;
 
 namespace MCSkin3D
 {
-	public class Brush
+	public class AlphanumComparatorFast : IComparer<string>
+	{
+		public int Compare(string s1, string s2)
+		{
+			int len1 = s1.Length;
+			int len2 = s2.Length;
+			int marker1 = 0;
+			int marker2 = 0;
+
+			// Walk through two the strings with two markers.
+			while (marker1 < len1 && marker2 < len2)
+			{
+				char ch1 = s1[marker1];
+				char ch2 = s2[marker2];
+
+				// Some buffers we can build up characters in for each chunk.
+				char[] space1 = new char[len1];
+				int loc1 = 0;
+				char[] space2 = new char[len2];
+				int loc2 = 0;
+
+				// Walk through all following characters that are digits or
+				// characters in BOTH strings starting at the appropriate marker.
+				// Collect char arrays.
+				do
+				{
+					space1[loc1++] = ch1;
+					marker1++;
+
+					if (marker1 < len1)
+						ch1 = s1[marker1];
+					else
+						break;
+				} while (char.IsDigit(ch1) == char.IsDigit(space1[0]));
+
+				do
+				{
+					space2[loc2++] = ch2;
+					marker2++;
+
+					if (marker2 < len2)
+						ch2 = s2[marker2];
+					else
+						break;
+				}
+				while (char.IsDigit(ch2) == char.IsDigit(space2[0]));
+
+				// If we have collected numbers, compare them numerically.
+				// Otherwise, if we have strings, compare them alphabetically.
+				string str1 = new string(space1);
+				string str2 = new string(space2);
+
+				int result;
+
+				if (char.IsDigit(space1[0]) && char.IsDigit(space2[0]))
+				{
+					int thisNumericChunk = int.Parse(str1);
+					int thatNumericChunk = int.Parse(str2);
+					result = thisNumericChunk.CompareTo(thatNumericChunk);
+				}
+				else
+					result = str1.CompareTo(str2);
+
+				if (result != 0)
+					return result;
+			}
+
+			return len1 - len2;
+		}
+	}
+
+	public class Brush : IComparable<Brush>
 	{
 		public string Name { get; set; }
 		public float[,] Luminance;
@@ -52,6 +126,21 @@ namespace MCSkin3D
 			Luminance = new float[w, h];
 		}
 
+		public Brush(string file)
+		{
+			Name = Path.GetFileNameWithoutExtension(file);
+
+			Image = new Bitmap(file);
+			Luminance = new float[Image.Width, Image.Height];
+
+			using (FastPixel fp = new FastPixel(Image, true))
+			{
+				for (int y = 0; y < Height; ++y)
+					for (int x = 0; x < Width; ++x)
+						Luminance[x, y] = (float)fp.GetPixel(x, y).A / 255.0f;
+			}
+		}
+
 		public void BuildImage()
 		{
 			if (Image != null)
@@ -65,6 +154,14 @@ namespace MCSkin3D
 					for (int x = 0; x < Width; ++x)
 						fp.SetPixel(x, y, System.Drawing.Color.FromArgb((byte)(Luminance[x, y] * 255), 0, 0, 0));
 			}
+
+			Image.Save("Brushes\\" + Editor.GetLanguageString(Name) + " [" + Width + "].png");
+		}
+
+		static AlphanumComparatorFast logical = new AlphanumComparatorFast();
+		public int CompareTo(Brush b)
+		{
+			return logical.Compare(Name, b.Name);
 		}
 	}
 
@@ -169,30 +266,25 @@ namespace MCSkin3D
 
 		public static void LoadBrushes()
 		{
-			for (int i = 0; i < NumBrushes * 2; ++i)
-				BrushList.Add(GenerateSquare(i + 1));
-			//for (int i = 0; i < NumBrushes; ++i)
-			//	BrushList.Add(GenerateFeatheredSquare((i * 2) + 1));
-			for (int i = 1; i < NumBrushes; ++i)
-				BrushList.Add(GenerateCircle((i * 2) + 1));
-			//for (int i = 1; i < NumBrushes; ++i)
-			//	BrushList.Add(GenerateSmoothCircle((i * 2) + 1));
+			foreach (var file in Directory.GetFiles("Brushes", "*.png", SearchOption.AllDirectories))
+			{
+				try
+				{
+					BrushList.Add(new Brush(file));
+				}
+				catch
+				{
+				}
+			}
+
+			BrushList.Sort();
 
 			foreach (var b in BrushList)
-			{
-				b.BuildImage();
 				BrushBox.Items.Add(b);
-			}
 
 			BrushBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			BrushBox.SelectedIndex = 0;
 			BrushBox.Width = 44;
-
-			GaussianBlurFilter filter = new GaussianBlurFilter(8);
-			FloatMatrixOperand op = new FloatMatrixOperand();
-			op.Value = new float[5, 5];
-			op.Value[2, 2] = 1;
-			filter.Apply(op);
 		}
 	}
 
@@ -222,7 +314,7 @@ namespace MCSkin3D
 
 				//e.Graphics.DrawRectangle(Pens.Black, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height));
 
-				TextRenderer.DrawText(e.Graphics, brush.Name + " [" + brush.Height + "]", Font, new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText, TextFormatFlags.VerticalCenter);
+				TextRenderer.DrawText(e.Graphics, brush.Name, Font, new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText, TextFormatFlags.VerticalCenter);
 			}
 
 			e.DrawFocusRectangle();

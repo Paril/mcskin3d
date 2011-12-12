@@ -96,6 +96,8 @@ namespace MCSkin3D
 
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
+		FileSystemWatcher _watcher;
+		Thread watcherThread;
 		#endregion
 
 		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
@@ -151,9 +153,6 @@ namespace MCSkin3D
 			SetCheckbox(VisiblePartFlags.HelmetFlag, helmetToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.LeftLegFlag, leftLegToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
-
-			Brushes.LoadBrushes();
-
 			Language.Language useLanguage = null;
 			try
 			{
@@ -202,6 +201,8 @@ namespace MCSkin3D
 			InitShortcuts();
 			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
+			CurrentLanguage = useLanguage;
+			Brushes.LoadBrushes();
 			CurrentLanguage = useLanguage;
 
 			SetSelectedTool(_tools[0]);
@@ -282,6 +283,198 @@ namespace MCSkin3D
 			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
 			treeView1.Scrollable = true;
 			splitContainer4.SplitterDistance = 74;
+
+
+			watcherThread = new Thread(
+				delegate()
+				{
+					_watcher = new FileSystemWatcher("Skins");
+					_watcher.SynchronizingObject = Program.MainForm;
+					_watcher.Changed += _watcher_Changed;
+					_watcher.Created += _watcher_Created;
+					_watcher.Deleted += _watcher_Deleted;
+					_watcher.Renamed += _watcher_Renamed;
+					_watcher.EnableRaisingEvents = true;
+					_watcher.IncludeSubdirectories = true;
+
+					while (true)
+						_watcher.WaitForChanged(WatcherChangeTypes.All);
+				});
+			watcherThread.Start();
+		}
+
+		static List<string> _ignoreFiles = new List<string>();
+
+		public static void AddIgnoreFile(string fileName)
+		{
+			_ignoreFiles.Add(fileName);
+		}
+
+		public static bool IsIgnored(string fileName)
+		{
+			FileInfo right = new FileInfo(fileName);
+
+			if (_ignoreFiles.Contains(right.FullName))
+			{
+				_ignoreFiles.Remove(fileName);
+				return true;
+			}
+
+			return false;
+		}
+
+		void _watcher_Renamed(object sender, RenamedEventArgs e)
+		{
+			if (IsIgnored(e.OldFullPath))
+				return;
+	
+			System.Diagnostics.Debug.WriteLine(e.ChangeType.ToString() + " detected on " + e.Name);
+
+			if (Path.HasExtension(e.OldFullPath))
+			{
+				Skin node = (Skin)treeView1.NodeFromPath(Path.GetDirectoryName(e.OldFullPath).Replace("Skins\\", "") + "\\" + Path.GetFileNameWithoutExtension(e.OldFullPath), false);
+
+				if (node == null)
+					return;
+
+				node.ChangeName(Path.GetFileNameWithoutExtension(e.FullPath), true);
+			}
+			else
+			{
+				FolderNode folder = (FolderNode)treeView1.NodeFromPath(Path.GetDirectoryName(e.OldFullPath).Replace("Skins\\", ""), false);
+
+				if (folder == null)
+					return;
+
+				folder.Name = folder.Text = new DirectoryInfo(e.FullPath).Name;
+				treeView1.Invalidate();
+			}
+		}
+
+		void _watcher_Deleted(object sender, FileSystemEventArgs e)
+		{
+			if (IsIgnored(e.FullPath))
+				return;
+	
+			System.Diagnostics.Debug.WriteLine(e.ChangeType.ToString() + " detected on " + e.Name);
+
+			if (Path.HasExtension(e.FullPath))
+			{
+				Skin node = (Skin)treeView1.NodeFromPath(Path.GetDirectoryName(e.FullPath).Replace("Skins\\", "") + "\\" + Path.GetFileNameWithoutExtension(e.FullPath), false);
+
+				if (node == null)
+					return;
+
+				node.Delete();
+				node.Remove();
+				node.Dispose();
+
+				treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
+
+				Invalidate();
+			}
+			else
+			{
+				FolderNode folder = (FolderNode)treeView1.NodeFromPath(e.FullPath.Replace("Skins\\", ""), false);
+
+				if (folder == null)
+					return;
+
+				folder.Remove();
+			}
+		}
+
+		void _watcher_Created(object sender, FileSystemEventArgs e)
+		{
+			if (IsIgnored(e.FullPath))
+				return;
+	
+			System.Diagnostics.Debug.WriteLine(e.ChangeType.ToString() + " detected on " + e.Name);
+
+			if (Path.HasExtension(e.FullPath))
+			{
+				// Easy - assume an import!
+				// FullPath is relative - thank God.
+				var node = treeView1.NodeFromPath(Path.GetDirectoryName(e.FullPath).Replace("Skins\\", ""), false);
+
+				if (node == null)
+					throw new Exception("Watcher found a new file, but path is invalid");
+
+				Thread.Sleep(100); // Sleep a bit, because Windows might still be using this file.
+
+				// Oh, slight modification to import code - forgot that it's not being
+				// imported externally...
+
+				Skin newSkin = new Skin(e.FullPath);
+
+				// FIXME: Don't ask me why this is required, but, for some reason
+				// the skin just stays black without this.
+				treeView1.BeginUpdate();
+				var oldNode = treeView1.SelectedNode;
+
+				node.Nodes.Add(newSkin);
+				newSkin.SetImages();
+
+				treeView1.SelectedNode = newSkin;
+				treeView1.SelectedNode = oldNode;
+				treeView1.EndUpdate();
+			}
+			else
+			{
+				FolderNode folder = (FolderNode)treeView1.NodeFromPath(Path.GetDirectoryName(e.FullPath.Replace("Skins\\", "")), false);
+
+				if (folder == null)
+					return;
+
+				FolderNode newFolder = new FolderNode(new DirectoryInfo(e.FullPath).Name);
+				folder.Nodes.Add(newFolder);
+			}
+		}
+
+		void _watcher_Changed(object sender, FileSystemEventArgs e)
+		{
+			if (IsIgnored(e.FullPath))
+				return;
+
+			System.Diagnostics.Debug.WriteLine(e.ChangeType.ToString() + " detected on " + e.Name);
+
+			rendererControl.MakeCurrent();
+			var node = treeView1.NodeFromPath(e.FullPath.Replace(".png", "").Replace("Skins\\", ""));
+
+			if (node == null)
+				return;
+
+			Thread.Sleep(100); // Sleep a bit, because Windows might still be using this file.
+			
+			if (node is Skin)
+			{
+				Skin skin = (Skin)node;
+				skin.SetImages();
+				skin.Undo.Clear();
+
+				CheckUndo();
+				
+				if (treeView1.SelectedNode == skin)
+				{
+					RenderState.BindTexture(skin.GLImage);
+					int[] array = new int[skin.Width * skin.Height];
+					GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
+					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					RenderState.BindTexture(_previewPaint);
+					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				}
+				else
+				{
+					// FIXME: Don't ask me why this is required, but, for some reason
+					// the skin just stays black without this.
+					treeView1.BeginUpdate();
+					var oldNode = treeView1.SelectedNode;
+					treeView1.SelectedNode = skin;
+					treeView1.SelectedNode = oldNode;
+					treeView1.EndUpdate();
+				}
+			}
 		}
 
 		void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)
@@ -605,6 +798,7 @@ namespace MCSkin3D
 			}
 
 			_updater.Abort();
+			watcherThread.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
 			GlobalSettings.Save();
@@ -1763,6 +1957,49 @@ namespace MCSkin3D
 		}
 
 		#region Skin Management
+		void ImportSkin(string fileName, string folderLocation, TreeNode parentNode)
+		{
+			var name = Path.GetFileNameWithoutExtension(fileName);
+
+			while (File.Exists(folderLocation + name + ".png"))
+				name += " (New)";
+
+			File.Copy(fileName, folderLocation + name + ".png");
+
+			Skin skin = new Skin(folderLocation + name + ".png");
+
+			if (parentNode != null)
+			{
+				if (!(parentNode is Skin))
+					parentNode.Nodes.Add(skin);
+				else
+					parentNode.GetParentCollection().Add(skin);
+			}
+			else
+				treeView1.Nodes.Add(skin);
+
+			skin.SetImages();
+		}
+
+		void ImportSkins(string[] fileName, TreeNode parentNode)
+		{
+			string folderLocation;
+			if (parentNode != null)
+			{
+				if (!(parentNode is Skin))
+					folderLocation = "Skins\\" + parentNode.FullPath + '\\';
+				else if (parentNode.Parent != null)
+					folderLocation = "Skins\\" + parentNode.Parent.FullPath + '\\';
+				else
+					folderLocation = "Skins\\";
+			}
+			else
+				folderLocation = "Skins\\";
+
+			foreach (var f in fileName)
+				ImportSkin(f, folderLocation, parentNode);
+		}
+
 		void PerformImportSkin()
 		{
 			using (var ofd = new OpenFileDialog())
@@ -1772,46 +2009,10 @@ namespace MCSkin3D
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					string folderLocation;
-
 					if (_rightClickedNode == null)
 						_rightClickedNode = treeView1.SelectedNode;
 
-					if (_rightClickedNode != null)
-					{
-						if (!(_rightClickedNode is Skin))
-							folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
-						else if (_rightClickedNode.Parent != null)
-							folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
-						else
-							folderLocation = "Skins\\";
-					}
-					else
-						folderLocation = "Skins\\";
-
-					foreach (var f in ofd.FileNames)
-					{
-						var name = Path.GetFileNameWithoutExtension(f);
-
-						while (File.Exists(folderLocation + name + ".png"))
-							name += " (New)";
-
-						File.Copy(f, folderLocation + name + ".png");
-
-						Skin skin = new Skin(folderLocation + name + ".png");
-
-						if (_rightClickedNode != null)
-						{
-							if (!(_rightClickedNode is Skin))
-								_rightClickedNode.Nodes.Add(skin);
-							else
-								_rightClickedNode.GetParentCollection().Add(skin);
-						}
-						else
-							treeView1.Nodes.Add(skin);
-
-						skin.SetImages();
-					}
+					ImportSkins(ofd.FileNames, _rightClickedNode);
 				}
 			}
 		}
@@ -1851,7 +2052,7 @@ namespace MCSkin3D
 			string newFolderName = "New Folder";
 
 			while (Directory.Exists(folderLocation + newFolderName))
-				newFolderName = newFolderName.Insert(0, "New ");
+				newFolderName = newFolderName.Insert(0, Editor.GetLanguageString("C_NEW"));
 
 			Directory.CreateDirectory(folderLocation + newFolderName);
 			var newNode = new FolderNode(newFolderName);
@@ -1899,7 +2100,7 @@ namespace MCSkin3D
 			string newSkinName = "New Skin";
 
 			while (File.Exists(folderLocation + newSkinName + ".png"))
-				newSkinName = newSkinName.Insert(0, "New ");
+				newSkinName = newSkinName.Insert(0, Editor.GetLanguageString("C_NEW"));
 
 			using (Bitmap bmp = new Bitmap(64, 32))
 			{
@@ -1953,12 +2154,12 @@ namespace MCSkin3D
 				{
 					Skin skin = (Skin)treeView1.SelectedNode;
 
-					skin.File.Delete();
+					AddIgnoreFile(skin.File.FullName);
+					skin.Delete();
 					skin.Remove();
 					skin.Dispose();
 
 					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
-					//_lastSkin = null;
 
 					Invalidate();
 				}
@@ -1969,6 +2170,7 @@ namespace MCSkin3D
 				{
 					DirectoryInfo folder = new DirectoryInfo("Skins\\" + treeView1.SelectedNode.FullPath);
 
+					Editor.AddIgnoreFile(folder.FullName);
 					RecursiveDeleteSkins(treeView1.SelectedNode);
 
 					treeView1.SelectedNode.Remove();
@@ -1994,6 +2196,7 @@ namespace MCSkin3D
 				newFileName = skin.Directory.FullName + '\\' + newName + ".png";
 			} while (File.Exists(newFileName));
 
+			Editor.AddIgnoreFile(newFileName);
 			File.Copy(skin.File.FullName, newFileName);
 			Skin newSkin = new Skin(newFileName);
 
@@ -2035,7 +2238,7 @@ namespace MCSkin3D
 					return;
 
 				if (skin.ChangeName(newName) == false)
-					System.Media.SystemSounds.Question.Play();
+					System.Media.SystemSounds.Beep.Play();
 			}
 			else
 			{
@@ -2048,12 +2251,14 @@ namespace MCSkin3D
 
 				if (Directory.Exists(newFolder.FullName))
 				{
-					System.Media.SystemSounds.Question.Play();
+					System.Media.SystemSounds.Beep.Play();
 					return;
 				}
 
+				AddIgnoreFile(newFolder.FullName);
+				AddIgnoreFile(folder.FullName);
 				folder.MoveTo(newFolder.FullName);
-				_currentlyEditing.Text = newFolder.Name;
+				_currentlyEditing.Text = _currentlyEditing.Name = newFolder.Name;
 			}
 		}
 
@@ -2965,6 +3170,8 @@ namespace MCSkin3D
 				!(e.Node is Skin))
 				return;
 
+			rendererControl.MakeCurrent();
+
 			if (_lastSkin != null && treeView1.SelectedNode != _lastSkin)
 			{
 				// Copy over the current changes to the tex stored in the skin.
@@ -2974,8 +3181,6 @@ namespace MCSkin3D
 
 			//if (_lastSkin != null)
 			//	_lastSkin.Undo.Clear();
-
-			rendererControl.MakeCurrent();
 
 			Skin skin = (Skin)treeView1.SelectedNode;
 			SetCanSave(skin.Dirty);
@@ -3001,8 +3206,7 @@ namespace MCSkin3D
 				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
 
 				_currentUndoBuffer = skin.Undo;
-				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
-				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+				CheckUndo();
 			}
 
 			rendererControl.Invalidate();
