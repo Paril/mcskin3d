@@ -130,6 +130,14 @@
     <Compile Include="Controls\Tools\EraserOptions.Designer.cs">
       <DependentUpon>EraserOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="FolderBrowserDialogEx\FolderBrowserDialogEx.cs" />
+    <Compile Include="FolderBrowserDialogEx\Win32.cs" />
+    <Compile Include="Forms\DirectoryList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DirectoryList.Designer.cs">
+      <DependentUpon>DirectoryList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DontAskAgain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +151,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Paril\Components\Update\Version.cs" />
+    <Compile Include="Paril\Controls\NaturalSortedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Paril\Net\WebHelpers.cs" />
     <Compile Include="SVN.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
@@ -321,6 +332,12 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\112_Minus_Orange_16x16_72.png" />
+    <None Include="Resources\112_Minus_Orange_24x24_721.png" />
+    <None Include="Resources\112_Plus_Green_16x16_72.png" />
+    <None Include="Resources\112_Minus_Orange_24x24_72.png" />
+    <None Include="Resources\112_Plus_Green_24x24_72.png" />
+    <None Include="Resources\112_Plus_Green_32x32_72.png" />
     <None Include="Resources\buttong_down2.png" />
     <None Include="Resources\buttong_down.png" />
     <None Include="Resources\buttong_2.png" />
@@ -355,6 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DirectoryList.resx">
+      <DependentUpon>DirectoryList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DontAskAgain.resx">
       <DependentUpon>DontAskAgain.cs</DependentUpon>

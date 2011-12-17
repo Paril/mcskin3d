@@ -115,6 +115,28 @@ namespace Paril.Settings
 		}
 	}
 
+	public class StringArraySerializer : ITypeSerializer
+	{
+		public string Serialize(object obj)
+		{
+			string[] arr = (string[])obj;
+			string combined = "";
+
+			foreach (var c in arr)
+				if (combined == "")
+					combined += c;
+				else
+					combined += ";" + c;
+
+			return combined;
+		}
+
+		public object Deserialize(string str)
+		{
+			return str.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+		}
+	}
+
 	public class Settings
 	{
 		public List<object> Structures = new List<object>();

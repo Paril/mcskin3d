@@ -74,6 +74,48 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap _112_Minus_Orange_16x16_72 {
+            get {
+                object obj = ResourceManager.GetObject("112_Minus_Orange_16x16_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _112_Minus_Orange_24x24_72 {
+            get {
+                object obj = ResourceManager.GetObject("112_Minus_Orange_24x24_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _112_Minus_Orange_24x24_721 {
+            get {
+                object obj = ResourceManager.GetObject("112_Minus_Orange_24x24_721", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _112_Plus_Green_16x16_72 {
+            get {
+                object obj = ResourceManager.GetObject("112_Plus_Green_16x16_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _112_Plus_Green_24x24_72 {
+            get {
+                object obj = ResourceManager.GetObject("112_Plus_Green_24x24_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _112_Plus_Green_32x32_72 {
+            get {
+                object obj = ResourceManager.GetObject("112_Plus_Green_32x32_72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap arrow_state_blue_expanded {
             get {
                 object obj = ResourceManager.GetObject("arrow_state_blue_expanded", resourceCulture);

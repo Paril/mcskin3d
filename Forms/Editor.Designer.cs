@@ -180,6 +180,7 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -676,7 +677,8 @@
 			// 
 			this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.keyboardShortcutsToolStripMenuItem,
-            this.backgroundColorToolStripMenuItem});
+            this.backgroundColorToolStripMenuItem,
+            this.mSKINDIRSToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.optionsToolStripMenuItem, "Text");
 			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
@@ -1822,6 +1824,13 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
+			// mSKINDIRSToolStripMenuItem
+			// 
+			this.mSKINDIRSToolStripMenuItem.Name = "mSKINDIRSToolStripMenuItem";
+			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
+			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2026,6 +2035,7 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton6;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;
 	}
 }
 

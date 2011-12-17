@@ -3,6 +3,9 @@
 ?-- Update program
 *- Custom model support
 *- Custom brushes
+?- Allow change to main skin directory (hold multiple directories as well?)
+?- Check upload size (apparently is broken)
+?- Tutorial system
 ?- Hex issues (more than 10 symbols = crash)
 ?-- All blocks and mobs supported by 1.0 included
 ?- Don't rely on OpenGL to store finalized image
@@ -19,6 +22,7 @@
 ?- Fit keyboard shortcuts into tooltips
 ?- Automatically hide/show helmet based on transparency contained in helmet
 ?- Smudge tool
+?- Double-check language strings, ensure all English strings in source are language-ized
 \- Port to C++/work on them side by side
 \- Part saver/picker (call it Mix'n'Match?)
 
