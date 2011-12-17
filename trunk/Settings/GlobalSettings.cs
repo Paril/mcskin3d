@@ -138,6 +138,11 @@ namespace MCSkin3D
 		[Savable]
 		public static bool ResChangeDontShowAgain { get; set; }
 
+		[Savable]
+		[DefaultValue("Skins\\")]
+		[TypeSerializer(typeof(StringArraySerializer), true)]
+		public static string[] SkinDirectories { get; set; }
+
 		static Settings Settings = null;
 
 		public static bool Load()

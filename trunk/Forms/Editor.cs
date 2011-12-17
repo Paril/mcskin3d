@@ -4149,5 +4149,18 @@ namespace MCSkin3D
 		{
 
 		}
+
+		private void mSKINDIRSToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (DirectoryList dl = new DirectoryList())
+			{
+				dl.StartPosition = FormStartPosition.CenterParent;
+				foreach (var dir in GlobalSettings.SkinDirectories)
+					dl.Directories.Add(dir);
+
+				if (dl.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+					GlobalSettings.SkinDirectories = dl.Directories.ToArray();
+			}
+		}
 	}
 }
