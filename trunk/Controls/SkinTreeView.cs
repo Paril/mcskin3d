@@ -390,9 +390,16 @@ namespace MCSkin3D
 					g.DrawImage(prevImage, new Rectangle(0, 0, 32, 32), new Rectangle(0, 0, prevImage.Width, prevImage.Height), GraphicsUnit.Pixel);
 				}
 
+				var kvps = new List<KeyValuePair<string, object>>();
+
+				kvps.Add(new KeyValuePair<string, object>("MCSkin3D.Skin", SelectedNode));
+
+				if (SelectedNode is Skin)
+					kvps.Add(new KeyValuePair<string, object>(DataFormats.FileDrop, new string[] { ((Skin)SelectedNode).File.FullName }));
+
 				_dragNode = SelectedNode;
 				DragSourceHelper.DoDragDrop(Program.MainForm, _dragBitmap, new Point((_dragBitmap.Width / 2), _dragBitmap.Height), DragDropEffects.Move | DragDropEffects.Copy,
-					new KeyValuePair<string, object>("MCSkin3D.Skin", SelectedNode));
+					kvps.ToArray());
 			}
 		}
 
@@ -551,12 +558,7 @@ namespace MCSkin3D
 		DragDropEffects _oldEffects = 0;
 		protected override void OnDragEnter(DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
-				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect, Editor.GetLanguageString("C_IMPORTTO") + " %1", "MCSkin3D");
-			}
-			else if (e.Data.GetDataPresent("MCSkin3D.Skin") && _dragNode != null)
+			if (e.Data.GetDataPresent("MCSkin3D.Skin") && _dragNode != null)
 			{
 				var node = _dragNode;
 				var selectedNode = GetSelectedNodeAt(PointToClient(Cursor.Position));
@@ -579,6 +581,11 @@ namespace MCSkin3D
 					e.Effect = DragDropEffects.Move;
 
 				SetDragEnter(e.Effect, new Point(e.X, e.Y), e.Data);
+			}
+			else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect, Editor.GetLanguageString("C_IMPORTTO") + " %1", "MCSkin3D");
 			}
 		}
 
@@ -605,9 +612,7 @@ namespace MCSkin3D
 
 		protected override void OnDragOver(DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
-			else if (e.Data.GetDataPresent("MCSkin3D.Skin") && _dragNode != null)
+			if (e.Data.GetDataPresent("MCSkin3D.Skin") && _dragNode != null)
 			{
                 Point cp = this.PointToClient(new Point(e.X, e.Y));
                 TreeNode dragToItem = GetSelectedNodeAt(new Point(cp.X, cp.Y));
@@ -627,6 +632,8 @@ namespace MCSkin3D
 				else
 					e.Effect = DragDropEffects.Move;
 			}
+			else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
 			else
 				e.Effect = DragDropEffects.None;
 
@@ -678,7 +685,8 @@ namespace MCSkin3D
 		{
             dragDropOverFolder = 0;
             dragTimer.Stop();
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			if (e.Data.GetDataPresent(DataFormats.FileDrop) &&
+				!e.Data.GetDataPresent("MCSkin3D.Skin"))
 			{
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
 
