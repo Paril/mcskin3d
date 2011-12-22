@@ -2638,6 +2638,10 @@ namespace MCSkin3D
 		Bitmap CopyScreenToBitmap()
 		{
 			rendererControl.MakeCurrent();
+			_screenshotMode = true;
+			rendererControl_Paint(null, null);
+			_screenshotMode = false;
+
 			Bitmap b = new Bitmap(rendererControl.Width, rendererControl.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
 			int[] pixels = new int[rendererControl.Width * rendererControl.Height];
@@ -2881,6 +2885,8 @@ namespace MCSkin3D
 			GL.End();
 		}
 
+		static bool _screenshotMode = false;
+
 		void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
 			rendererControl.MakeCurrent();
@@ -2918,9 +2924,11 @@ namespace MCSkin3D
 
 			GL.PopMatrix();
 
-			DrawGLToolbar();
+			if (!_screenshotMode)
+				DrawGLToolbar();
 
-			rendererControl.SwapBuffers();
+			if (!_screenshotMode)
+				rendererControl.SwapBuffers();
 		}
 
 		Rectangle _currentViewport;
