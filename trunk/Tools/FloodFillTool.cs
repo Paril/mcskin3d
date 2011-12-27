@@ -46,7 +46,7 @@ namespace MCSkin3D
 			_boundBox = new Rectangle(0, 0, skin.Width, skin.Height);
 
 			if ((Control.ModifierKeys & Keys.Control) != 0)
-				_boundBox = PlayerModel.HumanModel.GetTextureFaceBounds(new Point(p.X, p.Y), skin);
+				_boundBox = Editor.CurrentModel.GetTextureFaceBounds(new Point(p.X, p.Y), skin);
 
 			_done = false;
 		}
@@ -144,7 +144,7 @@ namespace MCSkin3D
 			Color newColor;
 			if (doHighlight)
 			{
-				var part = PlayerModel.HumanModel.GetTextureFaceBounds(highlightPoint, skin);
+				var part = Editor.CurrentModel.GetTextureFaceBounds(highlightPoint, skin);
 
 				for (int ry = part.Y; ry < part.Y + part.Height; ++ry)
 					for (int rx = part.X; rx < part.X + part.Width; ++rx)

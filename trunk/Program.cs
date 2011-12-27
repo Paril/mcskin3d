@@ -65,16 +65,21 @@ namespace MCSkin3D
 			Version = new Version(Application.ProductVersion);
 			Version.Revision = SVN.Repository.Revision;
 
+#if !DEBUG
 			try
 			{
+#endif
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(MainForm = new Editor());
+
+#if !DEBUG
 			}
 			catch (Exception ex)
 			{
 				Paril.Windows.Dialogs.ExceptionDialog.Show(ex);
 			}
+#endif
 		}
 
 		static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)

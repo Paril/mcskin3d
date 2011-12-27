@@ -225,7 +225,7 @@
     <Compile Include="Paril\OpenGL\ImmediateRenderer.cs" />
     <Compile Include="Paril\OpenGL\Renderer.cs" />
     <Compile Include="Tools\PencilTool.cs" />
-    <Compile Include="Models\PlayerModel.cs" />
+    <Compile Include="Models\ModelLoader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -100,7 +100,7 @@ namespace MCSkin3D
 			seed = _random.Next();
 
 			if ((Control.ModifierKeys & Keys.Control) != 0)
-				_applyRect = PlayerModel.HumanModel.GetTextureFaceBounds(p, skin);
+				_applyRect = Editor.CurrentModel.GetTextureFaceBounds(p, skin);
 			else
 				_applyRect = new Rectangle(0, 0, skin.Width, skin.Height);
 
@@ -135,7 +135,7 @@ namespace MCSkin3D
 			{
 				if (doHighlight)
 				{
-					var part = PlayerModel.HumanModel.GetTextureFaceBounds(highlightPoint, skin);
+					var part = Editor.CurrentModel.GetTextureFaceBounds(highlightPoint, skin);
 
 					for (int ry = part.Y; ry < part.Y + part.Height; ++ry)
 						for (int rx = part.X; rx < part.X + part.Width; ++rx)

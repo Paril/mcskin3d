@@ -3,6 +3,9 @@
 ?-- Update program
 *- Custom model support
 *- Custom brushes
+?- Deleting all skins (folders, etC) causes errors.
+?- Handle more upload errors
+?- Selection tool, copy/paste
 ?- Drag-drop from program to folder
 ?- Allow "old-style" drag/drop in case the COM entry for drag/drop is missing.
 ?- Allow change to main skin directory (hold multiple directories as well?)

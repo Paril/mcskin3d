@@ -29,7 +29,7 @@ using System.IO;
 
 namespace MCSkin3D
 {
-	public static class PlayerModel
+	public static class ModelLoader
 	{
 		// 3 = front-top-left
 		// 2 = front-top-right
@@ -122,34 +122,53 @@ namespace MCSkin3D
 			return new Vector2[] { box[i1], box[i2], box[i3], box[i4] };
 		}
 
-		public static Mesh HeadMesh;
-		public static Mesh InsideHelmetMesh;
-		public static Mesh HelmetMesh;
-		public static Mesh ChestMesh;
-		public static Mesh RightLegMesh;
-		public static Mesh LeftLegMesh;
-		public static Mesh RightArmMesh;
-		public static Mesh LeftArmMesh;
-		public static Model HumanModel;
-
 		static Vector2[] InvertCoords(Vector2[] coords)
 		{
 			return new Vector2[] { coords[3], coords[2], coords[1], coords[0] };
 		}
 
-		public static void LoadModel()
-		{
-			/*try
-			{
-				if ((HumanModel = Model.Load("Models\\human.xml")) != null)
-					return;
-			}
-			catch
-			{
-			}
+		public static Dictionary<string, Model> Models = new Dictionary<string, Model>();
 
-			MessageBox.Show(this, "Human model missing - did you forget to extract first? (creating...)");*/
-			Directory.CreateDirectory("Models");
+		public static void InvertBottomFaces()
+		{
+			foreach (var m in Models.Values)
+				foreach (var mesh in m.Meshes)
+					foreach (var face in mesh.Faces)
+					{
+						if (face.Downface)
+						{
+							float minY = 1, maxY = 0;
+
+							for (int i = 0; i < 4; ++i)
+							{
+								if (face.TexCoords[i].Y < minY)
+									minY = face.TexCoords[i].Y;
+								if (face.TexCoords[i].Y > maxY)
+									maxY = face.TexCoords[i].Y;
+							}
+
+
+							for (int i = 0; i < 4; ++i)
+							{
+								if (face.TexCoords[i].Y == minY)
+									face.TexCoords[i].Y = maxY;
+								else
+									face.TexCoords[i].Y = minY;
+							}
+						}
+					}
+		}
+
+		public static void CompileHumanModel()
+		{
+			Mesh HeadMesh;
+			Mesh HelmetMesh;
+			Mesh ChestMesh;
+			Mesh RightLegMesh;
+			Mesh LeftLegMesh;
+			Mesh RightArmMesh;
+			Mesh LeftArmMesh;
+			Model HumanModel;
 
 			var box = CreateBox(8);
 			var allWhite = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
@@ -201,7 +220,7 @@ namespace MCSkin3D
 			rightFace.Indices = ccw;
 
 			HelmetMesh.Faces = new List<Face>(new Face[] { frontFace, topFace, bottomFace, backFace, leftFace, rightFace });
-	
+
 			frontFace.Indices =
 			topFace.Indices =
 			bottomFace.Indices =
@@ -367,6 +386,23 @@ namespace MCSkin3D
 			HumanModel.Meshes.Add(HelmetMesh);
 
 			HumanModel.Save("Models\\human.xml");
+		}
+
+		public static void LoadModels()
+		{
+			Directory.CreateDirectory("Models");
+
+			foreach (var m in Directory.GetFiles("Models", "*.xml"))
+			{
+				try
+				{
+					Model model = Model.Load(m);
+					Models.Add(model.Name, model);
+				}
+				catch
+				{
+				}
+			}
 		}
 	}
 }

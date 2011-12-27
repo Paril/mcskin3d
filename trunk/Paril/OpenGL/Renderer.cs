@@ -48,6 +48,7 @@ namespace Paril.OpenGL
 		public Vector2[] TexCoords;
 		public Color4[] Colors;
 		public int[] Indices;
+		public bool Downface;
 
 		public Face(Vector3[] vertices, Vector2[] texCoords, Color4[] colors, int[] indices) :
 			this()
@@ -289,6 +290,12 @@ namespace Paril.OpenGL
 					i = 0;
 					foreach (XmlElement vertexNode in faceNode["Indices"])
 						face.Indices[i++] = int.Parse(vertexNode.InnerText);
+
+					var dir = Vector3.Cross(face.Vertices[1] - face.Vertices[0], face.Vertices[2] - face.Vertices[0]);
+					var norm = Vector3.Normalize(dir);
+
+					if (norm == new Vector3(0, 1, 0))
+						face.Downface = true;
 
 					mesh.Faces.Add(face);
 				}
