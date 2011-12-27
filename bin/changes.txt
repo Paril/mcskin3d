@@ -4,6 +4,7 @@ Version 1.4
 - Support for textures up to 4096x4096
 - External change support (modifications done outside of the program are picked up and reflected).
 - Removed toolbar button at top when taking a screenshot
+- Fixed M_UPLOADRES not appearing in all conditions.
 
 Version 1.3
 - Treeview skin selector

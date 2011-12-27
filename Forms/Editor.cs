@@ -97,7 +97,8 @@ namespace MCSkin3D
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
 		FileSystemWatcher _watcher;
-		Thread watcherThread;
+
+		public static Model CurrentModel;
 		#endregion
 
 		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
@@ -145,6 +146,7 @@ namespace MCSkin3D
 
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
+			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointOhMode;
 
 			SetCheckbox(VisiblePartFlags.HeadFlag, headToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.ChestFlag, chestToolStripMenuItem);
@@ -244,7 +246,15 @@ namespace MCSkin3D
 
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 
-			PlayerModel.LoadModel();
+			ModelLoader.LoadModels();
+
+			if (!ModelLoader.Models.ContainsKey(GlobalSettings.LastModel))
+			{
+				MessageBox.Show("M_NOLASTMODEL");
+				CurrentModel = ModelLoader.Models["Human"];
+			}
+			else
+				CurrentModel = ModelLoader.Models[GlobalSettings.LastModel];
 
 			SetSampleMenuItem(GlobalSettings.Multisamples);
 
@@ -284,23 +294,17 @@ namespace MCSkin3D
 			treeView1.Scrollable = true;
 			splitContainer4.SplitterDistance = 74;
 
+			_watcher = new FileSystemWatcher("Skins");
+			_watcher.SynchronizingObject = Program.MainForm;
+			_watcher.Changed += _watcher_Changed;
+			_watcher.Created += _watcher_Created;
+			_watcher.Deleted += _watcher_Deleted;
+			_watcher.Renamed += _watcher_Renamed;
+			_watcher.EnableRaisingEvents = true;
+			_watcher.IncludeSubdirectories = true;
 
-			watcherThread = new Thread(
-				delegate()
-				{
-					_watcher = new FileSystemWatcher("Skins");
-					_watcher.SynchronizingObject = Program.MainForm;
-					_watcher.Changed += _watcher_Changed;
-					_watcher.Created += _watcher_Created;
-					_watcher.Deleted += _watcher_Deleted;
-					_watcher.Renamed += _watcher_Renamed;
-					_watcher.EnableRaisingEvents = true;
-					_watcher.IncludeSubdirectories = true;
-
-					while (true)
-						_watcher.WaitForChanged(WatcherChangeTypes.All);
-				});
-			watcherThread.Start();
+			if (GlobalSettings.OnePointOhMode)
+				ModelLoader.InvertBottomFaces();
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -398,7 +402,8 @@ namespace MCSkin3D
 				var node = treeView1.NodeFromPath(Path.GetDirectoryName(e.FullPath).Replace("Skins\\", ""), false);
 
 				if (node == null)
-					throw new Exception("Watcher found a new file, but path is invalid");
+					return;
+					//throw new Exception("Watcher found a new file, but path is invalid");
 
 				Thread.Sleep(100); // Sleep a bit, because Windows might still be using this file.
 
@@ -798,7 +803,6 @@ namespace MCSkin3D
 			}
 
 			_updater.Abort();
-			watcherThread.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
 			GlobalSettings.Save();
@@ -859,6 +863,12 @@ namespace MCSkin3D
 			twoDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
+
+			optionsToolStripMenuItem.DropDown.Closing += (sender, args) =>
+			{
+				if (modeToolStripMenuItem1.Selected && (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked || args.CloseReason == ToolStripDropDownCloseReason.Keyboard))
+					args.Cancel = true;
+			};
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -1086,7 +1096,7 @@ namespace MCSkin3D
 			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
 
 			// draw non-transparent meshes
-			foreach (var mesh in PlayerModel.HumanModel.Meshes)
+			foreach (var mesh in CurrentModel.Meshes)
 			{
 				if (mesh.Helmet)
 					continue;
@@ -1115,7 +1125,7 @@ namespace MCSkin3D
 			// Draw ghosted parts
 			if (GlobalSettings.Ghost && !pickView)
 			{
-				foreach (var mesh in PlayerModel.HumanModel.Meshes)
+				foreach (var mesh in CurrentModel.Meshes)
 				{
 					if (mesh.Helmet)
 						continue;
@@ -1150,7 +1160,7 @@ namespace MCSkin3D
 				GL.Disable(EnableCap.Blend);
 
 			// draw transparent meshes
-			foreach (var mesh in PlayerModel.HumanModel.Meshes)
+			foreach (var mesh in CurrentModel.Meshes)
 			{
 				if (!mesh.Helmet)
 					continue;
@@ -1179,7 +1189,7 @@ namespace MCSkin3D
 			// Draw ghosted parts
 			if (GlobalSettings.Ghost && !pickView)
 			{
-				foreach (var mesh in PlayerModel.HumanModel.Meshes)
+				foreach (var mesh in CurrentModel.Meshes)
 				{
 					if (!mesh.Helmet)
 						continue;
@@ -1863,6 +1873,12 @@ namespace MCSkin3D
 			if (_lastSkin == null)
 				return;
 
+			if (_lastSkin.Width != 64 || _lastSkin.Height != 32)
+			{
+				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADRES"));
+				return;
+			}
+
 			login.Username = GlobalSettings.LastUsername;
 			login.Password = GlobalSettings.LastPassword;
 
@@ -1956,6 +1972,16 @@ namespace MCSkin3D
 			rendererControl.Invalidate();
 		}
 
+		void Perform10Mode()
+		{
+			ModelLoader.InvertBottomFaces();
+
+			modeToolStripMenuItem1.Checked = !modeToolStripMenuItem1.Checked;
+			GlobalSettings.OnePointOhMode = modeToolStripMenuItem1.Checked;
+
+			rendererControl.Invalidate();
+		}
+
 		#region Skin Management
 		void ImportSkin(string fileName, string folderLocation, TreeNode parentNode)
 		{
@@ -1964,6 +1990,7 @@ namespace MCSkin3D
 			while (File.Exists(folderLocation + name + ".png"))
 				name += " (New)";
 
+			AddIgnoreFile(folderLocation + name + ".png");
 			File.Copy(fileName, folderLocation + name + ".png");
 
 			Skin skin = new Skin(folderLocation + name + ".png");
@@ -2949,7 +2976,7 @@ namespace MCSkin3D
 
 			Vector3 vec = new Vector3();
 			int count = 0;
-			foreach (var mesh in PlayerModel.HumanModel.Meshes)
+			foreach (var mesh in CurrentModel.Meshes)
 			{
 				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
 				{
@@ -3223,12 +3250,6 @@ namespace MCSkin3D
 
 		void uploadButton_Click(object sender, EventArgs e)
 		{
-			if (_lastSkin.Width != 64 || _lastSkin.Height != 32)
-			{
-				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADRES"));
-				return;
-			}
-
 			PerformUpload();
 		}
 
@@ -3748,15 +3769,18 @@ namespace MCSkin3D
 				if (textBox1.Text.Contains('#'))
 					textBox1.Text = textBox1.Text.Replace("#", "");
 
+				if (textBox1.Text.Length > 8)
+					textBox1.Text = textBox1.Text.Remove(8);
+
 				string realHex = textBox1.Text;
 
 				while (realHex.Length != 8)
 					realHex += 'F';
 
-				byte r = byte.Parse(realHex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-				byte g = byte.Parse(realHex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-				byte b = byte.Parse(realHex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-				byte a = byte.Parse(realHex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+				byte r = byte.Parse(realHex.Substring(0, 2), NumberStyles.HexNumber);
+				byte g = byte.Parse(realHex.Substring(2, 2), NumberStyles.HexNumber);
+				byte b = byte.Parse(realHex.Substring(4, 2), NumberStyles.HexNumber);
+				byte a = byte.Parse(realHex.Substring(6, 2), NumberStyles.HexNumber);
 
 				_editingHex = true;
 				SetColor(Color.FromArgb(a, r, g, b));
@@ -4169,6 +4193,11 @@ namespace MCSkin3D
 				if (dl.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 					GlobalSettings.SkinDirectories = dl.Directories.ToArray();
 			}
+		}
+
+		private void modeToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			Perform10Mode();
 		}
 	}
 }

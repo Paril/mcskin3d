@@ -81,6 +81,9 @@
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.keyboardShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+			this.modeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -180,7 +183,6 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -678,7 +680,9 @@
 			this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.keyboardShortcutsToolStripMenuItem,
             this.backgroundColorToolStripMenuItem,
-            this.mSKINDIRSToolStripMenuItem});
+            this.mSKINDIRSToolStripMenuItem,
+            this.toolStripMenuItem6,
+            this.modeToolStripMenuItem1});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.optionsToolStripMenuItem, "Text");
 			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
@@ -699,6 +703,27 @@
 			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.backgroundColorToolStripMenuItem.Text = "M_BGCOLOR";
 			this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
+			// 
+			// mSKINDIRSToolStripMenuItem
+			// 
+			this.mSKINDIRSToolStripMenuItem.Name = "mSKINDIRSToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mSKINDIRSToolStripMenuItem, "Text");
+			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
+			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem6
+			// 
+			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+			this.toolStripMenuItem6.Size = new System.Drawing.Size(174, 6);
+			// 
+			// modeToolStripMenuItem1
+			// 
+			this.modeToolStripMenuItem1.Name = "modeToolStripMenuItem1";
+			this.languageProvider1.SetPropertyNames(this.modeToolStripMenuItem1, "Text");
+			this.modeToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+			this.modeToolStripMenuItem1.Text = "M_10_MODE";
+			this.modeToolStripMenuItem1.Click += new System.EventHandler(this.modeToolStripMenuItem1_Click);
 			// 
 			// languageToolStripMenuItem
 			// 
@@ -749,7 +774,7 @@
             this.toolStripMenuItem5,
             this.mFETCHNAMEToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 242);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 220);
 			// 
 			// importHereToolStripMenuItem
 			// 
@@ -820,7 +845,7 @@
 			// 
 			// mDECRESToolStripMenuItem
 			// 
-			this.mDECRESToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.decres;
+			this.mDECRESToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.incres;
 			this.mDECRESToolStripMenuItem.Name = "mDECRESToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mDECRESToolStripMenuItem, "Text");
 			this.mDECRESToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
@@ -829,7 +854,7 @@
 			// 
 			// mINCRESToolStripMenuItem
 			// 
-			this.mINCRESToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.incres;
+			this.mINCRESToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.decres;
 			this.mINCRESToolStripMenuItem.Name = "mINCRESToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mINCRESToolStripMenuItem, "Text");
 			this.mINCRESToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
@@ -1056,7 +1081,7 @@
 			// toolStripButton4
 			// 
 			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton4.Image = global::MCSkin3D.Properties.Resources.decres;
+			this.toolStripButton4.Image = global::MCSkin3D.Properties.Resources.incres;
 			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton4.Name = "toolStripButton4";
 			this.languageProvider1.SetPropertyNames(this.toolStripButton4, "Text");
@@ -1067,7 +1092,7 @@
 			// toolStripButton3
 			// 
 			this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton3.Image = global::MCSkin3D.Properties.Resources.incres;
+			this.toolStripButton3.Image = global::MCSkin3D.Properties.Resources.decres;
 			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton3.Name = "toolStripButton3";
 			this.languageProvider1.SetPropertyNames(this.toolStripButton3, "Text");
@@ -1824,13 +1849,6 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
-			// mSKINDIRSToolStripMenuItem
-			// 
-			this.mSKINDIRSToolStripMenuItem.Name = "mSKINDIRSToolStripMenuItem";
-			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
-			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
-			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2036,6 +2054,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+		private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem1;
 	}
 }
 

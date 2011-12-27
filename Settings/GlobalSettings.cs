@@ -143,6 +143,14 @@ namespace MCSkin3D
 		[TypeSerializer(typeof(StringArraySerializer), true)]
 		public static string[] SkinDirectories { get; set; }
 
+		[Savable]
+		[DefaultValue("Human")]
+		public static string LastModel { get; set; }
+
+		[Savable]
+		[DefaultValue(true)]
+		public static bool OnePointOhMode { get; set; }
+
 		static Settings Settings = null;
 
 		public static bool Load()
