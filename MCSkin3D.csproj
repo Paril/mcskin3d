@@ -59,7 +59,7 @@
     </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Icon_new.ico</ApplicationIcon>
+    <ApplicationIcon>Icon_new.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Beta|x86'">
     <OutputPath>bin\</OutputPath>
@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
+    <Compile Include="ColorGrabber.cs" />
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -332,6 +333,8 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <Content Include="Icon_new.ico" />
+    <Content Include="Icon_new2.ico" />
     <None Include="Resources\112_Minus_Orange_16x16_72.png" />
     <None Include="Resources\112_Minus_Orange_24x24_721.png" />
     <None Include="Resources\112_Plus_Green_16x16_72.png" />

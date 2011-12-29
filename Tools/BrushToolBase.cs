@@ -43,7 +43,7 @@ namespace MCSkin3D
 		{
 		}
 
-		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y, bool incremental)
+		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
 		{
 			if (x == _oldPixel.X && y == _oldPixel.Y)
 				return false;
@@ -67,9 +67,8 @@ namespace MCSkin3D
 					if (brush[rx, ry] == 0.0f)
 						continue;
 
-					var pixNum = xx + (skin.Width * yy);
-					var c = pixels[pixNum];
-					var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+					var c = pixels[xx, yy];
+					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 					var color = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
 
 					var maxAlpha = color.A;
@@ -100,7 +99,7 @@ namespace MCSkin3D
 					else
 						_undo.Points.Add(new Point(xx, yy), Tuple.MakeTuple(oldColor, new ColorAlpha(newColor, alphaToAdd)));
 
-					pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
+					pixels[xx, yy] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 				}
 			}
 
@@ -115,7 +114,7 @@ namespace MCSkin3D
 			private set;
 		}
 
-		public virtual bool RequestPreview(int[] pixels, Skin skin, int x, int y)
+		public virtual bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (x == -1)
 				return false;
@@ -139,21 +138,20 @@ namespace MCSkin3D
 					if (brush[rx, ry] == 0.0f)
 						continue;
 
-					var pixNum = xx + (skin.Width * yy);
-					var c = pixels[pixNum];
-					var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+					var c = pixels[xx, yy];
+					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
 					var color = GetLeftColor();
 					color = Color.FromArgb((byte)(brush[rx, ry] * 255 * (color.A / 255.0f)), color);
 
 					var newColor = BlendColor(color, oldColor);
-					pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
+					pixels[xx, yy] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 				}
 			}
 
 			return true;
 		}
 
-		public virtual bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
+		public virtual bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			if (_undo.Points.Count != 0)
 			{
@@ -167,7 +165,7 @@ namespace MCSkin3D
 			return false;
 		}
 
-		public abstract bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y);
+		public abstract bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y);
 		public abstract Color BlendColor(Color l, Color r);
 		public abstract Color GetLeftColor();
 

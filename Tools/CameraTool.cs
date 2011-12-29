@@ -46,17 +46,17 @@ namespace MCSkin3D
 			_oldMouse = e.Location;
 		}
 
-		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			return false;
 		}
 
-		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
+		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			return false;
 		}
 
-		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
+		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			return false;
 		}
