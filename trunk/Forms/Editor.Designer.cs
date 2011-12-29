@@ -183,6 +183,7 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.mINVERTBOTTOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -682,7 +683,8 @@
             this.backgroundColorToolStripMenuItem,
             this.mSKINDIRSToolStripMenuItem,
             this.toolStripMenuItem6,
-            this.modeToolStripMenuItem1});
+            this.modeToolStripMenuItem1,
+            this.mINVERTBOTTOMToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.optionsToolStripMenuItem, "Text");
 			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
@@ -1849,6 +1851,13 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
+			// mINVERTBOTTOMToolStripMenuItem
+			// 
+			this.mINVERTBOTTOMToolStripMenuItem.Name = "mINVERTBOTTOMToolStripMenuItem";
+			this.mINVERTBOTTOMToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.mINVERTBOTTOMToolStripMenuItem.Text = "M_INVERTBOTTOM";
+			this.mINVERTBOTTOMToolStripMenuItem.Click += new System.EventHandler(this.mINVERTBOTTOMToolStripMenuItem_Click);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2056,6 +2065,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
 		private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem mINVERTBOTTOMToolStripMenuItem;
 	}
 }
 

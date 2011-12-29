@@ -461,13 +461,13 @@ namespace MCSkin3D
 				
 				if (treeView1.SelectedNode == skin)
 				{
-					RenderState.BindTexture(skin.GLImage);
-					int[] array = new int[skin.Width * skin.Height];
-					GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-					RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-					RenderState.BindTexture(_previewPaint);
-					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					ColorGrabber skinImage = new ColorGrabber(skin.GLImage, skin.Width, skin.Height);
+					skinImage.Load();
+
+					skinImage.Texture = GlobalDirtiness.CurrentSkin;
+					skinImage.Save();
+					skinImage.Texture = _previewPaint;
+					skinImage.Save();
 				}
 				else
 				{
@@ -1226,29 +1226,27 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 			{
-				int[] array = new int[64 * 32];
-				RenderState.BindTexture(_previewPaint);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				ColorGrabber preview = new ColorGrabber(_previewPaint, 64, 32);
+				preview.Save();
 			}
 			else
 			{
 				Skin skin = _lastSkin;
 
-				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-				int[] array = new int[skin.Width * skin.Height];
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+				currentSkin.Load();
 
 				//var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
 				{
-					if (_selectedTool.Tool.RequestPreview(array, skin, _pickPosition.X, _pickPosition.Y))
+					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
 					{
-						RenderState.BindTexture(_previewPaint);
-						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+						currentSkin.Texture = _previewPaint;
+						currentSkin.Save();
 					}
 					else
 					{
-						RenderState.BindTexture(_previewPaint);
-						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+						currentSkin.Texture = _previewPaint;
+						currentSkin.Save();
 					}
 				}
 			}
@@ -1683,16 +1681,14 @@ namespace MCSkin3D
 			{
 				Skin skin = _lastSkin;
 
-				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-				int[] array = new int[skin.Width * skin.Height];
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+				currentSkin.Load();
 
-				if (_selectedTool.Tool.MouseMoveOnSkin(array, skin, _pickPosition.X, _pickPosition.Y))
+				if (_selectedTool.Tool.MouseMoveOnSkin(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
 				{
 					SetCanSave(true);
 					skin.Dirty = true;
-					//treeView1.Invalidate();
-					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					currentSkin.Save();
 				}
 			}
 
@@ -3167,22 +3163,23 @@ namespace MCSkin3D
 
 			if (_mouseIsDown)
 			{
+				ColorGrabber currentSkin = new ColorGrabber();
+
 				if (e.Button == MouseButtons.Left)
 				{
-					RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-					int[] array = new int[skin.Width * skin.Height];
-					GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+					currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+					currentSkin.Load();
 
-					if (_selectedTool.Tool.EndClick(array, skin, e))
+					if (_selectedTool.Tool.EndClick(ref currentSkin, skin, e))
 					{
 						SetCanSave(true);
 						skin.Dirty = true;
 						treeView1.Invalidate();
-						GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+						currentSkin.Save();
 					}
 				}
 				else
-					_tools[(int)Tools.Camera].Tool.EndClick(null, _lastSkin, e);
+					_tools[(int)Tools.Camera].Tool.EndClick(ref currentSkin, _lastSkin, e);
 			}
 
 			_mouseIsDown = false;
@@ -3224,21 +3221,22 @@ namespace MCSkin3D
 			{
 				_currentUndoBuffer = null;
 				RenderState.BindTexture(0);
-				int[] array = new int[64 * 32];
-				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+
+				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, 64, 32);
+				currentSkin.Save();
+
 				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = false;
 				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = false;
 			}
 			else
 			{
-				RenderState.BindTexture(skin.GLImage);
-				int[] array = new int[skin.Width * skin.Height];
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-				RenderState.BindTexture(_previewPaint);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+				ColorGrabber glImage = new ColorGrabber(skin.GLImage, skin.Width, skin.Height);
+				glImage.Load();
+
+				glImage.Texture = GlobalDirtiness.CurrentSkin;
+				glImage.Save();
+				glImage.Texture = _previewPaint;
+				glImage.Save();
 
 				_currentUndoBuffer = skin.Undo;
 				CheckUndo();
@@ -4198,6 +4196,57 @@ namespace MCSkin3D
 		private void modeToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			Perform10Mode();
+		}
+
+		private void mINVERTBOTTOMToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (treeView1.SelectedNode == null ||
+				_lastSkin == null)
+				return;
+
+			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height);
+			grabber.Load();
+
+			List<Rectangle> toInvert = new List<Rectangle>();
+
+			foreach (var meshes in CurrentModel.Meshes)
+			{
+				foreach (var face in meshes.Faces)
+				{
+					if (face.Downface)
+					{
+						var rect = face.TexCoordsToInteger(_lastSkin.Width, _lastSkin.Height);
+
+						if (!toInvert.Contains(rect))
+							toInvert.Add(rect);
+					}
+				}
+			}
+
+			PixelsChangedUndoable undoable = new PixelsChangedUndoable();
+
+			foreach (var rect in toInvert)
+			{
+				for (int x = rect.X; x < rect.X + rect.Width; ++x)
+				{
+					for (int y = rect.Y, y2 = rect.Y + rect.Height - 1; y2 > y; ++y, --y2)
+					{
+						var topPixel = grabber[x, y];
+						var bottomPixel = grabber[x, y2];
+
+						undoable.Points.Add(new Point(x, y), Tuple.MakeTuple(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue), new ColorAlpha(Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green, bottomPixel.Blue), -1)));
+						undoable.Points.Add(new Point(x, y2), Tuple.MakeTuple(Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green, bottomPixel.Blue), new ColorAlpha(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue), -1)));
+
+						grabber[x, y] = bottomPixel;
+						grabber[x, y2] = topPixel;
+					}
+				}
+			}
+
+			_lastSkin.Undo.AddBuffer(undoable);
+			CheckUndo();
+
+			grabber.Save();
 		}
 	}
 }

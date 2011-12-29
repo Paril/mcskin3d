@@ -147,7 +147,6 @@ namespace MCSkin3D
 									maxY = face.TexCoords[i].Y;
 							}
 
-
 							for (int i = 0; i < 4; ++i)
 							{
 								if (face.TexCoords[i].Y == minY)

@@ -28,9 +28,9 @@ namespace MCSkin3D
 {
 	public class DodgeBurnTool : BrushToolBase
 	{
-		public override bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
+		public override bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			return MouseMoveOnSkin(pixels, skin, x, y, GlobalSettings.DodgeBurnIncremental);
+			return MouseMoveOnSkin(ref pixels, skin, x, y, GlobalSettings.DodgeBurnIncremental);
 		}
 
 		public override Color BlendColor(Color l, Color r)

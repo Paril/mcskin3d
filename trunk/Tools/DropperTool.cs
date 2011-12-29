@@ -36,11 +36,10 @@ namespace MCSkin3D
 		{
 		}
 
-		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			var pixNum = x + (skin.Width * y);
-			var c = pixels[pixNum];
-			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+			var c = pixels[x, y];
+			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
 
 			if ((Control.ModifierKeys & Keys.Shift) != 0)
 				Program.MainForm.UnselectedColor = oldColor;
@@ -49,12 +48,12 @@ namespace MCSkin3D
 			return false;
 		}
 
-		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
+		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			return false;
 		}
 
-		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
+		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			return false;
 		}

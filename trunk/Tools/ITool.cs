@@ -26,9 +26,9 @@ namespace MCSkin3D
 	{
 		void BeginClick(Skin skin, Point p, MouseEventArgs e);
 		void MouseMove(Skin skin, MouseEventArgs e);
-		bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y);
-		bool RequestPreview(int[] pixels, Skin skin, int x, int y);
-		bool EndClick(int[] pixels, Skin skin, MouseEventArgs e);
+		bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y);
+		bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y);
+		bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e);
 		string GetStatusLabelText();
 	}
 }

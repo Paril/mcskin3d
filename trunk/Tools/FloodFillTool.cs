@@ -36,7 +36,6 @@ namespace MCSkin3D
         }
 
 		PixelsChangedUndoable _undo;
-		private bool[] hitPixels;
 		Rectangle _boundBox;
 		bool _done = false;
 
@@ -83,17 +82,16 @@ namespace MCSkin3D
 		}
 
 		byte _threshold;
-		private void recursiveFill(int x, int y, Color oldColor, Color newColor, int[] pixels, bool[] hitPixels, Skin skin)
+		private void recursiveFill(int x, int y, Color oldColor, Color newColor, ref ColorGrabber pixels, bool[,] hitPixels, Skin skin)
 		{
 			if (!_boundBox.Contains(x, y))
 				return;
 
-			int i = x + (y * skin.Width);
-			if (hitPixels[i])
+			if (hitPixels[x, y])
 				return;
 
-			var c = pixels[i];
-			var real = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+			var c = pixels[x, y];
+			var real = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 
 			if (!similarColor2(oldColor, real, _threshold))
 				return;
@@ -101,20 +99,20 @@ namespace MCSkin3D
 			if (!_undo.Points.ContainsKey(new Point(x, y)))
 				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor, 0)));
 
-			pixels[i] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
-			hitPixels[i] = true;
+			pixels[x, y] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
+			hitPixels[x, y] = true;
 
-            recursiveFill(x, y - 1, oldColor, newColor, pixels, hitPixels, skin);
+            recursiveFill(x, y - 1, oldColor, newColor, ref pixels, hitPixels, skin);
 			//recursiveFill(x + 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
-            recursiveFill(x + 1, y, oldColor, newColor, pixels, hitPixels, skin);
+            recursiveFill(x + 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
 			//recursiveFill(x + 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
-            recursiveFill(x, y + 1, oldColor, newColor, pixels, hitPixels, skin);
+            recursiveFill(x, y + 1, oldColor, newColor, ref pixels, hitPixels, skin);
 			//recursiveFill(x - 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
-            recursiveFill(x - 1, y, oldColor, newColor, pixels, hitPixels, skin);
+            recursiveFill(x - 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
 			//recursiveFill(x - 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
 		}
 
-		public bool MouseMoveOnSkin(int[] pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (_done)
 				return false;
@@ -122,18 +120,16 @@ namespace MCSkin3D
 			var curve = new BezierCurveQuadric(new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 2));
 			_threshold = (byte)((1 - (curve.CalculatePoint(Threshold)).X) * 255);//(byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255);
 
-			hitPixels = new bool[skin.Width * skin.Height];
-			var pixNum = x + (skin.Width * y);
-			var c = pixels[pixNum];
-			var oldColor = Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+			var c = pixels[x, y];
+			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
 			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
 
-            recursiveFill(x, y, oldColor, newColor, pixels, hitPixels, skin);
+            recursiveFill(x, y, oldColor, newColor, ref pixels, new bool[skin.Width, skin.Height], skin);
 			_done = true;
 			return true;
 		}
 
-		public bool RequestPreview(int[] pixels, Skin skin, int x, int y)
+		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (x == -1)
 				return false;
@@ -149,23 +145,22 @@ namespace MCSkin3D
 				for (int ry = part.Y; ry < part.Y + part.Height; ++ry)
 					for (int rx = part.X; rx < part.X + part.Width; ++rx)
 					{
-						var px = rx + (ry * skin.Width);
-						Color c = Color.FromArgb((pixels[px] >> 24) & 0xFF, (pixels[px] >> 0) & 0xFF, (pixels[px] >> 8) & 0xFF, (pixels[px] >> 16) & 0xFF);
+						var px = pixels[rx, ry];
+						Color c = Color.FromArgb(px.Alpha, px.Red, px.Green, px.Blue);
 						Color blendMe = Color.FromArgb(64, Color.Green);
 						newColor = (Color)ColorBlending.AlphaBlend(blendMe, c);
 
-						pixels[px] = (newColor.R << 0) | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
+						pixels[rx, ry] = new ColorPixel((newColor.R << 0) | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 					}
 
 			}
 
-			var pixNum = x + (skin.Width * y);
 			newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
-			pixels[pixNum] = newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24);
+			pixels[x, y] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 			return true;
 		}
 
-		public bool EndClick(int[] pixels, Skin skin, MouseEventArgs e)
+		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			_done = false;
 			if (_undo.Points.Count != 0)
