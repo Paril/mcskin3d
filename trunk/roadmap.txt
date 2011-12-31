@@ -3,10 +3,10 @@
 ?-- Update program
 *- Custom model support
 *- Custom brushes
-?- Deleting all skins (folders, etC) causes errors.
+*- Deleting all skins (folders, etC) causes errors.
+*- Drag-drop from program to folder
 ?- Handle more upload errors
 ?- Selection tool, copy/paste
-?- Drag-drop from program to folder
 ?- Allow "old-style" drag/drop in case the COM entry for drag/drop is missing.
 ?- Allow change to main skin directory (hold multiple directories as well?)
 ?- Check upload size (apparently is broken)
@@ -28,6 +28,7 @@
 ?- Automatically hide/show helmet based on transparency contained in helmet
 ?- Smudge tool
 ?- Double-check language strings, ensure all English strings in source are language-ized
+?- Ability to move the model around as well (change center)
 
 1.3:
 ?- Hopefully, get an optimized color class (not super-high priority)
