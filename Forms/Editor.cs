@@ -78,7 +78,7 @@ namespace MCSkin3D
 		float _2dCamOffsetY = 0;
 		float _2dZoom = 8;
 		float _3dZoom = -80;
-		float _3dRotationX = 0, _3dRotationY = 0;
+		float _3dRotationX = 0, _3dRotationY = 180;
 		bool _mouseIsDown = false;
 		Point _mousePoint;
 		UndoBuffer _currentUndoBuffer = null;
@@ -932,12 +932,7 @@ namespace MCSkin3D
 
 		void DrawSkinnedRectangle
 			(float x, float y, float z, float width, float length, float height,
-			int frontSkinX, int frontSkinY, int frontSkinW, int frontSkinH,
-			int backSkinX, int backSkinY, int backSkinW, int backSkinH,
 			int topSkinX, int topSkinY, int topSkinW, int topSkinH,
-			int bottomSkinX, int bottomSkinY, int bottomSkinW, int bottomSkinH,
-			int leftSkinX, int leftSkinY, int leftSkinW, int leftSkinH,
-			int rightSkinX, int rightSkinY, int rightSkinW, int rightSkinH,
 			int texture, int skinW = 64, int skinH = 32)
 		{
 			RenderState.BindTexture(texture);
@@ -948,72 +943,15 @@ namespace MCSkin3D
 			length /= 2;
 			height /= 2;
 
-			float fsX = (float)frontSkinX / skinW;
-			float fsY = (float)frontSkinY / skinH;
-			float fsW = (float)frontSkinW / skinW;
-			float fsH = (float)frontSkinH / skinH;
-
-			float basX = (float)backSkinX / skinW;
-			float basY = (float)backSkinY / skinH;
-			float basW = (float)backSkinW / skinW;
-			float basH = (float)backSkinH / skinH;
-
 			float tsX = (float)topSkinX / skinW;
 			float tsY = (float)topSkinY / skinH;
 			float tsW = (float)topSkinW / skinW;
 			float tsH = (float)topSkinH / skinH;
 
-			float bsX = (float)bottomSkinX / skinW;
-			float bsY = (float)bottomSkinY / skinH;
-			float bsW = (float)bottomSkinW / skinW;
-			float bsH = (float)bottomSkinH / skinH;
-
-			float lsX = (float)leftSkinX / skinW;
-			float lsY = (float)leftSkinY / skinH;
-			float lsW = (float)leftSkinW / skinW;
-			float lsH = (float)leftSkinH / skinH;
-
-			float rsX = (float)rightSkinX / skinW;
-			float rsY = (float)rightSkinY / skinH;
-			float rsW = (float)rightSkinW / skinW;
-			float rsH = (float)rightSkinH / skinH;
-
-			// Front Face
-			if (texture != _grassTop)
-			{
-				GL.TexCoord2(fsX, fsY); GL.Vertex3(x - width, y + length, z + height);  // Bottom Left Of The Texture and Quad
-				GL.TexCoord2(fsX + fsW - 0.00005, fsY); GL.Vertex3(x + width, y + length, z + height);  // Bottom Right Of The Texture and Quad
-				GL.TexCoord2(fsX + fsW - 0.00005, fsY + fsH - 0.00005); GL.Vertex3(x + width, y - length, z + height);  // Top Right Of The Texture and Quad
-				GL.TexCoord2(fsX, fsY + fsH - 0.00005); GL.Vertex3(x - width, y - length, z + height);  // Top Left Of The Texture and Quad
-			}
-
 			GL.TexCoord2(tsX, tsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Top)
 			GL.TexCoord2(tsX + tsW - 0.00005, tsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Top)
 			GL.TexCoord2(tsX + tsW - 0.00005, tsY + tsH - 0.00005); GL.Vertex3(x + width, y + length, z + height);          // Bottom Left Of The Quad (Top)
 			GL.TexCoord2(tsX, tsY + tsH - 0.00005); GL.Vertex3(x - width, y + length, z + height);          // Bottom Right Of The Quad (Top)
-
-			if (texture != _grassTop)
-			{
-				GL.TexCoord2(bsX, bsY); GL.Vertex3(x - width, y - length, z + height);          // Top Right Of The Quad (Top)
-				GL.TexCoord2(bsX + bsW - 0.00005, bsY); GL.Vertex3(x + width, y - length, z + height);          // Top Left Of The Quad (Top)
-				GL.TexCoord2(bsX + bsW - 0.00005, bsY + bsH - 0.00005); GL.Vertex3(x + width, y - length, z - height);          // Bottom Left Of The Quad (Top)
-				GL.TexCoord2(bsX, bsY + bsH - 0.00005); GL.Vertex3(x - width, y - length, z - height);          // Bottom Right Of The Quad (Top)
-
-				GL.TexCoord2(lsX, lsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Left)
-				GL.TexCoord2(lsX + lsW - 0.00005, lsY); GL.Vertex3(x - width, y + length, z + height);          // Top Left Of The Quad (Left)
-				GL.TexCoord2(lsX + lsW - 0.00005, lsY + lsH - 0.00005); GL.Vertex3(x - width, y - length, z + height);          // Bottom Left Of The Quad (Left)
-				GL.TexCoord2(lsX, lsY + lsH - 0.00005); GL.Vertex3(x - width, y - length, z - height);          // Bottom Right Of The Quad (Left)
-
-				GL.TexCoord2(rsX, rsY); GL.Vertex3(x + width, y + length, z + height);          // Top Right Of The Quad (Left)
-				GL.TexCoord2(rsX + rsW - 0.00005, rsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Left)
-				GL.TexCoord2(rsX + rsW - 0.00005, rsY + rsH - 0.00005); GL.Vertex3(x + width, y - length, z - height);          // Bottom Left Of The Quad (Left)
-				GL.TexCoord2(rsX, rsY + rsH - 0.00005); GL.Vertex3(x + width, y - length, z + height);          // Bottom Right Of The Quad (Left)
-
-				GL.TexCoord2(basX, basY); GL.Vertex3(x + width, y + length, z - height);  // Bottom Left Of The Texture and Quad
-				GL.TexCoord2(basX + basW - 0.00005, basY); GL.Vertex3(x - width, y + length, z - height);  // Bottom Right Of The Texture and Quad
-				GL.TexCoord2(basX + basW - 0.00005, basY + basH - 0.00005); GL.Vertex3(x - width, y - length, z - height);  // Top Right Of The Texture and Quad
-				GL.TexCoord2(basX, basY + basH - 0.00005); GL.Vertex3(x + width, y - length, z - height);  // Top Left Of The Texture and Quad		
-			}
 
 			GL.End();
 		}
@@ -1090,7 +1028,7 @@ namespace MCSkin3D
 				GL.Disable(EnableCap.Blend);
 
 			if (grass)
-				DrawSkinnedRectangle(0, -20, 0, 1024, 4, 1024, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 1024, 1024, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _grassTop, 16, 16);
+				DrawSkinnedRectangle(0, 24, 0, 1024, 4, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
 
 			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
 			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
@@ -2964,6 +2902,7 @@ namespace MCSkin3D
 			GL.Viewport(viewport);
 			var mat = OpenTK.Matrix4d.Perspective(45, (double)viewport.Width / (double)viewport.Height, 0.01, 100000);
 			GL.MultMatrix(ref mat);
+			GL.Scale(1, -1, 1);
 
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
@@ -2976,7 +2915,7 @@ namespace MCSkin3D
 			{
 				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
 				{
-					vec += mesh.Translate;
+					vec += mesh.Center;
 					count++;
 				}
 			}
@@ -2985,7 +2924,7 @@ namespace MCSkin3D
 				vec /= count;
 
 			GL.Translate(0, 0, _3dZoom);
-			GL.Rotate(_3dRotationX, 1, 0, 0);
+			GL.Rotate(_3dRotationX, -1, 0, 0);
 			GL.Rotate(_3dRotationY, 0, 1, 0);
 
 			GL.Translate(-vec.X, -vec.Y, 0);
@@ -3892,7 +3831,6 @@ namespace MCSkin3D
 
 		private void SetLanguage(string filename)
 		{
-
 		}
 
 		private void ReloadLanguage()
@@ -4245,6 +4183,7 @@ namespace MCSkin3D
 
 			_lastSkin.Undo.AddBuffer(undoable);
 			CheckUndo();
+			SetCanSave(_lastSkin.Dirty = true);
 
 			grabber.Save();
 		}

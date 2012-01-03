@@ -155,6 +155,7 @@
     <Compile Include="Paril\Controls\NaturalSortedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Paril\Drawing\Bounds.cs" />
     <Compile Include="Paril\Net\WebHelpers.cs" />
     <Compile Include="SVN.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
@@ -334,7 +335,6 @@
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
     <Content Include="Icon_new.ico" />
-    <Content Include="Icon_new2.ico" />
     <None Include="Resources\112_Minus_Orange_16x16_72.png" />
     <None Include="Resources\112_Minus_Orange_24x24_721.png" />
     <None Include="Resources\112_Plus_Green_16x16_72.png" />

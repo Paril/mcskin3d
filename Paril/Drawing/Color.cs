@@ -20,12 +20,12 @@ using System;
 
 namespace Paril.Drawing
 {
-	public struct Color
+	public struct NColor
 	{
 		float _r, _g, _b, _a;
 		float _h, _s, _l;
 
-		public Color(byte r, byte g, byte b, byte a) :
+		public NColor(byte r, byte g, byte b, byte a) :
 			this()
 		{
 			_r = r / 255.0f;
@@ -36,7 +36,7 @@ namespace Paril.Drawing
 			SetHSL();
 		}
 
-		public Color(float r, float g, float b, float a) :
+		public NColor(float r, float g, float b, float a) :
 			this()
 		{
 			_r = r;
@@ -47,7 +47,7 @@ namespace Paril.Drawing
 			SetHSL();
 		}
 
-		public Color(Color c) :
+		public NColor(NColor c) :
 			this()
 		{
 			_r = c.R;
@@ -59,7 +59,7 @@ namespace Paril.Drawing
 			_l = c.Luminance;
 		}
 
-		public Color(float hue, float saturation, float lightness, byte alpha) :
+		public NColor(float hue, float saturation, float lightness, byte alpha) :
 			this()
 		{
 			_h = hue;
@@ -70,17 +70,17 @@ namespace Paril.Drawing
 			SetRGB();
 		}
 
-		public static implicit operator System.Drawing.Color(Color c)
+		public static implicit operator System.Drawing.Color(NColor c)
 		{
 			return System.Drawing.Color.FromArgb((byte)(c.A * 255.0f), (byte)(c.R * 255.0f), (byte)(c.G * 255.0f), (byte)(c.B * 255.0f));
 		}
 
-		public static implicit operator Color(System.Drawing.Color c)
+		public static implicit operator NColor(System.Drawing.Color c)
 		{
-			return new Color(c.R, c.G, c.B, c.A);
+			return new NColor(c.R, c.G, c.B, c.A);
 		}
 
-		public static implicit operator OpenTK.Graphics.Color4(Color c)
+		public static implicit operator OpenTK.Graphics.Color4(NColor c)
 		{
 			return new OpenTK.Graphics.Color4(c.R, c.G, c.B, c.A);
 		}
