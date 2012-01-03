@@ -26,6 +26,7 @@ using System.Xml;
 using System.Globalization;
 using System.Drawing;
 using MCSkin3D;
+using Paril.Drawing;
 
 namespace Paril.OpenGL
 {
@@ -93,12 +94,15 @@ namespace Paril.OpenGL
 		public bool Helmet;
 		public bool FollowCursor;
 		public float RotateFactor;
+		public Vector3 Center;
+		public Bounds3 Bounds;
 
 		public MCSkin3D.VisiblePartFlags Part;
 
 		public Mesh(string name) :
 			this()
 		{
+			Bounds = new Bounds3(new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), new Vector3(float.MinValue, float.MinValue, float.MinValue));
 			Name = name;
 		}
 
@@ -136,6 +140,7 @@ namespace Paril.OpenGL
 			writer.WriteAttributeString("IsHelmet", Helmet.ToString());
 			writer.WriteAttributeString("FollowCursor", FollowCursor.ToString());
 			writer.WriteAttributeString("RotateFactor", RotateFactor.ToString());
+			writer.WriteAttributeString("Rotate", VertexToString(Rotate));
 			writer.WriteAttributeString("Part", Part.ToString());
 
 			foreach (var f in Faces)
@@ -161,6 +166,29 @@ namespace Paril.OpenGL
 			}
 
 			writer.WriteEndElement();
+		}
+
+		public void CalculateCenter()
+		{
+			int count = 0;
+
+			foreach (var x in Faces)
+			{
+				foreach (var v in x.Vertices)
+				{
+					count++;
+					Center += v + Translate;
+				}
+			}
+
+			Center /= count;
+		}
+
+		public void CalculateBounds()
+		{
+			foreach (var x in Faces)
+				foreach (var v in x.Vertices)
+					Bounds += v + Translate;
 		}
 	}
 
@@ -282,6 +310,8 @@ namespace Paril.OpenGL
 					mesh.FollowCursor = bool.Parse(n.Attributes["FollowCursor"].InnerText);
 				if (n.Attributes["RotateFactor"] != null)
 					mesh.RotateFactor = float.Parse(n.Attributes["RotateFactor"].InnerText);
+				if (n.Attributes["Rotate"] != null)
+					mesh.Rotate = Mesh.StringToVertex3(n.Attributes["Rotate"].InnerText);
 				if (n.Attributes["Part"] != null)
 					mesh.Part = (MCSkin3D.VisiblePartFlags)Enum.Parse(typeof(MCSkin3D.VisiblePartFlags), n.Attributes["Part"].InnerText);
 
@@ -319,6 +349,9 @@ namespace Paril.OpenGL
 
 					mesh.Faces.Add(face);
 				}
+
+				mesh.CalculateCenter();
+				mesh.CalculateBounds();
 
 				model.Meshes.Add(mesh);
 			}

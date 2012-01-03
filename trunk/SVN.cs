@@ -2,6 +2,6 @@ namespace SVN
 {
 	public static class Repository
 	{
-		public const int Revision = 160;
+		public const int Revision = 161;
 	}
 }

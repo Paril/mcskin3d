@@ -84,6 +84,7 @@
 			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
 			this.modeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.mINVERTBOTTOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,7 +184,6 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.mINVERTBOTTOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -694,7 +694,7 @@
 			// 
 			this.keyboardShortcutsToolStripMenuItem.Name = "keyboardShortcutsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.keyboardShortcutsToolStripMenuItem, "Text");
-			this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.keyboardShortcutsToolStripMenuItem.Text = "M_KEYSHORTCUTS";
 			this.keyboardShortcutsToolStripMenuItem.Click += new System.EventHandler(this.keyboardShortcutsToolStripMenuItem_Click);
 			// 
@@ -702,7 +702,7 @@
 			// 
 			this.backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.backgroundColorToolStripMenuItem, "Text");
-			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.backgroundColorToolStripMenuItem.Text = "M_BGCOLOR";
 			this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
 			// 
@@ -710,22 +710,29 @@
 			// 
 			this.mSKINDIRSToolStripMenuItem.Name = "mSKINDIRSToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mSKINDIRSToolStripMenuItem, "Text");
-			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
 			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem6
 			// 
 			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-			this.toolStripMenuItem6.Size = new System.Drawing.Size(174, 6);
+			this.toolStripMenuItem6.Size = new System.Drawing.Size(176, 6);
 			// 
 			// modeToolStripMenuItem1
 			// 
 			this.modeToolStripMenuItem1.Name = "modeToolStripMenuItem1";
 			this.languageProvider1.SetPropertyNames(this.modeToolStripMenuItem1, "Text");
-			this.modeToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+			this.modeToolStripMenuItem1.Size = new System.Drawing.Size(179, 22);
 			this.modeToolStripMenuItem1.Text = "M_10_MODE";
 			this.modeToolStripMenuItem1.Click += new System.EventHandler(this.modeToolStripMenuItem1_Click);
+			// 
+			// mINVERTBOTTOMToolStripMenuItem
+			// 
+			this.mINVERTBOTTOMToolStripMenuItem.Name = "mINVERTBOTTOMToolStripMenuItem";
+			this.mINVERTBOTTOMToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.mINVERTBOTTOMToolStripMenuItem.Text = "M_INVERTBOTTOM";
+			this.mINVERTBOTTOMToolStripMenuItem.Click += new System.EventHandler(this.mINVERTBOTTOMToolStripMenuItem_Click);
 			// 
 			// languageToolStripMenuItem
 			// 
@@ -1850,13 +1857,6 @@
 			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
-			// 
-			// mINVERTBOTTOMToolStripMenuItem
-			// 
-			this.mINVERTBOTTOMToolStripMenuItem.Name = "mINVERTBOTTOMToolStripMenuItem";
-			this.mINVERTBOTTOMToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-			this.mINVERTBOTTOMToolStripMenuItem.Text = "M_INVERTBOTTOM";
-			this.mINVERTBOTTOMToolStripMenuItem.Click += new System.EventHandler(this.mINVERTBOTTOMToolStripMenuItem_Click);
 			// 
 			// Editor
 			// 
