@@ -151,11 +151,20 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MiscUtil\Conversion\BigEndianBitConverter.cs" />
+    <Compile Include="MiscUtil\Conversion\DoubleConverter.cs" />
+    <Compile Include="MiscUtil\Conversion\EndianBitConverter.cs" />
+    <Compile Include="MiscUtil\Conversion\Endianness.cs" />
+    <Compile Include="MiscUtil\Conversion\LittleEndianBitConverter.cs" />
+    <Compile Include="MiscUtil\IO\EndianBinaryReader.cs" />
+    <Compile Include="MiscUtil\IO\EndianBinaryWriter.cs" />
     <Compile Include="Paril\Components\Update\Version.cs" />
     <Compile Include="Paril\Controls\NaturalSortedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Paril\Cryptography\Crc32.cs" />
     <Compile Include="Paril\Drawing\Bounds.cs" />
+    <Compile Include="Paril\Imaging\PNGMetadata.cs" />
     <Compile Include="Paril\Net\WebHelpers.cs" />
     <Compile Include="SVN.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
@@ -409,6 +418,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SwatchContainer.resx">
       <DependentUpon>SwatchContainer.cs</DependentUpon>

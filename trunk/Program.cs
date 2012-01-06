@@ -59,8 +59,10 @@ namespace MCSkin3D
 
 			};
 
+#if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+#endif
 
 			Version = new Version(Application.ProductVersion);
 			Version.Revision = SVN.Repository.Revision;

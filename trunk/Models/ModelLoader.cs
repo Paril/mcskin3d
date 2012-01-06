@@ -196,12 +196,10 @@ namespace MCSkin3D
 		{
 			public PositionTextureVertex[] vertexPositions;
 			public int nVertices;
-			private bool invertNormal;
 
 			public TexturedQuad(PositionTextureVertex[] apositiontexturevertex)
 			{
 				nVertices = 0;
-				invertNormal = false;
 				vertexPositions = apositiontexturevertex;
 				nVertices = apositiontexturevertex.Length;
 			}
@@ -252,8 +250,6 @@ namespace MCSkin3D
 			public float rotateAngleX;
 			public float rotateAngleY;
 			public float rotateAngleZ;
-			private bool compiled;
-			private int displayList;
 			public bool mirror;
 			public bool showModel;
 			public bool isHidden;
@@ -275,8 +271,6 @@ namespace MCSkin3D
 			{
 				textureWidth = 64F;
 				textureHeight = 32F;
-				compiled = false;
-				displayList = 0;
 				mirror = false;
 				showModel = true;
 				isHidden = false;

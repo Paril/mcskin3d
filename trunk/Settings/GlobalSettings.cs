@@ -144,10 +144,6 @@ namespace MCSkin3D
 		public static string[] SkinDirectories { get; set; }
 
 		[Savable]
-		[DefaultValue("Human")]
-		public static string LastModel { get; set; }
-
-		[Savable]
 		[DefaultValue(true)]
 		public static bool OnePointOhMode { get; set; }
 
