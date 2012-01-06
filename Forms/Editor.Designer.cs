@@ -184,6 +184,8 @@
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -1660,7 +1662,9 @@
             this.toggleLeftArmToolStripButton,
             this.toggleRightArmToolStripButton,
             this.toggleLeftLegToolStripButton,
-            this.toggleRightLegToolStripButton});
+            this.toggleRightLegToolStripButton,
+            this.toolStripSeparator15,
+            this.toolStripDropDownButton1});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(693, 25);
@@ -1857,6 +1861,20 @@
 			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
+			// 
+			// toolStripSeparator15
+			// 
+			this.toolStripSeparator15.Name = "toolStripSeparator15";
+			this.toolStripSeparator15.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripDropDownButton1
+			// 
+			this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
+			this.toolStripDropDownButton1.Text = "Human";
 			// 
 			// Editor
 			// 
@@ -2066,6 +2084,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
 		private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem mINVERTBOTTOMToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
 	}
 }
 

@@ -26,6 +26,8 @@ using Paril.Extensions;
 using Paril.OpenGL;
 using Paril.Drawing;
 using System.Drawing.Drawing2D;
+using Paril.Imaging;
+using System.Collections.Generic;
 
 namespace MCSkin3D
 {
@@ -38,6 +40,7 @@ namespace MCSkin3D
 		public UndoBuffer Undo;
 		public bool Dirty;
 		public Size Size;
+		public Model Model { get; set; }
 
 		public int Width { get { return Size.Width; } }
 		public int Height { get { return Size.Height; } }
@@ -130,6 +133,20 @@ namespace MCSkin3D
 			using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
 				Image = new Bitmap(file);
 
+			var metadata = PNGMetadata.ReadMetadata(File.FullName);
+
+			if (metadata.ContainsKey("Model"))
+			{
+				Model model;
+
+				if (!ModelLoader.Models.TryGetValue(metadata["Model"], out model))
+					Model = ModelLoader.Models["Human"];
+				else
+					Model = model;
+			}
+			else
+				Model = ModelLoader.Models["Human"];
+
 			Size = Image.Size;
 
 			float scale = Size.Width / 64.0f;
@@ -164,8 +181,11 @@ namespace MCSkin3D
 			RenderState.BindTexture(currentSkin);
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
-			RenderState.BindTexture(GLImage);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+			if (currentSkin != GLImage)
+			{
+				RenderState.BindTexture(GLImage);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+			}
 
 			if (save)
 			{
@@ -184,6 +204,10 @@ namespace MCSkin3D
 				Editor.AddIgnoreFile(File.FullName);
 				newBitmap.Save(File.FullName);
 				newBitmap.Dispose();
+
+				var md = new Dictionary<string, string>();
+				md.Add("Model", Model.Name);
+				PNGMetadata.WriteMetadata(File.FullName, md);
 
 				SetImages();
 

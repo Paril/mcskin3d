@@ -97,8 +97,6 @@ namespace MCSkin3D
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
 		FileSystemWatcher _watcher;
-
-		public static Model CurrentModel;
 		#endregion
 
 		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
@@ -107,6 +105,22 @@ namespace MCSkin3D
 		public FloodFillOptions FloodFillOptions { get; private set; }
 		public NoiseOptions NoiseOptions { get; private set; }
 		public EraserOptions EraserOptions { get; private set; }
+
+		class ModelToolStripMenuItem : ToolStripMenuItem
+		{
+			public Model Model;
+
+			public ModelToolStripMenuItem(Model model) :
+				base(model.Name)
+			{
+				Model = model;
+			}
+
+			protected override void OnClick(EventArgs e)
+			{
+				Program.MainForm.SetModel(Model);
+			}
+		}
 
 		// ===============================================
 		// Constructor
@@ -248,13 +262,8 @@ namespace MCSkin3D
 
 			ModelLoader.LoadModels();
 
-			if (!ModelLoader.Models.ContainsKey(GlobalSettings.LastModel))
-			{
-				MessageBox.Show("M_NOLASTMODEL");
-				CurrentModel = ModelLoader.Models["Human"];
-			}
-			else
-				CurrentModel = ModelLoader.Models[GlobalSettings.LastModel];
+			foreach (var x in ModelLoader.Models)
+				toolStripDropDownButton1.DropDownItems.Add(new ModelToolStripMenuItem(x.Value));
 
 			SetSampleMenuItem(GlobalSettings.Multisamples);
 
@@ -1012,6 +1021,11 @@ namespace MCSkin3D
 			GL.PopMatrix();
 
 			GL.Disable(EnableCap.Blend);
+		}
+
+		public static Model CurrentModel
+		{
+			get { return Program.MainForm._lastSkin == null ? null : Program.MainForm._lastSkin.Model; }
 		}
 
 		void DrawPlayer(int tex, Skin skin, bool pickView)
@@ -2277,9 +2291,13 @@ namespace MCSkin3D
 
 		void PerformSaveSkin(Skin s)
 		{
+			var oldNode = treeView1.SelectedNode;
+			treeView1.BeginUpdate();
+			treeView1.SelectedNode = s;
 			rendererControl.MakeCurrent();
 
 			s.CommitChanges((s == _lastSkin) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
+			treeView1.SelectedNode = oldNode;
 		}
 
 		bool RecursiveNodeIsDirty(TreeNodeCollection nodes)
@@ -3181,8 +3199,10 @@ namespace MCSkin3D
 				CheckUndo();
 			}
 
-			rendererControl.Invalidate();
 			_lastSkin = (Skin)treeView1.SelectedNode;
+
+			SetModel(skin.Model);
+			rendererControl.Invalidate();
 		}
 
 		void uploadButton_Click(object sender, EventArgs e)
@@ -4186,6 +4206,24 @@ namespace MCSkin3D
 			SetCanSave(_lastSkin.Dirty = true);
 
 			grabber.Save();
+		}
+
+		public void SetModel(Model Model)
+		{
+			if (_lastSkin == null)
+				return;
+
+			if (_lastSkin.Model != Model)
+			{
+				_lastSkin.Model = Model;
+
+				_lastSkin.Dirty = true;
+				SetCanSave(true);
+				CheckUndo();
+			}
+
+			foreach (ModelToolStripMenuItem x in toolStripDropDownButton1.DropDownItems)
+				x.Checked = (x.Model == _lastSkin.Model);
 		}
 	}
 }
