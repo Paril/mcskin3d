@@ -22,12 +22,12 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using Version = Paril.Components.Update.Version;
+using System.Runtime.CompilerServices;
 
 namespace MCSkin3D
 {
 	static class Program
 	{
-		public static Editor MainForm { get; set; }
 		public static Version Version;
 
 		/// <summary>
@@ -38,9 +38,7 @@ namespace MCSkin3D
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
 			{
-
 				String resourceName = "MCSkin3D.Resources." +
-
 				   new AssemblyName(args.Name).Name + ".dll";
 
 				using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
@@ -50,14 +48,17 @@ namespace MCSkin3D
 						return null;
 
 					Byte[] assemblyData = new Byte[stream.Length];
-
 					stream.Read(assemblyData, 0, assemblyData.Length);
-
 					return Assembly.Load(assemblyData);
-
 				}
-
 			};
+
+			MainCore();
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		static void MainCore()
+		{
 
 #if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -71,9 +72,9 @@ namespace MCSkin3D
 			try
 			{
 #endif
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(MainForm = new Editor());
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new Editor());
 
 #if !DEBUG
 			}

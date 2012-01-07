@@ -460,7 +460,9 @@
     <Folder Include="Jonas\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\OpenTK.dll" />
+    <EmbeddedResource Include="Resources\OpenTK.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
   </ItemGroup>
   <ItemGroup>

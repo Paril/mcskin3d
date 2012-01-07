@@ -105,7 +105,7 @@ namespace MCSkin3D
 		{
 			if (GLImage != 0)
 			{
-				GL.DeleteTexture(GLImage);
+				RenderState.DeleteTexture(GLImage);
 				GLImage = 0;
 			}
 
@@ -122,12 +122,14 @@ namespace MCSkin3D
 			}
 		}
 
-		public void SetImages()
+		public void SetImages(bool updateGL = true)
 		{
 			if (Head != null)
 			{
 				Head.Dispose();
-				GL.DeleteTexture(GLImage);
+
+				if (updateGL)
+					RenderState.DeleteTexture(GLImage);
 			}
 
 			using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -163,9 +165,12 @@ namespace MCSkin3D
 			Image.Dispose();
 			Image = null;
 
-			GLImage = ImageUtilities.LoadImage(File.FullName);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+			if (updateGL)
+			{
+				GLImage = ImageUtilities.LoadImage(File.FullName);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+			}
 		}
 
 		public override string ToString()
@@ -177,14 +182,13 @@ namespace MCSkin3D
 
 		public void CommitChanges(int currentSkin, bool save)
 		{
-			int[] data = new int[Width * Height];
-			RenderState.BindTexture(currentSkin);
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+			ColorGrabber grabber = new ColorGrabber(currentSkin, Width, Height);
+			grabber.Load();
 
 			if (currentSkin != GLImage)
 			{
-				RenderState.BindTexture(GLImage);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+				grabber.Texture = GLImage;
+				grabber.Save();
 			}
 
 			if (save)
@@ -196,8 +200,8 @@ namespace MCSkin3D
 					for (int y = 0; y < Height; ++y)
 						for (int x = 0; x < Width; ++x)
 						{
-							var c = data[x + (y * Width)];
-							fp.SetPixel(x, y, System.Drawing.Color.FromArgb((c >> 24) & 0xFF, (c >> 0) & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF));
+							var c = grabber[x, y];
+							fp.SetPixel(x, y, System.Drawing.Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue));
 						}
 				}
 
@@ -209,7 +213,7 @@ namespace MCSkin3D
 				md.Add("Model", Model.Name);
 				PNGMetadata.WriteMetadata(File.FullName, md);
 
-				SetImages();
+				SetImages(true);
 
 				Dirty = false;
 			}
@@ -257,7 +261,7 @@ namespace MCSkin3D
 			SetImages();
 
 			Undo.Clear();
-			Program.MainForm.CheckUndo();
+			Editor.MainForm.CheckUndo();
 		}
 
 		public void Delete()

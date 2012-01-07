@@ -38,10 +38,10 @@ namespace MCSkin3D
 		{
 			var delta = new Point(e.X - _oldMouse.X, e.Y - _oldMouse.Y);
 
-			if (e.Button == Program.MainForm.CameraRotate)
-				Program.MainForm.RotateView(delta, 1);
-			else if (e.Button == Program.MainForm.CameraZoom)
-				Program.MainForm.ScaleView(delta, 1);
+			if (e.Button == Editor.MainForm.CameraRotate)
+				Editor.MainForm.RotateView(delta, 1);
+			else if (e.Button == Editor.MainForm.CameraZoom)
+				Editor.MainForm.ScaleView(delta, 1);
 
 			_oldMouse = e.Location;
 		}

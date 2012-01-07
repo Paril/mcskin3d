@@ -63,7 +63,7 @@ namespace Paril.Components.Shortcuts
 			}
 
 			_shortcuts.Add(shortcut);
-			Program.MainForm.languageProvider1.SetPropertyNames(shortcut, "Name");
+			Editor.MainForm.languageProvider1.SetPropertyNames(shortcut, "Name");
 		}
 
 		public int ShortcutCount

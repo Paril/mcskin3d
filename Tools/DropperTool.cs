@@ -42,9 +42,9 @@ namespace MCSkin3D
 			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
 
 			if ((Control.ModifierKeys & Keys.Shift) != 0)
-				Program.MainForm.UnselectedColor = oldColor;
+				Editor.MainForm.UnselectedColor = oldColor;
 			else
-				Program.MainForm.SelectedColor = oldColor;
+				Editor.MainForm.SelectedColor = oldColor;
 			return false;
 		}
 

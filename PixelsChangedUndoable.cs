@@ -47,36 +47,34 @@ namespace MCSkin3D
 		{
 			Skin skin = (Skin)obj;
 
-			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-			int[] array = new int[skin.Width * skin.Height];
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+			grabber.Load();
 
 			foreach (var kvp in Points)
 			{
 				var p = kvp.Key;
 				var color = kvp.Value;
-				array[p.X + (skin.Width * p.Y)] = color.Item1.R | (color.Item1.G << 8) | (color.Item1.B << 16) | (color.Item1.A << 24);
+				grabber[p.X, p.Y] = new ColorPixel(color.Item1.R | (color.Item1.G << 8) | (color.Item1.B << 16) | (color.Item1.A << 24));
 			}
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			grabber.Save();
 		}
 
 		public void Redo(object obj)
 		{
 			Skin skin = (Skin)obj;
 
-			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-			int[] array = new int[skin.Width * skin.Height];
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+			grabber.Load();
 
 			foreach (var kvp in Points)
 			{
 				var p = kvp.Key;
 				var color = kvp.Value;
-				array[p.X + (skin.Width * p.Y)] = color.Item2.Color.R | (color.Item2.Color.G << 8) | (color.Item2.Color.B << 16) | (color.Item2.Color.A << 24);
+				grabber[p.X, p.Y] = new ColorPixel(color.Item2.Color.R | (color.Item2.Color.G << 8) | (color.Item2.Color.B << 16) | (color.Item2.Color.A << 24));
 			}
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, skin.Width, skin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			grabber.Save();
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace MCSkin3D
 		public override Color BlendColor(Color l, Color r)
 		{
 			bool ctrlIng = (Control.ModifierKeys & Keys.Shift) != 0;
-			bool switchTools = (!Program.MainForm.DarkenLightenOptions.Inverted && ctrlIng) || (Program.MainForm.DarkenLightenOptions.Inverted && !ctrlIng);
+			bool switchTools = (!Editor.MainForm.DarkenLightenOptions.Inverted && ctrlIng) || (Editor.MainForm.DarkenLightenOptions.Inverted && !ctrlIng);
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(r);
 			var mod = l.A / 255.0f;
 

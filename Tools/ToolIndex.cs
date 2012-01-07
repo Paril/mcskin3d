@@ -50,7 +50,7 @@ namespace MCSkin3D
 
 		public void SetMeAsTool()
 		{
-			Program.MainForm.SetSelectedTool(this);
+			Editor.MainForm.SetSelectedTool(this);
 		}
 	}
 }

@@ -122,7 +122,7 @@ namespace MCSkin3D
 
 			var c = pixels[x, y];
 			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
-			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
+			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
 
             recursiveFill(x, y, oldColor, newColor, ref pixels, new bool[skin.Width, skin.Height], skin);
 			_done = true;
@@ -155,7 +155,7 @@ namespace MCSkin3D
 
 			}
 
-			newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
+			newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
 			pixels[x, y] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 			return true;
 		}
@@ -167,7 +167,7 @@ namespace MCSkin3D
 				skin.Undo.AddBuffer(_undo);
 			_undo = null;
 
-			Program.MainForm.CheckUndo();
+			Editor.MainForm.CheckUndo();
 			return false;
 		}
 
