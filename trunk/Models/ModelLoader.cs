@@ -477,7 +477,7 @@ namespace MCSkin3D
 					Mesh mesh = new Mesh("Test");
 					mesh.Faces = new List<Face>();
 					mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-					mesh.Helmet = box.Helmet;
+					mesh.Helmet = mesh.AllowTransparency = box.Helmet;
 					mesh.Part = box.Flags;
 					mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
 					mesh.Pivot = mesh.Translate;

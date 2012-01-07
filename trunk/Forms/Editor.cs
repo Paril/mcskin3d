@@ -106,6 +106,8 @@ namespace MCSkin3D
 		public NoiseOptions NoiseOptions { get; private set; }
 		public EraserOptions EraserOptions { get; private set; }
 
+		public static Editor MainForm { get; private set; }
+
 		class ModelToolStripMenuItem : ToolStripMenuItem
 		{
 			public Model Model;
@@ -118,7 +120,7 @@ namespace MCSkin3D
 
 			protected override void OnClick(EventArgs e)
 			{
-				Program.MainForm.SetModel(Model);
+				MainForm.SetModel(Model);
 			}
 		}
 
@@ -128,7 +130,7 @@ namespace MCSkin3D
 		#region Constructor
 		public Editor()
 		{
-			Program.MainForm = this;
+			MainForm = this;
 			InitializeComponent();
 
 			bool settingsLoaded = GlobalSettings.Load();
@@ -304,13 +306,13 @@ namespace MCSkin3D
 			splitContainer4.SplitterDistance = 74;
 
 			_watcher = new FileSystemWatcher("Skins");
-			_watcher.SynchronizingObject = Program.MainForm;
+			_watcher.SynchronizingObject = MainForm;
 			_watcher.Changed += _watcher_Changed;
 			_watcher.Created += _watcher_Created;
 			_watcher.Deleted += _watcher_Deleted;
 			_watcher.Renamed += _watcher_Renamed;
-			_watcher.EnableRaisingEvents = true;
 			_watcher.IncludeSubdirectories = true;
+			_watcher.EnableRaisingEvents = true;
 
 			if (GlobalSettings.OnePointOhMode)
 				ModelLoader.InvertBottomFaces();
@@ -1025,7 +1027,7 @@ namespace MCSkin3D
 
 		public static Model CurrentModel
 		{
-			get { return Program.MainForm._lastSkin == null ? null : Program.MainForm._lastSkin.Model; }
+			get { return MainForm._lastSkin == null ? null : MainForm._lastSkin.Model; }
 		}
 
 		void DrawPlayer(int tex, Skin skin, bool pickView)
@@ -1050,9 +1052,8 @@ namespace MCSkin3D
 			// draw non-transparent meshes
 			foreach (var mesh in CurrentModel.Meshes)
 			{
-				if (mesh.Helmet)
-					continue;
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0)
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
+					!(GlobalSettings.Ghost && !pickView))
 					continue;
 
 				var newMesh = mesh;
@@ -1062,18 +1063,28 @@ namespace MCSkin3D
 				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
 					newMesh.Rotate = helmetRotate;
 
-				foreach (var f in mesh.Faces)
-					for (int i = 0; i < f.Colors.Length; ++i)
-						f.Colors[i] = Color4.White;
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
+				{
+					foreach (var f in mesh.Faces)
+						for (int i = 0; i < f.Colors.Length; ++i)
+							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
+				}
+				else
+				{
+					foreach (var f in mesh.Faces)
+						for (int i = 0; i < f.Colors.Length; ++i)
+							f.Colors[i] = Color4.White;
+				}
 
 				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
 					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
 
-				_renderer.Meshes.Add(newMesh);
+				_renderer.AddMesh(newMesh);
 			}
 
 			_renderer.Render();
 
+			/*
 			// Draw ghosted parts
 			if (GlobalSettings.Ghost && !pickView)
 			{
@@ -1168,7 +1179,7 @@ namespace MCSkin3D
 				GL.Enable(EnableCap.Blend);
 				_renderer.Render();
 				GL.Disable(EnableCap.Blend);
-			}
+			}*/
 		}
 
 		Point _pickPosition = new Point(-1, -1);
@@ -2248,8 +2259,8 @@ namespace MCSkin3D
 			var skin = _lastSkin;
 
 			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-			int[] pixels = new int[skin.Width * skin.Height];
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+			grabber.Load();
 
 			Bitmap b = new Bitmap(skin.Width, skin.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
@@ -2257,7 +2268,7 @@ namespace MCSkin3D
 
 			unsafe
 			{
-				fixed (void *inPixels = pixels)
+				fixed (void *inPixels = grabber.Array)
 				{
 					void *outPixels = locked.Scan0.ToPointer();
 
@@ -2291,13 +2302,9 @@ namespace MCSkin3D
 
 		void PerformSaveSkin(Skin s)
 		{
-			var oldNode = treeView1.SelectedNode;
-			treeView1.BeginUpdate();
-			treeView1.SelectedNode = s;
 			rendererControl.MakeCurrent();
 
 			s.CommitChanges((s == _lastSkin) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
-			treeView1.SelectedNode = oldNode;
 		}
 
 		bool RecursiveNodeIsDirty(TreeNodeCollection nodes)
@@ -2941,11 +2948,22 @@ namespace MCSkin3D
 			if (count != 0)
 				vec /= count;
 
-			GL.Translate(0, 0, _3dZoom);
-			GL.Rotate(_3dRotationX, -1, 0, 0);
-			GL.Rotate(_3dRotationY, 0, 1, 0);
+			// FIXME: calculate these only on change
+			Matrix4 mt =
+				Matrix4.CreateTranslation(-vec.X, -vec.Y, 0) *
+				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
+				Matrix4.CreateTranslation(0, 0, _3dZoom);
 
-			GL.Translate(-vec.X, -vec.Y, 0);
+			GL.LoadMatrix(ref mt);
+
+			mt =
+				Matrix4.CreateTranslation(-vec.X, -vec.Y, 0) *
+				Matrix4.CreateTranslation(0, 0, _3dZoom) *
+				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX));
+
+			CameraPosition = Vector3.TransformPosition(Vector3.Zero, mt);
 		}
 
 		void Setup2D(Rectangle viewport)
@@ -3868,19 +3886,19 @@ namespace MCSkin3D
 
 				_currentLanguage = value;
 				GlobalSettings.LanguageFile = _currentLanguage.Culture.Name;
-				Program.MainForm.languageProvider1.LanguageChanged(value);
-				Program.MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
-				Program.MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
-				Program.MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
-				Program.MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
-				Program.MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
-				Program.MainForm.login.languageProvider1.LanguageChanged(value);
-				Program.MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
-				Program.MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
-				Program.MainForm._importFromSite.languageProvider1.LanguageChanged(value);
+				MainForm.languageProvider1.LanguageChanged(value);
+				MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
+				MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
+				MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
+				MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
+				MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
+				MainForm.login.languageProvider1.LanguageChanged(value);
+				MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
+				MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
+				MainForm._importFromSite.languageProvider1.LanguageChanged(value);
 
-				if (Program.MainForm._selectedTool != null)
-					Program.MainForm.toolStripStatusLabel1.Text = Program.MainForm._selectedTool.Tool.GetStatusLabelText();
+				if (MainForm._selectedTool != null)
+					MainForm.toolStripStatusLabel1.Text = MainForm._selectedTool.Tool.GetStatusLabelText();
 
 				_currentLanguage.Item.Checked = true;
 			}
@@ -3999,13 +4017,12 @@ namespace MCSkin3D
 
 			_lastSkin.Resize(_lastSkin.Width / 2, _lastSkin.Height / 2);
 
-			RenderState.BindTexture(_lastSkin.GLImage);
-			int[] array = new int[_lastSkin.Width * _lastSkin.Height];
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-			RenderState.BindTexture(_previewPaint);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			ColorGrabber grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height);
+			grabber.Load();
+			grabber.Texture = GlobalDirtiness.CurrentSkin;
+			grabber.Save();
+			grabber.Texture = _previewPaint;
+			grabber.Save();
 		}
 
 		void PerformIncreaseResolution()
@@ -4019,13 +4036,12 @@ namespace MCSkin3D
 
 			_lastSkin.Resize(_lastSkin.Width * 2, _lastSkin.Height * 2);
 
-			RenderState.BindTexture(_lastSkin.GLImage);
-			int[] array = new int[_lastSkin.Width * _lastSkin.Height];
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
-			RenderState.BindTexture(_previewPaint);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _lastSkin.Width, _lastSkin.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+			ColorGrabber grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height);
+			grabber.Load();
+			grabber.Texture = GlobalDirtiness.CurrentSkin;
+			grabber.Save();
+			grabber.Texture = _previewPaint;
+			grabber.Save();
 		}
 
 		ImportSite _importFromSite = new ImportSite();
@@ -4224,6 +4240,14 @@ namespace MCSkin3D
 
 			foreach (ModelToolStripMenuItem x in toolStripDropDownButton1.DropDownItems)
 				x.Checked = (x.Model == _lastSkin.Model);
+
+			toolStripDropDownButton1.Text = _lastSkin.Model.Name;
+		}
+
+		public static Vector3 CameraPosition
+		{
+			get;
+			private set;
 		}
 	}
 }

@@ -41,6 +41,14 @@ namespace Paril.OpenGL
 			GL.BindTexture(TextureTarget.Texture2D, texID);
 			_curTex = texID;
 		}
+
+		public static void DeleteTexture(int GLImage)
+		{
+			GL.DeleteTexture(GLImage);
+
+			if (_curTex == GLImage)
+				BindTexture(0);
+		}
 	}
 
 	public struct Face
@@ -98,6 +106,7 @@ namespace Paril.OpenGL
 		public Bounds3 Bounds;
 
 		public MCSkin3D.VisiblePartFlags Part;
+		public bool AllowTransparency;
 
 		public Mesh(string name) :
 			this()
@@ -362,20 +371,58 @@ namespace Paril.OpenGL
 
 	public abstract class Renderer
 	{
-		public List<Mesh> Meshes = new List<Mesh>();
+		List<Mesh> OpaqueMeshes = new List<Mesh>();
+		List<Mesh> TransparentMeshes = new List<Mesh>();
+
+		public void Sort()
+		{
+			/*OpaqueMeshes.Sort(
+				(left, right) =>
+				{
+					var leftDist = (left.Center - Editor.CameraPosition).LengthFast;
+					var rightDist = (right.Center - Editor.CameraPosition).LengthFast;
+
+					return leftDist.CompareTo(rightDist);
+				}
+			);*/
+
+			TransparentMeshes.Sort(
+				(left, right) =>
+				{
+					var leftDist = (Editor.CameraPosition - left.Center).LengthSquared;
+					var rightDist = (Editor.CameraPosition - right.Center).LengthSquared;
+
+					return rightDist.CompareTo(leftDist);
+				}
+			);
+		}
 
 		public void Render()
 		{
 			// FIXME: sort!
+			Sort();
 
 			PreRender();
 
-			foreach (var mesh in Meshes)
+			foreach (var mesh in OpaqueMeshes)
 				RenderMesh(mesh);
-			
+			GL.Enable(EnableCap.Blend);
+			foreach (var mesh in TransparentMeshes)
+				RenderMesh(mesh);
+			GL.Disable(EnableCap.Blend);
+	
 			PostRender();
 
-			Meshes.Clear();
+			OpaqueMeshes.Clear();
+			TransparentMeshes.Clear();
+		}
+
+		public void AddMesh(Mesh mesh)
+		{
+			if (mesh.Helmet)
+				TransparentMeshes.Add(mesh);
+			else
+				OpaqueMeshes.Add(mesh);
 		}
 
 		protected virtual void PreRender() { }

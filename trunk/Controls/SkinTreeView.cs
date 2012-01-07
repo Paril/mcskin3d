@@ -398,7 +398,7 @@ namespace MCSkin3D
 					kvps.Add(new KeyValuePair<string, object>(DataFormats.FileDrop, new string[] { ((Skin)SelectedNode).File.FullName }));
 
 				_dragNode = SelectedNode;
-				DragSourceHelper.DoDragDrop(Program.MainForm, _dragBitmap, new Point((_dragBitmap.Width / 2), _dragBitmap.Height), DragDropEffects.Move | DragDropEffects.Copy,
+				DragSourceHelper.DoDragDrop(Editor.MainForm, _dragBitmap, new Point((_dragBitmap.Width / 2), _dragBitmap.Height), DragDropEffects.Move | DragDropEffects.Copy,
 					kvps.ToArray());
 			}
 		}
@@ -531,7 +531,7 @@ namespace MCSkin3D
 		{
 			if (!DesignMode)
 			{
-				_oldScrollValue = Program.MainForm.hScrollBar1.Value;
+				_oldScrollValue = Editor.MainForm.hScrollBar1.Value;
 				_newMaximum = 0;
 			}
 
@@ -541,10 +541,10 @@ namespace MCSkin3D
 
 			if (!DesignMode)
 			{
-				Program.MainForm.hScrollBar1.Maximum = _newMaximum;
-				Program.MainForm.hScrollBar1.Value = _oldScrollValue;
+				Editor.MainForm.hScrollBar1.Maximum = _newMaximum;
+				Editor.MainForm.hScrollBar1.Value = _oldScrollValue;
 
-				Program.MainForm.hScrollBar1.Visible = Program.MainForm.hScrollBar1.Maximum != 0;
+				Editor.MainForm.hScrollBar1.Visible = Editor.MainForm.hScrollBar1.Maximum != 0;
 			}
 		}
 

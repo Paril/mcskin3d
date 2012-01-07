@@ -69,10 +69,10 @@ namespace MCSkin3D
 
 					var c = pixels[xx, yy];
 					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-					var color = ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
+					var color = ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
 
 					var maxAlpha = color.A;
-					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Program.MainForm.SelectedColor.A / 255.0f));
+					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Editor.MainForm.SelectedColor.A / 255.0f));
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
 						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
@@ -156,7 +156,7 @@ namespace MCSkin3D
 			if (_undo.Points.Count != 0)
 			{
 				skin.Undo.AddBuffer(_undo);
-				Program.MainForm.CheckUndo();
+				Editor.MainForm.CheckUndo();
 				_oldPixel = new Point(-1, -1);
 			}
 			

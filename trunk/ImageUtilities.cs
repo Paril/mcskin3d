@@ -70,7 +70,7 @@ namespace MCSkin3D
 			var err = GL.GetError();
 			if (err != ErrorCode.NoError)
 			{
-				GL.DeleteTexture(glImage);
+				RenderState.DeleteTexture(glImage);
 				throw new Exception(err.ToString());
 			}
 

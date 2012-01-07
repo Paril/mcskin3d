@@ -40,7 +40,7 @@ namespace MCSkin3D
 
 		public override Color GetLeftColor()
 		{
-			return ((Control.ModifierKeys & Keys.Shift) != 0) ? Program.MainForm.UnselectedColor : Program.MainForm.SelectedColor;
+			return ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
 		}
 
 		public override string GetStatusLabelText()

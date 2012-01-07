@@ -108,7 +108,7 @@ namespace MCSkin3D
 		static Brush GenerateSquare(int size)
 		{
 			Brush brush = new Brush("C_SQUARE", size, size);
-			Program.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
+			Editor.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
 
 			for (int y = 0; y < brush.Height; ++y)
 				for (int x = 0; x < brush.Width; ++x)
@@ -120,7 +120,7 @@ namespace MCSkin3D
 		static Brush GenerateCircle(int size)
 		{
 			Brush brush = new Brush("C_CIRCLE", size, size);
-			Program.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
+			Editor.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
 			int radius = (int)Math.Floor(size / 2.0);
 
 			for (int i = 0; i < size; i++)
