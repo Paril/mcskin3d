@@ -2203,10 +2203,10 @@ namespace MCSkin3D
 				else
 					labelEditTextBox.Text = _currentlyEditing.Text;
 
+				labelEditTextBox.Show();
 				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 24 + (treeView1.SelectedNode.Level * 1), treeView1.Location.Y + treeView1.SelectedNode.Bounds.Location.Y + 4);
 				labelEditTextBox.Size = new System.Drawing.Size(treeView1.Width - labelEditTextBox.Location.X - 20, labelEditTextBox.Height);
 				labelEditTextBox.BringToFront();
-				labelEditTextBox.Show();
 				labelEditTextBox.Focus();
 			}
 		}
