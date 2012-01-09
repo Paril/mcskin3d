@@ -704,7 +704,7 @@ namespace MCSkin3D
 				field_40337_e.mirror = true;
 				field_40337_e.setRotationPoint(2.0F, 12F + f1, 0.0F);
 				field_40337_e.addBox(-2F, 0.0F, -2F, 4, 12, 4, f);
-				body = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				body = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, true, false)).setTextureSize(byte0, byte1);
 				body.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
 				body.setTextureOffset(16, 20).addBox(-4F, 0.0F, -3F, 8, 12, 6, f);
 				body.setTextureOffset(0, 38).addBox(-4F, 0.0F, -3F, 8, 18, 6, f + 0.5F);
@@ -1337,6 +1337,248 @@ namespace MCSkin3D
 			}
 		}
 
+		public class ModelChest : ModelBase
+		{
+			public ModelRenderer chestLid;
+			public ModelRenderer chestBelow;
+			public ModelRenderer chestKnob;
+
+			public ModelChest()
+			{
+				chestLid = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, true)).setTextureSize(64, 64);
+				chestLid.addBox(0.0F, -5F, -14F, 14, 5, 14, 0.0F);
+				chestLid.rotationPointX = 1.0F;
+				chestLid.rotationPointY = 7F;
+				chestLid.rotationPointZ = 15F;
+				chestKnob = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, true)).setTextureSize(64, 64);
+				chestKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
+				chestKnob.rotationPointX = 8F;
+				chestKnob.rotationPointY = 7F;
+				chestKnob.rotationPointZ = 15F;
+				chestBelow = (new ModelRenderer(this, 0, 19, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(64, 64);
+				chestBelow.addBox(0.0F, 0.0F, 0.0F, 14, 10, 14, 0.0F);
+				chestBelow.rotationPointX = 1.0F;
+				chestBelow.rotationPointY = 6F;
+				chestBelow.rotationPointZ = 1.0F;
+			}
+		}
+
+		public class ModelLargeChest : ModelBase
+		{
+			public ModelRenderer chestLid;
+			public ModelRenderer chestBelow;
+			public ModelRenderer chestKnob;
+
+			public ModelLargeChest()
+			{
+				chestLid = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, true)).setTextureSize(128, 64);
+				chestLid.addBox(0.0F, -5F, -14F, 30, 5, 14, 0.0F);
+				chestLid.rotationPointX = 1.0F;
+				chestLid.rotationPointY = 7F;
+				chestLid.rotationPointZ = 15F;
+				chestKnob = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, true)).setTextureSize(128, 64);
+				chestKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
+				chestKnob.rotationPointX = 16F;
+				chestKnob.rotationPointY = 7F;
+				chestKnob.rotationPointZ = 15F;
+				chestBelow = (new ModelRenderer(this, 0, 19, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(128, 64);
+				chestBelow.addBox(0.0F, 0.0F, 0.0F, 30, 10, 14, 0.0F);
+				chestBelow.rotationPointX = 1.0F;
+				chestBelow.rotationPointY = 6F;
+				chestBelow.rotationPointZ = 1.0F;
+			}
+		}
+
+		public class ModelBoat : ModelBase
+		{
+			public ModelRenderer[] boatSides;
+
+			public ModelBoat()
+			{
+				boatSides = new ModelRenderer[5];
+				boatSides[0] = new ModelRenderer(this, 0, 8, VisiblePartFlags.HeadFlag, false, false);
+				boatSides[1] = new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, false);
+				boatSides[2] = new ModelRenderer(this, 0, 0, VisiblePartFlags.ChestFlag, false, false);
+				boatSides[3] = new ModelRenderer(this, 0, 0, VisiblePartFlags.LeftArmFlag, false, false);
+				boatSides[4] = new ModelRenderer(this, 0, 0, VisiblePartFlags.RightArmFlag, false, false);
+				byte byte0 = 24;
+				byte byte1 = 6;
+				byte byte2 = 20;
+				byte byte3 = 4;
+				boatSides[0].addBox(-byte0 / 2, -byte2 / 2 + 2, -3F, byte0, byte2 - 4, 4, 0.0F);
+				boatSides[0].setRotationPoint(0.0F, 0 + byte3, 0.0F);
+				boatSides[1].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[1].setRotationPoint(-byte0 / 2 + 1, 0 + byte3, 0.0F);
+				boatSides[2].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[2].setRotationPoint(byte0 / 2 - 1, 0 + byte3, 0.0F);
+				boatSides[3].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[3].setRotationPoint(0.0F, 0 + byte3, -byte2 / 2 + 1);
+				boatSides[4].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[4].setRotationPoint(0.0F, 0 + byte3, byte2 / 2 - 1);
+				boatSides[0].rotateAngleX = 1.570796F;
+				boatSides[1].rotateAngleY = 4.712389F;
+				boatSides[2].rotateAngleY = 1.570796F;
+				boatSides[3].rotateAngleY = 3.141593F;
+			}
+		}
+
+		public class SignModel : ModelBase
+		{
+			public ModelRenderer signBoard;
+			public ModelRenderer signStick;
+
+			public SignModel()
+			{
+				signBoard = new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, false);
+				signBoard.addBox(-12F, -14F, -1F, 24, 12, 2, 0.0F);
+				signStick = new ModelRenderer(this, 0, 14, VisiblePartFlags.ChestFlag, false, false);
+				signStick.addBox(-1F, -2F, -1F, 2, 14, 2, 0.0F);
+			}
+		}
+
+		public class ModelBook : ModelBase
+		{
+			public ModelRenderer field_40330_a;
+			public ModelRenderer field_40328_b;
+			public ModelRenderer field_40329_c;
+			public ModelRenderer field_40326_d;
+			public ModelRenderer field_40327_e;
+			public ModelRenderer field_40324_f;
+			public ModelRenderer field_40325_g;
+
+			public ModelBook()
+			{
+				field_40330_a = (new ModelRenderer(this, VisiblePartFlags.HeadFlag, false, false)).setTextureOffset(0, 0).addBox(-6F, -5F, 0.0F, 6, 10, 0);
+				field_40328_b = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureOffset(16, 0).addBox(0.0F, -5F, 0.0F, 6, 10, 0);
+				field_40325_g = (new ModelRenderer(this, VisiblePartFlags.HelmetFlag, false, false)).setTextureOffset(12, 0).addBox(-1F, -5F, 0.0F, 2, 10, 0);
+				field_40329_c = (new ModelRenderer(this, VisiblePartFlags.LeftArmFlag, false, false)).setTextureOffset(0, 10).addBox(0.0F, -4F, -0.99F, 5, 8, 1);
+				field_40326_d = (new ModelRenderer(this, VisiblePartFlags.LeftLegFlag, false, false)).setTextureOffset(12, 10).addBox(0.0F, -4F, -0.01F, 5, 8, 1);
+				field_40327_e = (new ModelRenderer(this, VisiblePartFlags.RightArmFlag, false, false)).setTextureOffset(24, 10).addBox(0.0F, -4F, 0.0F, 5, 8, 0);
+				field_40324_f = (new ModelRenderer(this, VisiblePartFlags.RightLegFlag, false, false)).setTextureOffset(24, 10).addBox(0.0F, -4F, 0.0F, 5, 8, 0);
+				field_40330_a.setRotationPoint(0.0F, 0.0F, -1F);
+				field_40328_b.setRotationPoint(0.0F, 0.0F, 1.0F);
+				field_40325_g.rotateAngleY = 1.570796F;
+			}
+
+			public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+			{
+				float f6 = (float)(Math.Sin(f * 0.02F) * 0.1F + 1.25F) * f3;
+				field_40330_a.rotateAngleY = 3.141593F + f6;
+				field_40328_b.rotateAngleY = -f6;
+				field_40329_c.rotateAngleY = f6;
+				field_40326_d.rotateAngleY = -f6;
+				field_40327_e.rotateAngleY = f6 - f6 * 2.0F * f1;
+				field_40324_f.rotateAngleY = f6 - f6 * 2.0F * f2;
+				field_40329_c.rotationPointX = (float)Math.Sin(f6);
+				field_40326_d.rotationPointX = (float)Math.Sin(f6);
+				field_40327_e.rotationPointX = (float)Math.Sin(f6);
+				field_40324_f.rotationPointX = (float)Math.Sin(f6);
+			}
+		}
+
+		public class ModelMinecart : ModelBase
+		{
+			public ModelRenderer[] sideModels;
+
+			public ModelMinecart()
+			{
+				sideModels = new ModelRenderer[7];
+				sideModels[0] = new ModelRenderer(this, 0, 10, VisiblePartFlags.HeadFlag, false, false);
+				sideModels[1] = new ModelRenderer(this, 0, 0, VisiblePartFlags.LeftArmFlag, false, false);
+				sideModels[2] = new ModelRenderer(this, 0, 0, VisiblePartFlags.LeftLegFlag, false, false);
+				sideModels[3] = new ModelRenderer(this, 0, 0, VisiblePartFlags.RightArmFlag, false, false);
+				sideModels[4] = new ModelRenderer(this, 0, 0, VisiblePartFlags.RightLegFlag, false, false);
+				sideModels[5] = new ModelRenderer(this, 44, 10, VisiblePartFlags.ChestFlag, false, false);
+				byte byte0 = 20;
+				byte byte1 = 8;
+				byte byte2 = 16;
+				byte byte3 = 4;
+				sideModels[0].addBox(-byte0 / 2, -byte2 / 2, -1F, byte0, byte2, 2, 0.0F);
+				sideModels[0].setRotationPoint(0.0F, 0 + byte3, 0.0F);
+				sideModels[5].addBox(-byte0 / 2 + 1, -byte2 / 2 + 1, -1F, byte0 - 2, byte2 - 2, 1, 0.0F);
+				sideModels[5].setRotationPoint(0.0F, 0 + byte3, 0.0F);
+				sideModels[1].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[1].setRotationPoint(-byte0 / 2 + 1, 0 + byte3, 0.0F);
+				sideModels[2].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[2].setRotationPoint(byte0 / 2 - 1, 0 + byte3, 0.0F);
+				sideModels[3].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[3].setRotationPoint(0.0F, 0 + byte3, -byte2 / 2 + 1);
+				sideModels[4].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[4].setRotationPoint(0.0F, 0 + byte3, byte2 / 2 - 1);
+				sideModels[0].rotateAngleX = 1.570796F;
+				sideModels[1].rotateAngleY = 4.712389F;
+				sideModels[2].rotateAngleY = 1.570796F;
+				sideModels[3].rotateAngleY = 3.141593F;
+				sideModels[5].rotateAngleX = -1.570796F;
+			}
+		}
+
+		public class ModelEnderCrystal : ModelBase
+		{
+			private ModelRenderer field_41057_g;
+			private ModelRenderer field_41058_h;
+			private ModelRenderer field_41059_i;
+
+			public ModelEnderCrystal()
+			{
+				field_41058_h = new ModelRenderer(this, "glass", VisiblePartFlags.HeadFlag, true, false);
+				field_41058_h.setTextureOffset(0, 0).addBox(-4F, -4F, -4F, 8, 8, 8);
+				field_41057_g = new ModelRenderer(this, "cube", VisiblePartFlags.HelmetFlag, false, false);
+				field_41057_g.setTextureOffset(32, 0).addBox(-4F, -4F, -4F, 8, 8, 8);
+				field_41059_i = new ModelRenderer(this, "base", VisiblePartFlags.ChestFlag, false, false);
+				field_41059_i.setTextureOffset(0, 16).addBox(-6F, 0.0F, -6F, 12, 4, 12);
+			}
+		}
+
+		public class ModelSnowMan : ModelBase
+		{
+			public ModelRenderer field_40306_a;
+			public ModelRenderer field_40304_b;
+			public ModelRenderer field_40305_c;
+			public ModelRenderer field_40302_d;
+			public ModelRenderer field_40303_e;
+
+			public ModelSnowMan()
+			{
+				float f = 4F;
+				float f1 = 0.0F;
+				field_40305_c = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false)).setTextureSize(64, 64);
+				field_40305_c.addBox(-4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
+				field_40305_c.setRotationPoint(0.0F, 0.0F + f, 0.0F);
+				field_40302_d = (new ModelRenderer(this, 32, 0, VisiblePartFlags.HelmetFlag, false, false)).setTextureSize(64, 64);
+				field_40302_d.addBox(-1F, 0.0F, -1F, 12, 2, 2, f1 - 0.5F);
+				field_40302_d.setRotationPoint(0.0F, (0.0F + f + 9F) - 7F, 0.0F);
+				field_40303_e = (new ModelRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(64, 64);
+				field_40303_e.addBox(-1F, 0.0F, -1F, 12, 2, 2, f1 - 0.5F);
+				field_40303_e.setRotationPoint(0.0F, (0.0F + f + 9F) - 7F, 0.0F);
+				field_40306_a = (new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, false)).setTextureSize(64, 64);
+				field_40306_a.addBox(-5F, -10F, -5F, 10, 10, 10, f1 - 0.5F);
+				field_40306_a.setRotationPoint(0.0F, 0.0F + f + 9F, 0.0F);
+				field_40304_b = (new ModelRenderer(this, 0, 36, VisiblePartFlags.RightArmFlag, false, false)).setTextureSize(64, 64);
+				field_40304_b.addBox(-6F, -12F, -6F, 12, 12, 12, f1 - 0.5F);
+				field_40304_b.setRotationPoint(0.0F, 0.0F + f + 20F, 0.0F);
+
+				setRotationAngles(0, 0, 0, (float)Math.PI / 2, 0, 0);
+			}
+
+			public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+			{
+				field_40305_c.rotateAngleY = f3 / 57.29578F;
+				field_40305_c.rotateAngleX = f4 / 57.29578F;
+				field_40306_a.rotateAngleY = (f3 / 57.29578F) * 0.25F;
+				float f6 = (float)Math.Sin(field_40306_a.rotateAngleY);
+				float f7 = (float)Math.Cos(field_40306_a.rotateAngleY);
+				field_40302_d.rotateAngleZ = 1.0F;
+				field_40303_e.rotateAngleZ = -1F;
+				field_40302_d.rotateAngleY = 0.0F + field_40306_a.rotateAngleY;
+				field_40303_e.rotateAngleY = 3.141593F + field_40306_a.rotateAngleY;
+				field_40302_d.rotationPointX = f7 * 5F;
+				field_40302_d.rotationPointZ = -f6 * 5F;
+				field_40303_e.rotationPointX = -f7 * 5F;
+				field_40303_e.rotationPointZ = f6 * 5F;
+			}
+		}
+
 		public static void LoadModels()
 		{
 			new ModelPig().Compile("Pig").Save("Models\\Pig.xml");
@@ -1362,6 +1604,14 @@ namespace MCSkin3D
 			new ModelSpider().Compile("Spider").Save("Models\\Spider.xml");
 			new ModelSheep1().Compile("Sheep Fur").Save("Models\\Sheep Fur.xml");
 			new ModelSheep2().Compile("Sheep").Save("Models\\Sheep.xml");
+			new ModelChest().Compile("Chest").Save("Models\\Chest.xml");
+			new ModelLargeChest().Compile("Large Chest").Save("Models\\LargeChest.xml");
+			new ModelBoat().Compile("Boat").Save("Models\\Boat.xml");
+			new SignModel().Compile("Sign").Save("Models\\Sign.xml");
+			new ModelBook().Compile("Book").Save("Models\\Book.xml");
+			new ModelMinecart().Compile("Minecart").Save("Models\\Minecart.xml");
+			new ModelEnderCrystal().Compile("Ender Crystal").Save("Models\\EnderCrystal.xml");
+			new ModelSnowMan().Compile("SnowMan").Save("Models\\SnowMan.xml");
 
 			Directory.CreateDirectory("Models");
 
