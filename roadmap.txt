@@ -5,6 +5,7 @@
 *- Custom brushes
 *- Deleting all skins (folders, etC) causes errors.
 *- Drag-drop from program to folder
+?- Clear skin option
 ?- Handle more upload errors
 ?- Selection tool, copy/paste
 ?- Allow "old-style" drag/drop in case the COM entry for drag/drop is missing.
