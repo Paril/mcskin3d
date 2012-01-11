@@ -342,6 +342,226 @@ namespace MCSkin3D
 			}
 		}
 
+		public class PlaneRenderer
+		{
+			public float textureWidth;
+			public float textureHeight;
+			public PositionTextureVertex[] corners;
+			public TexturedQuad[] faces;
+			public int textureOffsetX;
+			public int textureOffsetY;
+			public float rotationPointX;
+			public float rotationPointY;
+			public float rotationPointZ;
+			public float rotateAngleX;
+			public float rotateAngleY;
+			public float rotateAngleZ;
+			public float field_35977_i;
+			public float field_35975_j;
+			public float field_35976_k;
+			public float field_35973_l;
+			public float field_35974_m;
+			public float field_35972_n;
+			public bool compiled;
+			public int displayList;
+			public bool mirror;
+			public bool showModel;
+			public bool isHidden;
+
+			public VisiblePartFlags Flags;
+			public bool Helmet;
+			public bool Animate, AlsoReverse;
+
+			public PlaneRenderer(ModelBase modelbase, int i, int j, VisiblePartFlags flags, bool helmet, bool animate, bool alsoReverse = true)
+			{
+				this.textureWidth = 64.0F;
+				this.textureHeight = 32.0F;
+				this.compiled = false;
+				this.displayList = 0;
+				this.mirror = false;
+				this.showModel = true;
+				this.isHidden = false;
+				this.textureOffsetX = i;
+				this.textureOffsetY = j;
+				modelbase.boxList.Add(this);
+
+				Flags = flags;
+				Helmet = helmet;
+				AlsoReverse = alsoReverse;
+				Animate = animate;
+			}
+
+			public void addBackPlane(float f, float f1, float f2, int i, int j, int k)
+			{
+				addBackPlane(f, f1, f2, i, j, k, 0.0F);
+			}
+
+			public void addSidePlane(float f, float f1, float f2, int i, int j, int k)
+			{
+				addSidePlane(f, f1, f2, i, j, k, 0.0F);
+			}
+
+			public void addTopPlane(float f, float f1, float f2, int i, int j, int k)
+			{
+				addTopPlane(f, f1, f2, i, j, k, 0.0F);
+			}
+
+			public void addBackPlane(float f, float f1, float f2, int i, int j, int k, float f3)
+			{
+				this.field_35977_i = f;
+				this.field_35975_j = f1;
+				this.field_35976_k = f2;
+				this.field_35973_l = (f + i);
+				this.field_35974_m = (f1 + j);
+				this.field_35972_n = (f2 + k);
+				this.corners = new PositionTextureVertex[8];
+				this.faces = new TexturedQuad[1];
+				float f4 = f + i;
+				float f5 = f1 + j;
+				float f6 = f2 + k;
+				f -= f3;
+				f1 -= f3;
+				f2 -= f3;
+				f4 += f3;
+				f5 += f3;
+				f6 += f3;
+				if (this.mirror)
+				{
+					float f7 = f4;
+					f4 = f;
+					f = f7;
+				}
+				PositionTextureVertex positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8.0F, 0.0F);
+				this.corners[0] = positiontexturevertex;
+				this.corners[1] = positiontexturevertex1;
+				this.corners[2] = positiontexturevertex2;
+				this.corners[3] = positiontexturevertex3;
+				this.corners[4] = positiontexturevertex4;
+				this.corners[5] = positiontexturevertex5;
+				this.corners[6] = positiontexturevertex6;
+				this.corners[7] = positiontexturevertex7;
+				this.faces[0] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex1, positiontexturevertex, positiontexturevertex3, positiontexturevertex2 }, this.textureOffsetX, this.textureOffsetY, this.textureOffsetX + i, this.textureOffsetY + j, this.textureWidth, this.textureHeight);
+
+				if (this.mirror)
+					this.faces[0].flipFace();
+			}
+
+			public void addSidePlane(float f, float f1, float f2, int i, int j, int k, float f3)
+			{
+				this.field_35977_i = f;
+				this.field_35975_j = f1;
+				this.field_35976_k = f2;
+				this.field_35973_l = (f + i);
+				this.field_35974_m = (f1 + j);
+				this.field_35972_n = (f2 + k);
+				this.corners = new PositionTextureVertex[8];
+				this.faces = new TexturedQuad[1];
+				float f4 = f + i;
+				float f5 = f1 + j;
+				float f6 = f2 + k;
+				f -= f3;
+				f1 -= f3;
+				f2 -= f3;
+				f4 += f3;
+				f5 += f3;
+				f6 += f3;
+				if (this.mirror)
+				{
+					float f7 = f4;
+					f4 = f;
+					f = f7;
+				}
+				PositionTextureVertex positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8.0F, 0.0F);
+				this.corners[0] = positiontexturevertex;
+				this.corners[1] = positiontexturevertex1;
+				this.corners[2] = positiontexturevertex2;
+				this.corners[3] = positiontexturevertex3;
+				this.corners[4] = positiontexturevertex4;
+				this.corners[5] = positiontexturevertex5;
+				this.corners[6] = positiontexturevertex6;
+				this.corners[7] = positiontexturevertex7;
+				this.faces[0] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex5, positiontexturevertex1, positiontexturevertex2, positiontexturevertex6 }, this.textureOffsetX, this.textureOffsetY, this.textureOffsetX + k, this.textureOffsetY + j, this.textureWidth, this.textureHeight);
+
+				if (this.mirror)
+					this.faces[0].flipFace();
+			}
+
+			public void addTopPlane(float f, float f1, float f2, int i, int j, int k, float f3)
+			{
+				this.field_35977_i = f;
+				this.field_35975_j = f1;
+				this.field_35976_k = f2;
+				this.field_35973_l = (f + i);
+				this.field_35974_m = (f1 + j);
+				this.field_35972_n = (f2 + k);
+				this.corners = new PositionTextureVertex[8];
+				this.faces = new TexturedQuad[1];
+				float f4 = f + i;
+				float f5 = f1 + j;
+				float f6 = f2 + k;
+				f -= f3;
+				f1 -= f3;
+				f2 -= f3;
+				f4 += f3;
+				f5 += f3;
+				f6 += f3;
+				if (this.mirror)
+				{
+					float f7 = f4;
+					f4 = f;
+					f = f7;
+				}
+				PositionTextureVertex positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8.0F, 0.0F);
+				this.corners[0] = positiontexturevertex;
+				this.corners[1] = positiontexturevertex1;
+				this.corners[2] = positiontexturevertex2;
+				this.corners[3] = positiontexturevertex3;
+				this.corners[4] = positiontexturevertex4;
+				this.corners[5] = positiontexturevertex5;
+				this.corners[6] = positiontexturevertex6;
+				this.corners[7] = positiontexturevertex7;
+				this.faces[0] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex5, positiontexturevertex4, positiontexturevertex, positiontexturevertex1 }, this.textureOffsetX, this.textureOffsetY, this.textureOffsetX + i, this.textureOffsetY + k, this.textureWidth, this.textureHeight);
+
+				if (this.mirror)
+					this.faces[0].flipFace();
+			}
+
+			public void setRotationPoint(float f, float f1, float f2)
+			{
+				this.rotationPointX = f;
+				this.rotationPointY = f1;
+				this.rotationPointZ = f2;
+			}
+
+			public PlaneRenderer setTextureSize(int i, int j)
+			{
+				this.textureWidth = i;
+				this.textureHeight = j;
+				return this;
+			}
+		}
+
 		public class ModelBox
 		{
 
@@ -441,7 +661,7 @@ namespace MCSkin3D
 
 			public float onGround;
 			public bool isRiding;
-			public List<ModelRenderer> boxList;
+			public List<object> boxList;
 			public bool field_40301_k;
 			private Dictionary<string, TextureOffset> field_39000_a;
 			public int textureWidth;
@@ -450,7 +670,7 @@ namespace MCSkin3D
 			public ModelBase()
 			{
 				isRiding = false;
-				boxList = new List<ModelRenderer>();
+				boxList = new List<object>();
 				field_40301_k = true;
 				field_39000_a = new Dictionary<string, TextureOffset>();
 				textureWidth = 64;
@@ -472,33 +692,96 @@ namespace MCSkin3D
 				var model = new Model();
 				model.Name = name;
 
-				foreach (var box in boxList)
+				foreach (var boxObj in boxList)
 				{
-					Mesh mesh = new Mesh("Test");
-					mesh.Faces = new List<Face>();
-					mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-					mesh.Helmet = mesh.AllowTransparency = box.Helmet;
-					mesh.Part = box.Flags;
-					mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
-					mesh.Pivot = mesh.Translate;
-
-					if (box.Animate)
-						mesh.RotateFactor = (box.mirror) ? -25 : 25;
-
-					if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
-						mesh.FollowCursor = true;
-
-					mesh.Mode = BeginMode.Quads;
-
-					foreach (var face in box.cubeList)
+					if (boxObj is ModelRenderer)
 					{
+						ModelRenderer box = (ModelRenderer)boxObj;
+						Mesh mesh = new Mesh("Test");
+						mesh.Faces = new List<Face>();
+						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
+						mesh.Helmet = mesh.AllowTransparency = box.Helmet;
+						mesh.Part = box.Flags;
+						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
+						mesh.Pivot = mesh.Translate;
+
+						if (box.Animate)
+							mesh.RotateFactor = (box.mirror) ? -25 : 25;
+
+						if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
+							mesh.FollowCursor = true;
+
+						mesh.Mode = BeginMode.Quads;
+
+						foreach (var face in box.cubeList)
+						{
+							int[] cwIndices = new int[] { 0, 1, 2, 3 };
+							int[] cwwIndices = new int[] { 3, 2, 1, 0 };
+							Color4[] colors = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
+
+							if (box.Helmet)
+							{
+								foreach (var quad in face.field_40680_i)
+								{
+									List<Vector3> vertices = new List<Vector3>();
+									List<Vector2> texcoords = new List<Vector2>();
+
+									foreach (var x in quad.vertexPositions)
+									{
+										vertices.Add(x.vector3D * scale);
+										texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
+									}
+
+									Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
+									mesh.Faces.Add(newFace);
+								}
+							}
+
+							foreach (var quad in face.field_40680_i)
+							{
+								List<Vector3> vertices = new List<Vector3>();
+								List<Vector2> texcoords = new List<Vector2>();
+
+								foreach (var x in quad.vertexPositions)
+								{
+									vertices.Add(x.vector3D * scale);
+									texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
+								}
+
+								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
+								mesh.Faces.Add(newFace);
+							}
+						}
+
+						model.Meshes.Add(mesh);
+					}
+					else if (boxObj is PlaneRenderer)
+					{
+						PlaneRenderer box = (PlaneRenderer)boxObj;
+
+						Mesh mesh = new Mesh("Test");
+						mesh.Faces = new List<Face>();
+						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
+						mesh.Helmet = mesh.AllowTransparency = box.Helmet;
+						mesh.Part = box.Flags;
+						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
+						mesh.Pivot = mesh.Translate;
+
+						if (box.Animate)
+							mesh.RotateFactor = (box.mirror) ? -25 : 25;
+
+						if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
+							mesh.FollowCursor = true;
+
+						mesh.Mode = BeginMode.Quads;
+
 						int[] cwIndices = new int[] { 0, 1, 2, 3 };
 						int[] cwwIndices = new int[] { 3, 2, 1, 0 };
 						Color4[] colors = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
 
-						if (box.Helmet)
+						if (box.Helmet || box.AlsoReverse)
 						{
-							foreach (var quad in face.field_40680_i)
+							foreach (var quad in box.faces)
 							{
 								List<Vector3> vertices = new List<Vector3>();
 								List<Vector2> texcoords = new List<Vector2>();
@@ -514,8 +797,7 @@ namespace MCSkin3D
 							}
 						}
 
-
-						foreach (var quad in face.field_40680_i)
+						foreach (var quad in box.faces)
 						{
 							List<Vector3> vertices = new List<Vector3>();
 							List<Vector2> texcoords = new List<Vector2>();
@@ -529,9 +811,9 @@ namespace MCSkin3D
 							Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
 							mesh.Faces.Add(newFace);
 						}
+	
+						model.Meshes.Add(mesh);
 					}
-
-					model.Meshes.Add(mesh);
 				}
 
 				return model;
@@ -835,7 +1117,7 @@ namespace MCSkin3D
 
 			public ModelSlime(int i)
 			{
-				if(i > 0)
+				if (i > 0)
 				{
 					slimeBodies = new ModelRenderer(this, 0, 0, VisiblePartFlags.ChestFlag, false, false);
 					slimeBodies.addBox(-3F, 17F, -3F, 6, 6, 6);
@@ -863,7 +1145,7 @@ namespace MCSkin3D
 				squidBody = new ModelRenderer(this, 0, 0, VisiblePartFlags.ChestFlag, false, false);
 				squidBody.addBox(-6F, -8F, -6F, 12, 16, 12);
 				squidBody.rotationPointY += 24 + byte0;
-				for(int i = 0; i < squidTentacles.Length; i++)
+				for (int i = 0; i < squidTentacles.Length; i++)
 				{
 					squidTentacles[i] = new ModelRenderer(this, 48, 0, VisiblePartFlags.LeftArmFlag, false, true);
 					double d = ((double)i * 3.1415926535897931D * 2D) / (double)squidTentacles.Length;
@@ -887,20 +1169,21 @@ namespace MCSkin3D
 			public ModelMagmaCube()
 			{
 				field_40345_a = new ModelRenderer[8];
-				for(int i = 0; i < field_40345_a.Length; i++)
+				for (int i = 0; i < field_40345_a.Length; i++)
 				{
 					byte byte0 = 0;
 					int j = i;
-					if(i == 2)
+					if (i == 2)
 					{
 						byte0 = 24;
 						j = 10;
-					} else
-					if(i == 3)
-					{
-						byte0 = 24;
-						j = 19;
 					}
+					else
+						if (i == 3)
+						{
+							byte0 = 24;
+							j = 19;
+						}
 					field_40345_a[i] = new ModelRenderer(this, byte0, j, VisiblePartFlags.HeadFlag, false, false);
 					field_40345_a[i].addBox(-4F, 16 + i, -4F, 8, 1, 8);
 				}
@@ -918,7 +1201,7 @@ namespace MCSkin3D
 			public ModelBlaze()
 			{
 				field_40323_a = new ModelRenderer[12];
-				for(int i = 0; i < field_40323_a.Length; i++)
+				for (int i = 0; i < field_40323_a.Length; i++)
 				{
 					field_40323_a[i] = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, false);
 					field_40323_a[i].addBox(0.0F, 0.0F, 0.0F, 2, 8, 2);
@@ -1127,20 +1410,20 @@ namespace MCSkin3D
 
 			public void setLivingAnimations(float f, float f1, float f2)
 			{
-					wolfBody.setRotationPoint(0.0F, 14F, 2.0F);
-					wolfBody.rotateAngleX = 1.570796F;
-					wolfMane.setRotationPoint(-1F, 14F, -3F);
-					wolfMane.rotateAngleX = wolfBody.rotateAngleX;
-					wolfTail.setRotationPoint(-1F, 12F, 8F);
-					wolfTail.rotateAngleX = wolfBody.rotateAngleX;
-					wolfLeg1.setRotationPoint(-2.5F, 16F, 7F);
-					wolfLeg2.setRotationPoint(0.5F, 16F, 7F);
-					wolfLeg3.setRotationPoint(-2.5F, 16F, -4F);
-					wolfLeg4.setRotationPoint(0.5F, 16F, -4F);
-					wolfLeg1.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
-					wolfLeg2.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
-					wolfLeg3.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
-					wolfLeg4.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
+				wolfBody.setRotationPoint(0.0F, 14F, 2.0F);
+				wolfBody.rotateAngleX = 1.570796F;
+				wolfMane.setRotationPoint(-1F, 14F, -3F);
+				wolfMane.rotateAngleX = wolfBody.rotateAngleX;
+				wolfTail.setRotationPoint(-1F, 12F, 8F);
+				wolfTail.rotateAngleX = wolfBody.rotateAngleX;
+				wolfLeg1.setRotationPoint(-2.5F, 16F, 7F);
+				wolfLeg2.setRotationPoint(0.5F, 16F, 7F);
+				wolfLeg3.setRotationPoint(-2.5F, 16F, -4F);
+				wolfLeg4.setRotationPoint(0.5F, 16F, -4F);
+				wolfLeg1.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
+				wolfLeg2.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+				wolfLeg3.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+				wolfLeg4.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
 			}
 		}
 
@@ -1157,7 +1440,7 @@ namespace MCSkin3D
 				body.addBox(-8F, -8F, -8F, 16, 16, 16);
 				body.rotationPointY += 24 + byte0;
 				Random random = new Random(1660);
-				for(int i = 0; i < tentacles.Length; i++)
+				for (int i = 0; i < tentacles.Length; i++)
 				{
 					tentacles[i] = new ModelRenderer(this, 0, 0, VisiblePartFlags.LeftLegFlag, false, false);
 					float f = (((((float)(i % 3) - (float)((i / 3) % 2) * 0.5F) + 0.25F) / 2.0F) * 2.0F - 1.0F) * 5F;
@@ -1174,7 +1457,7 @@ namespace MCSkin3D
 
 			public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 			{
-				for(int i = 0; i < tentacles.Length; i++)
+				for (int i = 0; i < tentacles.Length; i++)
 				{
 					tentacles[i].rotateAngleX = 0.2F * (float)Math.Sin(f2 * 0.3F + (float)i) + 0.4F;
 				}
@@ -1260,13 +1543,13 @@ namespace MCSkin3D
 				spiderLeg7.rotateAngleY = -f8 * 2.0F + f7;
 				spiderLeg8.rotateAngleY = f8 * 2.0F - f7;
 				float f9 = (float)-(Math.Cos(f * 0.6662F * 2.0F + 0.0F) * 0.4F) * f1;
-				float f10 =(float) (-Math.Cos(f * 0.6662F * 2.0F + 3.141593F) * 0.4F) * f1;
-				float f11 =(float) (-Math.Cos(f * 0.6662F * 2.0F + 1.570796F) * 0.4F) * f1;
-				float f12 =(float) (-Math.Cos(f * 0.6662F * 2.0F + 4.712389F) * 0.4F) * f1;
-				float f13 =(float) Math.Abs(Math.Sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
-				float f14 =(float) Math.Abs(Math.Sin(f * 0.6662F + 3.141593F) * 0.4F) * f1;
-				float f15 =(float) Math.Abs(Math.Sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
-				float f16 =(float) Math.Abs(Math.Sin(f * 0.6662F + 4.712389F) * 0.4F) * f1;
+				float f10 =(float)(-Math.Cos(f * 0.6662F * 2.0F + 3.141593F) * 0.4F) * f1;
+				float f11 =(float)(-Math.Cos(f * 0.6662F * 2.0F + 1.570796F) * 0.4F) * f1;
+				float f12 =(float)(-Math.Cos(f * 0.6662F * 2.0F + 4.712389F) * 0.4F) * f1;
+				float f13 =(float)Math.Abs(Math.Sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
+				float f14 =(float)Math.Abs(Math.Sin(f * 0.6662F + 3.141593F) * 0.4F) * f1;
+				float f15 =(float)Math.Abs(Math.Sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
+				float f16 =(float)Math.Abs(Math.Sin(f * 0.6662F + 4.712389F) * 0.4F) * f1;
 				spiderLeg1.rotateAngleY += f9;
 				spiderLeg2.rotateAngleY += -f9;
 				spiderLeg3.rotateAngleY += f10;
@@ -1579,6 +1862,1103 @@ namespace MCSkin3D
 			}
 		}
 
+		public class ModelZombie : ModelBiped
+		{
+			public ModelZombie()
+			{
+				setRotationAngles(0, 0, 0, 0, 0, 0);
+			}
+
+			public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+			{
+				float f6 = (float)Math.Sin(onGround * 3.141593F);
+				float f7 = (float)Math.Sin((1.0F - (1.0F - onGround) * (1.0F - onGround)) * 3.141593F);
+				bipedRightArm.rotateAngleZ = 0.0F;
+				bipedLeftArm.rotateAngleZ = 0.0F;
+				bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
+				bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F;
+				bipedRightArm.rotateAngleX = -1.570796F;
+				bipedLeftArm.rotateAngleX = -1.570796F;
+				bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+				bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+				bipedRightArm.rotateAngleZ += (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+				bipedLeftArm.rotateAngleZ -= (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+				bipedRightArm.rotateAngleX += (float)Math.Sin(f2 * 0.067F) * 0.05F;
+				bipedLeftArm.rotateAngleX -= (float)Math.Sin(f2 * 0.067F) * 0.05F;
+			}
+		}
+
+		public class ModelSkeleton : ModelZombie
+		{
+			public ModelSkeleton()
+			{
+				float f = 0.0F;
+				boxList.Remove(bipedRightArm);
+				bipedRightArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, false);
+				bipedRightArm.addBox(-1F, -2F, -1F, 2, 12, 2, f);
+				bipedRightArm.setRotationPoint(-5F, 2.0F, 0.0F);
+				boxList.Remove(bipedLeftArm);
+				bipedLeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, false);
+				bipedLeftArm.mirror = true;
+				bipedLeftArm.addBox(-1F, -2F, -1F, 2, 12, 2, f);
+				bipedLeftArm.setRotationPoint(5F, 2.0F, 0.0F);
+				boxList.Remove(bipedRightLeg);
+				bipedRightLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, false);
+				bipedRightLeg.addBox(-1F, 0.0F, -1F, 2, 12, 2, f);
+				bipedRightLeg.setRotationPoint(-2F, 12F, 0.0F);
+				boxList.Remove(bipedLeftLeg);
+				bipedLeftLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, false);
+				bipedLeftLeg.mirror = true;
+				bipedLeftLeg.addBox(-1F, 0.0F, -1F, 2, 12, 2, f);
+				bipedLeftLeg.setRotationPoint(2.0F, 12F, 0.0F);
+
+				setRotationAngles(0, 0, 0, 0, 0, 0);
+			}
+
+			public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+			{
+				aimedBow = true;
+				base.setRotationAngles(f, f1, f2, f3, f4, f5);
+			}
+		}
+
+		public class pm_Pony : ModelBase
+		{
+			private bool rainboom;
+			private float WingRotateAngleX;
+			private float WingRotateAngleY;
+			private float WingRotateAngleZ;
+			private float TailRotateAngleY;
+			public ModelRenderer head;
+			public ModelRenderer[] headpiece;
+			public ModelRenderer helmet;
+			public ModelRenderer Body;
+			public PlaneRenderer[] Bodypiece;
+			public ModelRenderer rightarm;
+			public ModelRenderer LeftArm;
+			public ModelRenderer RightLeg;
+			public ModelRenderer LeftLeg;
+			public ModelRenderer SteveArm;
+			public ModelRenderer unicornarm;
+			public PlaneRenderer[] Tail;
+			public ModelRenderer[] LeftWing;
+			public ModelRenderer[] RightWing;
+			public ModelRenderer[] LeftWingExt;
+			public ModelRenderer[] RightWingExt;
+			public float strech;
+
+			public bool isFlying, isUnicorn, isPegasus;
+
+			public pm_Pony()
+			{
+			}
+
+			public pm_Pony init(bool unicorn, bool pegasis)
+			{
+				isUnicorn = unicorn;
+				isPegasus = pegasis;
+				init(0.0F);
+				return this;
+			}
+			public void init(float yoffset)
+			{
+				init(yoffset, 0.0F);
+			}
+
+			public void init(float yoffset, float init_strech)
+			{
+				this.strech = init_strech;
+
+				float headR1 = 0.0F;
+				float headR2 = 0.0F;
+				float headR3 = 0.0F;
+
+				this.head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.head.addBox(-4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech);
+				this.head.setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.headpiece = new ModelRenderer[3];
+
+				this.headpiece[0] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, true, false);
+				this.headpiece[0].addBox(-4.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
+				this.headpiece[0].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.headpiece[1] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, true, false);
+				this.headpiece[1].addBox(2.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
+				this.headpiece[1].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.headpiece[2] = new ModelRenderer(this, 56, 0, VisiblePartFlags.HelmetFlag, true, false);
+				this.headpiece[2].addBox(-0.5F, -10.0F, -4.0F, 1, 4, 1, this.strech);
+				this.headpiece[2].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.helmet = new ModelRenderer(this, 32, 0, VisiblePartFlags.HelmetFlag, true, false);
+				this.helmet.addBox(-4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech + 0.5F);
+				this.helmet.setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				float BodyR1 = 0.0F;
+				float BodyR2 = 0.0F;
+				float BodyR3 = 0.0F;
+
+				this.Body = new ModelRenderer(this, 16, 16, VisiblePartFlags.ChestFlag, false, false);
+				this.Body.addBox(-4.0F, 4.0F, -2.0F, 8, 8, 4, this.strech);
+				this.Body.setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
+
+				this.Bodypiece = new PlaneRenderer[13];
+
+				this.Bodypiece[0] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.RightLegFlag, false, false);
+				this.Bodypiece[0].addSidePlane(-4.0F, 4.0F, 2.0F, 0, 8, 8, this.strech);
+				this.Bodypiece[0].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
+
+				this.Bodypiece[1] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.RightLegFlag, false, false);
+				this.Bodypiece[1].addSidePlane(4.0F, 4.0F, 2.0F, 0, 8, 8, this.strech);
+				this.Bodypiece[1].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
+
+				this.Bodypiece[2] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[2].addTopPlane(-4.0F, 4.0F, 2.0F, 8, 0, 8, this.strech);
+				this.Bodypiece[2].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[3] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[3].addTopPlane(-4.0F, 12.0F, 2.0F, 8, 0, 8, this.strech);
+				this.Bodypiece[3].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[4] = new PlaneRenderer(this, 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[4].addSidePlane(-4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
+				this.Bodypiece[4].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
+
+				this.Bodypiece[5] = new PlaneRenderer(this, 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[5].addSidePlane(4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
+				this.Bodypiece[5].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
+
+				this.Bodypiece[6] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[6].addTopPlane(-4.0F, 4.0F, 10.0F, 8, 0, 4, this.strech);
+				this.Bodypiece[6].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[7] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[7].addTopPlane(-4.0F, 12.0F, 10.0F, 8, 0, 4, this.strech);
+				this.Bodypiece[7].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[8] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[8].addBackPlane(-4.0F, 4.0F, 14.0F, 8, 8, 0, this.strech);
+				this.Bodypiece[8].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[9] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[9].addTopPlane(-1.0F, 10.0F, 8.0F, 2, 0, 6, this.strech);
+				this.Bodypiece[9].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[10] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[10].addTopPlane(-1.0F, 12.0F, 8.0F, 2, 0, 6, this.strech);
+				this.Bodypiece[10].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[11] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[11].mirror = true;
+				this.Bodypiece[11].addSidePlane(-1.0F, 10.0F, 8.0F, 0, 2, 6, this.strech);
+				this.Bodypiece[11].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.Bodypiece[12] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[12].addSidePlane(1.0F, 10.0F, 8.0F, 0, 2, 6, this.strech);
+				this.Bodypiece[12].setRotationPoint(headR1, headR2 + yoffset, headR3);
+
+				this.rightarm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, false);
+				this.rightarm.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.rightarm.setRotationPoint(-3.0F, 8.0F + yoffset, 0.0F);
+
+				this.LeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftArmFlag, false, false);
+				this.LeftArm.mirror = true;
+				this.LeftArm.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.LeftArm.setRotationPoint(3.0F, 8.0F + yoffset, 0.0F);
+
+				this.RightLeg = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftLegFlag, false, false);
+				this.RightLeg.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.RightLeg.setRotationPoint(-3.0F, 0.0F + yoffset, 0.0F);
+
+				this.LeftLeg = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftLegFlag, false, false);
+				this.LeftLeg.mirror = true;
+				this.LeftLeg.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.LeftLeg.setRotationPoint(3.0F, 0.0F + yoffset, 0.0F);
+
+				this.SteveArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
+				this.SteveArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, this.strech);
+				this.SteveArm.setRotationPoint(-5.0F, 2.0F + yoffset, 0.0F);
+				boxList.Remove(SteveArm);
+
+				this.unicornarm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
+				this.unicornarm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, this.strech);
+				this.unicornarm.setRotationPoint(-5.0F, 2.0F + yoffset, 0.0F);
+				boxList.Remove(unicornarm);
+
+				float txf = 0.0F;
+				float tyf = 8.0F;
+				float tzf = -14.0F;
+				float TailR1 = 0.0F - txf;
+				float TailR2 = 10.0F - tyf;
+				float TailR3 = 0.0F;
+				this.Tail = new PlaneRenderer[10];
+
+				this.Tail[0] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[0].addTopPlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 4, 0, 4, this.strech);
+				this.Tail[0].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[1] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[1].addTopPlane(-2.0F + txf, 9.0F + tyf, 16.0F + tzf, 4, 0, 4, this.strech);
+				this.Tail[1].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[2] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[2].addBackPlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 4, 8, 0, this.strech);
+				this.Tail[2].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[3] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[3].addBackPlane(-2.0F + txf, -7.0F + tyf, 20.0F + tzf, 4, 8, 0, this.strech);
+				this.Tail[3].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[4] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[4].addBackPlane(-2.0F + txf, 1.0F + tyf, 16.0F + tzf, 4, 8, 0, this.strech);
+				this.Tail[4].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[5] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[5].addBackPlane(-2.0F + txf, 1.0F + tyf, 20.0F + tzf, 4, 8, 0, this.strech);
+				this.Tail[5].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[6] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[6].mirror = true;
+				this.Tail[6].addSidePlane(2.0F + txf, -7.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
+				this.Tail[6].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[7] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[7].addSidePlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
+				this.Tail[7].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[8] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[8].mirror = true;
+				this.Tail[8].addSidePlane(2.0F + txf, 1.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
+				this.Tail[8].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.Tail[9] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[9].addSidePlane(-2.0F + txf, 1.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
+				this.Tail[9].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
+
+				this.TailRotateAngleY = this.Tail[0].rotateAngleY;
+				this.TailRotateAngleY = this.Tail[0].rotateAngleY;
+
+				float WingR1 = 0.0F;
+
+				float WingR2 = 0.0F;
+				float WingR3 = 0.0F;
+
+				this.LeftWing = new ModelRenderer[3];
+
+				this.LeftWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWing[0].mirror = true;
+				this.LeftWing[0].addBox(4.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
+				this.LeftWing[0].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
+
+				this.LeftWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWing[1].mirror = true;
+				this.LeftWing[1].addBox(4.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
+				this.LeftWing[1].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
+
+				this.LeftWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWing[2].mirror = true;
+				this.LeftWing[2].addBox(4.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
+				this.LeftWing[2].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
+				
+				this.RightWing = new ModelRenderer[3];
+
+				this.RightWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWing[0].addBox(-6.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
+				this.RightWing[0].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
+
+				this.RightWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWing[1].addBox(-6.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
+				this.RightWing[1].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
+
+				this.RightWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWing[2].addBox(-6.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
+				this.RightWing[2].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
+				
+				float LeftWingExtR1 = headR1 + 4.5F;
+				float LeftWingExtR2 = headR2 + 5.0F;
+				float LeftWingExtR3 = headR3 + 6.0F;
+
+				this.LeftWingExt = new ModelRenderer[7];
+
+				this.LeftWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[0].mirror = true;
+
+				this.LeftWingExt[0].addBox(0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
+				this.LeftWingExt[0].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				this.LeftWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[1].mirror = true;
+
+				this.LeftWingExt[1].addBox(0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
+				this.LeftWingExt[1].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				this.LeftWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[2].mirror = true;
+				this.LeftWingExt[2].addBox(0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
+				this.LeftWingExt[2].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				this.LeftWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[3].mirror = true;
+				this.LeftWingExt[3].addBox(0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
+				this.LeftWingExt[3].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				this.LeftWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[4].mirror = true;
+				this.LeftWingExt[4].addBox(0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
+				this.LeftWingExt[4].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				this.LeftWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[5].mirror = true;
+
+				this.LeftWingExt[5].addBox(0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
+				this.LeftWingExt[5].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				this.LeftWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.LeftWingExt[6].mirror = true;
+
+				this.LeftWingExt[6].addBox(0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
+				this.LeftWingExt[6].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
+
+				float RightWingExtR1 = headR1 - 5.5F;
+				float RightWingExtR2 = headR2 + 5.0F;
+				float RightWingExtR3 = headR3 + 6.0F;
+
+				this.RightWingExt = new ModelRenderer[7];
+
+				this.RightWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[0].mirror = true;
+
+				this.RightWingExt[0].addBox(0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
+				this.RightWingExt[0].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.RightWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[1].mirror = true;
+
+				this.RightWingExt[1].addBox(0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
+				this.RightWingExt[1].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.RightWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[2].mirror = true;
+				this.RightWingExt[2].addBox(0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
+				this.RightWingExt[2].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.RightWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[3].mirror = true;
+				this.RightWingExt[3].addBox(0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
+				this.RightWingExt[3].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.RightWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[4].mirror = true;
+				this.RightWingExt[4].addBox(0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
+				this.RightWingExt[4].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.RightWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[5].mirror = true;
+
+				this.RightWingExt[5].addBox(0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
+				this.RightWingExt[5].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.RightWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
+				this.RightWingExt[6].mirror = true;
+
+				this.RightWingExt[6].addBox(0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
+				this.RightWingExt[6].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
+
+				this.WingRotateAngleX = this.LeftWingExt[0].rotateAngleX;
+				this.WingRotateAngleY = this.LeftWingExt[0].rotateAngleY;
+				this.WingRotateAngleZ = this.LeftWingExt[0].rotateAngleZ;
+
+				animate(0, 0, 0, 0, 0);
+			}
+
+			public void animate(float Move, float Moveswing, float Loop, float Right, float Down)
+			{
+				float SwingProgress = 0;
+
+				this.rainboom = false;
+				float headRotateAngleX;
+				float headRotateAngleY;
+
+				//if (this.isSleeping)
+				//{
+				//  float headRotateAngleY = 1.4F;
+				//  headRotateAngleX = 0.1F;
+				//} else {
+				headRotateAngleY = Right / 57.29578F;
+				headRotateAngleX = Down / 57.29578F;
+				//}
+				this.head.rotateAngleY = headRotateAngleY;
+				this.head.rotateAngleX = headRotateAngleX;
+				this.headpiece[0].rotateAngleY = headRotateAngleY;
+				this.headpiece[0].rotateAngleX = headRotateAngleX;
+				this.headpiece[1].rotateAngleY = headRotateAngleY;
+				this.headpiece[1].rotateAngleX = headRotateAngleX;
+				this.headpiece[2].rotateAngleY = headRotateAngleY;
+				this.headpiece[2].rotateAngleX = headRotateAngleX;
+				this.helmet.rotateAngleY = headRotateAngleY;
+				this.helmet.rotateAngleX = headRotateAngleX;
+
+				this.headpiece[2].rotateAngleX = (headRotateAngleX + 0.5F);
+				float rightarmRotateAngleX;
+				float LeftArmRotateAngleX;
+				float RightLegRotateAngleX;
+				float LeftLegRotateAngleX;
+
+				if ((!this.isFlying) || (!this.isPegasus))
+				{
+					rightarmRotateAngleX = (Move * 0.6662F + 3.141593F) * 0.6F * Moveswing;
+					LeftArmRotateAngleX = (Move * 0.6662F) * 0.6F * Moveswing;
+					RightLegRotateAngleX = (Move * 0.6662F) * 0.3F * Moveswing;
+					LeftLegRotateAngleX = (Move * 0.6662F + 3.141593F) * 0.3F * Moveswing;
+					this.rightarm.rotateAngleY = 0.0F;
+					this.SteveArm.rotateAngleY = 0.0F;
+					this.unicornarm.rotateAngleY = 0.0F;
+					this.LeftArm.rotateAngleY = 0.0F;
+					this.RightLeg.rotateAngleY = 0.0F;
+					this.LeftLeg.rotateAngleY = 0.0F;
+				}
+				else
+				{
+				  if (Moveswing < 0.9999F)
+				  {
+					this.rainboom = false;
+					rightarmRotateAngleX = (0.0F - Moveswing * 0.5F);
+					LeftArmRotateAngleX = (0.0F - Moveswing * 0.5F);
+					RightLegRotateAngleX = (Moveswing * 0.5F);
+					LeftLegRotateAngleX = (Moveswing * 0.5F);
+				  }
+				  else
+				  {
+					this.rainboom = true;
+					rightarmRotateAngleX = 4.712F;
+					LeftArmRotateAngleX = 4.712F;
+					RightLegRotateAngleX = 1.571F;
+					LeftLegRotateAngleX = 1.571F;
+				  }
+				  this.rightarm.rotateAngleY = 0.2F;
+				  this.SteveArm.rotateAngleY = 0.2F;
+				  this.LeftArm.rotateAngleY = -0.2F;
+				  this.RightLeg.rotateAngleY = -0.2F;
+				  this.LeftLeg.rotateAngleY = 0.2F;
+				}
+
+				/*if (this.isSleeping) {
+				  rightarmRotateAngleX = 4.712F;
+				  LeftArmRotateAngleX = 4.712F;
+				  RightLegRotateAngleX = 1.571F;
+				  LeftLegRotateAngleX = 1.571F;
+				}*/
+
+				this.rightarm.rotateAngleX = rightarmRotateAngleX;
+				this.SteveArm.rotateAngleX = rightarmRotateAngleX;
+
+				this.unicornarm.rotateAngleX = 0.0F;
+				this.LeftArm.rotateAngleX = LeftArmRotateAngleX;
+				this.RightLeg.rotateAngleX = RightLegRotateAngleX;
+				this.LeftLeg.rotateAngleX = LeftLegRotateAngleX;
+				this.rightarm.rotateAngleZ = 0.0F;
+				this.SteveArm.rotateAngleZ = 0.0F;
+				this.unicornarm.rotateAngleZ = 0.0F;
+				this.LeftArm.rotateAngleZ = 0.0F;
+
+				for (int i = 0; i < this.Tail.Length; i++)
+				{
+				  if (this.rainboom)
+					this.Tail[i].rotateAngleZ = 0.0F;
+				  else {
+					this.Tail[i].rotateAngleZ = ((Move * 0.8F) * 0.2F * Moveswing);
+				  }
+				}
+
+				/*if ((this.heldItemRight != 0) && (!this.rainboom))
+				{
+				  if (!this.isUnicorn)
+				  {
+					this.rightarm.rotateAngleX = (this.rightarm.f * 0.5F - 0.314159F);
+					this.SteveArm.rotateAngleX = (this.SteveArm.f * 0.5F - 0.314159F);
+				  }
+				}*/
+
+				float BodyRotateAngleY = 0.0F;
+
+				if ((SwingProgress > -9990.0 && !this.isUnicorn))
+				{
+					BodyRotateAngleY = ((SwingProgress) * 3.141593F * 2.0F) * 0.2F;
+				}
+
+				this.Body.rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
+				for (int i = 0; i < this.Bodypiece.Length; i++)
+				{
+					this.Bodypiece[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
+				}
+				for (int i = 0; i < this.LeftWing.Length; i++)
+				{
+					this.LeftWing[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
+				}
+				for (int i = 0; i < this.RightWing.Length; i++)
+				{
+					this.RightWing[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
+				}
+
+				for (int i = 0; i < this.Tail.Length; i++)
+				{
+				  this.Tail[i].rotateAngleY = BodyRotateAngleY;
+				}
+
+				float ArmRotationPointZ = (this.Body.rotationPointZ) * 5.0F;
+				float ArmRotationPointX = (this.Body.rotationPointX) * 5.0F;
+				float LegSplay = 4.0F;
+				/*if ((this.issneak) && (!this.isFlying))
+				{
+				  LegSplay = 0.0F;
+				}
+				if (this.isSleeping)
+				{
+				  LegSplay = 2.6F;
+				}
+				if (this.rainboom) {
+				  this.rightarm.rotationPointZ = (ArmRotationPointZ + 2.0F);
+				  this.SteveArm.rotationPointZ = (ArmRotationPointZ + 2.0F);
+				  this.LeftArm.rotationPointZ = (0.0F - ArmRotationPointZ + 2.0F);
+				} else {*/
+				this.rightarm.rotationPointZ = (ArmRotationPointZ + 1.0F);
+				this.SteveArm.rotationPointZ = (ArmRotationPointZ + 1.0F);
+				this.LeftArm.rotationPointZ = (0.0F - ArmRotationPointZ + 1.0F);
+				//}
+				this.rightarm.rotationPointX = (0.0F - ArmRotationPointX - 1.0F + LegSplay);
+				this.SteveArm.rotationPointX = (0.0F - ArmRotationPointX);
+				this.LeftArm.rotationPointX = (ArmRotationPointX + 1.0F - LegSplay);
+				this.RightLeg.rotationPointX = (0.0F - ArmRotationPointX - 1.0F + LegSplay);
+				this.LeftLeg.rotationPointX = (ArmRotationPointX + 1.0F - LegSplay);
+
+				this.rightarm.rotateAngleY += this.Body.rotateAngleY;
+				this.LeftArm.rotateAngleY += this.Body.rotateAngleY;
+				this.LeftArm.rotateAngleX += this.Body.rotateAngleX;
+
+				this.rightarm.rotationPointY = 8.0F;
+				this.LeftArm.rotationPointY = 8.0F;
+				this.RightLeg.rotationPointY = 4.0F;
+				this.LeftLeg.rotationPointY = 4.0F;
+
+				/*if (SwingProgress > -9990.0F)
+				{
+				  float f = SwingProgress;
+				  f = 1.0F - SwingProgress;
+				  f *= f * f;
+				  f = 1.0F - f;
+				  float f1 = me.a(f * 3.141593F);
+				  float SwingProgressPi = me.a(SwingProgress * 3.141593F);
+				  float f2 = SwingProgressPi * -(this.head.f - 0.7F) * 0.75F;
+
+				  if (this.isUnicorn)
+				  {
+					acf tmp1252_1249 = this.unicornarm; tmp1252_1249.rotateAngleX = (float)(tmp1252_1249.f - (f1 * 1.2D + f2));
+					this.unicornarm.g += this.Body.g * 2.0F;
+					this.unicornarm.rotateAngleZ = (SwingProgressPi * -0.4F);
+				  }
+				  else
+				  {
+					acf tmp1313_1310 = this.rightarm; tmp1313_1310.rotateAngleX = (float)(tmp1313_1310.f - (f1 * 1.2D + f2));
+					this.rightarm.g += this.Body.g * 2.0F;
+					this.rightarm.rotateAngleZ = (SwingProgressPi * -0.4F);
+					acf tmp1371_1368 = this.SteveArm; tmp1371_1368.rotateAngleX = (float)(tmp1371_1368.f - (f1 * 1.2D + f2));
+					this.SteveArm.g += this.Body.g * 2.0F;
+					this.SteveArm.rotateAngleZ = (SwingProgressPi * -0.4F);
+				  }
+				}
+
+				if ((this.issneak) && (!this.isFlying))
+				{
+				  float BodyRotateAngleX = 0.4F;
+				  float BodyRotationPointY = 7.0F;
+				  float BodyRotationPointZ = -4.0F;
+				  this.Body.rotateAngleX = BodyRotateAngleX;
+				  this.Body.rotationPointY = BodyRotationPointY;
+				  this.Body.rotationPointZ = BodyRotationPointZ;
+				  for (int i = 0; i < this.Bodypiece.length; i++)
+				  {
+					this.Bodypiece[i].rotateAngleX = BodyRotateAngleX;
+					this.Bodypiece[i].rotationPointY = BodyRotationPointY;
+					this.Bodypiece[i].rotationPointZ = BodyRotationPointZ;
+				  }
+
+				  float lwrpy = 3.5F;
+				  float lwrpz = 6.0F;
+
+				  for (int i = 0; i < this.LeftWingExt.length; i++)
+				  {
+					this.LeftWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 2.356194734573364D);
+					this.LeftWingExt[i].rotationPointY = (BodyRotationPointY + lwrpy);
+					this.LeftWingExt[i].rotationPointZ = (BodyRotationPointZ + lwrpz);
+
+					this.LeftWingExt[i].rotateAngleX = 2.5F;
+					this.LeftWingExt[i].rotateAngleZ = -6.0F;
+				  }
+
+				  float rwrpy = 4.5F;
+				  float rwrpz = 6.0F;
+
+				  for (int i = 0; i < this.LeftWingExt.length; i++)
+				  {
+					this.RightWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 2.356194734573364D);
+					this.RightWingExt[i].rotationPointY = (BodyRotationPointY + rwrpy);
+					this.RightWingExt[i].rotationPointZ = (BodyRotationPointZ + rwrpz);
+
+					this.RightWingExt[i].rotateAngleX = 2.5F;
+					this.RightWingExt[i].rotateAngleZ = 6.0F;
+				  }
+
+				  this.RightLeg.f -= 0.0F;
+				  this.LeftLeg.f -= 0.0F;
+				  this.rightarm.f -= 0.4F;
+				  this.SteveArm.f += 0.4F;
+				  this.unicornarm.f += 0.4F;
+				  this.LeftArm.f -= 0.4F;
+				  this.RightLeg.rotationPointZ = 10.0F;
+				  this.LeftLeg.rotationPointZ = 10.0F;
+				  this.RightLeg.rotationPointY = 7.0F;
+				  this.LeftLeg.rotationPointY = 7.0F;
+				  float headRotationPointX;
+				  float headRotationPointY;
+				  float headRotationPointZ;
+				  float headRotationPointX;
+				  if (this.isSleeping) {
+					float headRotationPointY = 2.0F;
+					float headRotationPointZ = -1.0F;
+					headRotationPointX = 1.0F;
+				  } else {
+					headRotationPointY = 6.0F;
+					headRotationPointZ = -2.0F;
+					headRotationPointX = 0.0F;
+				  }
+				  this.head.rotationPointY = headRotationPointY;
+				  this.head.rotationPointZ = headRotationPointZ;
+				  this.head.rotationPointX = headRotationPointX;
+				  this.helmet.rotationPointY = headRotationPointY;
+				  this.helmet.rotationPointZ = headRotationPointZ;
+				  this.helmet.rotationPointX = headRotationPointX;
+				  this.headpiece[0].rotationPointY = headRotationPointY;
+				  this.headpiece[0].rotationPointZ = headRotationPointZ;
+				  this.headpiece[0].rotationPointX = headRotationPointX;
+				  this.headpiece[1].rotationPointY = headRotationPointY;
+				  this.headpiece[1].rotationPointZ = headRotationPointZ;
+				  this.headpiece[1].rotationPointX = headRotationPointX;
+				  this.headpiece[2].rotationPointY = headRotationPointY;
+				  this.headpiece[2].rotationPointZ = headRotationPointZ;
+				  this.headpiece[2].rotationPointX = headRotationPointX;
+
+				  float txf = 0.0F;
+				  float tyf = 8.0F;
+				  float tzf = -14.0F;
+				  float TailRotationPointX = 0.0F - txf;
+				  float TailRotationPointY = 9.0F - tyf;
+				  float TailRotationPointZ = -4.0F - tzf;
+				  float TailRotateAngleX = 0.0F;
+				  for (int i = 0; i < this.Tail.length; i++)
+				  {
+					this.Tail[i].rotationPointX = TailRotationPointX;
+					this.Tail[i].rotationPointY = TailRotationPointY;
+					this.Tail[i].rotationPointZ = TailRotationPointZ;
+					this.Tail[i].rotateAngleX = TailRotateAngleX;
+				  }
+
+				}
+				else
+				{*/
+				float BodyRotateAngleX = 0.0F;
+				float BodyRotationPointY = 0.0F;
+				float BodyRotationPointZ = 0.0F;
+				this.Body.rotateAngleX = BodyRotateAngleX;
+				this.Body.rotationPointY = BodyRotationPointY;
+				this.Body.rotationPointZ = BodyRotationPointZ;
+				for (int i = 0; i < this.Bodypiece.Length; i++)
+				{
+					this.Bodypiece[i].rotateAngleX = BodyRotateAngleX;
+					this.Bodypiece[i].rotationPointY = BodyRotationPointY;
+					this.Bodypiece[i].rotationPointZ = BodyRotationPointZ;
+				}
+
+				if (this.isPegasus)
+				{
+					if (!this.isFlying)
+					{
+						for (int i = 0; i < this.LeftWing.Length; i++)
+						{
+							this.LeftWing[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
+							this.LeftWing[i].rotationPointY = (BodyRotationPointY + 13.0F);
+							this.LeftWing[i].rotationPointZ = (BodyRotationPointZ - 3.0F);
+						}
+						for (int i = 0; i < this.RightWing.Length; i++)
+						{
+							this.RightWing[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
+							this.RightWing[i].rotationPointY = (BodyRotationPointY + 13.0F);
+							this.RightWing[i].rotationPointZ = (BodyRotationPointZ - 3.0F);
+						}
+					}
+					else
+					{
+						float lwrpy = 5.5F;
+						float lwrpz = 3.0F;
+
+						for (int i = 0; i < this.LeftWingExt.Length; i++)
+						{
+							this.LeftWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
+							this.LeftWingExt[i].rotationPointY = (BodyRotationPointY + lwrpy);
+							this.LeftWingExt[i].rotationPointZ = (BodyRotationPointZ + lwrpz);
+						}
+
+						float rwrpy = 6.5F;
+						float rwrpz = 3.0F;
+
+						for (int i = 0; i < this.RightWingExt.Length; i++)
+						{
+							this.RightWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
+							this.RightWingExt[i].rotationPointY = (BodyRotationPointY + rwrpy);
+							this.RightWingExt[i].rotationPointZ = (BodyRotationPointZ + rwrpz);
+						}
+					}
+				}
+
+				//  }
+
+				this.RightLeg.rotationPointZ = 10.0F;
+				this.LeftLeg.rotationPointZ = 10.0F;
+				this.RightLeg.rotationPointY = 8.0F;
+				this.LeftLeg.rotationPointY = 8.0F;
+
+				float ArmRotateAngleZ = (Loop * 0.09F) * 0.05F + 0.05F;
+				float ArmRotateAngleX = (Loop * 0.067F) * 0.05F;
+				this.SteveArm.rotateAngleZ += ArmRotateAngleZ;
+				this.unicornarm.rotateAngleZ += ArmRotateAngleZ;
+				this.SteveArm.rotateAngleX += ArmRotateAngleX;
+				this.unicornarm.rotateAngleX += ArmRotateAngleX;
+
+				if ((this.isPegasus) && (this.isFlying))
+				{
+					this.WingRotateAngleY = ((Loop * 0.067F * 8.0F) * 1.0F);
+					this.WingRotateAngleZ = ((Loop * 0.067F * 8.0F) * 1.0F);
+					for (int i = 0; i < this.LeftWingExt.Length; i++)
+					{
+						this.LeftWingExt[i].rotateAngleX = 2.5F;
+						this.LeftWingExt[i].rotateAngleZ = (-this.WingRotateAngleZ - 4.712F - 0.4F);
+					}
+					for (int i = 0; i < this.RightWingExt.Length; i++)
+					{
+						this.RightWingExt[i].rotateAngleX = 2.5F;
+						this.RightWingExt[i].rotateAngleZ = (this.WingRotateAngleZ + 4.712F + 0.4F);
+					}
+				}
+
+				float headRotationPointX;
+				float headRotationPointY;
+				float headRotationPointZ;
+				/*if (this.isSleeping) {
+				  float headRotationPointY = 2.0F;
+				  float headRotationPointZ = 1.0F;
+				  headRotationPointX = 1.0F;
+				} else {*/
+				headRotationPointY = 0.0F;
+				headRotationPointZ = 0.0F;
+				headRotationPointX = 0.0F;
+				//}
+				this.head.rotationPointY = headRotationPointY;
+				this.head.rotationPointZ = headRotationPointZ;
+				this.head.rotationPointX = headRotationPointX;
+				this.helmet.rotationPointY = headRotationPointY;
+				this.helmet.rotationPointZ = headRotationPointZ;
+				this.helmet.rotationPointX = headRotationPointX;
+				this.headpiece[0].rotationPointY = headRotationPointY;
+				this.headpiece[0].rotationPointZ = headRotationPointZ;
+				this.headpiece[0].rotationPointX = headRotationPointX;
+				this.headpiece[1].rotationPointY = headRotationPointY;
+				this.headpiece[1].rotationPointZ = headRotationPointZ;
+				this.headpiece[1].rotationPointX = headRotationPointX;
+				this.headpiece[2].rotationPointY = headRotationPointY;
+				this.headpiece[2].rotationPointZ = headRotationPointZ;
+				this.headpiece[2].rotationPointX = headRotationPointX;
+
+				float txf = 0.0F;
+				float tyf = 8.0F;
+				float tzf = -14.0F;
+				float TailRotationPointX = 0.0F - txf;
+				float TailRotationPointY = 9.0F - tyf;
+				float TailRotationPointZ = 0.0F - tzf;
+				float TailRotateAngleX = 0.5F * Moveswing;
+
+				 for (int i = 0; i < this.Tail.Length; i++)
+				 {
+				   this.Tail[i].rotationPointX = TailRotationPointX;
+				   this.Tail[i].rotationPointY = TailRotationPointY;
+				   this.Tail[i].rotationPointZ = TailRotationPointZ;
+				   if (this.rainboom)
+					 this.Tail[i].rotateAngleX = (1.571F + 0.1F * (Move));
+				   else {
+					 this.Tail[i].rotateAngleX = TailRotateAngleX;
+				   }
+
+				 }
+
+				for (int i = 0; i < this.Tail.Length; i++)
+				{
+				  if (this.rainboom) {
+					continue;
+				  }
+				  this.Tail[i].rotateAngleX += ArmRotateAngleX;
+				}
+
+				this.LeftWingExt[2].rotateAngleX -= 0.85F;
+
+				this.LeftWingExt[3].rotateAngleX -= 0.75F;
+
+				this.LeftWingExt[4].rotateAngleX -= 0.5F;
+
+				this.LeftWingExt[6].rotateAngleX -= 0.85F;
+
+				this.RightWingExt[2].rotateAngleX -= 0.85F;
+
+				this.RightWingExt[3].rotateAngleX -= 0.75F;
+
+				this.RightWingExt[4].rotateAngleX -= 0.5F;
+
+				this.RightWingExt[6].rotateAngleX -= 0.85F;
+
+				this.Bodypiece[9].rotateAngleX += 0.5F;
+				this.Bodypiece[10].rotateAngleX += 0.5F;
+				this.Bodypiece[11].rotateAngleX += 0.5F;
+				this.Bodypiece[12].rotateAngleX += 0.5F;
+
+				if (this.rainboom) {
+				  for (int i = 0; i < this.Tail.Length; i++)
+				  {
+					this.Tail[i].rotationPointY += 6.0F;
+					this.Tail[i].rotationPointZ += 1.0F;
+				  }
+				}
+
+				/*if (this.b)
+				{
+				  float ShiftY = -10.0F;
+				  float ShiftZ = -10.0F;
+
+				  this.head.d += ShiftY;
+				  this.head.e += ShiftZ;
+				  this.headpiece[0].d += ShiftY;
+				  this.headpiece[0].e += ShiftZ;
+				  this.headpiece[1].d += ShiftY;
+				  this.headpiece[1].e += ShiftZ;
+
+				  this.headpiece[2].d += ShiftY;
+				  this.headpiece[2].e += ShiftZ;
+
+				  this.helmet.d += ShiftY;
+				  this.helmet.e += ShiftZ;
+				  this.Body.d += ShiftY;
+				  this.Body.e += ShiftZ;
+				  for (int i = 0; i < this.Bodypiece.length; i++)
+				  {
+					this.Bodypiece[i].rotationPointY += ShiftY;
+					this.Bodypiece[i].rotationPointZ += ShiftZ;
+				  }
+				  this.LeftArm.d += ShiftY;
+				  this.LeftArm.e += ShiftZ;
+				  this.rightarm.d += ShiftY;
+				  this.rightarm.e += ShiftZ;
+				  this.LeftLeg.d += ShiftY;
+				  this.LeftLeg.e += ShiftZ;
+				  this.RightLeg.d += ShiftY;
+				  this.RightLeg.e += ShiftZ;
+				  for (int i = 0; i < this.Tail.length; i++)
+				  {
+					this.Tail[i].rotationPointY += ShiftY;
+					this.Tail[i].rotationPointZ += ShiftZ;
+				  }
+
+				  for (int i = 0; i < this.LeftWing.length; i++)
+				  {
+					this.LeftWing[i].d += ShiftY;
+					this.LeftWing[i].e += ShiftZ;
+				  }
+				  for (int i = 0; i < this.RightWing.length; i++)
+				  {
+					this.RightWing[i].d += ShiftY;
+					this.RightWing[i].e += ShiftZ;
+				  }
+
+				  for (int i = 0; i < this.LeftWingExt.length; i++)
+				  {
+					this.LeftWingExt[i].d += ShiftY;
+					this.LeftWingExt[i].e += ShiftZ;
+				  }
+
+				  for (int i = 0; i < this.RightWingExt.length; i++)
+				  {
+					this.RightWingExt[i].d += ShiftY;
+					this.RightWingExt[i].e += ShiftZ;
+				  }
+				}
+
+				if (this.isSleeping)
+				{
+				  this.rightarm.e += 6.0F;
+				  this.LeftArm.e += 6.0F;
+				  this.RightLeg.e -= 8.0F;
+				  this.LeftLeg.e -= 8.0F;
+				  this.rightarm.d += 2.0F;
+				  this.LeftArm.d += 2.0F;
+				  this.RightLeg.d += 2.0F;
+				  this.LeftLeg.d += 2.0F;
+				}
+
+				if (this.aimedBow)
+				{
+				  if (this.isUnicorn) {
+					float f7 = 0.0F;
+					float f9 = 0.0F;
+					this.unicornarm.rotateAngleZ = 0.0F;
+					this.unicornarm.rotateAngleY = (-(0.1F - f7 * 0.6F) + this.head.g);
+					this.unicornarm.rotateAngleX = (4.712F + this.head.f);
+					this.unicornarm.f -= f7 * 1.2F - f9 * 0.4F;
+					float f2 = ani.tick;
+					this.unicornarm.h += me.b(f2 * 0.09F) * 0.05F + 0.05F;
+					this.unicornarm.f += me.a(f2 * 0.067F) * 0.05F;
+				  } else {
+					float f7 = 0.0F;
+					float f9 = 0.0F;
+					this.rightarm.rotateAngleZ = 0.0F;
+					this.rightarm.rotateAngleY = (-(0.1F - f7 * 0.6F) + this.head.g);
+					this.rightarm.rotateAngleX = (4.712F + this.head.f);
+					this.rightarm.f -= f7 * 1.2F - f9 * 0.4F;
+					float f2 = ani.tick;
+					this.rightarm.h += me.b(f2 * 0.09F) * 0.05F + 0.05F;
+					this.rightarm.f += me.a(f2 * 0.067F) * 0.05F;
+
+					this.rightarm.e += 1.0F;
+				  }
+				}*/
+			}
+
+			/*
+		  public void render(AniParams ani, boolean thirdperson)
+		  {
+			if (thirdperson)
+			{
+			  this.head.a(this.scale);
+
+			  this.headpiece[0].a(this.scale);
+			  this.headpiece[1].a(this.scale);
+			  if (this.isUnicorn)
+			  {
+				this.headpiece[2].a(this.scale);
+			  }
+
+			  this.helmet.a(this.scale);
+			  this.Body.a(this.scale);
+			  for (int i = 0; i < this.Bodypiece.length; i++)
+			  {
+				this.Bodypiece[i].render(this.scale);
+			  }
+			  this.LeftArm.a(this.scale);
+			  this.rightarm.a(this.scale);
+			  this.LeftLeg.a(this.scale);
+			  this.RightLeg.a(this.scale);
+			  for (int i = 0; i < this.Tail.length; i++)
+			  {
+				this.Tail[i].render(this.scale);
+			  }
+
+			  if (this.isPegasus)
+				if ((this.isFlying) || (this.issneak))
+				{
+				  for (int i = 0; i < this.LeftWingExt.length; i++)
+				  {
+					this.LeftWingExt[i].a(this.scale);
+				  }
+				  for (int i = 0; i < this.RightWingExt.length; i++)
+				  {
+					this.RightWingExt[i].a(this.scale);
+				  }
+				}
+				else {
+				  for (int i = 0; i < this.LeftWing.length; i++)
+				  {
+					this.LeftWing[i].a(this.scale);
+				  }
+				  for (int i = 0; i < this.RightWing.length; i++)
+				  {
+					this.RightWing[i].a(this.scale);
+				  }
+				}
+			}
+			else {
+			  this.SteveArm.a(this.scale);
+			}
+		  }
+
+		  public void specials(wb renderman, vi player)
+		  {
+			if (!this.isSleeping) {
+			  if (this.isUnicorn) {
+				if (this.aimedBow)
+				{
+				  renderDrop(renderman, player, this.unicornarm, 1.0F, 0.15F, 0.9375F, 0.0625F);
+				}
+				else renderDrop(renderman, player, this.unicornarm, 1.0F, 0.35F, 0.5375F, -0.45F);
+
+			  }
+			  else
+			  {
+				renderDrop(renderman, player, this.rightarm, 1.0F, -0.0625F, 0.8375F, 0.0625F);
+			  }
+
+			}
+
+			renderPumpkin(renderman, player, this.head, 0.625F, 0.0F, 0.0F, -0.15F);
+		  }
+
+		  protected void renderGlow(wb renderman, vi player)
+		  {
+			dk drop = player.by.a();
+			if (drop == null)
+			  return;
+			GL11.glPushMatrix();
+			double d = player.s;
+			double d1 = player.t;
+			double d2 = player.u;
+			GL11.glEnable(32826);
+			GL11.glTranslatef((float)d + 0.0F, (float)d1 + 2.3F, (float)d2);
+
+			GL11.glScalef(5.0F, 5.0F, 5.0F);
+			GL11.glRotatef(-renderman.i, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(renderman.j, 1.0F, 0.0F, 0.0F);
+
+			zh renderengine = renderman.e;
+			renderengine.b(renderengine.b("/fx/glow.png"));
+			cv tessellator = cv.a;
+
+			float f2 = 0.0F;
+
+			float f3 = 0.25F;
+
+			float f4 = 0.0F;
+
+			float f5 = 0.25F;
+			float f6 = 1.0F;
+			float f7 = 0.5F;
+			float f8 = 0.25F;
+			tessellator.b();
+			tessellator.b(0.0F, 1.0F, 0.0F);
+
+			tessellator.a(-1.0D, -1.0D, 0.0D, 0.0D, 1.0D);
+			tessellator.a(-1.0D, 1.0D, 0.0D, 1.0D, 1.0D);
+			tessellator.a(1.0D, 1.0D, 0.0D, 1.0D, 0.0D);
+			tessellator.a(1.0D, -1.0D, 0.0D, 0.0D, 0.0D);
+			tessellator.a();
+			GL11.glDisable(32826);
+			GL11.glPopMatrix();
+		  }*/
+		}
+
 		public static void LoadModels()
 		{
 			new ModelPig().Compile("Pig").Save("Models\\Pig.xml");
@@ -1612,6 +2992,9 @@ namespace MCSkin3D
 			new ModelMinecart().Compile("Minecart").Save("Models\\Minecart.xml");
 			new ModelEnderCrystal().Compile("Ender Crystal").Save("Models\\EnderCrystal.xml");
 			new ModelSnowMan().Compile("SnowMan").Save("Models\\SnowMan.xml");
+			new pm_Pony().init(false, true).Compile("PonyTest").Save("Models\\PonyTest.xml");
+			new ModelZombie().Compile("Zombie").Save("Models\\Zombie.xml");
+			new ModelSkeleton().Compile("Skeleton").Save("Models\\Skeleton.xml");
 
 			Directory.CreateDirectory("Models");
 

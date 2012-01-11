@@ -392,7 +392,7 @@ namespace Paril.OpenGL
 					var leftDist = (Editor.CameraPosition - left.Center).LengthSquared;
 					var rightDist = (Editor.CameraPosition - right.Center).LengthSquared;
 
-					return rightDist.CompareTo(leftDist);
+					return leftDist.CompareTo(rightDist);
 				}
 			);
 		}

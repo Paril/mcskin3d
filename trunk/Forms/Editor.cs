@@ -1077,109 +1077,12 @@ namespace MCSkin3D
 				}
 
 				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+					newMesh.Rotate += new Vector3(0, 0, (float)sinAnim * mesh.RotateFactor);
 
 				_renderer.AddMesh(newMesh);
 			}
 
 			_renderer.Render();
-
-			/*
-			// Draw ghosted parts
-			if (GlobalSettings.Ghost && !pickView)
-			{
-				foreach (var mesh in CurrentModel.Meshes)
-				{
-					if (mesh.Helmet)
-						continue;
-					if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
-						continue;
-
-					var newMesh = mesh;
-
-					newMesh.Texture = tex;
-
-					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-						newMesh.Rotate = helmetRotate;
-
-					foreach (var f in mesh.Faces)
-						for (int i = 0; i < f.Colors.Length; ++i)
-							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
-
-					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-						newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
-
-					_renderer.Meshes.Add(newMesh);
-				}
-
-				GL.Enable(EnableCap.Blend);
-				_renderer.Render();
-				GL.Disable(EnableCap.Blend);
-			}
-
-			if (!pickView && GlobalSettings.Transparency != TransparencyMode.Off)
-				GL.Enable(EnableCap.Blend);
-			else
-				GL.Disable(EnableCap.Blend);
-
-			// draw transparent meshes
-			foreach (var mesh in CurrentModel.Meshes)
-			{
-				if (!mesh.Helmet)
-					continue;
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0)
-					continue;
-
-				var newMesh = mesh;
-
-				newMesh.Texture = tex;
-
-				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-					newMesh.Rotate = helmetRotate;
-
-				foreach (var f in mesh.Faces)
-					for (int i = 0; i < f.Colors.Length; ++i)
-						f.Colors[i] = Color4.White;
-
-				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
-
-				_renderer.Meshes.Add(newMesh);
-			}
-
-			_renderer.Render();
-
-			// Draw ghosted parts
-			if (GlobalSettings.Ghost && !pickView)
-			{
-				foreach (var mesh in CurrentModel.Meshes)
-				{
-					if (!mesh.Helmet)
-						continue;
-					if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
-						continue;
-
-					var newMesh = mesh;
-
-					newMesh.Texture = tex;
-
-					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-						newMesh.Rotate = helmetRotate;
-
-					foreach (var f in mesh.Faces)
-						for (int i = 0; i < f.Colors.Length; ++i)
-							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
-
-					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-						newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
-
-					_renderer.Meshes.Add(newMesh);
-				}
-
-				GL.Enable(EnableCap.Blend);
-				_renderer.Render();
-				GL.Disable(EnableCap.Blend);
-			}*/
 		}
 
 		Point _pickPosition = new Point(-1, -1);
