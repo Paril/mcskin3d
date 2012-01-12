@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -93,13 +94,13 @@ namespace MCSkin3D
 
 		public void Load()
 		{
-			GL.BindTexture(TextureTarget.Texture2D, _texture);
+			RenderState.BindTexture(_texture);
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, _array);
 		}
 
 		public void Save()
 		{
-			GL.BindTexture(TextureTarget.Texture2D, _texture);
+			RenderState.BindTexture(_texture);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _width, _height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, _array);
 		}
 

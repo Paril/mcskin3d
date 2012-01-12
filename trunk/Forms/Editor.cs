@@ -2823,7 +2823,7 @@ namespace MCSkin3D
 			if (_currentViewMode == ViewMode.Perspective)
 			{
 				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
-				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
+				DrawPlayer(_previewPaint, skin, false);
 			}
 			else if (_currentViewMode == ViewMode.Orthographic)
 			{
