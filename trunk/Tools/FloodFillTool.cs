@@ -121,7 +121,7 @@ namespace MCSkin3D
 			_threshold = (byte)((1 - (curve.CalculatePoint(Threshold)).X) * 255);//(byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255);
 
 			var c = pixels[x, y];
-			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
+			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
 
             recursiveFill(x, y, oldColor, newColor, ref pixels, new bool[skin.Width, skin.Height], skin);

@@ -27,6 +27,7 @@ using System.Globalization;
 using System.Drawing;
 using MCSkin3D;
 using Paril.Drawing;
+using System.IO.Compression;
 
 namespace Paril.OpenGL
 {
@@ -244,6 +245,7 @@ namespace Paril.OpenGL
 	{
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
+		public FileInfo File;
 
 		// P: polygon support required? used bounds 'n stuff but, you know...
 		public Rectangle GetTextureFaceBounds(Point p, Skin skin)
@@ -292,6 +294,10 @@ namespace Paril.OpenGL
 
 		public static Model Load(string fileName)
 		{
+			if (new FileInfo(fileName).Extension == ".xml" &&
+				new FileInfo(fileName.Substring(0, fileName.Length - 4) + ".gz.xml").Exists)
+				return null;
+
 			Model model = new Model();
 
 			XmlReaderSettings settings = new XmlReaderSettings();
@@ -299,7 +305,14 @@ namespace Paril.OpenGL
 			settings.CloseInput = true;
 
 			XmlDocument document = new XmlDocument();
-			document.Load(fileName);
+			Stream inStream = null;
+
+			if (fileName.EndsWith(".gz.xml"))
+				inStream = new GZipStream(System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read), CompressionMode.Decompress);
+			else
+				inStream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
+
+			document.Load(inStream);
 
 			model.Name = document.DocumentElement.Attributes["Name"].InnerText;
 
@@ -365,8 +378,12 @@ namespace Paril.OpenGL
 				model.Meshes.Add(mesh);
 			}
 
+			inStream.Dispose();
+
 			return model;
 		}
+
+		public Editor.ModelToolStripMenuItem DropDownItem { get; set; }
 	}
 
 	public abstract class Renderer
@@ -399,7 +416,6 @@ namespace Paril.OpenGL
 
 		public void Render()
 		{
-			// FIXME: sort!
 			Sort();
 
 			PreRender();
@@ -411,6 +427,23 @@ namespace Paril.OpenGL
 				RenderMesh(mesh);
 			GL.Disable(EnableCap.Blend);
 	
+			PostRender();
+
+			OpaqueMeshes.Clear();
+			TransparentMeshes.Clear();
+		}
+
+		public void RenderWithoutTransparency()
+		{
+			GL.Disable(EnableCap.Blend);
+
+			PreRender();
+
+			foreach (var mesh in OpaqueMeshes)
+				RenderMesh(mesh);
+			foreach (var mesh in TransparentMeshes)
+				RenderMesh(mesh);
+
 			PostRender();
 
 			OpaqueMeshes.Clear();

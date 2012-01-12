@@ -139,7 +139,7 @@ namespace MCSkin3D
 						continue;
 
 					var c = pixels[xx, yy];
-					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
+					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 					var color = GetLeftColor();
 					color = Color.FromArgb((byte)(brush[rx, ry] * 255 * (color.A / 255.0f)), color);
 

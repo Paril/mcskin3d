@@ -5,6 +5,7 @@
 *- Custom brushes
 *- Deleting all skins (folders, etC) causes errors.
 *- Drag-drop from program to folder
+?- Check why fillbucket crashes 
 ?- Clear skin option
 ?- Handle more upload errors
 ?- Selection tool, copy/paste

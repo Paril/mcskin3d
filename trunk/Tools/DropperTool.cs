@@ -39,7 +39,7 @@ namespace MCSkin3D
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			var c = pixels[x, y];
-			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Blue, c.Green);
+			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 
 			if ((Control.ModifierKeys & Keys.Shift) != 0)
 				Editor.MainForm.UnselectedColor = oldColor;
