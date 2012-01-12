@@ -1131,7 +1131,6 @@ namespace MCSkin3D
 				currentSkin.Load();
 
 				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
-				Text = _pickPosition.ToString();
 
 				{
 					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
