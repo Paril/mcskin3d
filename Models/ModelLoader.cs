@@ -1915,7 +1915,7 @@ namespace MCSkin3D
 				setRotationAngles(0, 0, 0, 0, 0, 0);
 			}
 
-			public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+			public new void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 			{
 				aimedBow = true;
 				base.setRotationAngles(f, f1, f2, f3, f4, f5);
@@ -2961,48 +2961,56 @@ namespace MCSkin3D
 
 		public static void LoadModels()
 		{
-			new ModelPig().Compile("Pig").Save("Models\\Pig.xml");
-			new ModelBiped().Compile("Human").Save("Models\\Human.xml");
-			new ModelVillager().Compile("Villager").Save("Models\\Villager.xml");
-			new ModelCreeper().Compile("Creeper").Save("Models\\Creeper.xml");
-			new ModelCow().Compile("Cow").Save("Models\\Cow.xml");
-			new ModelChicken().Compile("Chicken").Save("Models\\Chicken.xml");
-			new ModelSlime(0).Compile("Tiny Slime").Save("Models\\TinySlime.xml");
-			new ModelSlime(1).Compile("Small Slime", 2).Save("Models\\SmallSlime.xml");
-			new ModelSlime(1).Compile("Medium Slime", 3).Save("Models\\MediumSlime.xml");
-			new ModelSlime(1).Compile("Huge Slime", 4).Save("Models\\HugeSlime.xml");
-			new ModelSquid().Compile("Squid").Save("Models\\Squid.xml");
-			new ModelMagmaCube().Compile("Tiny Magma Cube").Save("Models\\TinyMagmaCube.xml");
-			new ModelMagmaCube().Compile("Small Magma Cube", 2).Save("Models\\SmallMagmaCube.xml");
-			new ModelMagmaCube().Compile("Medium Magma Cube", 3).Save("Models\\MediumMagmaCube.xml");
-			new ModelMagmaCube().Compile("Huge Magma Cube", 4).Save("Models\\HugeMagmaCube.xml");
-			new ModelBlaze().Compile("Blaze").Save("Models\\Blaze.xml");
-			new ModelSilverfish().Compile("Silverfish").Save("Models\\Silverfish.xml");
-			new ModelEnderman().Compile("Enderman").Save("Models\\Enderman.xml");
-			new ModelWolf().Compile("Wolf").Save("Models\\Wolf.xml");
-			new ModelGhast().Compile("Ghast", 1).Save("Models\\Ghast.xml");
-			new ModelSpider().Compile("Spider").Save("Models\\Spider.xml");
-			new ModelSheep1().Compile("Sheep Fur").Save("Models\\Sheep Fur.xml");
-			new ModelSheep2().Compile("Sheep").Save("Models\\Sheep.xml");
-			new ModelChest().Compile("Chest").Save("Models\\Chest.xml");
-			new ModelLargeChest().Compile("Large Chest").Save("Models\\LargeChest.xml");
-			new ModelBoat().Compile("Boat").Save("Models\\Boat.xml");
-			new SignModel().Compile("Sign").Save("Models\\Sign.xml");
-			new ModelBook().Compile("Book").Save("Models\\Book.xml");
-			new ModelMinecart().Compile("Minecart").Save("Models\\Minecart.xml");
-			new ModelEnderCrystal().Compile("Ender Crystal").Save("Models\\EnderCrystal.xml");
-			new ModelSnowMan().Compile("SnowMan").Save("Models\\SnowMan.xml");
-			new pm_Pony().init(false, true).Compile("PonyTest").Save("Models\\PonyTest.xml");
-			new ModelZombie().Compile("Zombie").Save("Models\\Zombie.xml");
-			new ModelSkeleton().Compile("Skeleton").Save("Models\\Skeleton.xml");
+			new ModelPig().Compile("Pig").Save("Models\\Mobs\\Passive\\Pig.xml");
+			new ModelBiped().Compile("Human").Save("Models\\Mobs\\Passive\\Human.xml");
+			new ModelVillager().Compile("Villager").Save("Models\\Mobs\\Passive\\Villager.xml");
+			new ModelCow().Compile("Cow").Save("Models\\Mobs\\Passive\\Cow.xml");
+			new ModelChicken().Compile("Chicken").Save("Models\\Mobs\\Passive\\Chicken.xml");
+			new ModelSquid().Compile("Squid").Save("Models\\Mobs\\Passive\\Squid.xml");
+			new ModelWolf().Compile("Wolf").Save("Models\\Mobs\\Passive\\Wolf.xml");
+			new ModelSheep1().Compile("Sheep Fur").Save("Models\\Mobs\\Passive\\Sheep Fur.xml");
+			new ModelSheep2().Compile("Sheep").Save("Models\\Mobs\\Passive\\Sheep.xml");
+			new ModelSnowMan().Compile("SnowMan").Save("Models\\Mobs\\Passive\\SnowMan.xml");
+
+			new ModelChest().Compile("Chest").Save("Models\\Other\\Chest.xml");
+			new ModelLargeChest().Compile("Large Chest").Save("Models\\Other\\LargeChest.xml");
+			new ModelBoat().Compile("Boat").Save("Models\\Other\\Boat.xml");
+			new SignModel().Compile("Sign").Save("Models\\Other\\Sign.xml");
+			new ModelBook().Compile("Book").Save("Models\\Other\\Book.xml");
+			new ModelMinecart().Compile("Minecart").Save("Models\\Other\\Minecart.xml");
+			new ModelEnderCrystal().Compile("Ender Crystal").Save("Models\\Other\\EnderCrystal.xml");
+
+			new ModelCreeper().Compile("Creeper").Save("Models\\Mobs\\Hostile\\Creeper.xml");
+			new ModelSlime(0).Compile("Tiny Slime").Save("Models\\Mobs\\Hostile\\TinySlime.xml");
+			new ModelSlime(1).Compile("Small Slime", 2).Save("Models\\Mobs\\Hostile\\SmallSlime.xml");
+			new ModelSlime(1).Compile("Medium Slime", 3).Save("Models\\Mobs\\Hostile\\MediumSlime.xml");
+			new ModelSlime(1).Compile("Huge Slime", 4).Save("Models\\Mobs\\Hostile\\HugeSlime.xml");
+			new ModelMagmaCube().Compile("Tiny Magma Cube").Save("Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
+			new ModelMagmaCube().Compile("Small Magma Cube", 2).Save("Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
+			new ModelMagmaCube().Compile("Medium Magma Cube", 3).Save("Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
+			new ModelMagmaCube().Compile("Huge Magma Cube", 4).Save("Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
+			new ModelBlaze().Compile("Blaze").Save("Models\\Mobs\\Hostile\\Blaze.xml");
+			new ModelSilverfish().Compile("Silverfish").Save("Models\\Mobs\\Hostile\\Silverfish.xml");
+			new ModelEnderman().Compile("Enderman").Save("Models\\Mobs\\Hostile\\Enderman.xml");
+			new ModelGhast().Compile("Ghast", 1).Save("Models\\Mobs\\Hostile\\Ghast.xml");
+			new ModelSpider().Compile("Spider").Save("Models\\Mobs\\Hostile\\Spider.xml");
+			new ModelZombie().Compile("Zombie").Save("Models\\Mobs\\Hostile\\Zombie.xml");
+			new ModelSkeleton().Compile("Skeleton").Save("Models\\Mobs\\Hostile\\Skeleton.xml");
+
+			new pm_Pony().init(false, true).Compile("PonyTest").Save("Models\\Mine Little Pony\\PonyTest.xml");
 
 			Directory.CreateDirectory("Models");
 
-			foreach (var m in Directory.GetFiles("Models", "*.xml"))
+			foreach (var m in Directory.GetFiles("Models", "*.xml", SearchOption.AllDirectories))
 			{
 				try
 				{
 					Model model = Model.Load(m);
+
+					if (model == null)
+						continue;
+
+					model.File = new FileInfo(m);
 					Models.Add(model.Name, model);
 				}
 				catch

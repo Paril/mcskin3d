@@ -108,14 +108,16 @@ namespace MCSkin3D
 
 		public static Editor MainForm { get; private set; }
 
-		class ModelToolStripMenuItem : ToolStripMenuItem
+		public class ModelToolStripMenuItem : ToolStripMenuItem
 		{
 			public Model Model;
 
 			public ModelToolStripMenuItem(Model model) :
 				base(model.Name)
 			{
+				Name = model.Name;
 				Model = model;
+				Model.DropDownItem = this;
 			}
 
 			protected override void OnClick(EventArgs e)
@@ -265,7 +267,30 @@ namespace MCSkin3D
 			ModelLoader.LoadModels();
 
 			foreach (var x in ModelLoader.Models)
-				toolStripDropDownButton1.DropDownItems.Add(new ModelToolStripMenuItem(x.Value));
+			{
+				ToolStripItemCollection collection = toolStripDropDownButton1.DropDownItems;
+				string path = Path.GetDirectoryName(x.Value.File.ToString()).Substring(6);
+
+				while (!string.IsNullOrEmpty(path))
+				{
+					string sub = path.Substring(1, path.IndexOf('\\', 1) == -1 ? (path.Length - 1) : (path.IndexOf('\\', 1) - 1));
+
+					var subMenu = collection.Find(sub, false);
+
+					if (subMenu.Length == 0)
+					{
+						var item = ((ToolStripMenuItem)collection.Add(sub));
+						item.Name = item.Text;
+						collection = item.DropDownItems;
+					}
+					else
+						collection = ((ToolStripMenuItem)subMenu[0]).DropDownItems;
+
+					path = path.Remove(0, sub.Length + 1);
+				}
+
+				collection.Add(new ModelToolStripMenuItem(x.Value));
+			}
 
 			SetSampleMenuItem(GlobalSettings.Multisamples);
 
@@ -1082,7 +1107,10 @@ namespace MCSkin3D
 				_renderer.AddMesh(newMesh);
 			}
 
-			_renderer.Render();
+			if (!pickView)
+				_renderer.Render();
+			else
+				_renderer.RenderWithoutTransparency();
 		}
 
 		Point _pickPosition = new Point(-1, -1);
@@ -1102,7 +1130,9 @@ namespace MCSkin3D
 				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
 				currentSkin.Load();
 
-				//var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
+				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
+				Text = _pickPosition.ToString();
+
 				{
 					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
 					{
@@ -2793,7 +2823,7 @@ namespace MCSkin3D
 			if (_currentViewMode == ViewMode.Perspective)
 			{
 				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
-				DrawPlayer(_previewPaint, skin, false);
+				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
 			}
 			else if (_currentViewMode == ViewMode.Orthographic)
 			{
@@ -2993,7 +3023,7 @@ namespace MCSkin3D
 			}
 
 			_mouseIsDown = true;
-			_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
+			//_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
 
 			if (e.Button == MouseButtons.Left)
 			{
@@ -4127,6 +4157,7 @@ namespace MCSkin3D
 			grabber.Save();
 		}
 
+		ModelToolStripMenuItem _oldModel = null;
 		public void SetModel(Model Model)
 		{
 			if (_lastSkin == null)
@@ -4141,10 +4172,20 @@ namespace MCSkin3D
 				CheckUndo();
 			}
 
-			foreach (ModelToolStripMenuItem x in toolStripDropDownButton1.DropDownItems)
-				x.Checked = (x.Model == _lastSkin.Model);
+			if (_oldModel != null)
+			{
+				_oldModel.Checked = false;
+
+				for (var parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
+					parent.Image = null;
+			}
 
 			toolStripDropDownButton1.Text = _lastSkin.Model.Name;
+			_oldModel = _lastSkin.Model.DropDownItem;
+			_oldModel.Checked = true;
+
+			for (var parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
+				parent.Image = Properties.Resources.right_arrow_next;
 		}
 
 		public static Vector3 CameraPosition
