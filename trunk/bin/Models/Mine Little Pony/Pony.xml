@@ -1,4 +1,4 @@
-﻿<Model Name="PonyTest">
+﻿<Model Name="Pony">
 	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

@@ -2997,7 +2997,7 @@ namespace MCSkin3D
 			new ModelZombie().Compile("Zombie").Save("Models\\Mobs\\Hostile\\Zombie.xml");
 			new ModelSkeleton().Compile("Skeleton").Save("Models\\Mobs\\Hostile\\Skeleton.xml");
 
-			new pm_Pony().init(false, true).Compile("PonyTest").Save("Models\\Mine Little Pony\\PonyTest.xml");
+			new pm_Pony().init(true, true).Compile("Pony").Save("Models\\Mine Little Pony\\Pony.xml");
 
 			Directory.CreateDirectory("Models");
 

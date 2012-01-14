@@ -75,8 +75,6 @@ namespace flate
 			}
 			else
 				FlateFile(new FileInfo(args[0]), args[1][0] == 'd');
-
-			Thread.Sleep(20000);
 		}
 	}
 }
