@@ -3,4 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <StartArguments>"C:\MCSkinner\bin\Models\*" e</StartArguments>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <StartArguments>..\..\..\bin\models\*.xml e</StartArguments>
+  </PropertyGroup>
 </Project>

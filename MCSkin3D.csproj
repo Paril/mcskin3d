@@ -648,7 +648,8 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)\versioning.exe $(ProjectDir) SVN.cs</PreBuildEvent>
+    <PreBuildEvent>$(ProjectDir)\versioning.exe $(ProjectDir) SVN.cs
+flate models\*.xml e</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

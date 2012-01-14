@@ -5,7 +5,10 @@
 *- Custom brushes
 *- Deleting all skins (folders, etC) causes errors.
 *- Drag-drop from program to folder
-?- Check why fillbucket crashes 
+*- Pick up on external file changes (this might be really tough to do in a non-Windows environment)
+   -- NOTE: STILL NOT PERFECT
+?- Change colorsquare/saturation slider to something better.
+?- Make 1x1 the default brush
 ?- Clear skin option
 ?- Handle more upload errors
 ?- Selection tool, copy/paste
@@ -24,7 +27,6 @@
 ?- Fix smooth brushes
 ?- Mouse shortcuts / "multitool"
 ?- Posing
-?- Pick up on external file changes (this might be really tough to do in a non-Windows environment)
 ?- Mineshafter support
 ?- Fit keyboard shortcuts into tooltips
 ?- Automatically hide/show helmet based on transparency contained in helmet

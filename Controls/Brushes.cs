@@ -70,7 +70,7 @@ namespace MCSkin3D
 			}
 		}
 
-		public void BuildImage()
+		public void BuildImage(bool save = true)
 		{
 			if (Image != null)
 				Image.Dispose();
@@ -84,7 +84,8 @@ namespace MCSkin3D
 						fp.SetPixel(x, y, System.Drawing.Color.FromArgb((byte)(Luminance[x, y] * 255), 0, 0, 0));
 			}
 
-			Image.Save("Brushes\\" + Editor.GetLanguageString(Name) + " [" + Width + "].png");
+			if (save)
+				Image.Save("Brushes\\" + Editor.GetLanguageString(Name) + " [" + Width + "].png");
 		}
 
 		static Paril.Controls.AlphanumComparatorFast logical = new Paril.Controls.AlphanumComparatorFast();
@@ -207,6 +208,12 @@ namespace MCSkin3D
 			}
 
 			BrushList.Sort();
+
+			Brush onebyone = new Brush("Pixel", 1, 1);
+			onebyone.Luminance = new float[,] { { 1 } };
+			onebyone.BuildImage(false);
+
+			BrushList.Insert(0, onebyone);
 
 			foreach (var b in BrushList)
 				BrushBox.Items.Add(b);
