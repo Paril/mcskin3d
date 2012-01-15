@@ -452,7 +452,7 @@ namespace Paril.OpenGL
 
 		public void AddMesh(Mesh mesh)
 		{
-			if (mesh.Helmet)
+			if (mesh.Helmet || mesh.Faces[0].Colors[0].A != 1)
 				TransparentMeshes.Add(mesh);
 			else
 				OpaqueMeshes.Add(mesh);

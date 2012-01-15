@@ -1149,7 +1149,7 @@ namespace MCSkin3D
 				{
 					squidTentacles[i] = new ModelRenderer(this, 48, 0, VisiblePartFlags.LeftArmFlag, false, true);
 					double d = ((double)i * 3.1415926535897931D * 2D) / (double)squidTentacles.Length;
-					float f = (float)Math.Cos(d) * 5F;
+					float f = (float)d * 5F;
 					float f1 = (float)Math.Sin(d) * 5F;
 					squidTentacles[i].addBox(-1F, 0.0F, -1F, 2, 18, 2);
 					squidTentacles[i].rotationPointX = f;
@@ -1218,8 +1218,8 @@ namespace MCSkin3D
 				float f6 = f2 * 3.141593F * -0.1F;
 				for (int i = 0; i < 4; i++)
 				{
-					field_40323_a[i].rotationPointY = -2F + (float)Math.Cos(((float)(i * 2) + f2) * 0.25F);
-					field_40323_a[i].rotationPointX = (float)Math.Cos(f6) * 9F;
+					field_40323_a[i].rotationPointY = -2F + (((float)(i * 2) + f2) * 0.25F);
+					field_40323_a[i].rotationPointX = (f6) * 9F;
 					field_40323_a[i].rotationPointZ = (float)Math.Sin(f6) * 9F;
 					f6 += 1.570796F;
 				}
@@ -1227,8 +1227,8 @@ namespace MCSkin3D
 				f6 = 0.7853982F + f2 * 3.141593F * 0.03F;
 				for (int j = 4; j < 8; j++)
 				{
-					field_40323_a[j].rotationPointY = 2.0F + (float)Math.Cos(((float)(j * 2) + f2) * 0.25F);
-					field_40323_a[j].rotationPointX = (float)Math.Cos(f6) * 7F;
+					field_40323_a[j].rotationPointY = 2.0F + (((float)(j * 2) + f2) * 0.25F);
+					field_40323_a[j].rotationPointX = (f6) * 7F;
 					field_40323_a[j].rotationPointZ = (float)Math.Sin(f6) * 7F;
 					f6 += 1.570796F;
 				}
@@ -1236,8 +1236,8 @@ namespace MCSkin3D
 				f6 = 0.4712389F + f2 * 3.141593F * -0.05F;
 				for (int k = 8; k < 12; k++)
 				{
-					field_40323_a[k].rotationPointY = 11F + (float)Math.Cos(((float)k * 1.5F + f2) * 0.5F);
-					field_40323_a[k].rotationPointX = (float)Math.Cos(f6) * 5F;
+					field_40323_a[k].rotationPointY = 11F + (((float)k * 1.5F + f2) * 0.5F);
+					field_40323_a[k].rotationPointX = (f6) * 5F;
 					field_40323_a[k].rotationPointZ = (float)Math.Sin(f6) * 5F;
 					f6 += 1.570796F;
 				}
@@ -1420,10 +1420,10 @@ namespace MCSkin3D
 				wolfLeg2.setRotationPoint(0.5F, 16F, 7F);
 				wolfLeg3.setRotationPoint(-2.5F, 16F, -4F);
 				wolfLeg4.setRotationPoint(0.5F, 16F, -4F);
-				wolfLeg1.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
-				wolfLeg2.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
-				wolfLeg3.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
-				wolfLeg4.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
+				wolfLeg1.rotateAngleX = (f * 0.6662F) * 1.4F * f1;
+				wolfLeg2.rotateAngleX = (f * 0.6662F + 3.141593F) * 1.4F * f1;
+				wolfLeg3.rotateAngleX = (f * 0.6662F + 3.141593F) * 1.4F * f1;
+				wolfLeg4.rotateAngleX = (f * 0.6662F) * 1.4F * f1;
 			}
 		}
 
@@ -1850,7 +1850,7 @@ namespace MCSkin3D
 				field_40305_c.rotateAngleX = f4 / 57.29578F;
 				field_40306_a.rotateAngleY = (f3 / 57.29578F) * 0.25F;
 				float f6 = (float)Math.Sin(field_40306_a.rotateAngleY);
-				float f7 = (float)Math.Cos(field_40306_a.rotateAngleY);
+				float f7 = (field_40306_a.rotateAngleY);
 				field_40302_d.rotateAngleZ = 1.0F;
 				field_40303_e.rotateAngleZ = -1F;
 				field_40302_d.rotateAngleY = 0.0F + field_40306_a.rotateAngleY;
@@ -1881,8 +1881,8 @@ namespace MCSkin3D
 				bipedLeftArm.rotateAngleX = -1.570796F;
 				bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
 				bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-				bipedRightArm.rotateAngleZ += (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
-				bipedLeftArm.rotateAngleZ -= (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+				bipedRightArm.rotateAngleZ += (f2 * 0.09F) * 0.05F + 0.05F;
+				bipedLeftArm.rotateAngleZ -= (f2 * 0.09F) * 0.05F + 0.05F;
 				bipedRightArm.rotateAngleX += (float)Math.Sin(f2 * 0.067F) * 0.05F;
 				bipedLeftArm.rotateAngleX -= (float)Math.Sin(f2 * 0.067F) * 0.05F;
 			}
@@ -2274,568 +2274,658 @@ namespace MCSkin3D
 
 			public void animate(float Move, float Moveswing, float Loop, float Right, float Down)
 			{
-				float SwingProgress = 0;
+				int heldItemRight = 0;
+				bool isSleeping = false, issneak = false, aimedBow = false;
 
-				this.rainboom = false;
-				float headRotateAngleX;
+				//Naming Error by MCP! Renamed for you...
+				float SwingProgress = onGround;
+				//
+				rainboom = false;
+
 				float headRotateAngleY;
+				float headRotateAngleX;
+				if (isSleeping)
+				{
+					// the full 90 degrees looks a bit off
+					//headRotateAngleY = 1.571F;
+					headRotateAngleY = 1.4F;
+					headRotateAngleX = .1F;
+				}
+				else
+				{
+					headRotateAngleY = Right / 57.29578F;
+					headRotateAngleX = Down / 57.29578F;
+				}
+				head.rotateAngleY = headRotateAngleY;
+				head.rotateAngleX = headRotateAngleX;
+				headpiece[0].rotateAngleY = headRotateAngleY;
+				headpiece[0].rotateAngleX = headRotateAngleX;
+				headpiece[1].rotateAngleY = headRotateAngleY;
+				headpiece[1].rotateAngleX = headRotateAngleX;
+				headpiece[2].rotateAngleY = headRotateAngleY;
+				headpiece[2].rotateAngleX = headRotateAngleX;
+				helmet.rotateAngleY = headRotateAngleY;
+				helmet.rotateAngleX = headRotateAngleX;
+				// finally, whatever else we did, tilt the horn forward a bit
+				headpiece[2].rotateAngleX = headRotateAngleX + 0.5F;
 
-				//if (this.isSleeping)
-				//{
-				//  float headRotateAngleY = 1.4F;
-				//  headRotateAngleX = 0.1F;
-				//} else {
-				headRotateAngleY = Right / 57.29578F;
-				headRotateAngleX = Down / 57.29578F;
-				//}
-				this.head.rotateAngleY = headRotateAngleY;
-				this.head.rotateAngleX = headRotateAngleX;
-				this.headpiece[0].rotateAngleY = headRotateAngleY;
-				this.headpiece[0].rotateAngleX = headRotateAngleX;
-				this.headpiece[1].rotateAngleY = headRotateAngleY;
-				this.headpiece[1].rotateAngleX = headRotateAngleX;
-				this.headpiece[2].rotateAngleY = headRotateAngleY;
-				this.headpiece[2].rotateAngleX = headRotateAngleX;
-				this.helmet.rotateAngleY = headRotateAngleY;
-				this.helmet.rotateAngleX = headRotateAngleX;
-
-				this.headpiece[2].rotateAngleX = (headRotateAngleX + 0.5F);
 				float rightarmRotateAngleX;
 				float LeftArmRotateAngleX;
 				float RightLegRotateAngleX;
 				float LeftLegRotateAngleX;
 
-				if ((!this.isFlying) || (!this.isPegasus))
+				if (!isFlying || !isPegasus)
 				{
-					rightarmRotateAngleX = (Move * 0.6662F + 3.141593F) * 0.6F * Moveswing;
-					LeftArmRotateAngleX = (Move * 0.6662F) * 0.6F * Moveswing;
-					RightLegRotateAngleX = (Move * 0.6662F) * 0.3F * Moveswing;
-					LeftLegRotateAngleX = (Move * 0.6662F + 3.141593F) * 0.3F * Moveswing;
-					this.rightarm.rotateAngleY = 0.0F;
-					this.SteveArm.rotateAngleY = 0.0F;
-					this.unicornarm.rotateAngleY = 0.0F;
-					this.LeftArm.rotateAngleY = 0.0F;
-					this.RightLeg.rotateAngleY = 0.0F;
-					this.LeftLeg.rotateAngleY = 0.0F;
+					// swing the legs a bit
+					rightarmRotateAngleX = (float)Math.Cos(Move * 0.6662F + (float)Math.PI) * 0.6F * Moveswing;
+					LeftArmRotateAngleX = (float)Math.Cos(Move * 0.6662F) * 0.6F * Moveswing;
+					RightLegRotateAngleX = (float)Math.Cos(Move * 0.6662F) * 0.3F * Moveswing;
+					LeftLegRotateAngleX = (float)Math.Cos(Move * 0.6662F + (float)Math.PI) * 0.3F * Moveswing;
+					rightarm.rotateAngleY = 0F;
+					SteveArm.rotateAngleY = 0F;
+					unicornarm.rotateAngleY = 0F;
+					LeftArm.rotateAngleY = 0F;
+					RightLeg.rotateAngleY = 0F;
+					LeftLeg.rotateAngleY = 0F;
 				}
 				else
 				{
-				  if (Moveswing < 0.9999F)
-				  {
-					this.rainboom = false;
-					rightarmRotateAngleX = (0.0F - Moveswing * 0.5F);
-					LeftArmRotateAngleX = (0.0F - Moveswing * 0.5F);
-					RightLegRotateAngleX = (Moveswing * 0.5F);
-					LeftLegRotateAngleX = (Moveswing * 0.5F);
-				  }
-				  else
-				  {
-					this.rainboom = true;
+					if (Moveswing < 0.9999F)
+					{
+						// just sweep the legs back slightly
+						rainboom = false;
+						rightarmRotateAngleX = (float)Math.Sin(0F - (Moveswing * 0.5F));
+						LeftArmRotateAngleX = (float)Math.Sin(0F - (Moveswing * 0.5F));
+						RightLegRotateAngleX = (float)Math.Sin(Moveswing * 0.5F);
+						LeftLegRotateAngleX = (float)Math.Sin(Moveswing * 0.5F);
+
+					}
+					else
+					{
+						//sonic rainboom pose
+						rainboom = true;
+						rightarmRotateAngleX = 4.712F;
+						LeftArmRotateAngleX = 4.712F;
+						RightLegRotateAngleX = 1.571F;
+						LeftLegRotateAngleX = 1.571F;
+					}
+					rightarm.rotateAngleY = .2F;
+					SteveArm.rotateAngleY = .2F;
+					LeftArm.rotateAngleY = -.2F;
+					RightLeg.rotateAngleY = -.2F;
+					LeftLeg.rotateAngleY = .2F;
+				}
+
+				if (isSleeping)
+				{
 					rightarmRotateAngleX = 4.712F;
 					LeftArmRotateAngleX = 4.712F;
 					RightLegRotateAngleX = 1.571F;
 					LeftLegRotateAngleX = 1.571F;
-				  }
-				  this.rightarm.rotateAngleY = 0.2F;
-				  this.SteveArm.rotateAngleY = 0.2F;
-				  this.LeftArm.rotateAngleY = -0.2F;
-				  this.RightLeg.rotateAngleY = -0.2F;
-				  this.LeftLeg.rotateAngleY = 0.2F;
 				}
 
-				/*if (this.isSleeping) {
-				  rightarmRotateAngleX = 4.712F;
-				  LeftArmRotateAngleX = 4.712F;
-				  RightLegRotateAngleX = 1.571F;
-				  LeftLegRotateAngleX = 1.571F;
-				}*/
+				rightarm.rotateAngleX = rightarmRotateAngleX;
+				SteveArm.rotateAngleX = rightarmRotateAngleX;
+				// unicorn arm stays still, because magic
+				//unicornarm.rotateAngleX = rightarmRotateAngleX;
+				unicornarm.rotateAngleX = 0F;
+				LeftArm.rotateAngleX = LeftArmRotateAngleX;
+				RightLeg.rotateAngleX = RightLegRotateAngleX;
+				LeftLeg.rotateAngleX = LeftLegRotateAngleX;
+				rightarm.rotateAngleZ = 0F;
+				SteveArm.rotateAngleZ = 0F;
+				unicornarm.rotateAngleZ = 0F;
+				LeftArm.rotateAngleZ = 0F;
 
-				this.rightarm.rotateAngleX = rightarmRotateAngleX;
-				this.SteveArm.rotateAngleX = rightarmRotateAngleX;
 
-				this.unicornarm.rotateAngleX = 0.0F;
-				this.LeftArm.rotateAngleX = LeftArmRotateAngleX;
-				this.RightLeg.rotateAngleX = RightLegRotateAngleX;
-				this.LeftLeg.rotateAngleX = LeftLegRotateAngleX;
-				this.rightarm.rotateAngleZ = 0.0F;
-				this.SteveArm.rotateAngleZ = 0.0F;
-				this.unicornarm.rotateAngleZ = 0.0F;
-				this.LeftArm.rotateAngleZ = 0.0F;
 
-				for (int i = 0; i < this.Tail.Length; i++)
+				for (int i = 0; i < Tail.Length; i++)
 				{
-				  if (this.rainboom)
-					this.Tail[i].rotateAngleZ = 0.0F;
-				  else {
-					this.Tail[i].rotateAngleZ = ((Move * 0.8F) * 0.2F * Moveswing);
-				  }
-				}
-
-				/*if ((this.heldItemRight != 0) && (!this.rainboom))
-				{
-				  if (!this.isUnicorn)
-				  {
-					this.rightarm.rotateAngleX = (this.rightarm.f * 0.5F - 0.314159F);
-					this.SteveArm.rotateAngleX = (this.SteveArm.f * 0.5F - 0.314159F);
-				  }
-				}*/
-
-				float BodyRotateAngleY = 0.0F;
-
-				if ((SwingProgress > -9990.0 && !this.isUnicorn))
-				{
-					BodyRotateAngleY = ((SwingProgress) * 3.141593F * 2.0F) * 0.2F;
-				}
-
-				this.Body.rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
-				for (int i = 0; i < this.Bodypiece.Length; i++)
-				{
-					this.Bodypiece[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
-				}
-				for (int i = 0; i < this.LeftWing.Length; i++)
-				{
-					this.LeftWing[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
-				}
-				for (int i = 0; i < this.RightWing.Length; i++)
-				{
-					this.RightWing[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2D);
-				}
-
-				for (int i = 0; i < this.Tail.Length; i++)
-				{
-				  this.Tail[i].rotateAngleY = BodyRotateAngleY;
-				}
-
-				float ArmRotationPointZ = (this.Body.rotationPointZ) * 5.0F;
-				float ArmRotationPointX = (this.Body.rotationPointX) * 5.0F;
-				float LegSplay = 4.0F;
-				/*if ((this.issneak) && (!this.isFlying))
-				{
-				  LegSplay = 0.0F;
-				}
-				if (this.isSleeping)
-				{
-				  LegSplay = 2.6F;
-				}
-				if (this.rainboom) {
-				  this.rightarm.rotationPointZ = (ArmRotationPointZ + 2.0F);
-				  this.SteveArm.rotationPointZ = (ArmRotationPointZ + 2.0F);
-				  this.LeftArm.rotationPointZ = (0.0F - ArmRotationPointZ + 2.0F);
-				} else {*/
-				this.rightarm.rotationPointZ = (ArmRotationPointZ + 1.0F);
-				this.SteveArm.rotationPointZ = (ArmRotationPointZ + 1.0F);
-				this.LeftArm.rotationPointZ = (0.0F - ArmRotationPointZ + 1.0F);
-				//}
-				this.rightarm.rotationPointX = (0.0F - ArmRotationPointX - 1.0F + LegSplay);
-				this.SteveArm.rotationPointX = (0.0F - ArmRotationPointX);
-				this.LeftArm.rotationPointX = (ArmRotationPointX + 1.0F - LegSplay);
-				this.RightLeg.rotationPointX = (0.0F - ArmRotationPointX - 1.0F + LegSplay);
-				this.LeftLeg.rotationPointX = (ArmRotationPointX + 1.0F - LegSplay);
-
-				this.rightarm.rotateAngleY += this.Body.rotateAngleY;
-				this.LeftArm.rotateAngleY += this.Body.rotateAngleY;
-				this.LeftArm.rotateAngleX += this.Body.rotateAngleX;
-
-				this.rightarm.rotationPointY = 8.0F;
-				this.LeftArm.rotationPointY = 8.0F;
-				this.RightLeg.rotationPointY = 4.0F;
-				this.LeftLeg.rotationPointY = 4.0F;
-
-				/*if (SwingProgress > -9990.0F)
-				{
-				  float f = SwingProgress;
-				  f = 1.0F - SwingProgress;
-				  f *= f * f;
-				  f = 1.0F - f;
-				  float f1 = me.a(f * 3.141593F);
-				  float SwingProgressPi = me.a(SwingProgress * 3.141593F);
-				  float f2 = SwingProgressPi * -(this.head.f - 0.7F) * 0.75F;
-
-				  if (this.isUnicorn)
-				  {
-					acf tmp1252_1249 = this.unicornarm; tmp1252_1249.rotateAngleX = (float)(tmp1252_1249.f - (f1 * 1.2D + f2));
-					this.unicornarm.g += this.Body.g * 2.0F;
-					this.unicornarm.rotateAngleZ = (SwingProgressPi * -0.4F);
-				  }
-				  else
-				  {
-					acf tmp1313_1310 = this.rightarm; tmp1313_1310.rotateAngleX = (float)(tmp1313_1310.f - (f1 * 1.2D + f2));
-					this.rightarm.g += this.Body.g * 2.0F;
-					this.rightarm.rotateAngleZ = (SwingProgressPi * -0.4F);
-					acf tmp1371_1368 = this.SteveArm; tmp1371_1368.rotateAngleX = (float)(tmp1371_1368.f - (f1 * 1.2D + f2));
-					this.SteveArm.g += this.Body.g * 2.0F;
-					this.SteveArm.rotateAngleZ = (SwingProgressPi * -0.4F);
-				  }
-				}
-
-				if ((this.issneak) && (!this.isFlying))
-				{
-				  float BodyRotateAngleX = 0.4F;
-				  float BodyRotationPointY = 7.0F;
-				  float BodyRotationPointZ = -4.0F;
-				  this.Body.rotateAngleX = BodyRotateAngleX;
-				  this.Body.rotationPointY = BodyRotationPointY;
-				  this.Body.rotationPointZ = BodyRotationPointZ;
-				  for (int i = 0; i < this.Bodypiece.length; i++)
-				  {
-					this.Bodypiece[i].rotateAngleX = BodyRotateAngleX;
-					this.Bodypiece[i].rotationPointY = BodyRotationPointY;
-					this.Bodypiece[i].rotationPointZ = BodyRotationPointZ;
-				  }
-
-				  float lwrpy = 3.5F;
-				  float lwrpz = 6.0F;
-
-				  for (int i = 0; i < this.LeftWingExt.length; i++)
-				  {
-					this.LeftWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 2.356194734573364D);
-					this.LeftWingExt[i].rotationPointY = (BodyRotationPointY + lwrpy);
-					this.LeftWingExt[i].rotationPointZ = (BodyRotationPointZ + lwrpz);
-
-					this.LeftWingExt[i].rotateAngleX = 2.5F;
-					this.LeftWingExt[i].rotateAngleZ = -6.0F;
-				  }
-
-				  float rwrpy = 4.5F;
-				  float rwrpz = 6.0F;
-
-				  for (int i = 0; i < this.LeftWingExt.length; i++)
-				  {
-					this.RightWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 2.356194734573364D);
-					this.RightWingExt[i].rotationPointY = (BodyRotationPointY + rwrpy);
-					this.RightWingExt[i].rotationPointZ = (BodyRotationPointZ + rwrpz);
-
-					this.RightWingExt[i].rotateAngleX = 2.5F;
-					this.RightWingExt[i].rotateAngleZ = 6.0F;
-				  }
-
-				  this.RightLeg.f -= 0.0F;
-				  this.LeftLeg.f -= 0.0F;
-				  this.rightarm.f -= 0.4F;
-				  this.SteveArm.f += 0.4F;
-				  this.unicornarm.f += 0.4F;
-				  this.LeftArm.f -= 0.4F;
-				  this.RightLeg.rotationPointZ = 10.0F;
-				  this.LeftLeg.rotationPointZ = 10.0F;
-				  this.RightLeg.rotationPointY = 7.0F;
-				  this.LeftLeg.rotationPointY = 7.0F;
-				  float headRotationPointX;
-				  float headRotationPointY;
-				  float headRotationPointZ;
-				  float headRotationPointX;
-				  if (this.isSleeping) {
-					float headRotationPointY = 2.0F;
-					float headRotationPointZ = -1.0F;
-					headRotationPointX = 1.0F;
-				  } else {
-					headRotationPointY = 6.0F;
-					headRotationPointZ = -2.0F;
-					headRotationPointX = 0.0F;
-				  }
-				  this.head.rotationPointY = headRotationPointY;
-				  this.head.rotationPointZ = headRotationPointZ;
-				  this.head.rotationPointX = headRotationPointX;
-				  this.helmet.rotationPointY = headRotationPointY;
-				  this.helmet.rotationPointZ = headRotationPointZ;
-				  this.helmet.rotationPointX = headRotationPointX;
-				  this.headpiece[0].rotationPointY = headRotationPointY;
-				  this.headpiece[0].rotationPointZ = headRotationPointZ;
-				  this.headpiece[0].rotationPointX = headRotationPointX;
-				  this.headpiece[1].rotationPointY = headRotationPointY;
-				  this.headpiece[1].rotationPointZ = headRotationPointZ;
-				  this.headpiece[1].rotationPointX = headRotationPointX;
-				  this.headpiece[2].rotationPointY = headRotationPointY;
-				  this.headpiece[2].rotationPointZ = headRotationPointZ;
-				  this.headpiece[2].rotationPointX = headRotationPointX;
-
-				  float txf = 0.0F;
-				  float tyf = 8.0F;
-				  float tzf = -14.0F;
-				  float TailRotationPointX = 0.0F - txf;
-				  float TailRotationPointY = 9.0F - tyf;
-				  float TailRotationPointZ = -4.0F - tzf;
-				  float TailRotateAngleX = 0.0F;
-				  for (int i = 0; i < this.Tail.length; i++)
-				  {
-					this.Tail[i].rotationPointX = TailRotationPointX;
-					this.Tail[i].rotationPointY = TailRotationPointY;
-					this.Tail[i].rotationPointZ = TailRotationPointZ;
-					this.Tail[i].rotateAngleX = TailRotateAngleX;
-				  }
-
-				}
-				else
-				{*/
-				float BodyRotateAngleX = 0.0F;
-				float BodyRotationPointY = 0.0F;
-				float BodyRotationPointZ = 0.0F;
-				this.Body.rotateAngleX = BodyRotateAngleX;
-				this.Body.rotationPointY = BodyRotationPointY;
-				this.Body.rotationPointZ = BodyRotationPointZ;
-				for (int i = 0; i < this.Bodypiece.Length; i++)
-				{
-					this.Bodypiece[i].rotateAngleX = BodyRotateAngleX;
-					this.Bodypiece[i].rotationPointY = BodyRotationPointY;
-					this.Bodypiece[i].rotationPointZ = BodyRotationPointZ;
-				}
-
-				if (this.isPegasus)
-				{
-					if (!this.isFlying)
+					if (rainboom)
 					{
-						for (int i = 0; i < this.LeftWing.Length; i++)
-						{
-							this.LeftWing[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
-							this.LeftWing[i].rotationPointY = (BodyRotationPointY + 13.0F);
-							this.LeftWing[i].rotationPointZ = (BodyRotationPointZ - 3.0F);
-						}
-						for (int i = 0; i < this.RightWing.Length; i++)
-						{
-							this.RightWing[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
-							this.RightWing[i].rotationPointY = (BodyRotationPointY + 13.0F);
-							this.RightWing[i].rotationPointZ = (BodyRotationPointZ - 3.0F);
-						}
+						Tail[i].rotateAngleZ = 0F;
 					}
 					else
 					{
-						float lwrpy = 5.5F;
-						float lwrpz = 3.0F;
-
-						for (int i = 0; i < this.LeftWingExt.Length; i++)
-						{
-							this.LeftWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
-							this.LeftWingExt[i].rotationPointY = (BodyRotationPointY + lwrpy);
-							this.LeftWingExt[i].rotationPointZ = (BodyRotationPointZ + lwrpz);
-						}
-
-						float rwrpy = 6.5F;
-						float rwrpz = 3.0F;
-
-						for (int i = 0; i < this.RightWingExt.Length; i++)
-						{
-							this.RightWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + 1.570796489715576D);
-							this.RightWingExt[i].rotationPointY = (BodyRotationPointY + rwrpy);
-							this.RightWingExt[i].rotationPointZ = (BodyRotationPointZ + rwrpz);
-						}
+						Tail[i].rotateAngleZ = (float)Math.Cos(Move * 0.8F) * 0.2F * Moveswing;
 					}
 				}
 
-				//  }
-
-				this.RightLeg.rotationPointZ = 10.0F;
-				this.LeftLeg.rotationPointZ = 10.0F;
-				this.RightLeg.rotationPointY = 8.0F;
-				this.LeftLeg.rotationPointY = 8.0F;
-
-				float ArmRotateAngleZ = (Loop * 0.09F) * 0.05F + 0.05F;
-				float ArmRotateAngleX = (Loop * 0.067F) * 0.05F;
-				this.SteveArm.rotateAngleZ += ArmRotateAngleZ;
-				this.unicornarm.rotateAngleZ += ArmRotateAngleZ;
-				this.SteveArm.rotateAngleX += ArmRotateAngleX;
-				this.unicornarm.rotateAngleX += ArmRotateAngleX;
-
-				if ((this.isPegasus) && (this.isFlying))
+				if ((heldItemRight != 0) && !rainboom)
 				{
-					this.WingRotateAngleY = ((Loop * 0.067F * 8.0F) * 1.0F);
-					this.WingRotateAngleZ = ((Loop * 0.067F * 8.0F) * 1.0F);
-					for (int i = 0; i < this.LeftWingExt.Length; i++)
+					if (isUnicorn)
 					{
-						this.LeftWingExt[i].rotateAngleX = 2.5F;
-						this.LeftWingExt[i].rotateAngleZ = (-this.WingRotateAngleZ - 4.712F - 0.4F);
+						// unicorn arm stays still, because magic
+						//unicornarm.rotateAngleX = rightarm.rotateAngleX * 0.5F - (float)Math.PI * 0.1F;
 					}
-					for (int i = 0; i < this.RightWingExt.Length; i++)
+					else
 					{
-						this.RightWingExt[i].rotateAngleX = 2.5F;
-						this.RightWingExt[i].rotateAngleZ = (this.WingRotateAngleZ + 4.712F + 0.4F);
+						rightarm.rotateAngleX = rightarm.rotateAngleX * 0.5F - (float)Math.PI * 0.1F;
+						SteveArm.rotateAngleX = SteveArm.rotateAngleX * 0.5F - (float)Math.PI * 0.1F;
 					}
 				}
 
-				float headRotationPointX;
-				float headRotationPointY;
-				float headRotationPointZ;
-				/*if (this.isSleeping) {
-				  float headRotationPointY = 2.0F;
-				  float headRotationPointZ = 1.0F;
-				  headRotationPointX = 1.0F;
-				} else {*/
-				headRotationPointY = 0.0F;
-				headRotationPointZ = 0.0F;
-				headRotationPointX = 0.0F;
-				//}
-				this.head.rotationPointY = headRotationPointY;
-				this.head.rotationPointZ = headRotationPointZ;
-				this.head.rotationPointX = headRotationPointX;
-				this.helmet.rotationPointY = headRotationPointY;
-				this.helmet.rotationPointZ = headRotationPointZ;
-				this.helmet.rotationPointX = headRotationPointX;
-				this.headpiece[0].rotationPointY = headRotationPointY;
-				this.headpiece[0].rotationPointZ = headRotationPointZ;
-				this.headpiece[0].rotationPointX = headRotationPointX;
-				this.headpiece[1].rotationPointY = headRotationPointY;
-				this.headpiece[1].rotationPointZ = headRotationPointZ;
-				this.headpiece[1].rotationPointX = headRotationPointX;
-				this.headpiece[2].rotationPointY = headRotationPointY;
-				this.headpiece[2].rotationPointZ = headRotationPointZ;
-				this.headpiece[2].rotationPointX = headRotationPointX;
+				float BodyRotateAngleY = 0F;
 
-				float txf = 0.0F;
-				float tyf = 8.0F;
-				float tzf = -14.0F;
-				float TailRotationPointX = 0.0F - txf;
-				float TailRotationPointY = 9.0F - tyf;
-				float TailRotationPointZ = 0.0F - tzf;
-				float TailRotateAngleX = 0.5F * Moveswing;
-
-				 for (int i = 0; i < this.Tail.Length; i++)
-				 {
-				   this.Tail[i].rotationPointX = TailRotationPointX;
-				   this.Tail[i].rotationPointY = TailRotationPointY;
-				   this.Tail[i].rotationPointZ = TailRotationPointZ;
-				   if (this.rainboom)
-					 this.Tail[i].rotateAngleX = (1.571F + 0.1F * (Move));
-				   else {
-					 this.Tail[i].rotateAngleX = TailRotateAngleX;
-				   }
-
-				 }
-
-				for (int i = 0; i < this.Tail.Length; i++)
+				if ((SwingProgress > -9990F) && !isUnicorn)
 				{
-				  if (this.rainboom) {
-					continue;
-				  }
-				  this.Tail[i].rotateAngleX += ArmRotateAngleX;
+					// swing the body and tail if we are smashing stuff
+					BodyRotateAngleY = (float)Math.Sin((float)Math.Sqrt(SwingProgress) * (float)Math.PI * 2F) * 0.2F;
 				}
 
-				this.LeftWingExt[2].rotateAngleX -= 0.85F;
-
-				this.LeftWingExt[3].rotateAngleX -= 0.75F;
-
-				this.LeftWingExt[4].rotateAngleX -= 0.5F;
-
-				this.LeftWingExt[6].rotateAngleX -= 0.85F;
-
-				this.RightWingExt[2].rotateAngleX -= 0.85F;
-
-				this.RightWingExt[3].rotateAngleX -= 0.75F;
-
-				this.RightWingExt[4].rotateAngleX -= 0.5F;
-
-				this.RightWingExt[6].rotateAngleX -= 0.85F;
-
-				this.Bodypiece[9].rotateAngleX += 0.5F;
-				this.Bodypiece[10].rotateAngleX += 0.5F;
-				this.Bodypiece[11].rotateAngleX += 0.5F;
-				this.Bodypiece[12].rotateAngleX += 0.5F;
-
-				if (this.rainboom) {
-				  for (int i = 0; i < this.Tail.Length; i++)
-				  {
-					this.Tail[i].rotationPointY += 6.0F;
-					this.Tail[i].rotationPointZ += 1.0F;
-				  }
+				Body.rotateAngleY = (float)(BodyRotateAngleY * 0.2);
+				for (int i = 0; i < Bodypiece.Length; i++)
+				{
+					Bodypiece[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2);
+				}
+				for (int i = 0; i < LeftWing.Length; i++)
+				{
+					LeftWing[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2);
+				}
+				for (int i = 0; i < RightWing.Length; i++)
+				{
+					RightWing[i].rotateAngleY = (float)(BodyRotateAngleY * 0.2);
 				}
 
-				/*if (this.b)
+				for (int i = 0; i < Tail.Length; i++)
 				{
-				  float ShiftY = -10.0F;
-				  float ShiftZ = -10.0F;
-
-				  this.head.d += ShiftY;
-				  this.head.e += ShiftZ;
-				  this.headpiece[0].d += ShiftY;
-				  this.headpiece[0].e += ShiftZ;
-				  this.headpiece[1].d += ShiftY;
-				  this.headpiece[1].e += ShiftZ;
-
-				  this.headpiece[2].d += ShiftY;
-				  this.headpiece[2].e += ShiftZ;
-
-				  this.helmet.d += ShiftY;
-				  this.helmet.e += ShiftZ;
-				  this.Body.d += ShiftY;
-				  this.Body.e += ShiftZ;
-				  for (int i = 0; i < this.Bodypiece.length; i++)
-				  {
-					this.Bodypiece[i].rotationPointY += ShiftY;
-					this.Bodypiece[i].rotationPointZ += ShiftZ;
-				  }
-				  this.LeftArm.d += ShiftY;
-				  this.LeftArm.e += ShiftZ;
-				  this.rightarm.d += ShiftY;
-				  this.rightarm.e += ShiftZ;
-				  this.LeftLeg.d += ShiftY;
-				  this.LeftLeg.e += ShiftZ;
-				  this.RightLeg.d += ShiftY;
-				  this.RightLeg.e += ShiftZ;
-				  for (int i = 0; i < this.Tail.length; i++)
-				  {
-					this.Tail[i].rotationPointY += ShiftY;
-					this.Tail[i].rotationPointZ += ShiftZ;
-				  }
-
-				  for (int i = 0; i < this.LeftWing.length; i++)
-				  {
-					this.LeftWing[i].d += ShiftY;
-					this.LeftWing[i].e += ShiftZ;
-				  }
-				  for (int i = 0; i < this.RightWing.length; i++)
-				  {
-					this.RightWing[i].d += ShiftY;
-					this.RightWing[i].e += ShiftZ;
-				  }
-
-				  for (int i = 0; i < this.LeftWingExt.length; i++)
-				  {
-					this.LeftWingExt[i].d += ShiftY;
-					this.LeftWingExt[i].e += ShiftZ;
-				  }
-
-				  for (int i = 0; i < this.RightWingExt.length; i++)
-				  {
-					this.RightWingExt[i].d += ShiftY;
-					this.RightWingExt[i].e += ShiftZ;
-				  }
+					Tail[i].rotateAngleY = BodyRotateAngleY;
 				}
 
-				if (this.isSleeping)
+				float ArmRotationPointZ = (float)Math.Sin(Body.rotateAngleY) * 5F;
+				float ArmRotationPointX = (float)Math.Cos(Body.rotateAngleY) * 5F;
+				float LegSplay = 4F;
+				if (issneak && !isFlying)
 				{
-				  this.rightarm.e += 6.0F;
-				  this.LeftArm.e += 6.0F;
-				  this.RightLeg.e -= 8.0F;
-				  this.LeftLeg.e -= 8.0F;
-				  this.rightarm.d += 2.0F;
-				  this.LeftArm.d += 2.0F;
-				  this.RightLeg.d += 2.0F;
-				  this.LeftLeg.d += 2.0F;
+					LegSplay = 0F;
+				}
+				if (isSleeping)
+				{
+					LegSplay = 2.6F;
+				}
+				if (rainboom)
+				{
+					rightarm.rotationPointZ = ArmRotationPointZ + 2F;
+					SteveArm.rotationPointZ = ArmRotationPointZ + 2F;
+					LeftArm.rotationPointZ = 0 - ArmRotationPointZ + 2F;
+				}
+				else
+				{
+					rightarm.rotationPointZ = ArmRotationPointZ + 1F;
+					SteveArm.rotationPointZ = ArmRotationPointZ + 1F;
+					LeftArm.rotationPointZ = 0 - ArmRotationPointZ + 1F;
+				}
+				rightarm.rotationPointX = 0 - ArmRotationPointX - 1F + LegSplay;
+				SteveArm.rotationPointX = 0 - ArmRotationPointX;
+				LeftArm.rotationPointX = ArmRotationPointX + 1F - LegSplay;
+				RightLeg.rotationPointX = 0 - ArmRotationPointX - 1F + LegSplay;
+				LeftLeg.rotationPointX = ArmRotationPointX + 1F - LegSplay;
+
+
+				rightarm.rotateAngleY += Body.rotateAngleY;
+				LeftArm.rotateAngleY += Body.rotateAngleY;
+				LeftArm.rotateAngleX += Body.rotateAngleY;
+
+
+
+				// set rotation point Y as well, to reset leg position after riding
+				rightarm.rotationPointY = 8F;
+				LeftArm.rotationPointY = 8F;
+				RightLeg.rotationPointY = 4F;
+				LeftLeg.rotationPointY = 4F;
+
+				if (SwingProgress > -9990F)
+				{
+					float f = SwingProgress;
+					f = 1F - SwingProgress;
+					f *= f * f; //f^3
+					f = 1F - f;
+					float f1 = (float)Math.Sin(f * (float)Math.PI);
+					float SwingProgressPi = (float)Math.Sin(SwingProgress * (float)Math.PI);
+					float f2 = SwingProgressPi * -(head.rotateAngleX - 0.7F) * 0.75F;
+
+					if (isUnicorn)
+					{
+						// swingprogress is used when we hit stuff with a pick or whatever      
+						unicornarm.rotateAngleX -= (float)((double)f1 * 1.2D + (double)f2);
+						unicornarm.rotateAngleY += Body.rotateAngleY * 2F;
+						unicornarm.rotateAngleZ = SwingProgressPi * -0.4F;
+					}
+					else
+					{
+						rightarm.rotateAngleX -= (float)((double)f1 * 1.2D + (double)f2);
+						rightarm.rotateAngleY += Body.rotateAngleY * 2F;
+						rightarm.rotateAngleZ = SwingProgressPi * -0.4F;
+
+						SteveArm.rotateAngleX -= (float)((double)f1 * 1.2D + (double)f2);
+						SteveArm.rotateAngleY += Body.rotateAngleY * 2F;
+						SteveArm.rotateAngleZ = SwingProgressPi * -0.4F;
+					}
 				}
 
-				if (this.aimedBow)
+				if (issneak && !isFlying)
 				{
-				  if (this.isUnicorn) {
-					float f7 = 0.0F;
-					float f9 = 0.0F;
-					this.unicornarm.rotateAngleZ = 0.0F;
-					this.unicornarm.rotateAngleY = (-(0.1F - f7 * 0.6F) + this.head.g);
-					this.unicornarm.rotateAngleX = (4.712F + this.head.f);
-					this.unicornarm.f -= f7 * 1.2F - f9 * 0.4F;
-					float f2 = ani.tick;
-					this.unicornarm.h += me.b(f2 * 0.09F) * 0.05F + 0.05F;
-					this.unicornarm.f += me.a(f2 * 0.067F) * 0.05F;
-				  } else {
-					float f7 = 0.0F;
-					float f9 = 0.0F;
-					this.rightarm.rotateAngleZ = 0.0F;
-					this.rightarm.rotateAngleY = (-(0.1F - f7 * 0.6F) + this.head.g);
-					this.rightarm.rotateAngleX = (4.712F + this.head.f);
-					this.rightarm.f -= f7 * 1.2F - f9 * 0.4F;
-					float f2 = ani.tick;
-					this.rightarm.h += me.b(f2 * 0.09F) * 0.05F + 0.05F;
-					this.rightarm.f += me.a(f2 * 0.067F) * 0.05F;
+					// face down, plot up, that's the way we like to buck
 
-					this.rightarm.e += 1.0F;
-				  }
-				}*/
+					// body stuff
+					float BodyRotateAngleX = 0.4F;
+					float BodyRotationPointY = 7F;
+					float BodyRotationPointZ = -4F;
+					Body.rotateAngleX = BodyRotateAngleX;
+					Body.rotationPointY = BodyRotationPointY;
+					Body.rotationPointZ = BodyRotationPointZ;
+					for (int i = 0; i < Bodypiece.Length; i++)
+					{
+						Bodypiece[i].rotateAngleX = BodyRotateAngleX;
+						Bodypiece[i].rotationPointY = BodyRotationPointY;
+						Bodypiece[i].rotationPointZ = BodyRotationPointZ;
+					}
+
+
+					// extended wings
+					float lwrpy = 3.5F;
+					float lwrpz = 6F;
+
+					for (int i = 0; i < LeftWingExt.Length; i++)
+					{
+						LeftWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + (float)Math.PI * 0.75);
+						LeftWingExt[i].rotationPointY = BodyRotationPointY + lwrpy;
+						LeftWingExt[i].rotationPointZ = BodyRotationPointZ + lwrpz;
+						// point the wings up
+						LeftWingExt[i].rotateAngleX = 2.5F;
+						LeftWingExt[i].rotateAngleZ = -6F;
+					}
+
+					float rwrpy = 4.5F;
+					float rwrpz = 6F;
+
+					for (int i = 0; i < LeftWingExt.Length; i++)
+					{
+						RightWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + (float)Math.PI * 0.75);
+						RightWingExt[i].rotationPointY = BodyRotationPointY + rwrpy;
+						RightWingExt[i].rotationPointZ = BodyRotationPointZ + rwrpz;
+						// point the wings up
+						RightWingExt[i].rotateAngleX = 2.5F;
+						RightWingExt[i].rotateAngleZ = 6F;
+					}
+
+					// legs stuff
+					RightLeg.rotateAngleX -= 0F;
+					LeftLeg.rotateAngleX -= 0F;
+					rightarm.rotateAngleX -= 0.4F;
+					SteveArm.rotateAngleX += 0.4F;
+					unicornarm.rotateAngleX += 0.4F;
+					LeftArm.rotateAngleX -= 0.4F;
+					RightLeg.rotationPointZ = 10F;
+					LeftLeg.rotationPointZ = 10F;
+					RightLeg.rotationPointY = 7F;
+					LeftLeg.rotationPointY = 7F;
+
+					// head stuff
+					float headRotationPointY;
+					float headRotationPointZ;
+					float headRotationPointX;
+					if (isSleeping)
+					{
+						headRotationPointY = 2F;
+						headRotationPointZ = -1F;
+						headRotationPointX = 1F;
+					}
+					else
+					{
+						headRotationPointY = 6F;
+						headRotationPointZ = -2F;
+						headRotationPointX = 0F;
+					}
+					head.rotationPointY = headRotationPointY;
+					head.rotationPointZ = headRotationPointZ;
+					head.rotationPointX = headRotationPointX;
+					helmet.rotationPointY = headRotationPointY;
+					helmet.rotationPointZ = headRotationPointZ;
+					helmet.rotationPointX = headRotationPointX;
+					headpiece[0].rotationPointY = headRotationPointY;
+					headpiece[0].rotationPointZ = headRotationPointZ;
+					headpiece[0].rotationPointX = headRotationPointX;
+					headpiece[1].rotationPointY = headRotationPointY;
+					headpiece[1].rotationPointZ = headRotationPointZ;
+					headpiece[1].rotationPointX = headRotationPointX;
+					headpiece[2].rotationPointY = headRotationPointY;
+					headpiece[2].rotationPointZ = headRotationPointZ;
+					headpiece[2].rotationPointX = headRotationPointX;
+
+					// tail stuff
+					float txf = 0F; // tail horizontal fudge
+					float tyf = 8F; // tail vertical fudge
+					float tzf = -14F; // tail depth fudge
+					float TailRotationPointX = 0.0F - txf;
+					float TailRotationPointY = 9F - tyf;
+					float TailRotationPointZ = -4F - tzf;
+					float TailRotateAngleX = 0.0F;
+					for (int i = 0; i < Tail.Length; i++)
+					{
+						Tail[i].rotationPointX = TailRotationPointX;
+						Tail[i].rotationPointY = TailRotationPointY;
+						Tail[i].rotationPointZ = TailRotationPointZ;
+						Tail[i].rotateAngleX = TailRotateAngleX;
+					}
+
+				}
+				else
+				{
+					// body stuff
+					float BodyRotateAngleX = 0F;
+					float BodyRotationPointY = 0F;
+					float BodyRotationPointZ = 0F;
+					Body.rotateAngleX = BodyRotateAngleX;
+					Body.rotationPointY = BodyRotationPointY;
+					Body.rotationPointZ = BodyRotationPointZ;
+					for (int i = 0; i < Bodypiece.Length; i++)
+					{
+						Bodypiece[i].rotateAngleX = BodyRotateAngleX;
+						Bodypiece[i].rotationPointY = BodyRotationPointY;
+						Bodypiece[i].rotationPointZ = BodyRotationPointZ;
+					}
+
+					if (isPegasus)
+					{
+						if (!isFlying)
+						{
+							// wings folded
+							for (int i = 0; i < LeftWing.Length; i++)
+							{
+								LeftWing[i].rotateAngleX = (float)(BodyRotateAngleX + (float)Math.PI * 0.5);
+								LeftWing[i].rotationPointY = BodyRotationPointY + 13F;
+								LeftWing[i].rotationPointZ = BodyRotationPointZ - 3F;
+							}
+							for (int i = 0; i < RightWing.Length; i++)
+							{
+								RightWing[i].rotateAngleX = (float)(BodyRotateAngleX + (float)Math.PI * 0.5);
+								RightWing[i].rotationPointY = BodyRotationPointY + 13F;
+								RightWing[i].rotationPointZ = BodyRotationPointZ - 3F;
+							}
+						}
+						else
+						{
+							// wings extended
+							float lwrpy = 5.5F;
+							float lwrpz = 3F;
+
+							for (int i = 0; i < LeftWingExt.Length; i++)
+							{
+								LeftWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + (float)Math.PI * 0.5);
+								LeftWingExt[i].rotationPointY = BodyRotationPointY + lwrpy;
+								LeftWingExt[i].rotationPointZ = BodyRotationPointZ + lwrpz;
+							}
+
+							float rwrpy = 6.5F;
+							float rwrpz = 3F;
+
+							for (int i = 0; i < RightWingExt.Length; i++)
+							{
+								RightWingExt[i].rotateAngleX = (float)(BodyRotateAngleX + (float)Math.PI * 0.5);
+								RightWingExt[i].rotationPointY = BodyRotationPointY + rwrpy;
+								RightWingExt[i].rotationPointZ = BodyRotationPointZ + rwrpz;
+							}
+						}
+					}
+
+					// legs stuff
+					RightLeg.rotationPointZ = 10F;
+					LeftLeg.rotationPointZ = 10F;
+					RightLeg.rotationPointY = 8F;
+					LeftLeg.rotationPointY = 8F;
+
+					// swing the front arms a bit when still
+					// scratch that, only swing steve arm and pony tail
+					float ArmRotateAngleZ = (float)Math.Cos(Loop * 0.09F) * 0.05F + 0.05F;
+					float ArmRotateAngleX = (float)Math.Sin(Loop * 0.067F) * 0.05F;
+					SteveArm.rotateAngleZ += ArmRotateAngleZ;
+					unicornarm.rotateAngleZ += ArmRotateAngleZ;
+					SteveArm.rotateAngleX += ArmRotateAngleX;
+					unicornarm.rotateAngleX += ArmRotateAngleX;
+
+					if (isPegasus && isFlying)
+					{
+						// swing (flap) the large wings a bit
+						WingRotateAngleY = (float)Math.Sin(Loop * 0.067F * 8) * 1F;
+						WingRotateAngleZ = (float)Math.Sin(Loop * 0.067F * 8) * 1F;
+						for (int i = 0; i < LeftWingExt.Length; i++)
+						{
+							LeftWingExt[i].rotateAngleX = 2.5F;
+							LeftWingExt[i].rotateAngleZ = -WingRotateAngleZ - 4.712F - .4F;
+						}
+						for (int i = 0; i < RightWingExt.Length; i++)
+						{
+							RightWingExt[i].rotateAngleX = 2.5F;
+							RightWingExt[i].rotateAngleZ = WingRotateAngleZ + 4.712F + .4F;
+						}
+					}
+
+					// head stuff
+					float headRotationPointY;
+					float headRotationPointZ;
+					float headRotationPointX;
+					if (isSleeping)
+					{
+						headRotationPointY = 2F;
+						headRotationPointZ = 1F;
+						headRotationPointX = 1F;
+					}
+					else
+					{
+						headRotationPointY = 0F;
+						headRotationPointZ = 0F;
+						headRotationPointX = 0F;
+					}
+					head.rotationPointY = headRotationPointY;
+					head.rotationPointZ = headRotationPointZ;
+					head.rotationPointX = headRotationPointX;
+					helmet.rotationPointY = headRotationPointY;
+					helmet.rotationPointZ = headRotationPointZ;
+					helmet.rotationPointX = headRotationPointX;
+					headpiece[0].rotationPointY = headRotationPointY;
+					headpiece[0].rotationPointZ = headRotationPointZ;
+					headpiece[0].rotationPointX = headRotationPointX;
+					headpiece[1].rotationPointY = headRotationPointY;
+					headpiece[1].rotationPointZ = headRotationPointZ;
+					headpiece[1].rotationPointX = headRotationPointX;
+					headpiece[2].rotationPointY = headRotationPointY;
+					headpiece[2].rotationPointZ = headRotationPointZ;
+					headpiece[2].rotationPointX = headRotationPointX;
+
+					float txf = 0F; // tail horizontal fudge
+					float tyf = 8F; // tail vertical fudge
+					float tzf = -14F; // tail depth fudge
+					float TailRotationPointX = 0F - txf;
+					float TailRotationPointY = 9F - tyf;
+					float TailRotationPointZ = 0F - tzf;
+					float TailRotateAngleX = 0.5F * Moveswing;
+					for (int i = 0; i < Tail.Length; i++)
+					{
+						Tail[i].rotationPointX = TailRotationPointX;
+						Tail[i].rotationPointY = TailRotationPointY;
+						Tail[i].rotationPointZ = TailRotationPointZ;
+						if (rainboom)
+						{
+							Tail[i].rotateAngleX = 1.571F + 0.1F * (float)Math.Sin(Move);
+						}
+						else
+						{
+							Tail[i].rotateAngleX = TailRotateAngleX;
+						}
+					}
+
+					// swing the tail a bit
+					for (int i = 0; i < Tail.Length; i++)
+					{
+						if (rainboom)
+						{
+							// does nothing
+						}
+						else
+						{
+							Tail[i].rotateAngleX += ArmRotateAngleX;
+						}
+					}
+				}
+
+				//// finally, whatever else we did, tilt the wing feathers all over the place
+				//// shortest feather of large wing, to be rotated 60 degrees
+				LeftWingExt[2].rotateAngleX = LeftWingExt[2].rotateAngleX - .85F;
+				//// lower middle feather of large wing, also to be rotated 60 degrees
+				LeftWingExt[3].rotateAngleX = LeftWingExt[3].rotateAngleX - .75F;
+				//// upper middle feather of large wing, to be rotated 40 degrees
+				LeftWingExt[4].rotateAngleX = LeftWingExt[4].rotateAngleX - 0.5F;
+				//// other feathers of smaller wing, to be rotated 60 degrees
+				LeftWingExt[6].rotateAngleX = LeftWingExt[6].rotateAngleX - .85F;
+
+				//// shortest feather of large wing, to be rotated 60 degrees
+				RightWingExt[2].rotateAngleX = RightWingExt[2].rotateAngleX - .85F;
+				//// lower middle feather of large wing, also to be rotated 60 degrees
+				RightWingExt[3].rotateAngleX = RightWingExt[3].rotateAngleX - .75F;
+				//// upper middle feather of large wing, to be rotated 40 degrees
+				RightWingExt[4].rotateAngleX = RightWingExt[4].rotateAngleX - 0.5F;
+				//// other feathers of smaller wing, to be rotated 60 degrees
+				RightWingExt[6].rotateAngleX = RightWingExt[6].rotateAngleX - .85F;
+
+
+				// finally, whatever else we did, tilt the tail joining piece up a bit
+				Bodypiece[9].rotateAngleX = Bodypiece[9].rotateAngleX + 0.5F;
+				Bodypiece[10].rotateAngleX = Bodypiece[10].rotateAngleX + 0.5F;
+				Bodypiece[11].rotateAngleX = Bodypiece[11].rotateAngleX + 0.5F;
+				Bodypiece[12].rotateAngleX = Bodypiece[12].rotateAngleX + 0.5F;
+
+				// move the tail into position if we are rainbooming
+				if (rainboom)
+				{
+					for (int i = 0; i < Tail.Length; i++)
+					{
+						Tail[i].rotationPointY = Tail[i].rotationPointY + 6;
+						Tail[i].rotationPointZ = Tail[i].rotationPointZ + 1;
+					}
+				}
+
+				if (isRiding)
+				{
+					// We need to move every single piece up and forward (except Steve's arm)
+					// so the pony stands in the boat.
+					float ShiftY = -10F;
+					float ShiftZ = -10F;
+					//    rightarm.rotateAngleX += -0.6283185F;
+					//      SteveArm.rotateAngleX += -0.6283185F;
+					//    LeftArm.rotateAngleX += -0.6283185F;
+					//    RightLeg.rotateAngleX = -1.256637F;
+					//    LeftLeg.rotateAngleX = -1.256637F;
+					//    RightLeg.rotateAngleY = (float)Math.PI * 0.1F;
+					//    LeftLeg.rotateAngleY = -(float)Math.PI * 0.1F;
+					head.rotationPointY = head.rotationPointY + ShiftY;
+					head.rotationPointZ = head.rotationPointZ + ShiftZ;
+					headpiece[0].rotationPointY = headpiece[0].rotationPointY + ShiftY;
+					headpiece[0].rotationPointZ = headpiece[0].rotationPointZ + ShiftZ;
+					headpiece[1].rotationPointY = headpiece[1].rotationPointY + ShiftY;
+					headpiece[1].rotationPointZ = headpiece[1].rotationPointZ + ShiftZ;
+					//if (isUnicorn) {
+					headpiece[2].rotationPointY = headpiece[2].rotationPointY + ShiftY;
+					headpiece[2].rotationPointZ = headpiece[2].rotationPointZ + ShiftZ;
+					//}
+					//for(int i = 0; i < headpiece.Length; i++)
+					//{
+					//      headpiece[i].rotationPointY = headpiece[i].rotationPointY + ShiftY;
+					//      headpiece[i].rotationPointZ = headpiece[i].rotationPointZ + ShiftZ;
+					//}
+					helmet.rotationPointY = helmet.rotationPointY + ShiftY;
+					helmet.rotationPointZ = helmet.rotationPointZ + ShiftZ;
+					Body.rotationPointY = Body.rotationPointY + ShiftY;
+					Body.rotationPointZ = Body.rotationPointZ + ShiftZ;
+					for (int i = 0; i < Bodypiece.Length; i++)
+					{
+						Bodypiece[i].rotationPointY = Bodypiece[i].rotationPointY + ShiftY;
+						Bodypiece[i].rotationPointZ = Bodypiece[i].rotationPointZ + ShiftZ;
+					}
+					LeftArm.rotationPointY = LeftArm.rotationPointY + ShiftY;
+					LeftArm.rotationPointZ = LeftArm.rotationPointZ + ShiftZ;
+					rightarm.rotationPointY = rightarm.rotationPointY + ShiftY;
+					rightarm.rotationPointZ = rightarm.rotationPointZ + ShiftZ;
+					LeftLeg.rotationPointY = LeftLeg.rotationPointY + ShiftY;
+					LeftLeg.rotationPointZ = LeftLeg.rotationPointZ + ShiftZ;
+					RightLeg.rotationPointY = RightLeg.rotationPointY + ShiftY;
+					RightLeg.rotationPointZ = RightLeg.rotationPointZ + ShiftZ;
+					for (int i = 0; i < Tail.Length; i++)
+					{
+						Tail[i].rotationPointY = Tail[i].rotationPointY + ShiftY;
+						Tail[i].rotationPointZ = Tail[i].rotationPointZ + ShiftZ;
+					}
+
+					// wings folded
+					for (int i = 0; i < LeftWing.Length; i++)
+					{
+						LeftWing[i].rotationPointY = LeftWing[i].rotationPointY + ShiftY;
+						LeftWing[i].rotationPointZ = LeftWing[i].rotationPointZ + ShiftZ;
+					}
+					for (int i = 0; i < RightWing.Length; i++)
+					{
+						RightWing[i].rotationPointY = RightWing[i].rotationPointY + ShiftY;
+						RightWing[i].rotationPointZ = RightWing[i].rotationPointZ + ShiftZ;
+					}
+
+					//wings extended
+					for (int i = 0; i < LeftWingExt.Length; i++)
+					{
+						LeftWingExt[i].rotationPointY = LeftWingExt[i].rotationPointY + ShiftY;
+						LeftWingExt[i].rotationPointZ = LeftWingExt[i].rotationPointZ + ShiftZ;
+					}
+
+					for (int i = 0; i < RightWingExt.Length; i++)
+					{
+						RightWingExt[i].rotationPointY = RightWingExt[i].rotationPointY + ShiftY;
+						RightWingExt[i].rotationPointZ = RightWingExt[i].rotationPointZ + ShiftZ;
+					}
+				}
+
+				if (isSleeping)
+				{
+					// move the head down into the body, and lock it rotated fully 90 degrees.
+					// move the legs out to the sides of the body (a bit)
+					// and rotate the front legs fully forward and the back legs fully back (a bit like a rainboom pose).
+					rightarm.rotationPointZ = rightarm.rotationPointZ + 6F;
+					LeftArm.rotationPointZ = LeftArm.rotationPointZ + 6F;
+					RightLeg.rotationPointZ = RightLeg.rotationPointZ - 8F;
+					LeftLeg.rotationPointZ = LeftLeg.rotationPointZ - 8F;
+					rightarm.rotationPointY = rightarm.rotationPointY + 2F;
+					LeftArm.rotationPointY = LeftArm.rotationPointY + 2F;
+					RightLeg.rotationPointY = RightLeg.rotationPointY + 2F;
+					LeftLeg.rotationPointY = LeftLeg.rotationPointY + 2F;
+				}
+
+				if (aimedBow)
+				{
+					if (isUnicorn)
+					{
+						float f7 = 0.0F;
+						float f9 = 0.0F;
+						unicornarm.rotateAngleZ = 0.0F;
+						unicornarm.rotateAngleY = -(0.1F - f7 * 0.6F) + head.rotateAngleY;
+						unicornarm.rotateAngleX = 4.712F + head.rotateAngleX;
+						unicornarm.rotateAngleX -= f7 * 1.2F - f9 * 0.4F;
+						float f2 = 0; // I am lazy
+						unicornarm.rotateAngleZ += (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+						unicornarm.rotateAngleX += (float)Math.Sin(f2 * 0.067F) * 0.05F;
+					}
+					else
+					{
+						float f7 = 0.0F;
+						float f9 = 0.0F;
+						rightarm.rotateAngleZ = 0.0F;
+						rightarm.rotateAngleY = -(0.1F - f7 * 0.6F) + head.rotateAngleY;
+						rightarm.rotateAngleX = 4.712F + head.rotateAngleX;
+						rightarm.rotateAngleX -= f7 * 1.2F - f9 * 0.4F;
+						float f2 = 0; // I am lazy
+						rightarm.rotateAngleZ += (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+						rightarm.rotateAngleX += (float)Math.Sin(f2 * 0.067F) * 0.05F;
+						// move the arm back a bit so it looks less weird
+						rightarm.rotationPointZ = rightarm.rotationPointZ + 1F;
+					}
+				}
 			}
 
 			/*
@@ -2854,7 +2944,7 @@ namespace MCSkin3D
 
 			  this.helmet.a(this.scale);
 			  this.Body.a(this.scale);
-			  for (int i = 0; i < this.Bodypiece.length; i++)
+			  for (int i = 0; i < this.Bodypiece.Length; i++)
 			  {
 				this.Bodypiece[i].render(this.scale);
 			  }
@@ -2862,7 +2952,7 @@ namespace MCSkin3D
 			  this.rightarm.a(this.scale);
 			  this.LeftLeg.a(this.scale);
 			  this.RightLeg.a(this.scale);
-			  for (int i = 0; i < this.Tail.length; i++)
+			  for (int i = 0; i < this.Tail.Length; i++)
 			  {
 				this.Tail[i].render(this.scale);
 			  }
@@ -2870,21 +2960,21 @@ namespace MCSkin3D
 			  if (this.isPegasus)
 				if ((this.isFlying) || (this.issneak))
 				{
-				  for (int i = 0; i < this.LeftWingExt.length; i++)
+				  for (int i = 0; i < this.LeftWingExt.Length; i++)
 				  {
 					this.LeftWingExt[i].a(this.scale);
 				  }
-				  for (int i = 0; i < this.RightWingExt.length; i++)
+				  for (int i = 0; i < this.RightWingExt.Length; i++)
 				  {
 					this.RightWingExt[i].a(this.scale);
 				  }
 				}
 				else {
-				  for (int i = 0; i < this.LeftWing.length; i++)
+				  for (int i = 0; i < this.LeftWing.Length; i++)
 				  {
 					this.LeftWing[i].a(this.scale);
 				  }
-				  for (int i = 0; i < this.RightWing.length; i++)
+				  for (int i = 0; i < this.RightWing.Length; i++)
 				  {
 					this.RightWing[i].a(this.scale);
 				  }
