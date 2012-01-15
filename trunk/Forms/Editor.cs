@@ -51,6 +51,7 @@ using MCSkin3D.Language;
 using System.Globalization;
 using MCSkin3D.Forms;
 using Version = Paril.Components.Update.Version;
+using Paril.Drawing;
 
 namespace MCSkin3D
 {
@@ -226,12 +227,6 @@ namespace MCSkin3D
 			CurrentLanguage = useLanguage;
 
 			SetSelectedTool(_tools[0]);
-
-			if (Screen.PrimaryScreen.BitsPerPixel != 32)
-			{
-				MessageBox.Show(this, GetLanguageString("B_MSG_PIXELFORMAT"), GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-				Application.Exit();
-			}
 
 			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
 			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
@@ -905,6 +900,18 @@ namespace MCSkin3D
 				if (modeToolStripMenuItem1.Selected && (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked || args.CloseReason == ToolStripDropDownCloseReason.Keyboard))
 					args.Cancel = true;
 			};
+
+			if (Screen.PrimaryScreen.BitsPerPixel != 32)
+			{
+				MessageBox.Show(Editor.GetLanguageString("B_MSG_PIXELFORMAT"), Editor.GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Application.Exit();
+			}
+
+			if (Environment.CurrentDirectory.StartsWith(Environment.ExpandEnvironmentVariables("%temp%")))
+			{
+				MessageBox.Show(GetLanguageString("M_TEMP"));
+				Application.Exit();
+			}
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -2851,6 +2858,7 @@ namespace MCSkin3D
 
 		Rectangle _currentViewport;
 
+		Matrix4 viewMatrix, cameraMatrix;
 		void Setup3D(Rectangle viewport)
 		{
 			GL.MatrixMode(MatrixMode.Projection);
@@ -2881,21 +2889,21 @@ namespace MCSkin3D
 				vec /= count;
 
 			// FIXME: calculate these only on change
-			Matrix4 mt =
+			viewMatrix =
 				Matrix4.CreateTranslation(-vec.X, -vec.Y, 0) *
 				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
 				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
 				Matrix4.CreateTranslation(0, 0, _3dZoom);
 
-			GL.LoadMatrix(ref mt);
+			GL.LoadMatrix(ref viewMatrix);
 
-			mt =
+			cameraMatrix =
 				Matrix4.CreateTranslation(-vec.X, -vec.Y, 0) *
 				Matrix4.CreateTranslation(0, 0, _3dZoom) *
 				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
 				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX));
 
-			CameraPosition = Vector3.TransformPosition(Vector3.Zero, mt);
+			CameraPosition = Vector3.TransformPosition(Vector3.Zero, cameraMatrix);
 		}
 
 		void Setup2D(Rectangle viewport)
