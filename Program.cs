@@ -59,7 +59,6 @@ namespace MCSkin3D
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		static void MainCore()
 		{
-
 #if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);

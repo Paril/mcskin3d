@@ -59,8 +59,13 @@ namespace Paril.Components.Update
 				}
 
 			updater.Done(succeeded);
+
+			lock (waitObject)
+				Monitor.Pulse(waitObject);
 		}
 
+		static readonly object waitObject = new object();
+		
 		static void UpdaterThread(object parameter)
 		{
 			Updater updater = null;
@@ -70,10 +75,12 @@ namespace Paril.Components.Update
 				updater = (Updater)parameter;
 				request = (HttpWebRequest)HttpWebRequest.Create(updater.URL);
 
-				request.Timeout = -1;
+				request.Timeout = 10000;
 
 				IAsyncResult response = (IAsyncResult)request.BeginGetResponse(CallbackAsync, new object[] { request, updater });
-				Thread.Sleep(20000);
+
+				lock (waitObject)
+					Monitor.Wait(waitObject);
 
 				request.Abort();
 			}
@@ -104,6 +111,8 @@ namespace Paril.Components.Update
 		{
 			if (Thread != null)
 			{
+				lock (waitObject)
+					Monitor.Pulse(waitObject);
 				Thread.Abort();
 				Done(false);
 			}
