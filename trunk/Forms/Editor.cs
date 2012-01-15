@@ -1093,7 +1093,7 @@ namespace MCSkin3D
 				newMesh.Texture = tex;
 
 				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-					newMesh.Rotate = helmetRotate;
+					newMesh.Rotate += helmetRotate;
 
 				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
 				{
@@ -1109,7 +1109,7 @@ namespace MCSkin3D
 				}
 
 				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-					newMesh.Rotate += new Vector3(0, 0, (float)sinAnim * mesh.RotateFactor);
+					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
 
 				_renderer.AddMesh(newMesh);
 			}
