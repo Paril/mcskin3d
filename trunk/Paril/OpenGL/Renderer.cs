@@ -28,6 +28,9 @@ using System.Drawing;
 using MCSkin3D;
 using Paril.Drawing;
 using System.IO.Compression;
+using System.Windows.Forms;
+using System.Drawing.Text;
+using System.Reflection;
 
 namespace Paril.OpenGL
 {
@@ -187,7 +190,14 @@ namespace Paril.OpenGL
 				foreach (var v in x.Vertices)
 				{
 					count++;
-					Center += v + Translate;
+
+					var m = Matrix4.CreateTranslation(Translate) *
+						Matrix4.CreateRotationX(Rotate.X) *
+						Matrix4.CreateRotationY(Rotate.Y) *
+						Matrix4.CreateRotationZ(Rotate.Z) *
+						Matrix4.CreateTranslation(Pivot);
+
+					Center += Vector3.Transform(v, m);
 				}
 			}
 
@@ -384,6 +394,54 @@ namespace Paril.OpenGL
 		}
 
 		public Editor.ModelToolStripMenuItem DropDownItem { get; set; }
+
+		static Font _silkScreen = null;
+		static PrivateFontCollection _collection;
+
+		public void GenerateOverlay(Color lineColor, Size baseSize, int scale, string fileName)
+		{
+			if (_silkScreen == null)
+			{
+				_collection = new PrivateFontCollection();
+				byte[] fontdata = MCSkin3D.Properties.Resources.slkscr;
+				unsafe
+				{
+					fixed (byte * pFontData = fontdata)
+					{
+						_collection.AddMemoryFont((System.IntPtr)pFontData, fontdata.Length);
+					}
+				}
+
+				_silkScreen = new Font(_collection.Families[0], 6);
+			}
+
+			Bitmap b = new Bitmap(baseSize.Width * scale, baseSize.Height * scale);
+			var pen = new Pen(lineColor);
+
+			using (Graphics g = Graphics.FromImage(b))
+			{
+				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+
+				foreach (var x in Meshes)
+				{
+					foreach (var y in x.Faces)
+					{
+						Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+
+						foreach (var p in y.TexCoords)
+							bounds.AddPoint(new Point((int)(p.X * (b.Width - 1)), (int)(p.Y * (b.Height - 1))));
+
+						var rect = bounds.ToRectangle();
+						g.DrawRectangle(pen, rect);
+
+						var measured = TextRenderer.MeasureText("Test", _silkScreen);
+						g.DrawString("Test", _silkScreen, System.Drawing.Brushes.White, rect, StringFormat.GenericDefault);
+					}
+				}
+			}
+
+			b.Save(fileName);
+		}
 	}
 
 	public abstract class Renderer
@@ -406,10 +464,10 @@ namespace Paril.OpenGL
 			TransparentMeshes.Sort(
 				(left, right) =>
 				{
-					var leftDist = (Editor.CameraPosition - left.Center).LengthSquared;
-					var rightDist = (Editor.CameraPosition - right.Center).LengthSquared;
+					var leftDist = (Editor.CameraPosition - left.Center).Length;
+					var rightDist = (Editor.CameraPosition - right.Center).Length;
 
-					return leftDist.CompareTo(rightDist);
+					return rightDist.CompareTo(leftDist);
 				}
 			);
 		}

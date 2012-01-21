@@ -26,6 +26,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 
 namespace MCSkin3D
 {
@@ -1979,11 +1980,11 @@ namespace MCSkin3D
 
 				this.headpiece = new ModelRenderer[3];
 
-				this.headpiece[0] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, true, false);
+				this.headpiece[0] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, false, false);
 				this.headpiece[0].addBox(-4.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
 				this.headpiece[0].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.headpiece[1] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, true, false);
+				this.headpiece[1] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, false, false);
 				this.headpiece[1].addBox(2.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
 				this.headpiece[1].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
@@ -3102,6 +3103,8 @@ namespace MCSkin3D
 
 					model.File = new FileInfo(m);
 					Models.Add(model.Name, model);
+
+					model.GenerateOverlay(System.Drawing.Color.White, new Size(64, 32), 8, "Overlays\\" + model.Name + ".png");
 				}
 				catch
 				{

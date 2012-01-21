@@ -1904,6 +1904,7 @@ namespace MCSkin3D
 				treeView1.Nodes.Add(skin);
 
 			skin.SetImages();
+			treeView1.SelectedNode = skin;
 		}
 
 		void ImportSkins(string[] fileName, TreeNode parentNode)
@@ -2650,7 +2651,7 @@ namespace MCSkin3D
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-			foreach (var file in Directory.GetFiles("Overlays"))
+			foreach (var file in Directory.GetFiles("Overlays", "*.png"))
 			{
 				try
 				{
