@@ -174,6 +174,7 @@
 			this.orthographicToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.hybridToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.resetCameraToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.screenshotToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.toggleHeadToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -1655,6 +1656,7 @@
             this.orthographicToolStripButton,
             this.hybridToolStripButton,
             this.toolStripSeparator4,
+            this.resetCameraToolStripButton,
             this.screenshotToolStripButton,
             this.toolStripSeparator9,
             this.toggleHeadToolStripButton,
@@ -1769,6 +1771,17 @@
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
+			// resetCameraToolStripButton
+			// 
+			this.resetCameraToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.resetCameraToolStripButton.Image = global::MCSkin3D.Properties.Resources.samesize;
+			this.resetCameraToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.resetCameraToolStripButton.Name = "resetCameraToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.resetCameraToolStripButton, "Text");
+			this.resetCameraToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.resetCameraToolStripButton.Text = "T_RESETCAMERA";
+			this.resetCameraToolStripButton.Click += new System.EventHandler(this.resetCameraToolStripButton_Click);
 			// 
 			// screenshotToolStripButton
 			// 
@@ -2087,6 +2100,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mINVERTBOTTOMToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+		private System.Windows.Forms.ToolStripButton resetCameraToolStripButton;
 	}
 }
 

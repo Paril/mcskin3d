@@ -1,5 +1,5 @@
-﻿<Model Name="Pony">
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+﻿<Model Name="Pony" AspectRatio="2">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 -4 2</Vertex>
@@ -121,7 +121,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
+	<Mesh Name="Headpiece" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 -6 1</Vertex>
@@ -243,7 +243,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
+	<Mesh Name="Headpiece" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 -6 1</Vertex>
@@ -365,7 +365,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="True" FollowCursor="True" RotateFactor="0" Rotate="28.64789 0 0" Part="HelmetFlag">
+	<Mesh Name="Headpiece" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="True" FollowCursor="True" RotateFactor="0" Rotate="28.64789 0 0" Part="HelmetFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0.5 -10 -3</Vertex>
@@ -607,7 +607,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="True" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
+	<Mesh Name="Helmet" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="True" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4.5 -4.5 2.5</Vertex>
@@ -849,7 +849,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 2</Vertex>
@@ -971,7 +971,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-4 4 10</Vertex>
@@ -1013,7 +1013,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 10</Vertex>
@@ -1055,7 +1055,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 10</Vertex>
@@ -1097,7 +1097,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 12 10</Vertex>
@@ -1139,7 +1139,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-4 4 14</Vertex>
@@ -1181,7 +1181,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 14</Vertex>
@@ -1223,7 +1223,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 14</Vertex>
@@ -1265,7 +1265,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 12 14</Vertex>
@@ -1307,7 +1307,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 14</Vertex>
@@ -1349,7 +1349,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="28.64789 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="28.64789 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 10 14</Vertex>
@@ -1391,7 +1391,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="28.64789 0 0" Part="ChestFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="28.64789 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 12 14</Vertex>
@@ -1433,7 +1433,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="28.64789 0 0" Part="HeadFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="28.64789 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-1 12 14</Vertex>
@@ -1475,7 +1475,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="28.64789 0 0" Part="HeadFlag">
+	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="28.64789 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 10 14</Vertex>
@@ -1517,7 +1517,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-2 8 1" Pivot="-2 8 1" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightArmFlag">
+	<Mesh Name="Right Arm" Mode="Quads" Translate="-2 8 1" Pivot="-2 8 1" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 4 2</Vertex>
@@ -1639,7 +1639,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="2 8 1" Pivot="2 8 1" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftArmFlag">
+	<Mesh Name="Left Arm" Mode="Quads" Translate="2 8 1" Pivot="2 8 1" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 16 2</Vertex>
@@ -1761,7 +1761,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-2 8 10" Pivot="-2 8 10" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftLegFlag">
+	<Mesh Name="Right Leg" Mode="Quads" Translate="-2 8 10" Pivot="-2 8 10" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 4 2</Vertex>
@@ -1883,7 +1883,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="2 8 10" Pivot="2 8 10" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftLegFlag">
+	<Mesh Name="Left Leg" Mode="Quads" Translate="2 8 10" Pivot="2 8 10" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 16 2</Vertex>
@@ -2005,7 +2005,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 1 6</Vertex>
@@ -2047,7 +2047,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 17 6</Vertex>
@@ -2089,7 +2089,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 1 2</Vertex>
@@ -2131,7 +2131,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 1 6</Vertex>
@@ -2173,7 +2173,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 9 2</Vertex>
@@ -2215,7 +2215,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 9 6</Vertex>
@@ -2257,7 +2257,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 9 6</Vertex>
@@ -2299,7 +2299,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 1 6</Vertex>
@@ -2341,7 +2341,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>2 17 6</Vertex>
@@ -2383,7 +2383,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Tail" Mode="Quads" Translate="0 1 14" Pivot="0 1 14" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-2 9 6</Vertex>
@@ -2425,7 +2425,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="90 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="90 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 11 4</Vertex>
@@ -2667,7 +2667,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="90 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="90 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 13 6</Vertex>
@@ -2909,7 +2909,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="90 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="90 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 11 8</Vertex>
@@ -3151,7 +3151,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="25" Rotate="90 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="25" Rotate="90 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-4 5 4</Vertex>
@@ -3393,7 +3393,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="25" Rotate="90 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="25" Rotate="90 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-4 5 6</Vertex>
@@ -3635,7 +3635,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="25" Rotate="90 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing" Mode="Quads" Translate="0 13 -3" Pivot="0 13 -3" IsHelmet="True" FollowCursor="False" RotateFactor="25" Rotate="90 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-4 5 8</Vertex>
@@ -3877,7 +3877,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.1 8.1 2.1</Vertex>
@@ -4119,7 +4119,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.1 14.1 2.1</Vertex>
@@ -4361,7 +4361,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0.2 6.6 1.6</Vertex>
@@ -4603,7 +4603,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-42.97183 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-42.97183 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0.1 9.7 3.2</Vertex>
@@ -4845,7 +4845,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-28.64789 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-28.64789 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0 13 4</Vertex>
@@ -5087,7 +5087,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.3 6.3 2.1</Vertex>
@@ -5329,7 +5329,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
+	<Mesh Name="Left Wing Ext" Mode="Quads" Translate="4.5 5 6" Pivot="4.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.2 3.2 2.4</Vertex>
@@ -5571,7 +5571,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.1 8.1 2.1</Vertex>
@@ -5813,7 +5813,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.1 14.1 2.1</Vertex>
@@ -6055,7 +6055,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0.2 6.6 1.6</Vertex>
@@ -6297,7 +6297,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-42.97183 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-42.97183 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0.1 9.7 3.2</Vertex>
@@ -6539,7 +6539,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-28.64789 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-28.64789 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>0 13 4</Vertex>
@@ -6781,7 +6781,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="0 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.3 6.3 2.1</Vertex>
@@ -7023,7 +7023,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
+	<Mesh Name="Right Wing Ext" Mode="Quads" Translate="-5.5 5 6" Pivot="-5.5 5 6" IsHelmet="True" FollowCursor="False" RotateFactor="-25" Rotate="-48.70141 0 0" Part="RightLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>-0.2 3.2 2.4</Vertex>

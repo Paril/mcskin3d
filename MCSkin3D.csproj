@@ -344,7 +344,7 @@
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
     <Content Include="Icon_new.ico" />
-    <None Include="bin\slkscr.ttf" />
+    <None Include="Resources\samesize.png" />
     <None Include="Resources\right_arrow_next.png" />
     <None Include="Resources\112_Minus_Orange_16x16_72.png" />
     <None Include="Resources\112_Minus_Orange_24x24_721.png" />
@@ -355,6 +355,7 @@
     <None Include="Resources\buttong_down2.png" />
     <None Include="Resources\buttong_down.png" />
     <None Include="Resources\buttong_2.png" />
+    <None Include="Resources\slkscr.ttf" />
     <None Include="Resources\ZoomOutHS.png" />
     <None Include="Resources\ZoomInHS.png" />
     <None Include="Resources\Rename.png" />

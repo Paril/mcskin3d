@@ -1,5 +1,5 @@
-﻿<Model Name="Chest">
-	<Mesh Name="Test" Mode="Quads" Translate="1 7 15" Pivot="1 7 15" IsHelmet="False" FollowCursor="True" RotateFactor="25" Rotate="0 0 0" Part="HeadFlag">
+﻿<Model Name="Chest" AspectRatio="1">
+	<Mesh Name="Lid" Mode="Quads" Translate="1 7 15" Pivot="1 7 15" IsHelmet="False" FollowCursor="True" RotateFactor="25" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>14 -5 0</Vertex>
@@ -121,7 +121,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="8 7 15" Pivot="8 7 15" IsHelmet="False" FollowCursor="True" RotateFactor="25" Rotate="0 0 0" Part="HelmetFlag">
+	<Mesh Name="Knob" Mode="Quads" Translate="8 7 15" Pivot="8 7 15" IsHelmet="False" FollowCursor="True" RotateFactor="25" Rotate="0 0 0" Part="HelmetFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 -2 -14</Vertex>
@@ -243,7 +243,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="1 6 1" Pivot="1 6 1" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Base" Mode="Quads" Translate="1 6 1" Pivot="1 6 1" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>14 0 14</Vertex>

@@ -32,8 +32,21 @@ namespace MCSkin3D
 			if (!System.IO.File.Exists(fileName))
 				throw new System.IO.FileNotFoundException(fileName);
 
-			using (Bitmap b = new Bitmap(fileName))
-				return LoadImage(b);
+			Bitmap b = new Bitmap(fileName);
+
+			if (b.PixelFormat == System.Drawing.Imaging.PixelFormat.Format8bppIndexed)
+			{
+				Bitmap newBitmap = new Bitmap(b.Width, b.Height);
+
+				using (Graphics g = Graphics.FromImage(newBitmap))
+					g.DrawImage(b, 0, 0, b.Width, b.Height);
+
+				b.Dispose();
+				b = newBitmap;
+				newBitmap.Save(fileName);
+			}
+
+			return LoadImage(b);
 		}
 
 		public static int LoadImage(Bitmap b)
