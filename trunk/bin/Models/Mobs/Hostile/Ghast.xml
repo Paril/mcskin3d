@@ -1,5 +1,5 @@
-﻿<Model Name="Ghast">
-	<Mesh Name="Test" Mode="Quads" Translate="0 8 0" Pivot="0 8 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+﻿<Model Name="Ghast" AspectRatio="2">
+	<Mesh Name="Body" Mode="Quads" Translate="0 8 0" Pivot="0 8 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>8 -8 8</Vertex>
@@ -121,7 +121,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-3.75 15 -5" Pivot="-3.75 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="16.77633 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-3.75 15 -5" Pivot="-3.75 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="16.77633 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -243,7 +243,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="1.25 15 -5" Pivot="1.25 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="11.45931 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="1.25 15 -5" Pivot="1.25 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="11.45931 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -365,7 +365,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="6.25 15 -5" Pivot="6.25 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="16.67764 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="6.25 15 -5" Pivot="6.25 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="16.67764 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -487,7 +487,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-6.25 15 0" Pivot="-6.25 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="27.63361 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-6.25 15 0" Pivot="-6.25 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="27.63361 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -609,7 +609,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-1.25 15 0" Pivot="-1.25 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="34.25436 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-1.25 15 0" Pivot="-1.25 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="34.25436 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -731,7 +731,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="3.75 15 0" Pivot="3.75 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="30.4528 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="3.75 15 0" Pivot="3.75 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="30.4528 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -853,7 +853,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="-3.75 15 5" Pivot="-3.75 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="19.72406 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-3.75 15 5" Pivot="-3.75 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="19.72406 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -975,7 +975,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="1.25 15 5" Pivot="1.25 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="11.9321 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="1.25 15 5" Pivot="1.25 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="11.9321 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -1097,7 +1097,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="6.25 15 5" Pivot="6.25 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="14.24081 0 0" Part="LeftLegFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="6.25 15 5" Pivot="6.25 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="14.24081 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>

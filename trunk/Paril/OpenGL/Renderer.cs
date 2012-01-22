@@ -62,6 +62,7 @@ namespace Paril.OpenGL
 		public Color4[] Colors;
 		public int[] Indices;
 		public bool Downface;
+		public Vector3 Normal;
 
 		public Face(Vector3[] vertices, Vector2[] texCoords, Color4[] colors, int[] indices) :
 			this()
@@ -184,6 +185,7 @@ namespace Paril.OpenGL
 		public void CalculateCenter()
 		{
 			int count = 0;
+			Bounds = new Bounds3(new Vector3(9999, 9999, 9999), new Vector3(-9999, -9999, -9999));
 
 			foreach (var x in Faces)
 			{
@@ -191,24 +193,20 @@ namespace Paril.OpenGL
 				{
 					count++;
 
-					var m = Matrix4.CreateTranslation(Translate) *
-						Matrix4.CreateRotationX(Rotate.X) *
-						Matrix4.CreateRotationY(Rotate.Y) *
-						Matrix4.CreateRotationZ(Rotate.Z) *
-						Matrix4.CreateTranslation(Pivot);
+					var m =
+					//Matrix4.CreateTranslation(-mesh.Pivot) *
+			Matrix4.CreateRotationX(MathHelper.DegreesToRadians(Rotate.X)) *
+				Matrix4.CreateRotationY(MathHelper.DegreesToRadians(Rotate.Y)) *
+				Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotate.Z)) *
+						//Matrix4.CreateTranslation(mesh.Pivot) *
+				Matrix4.CreateTranslation(Translate);
 
 					Center += Vector3.Transform(v, m);
+					Bounds += Vector3.Transform(v, m);
 				}
 			}
 
 			Center /= count;
-		}
-
-		public void CalculateBounds()
-		{
-			foreach (var x in Faces)
-				foreach (var v in x.Vertices)
-					Bounds += v + Translate;
 		}
 	}
 
@@ -255,6 +253,7 @@ namespace Paril.OpenGL
 	{
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
+		public float AspectRatio;
 		public FileInfo File;
 
 		// P: polygon support required? used bounds 'n stuff but, you know...
@@ -294,12 +293,26 @@ namespace Paril.OpenGL
 			{
 				writer.WriteStartElement("Model");
 				writer.WriteAttributeString("Name", Name);
+				writer.WriteAttributeString("AspectRatio", AspectRatio.ToString());
 
 				foreach (var mesh in Meshes)
 					mesh.Write(writer);
 
 				writer.WriteEndElement();
 			}
+		}
+
+		static Vector3 TranslateVertex(Vector3 Translate, Vector3 Rotate, Vector3 Pivot, Vector3 v)
+		{
+			var m =
+				//Matrix4.CreateTranslation(-mesh.Pivot) *
+				Matrix4.CreateRotationX(MathHelper.DegreesToRadians(Rotate.X)) *
+				Matrix4.CreateRotationY(MathHelper.DegreesToRadians(Rotate.Y)) *
+				Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotate.Z)) *
+				//Matrix4.CreateTranslation(mesh.Pivot) *
+				Matrix4.CreateTranslation(Translate);
+
+			return Vector3.Transform(v, m);
 		}
 
 		public static Model Load(string fileName)
@@ -325,6 +338,9 @@ namespace Paril.OpenGL
 			document.Load(inStream);
 
 			model.Name = document.DocumentElement.Attributes["Name"].InnerText;
+
+			if (document.DocumentElement.Attributes["AspectRatio"] != null)
+				model.AspectRatio = float.Parse(document.DocumentElement.Attributes["AspectRatio"].InnerText, CultureInfo.InvariantCulture);
 
 			foreach (XmlElement n in document.DocumentElement.ChildNodes)
 			{
@@ -373,17 +389,23 @@ namespace Paril.OpenGL
 					foreach (XmlElement vertexNode in faceNode["Indices"])
 						face.Indices[i++] = int.Parse(vertexNode.InnerText);
 
-					var dir = Vector3.Cross(face.Vertices[1] - face.Vertices[0], face.Vertices[2] - face.Vertices[0]);
-					var norm = Vector3.Normalize(dir);
+					var zero = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[0]);
+					var one = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[1]);
+					var two = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[2]);
 
-					if (norm == new Vector3(0, 1, 0))
+					var dir = Vector3.Cross(one - zero, two - zero);
+					face.Normal = Vector3.Normalize(dir);
+
+					dir = Vector3.Cross(face.Vertices[1] - face.Vertices[0], face.Vertices[2] - face.Vertices[0]);
+					var realNormal = Vector3.Normalize(dir);
+
+					if (realNormal == new Vector3(0, 1, 0))
 						face.Downface = true;
 
 					mesh.Faces.Add(face);
 				}
 
 				mesh.CalculateCenter();
-				mesh.CalculateBounds();
 
 				model.Meshes.Add(mesh);
 			}
@@ -398,8 +420,12 @@ namespace Paril.OpenGL
 		static Font _silkScreen = null;
 		static PrivateFontCollection _collection;
 
-		public void GenerateOverlay(Color lineColor, Size baseSize, int scale, string fileName)
+		public Bitmap GenerateOverlay(Color lineColor, float aspect, int scale, int lineWidth)
 		{
+			if (aspect == 0)
+				aspect = 1;
+
+			Size baseSize = new Size((int)scale, (int)(scale / aspect));
 			if (_silkScreen == null)
 			{
 				_collection = new PrivateFontCollection();
@@ -415,8 +441,8 @@ namespace Paril.OpenGL
 				_silkScreen = new Font(_collection.Families[0], 6);
 			}
 
-			Bitmap b = new Bitmap(baseSize.Width * scale, baseSize.Height * scale);
-			var pen = new Pen(lineColor);
+			Bitmap b = new Bitmap(baseSize.Width, baseSize.Height);
+			var pen = new Pen(lineColor, lineWidth);
 
 			using (Graphics g = Graphics.FromImage(b))
 			{
@@ -432,15 +458,72 @@ namespace Paril.OpenGL
 							bounds.AddPoint(new Point((int)(p.X * (b.Width - 1)), (int)(p.Y * (b.Height - 1))));
 
 						var rect = bounds.ToRectangle();
+						rect.X += lineWidth - 1;
+						rect.Y += lineWidth - 1;
+						rect.Width -= lineWidth - 1;
+						rect.Height -= lineWidth - 1;
+						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+						g.FillRectangle(new SolidBrush(Color.FromArgb(0, 255, 255, 255)), rect);
+						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
 						g.DrawRectangle(pen, rect);
 
-						var measured = TextRenderer.MeasureText("Test", _silkScreen);
-						g.DrawString("Test", _silkScreen, System.Drawing.Brushes.White, rect, StringFormat.GenericDefault);
+						string side = SideFromNormal(y.Normal);
+						string str = x.Name + " " + side;
+
+						rect.X++;
+						rect.Y++;
+
+						var measured = g.MeasureString(str, _silkScreen, rect.Size, StringFormat.GenericDefault);
+						g.DrawString(str, _silkScreen, System.Drawing.Brushes.White, rect, StringFormat.GenericDefault);
 					}
 				}
 			}
 
-			b.Save(fileName);
+			return b;
+		}
+
+		static string SideFromNormal(Vector3 vector3)
+		{
+			Vector3[] vecs = new Vector3[]
+			{
+				new Vector3(0, 1, 0),
+				new Vector3(0, -1, 0),
+				new Vector3(1, 0, 0),
+				new Vector3(-1, 0, 0),
+				new Vector3(0, 0, 1),
+				new Vector3(0, 0, -1),
+			};
+
+			string[] names = new string[]
+			{
+				"Bottom",
+				"Top",
+				"Right",
+				"Left",
+				"Back",
+				"Front"
+			};
+
+			int closestIndex = -1;
+			float closestDist = float.MaxValue;
+
+			if (float.IsNaN(vector3.X) &&
+				float.IsNaN(vector3.Y) &&
+				float.IsNaN(vector3.Z))
+				return "";
+
+			for (int i = 0; i < 6; ++i)
+			{
+				var dist = (vector3 - vecs[i]).LengthSquared;
+
+				if (dist < closestDist)
+				{
+					closestDist = dist;
+					closestIndex = i;
+				}
+			}
+
+			return names[closestIndex];
 		}
 	}
 
@@ -467,7 +550,7 @@ namespace Paril.OpenGL
 					var leftDist = (Editor.CameraPosition - left.Center).Length;
 					var rightDist = (Editor.CameraPosition - right.Center).Length;
 
-					return rightDist.CompareTo(leftDist);
+					return leftDist.CompareTo(rightDist);
 				}
 			);
 		}

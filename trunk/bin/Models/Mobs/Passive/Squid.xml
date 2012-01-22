@@ -1,5 +1,5 @@
-﻿<Model Name="Squid">
-	<Mesh Name="Test" Mode="Quads" Translate="0 8 0" Pivot="0 8 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+﻿<Model Name="Squid" AspectRatio="2">
+	<Mesh Name="Body" Mode="Quads" Translate="0 8 0" Pivot="0 8 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>6 -8 6</Vertex>
@@ -121,7 +121,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 15 0" Pivot="0 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 90 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="5 15 0" Pivot="5 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 90 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -243,7 +243,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="3.926991 15 3.535534" Pivot="3.926991 15 3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 45 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="3.535534 15 3.535534" Pivot="3.535534 15 3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 45 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -365,7 +365,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="7.853982 15 5" Pivot="7.853982 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 0 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="3.061516E-16 15 5" Pivot="3.061516E-16 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 0 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -487,7 +487,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="11.78097 15 3.535534" Pivot="11.78097 15 3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -45 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-3.535534 15 3.535534" Pivot="-3.535534 15 3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -45 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -609,7 +609,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="15.70796 15 6.123032E-16" Pivot="15.70796 15 6.123032E-16" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -90 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-5 15 6.123032E-16" Pivot="-5 15 6.123032E-16" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -90 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -731,7 +731,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="19.63495 15 -3.535534" Pivot="19.63495 15 -3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -135 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-3.535534 15 -3.535534" Pivot="-3.535534 15 -3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -135 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -853,7 +853,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="23.56194 15 -5" Pivot="23.56194 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -180 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="-9.184548E-16 15 -5" Pivot="-9.184548E-16 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -180 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>
@@ -975,7 +975,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="27.48894 15 -3.535534" Pivot="27.48894 15 -3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -225 0" Part="LeftArmFlag">
+	<Mesh Name="Tentacle" Mode="Quads" Translate="3.535534 15 -3.535534" Pivot="3.535534 15 -3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -225 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>
 				<Vertex>1 0 1</Vertex>

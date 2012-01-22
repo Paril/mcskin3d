@@ -396,6 +396,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap samesize {
+            get {
+                object obj = ResourceManager.GetObject("samesize", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap SaveAllHS {
             get {
                 object obj = ResourceManager.GetObject("SaveAllHS", resourceCulture);

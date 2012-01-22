@@ -546,6 +546,18 @@ namespace MCSkin3D
 			}
 		}
 
+		public void PerformResetCamera()
+		{
+			_2dCamOffsetX = 0;
+			_2dCamOffsetY = 0;
+			_2dZoom = 8;
+			_3dZoom = -80;
+			_3dRotationX = 0;
+			_3dRotationY = 180;
+
+			rendererControl.Invalidate();
+		}
+
 		// =====================================================================
 		// Updating
 		// =====================================================================
@@ -725,6 +737,7 @@ namespace MCSkin3D
 			InitControlShortcut("S_TREEVIEW_ZOOMOUT", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
 			InitUnlinkedShortcut("T_DECRES", Keys.Control | Keys.Shift | Keys.D, PerformDecreaseResolution);
 			InitUnlinkedShortcut("T_INCRES", Keys.Control | Keys.Shift | Keys.I, PerformIncreaseResolution);
+			InitUnlinkedShortcut("T_RESETCAMERA", Keys.Control | Keys.Shift | Keys.R, PerformResetCamera);
 		}
 
 		void PerformSwitchColor()
@@ -1041,9 +1054,9 @@ namespace MCSkin3D
 			}
 
 			if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
-				_backgrounds[_selectedBackground].GLImage != 0)
+				_dynamicOverlay != 0)
 			{
-				RenderState.BindTexture(_backgrounds[_selectedBackground].GLImage);
+				RenderState.BindTexture(_dynamicOverlay);
 
 				GL.Begin(BeginMode.Quads);
 				GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
@@ -1118,6 +1131,37 @@ namespace MCSkin3D
 				_renderer.Render();
 			else
 				_renderer.RenderWithoutTransparency();
+
+			/*RenderState.BindTexture(0);
+			GL.PointSize(4);
+			GL.Disable(EnableCap.DepthTest);
+
+			foreach (var mesh in CurrentModel.Meshes)
+			{
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
+					!(GlobalSettings.Ghost && !pickView))
+					continue;
+
+				var m =
+					//Matrix4.CreateTranslation(-mesh.Pivot) *
+			Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mesh.Rotate.X)) *
+			Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mesh.Rotate.Y)) *
+			Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mesh.Rotate.Z)) *
+			//Matrix4.CreateTranslation(mesh.Pivot) *
+			Matrix4.CreateTranslation(mesh.Translate);
+
+				GL.Begin(BeginMode.Points);
+				foreach (var f in mesh.Faces)
+				{
+					foreach (var v in f.Vertices)
+					{
+						GL.Vertex3(Vector3.Transform(v, m));
+					}
+				}
+				GL.End();
+			}
+
+			GL.Enable(EnableCap.DepthTest);*/
 		}
 
 		Point _pickPosition = new Point(-1, -1);
@@ -4166,6 +4210,7 @@ namespace MCSkin3D
 		}
 
 		ModelToolStripMenuItem _oldModel = null;
+		int _dynamicOverlay = 0;
 		public void SetModel(Model Model)
 		{
 			if (_lastSkin == null)
@@ -4191,6 +4236,15 @@ namespace MCSkin3D
 			toolStripDropDownButton1.Text = _lastSkin.Model.Name;
 			_oldModel = _lastSkin.Model.DropDownItem;
 			_oldModel.Checked = true;
+			
+			if (_dynamicOverlay != 0)
+				RenderState.DeleteTexture(_dynamicOverlay);
+
+			_dynamicOverlay = ImageUtilities.LoadImage(Model.GenerateOverlay(Color.White, Model.AspectRatio, 512, 1));
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
 			for (var parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
 				parent.Image = Properties.Resources.right_arrow_next;
@@ -4200,6 +4254,11 @@ namespace MCSkin3D
 		{
 			get;
 			private set;
+		}
+
+		private void resetCameraToolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformResetCamera();
 		}
 	}
 }

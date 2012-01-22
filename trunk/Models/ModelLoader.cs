@@ -308,24 +308,24 @@ namespace MCSkin3D
 				return this;
 			}
 
-			public ModelRenderer addBox(String s, float f, float f1, float f2, int i, int j, int k)
+			public ModelRenderer addBox(string name, String s, float f, float f1, float f2, int i, int j, int k)
 			{
 				s = (new StringBuilder()).Append(boxName).Append(".").Append(s).ToString();
 				TextureOffset textureoffset = baseModel.func_40297_a(s);
 				setTextureOffset(textureoffset.field_40734_a, textureoffset.field_40733_b);
-				cubeList.Add((new ModelBox(this, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, 0.0F)).func_40671_a(s));
+				cubeList.Add((new ModelBox(this, name, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, 0.0F)).func_40671_a(s));
 				return this;
 			}
 
-			public ModelRenderer addBox(float f, float f1, float f2, int i, int j, int k)
+			public ModelRenderer addBox(string name, float f, float f1, float f2, int i, int j, int k)
 			{
-				cubeList.Add(new ModelBox(this, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, 0.0F));
+				cubeList.Add(new ModelBox(this, name, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, 0.0F));
 				return this;
 			}
 
-			public void addBox(float f, float f1, float f2, int i, int j, int k, float f3)
+			public void addBox(string name, float f, float f1, float f2, int i, int j, int k, float f3)
 			{
-				cubeList.Add(new ModelBox(this, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, f3));
+				cubeList.Add(new ModelBox(this, name, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, f3));
 			}
 
 			public void setRotationPoint(float f, float f1, float f2)
@@ -368,13 +368,15 @@ namespace MCSkin3D
 			public bool mirror;
 			public bool showModel;
 			public bool isHidden;
+			public string Name;
 
 			public VisiblePartFlags Flags;
 			public bool Helmet;
 			public bool Animate, AlsoReverse;
 
-			public PlaneRenderer(ModelBase modelbase, int i, int j, VisiblePartFlags flags, bool helmet, bool animate, bool alsoReverse = true)
+			public PlaneRenderer(ModelBase modelbase, string name, int i, int j, VisiblePartFlags flags, bool helmet, bool animate, bool alsoReverse = true)
 			{
+				Name = name;
 				this.textureWidth = 64.0F;
 				this.textureHeight = 32.0F;
 				this.compiled = false;
@@ -575,10 +577,12 @@ namespace MCSkin3D
 			public float field_40675_e;
 			public float field_40672_f;
 			public String field_40673_g;
+			public string Name;
 
-			public ModelBox(ModelRenderer modelrenderer, int i, int j, float f, float f1, float f2, int k,
+			public ModelBox(ModelRenderer modelrenderer, string name, int i, int j, float f, float f1, float f2, int k,
 					int l, int i1, float f3)
 			{
+				Name = name;
 				field_40678_a = f;
 				field_40676_b = f1;
 				field_40677_c = f2;
@@ -688,34 +692,35 @@ namespace MCSkin3D
 				return (TextureOffset)field_39000_a[s];
 			}
 
-			public Model Compile(string name, float scale = 1)
+			public Model Compile(string name, float scale, float aspectRatio)
 			{
 				var model = new Model();
 				model.Name = name;
+				model.AspectRatio = aspectRatio;
 
 				foreach (var boxObj in boxList)
 				{
 					if (boxObj is ModelRenderer)
 					{
 						ModelRenderer box = (ModelRenderer)boxObj;
-						Mesh mesh = new Mesh("Test");
-						mesh.Faces = new List<Face>();
-						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-						mesh.Helmet = mesh.AllowTransparency = box.Helmet;
-						mesh.Part = box.Flags;
-						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
-						mesh.Pivot = mesh.Translate;
-
-						if (box.Animate)
-							mesh.RotateFactor = (box.mirror) ? -25 : 25;
-
-						if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
-							mesh.FollowCursor = true;
-
-						mesh.Mode = BeginMode.Quads;
-
 						foreach (var face in box.cubeList)
 						{
+							Mesh mesh = new Mesh(face.Name);
+							mesh.Faces = new List<Face>();
+							mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
+							mesh.Helmet = mesh.AllowTransparency = box.Helmet;
+							mesh.Part = box.Flags;
+							mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
+							mesh.Pivot = mesh.Translate;
+
+							if (box.Animate)
+								mesh.RotateFactor = (box.mirror) ? -25 : 25;
+
+							if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
+								mesh.FollowCursor = true;
+
+							mesh.Mode = BeginMode.Quads;
+
 							int[] cwIndices = new int[] { 0, 1, 2, 3 };
 							int[] cwwIndices = new int[] { 3, 2, 1, 0 };
 							Color4[] colors = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
@@ -752,15 +757,15 @@ namespace MCSkin3D
 								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
 								mesh.Faces.Add(newFace);
 							}
-						}
 
-						model.Meshes.Add(mesh);
+							model.Meshes.Add(mesh);
+						}
 					}
 					else if (boxObj is PlaneRenderer)
 					{
 						PlaneRenderer box = (PlaneRenderer)boxObj;
 
-						Mesh mesh = new Mesh("Test");
+						Mesh mesh = new Mesh(box.Name);
 						mesh.Faces = new List<Face>();
 						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
 						mesh.Helmet = mesh.AllowTransparency = box.Helmet;
@@ -837,24 +842,24 @@ namespace MCSkin3D
 				field_40331_g = 8F;
 				field_40332_n = 4F;
 				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				head.addBox(-4F, -4F, -8F, 8, 8, 8, f);
+				head.addBox("Head", -4F, -4F, -8F, 8, 8, 8, f);
 				head.setRotationPoint(0.0F, 18 - i, -6F);
 				body = new ModelRenderer(this, 28, 8, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-5F, -10F, -7F, 10, 16, 8, f);
+				body.addBox("Body", -5F, -10F, -7F, 10, 16, 8, f);
 				body.setRotationPoint(0.0F, 17 - i, 2.0F);
 				body.rotateAngleX = 1.570796F;
 				leg1 = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftLegFlag, false, true);
-				leg1.addBox(-2F, 0.0F, -2F, 4, i, 4, f);
+				leg1.addBox("Left Leg", -2F, 0.0F, -2F, 4, i, 4, f);
 				leg1.setRotationPoint(-3F, 24 - i, 7F);
 				leg2 = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightLegFlag, false, true);
 				leg2.mirror = true;
-				leg2.addBox(-2F, 0.0F, -2F, 4, i, 4, f);
+				leg2.addBox("Right Leg", -2F, 0.0F, -2F, 4, i, 4, f);
 				leg2.setRotationPoint(3F, 24 - i, 7F);
 				leg3 = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, true);
-				leg3.addBox(-2F, 0.0F, -2F, 4, i, 4, f);
+				leg3.addBox("Left Arm", -2F, 0.0F, -2F, 4, i, 4, f);
 				leg3.setRotationPoint(-3F, 24 - i, -5F);
 				leg4 = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, true);
-				leg4.addBox(-2F, 0.0F, -2F, 4, i, 4, f);
+				leg4.addBox("Right Arm", -2F, 0.0F, -2F, 4, i, 4, f);
 				leg4.setRotationPoint(3F, 24 - i, -5F);
 				leg4.mirror = true;
 			}
@@ -870,7 +875,7 @@ namespace MCSkin3D
 			public ModelPig(float f) :
 				base(6, f)
 			{
-				head.setTextureOffset(16, 16).addBox(-2F, 0.0F, -9F, 4, 3, 1, f);
+				head.setTextureOffset(16, 16).addBox("Snout", -2F, 0.0F, -9F, 4, 3, 1, f);
 				field_40331_g = 4F;
 			}
 		}
@@ -914,27 +919,27 @@ namespace MCSkin3D
 				bipedEars = new ModelRenderer(this, 24, 0);
 				bipedEars.addBox(-3F, -6F, -1F, 6, 6, 1, f);*/
 				bipedHead = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8, f);
+				bipedHead.addBox("Head", -4F, -8F, -4F, 8, 8, 8, f);
 				bipedHead.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
 				bipedHeadwear = new ModelRenderer(this, 32, 0, VisiblePartFlags.HelmetFlag, true, false);
-				bipedHeadwear.addBox(-4F, -8F, -4F, 8, 8, 8, f + 0.5F);
+				bipedHeadwear.addBox("Headwear", -4F, -8F, -4F, 8, 8, 8, f + 0.5F);
 				bipedHeadwear.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
 				bipedBody = new ModelRenderer(this, 16, 16, VisiblePartFlags.ChestFlag, false, false);
-				bipedBody.addBox(-4F, 0.0F, -2F, 8, 12, 4, f);
+				bipedBody.addBox("Body", -4F, 0.0F, -2F, 8, 12, 4, f);
 				bipedBody.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
 				bipedRightArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, true);
-				bipedRightArm.addBox(-3F, -2F, -2F, 4, 12, 4, f);
+				bipedRightArm.addBox("Right Arm", -3F, -2F, -2F, 4, 12, 4, f);
 				bipedRightArm.setRotationPoint(-5F, 2.0F + f1, 0.0F);
 				bipedLeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftArmFlag, false, true);
 				bipedLeftArm.mirror = true;
-				bipedLeftArm.addBox(-1F, -2F, -2F, 4, 12, 4, f);
+				bipedLeftArm.addBox("Left Arm", -1F, -2F, -2F, 4, 12, 4, f);
 				bipedLeftArm.setRotationPoint(5F, 2.0F + f1, 0.0F);
 				bipedRightLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightLegFlag, false, true);
-				bipedRightLeg.addBox(-2F, 0.0F, -2F, 4, 12, 4, f);
+				bipedRightLeg.addBox("Right Leg", -2F, 0.0F, -2F, 4, 12, 4, f);
 				bipedRightLeg.setRotationPoint(-2F, 12F + f1, 0.0F);
 				bipedLeftLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftLegFlag, false, true);
 				bipedLeftLeg.mirror = true;
-				bipedLeftLeg.addBox(-2F, 0.0F, -2F, 4, 12, 4, f);
+				bipedLeftLeg.addBox("Left Leg", -2F, 0.0F, -2F, 4, 12, 4, f);
 				bipedLeftLeg.setRotationPoint(2.0F, 12F + f1, 0.0F);
 			}
 		}
@@ -971,26 +976,26 @@ namespace MCSkin3D
 				byte byte1 = 64;
 				head = (new ModelRenderer(this, VisiblePartFlags.HeadFlag, false, false)).setTextureSize(byte0, byte1);
 				head.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
-				head.setTextureOffset(0, 0).addBox(-4F, -10F, -4F, 8, 10, 8, f);
-				head.setTextureOffset(24, 0).addBox(-1F, -3F, -6F, 2, 4, 2, f);
+				head.setTextureOffset(0, 0).addBox("Head", -4F, -10F, -4F, 8, 10, 8, f);
+				head.setTextureOffset(24, 0).addBox("Nose", -1F, -3F, -6F, 2, 4, 2, f);
 				arms = (new ModelRenderer(this, VisiblePartFlags.LeftArmFlag, false, false)).setTextureSize(byte0, byte1);
 				arms.rotationPointY = 3F;
 				arms.rotationPointZ = -1F;
 				arms.rotateAngleX = -0.75F;
-				arms.setTextureOffset(44, 22).addBox(-8F, -2F, -2F, 4, 8, 4, f);
-				arms.setTextureOffset(44, 22).addBox(4F, -2F, -2F, 4, 8, 4, f);
-				arms.setTextureOffset(40, 38).addBox(-4F, 2.0F, -2F, 8, 4, 4, f);
+				arms.setTextureOffset(44, 22).addBox("Arms", -8F, -2F, -2F, 4, 8, 4, f);
+				arms.setTextureOffset(44, 22).addBox("Arms", 4F, -2F, -2F, 4, 8, 4, f);
+				arms.setTextureOffset(40, 38).addBox("Arms", -4F, 2.0F, -2F, 8, 4, 4, f);
 				field_40336_d = (new ModelRenderer(this, 0, 22, VisiblePartFlags.LeftLegFlag, false, true)).setTextureSize(byte0, byte1);
 				field_40336_d.setRotationPoint(-2F, 12F + f1, 0.0F);
-				field_40336_d.addBox(-2F, 0.0F, -2F, 4, 12, 4, f);
+				field_40336_d.addBox("Left Leg", -2F, 0.0F, -2F, 4, 12, 4, f);
 				field_40337_e = (new ModelRenderer(this, 0, 22, VisiblePartFlags.RightLegFlag, false, true)).setTextureSize(byte0, byte1);
 				field_40337_e.mirror = true;
 				field_40337_e.setRotationPoint(2.0F, 12F + f1, 0.0F);
-				field_40337_e.addBox(-2F, 0.0F, -2F, 4, 12, 4, f);
+				field_40337_e.addBox("Left Leg", -2F, 0.0F, -2F, 4, 12, 4, f);
 				body = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, true, false)).setTextureSize(byte0, byte1);
 				body.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
-				body.setTextureOffset(16, 20).addBox(-4F, 0.0F, -3F, 8, 12, 6, f);
-				body.setTextureOffset(0, 38).addBox(-4F, 0.0F, -3F, 8, 18, 6, f + 0.5F);
+				body.setTextureOffset(16, 20).addBox("Body", -4F, 0.0F, -3F, 8, 12, 6, f);
+				body.setTextureOffset(0, 38).addBox("Overwear", -4F, 0.0F, -3F, 8, 18, 6, f + 0.5F);
 			}
 		}
 
@@ -1013,26 +1018,26 @@ namespace MCSkin3D
 			{
 				int i = 4;
 				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				head.addBox(-4F, -8F, -4F, 8, 8, 8, f);
+				head.addBox("Head", -4F, -8F, -4F, 8, 8, 8, f);
 				head.setRotationPoint(0.0F, i, 0.0F);
 				//unusedCreeperHeadwear = new ModelRenderer(this, 32, 0);
 				//unusedCreeperHeadwear.addBox(-4F, -8F, -4F, 8, 8, 8, f + 0.5F);
 				//unusedCreeperHeadwear.setRotationPoint(0.0F, i, 0.0F);
 				body = new ModelRenderer(this, 16, 16, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-4F, 0.0F, -2F, 8, 12, 4, f);
+				body.addBox("Body", -4F, 0.0F, -2F, 8, 12, 4, f);
 				body.setRotationPoint(0.0F, i, 0.0F);
 				leg1 = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftLegFlag, false, true);
-				leg1.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg1.addBox("Left Leg", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg1.setRotationPoint(-2F, 12 + i, 4F);
 				leg2 = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightLegFlag, false, true);
-				leg2.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg2.addBox("Right Leg", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg2.setRotationPoint(2.0F, 12 + i, 4F);
 				leg2.mirror = true;
 				leg3 = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, true);
-				leg3.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg3.addBox("Left Arm", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg3.setRotationPoint(-2F, 12 + i, -4F);
 				leg4 = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, true);
-				leg4.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg4.addBox("Right Arm", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg4.setRotationPoint(2.0F, 12 + i, -4F);
 				leg4.mirror = true;
 			}
@@ -1045,15 +1050,15 @@ namespace MCSkin3D
 			{
 				boxList.Remove(head);
 				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				head.addBox(-4F, -4F, -6F, 8, 8, 6, 0.0F);
+				head.addBox("Head", -4F, -4F, -6F, 8, 8, 6, 0.0F);
 				head.setRotationPoint(0.0F, 4F, -8F);
-				head.setTextureOffset(22, 0).addBox(-5F, -5F, -4F, 1, 3, 1, 0.0F);
-				head.setTextureOffset(22, 0).addBox(4F, -5F, -4F, 1, 3, 1, 0.0F);
+				head.setTextureOffset(22, 0).addBox("Ear", -5F, -5F, -4F, 1, 3, 1, 0.0F);
+				head.setTextureOffset(22, 0).addBox("Ear", 4F, -5F, -4F, 1, 3, 1, 0.0F);
 				boxList.Remove(body);
 				body = new ModelRenderer(this, 18, 4, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-6F, -10F, -7F, 12, 18, 10, 0.0F);
+				body.addBox("Body", -6F, -10F, -7F, 12, 18, 10, 0.0F);
 				body.setRotationPoint(0.0F, 5F, 2.0F);
-				body.setTextureOffset(52, 0).addBox(-2F, 2.0F, -8F, 4, 6, 1);
+				body.setTextureOffset(52, 0).addBox("Udder", -2F, 2.0F, -8F, 4, 6, 1);
 				body.rotateAngleX = 1.570796F;
 				leg1.rotationPointX--;
 				leg2.rotationPointX++;
@@ -1082,55 +1087,55 @@ namespace MCSkin3D
 			{
 				byte byte0 = 16;
 				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, true, false);
-				head.addBox(-2F, -6F, -2F, 4, 6, 3, 0.0F);
+				head.addBox("Head", -2F, -6F, -2F, 4, 6, 3, 0.0F);
 				head.setRotationPoint(0.0F, -1 + byte0, -4F);
 				bill = new ModelRenderer(this, 14, 0, VisiblePartFlags.HeadFlag, false, false);
-				bill.addBox(-2F, -4F, -4F, 4, 2, 2, 0.0F);
+				bill.addBox("Bill", -2F, -4F, -4F, 4, 2, 2, 0.0F);
 				bill.setRotationPoint(0.0F, -1 + byte0, -4F);
 				chin = new ModelRenderer(this, 14, 4, VisiblePartFlags.HeadFlag, false, false);
-				chin.addBox(-1F, -2F, -3F, 2, 2, 2, 0.0F);
+				chin.addBox("Chin", -1F, -2F, -3F, 2, 2, 2, 0.0F);
 				chin.setRotationPoint(0.0F, -1 + byte0, -4F);
 				body = new ModelRenderer(this, 0, 9, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-3F, -4F, -3F, 6, 8, 6, 0.0F);
+				body.addBox("Body", -3F, -4F, -3F, 6, 8, 6, 0.0F);
 				body.setRotationPoint(0.0F, 0 + byte0, 0.0F);
 				rightLeg = new ModelRenderer(this, 26, 0, VisiblePartFlags.RightLegFlag, true, true);
-				rightLeg.addBox(-1F, 0.0F, -3F, 3, 5, 3);
+				rightLeg.addBox("Right Leg", -1F, 0.0F, -3F, 3, 5, 3);
 				rightLeg.setRotationPoint(-2F, 3 + byte0, 1.0F);
 				leftLeg = new ModelRenderer(this, 26, 0, VisiblePartFlags.LeftLegFlag, true, true);
-				leftLeg.addBox(-1F, 0.0F, -3F, 3, 5, 3);
+				leftLeg.addBox("Left Leg", -1F, 0.0F, -3F, 3, 5, 3);
 				leftLeg.setRotationPoint(1.0F, 3 + byte0, 1.0F);
 				leftLeg.mirror = true;
 				rightWing = new ModelRenderer(this, 24, 13, VisiblePartFlags.RightArmFlag, false, true);
-				rightWing.addBox(0.0F, 0.0F, -3F, 1, 4, 6);
+				rightWing.addBox("Right Wing", 0.0F, 0.0F, -3F, 1, 4, 6);
 				rightWing.setRotationPoint(-4F, -3 + byte0, 0.0F);
 				leftWing = new ModelRenderer(this, 24, 13, VisiblePartFlags.LeftArmFlag, false, true);
-				leftWing.addBox(-1F, 0.0F, -3F, 1, 4, 6);
+				leftWing.addBox("Left Leg", -1F, 0.0F, -3F, 1, 4, 6);
 				leftWing.setRotationPoint(4F, -3 + byte0, 0.0F);
 			}
 		}
 
 		public class ModelSlime : ModelBase
 		{
-			ModelRenderer slimeBodies;
+			ModelRenderer slimeBodies, slimeBodies2;
 			ModelRenderer slimeRightEye;
 			ModelRenderer slimeLeftEye;
 			ModelRenderer slimeMouth;
 
 			public ModelSlime(int i)
 			{
+				slimeBodies = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, true, false);
+				slimeBodies.addBox("Slime", -4F, 16F, -4F, 8, 8, 8);
 				if (i > 0)
 				{
-					slimeBodies = new ModelRenderer(this, 0, 0, VisiblePartFlags.ChestFlag, false, false);
-					slimeBodies.addBox(-3F, 17F, -3F, 6, 6, 6);
-					slimeRightEye = new ModelRenderer(this, 32, 0, VisiblePartFlags.LeftArmFlag, false, false);
-					slimeRightEye.addBox(-3.25F, 18F, -3.5F, 2, 2, 2);
-					slimeLeftEye = new ModelRenderer(this, 32, 4, VisiblePartFlags.RightArmFlag, false, false);
-					slimeLeftEye.addBox(1.25F, 18F, -3.5F, 2, 2, 2);
-					slimeMouth = new ModelRenderer(this, 32, 8, VisiblePartFlags.RightArmFlag, false, false);
-					slimeMouth.addBox(0.0F, 21F, -3.5F, 1, 1, 1);
+					slimeBodies2 = new ModelRenderer(this, 0, i, VisiblePartFlags.HelmetFlag, true, false);
+					slimeBodies2.addBox("Slime", -3F, 17F, -3F, 6, 6, 6);
+					slimeRightEye = new ModelRenderer(this, 32, 0, VisiblePartFlags.RightLegFlag, false, false);
+					slimeRightEye.addBox("Eye", -3.25F, 18F, -3.5F, 2, 2, 2);
+					slimeLeftEye = new ModelRenderer(this, 32, 4, VisiblePartFlags.LeftLegFlag, false, false);
+					slimeLeftEye.addBox("Eye", 1.25F, 18F, -3.5F, 2, 2, 2);
+					slimeMouth = new ModelRenderer(this, 32, 8, VisiblePartFlags.ChestFlag, false, false);
+					slimeMouth.addBox("Mouth", 0.0F, 21F, -3.5F, 1, 1, 1);
 				}
-				slimeBodies = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				slimeBodies.addBox(-4F, 16F, -4F, 8, 8, 8);
 			}
 		}
 
@@ -1144,15 +1149,15 @@ namespace MCSkin3D
 				squidTentacles = new ModelRenderer[8];
 				var byte0 = -16;
 				squidBody = new ModelRenderer(this, 0, 0, VisiblePartFlags.ChestFlag, false, false);
-				squidBody.addBox(-6F, -8F, -6F, 12, 16, 12);
+				squidBody.addBox("Body", -6F, -8F, -6F, 12, 16, 12);
 				squidBody.rotationPointY += 24 + byte0;
 				for (int i = 0; i < squidTentacles.Length; i++)
 				{
 					squidTentacles[i] = new ModelRenderer(this, 48, 0, VisiblePartFlags.LeftArmFlag, false, true);
 					double d = ((double)i * 3.1415926535897931D * 2D) / (double)squidTentacles.Length;
-					float f = (float)d * 5F;
+					float f = (float)Math.Cos(d) * 5F;
 					float f1 = (float)Math.Sin(d) * 5F;
-					squidTentacles[i].addBox(-1F, 0.0F, -1F, 2, 18, 2);
+					squidTentacles[i].addBox("Tentacle", -1F, 0.0F, -1F, 2, 18, 2);
 					squidTentacles[i].rotationPointX = f;
 					squidTentacles[i].rotationPointZ = f1;
 					squidTentacles[i].rotationPointY = 31 + byte0;
@@ -1186,11 +1191,11 @@ namespace MCSkin3D
 							j = 19;
 						}
 					field_40345_a[i] = new ModelRenderer(this, byte0, j, VisiblePartFlags.HeadFlag, false, false);
-					field_40345_a[i].addBox(-4F, 16 + i, -4F, 8, 1, 8);
+					field_40345_a[i].addBox("Head", -4F, 16 + i, -4F, 8, 1, 8);
 				}
 
 				field_40344_b = new ModelRenderer(this, 0, 16, VisiblePartFlags.ChestFlag, false, false);
-				field_40344_b.addBox(-2F, 18F, -2F, 4, 4, 4);
+				field_40344_b.addBox("Core", -2F, 18F, -2F, 4, 4, 4);
 			}
 		}
 
@@ -1205,11 +1210,11 @@ namespace MCSkin3D
 				for (int i = 0; i < field_40323_a.Length; i++)
 				{
 					field_40323_a[i] = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, false);
-					field_40323_a[i].addBox(0.0F, 0.0F, 0.0F, 2, 8, 2);
+					field_40323_a[i].addBox("Rod", 0.0F, 0.0F, 0.0F, 2, 8, 2);
 				}
 
 				field_40322_b = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				field_40322_b.addBox(-4F, -4F, -4F, 8, 8, 8);
+				field_40322_b.addBox("Head", -4F, -4F, -4F, 8, 8, 8);
 
 				setRotationAngles(0, 0, 0, 0, 0, 0);
 			}
@@ -1219,8 +1224,8 @@ namespace MCSkin3D
 				float f6 = f2 * 3.141593F * -0.1F;
 				for (int i = 0; i < 4; i++)
 				{
-					field_40323_a[i].rotationPointY = -2F + (((float)(i * 2) + f2) * 0.25F);
-					field_40323_a[i].rotationPointX = (f6) * 9F;
+					field_40323_a[i].rotationPointY = -2F + (float)Math.Cos(((float)(i * 2) + f2) * 0.25F);
+					field_40323_a[i].rotationPointX = (float)Math.Cos(f6) * 9F;
 					field_40323_a[i].rotationPointZ = (float)Math.Sin(f6) * 9F;
 					f6 += 1.570796F;
 				}
@@ -1228,8 +1233,8 @@ namespace MCSkin3D
 				f6 = 0.7853982F + f2 * 3.141593F * 0.03F;
 				for (int j = 4; j < 8; j++)
 				{
-					field_40323_a[j].rotationPointY = 2.0F + (((float)(j * 2) + f2) * 0.25F);
-					field_40323_a[j].rotationPointX = (f6) * 7F;
+					field_40323_a[j].rotationPointY = 2.0F + (float)Math.Cos(((float)(j * 2) + f2) * 0.25F);
+					field_40323_a[j].rotationPointX = (float)Math.Cos(f6) * 7F;
 					field_40323_a[j].rotationPointZ = (float)Math.Sin(f6) * 7F;
 					f6 += 1.570796F;
 				}
@@ -1237,8 +1242,8 @@ namespace MCSkin3D
 				f6 = 0.4712389F + f2 * 3.141593F * -0.05F;
 				for (int k = 8; k < 12; k++)
 				{
-					field_40323_a[k].rotationPointY = 11F + (((float)k * 1.5F + f2) * 0.5F);
-					field_40323_a[k].rotationPointX = (f6) * 5F;
+					field_40323_a[k].rotationPointY = 11F + (float)Math.Cos(((float)k * 1.5F + f2) * 0.5F);
+					field_40323_a[k].rotationPointX = (float)Math.Cos(f6) * 5F;
 					field_40323_a[k].rotationPointZ = (float)Math.Sin(f6) * 5F;
 					f6 += 1.570796F;
 				}
@@ -1297,7 +1302,7 @@ namespace MCSkin3D
 				for (int i = 0; i < silverfishBodyParts.Length; i++)
 				{
 					silverfishBodyParts[i] = new ModelRenderer(this, silverfishTexturePositions[i, 0], silverfishTexturePositions[i, 1], VisiblePartFlags.ChestFlag, false, false);
-					silverfishBodyParts[i].addBox((float)silverfishBoxLength[i, 0] * -0.5F, 0.0F, (float)silverfishBoxLength[i, 2] * -0.5F, silverfishBoxLength[i, 0], silverfishBoxLength[i, 1], silverfishBoxLength[i, 2]);
+					silverfishBodyParts[i].addBox("Body", (float)silverfishBoxLength[i, 0] * -0.5F, 0.0F, (float)silverfishBoxLength[i, 2] * -0.5F, silverfishBoxLength[i, 0], silverfishBoxLength[i, 1], silverfishBoxLength[i, 2]);
 					silverfishBodyParts[i].setRotationPoint(0.0F, 24 - silverfishBoxLength[i, 1], f);
 					field_35399_c[i] = f;
 					if (i < silverfishBodyParts.Length - 1)
@@ -1308,13 +1313,13 @@ namespace MCSkin3D
 
 				silverfishWings = new ModelRenderer[3];
 				silverfishWings[0] = new ModelRenderer(this, 20, 0, VisiblePartFlags.HeadFlag, true, false);
-				silverfishWings[0].addBox(-5F, 0.0F, (float)silverfishBoxLength[2, 2] * -0.5F, 10, 8, silverfishBoxLength[2, 2]);
+				silverfishWings[0].addBox("Wings", -5F, 0.0F, (float)silverfishBoxLength[2, 2] * -0.5F, 10, 8, silverfishBoxLength[2, 2]);
 				silverfishWings[0].setRotationPoint(0.0F, 16F, field_35399_c[2]);
 				silverfishWings[1] = new ModelRenderer(this, 20, 11, VisiblePartFlags.HeadFlag, true, false);
-				silverfishWings[1].addBox(-3F, 0.0F, (float)silverfishBoxLength[4, 2] * -0.5F, 6, 4, silverfishBoxLength[4, 2]);
+				silverfishWings[1].addBox("Wings", -3F, 0.0F, (float)silverfishBoxLength[4, 2] * -0.5F, 6, 4, silverfishBoxLength[4, 2]);
 				silverfishWings[1].setRotationPoint(0.0F, 20F, field_35399_c[4]);
 				silverfishWings[2] = new ModelRenderer(this, 20, 18, VisiblePartFlags.HeadFlag, true, false);
-				silverfishWings[2].addBox(-3F, 0.0F, (float)silverfishBoxLength[4, 2] * -0.5F, 6, 5, silverfishBoxLength[1, 2]);
+				silverfishWings[2].addBox("Wings", -3F, 0.0F, (float)silverfishBoxLength[4, 2] * -0.5F, 6, 5, silverfishBoxLength[1, 2]);
 				silverfishWings[2].setRotationPoint(0.0F, 19F, field_35399_c[1]);
 			}
 		}
@@ -1334,31 +1339,31 @@ namespace MCSkin3D
 				bipedHead.Helmet = true;
 				boxList.Remove(bipedHeadwear);
 				bipedHeadwear = new ModelRenderer(this, 0, 16, VisiblePartFlags.HelmetFlag, true, false);
-				bipedHeadwear.addBox(-4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
+				bipedHeadwear.addBox("Jaw", -4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
 				bipedHeadwear.setRotationPoint(0.0F, 0.0F + f, 0.0F);
 				boxList.Remove(bipedHead);
 				boxList.Add(bipedHead);
 				boxList.Remove(bipedBody);
 				bipedBody = new ModelRenderer(this, 32, 16, VisiblePartFlags.ChestFlag, false, false);
-				bipedBody.addBox(-4F, 0.0F, -2F, 8, 12, 4, f1);
+				bipedBody.addBox("Body", -4F, 0.0F, -2F, 8, 12, 4, f1);
 				bipedBody.setRotationPoint(0.0F, 0.0F + f, 0.0F);
 				boxList.Remove(bipedRightArm);
 				bipedRightArm = new ModelRenderer(this, 56, 0, VisiblePartFlags.RightArmFlag, false, true);
-				bipedRightArm.addBox(-1F, -2F, -1F, 2, 30, 2, f1);
+				bipedRightArm.addBox("Right Arm", -1F, -2F, -1F, 2, 30, 2, f1);
 				bipedRightArm.setRotationPoint(-5F, 2.0F + f, 0.0F);
 				boxList.Remove(bipedLeftArm);
 				bipedLeftArm = new ModelRenderer(this, 56, 0, VisiblePartFlags.LeftArmFlag, false, true);
 				bipedLeftArm.mirror = true;
-				bipedLeftArm.addBox(-1F, -2F, -1F, 2, 30, 2, f1);
+				bipedLeftArm.addBox("Left Arm", -1F, -2F, -1F, 2, 30, 2, f1);
 				bipedLeftArm.setRotationPoint(5F, 2.0F + f, 0.0F);
 				boxList.Remove(bipedRightLeg);
 				bipedRightLeg = new ModelRenderer(this, 56, 0, VisiblePartFlags.RightLegFlag, false, true);
-				bipedRightLeg.addBox(-1F, 0.0F, -1F, 2, 30, 2, f1);
+				bipedRightLeg.addBox("Right Leg", -1F, 0.0F, -1F, 2, 30, 2, f1);
 				bipedRightLeg.setRotationPoint(-2F, 12F + f, 0.0F);
 				boxList.Remove(bipedLeftLeg);
 				bipedLeftLeg = new ModelRenderer(this, 56, 0, VisiblePartFlags.LeftLegFlag, false, true);
 				bipedLeftLeg.mirror = true;
-				bipedLeftLeg.addBox(-1F, 0.0F, -1F, 2, 30, 2, f1);
+				bipedLeftLeg.addBox("Left Leg", -1F, 0.0F, -1F, 2, 30, 2, f1);
 				bipedLeftLeg.setRotationPoint(2.0F, 12F + f, 0.0F);
 			}
 		}
@@ -1379,32 +1384,32 @@ namespace MCSkin3D
 				float f = 0.0F;
 				float f1 = 13.5F;
 				wolfHeadMain = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				wolfHeadMain.addBox(-3F, -3F, -2F, 6, 6, 4, f);
+				wolfHeadMain.addBox("Head", -3F, -3F, -2F, 6, 6, 4, f);
 				wolfHeadMain.setRotationPoint(-1F, f1, -7F);
 				wolfBody = new ModelRenderer(this, 18, 14, VisiblePartFlags.ChestFlag, false, false);
-				wolfBody.addBox(-4F, -2F, -3F, 6, 9, 6, f);
+				wolfBody.addBox("Body", -4F, -2F, -3F, 6, 9, 6, f);
 				wolfBody.setRotationPoint(0.0F, 14F, 2.0F);
 				wolfMane = new ModelRenderer(this, 21, 0, VisiblePartFlags.HelmetFlag, false, false);
-				wolfMane.addBox(-4F, -3F, -3F, 8, 6, 7, f);
+				wolfMane.addBox("Mane", -4F, -3F, -3F, 8, 6, 7, f);
 				wolfMane.setRotationPoint(-1F, 14F, 2.0F);
 				wolfLeg1 = new ModelRenderer(this, 0, 18, VisiblePartFlags.LeftLegFlag, false, true);
-				wolfLeg1.addBox(-1F, 0.0F, -1F, 2, 8, 2, f);
+				wolfLeg1.addBox("Left Leg", -1F, 0.0F, -1F, 2, 8, 2, f);
 				wolfLeg1.setRotationPoint(-2.5F, 16F, 7F);
 				wolfLeg2 = new ModelRenderer(this, 0, 18, VisiblePartFlags.RightLegFlag, false, true);
-				wolfLeg2.addBox(-1F, 0.0F, -1F, 2, 8, 2, f);
+				wolfLeg2.addBox("Right Leg", -1F, 0.0F, -1F, 2, 8, 2, f);
 				wolfLeg2.setRotationPoint(0.5F, 16F, 7F);
 				wolfLeg3 = new ModelRenderer(this, 0, 18, VisiblePartFlags.LeftArmFlag, false, true);
-				wolfLeg3.addBox(-1F, 0.0F, -1F, 2, 8, 2, f);
+				wolfLeg3.addBox("Left Arm", -1F, 0.0F, -1F, 2, 8, 2, f);
 				wolfLeg3.setRotationPoint(-2.5F, 16F, -4F);
 				wolfLeg4 = new ModelRenderer(this, 0, 18, VisiblePartFlags.RightArmFlag, false, true);
-				wolfLeg4.addBox(-1F, 0.0F, -1F, 2, 8, 2, f);
+				wolfLeg4.addBox("Right Arm", -1F, 0.0F, -1F, 2, 8, 2, f);
 				wolfLeg4.setRotationPoint(0.5F, 16F, -4F);
 				wolfTail = new ModelRenderer(this, 9, 18, VisiblePartFlags.ChestFlag, false, false);
-				wolfTail.addBox(-1F, 0.0F, -1F, 2, 8, 2, f);
+				wolfTail.addBox("Chest", -1F, 0.0F, -1F, 2, 8, 2, f);
 				wolfTail.setRotationPoint(-1F, 12F, 8F);
-				wolfHeadMain.setTextureOffset(16, 14).addBox(-3F, -5F, 0.0F, 2, 2, 1, f);
-				wolfHeadMain.setTextureOffset(16, 14).addBox(1.0F, -5F, 0.0F, 2, 2, 1, f);
-				wolfHeadMain.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -5F, 3, 3, 4, f);
+				wolfHeadMain.setTextureOffset(16, 14).addBox("Ear", -3F, -5F, 0.0F, 2, 2, 1, f);
+				wolfHeadMain.setTextureOffset(16, 14).addBox("Ear", 1.0F, -5F, 0.0F, 2, 2, 1, f);
+				wolfHeadMain.setTextureOffset(0, 10).addBox("Nose", -1.5F, 0.0F, -5F, 3, 3, 4, f);
 
 				setLivingAnimations(0, 0, 0);
 			}
@@ -1421,10 +1426,10 @@ namespace MCSkin3D
 				wolfLeg2.setRotationPoint(0.5F, 16F, 7F);
 				wolfLeg3.setRotationPoint(-2.5F, 16F, -4F);
 				wolfLeg4.setRotationPoint(0.5F, 16F, -4F);
-				wolfLeg1.rotateAngleX = (f * 0.6662F) * 1.4F * f1;
-				wolfLeg2.rotateAngleX = (f * 0.6662F + 3.141593F) * 1.4F * f1;
-				wolfLeg3.rotateAngleX = (f * 0.6662F + 3.141593F) * 1.4F * f1;
-				wolfLeg4.rotateAngleX = (f * 0.6662F) * 1.4F * f1;
+				wolfLeg1.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
+				wolfLeg2.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+				wolfLeg3.rotateAngleX = (float)Math.Cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+				wolfLeg4.rotateAngleX = (float)Math.Cos(f * 0.6662F) * 1.4F * f1;
 			}
 		}
 
@@ -1438,7 +1443,7 @@ namespace MCSkin3D
 				tentacles = new ModelRenderer[9];
 				int byte0 = -16;
 				body = new ModelRenderer(this, 0, 0, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-8F, -8F, -8F, 16, 16, 16);
+				body.addBox("Body", -8F, -8F, -8F, 16, 16, 16);
 				body.rotationPointY += 24 + byte0;
 				Random random = new Random(1660);
 				for (int i = 0; i < tentacles.Length; i++)
@@ -1447,7 +1452,7 @@ namespace MCSkin3D
 					float f = (((((float)(i % 3) - (float)((i / 3) % 2) * 0.5F) + 0.25F) / 2.0F) * 2.0F - 1.0F) * 5F;
 					float f1 = (((float)(i / 3) / 2.0F) * 2.0F - 1.0F) * 5F;
 					int j = random.Next(7) + 8;
-					tentacles[i].addBox(-1F, 0.0F, -1F, 2, j, 2);
+					tentacles[i].addBox("Tentacle", -1F, 0.0F, -1F, 2, j, 2);
 					tentacles[i].rotationPointX = f;
 					tentacles[i].rotationPointZ = f1;
 					tentacles[i].rotationPointY = 31 + byte0;
@@ -1484,37 +1489,37 @@ namespace MCSkin3D
 				float f = 0.0F;
 				int i = 15;
 				spiderHead = new ModelRenderer(this, 32, 4, VisiblePartFlags.HeadFlag, false, false);
-				spiderHead.addBox(-4F, -4F, -8F, 8, 8, 8, f);
+				spiderHead.addBox("Head", -4F, -4F, -8F, 8, 8, 8, f);
 				spiderHead.setRotationPoint(0.0F, 0 + i, -3F);
 				spiderNeck = new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, false);
-				spiderNeck.addBox(-3F, -3F, -3F, 6, 6, 6, f);
+				spiderNeck.addBox("Neck", -3F, -3F, -3F, 6, 6, 6, f);
 				spiderNeck.setRotationPoint(0.0F, i, 0.0F);
 				spiderBody = new ModelRenderer(this, 0, 12, VisiblePartFlags.ChestFlag, false, false);
-				spiderBody.addBox(-5F, -4F, -6F, 10, 8, 12, f);
+				spiderBody.addBox("Body", -5F, -4F, -6F, 10, 8, 12, f);
 				spiderBody.setRotationPoint(0.0F, 0 + i, 9F);
 				spiderLeg1 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, false);
-				spiderLeg1.addBox(-15F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg1.addBox("Leg", -15F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg1.setRotationPoint(-4F, 0 + i, 2.0F);
 				spiderLeg2 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg2.addBox(-1F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg2.addBox("Leg", -1F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg2.setRotationPoint(4F, 0 + i, 2.0F);
 				spiderLeg3 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg3.addBox(-15F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg3.addBox("Leg", -15F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg3.setRotationPoint(-4F, 0 + i, 1.0F);
 				spiderLeg4 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg4.addBox(-1F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg4.addBox("Leg", -1F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg4.setRotationPoint(4F, 0 + i, 1.0F);
 				spiderLeg5 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg5.addBox(-15F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg5.addBox("Leg", -15F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg5.setRotationPoint(-4F, 0 + i, 0.0F);
 				spiderLeg6 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg6.addBox(-1F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg6.addBox("Leg", -1F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg6.setRotationPoint(4F, 0 + i, 0.0F);
 				spiderLeg7 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg7.addBox(-15F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg7.addBox("Leg", -15F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg7.setRotationPoint(-4F, 0 + i, -1F);
 				spiderLeg8 = new ModelRenderer(this, 18, 0, VisiblePartFlags.LeftArmFlag, false, true);
-				spiderLeg8.addBox(-1F, -1F, -1F, 16, 2, 2, f);
+				spiderLeg8.addBox("Leg", -1F, -1F, -1F, 16, 2, 2, f);
 				spiderLeg8.setRotationPoint(4F, 0 + i, -1F);
 
 				setRotationAngles(0, 0, 0, 0, 0, 0);
@@ -1577,29 +1582,29 @@ namespace MCSkin3D
 			{
 				boxList.Remove(head);
 				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				head.addBox(-3F, -4F, -4F, 6, 6, 6, 0.6F);
+				head.addBox("Head", -3F, -4F, -4F, 6, 6, 6, 0.6F);
 				head.setRotationPoint(0.0F, 6F, -8F);
 				boxList.Remove(body);
 				body = new ModelRenderer(this, 28, 8, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-4F, -10F, -7F, 8, 16, 6, 1.75F);
+				body.addBox("Body", -4F, -10F, -7F, 8, 16, 6, 1.75F);
 				body.setRotationPoint(0.0F, 5F, 2.0F);
 				body.rotateAngleX = 1.570796F;
 				float f = 0.5F;
 				boxList.Remove(leg1);
 				leg1 = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftLegFlag, false, true);
-				leg1.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg1.addBox("Left Leg", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg1.setRotationPoint(-3F, 12F, 7F);
 				boxList.Remove(leg2);
 				leg2 = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightLegFlag, false, true);
-				leg2.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg2.addBox("Right Leg", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg2.setRotationPoint(3F, 12F, 7F);
 				boxList.Remove(leg3);
 				leg3 = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, true);
-				leg3.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg3.addBox("Left Arm", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg3.setRotationPoint(-3F, 12F, -5F);
 				boxList.Remove(leg4);
 				leg4 = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, true);
-				leg4.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
+				leg4.addBox("Right Arm", -2F, 0.0F, -2F, 4, 6, 4, f);
 				leg4.setRotationPoint(3F, 12F, -5F);
 			}
 		}
@@ -1611,11 +1616,11 @@ namespace MCSkin3D
 			{
 				boxList.Remove(head);
 				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				head.addBox(-3F, -4F, -6F, 6, 6, 8, 0.0F);
+				head.addBox("Head", -3F, -4F, -6F, 6, 6, 8, 0.0F);
 				head.setRotationPoint(0.0F, 6F, -8F);
 				boxList.Remove(body);
 				body = new ModelRenderer(this, 28, 8, VisiblePartFlags.ChestFlag, false, false);
-				body.addBox(-4F, -10F, -7F, 8, 16, 6, 0.0F);
+				body.addBox("Body", -4F, -10F, -7F, 8, 16, 6, 0.0F);
 				body.setRotationPoint(0.0F, 5F, 2.0F);
 				body.rotateAngleX = 1.570796F;
 			}
@@ -1630,17 +1635,17 @@ namespace MCSkin3D
 			public ModelChest()
 			{
 				chestLid = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, true)).setTextureSize(64, 64);
-				chestLid.addBox(0.0F, -5F, -14F, 14, 5, 14, 0.0F);
+				chestLid.addBox("Lid", 0.0F, -5F, -14F, 14, 5, 14, 0.0F);
 				chestLid.rotationPointX = 1.0F;
 				chestLid.rotationPointY = 7F;
 				chestLid.rotationPointZ = 15F;
 				chestKnob = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, true)).setTextureSize(64, 64);
-				chestKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
+				chestKnob.addBox("Knob", -1F, -2F, -15F, 2, 4, 1, 0.0F);
 				chestKnob.rotationPointX = 8F;
 				chestKnob.rotationPointY = 7F;
 				chestKnob.rotationPointZ = 15F;
 				chestBelow = (new ModelRenderer(this, 0, 19, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(64, 64);
-				chestBelow.addBox(0.0F, 0.0F, 0.0F, 14, 10, 14, 0.0F);
+				chestBelow.addBox("Base", 0.0F, 0.0F, 0.0F, 14, 10, 14, 0.0F);
 				chestBelow.rotationPointX = 1.0F;
 				chestBelow.rotationPointY = 6F;
 				chestBelow.rotationPointZ = 1.0F;
@@ -1656,17 +1661,17 @@ namespace MCSkin3D
 			public ModelLargeChest()
 			{
 				chestLid = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, true)).setTextureSize(128, 64);
-				chestLid.addBox(0.0F, -5F, -14F, 30, 5, 14, 0.0F);
+				chestLid.addBox("Lid", 0.0F, -5F, -14F, 30, 5, 14, 0.0F);
 				chestLid.rotationPointX = 1.0F;
 				chestLid.rotationPointY = 7F;
 				chestLid.rotationPointZ = 15F;
 				chestKnob = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, true)).setTextureSize(128, 64);
-				chestKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
+				chestKnob.addBox("Knob", -1F, -2F, -15F, 2, 4, 1, 0.0F);
 				chestKnob.rotationPointX = 16F;
 				chestKnob.rotationPointY = 7F;
 				chestKnob.rotationPointZ = 15F;
 				chestBelow = (new ModelRenderer(this, 0, 19, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(128, 64);
-				chestBelow.addBox(0.0F, 0.0F, 0.0F, 30, 10, 14, 0.0F);
+				chestBelow.addBox("Base", 0.0F, 0.0F, 0.0F, 30, 10, 14, 0.0F);
 				chestBelow.rotationPointX = 1.0F;
 				chestBelow.rotationPointY = 6F;
 				chestBelow.rotationPointZ = 1.0F;
@@ -1689,15 +1694,15 @@ namespace MCSkin3D
 				byte byte1 = 6;
 				byte byte2 = 20;
 				byte byte3 = 4;
-				boatSides[0].addBox(-byte0 / 2, -byte2 / 2 + 2, -3F, byte0, byte2 - 4, 4, 0.0F);
+				boatSides[0].addBox("Base", -byte0 / 2, -byte2 / 2 + 2, -3F, byte0, byte2 - 4, 4, 0.0F);
 				boatSides[0].setRotationPoint(0.0F, 0 + byte3, 0.0F);
-				boatSides[1].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[1].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				boatSides[1].setRotationPoint(-byte0 / 2 + 1, 0 + byte3, 0.0F);
-				boatSides[2].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[2].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				boatSides[2].setRotationPoint(byte0 / 2 - 1, 0 + byte3, 0.0F);
-				boatSides[3].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[3].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				boatSides[3].setRotationPoint(0.0F, 0 + byte3, -byte2 / 2 + 1);
-				boatSides[4].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				boatSides[4].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				boatSides[4].setRotationPoint(0.0F, 0 + byte3, byte2 / 2 - 1);
 				boatSides[0].rotateAngleX = 1.570796F;
 				boatSides[1].rotateAngleY = 4.712389F;
@@ -1714,9 +1719,9 @@ namespace MCSkin3D
 			public SignModel()
 			{
 				signBoard = new ModelRenderer(this, 0, 0, VisiblePartFlags.HelmetFlag, false, false);
-				signBoard.addBox(-12F, -14F, -1F, 24, 12, 2, 0.0F);
+				signBoard.addBox("Board", -12F, -14F, -1F, 24, 12, 2, 0.0F);
 				signStick = new ModelRenderer(this, 0, 14, VisiblePartFlags.ChestFlag, false, false);
-				signStick.addBox(-1F, -2F, -1F, 2, 14, 2, 0.0F);
+				signStick.addBox("Stick", -1F, -2F, -1F, 2, 14, 2, 0.0F);
 			}
 		}
 
@@ -1732,13 +1737,13 @@ namespace MCSkin3D
 
 			public ModelBook()
 			{
-				field_40330_a = (new ModelRenderer(this, VisiblePartFlags.HeadFlag, false, false)).setTextureOffset(0, 0).addBox(-6F, -5F, 0.0F, 6, 10, 0);
-				field_40328_b = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureOffset(16, 0).addBox(0.0F, -5F, 0.0F, 6, 10, 0);
-				field_40325_g = (new ModelRenderer(this, VisiblePartFlags.HelmetFlag, false, false)).setTextureOffset(12, 0).addBox(-1F, -5F, 0.0F, 2, 10, 0);
-				field_40329_c = (new ModelRenderer(this, VisiblePartFlags.LeftArmFlag, false, false)).setTextureOffset(0, 10).addBox(0.0F, -4F, -0.99F, 5, 8, 1);
-				field_40326_d = (new ModelRenderer(this, VisiblePartFlags.LeftLegFlag, false, false)).setTextureOffset(12, 10).addBox(0.0F, -4F, -0.01F, 5, 8, 1);
-				field_40327_e = (new ModelRenderer(this, VisiblePartFlags.RightArmFlag, false, false)).setTextureOffset(24, 10).addBox(0.0F, -4F, 0.0F, 5, 8, 0);
-				field_40324_f = (new ModelRenderer(this, VisiblePartFlags.RightLegFlag, false, false)).setTextureOffset(24, 10).addBox(0.0F, -4F, 0.0F, 5, 8, 0);
+				field_40330_a = (new ModelRenderer(this, VisiblePartFlags.HeadFlag, false, false)).setTextureOffset(0, 0).addBox("Left Cover", -6F, -5F, 0.0F, 6, 10, 0);
+				field_40328_b = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureOffset(16, 0).addBox("Right Cover", 0.0F, -5F, 0.0F, 6, 10, 0);
+				field_40325_g = (new ModelRenderer(this, VisiblePartFlags.HelmetFlag, false, false)).setTextureOffset(12, 0).addBox("Spine", -1F, -5F, 0.0F, 2, 10, 0);
+				field_40329_c = (new ModelRenderer(this, VisiblePartFlags.LeftArmFlag, false, false)).setTextureOffset(0, 10).addBox("Page", 0.0F, -4F, -0.99F, 5, 8, 1);
+				field_40326_d = (new ModelRenderer(this, VisiblePartFlags.LeftLegFlag, false, false)).setTextureOffset(12, 10).addBox("Page", 0.0F, -4F, -0.01F, 5, 8, 1);
+				field_40327_e = (new ModelRenderer(this, VisiblePartFlags.RightArmFlag, false, false)).setTextureOffset(24, 10).addBox("Page", 0.0F, -4F, 0.0F, 5, 8, 0);
+				field_40324_f = (new ModelRenderer(this, VisiblePartFlags.RightLegFlag, false, false)).setTextureOffset(24, 10).addBox("Page", 0.0F, -4F, 0.0F, 5, 8, 0);
 				field_40330_a.setRotationPoint(0.0F, 0.0F, -1F);
 				field_40328_b.setRotationPoint(0.0F, 0.0F, 1.0F);
 				field_40325_g.rotateAngleY = 1.570796F;
@@ -1777,17 +1782,17 @@ namespace MCSkin3D
 				byte byte1 = 8;
 				byte byte2 = 16;
 				byte byte3 = 4;
-				sideModels[0].addBox(-byte0 / 2, -byte2 / 2, -1F, byte0, byte2, 2, 0.0F);
+				sideModels[0].addBox("Base", -byte0 / 2, -byte2 / 2, -1F, byte0, byte2, 2, 0.0F);
 				sideModels[0].setRotationPoint(0.0F, 0 + byte3, 0.0F);
-				sideModels[5].addBox(-byte0 / 2 + 1, -byte2 / 2 + 1, -1F, byte0 - 2, byte2 - 2, 1, 0.0F);
+				sideModels[5].addBox("Leather", -byte0 / 2 + 1, -byte2 / 2 + 1, -1F, byte0 - 2, byte2 - 2, 1, 0.0F);
 				sideModels[5].setRotationPoint(0.0F, 0 + byte3, 0.0F);
-				sideModels[1].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[1].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				sideModels[1].setRotationPoint(-byte0 / 2 + 1, 0 + byte3, 0.0F);
-				sideModels[2].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[2].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				sideModels[2].setRotationPoint(byte0 / 2 - 1, 0 + byte3, 0.0F);
-				sideModels[3].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[3].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				sideModels[3].setRotationPoint(0.0F, 0 + byte3, -byte2 / 2 + 1);
-				sideModels[4].addBox(-byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
+				sideModels[4].addBox("Side", -byte0 / 2 + 2, -byte1 - 1, -1F, byte0 - 4, byte1, 2, 0.0F);
 				sideModels[4].setRotationPoint(0.0F, 0 + byte3, byte2 / 2 - 1);
 				sideModels[0].rotateAngleX = 1.570796F;
 				sideModels[1].rotateAngleY = 4.712389F;
@@ -1806,11 +1811,11 @@ namespace MCSkin3D
 			public ModelEnderCrystal()
 			{
 				field_41058_h = new ModelRenderer(this, "glass", VisiblePartFlags.HeadFlag, true, false);
-				field_41058_h.setTextureOffset(0, 0).addBox(-4F, -4F, -4F, 8, 8, 8);
+				field_41058_h.setTextureOffset(0, 0).addBox("Glass", -4F, -4F, -4F, 8, 8, 8);
 				field_41057_g = new ModelRenderer(this, "cube", VisiblePartFlags.HelmetFlag, false, false);
-				field_41057_g.setTextureOffset(32, 0).addBox(-4F, -4F, -4F, 8, 8, 8);
+				field_41057_g.setTextureOffset(32, 0).addBox("Cube", -4F, -4F, -4F, 8, 8, 8);
 				field_41059_i = new ModelRenderer(this, "base", VisiblePartFlags.ChestFlag, false, false);
-				field_41059_i.setTextureOffset(0, 16).addBox(-6F, 0.0F, -6F, 12, 4, 12);
+				field_41059_i.setTextureOffset(0, 16).addBox("Base", -6F, 0.0F, -6F, 12, 4, 12);
 			}
 		}
 
@@ -1827,19 +1832,19 @@ namespace MCSkin3D
 				float f = 4F;
 				float f1 = 0.0F;
 				field_40305_c = (new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false)).setTextureSize(64, 64);
-				field_40305_c.addBox(-4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
+				field_40305_c.addBox("Head", -4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
 				field_40305_c.setRotationPoint(0.0F, 0.0F + f, 0.0F);
 				field_40302_d = (new ModelRenderer(this, 32, 0, VisiblePartFlags.HelmetFlag, false, false)).setTextureSize(64, 64);
-				field_40302_d.addBox(-1F, 0.0F, -1F, 12, 2, 2, f1 - 0.5F);
+				field_40302_d.addBox("Top", -1F, 0.0F, -1F, 12, 2, 2, f1 - 0.5F);
 				field_40302_d.setRotationPoint(0.0F, (0.0F + f + 9F) - 7F, 0.0F);
 				field_40303_e = (new ModelRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(64, 64);
-				field_40303_e.addBox(-1F, 0.0F, -1F, 12, 2, 2, f1 - 0.5F);
+				field_40303_e.addBox("Bottom", -1F, 0.0F, -1F, 12, 2, 2, f1 - 0.5F);
 				field_40303_e.setRotationPoint(0.0F, (0.0F + f + 9F) - 7F, 0.0F);
 				field_40306_a = (new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftArmFlag, false, false)).setTextureSize(64, 64);
-				field_40306_a.addBox(-5F, -10F, -5F, 10, 10, 10, f1 - 0.5F);
+				field_40306_a.addBox("Left Arm", -5F, -10F, -5F, 10, 10, 10, f1 - 0.5F);
 				field_40306_a.setRotationPoint(0.0F, 0.0F + f + 9F, 0.0F);
 				field_40304_b = (new ModelRenderer(this, 0, 36, VisiblePartFlags.RightArmFlag, false, false)).setTextureSize(64, 64);
-				field_40304_b.addBox(-6F, -12F, -6F, 12, 12, 12, f1 - 0.5F);
+				field_40304_b.addBox("Right Arm", -6F, -12F, -6F, 12, 12, 12, f1 - 0.5F);
 				field_40304_b.setRotationPoint(0.0F, 0.0F + f + 20F, 0.0F);
 
 				setRotationAngles(0, 0, 0, (float)Math.PI / 2, 0, 0);
@@ -1851,7 +1856,7 @@ namespace MCSkin3D
 				field_40305_c.rotateAngleX = f4 / 57.29578F;
 				field_40306_a.rotateAngleY = (f3 / 57.29578F) * 0.25F;
 				float f6 = (float)Math.Sin(field_40306_a.rotateAngleY);
-				float f7 = (field_40306_a.rotateAngleY);
+				float f7 = (float)Math.Cos(field_40306_a.rotateAngleY);
 				field_40302_d.rotateAngleZ = 1.0F;
 				field_40303_e.rotateAngleZ = -1F;
 				field_40302_d.rotateAngleY = 0.0F + field_40306_a.rotateAngleY;
@@ -1882,8 +1887,8 @@ namespace MCSkin3D
 				bipedLeftArm.rotateAngleX = -1.570796F;
 				bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
 				bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-				bipedRightArm.rotateAngleZ += (f2 * 0.09F) * 0.05F + 0.05F;
-				bipedLeftArm.rotateAngleZ -= (f2 * 0.09F) * 0.05F + 0.05F;
+				bipedRightArm.rotateAngleZ += (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+				bipedLeftArm.rotateAngleZ -= (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
 				bipedRightArm.rotateAngleX += (float)Math.Sin(f2 * 0.067F) * 0.05F;
 				bipedLeftArm.rotateAngleX -= (float)Math.Sin(f2 * 0.067F) * 0.05F;
 			}
@@ -1896,21 +1901,21 @@ namespace MCSkin3D
 				float f = 0.0F;
 				boxList.Remove(bipedRightArm);
 				bipedRightArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, false);
-				bipedRightArm.addBox(-1F, -2F, -1F, 2, 12, 2, f);
+				bipedRightArm.addBox("Right Arm", -1F, -2F, -1F, 2, 12, 2, f);
 				bipedRightArm.setRotationPoint(-5F, 2.0F, 0.0F);
 				boxList.Remove(bipedLeftArm);
-				bipedLeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, false);
+				bipedLeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftArmFlag, false, false);
 				bipedLeftArm.mirror = true;
-				bipedLeftArm.addBox(-1F, -2F, -1F, 2, 12, 2, f);
+				bipedLeftArm.addBox("Right Arm", -1F, -2F, -1F, 2, 12, 2, f);
 				bipedLeftArm.setRotationPoint(5F, 2.0F, 0.0F);
 				boxList.Remove(bipedRightLeg);
-				bipedRightLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, false);
-				bipedRightLeg.addBox(-1F, 0.0F, -1F, 2, 12, 2, f);
+				bipedRightLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightLegFlag, false, false);
+				bipedRightLeg.addBox("Right Leg", -1F, 0.0F, -1F, 2, 12, 2, f);
 				bipedRightLeg.setRotationPoint(-2F, 12F, 0.0F);
 				boxList.Remove(bipedLeftLeg);
-				bipedLeftLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.RightArmFlag, false, false);
+				bipedLeftLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.LeftLegFlag, false, false);
 				bipedLeftLeg.mirror = true;
-				bipedLeftLeg.addBox(-1F, 0.0F, -1F, 2, 12, 2, f);
+				bipedLeftLeg.addBox("Left Leg", -1F, 0.0F, -1F, 2, 12, 2, f);
 				bipedLeftLeg.setRotationPoint(2.0F, 12F, 0.0F);
 
 				setRotationAngles(0, 0, 0, 0, 0, 0);
@@ -1975,25 +1980,25 @@ namespace MCSkin3D
 				float headR3 = 0.0F;
 
 				this.head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
-				this.head.addBox(-4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech);
+				this.head.addBox("Head", -4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech);
 				this.head.setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.headpiece = new ModelRenderer[3];
 
 				this.headpiece[0] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, false, false);
-				this.headpiece[0].addBox(-4.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
+				this.headpiece[0].addBox("Headpiece", -4.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
 				this.headpiece[0].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.headpiece[1] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, false, false);
-				this.headpiece[1].addBox(2.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
+				this.headpiece[1].addBox("Headpiece", 2.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
 				this.headpiece[1].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.headpiece[2] = new ModelRenderer(this, 56, 0, VisiblePartFlags.HelmetFlag, true, false);
-				this.headpiece[2].addBox(-0.5F, -10.0F, -4.0F, 1, 4, 1, this.strech);
+				this.headpiece[2].addBox("Headpiece", -0.5F, -10.0F, -4.0F, 1, 4, 1, this.strech);
 				this.headpiece[2].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.helmet = new ModelRenderer(this, 32, 0, VisiblePartFlags.HelmetFlag, true, false);
-				this.helmet.addBox(-4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech + 0.5F);
+				this.helmet.addBox("Helmet", -4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech + 0.5F);
 				this.helmet.setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				float BodyR1 = 0.0F;
@@ -2001,89 +2006,89 @@ namespace MCSkin3D
 				float BodyR3 = 0.0F;
 
 				this.Body = new ModelRenderer(this, 16, 16, VisiblePartFlags.ChestFlag, false, false);
-				this.Body.addBox(-4.0F, 4.0F, -2.0F, 8, 8, 4, this.strech);
+				this.Body.addBox("Body", -4.0F, 4.0F, -2.0F, 8, 8, 4, this.strech);
 				this.Body.setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
 				this.Bodypiece = new PlaneRenderer[13];
 
-				this.Bodypiece[0] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.RightLegFlag, false, false);
+				this.Bodypiece[0] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.RightLegFlag, false, false);
 				this.Bodypiece[0].addSidePlane(-4.0F, 4.0F, 2.0F, 0, 8, 8, this.strech);
 				this.Bodypiece[0].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[1] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.RightLegFlag, false, false);
+				this.Bodypiece[1] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.RightLegFlag, false, false);
 				this.Bodypiece[1].addSidePlane(4.0F, 4.0F, 2.0F, 0, 8, 8, this.strech);
 				this.Bodypiece[1].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[2] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[2] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[2].addTopPlane(-4.0F, 4.0F, 2.0F, 8, 0, 8, this.strech);
 				this.Bodypiece[2].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[3] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[3] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[3].addTopPlane(-4.0F, 12.0F, 2.0F, 8, 0, 8, this.strech);
 				this.Bodypiece[3].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[4] = new PlaneRenderer(this, 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[4] = new PlaneRenderer(this, "Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[4].addSidePlane(-4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
 				this.Bodypiece[4].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[5] = new PlaneRenderer(this, 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[5] = new PlaneRenderer(this, "Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[5].addSidePlane(4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
 				this.Bodypiece[5].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[6] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[6] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[6].addTopPlane(-4.0F, 4.0F, 10.0F, 8, 0, 4, this.strech);
 				this.Bodypiece[6].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[7] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[7] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[7].addTopPlane(-4.0F, 12.0F, 10.0F, 8, 0, 4, this.strech);
 				this.Bodypiece[7].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[8] = new PlaneRenderer(this, 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[8] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[8].addBackPlane(-4.0F, 4.0F, 14.0F, 8, 8, 0, this.strech);
 				this.Bodypiece[8].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[9] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[9] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[9].addTopPlane(-1.0F, 10.0F, 8.0F, 2, 0, 6, this.strech);
 				this.Bodypiece[9].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[10] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[10] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[10].addTopPlane(-1.0F, 12.0F, 8.0F, 2, 0, 6, this.strech);
 				this.Bodypiece[10].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[11] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[11] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[11].mirror = true;
 				this.Bodypiece[11].addSidePlane(-1.0F, 10.0F, 8.0F, 0, 2, 6, this.strech);
 				this.Bodypiece[11].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[12] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[12] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[12].addSidePlane(1.0F, 10.0F, 8.0F, 0, 2, 6, this.strech);
 				this.Bodypiece[12].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.rightarm = new ModelRenderer(this, 40, 16, VisiblePartFlags.RightArmFlag, false, false);
-				this.rightarm.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.rightarm.addBox("Right Arm", -2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
 				this.rightarm.setRotationPoint(-3.0F, 8.0F + yoffset, 0.0F);
 
 				this.LeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftArmFlag, false, false);
 				this.LeftArm.mirror = true;
-				this.LeftArm.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.LeftArm.addBox("Left Arm", -2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
 				this.LeftArm.setRotationPoint(3.0F, 8.0F + yoffset, 0.0F);
 
 				this.RightLeg = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftLegFlag, false, false);
-				this.RightLeg.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.RightLeg.addBox("Right Leg", -2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
 				this.RightLeg.setRotationPoint(-3.0F, 0.0F + yoffset, 0.0F);
 
 				this.LeftLeg = new ModelRenderer(this, 40, 16, VisiblePartFlags.LeftLegFlag, false, false);
 				this.LeftLeg.mirror = true;
-				this.LeftLeg.addBox(-2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
+				this.LeftLeg.addBox("Left Leg", -2.0F, 4.0F, -2.0F, 4, 12, 4, this.strech);
 				this.LeftLeg.setRotationPoint(3.0F, 0.0F + yoffset, 0.0F);
 
 				this.SteveArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
-				this.SteveArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, this.strech);
+				this.SteveArm.addBox("Steve Arm?", -3.0F, -2.0F, -2.0F, 4, 12, 4, this.strech);
 				this.SteveArm.setRotationPoint(-5.0F, 2.0F + yoffset, 0.0F);
 				boxList.Remove(SteveArm);
 
 				this.unicornarm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
-				this.unicornarm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, this.strech);
+				this.unicornarm.addBox("Unicorn Arm?", -3.0F, -2.0F, -2.0F, 4, 12, 4, this.strech);
 				this.unicornarm.setRotationPoint(-5.0F, 2.0F + yoffset, 0.0F);
 				boxList.Remove(unicornarm);
 
@@ -2095,45 +2100,45 @@ namespace MCSkin3D
 				float TailR3 = 0.0F;
 				this.Tail = new PlaneRenderer[10];
 
-				this.Tail[0] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[0] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[0].addTopPlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 4, 0, 4, this.strech);
 				this.Tail[0].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[1] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[1] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[1].addTopPlane(-2.0F + txf, 9.0F + tyf, 16.0F + tzf, 4, 0, 4, this.strech);
 				this.Tail[1].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[2] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[2] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[2].addBackPlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[2].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[3] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[3] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[3].addBackPlane(-2.0F + txf, -7.0F + tyf, 20.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[3].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[4] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[4] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[4].addBackPlane(-2.0F + txf, 1.0F + tyf, 16.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[4].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[5] = new PlaneRenderer(this, 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[5] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[5].addBackPlane(-2.0F + txf, 1.0F + tyf, 20.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[5].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[6] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[6] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[6].mirror = true;
 				this.Tail[6].addSidePlane(2.0F + txf, -7.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[6].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[7] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[7] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[7].addSidePlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[7].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[8] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[8] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[8].mirror = true;
 				this.Tail[8].addSidePlane(2.0F + txf, 1.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[8].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[9] = new PlaneRenderer(this, 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[9] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[9].addSidePlane(-2.0F + txf, 1.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[9].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
@@ -2149,31 +2154,31 @@ namespace MCSkin3D
 
 				this.LeftWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWing[0].mirror = true;
-				this.LeftWing[0].addBox(4.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
+				this.LeftWing[0].addBox("Left Wing", 4.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
 				this.LeftWing[0].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.LeftWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWing[1].mirror = true;
-				this.LeftWing[1].addBox(4.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
+				this.LeftWing[1].addBox("Left Wing", 4.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
 				this.LeftWing[1].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.LeftWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWing[2].mirror = true;
-				this.LeftWing[2].addBox(4.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
+				this.LeftWing[2].addBox("Left Wing", 4.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
 				this.LeftWing[2].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 				
 				this.RightWing = new ModelRenderer[3];
 
 				this.RightWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
-				this.RightWing[0].addBox(-6.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
+				this.RightWing[0].addBox("Right Wing", -6.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
 				this.RightWing[0].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.RightWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
-				this.RightWing[1].addBox(-6.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
+				this.RightWing[1].addBox("Right Wing", -6.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
 				this.RightWing[1].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.RightWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
-				this.RightWing[2].addBox(-6.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
+				this.RightWing[2].addBox("Right Wing", -6.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
 				this.RightWing[2].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 				
 				float LeftWingExtR1 = headR1 + 4.5F;
@@ -2185,40 +2190,40 @@ namespace MCSkin3D
 				this.LeftWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[0].mirror = true;
 
-				this.LeftWingExt[0].addBox(0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
+				this.LeftWingExt[0].addBox("Left Wing Ext", 0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
 				this.LeftWingExt[0].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[1].mirror = true;
 
-				this.LeftWingExt[1].addBox(0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
+				this.LeftWingExt[1].addBox("Left Wing Ext", 0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
 				this.LeftWingExt[1].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[2].mirror = true;
-				this.LeftWingExt[2].addBox(0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
+				this.LeftWingExt[2].addBox("Left Wing Ext", 0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
 				this.LeftWingExt[2].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[3].mirror = true;
-				this.LeftWingExt[3].addBox(0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
+				this.LeftWingExt[3].addBox("Left Wing Ext", 0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
 				this.LeftWingExt[3].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[4].mirror = true;
-				this.LeftWingExt[4].addBox(0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
+				this.LeftWingExt[4].addBox("Left Wing Ext", 0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
 				this.LeftWingExt[4].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[5].mirror = true;
 
-				this.LeftWingExt[5].addBox(0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
+				this.LeftWingExt[5].addBox("Left Wing Ext", 0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
 				this.LeftWingExt[5].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[6].mirror = true;
 
-				this.LeftWingExt[6].addBox(0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
+				this.LeftWingExt[6].addBox("Left Wing Ext", 0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
 				this.LeftWingExt[6].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				float RightWingExtR1 = headR1 - 5.5F;
@@ -2230,40 +2235,40 @@ namespace MCSkin3D
 				this.RightWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[0].mirror = true;
 
-				this.RightWingExt[0].addBox(0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
+				this.RightWingExt[0].addBox("Right Wing Ext", 0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
 				this.RightWingExt[0].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[1].mirror = true;
 
-				this.RightWingExt[1].addBox(0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
+				this.RightWingExt[1].addBox("Right Wing Ext", 0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
 				this.RightWingExt[1].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[2].mirror = true;
-				this.RightWingExt[2].addBox(0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
+				this.RightWingExt[2].addBox("Right Wing Ext", 0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
 				this.RightWingExt[2].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[3].mirror = true;
-				this.RightWingExt[3].addBox(0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
+				this.RightWingExt[3].addBox("Right Wing Ext", 0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
 				this.RightWingExt[3].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[4].mirror = true;
-				this.RightWingExt[4].addBox(0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
+				this.RightWingExt[4].addBox("Right Wing Ext", 0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
 				this.RightWingExt[4].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[5].mirror = true;
 
-				this.RightWingExt[5].addBox(0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
+				this.RightWingExt[5].addBox("Right Wing Ext", 0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
 				this.RightWingExt[5].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[6].mirror = true;
 
-				this.RightWingExt[6].addBox(0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
+				this.RightWingExt[6].addBox("Right Wing Ext", 0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
 				this.RightWingExt[6].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.WingRotateAngleX = this.LeftWingExt[0].rotateAngleX;
@@ -3052,43 +3057,43 @@ namespace MCSkin3D
 
 		public static void LoadModels()
 		{
-			new ModelPig().Compile("Pig").Save("Models\\Mobs\\Passive\\Pig.xml");
-			new ModelBiped().Compile("Human").Save("Models\\Mobs\\Passive\\Human.xml");
-			new ModelVillager().Compile("Villager").Save("Models\\Mobs\\Passive\\Villager.xml");
-			new ModelCow().Compile("Cow").Save("Models\\Mobs\\Passive\\Cow.xml");
-			new ModelChicken().Compile("Chicken").Save("Models\\Mobs\\Passive\\Chicken.xml");
-			new ModelSquid().Compile("Squid").Save("Models\\Mobs\\Passive\\Squid.xml");
-			new ModelWolf().Compile("Wolf").Save("Models\\Mobs\\Passive\\Wolf.xml");
-			new ModelSheep1().Compile("Sheep Fur").Save("Models\\Mobs\\Passive\\Sheep Fur.xml");
-			new ModelSheep2().Compile("Sheep").Save("Models\\Mobs\\Passive\\Sheep.xml");
-			new ModelSnowMan().Compile("SnowMan").Save("Models\\Mobs\\Passive\\SnowMan.xml");
+			new ModelPig().Compile("Pig", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
+			new ModelBiped().Compile("Human", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Human.xml");
+			new ModelVillager().Compile("Villager", 1, 64.0f / 64.0f).Save("Models\\Mobs\\Passive\\Villager.xml");
+			new ModelCow().Compile("Cow", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Cow.xml");
+			new ModelChicken().Compile("Chicken", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Chicken.xml");
+			new ModelSquid().Compile("Squid", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Squid.xml");
+			new ModelWolf().Compile("Wolf", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Wolf.xml");
+			new ModelSheep1().Compile("Sheep Fur", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Sheep Fur.xml");
+			new ModelSheep2().Compile("Sheep", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Sheep.xml");
+			new ModelSnowMan().Compile("SnowMan", 1, 64.0f / 64.0f).Save("Models\\Mobs\\Passive\\SnowMan.xml");
 
-			new ModelChest().Compile("Chest").Save("Models\\Other\\Chest.xml");
-			new ModelLargeChest().Compile("Large Chest").Save("Models\\Other\\LargeChest.xml");
-			new ModelBoat().Compile("Boat").Save("Models\\Other\\Boat.xml");
-			new SignModel().Compile("Sign").Save("Models\\Other\\Sign.xml");
-			new ModelBook().Compile("Book").Save("Models\\Other\\Book.xml");
-			new ModelMinecart().Compile("Minecart").Save("Models\\Other\\Minecart.xml");
-			new ModelEnderCrystal().Compile("Ender Crystal").Save("Models\\Other\\EnderCrystal.xml");
+			new ModelChest().Compile("Chest", 1, 64.0f / 64.0f).Save("Models\\Other\\Chest.xml");
+			new ModelLargeChest().Compile("Large Chest", 1, 128.0f / 64.0f).Save("Models\\Other\\LargeChest.xml");
+			new ModelBoat().Compile("Boat", 1, 64.0f / 32.0f).Save("Models\\Other\\Boat.xml");
+			new SignModel().Compile("Sign", 1, 64.0f / 32.0f).Save("Models\\Other\\Sign.xml");
+			new ModelBook().Compile("Book", 1, 64.0f / 32.0f).Save("Models\\Other\\Book.xml");
+			new ModelMinecart().Compile("Minecart", 1, 64.0f / 32.0f).Save("Models\\Other\\Minecart.xml");
+			new ModelEnderCrystal().Compile("Ender Crystal", 1, 128.0f / 64.0f).Save("Models\\Other\\EnderCrystal.xml");
 
-			new ModelCreeper().Compile("Creeper").Save("Models\\Mobs\\Hostile\\Creeper.xml");
-			new ModelSlime(0).Compile("Tiny Slime").Save("Models\\Mobs\\Hostile\\TinySlime.xml");
-			new ModelSlime(1).Compile("Small Slime", 2).Save("Models\\Mobs\\Hostile\\SmallSlime.xml");
-			new ModelSlime(1).Compile("Medium Slime", 3).Save("Models\\Mobs\\Hostile\\MediumSlime.xml");
-			new ModelSlime(1).Compile("Huge Slime", 4).Save("Models\\Mobs\\Hostile\\HugeSlime.xml");
-			new ModelMagmaCube().Compile("Tiny Magma Cube").Save("Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
-			new ModelMagmaCube().Compile("Small Magma Cube", 2).Save("Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
-			new ModelMagmaCube().Compile("Medium Magma Cube", 3).Save("Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
-			new ModelMagmaCube().Compile("Huge Magma Cube", 4).Save("Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
-			new ModelBlaze().Compile("Blaze").Save("Models\\Mobs\\Hostile\\Blaze.xml");
-			new ModelSilverfish().Compile("Silverfish").Save("Models\\Mobs\\Hostile\\Silverfish.xml");
-			new ModelEnderman().Compile("Enderman").Save("Models\\Mobs\\Hostile\\Enderman.xml");
-			new ModelGhast().Compile("Ghast", 1).Save("Models\\Mobs\\Hostile\\Ghast.xml");
-			new ModelSpider().Compile("Spider").Save("Models\\Mobs\\Hostile\\Spider.xml");
-			new ModelZombie().Compile("Zombie").Save("Models\\Mobs\\Hostile\\Zombie.xml");
-			new ModelSkeleton().Compile("Skeleton").Save("Models\\Mobs\\Hostile\\Skeleton.xml");
+			new ModelCreeper().Compile("Creeper", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Creeper.xml");
+			new ModelSlime(0).Compile("Tiny Slime", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\TinySlime.xml");
+			new ModelSlime(16).Compile("Small Slime", 2, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\SmallSlime.xml");
+			new ModelSlime(16).Compile("Medium Slime", 3, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\MediumSlime.xml");
+			new ModelSlime(16).Compile("Huge Slime", 4, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\HugeSlime.xml");
+			new ModelMagmaCube().Compile("Tiny Magma Cube", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
+			new ModelMagmaCube().Compile("Small Magma Cube", 2, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
+			new ModelMagmaCube().Compile("Medium Magma Cube", 3, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
+			new ModelMagmaCube().Compile("Huge Magma Cube", 4, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
+			new ModelBlaze().Compile("Blaze", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Blaze.xml");
+			new ModelSilverfish().Compile("Silverfish", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Silverfish.xml");
+			new ModelEnderman().Compile("Enderman", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Enderman.xml");
+			new ModelGhast().Compile("Ghast", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Ghast.xml");
+			new ModelSpider().Compile("Spider", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Spider.xml");
+			new ModelZombie().Compile("Zombie", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Zombie.xml");
+			new ModelSkeleton().Compile("Skeleton", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
 
-			new pm_Pony().init(true, true).Compile("Pony").Save("Models\\Mine Little Pony\\Pony.xml");
+			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f / 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
 
 			Directory.CreateDirectory("Models");
 
@@ -3103,8 +3108,6 @@ namespace MCSkin3D
 
 					model.File = new FileInfo(m);
 					Models.Add(model.Name, model);
-
-					model.GenerateOverlay(System.Drawing.Color.White, new Size(64, 32), 8, "Overlays\\" + model.Name + ".png");
 				}
 				catch
 				{

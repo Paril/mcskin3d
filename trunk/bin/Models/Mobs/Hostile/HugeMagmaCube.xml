@@ -1,5 +1,5 @@
-﻿<Model Name="Huge Magma Cube">
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+﻿<Model Name="Huge Magma Cube" AspectRatio="2">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 64 16</Vertex>
@@ -121,7 +121,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 68 16</Vertex>
@@ -243,7 +243,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 72 16</Vertex>
@@ -365,7 +365,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 76 16</Vertex>
@@ -487,7 +487,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 80 16</Vertex>
@@ -609,7 +609,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 84 16</Vertex>
@@ -731,7 +731,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 88 16</Vertex>
@@ -853,7 +853,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>16 92 16</Vertex>
@@ -975,7 +975,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Test" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
+	<Mesh Name="Core" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>
 				<Vertex>8 72 8</Vertex>
