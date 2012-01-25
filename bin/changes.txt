@@ -11,6 +11,7 @@ Version 1.4
 - Custom model support, model dropdown, etc.
 - Added a check for %temp% so you don't run it from the zip/rar by accident
 - Fixed uploader keeping the program running on close for 20 seconds
+- Added a "Reset Camera" button
 
 Version 1.3
 - Treeview skin selector

@@ -69,10 +69,8 @@ namespace MCSkin3D
 		LuminanceSliderRenderer lightnessRenderer;
 
 		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
-		int _grassTop;
-		int _alphaTex;
-		int _previewPaint;
-		Dictionary<Size, int> _charPaintSizes = new Dictionary<Size, int>();
+		Texture _grassTop, _alphaTex, _previewPaint;
+		Dictionary<Size, Texture> _charPaintSizes = new Dictionary<Size, Texture>();
 
 		float _animationTime = 0;
 		float _2dCamOffsetX = 0;
@@ -93,7 +91,7 @@ namespace MCSkin3D
 		List<BackgroundImage> _backgrounds = new List<BackgroundImage>();
 		int _selectedBackground = 0;
 		GLControl rendererControl;
-		int _toolboxUpNormal, _toolboxUpHover, _toolboxDownNormal, _toolboxDownHover;
+		Texture _toolboxUpNormal, _toolboxUpHover, _toolboxDownNormal, _toolboxDownHover;
 
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
@@ -174,6 +172,7 @@ namespace MCSkin3D
 			SetCheckbox(VisiblePartFlags.HelmetFlag, helmetToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.LeftLegFlag, leftLegToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
+
 			Language.Language useLanguage = null;
 			try
 			{
@@ -336,6 +335,11 @@ namespace MCSkin3D
 
 			if (GlobalSettings.OnePointOhMode)
 				ModelLoader.InvertBottomFaces();
+
+			this.mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mLINESIZEToolStripMenuItem_NumericBox_ValueChanged);
+			this.mOVERLAYSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mOVERLAYSIZEToolStripMenuItem_NumericBox_ValueChanged);
+			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
+			mOVERLAYSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlaySize;
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -949,11 +953,11 @@ namespace MCSkin3D
 				checkbox.Checked = false;
 		}
 
-		int GetPaintTexture(int width, int height)
+		Texture GetPaintTexture(int width, int height)
 		{
 			if (!_charPaintSizes.ContainsKey(new Size(width, height)))
 			{
-				int id = GL.GenTexture();
+				var tex = new TextureGL();
 
 				int[] arra = new int[width * height];
 				unsafe
@@ -971,16 +975,13 @@ namespace MCSkin3D
 					}
 				}
 
-				RenderState.BindTexture(id);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+				tex.Upload(arra, width, height);
+				tex.SetMipmapping(false);
+				tex.SetRepeat(false);
 
-				_charPaintSizes.Add(new Size(width, height), id);
+				_charPaintSizes.Add(new Size(width, height), tex);
 
-				return id;
+				return tex;
 			}
 
 			return _charPaintSizes[new Size(width, height)];
@@ -989,9 +990,9 @@ namespace MCSkin3D
 		void DrawSkinnedRectangle
 			(float x, float y, float z, float width, float length, float height,
 			int topSkinX, int topSkinY, int topSkinW, int topSkinH,
-			int texture, int skinW = 64, int skinH = 32)
+			Texture texture, int skinW = 64, int skinH = 32)
 		{
-			RenderState.BindTexture(texture);
+			texture.Bind();
 
 			GL.Begin(BeginMode.Quads);
 
@@ -1012,11 +1013,11 @@ namespace MCSkin3D
 			GL.End();
 		}
 
-		void DrawPlayer2D(int tex, Skin skin, bool pickView)
+		void DrawPlayer2D(Texture tex, Skin skin, bool pickView)
 		{
 			if (!pickView && GlobalSettings.AlphaCheckerboard)
 			{
-				RenderState.BindTexture(_alphaTex);
+				_alphaTex.Bind();
 
 				GL.Begin(BeginMode.Quads);
 				GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
@@ -1027,7 +1028,7 @@ namespace MCSkin3D
 			}
 
 			if (skin != null)
-				RenderState.BindTexture(tex);
+				tex.Bind();
 
 			GL.PushMatrix();
 
@@ -1054,9 +1055,10 @@ namespace MCSkin3D
 			}
 
 			if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
-				_dynamicOverlay != 0)
+				_backgrounds[_selectedBackground].GLImage != null)
 			{
-				RenderState.BindTexture(_dynamicOverlay);
+				//GL.BlendFunc(BlendingFactorSrc.OneMinusDstColor, BlendingFactorDest.OneMinusSrcAlpha);
+				_backgrounds[_selectedBackground].GLImage.Bind();
 
 				GL.Begin(BeginMode.Quads);
 				GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
@@ -1064,6 +1066,7 @@ namespace MCSkin3D
 				GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
 				GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
 				GL.End();
+				//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			}
 			GL.PopMatrix();
 
@@ -1075,7 +1078,7 @@ namespace MCSkin3D
 			get { return MainForm._lastSkin == null ? null : MainForm._lastSkin.Model; }
 		}
 
-		void DrawPlayer(int tex, Skin skin, bool pickView)
+		void DrawPlayer(Texture tex, Skin skin, bool pickView)
 		{
 			bool grass = !pickView && grassToolStripMenuItem.Checked;
 
@@ -1131,37 +1134,6 @@ namespace MCSkin3D
 				_renderer.Render();
 			else
 				_renderer.RenderWithoutTransparency();
-
-			/*RenderState.BindTexture(0);
-			GL.PointSize(4);
-			GL.Disable(EnableCap.DepthTest);
-
-			foreach (var mesh in CurrentModel.Meshes)
-			{
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
-					!(GlobalSettings.Ghost && !pickView))
-					continue;
-
-				var m =
-					//Matrix4.CreateTranslation(-mesh.Pivot) *
-			Matrix4.CreateRotationX(MathHelper.DegreesToRadians(mesh.Rotate.X)) *
-			Matrix4.CreateRotationY(MathHelper.DegreesToRadians(mesh.Rotate.Y)) *
-			Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(mesh.Rotate.Z)) *
-			//Matrix4.CreateTranslation(mesh.Pivot) *
-			Matrix4.CreateTranslation(mesh.Translate);
-
-				GL.Begin(BeginMode.Points);
-				foreach (var f in mesh.Faces)
-				{
-					foreach (var v in f.Vertices)
-					{
-						GL.Vertex3(Vector3.Transform(v, m));
-					}
-				}
-				GL.End();
-			}
-
-			GL.Enable(EnableCap.DepthTest);*/
 		}
 
 		Point _pickPosition = new Point(-1, -1);
@@ -2242,7 +2214,6 @@ namespace MCSkin3D
 		{
 			var skin = _lastSkin;
 
-			RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
 			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
 			grabber.Load();
 
@@ -2684,28 +2655,30 @@ namespace MCSkin3D
 			GL.Enable(EnableCap.CullFace);
 			GL.CullFace(CullFaceMode.Front);
 
-			_toolboxUpNormal = ImageUtilities.LoadImage(Properties.Resources.buttong);
-			_toolboxUpHover = ImageUtilities.LoadImage(Properties.Resources.buttong_2);
-			_toolboxDownNormal = ImageUtilities.LoadImage(Properties.Resources.buttong_down);
-			_toolboxDownHover = ImageUtilities.LoadImage(Properties.Resources.buttong_down2);
+			_toolboxUpNormal = new TextureGL(Properties.Resources.buttong);
+			_toolboxUpHover = new TextureGL(Properties.Resources.buttong_2);
+			_toolboxDownNormal = new TextureGL(Properties.Resources.buttong_down);
+			_toolboxDownHover = new TextureGL(Properties.Resources.buttong_down2);
 
-			_grassTop = ImageUtilities.LoadImage("grass.png");
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+			_grassTop = new TextureGL("grass.png");
+			_grassTop.SetMipmapping(false);
+			_grassTop.SetRepeat(true);
+
+			_dynamicOverlay = new BackgroundImage("Dynamic", "Dynamic", null);
+			_dynamicOverlay.Item = mDYNAMICOVERLAYToolStripMenuItem;
+			_backgrounds.Add(_dynamicOverlay);
 
 			foreach (var file in Directory.GetFiles("Overlays", "*.png"))
 			{
 				try
 				{
-					var image = ImageUtilities.LoadImage(file);
+					var image = new TextureGL(file);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
 					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
-					_backgrounds.Add(new BackgroundImage(Path.GetFileNameWithoutExtension(file), image));
+					_backgrounds.Add(new BackgroundImage(file, Path.GetFileNameWithoutExtension(file), image));
 				}
 				catch
 				{
@@ -2716,10 +2689,10 @@ namespace MCSkin3D
 			int index = 0;
 			foreach (var b in _backgrounds)
 			{
-				ToolStripMenuItem item = new ToolStripMenuItem(b.Name);
+				ToolStripMenuItem item = (b.Item == null) ? new ToolStripMenuItem(b.Name) : b.Item;
 				b.Item = item;
 
-				if (b.Name == GlobalSettings.LastBackground)
+				if (b.Path == GlobalSettings.LastBackground)
 				{
 					item.Checked = true;
 					_selectedBackground = index;
@@ -2728,29 +2701,24 @@ namespace MCSkin3D
 				item.Click += item_Clicked;
 				item.Tag = index++;
 
-				backgroundsToolStripMenuItem.DropDownItems.Add(item);
+				if (!backgroundsToolStripMenuItem.DropDownItems.Contains(item))
+					backgroundsToolStripMenuItem.DropDownItems.Add(item);
 			}
 
-			_previewPaint = GL.GenTexture();
-			GlobalDirtiness.CurrentSkin = GL.GenTexture();
-			_alphaTex = GL.GenTexture();
+			_previewPaint = new TextureGL();
+			GlobalDirtiness.CurrentSkin = new TextureGL();
+			_alphaTex = new TextureGL();
 
 			unsafe
 			{
 				byte[] arra = new byte[64 * 32];
-				RenderState.BindTexture(_previewPaint);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+				_previewPaint.Upload(arra, 64, 32);
+				_previewPaint.SetMipmapping(false);
+				_previewPaint.SetRepeat(false);
 
-				RenderState.BindTexture(GlobalDirtiness.CurrentSkin);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 32, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+				GlobalDirtiness.CurrentSkin.Upload(arra, 64, 32);
+				GlobalDirtiness.CurrentSkin.SetMipmapping(false);
+				GlobalDirtiness.CurrentSkin.SetRepeat(false);
 
 				arra = new byte[4 * 4 * 4];
 				fixed (byte* texData = arra)
@@ -2770,12 +2738,9 @@ namespace MCSkin3D
 						}
 				}
 
-				RenderState.BindTexture(_alphaTex);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 4, 4, 0, PixelFormat.Rgba, PixelType.UnsignedByte, arra);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+				_alphaTex.Upload(arra, 4, 4);
+				_alphaTex.SetMipmapping(false);
+				_alphaTex.SetRepeat(true);
 			}
 
 			if (GL.GetString(StringName.Extensions).Contains("GL_EXT_vertex_array"))
@@ -2823,7 +2788,7 @@ namespace MCSkin3D
 		{
 			// 2D
 			Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
-			RenderState.BindTexture(0);
+			TextureGL.Unbind();
 			GL.Enable(EnableCap.Blend);
 
 			float halfWidth = rendererControl.Width / 2.0f;
@@ -2831,18 +2796,14 @@ namespace MCSkin3D
 
 			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
 
-			int img = (splitContainer4.SplitterDistance == 0) ? _toolboxDownNormal : _toolboxUpNormal;
+			var img = (splitContainer4.SplitterDistance == 0) ? _toolboxDownNormal : _toolboxUpNormal;
 
 			if (rect.Contains(_mousePoint))
-			{
 				GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
-				RenderState.BindTexture(img);
-			}
 			else
-			{
 				GL.Color4((byte)255, (byte)255, (byte)255, (byte)64);
-				RenderState.BindTexture(img);
-			}
+
+			img.Bind();
 
 			const float widSep = 56.0f / 64.0f;
 			const float heiSep = 22.0f / 32.0f;
@@ -3180,7 +3141,7 @@ namespace MCSkin3D
 			if (skin == null)
 			{
 				_currentUndoBuffer = null;
-				RenderState.BindTexture(0);
+				TextureGL.Unbind();
 
 				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, 64, 32);
 				currentSkin.Save();
@@ -4209,21 +4170,42 @@ namespace MCSkin3D
 			grabber.Save();
 		}
 
+		void mLINESIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
+		{
+			GlobalSettings.DynamicOverlayLineSize = (int)mLINESIZEToolStripMenuItem.NumericBox.Value;
+
+			SetModel(CurrentModel);
+		}
+
+		void mOVERLAYSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
+		{
+			GlobalSettings.DynamicOverlaySize = (int)mOVERLAYSIZEToolStripMenuItem.NumericBox.Value;
+
+			SetModel(CurrentModel);
+		}
+
 		ModelToolStripMenuItem _oldModel = null;
-		int _dynamicOverlay = 0;
+		BackgroundImage _dynamicOverlay = null;
 		public void SetModel(Model Model)
 		{
 			if (_lastSkin == null)
 				return;
 
-			if (_lastSkin.Model != Model)
-			{
-				_lastSkin.Model = Model;
+			if (_dynamicOverlay.GLImage != null)
+				_dynamicOverlay.GLImage.Dispose();
 
-				_lastSkin.Dirty = true;
-				SetCanSave(true);
-				CheckUndo();
-			}
+			_dynamicOverlay.GLImage = new TextureGL(Model.GenerateOverlay(GlobalSettings.DynamicOverlayLineColor, GlobalSettings.DynamicOverlayTextColor, Model.AspectRatio, 1 << GlobalSettings.DynamicOverlaySize, GlobalSettings.DynamicOverlayLineSize));
+			_dynamicOverlay.GLImage.SetMipmapping(false);
+			_dynamicOverlay.GLImage.SetRepeat(false);
+
+			if (_lastSkin.Model == Model)
+				return;
+
+			_lastSkin.Model = Model;
+
+			_lastSkin.Dirty = true;
+			SetCanSave(true);
+			CheckUndo();
 
 			if (_oldModel != null)
 			{
@@ -4236,15 +4218,6 @@ namespace MCSkin3D
 			toolStripDropDownButton1.Text = _lastSkin.Model.Name;
 			_oldModel = _lastSkin.Model.DropDownItem;
 			_oldModel.Checked = true;
-			
-			if (_dynamicOverlay != 0)
-				RenderState.DeleteTexture(_dynamicOverlay);
-
-			_dynamicOverlay = ImageUtilities.LoadImage(Model.GenerateOverlay(Color.White, Model.AspectRatio, 512, 1));
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
 			for (var parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
 				parent.Image = Properties.Resources.right_arrow_next;
@@ -4259,6 +4232,38 @@ namespace MCSkin3D
 		private void resetCameraToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformResetCamera();
+		}
+
+		private void mLINECOLORToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (MultiPainter.ColorPicker picker = new MultiPainter.ColorPicker())
+			{
+				picker.CurrentColor = GlobalSettings.DynamicOverlayLineColor;
+
+				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					GlobalSettings.DynamicOverlayLineColor = picker.CurrentColor;
+
+					SetModel(CurrentModel);
+					rendererControl.Invalidate();
+				}
+			}
+		}
+
+		private void mTEXTCOLORToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (MultiPainter.ColorPicker picker = new MultiPainter.ColorPicker())
+			{
+				picker.CurrentColor = GlobalSettings.DynamicOverlayTextColor;
+
+				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					GlobalSettings.DynamicOverlayTextColor = picker.CurrentColor;
+
+					SetModel(CurrentModel);
+					rendererControl.Invalidate();
+				}
+			}
 		}
 	}
 }

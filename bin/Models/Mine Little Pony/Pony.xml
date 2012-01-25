@@ -1181,7 +1181,7 @@
 			</Indices>
 		</Face>
 	</Mesh>
-	<Mesh Name="Body" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
+	<Mesh Name="Cutie Mark" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>
 				<Vertex>4 4 14</Vertex>
