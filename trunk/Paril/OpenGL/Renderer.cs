@@ -34,27 +34,6 @@ using System.Reflection;
 
 namespace Paril.OpenGL
 {
-	public static class RenderState
-	{
-		static int _curTex = 0;
-		public static void BindTexture(int texID)
-		{
-			if (_curTex == texID)
-				return;
-
-			GL.BindTexture(TextureTarget.Texture2D, texID);
-			_curTex = texID;
-		}
-
-		public static void DeleteTexture(int GLImage)
-		{
-			GL.DeleteTexture(GLImage);
-
-			if (_curTex == GLImage)
-				BindTexture(0);
-		}
-	}
-
 	public struct Face
 	{
 		public Vector3[] Vertices;
@@ -99,7 +78,7 @@ namespace Paril.OpenGL
 		public string Name;
 		public BeginMode Mode;
 		public List<Face> Faces;
-		public int Texture;
+		public Texture Texture;
 
 		public Vector3 Translate, Rotate;
 		public Vector3 Pivot;
@@ -420,7 +399,7 @@ namespace Paril.OpenGL
 		static Font _silkScreen = null;
 		static PrivateFontCollection _collection;
 
-		public Bitmap GenerateOverlay(Color lineColor, float aspect, int scale, int lineWidth)
+		public Bitmap GenerateOverlay(Color lineColor, Color textColor, float aspect, int scale, int lineWidth)
 		{
 			if (aspect == 0)
 				aspect = 1;
@@ -465,7 +444,16 @@ namespace Paril.OpenGL
 						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 						g.FillRectangle(new SolidBrush(Color.FromArgb(0, 255, 255, 255)), rect);
 						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-						g.DrawRectangle(pen, rect);
+
+						var polygon = new Point[]
+						{
+							new Point(rect.X, rect.Y),
+							new Point(rect.X + rect.Width, rect.Y),
+							new Point(rect.X + rect.Width, rect.Y + rect.Height),
+							new Point(rect.X, rect.Y + rect.Height),
+						};
+
+						g.DrawPolygon(pen, polygon);
 
 						string side = SideFromNormal(y.Normal);
 						string str = x.Name + " " + side;
@@ -474,7 +462,7 @@ namespace Paril.OpenGL
 						rect.Y++;
 
 						var measured = g.MeasureString(str, _silkScreen, rect.Size, StringFormat.GenericDefault);
-						g.DrawString(str, _silkScreen, System.Drawing.Brushes.White, rect, StringFormat.GenericDefault);
+						g.DrawString(str, _silkScreen, new SolidBrush(textColor), rect, StringFormat.GenericDefault);
 					}
 				}
 			}

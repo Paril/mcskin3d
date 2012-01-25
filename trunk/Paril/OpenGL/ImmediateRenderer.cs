@@ -32,7 +32,7 @@ namespace Paril.OpenGL
 	{
 		public override void RenderMesh(Mesh mesh)
 		{
-			RenderState.BindTexture(mesh.Texture);
+			mesh.Texture.Bind();
 
 			GL.PushMatrix();
 

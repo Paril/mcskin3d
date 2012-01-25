@@ -17,17 +17,19 @@
 //
 
 using System;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
 	class BackgroundImage
 	{
-		public int GLImage;
-		public string Name;
-		public  System.Windows.Forms.ToolStripMenuItem Item;
+		public Texture GLImage;
+		public string Name, Path;
+		public System.Windows.Forms.ToolStripMenuItem Item;
 
-		public BackgroundImage(string name, int image)
+		public BackgroundImage(string path, string name, Texture image)
 		{
+			Path = path;
 			Name = name;
 			GLImage = image;
 		}

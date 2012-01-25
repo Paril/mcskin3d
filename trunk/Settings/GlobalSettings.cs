@@ -83,7 +83,7 @@ namespace MCSkin3D
 		public static bool TextureOverlay { get; set; }
 
 		[Savable]
-		[DefaultValue("")]
+		[DefaultValue("Dynamic")]
 		public static string LastBackground { get; set; }
 
 		[Savable]
@@ -146,6 +146,24 @@ namespace MCSkin3D
 		[Savable]
 		[DefaultValue(true)]
 		public static bool OnePointOhMode { get; set; }
+
+		[Savable]
+		[DefaultValue("255 255 255 255")]
+		[TypeSerializer(typeof(ColorSerializer), true)]
+		public static Color DynamicOverlayLineColor { get; set; }
+
+		[Savable]
+		[DefaultValue("255 255 255 255")]
+		[TypeSerializer(typeof(ColorSerializer), true)]
+		public static Color DynamicOverlayTextColor { get; set; }
+
+		[Savable]
+		[DefaultValue(1)]
+		public static int DynamicOverlayLineSize { get; set; }
+
+		[Savable]
+		[DefaultValue(9)]
+		public static int DynamicOverlaySize { get; set; }
 
 		static Settings Settings = null;
 

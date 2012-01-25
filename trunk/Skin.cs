@@ -36,7 +36,7 @@ namespace MCSkin3D
 	{
 		public Bitmap Image;
 		public Bitmap Head;
-		public int GLImage;
+		public Texture GLImage;
 		public UndoBuffer Undo;
 		public bool Dirty;
 		public Size Size;
@@ -103,10 +103,10 @@ namespace MCSkin3D
 
 		public void Dispose()
 		{
-			if (GLImage != 0)
+			if (GLImage != null)
 			{
-				RenderState.DeleteTexture(GLImage);
-				GLImage = 0;
+				GLImage.Dispose();
+				GLImage = null;
 			}
 
 			if (Head != null)
@@ -129,7 +129,10 @@ namespace MCSkin3D
 				Head.Dispose();
 
 				if (updateGL)
-					RenderState.DeleteTexture(GLImage);
+				{
+					GLImage.Dispose();
+					GLImage = null;
+				}
 			}
 
 			using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -167,9 +170,9 @@ namespace MCSkin3D
 
 			if (updateGL)
 			{
-				GLImage = ImageUtilities.LoadImage(File.FullName);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+				GLImage = new TextureGL(File.FullName);
+				GLImage.SetMipmapping(false);
+				GLImage.SetRepeat(false);
 			}
 		}
 
@@ -180,7 +183,7 @@ namespace MCSkin3D
 			return Name;
 		}
 
-		public void CommitChanges(int currentSkin, bool save)
+		public void CommitChanges(Texture currentSkin, bool save)
 		{
 			ColorGrabber grabber = new ColorGrabber(currentSkin, Width, Height);
 			grabber.Load();

@@ -20,11 +20,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
 	public static class GlobalDirtiness
 	{
-		public static int CurrentSkin { get; set; }
+		public static Texture CurrentSkin { get; set; }
 	}
 }

@@ -60,13 +60,13 @@ namespace MCSkin3D
 		ColorPixel[] Array { get; set; }
 	}
 
-	public struct ColorGrabber : IColorGrabber<int>
+	public struct ColorGrabber : IColorGrabber<Texture>
 	{
-		int _texture;
+		Texture _texture;
 		ColorPixel[] _array;
 		int _width, _height;
 
-		public int Texture { get { return _texture; } set { _texture = value; } }
+		public Texture Texture { get { return _texture; } set { _texture = value; } }
 		public int Width { get { return _width; } }
 		public int Height { get { return _height; } }
 
@@ -75,7 +75,7 @@ namespace MCSkin3D
 			get { return _array != null; }
 		}
 
-		public ColorGrabber(int texture, int width, int height)
+		public ColorGrabber(Texture texture, int width, int height)
 		{
 			_texture = texture;
 			_width = width;
@@ -94,14 +94,12 @@ namespace MCSkin3D
 
 		public void Load()
 		{
-			RenderState.BindTexture(_texture);
-			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, _array);
+			_texture.Get(_array);
 		}
 
 		public void Save()
 		{
-			RenderState.BindTexture(_texture);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _width, _height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, _array);
+			_texture.Upload(_array, _width, _height);
 		}
 
 		public ColorPixel this[int x, int y]

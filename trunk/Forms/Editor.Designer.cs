@@ -64,6 +64,12 @@
 			this.alphaCheckerboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.textureOverlayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
+			this.mDYNAMICOVERLAYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mDYNAMICOPTIONSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mTEXTCOLORToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mOVERLAYSIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
+			this.mLINESIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.transparencyModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,6 +193,7 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -528,6 +535,9 @@
 			// 
 			this.backgroundsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.textureOverlayToolStripMenuItem,
+            this.toolStripSeparator16,
+            this.mDYNAMICOVERLAYToolStripMenuItem,
+            this.mDYNAMICOPTIONSToolStripMenuItem,
             this.toolStripMenuItem2});
 			this.backgroundsToolStripMenuItem.Name = "backgroundsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.backgroundsToolStripMenuItem, "Text");
@@ -542,6 +552,52 @@
 			this.textureOverlayToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
 			this.textureOverlayToolStripMenuItem.Text = "M_ENABLEOVERLAY";
 			this.textureOverlayToolStripMenuItem.Click += new System.EventHandler(this.textureOverlayToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator16
+			// 
+			this.toolStripSeparator16.Name = "toolStripSeparator16";
+			this.toolStripSeparator16.Size = new System.Drawing.Size(222, 6);
+			// 
+			// mDYNAMICOVERLAYToolStripMenuItem
+			// 
+			this.mDYNAMICOVERLAYToolStripMenuItem.Name = "mDYNAMICOVERLAYToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mDYNAMICOVERLAYToolStripMenuItem, "Text");
+			this.mDYNAMICOVERLAYToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+			this.mDYNAMICOVERLAYToolStripMenuItem.Text = "M_DYNAMICOVERLAY";
+			// 
+			// mDYNAMICOPTIONSToolStripMenuItem
+			// 
+			this.mDYNAMICOPTIONSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem7,
+            this.mTEXTCOLORToolStripMenuItem,
+            this.mOVERLAYSIZEToolStripMenuItem,
+            this.mLINESIZEToolStripMenuItem});
+			this.mDYNAMICOPTIONSToolStripMenuItem.Name = "mDYNAMICOPTIONSToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mDYNAMICOPTIONSToolStripMenuItem, "Text");
+			this.mDYNAMICOPTIONSToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+			this.mDYNAMICOPTIONSToolStripMenuItem.Text = "M_DYNAMICOPTIONS";
+			// 
+			// mTEXTCOLORToolStripMenuItem
+			// 
+			this.mTEXTCOLORToolStripMenuItem.Name = "mTEXTCOLORToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mTEXTCOLORToolStripMenuItem, "Text");
+			this.mTEXTCOLORToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+			this.mTEXTCOLORToolStripMenuItem.Text = "M_TEXTCOLOR";
+			this.mTEXTCOLORToolStripMenuItem.Click += new System.EventHandler(this.mTEXTCOLORToolStripMenuItem_Click);
+			// 
+			// mOVERLAYSIZEToolStripMenuItem
+			// 
+			this.mOVERLAYSIZEToolStripMenuItem.Name = "mOVERLAYSIZEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mOVERLAYSIZEToolStripMenuItem, "Text");
+			this.mOVERLAYSIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
+			this.mOVERLAYSIZEToolStripMenuItem.Text = "M_OVERLAYSIZE";
+			// 
+			// mLINESIZEToolStripMenuItem
+			// 
+			this.mLINESIZEToolStripMenuItem.Name = "mLINESIZEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mLINESIZEToolStripMenuItem, "Text");
+			this.mLINESIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
+			this.mLINESIZEToolStripMenuItem.Text = "M_LINESIZE";
 			// 
 			// toolStripMenuItem2
 			// 
@@ -1890,6 +1946,14 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
+			// toolStripMenuItem7
+			// 
+			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem7, "Text");
+			this.toolStripMenuItem7.Size = new System.Drawing.Size(200, 22);
+			this.toolStripMenuItem7.Text = "M_LINECOLOR";
+			this.toolStripMenuItem7.Click += new System.EventHandler(this.mLINECOLORToolStripMenuItem_Click);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2101,6 +2165,13 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
 		private System.Windows.Forms.ToolStripButton resetCameraToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
+		private System.Windows.Forms.ToolStripMenuItem mDYNAMICOVERLAYToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mDYNAMICOPTIONSToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mTEXTCOLORToolStripMenuItem;
+		private Paril.Controls.NumericUpDownMenuItem mLINESIZEToolStripMenuItem;
+		private Paril.Controls.NumericUpDownMenuItem mOVERLAYSIZEToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
 	}
 }
 
