@@ -67,6 +67,7 @@
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.mDYNAMICOVERLAYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mDYNAMICOPTIONSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
 			this.mTEXTCOLORToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mOVERLAYSIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.mLINESIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
@@ -193,7 +194,6 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -576,6 +576,14 @@
 			this.languageProvider1.SetPropertyNames(this.mDYNAMICOPTIONSToolStripMenuItem, "Text");
 			this.mDYNAMICOPTIONSToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
 			this.mDYNAMICOPTIONSToolStripMenuItem.Text = "M_DYNAMICOPTIONS";
+			// 
+			// toolStripMenuItem7
+			// 
+			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem7, "Text");
+			this.toolStripMenuItem7.Size = new System.Drawing.Size(200, 22);
+			this.toolStripMenuItem7.Text = "M_LINECOLOR";
+			this.toolStripMenuItem7.Click += new System.EventHandler(this.mLINECOLORToolStripMenuItem_Click);
 			// 
 			// mTEXTCOLORToolStripMenuItem
 			// 
@@ -1945,14 +1953,6 @@
 			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
-			// 
-			// toolStripMenuItem7
-			// 
-			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem7, "Text");
-			this.toolStripMenuItem7.Size = new System.Drawing.Size(200, 22);
-			this.toolStripMenuItem7.Text = "M_LINECOLOR";
-			this.toolStripMenuItem7.Click += new System.EventHandler(this.mLINECOLORToolStripMenuItem_Click);
 			// 
 			// Editor
 			// 

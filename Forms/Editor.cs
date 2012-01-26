@@ -240,7 +240,7 @@ namespace MCSkin3D
 			Text = "MCSkin3D v" + Program.Version.ToString();
 
 #if BETA
-			Text += " [Beta]";
+			Text += " [Beta] [Juddaba Edition]";
 #endif
 
 			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
@@ -340,6 +340,11 @@ namespace MCSkin3D
 			this.mOVERLAYSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mOVERLAYSIZEToolStripMenuItem_NumericBox_ValueChanged);
 			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
 			mOVERLAYSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlaySize;
+
+			mOVERLAYSIZEToolStripMenuItem.NumericBox.Minimum = 1;
+			mOVERLAYSIZEToolStripMenuItem.NumericBox.Maximum = 12;
+			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
+			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -1054,9 +1059,36 @@ namespace MCSkin3D
 				GL.End();
 			}
 
+			TextureGL.Unbind();
+
+			GL.PushMatrix();
+			//GL.LineWidth(2);
+			//GL.Translate(-(skin.Width / 2), -(skin.Height / 2), 0);
 			if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
 				_backgrounds[_selectedBackground].GLImage != null)
 			{
+				/*var stub = (1.0f / _2dZoom);
+
+				foreach (var mesh in CurrentModel.Meshes)
+				{
+					foreach (var face in mesh.Faces)
+					{
+						var toint = face.TexCoordsToInteger(skin.Width, skin.Height);
+
+						GL.Begin(BeginMode.Quads);
+						GL.Vertex2(toint.X, toint.Y);
+						GL.Vertex2(toint.X + toint.Width, toint.Y);
+						GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
+						GL.Vertex2(toint.X, toint.Y + stub);
+
+						GL.Vertex2(toint.X, toint.Y);
+						GL.Vertex2(toint.X + stub, toint.Y);
+						GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
+						GL.Vertex2(toint.X, toint.Y + toint.Height);
+						GL.End();
+					}
+				}*/
+
 				//GL.BlendFunc(BlendingFactorSrc.OneMinusDstColor, BlendingFactorDest.OneMinusSrcAlpha);
 				_backgrounds[_selectedBackground].GLImage.Bind();
 
@@ -1068,6 +1100,8 @@ namespace MCSkin3D
 				GL.End();
 				//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			}
+			GL.PopMatrix();
+
 			GL.PopMatrix();
 
 			GL.Disable(EnableCap.Blend);
