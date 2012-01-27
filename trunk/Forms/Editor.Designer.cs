@@ -69,8 +69,8 @@
 			this.mDYNAMICOPTIONSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
 			this.mTEXTCOLORToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mOVERLAYSIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.mLINESIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
+			this.mOVERLAYTEXTSIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.transparencyModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -570,8 +570,8 @@
 			this.mDYNAMICOPTIONSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem7,
             this.mTEXTCOLORToolStripMenuItem,
-            this.mOVERLAYSIZEToolStripMenuItem,
-            this.mLINESIZEToolStripMenuItem});
+            this.mLINESIZEToolStripMenuItem,
+            this.mOVERLAYTEXTSIZEToolStripMenuItem});
 			this.mDYNAMICOPTIONSToolStripMenuItem.Name = "mDYNAMICOPTIONSToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mDYNAMICOPTIONSToolStripMenuItem, "Text");
 			this.mDYNAMICOPTIONSToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
@@ -593,12 +593,12 @@
 			this.mTEXTCOLORToolStripMenuItem.Text = "M_TEXTCOLOR";
 			this.mTEXTCOLORToolStripMenuItem.Click += new System.EventHandler(this.mTEXTCOLORToolStripMenuItem_Click);
 			// 
-			// mOVERLAYSIZEToolStripMenuItem
+			// mOVERLAYTEXTSIZEToolStripMenuItem
 			// 
-			this.mOVERLAYSIZEToolStripMenuItem.Name = "mOVERLAYSIZEToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.mOVERLAYSIZEToolStripMenuItem, "Text");
-			this.mOVERLAYSIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
-			this.mOVERLAYSIZEToolStripMenuItem.Text = "M_OVERLAYSIZE";
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.Name = "mOVERLAYTEXTSIZEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mOVERLAYTEXTSIZEToolStripMenuItem, "Text");
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.Text = "M_OVERLAYTEXTSIZE";
 			// 
 			// mLINESIZEToolStripMenuItem
 			// 
@@ -2170,7 +2170,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mDYNAMICOPTIONSToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mTEXTCOLORToolStripMenuItem;
 		private Paril.Controls.NumericUpDownMenuItem mLINESIZEToolStripMenuItem;
-		private Paril.Controls.NumericUpDownMenuItem mOVERLAYSIZEToolStripMenuItem;
+		private Paril.Controls.NumericUpDownMenuItem mOVERLAYTEXTSIZEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
 	}
 }

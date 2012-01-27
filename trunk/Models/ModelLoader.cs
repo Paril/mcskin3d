@@ -2027,11 +2027,11 @@ namespace MCSkin3D
 				this.Bodypiece[3].addTopPlane(-4.0F, 12.0F, 2.0F, 8, 0, 8, this.strech);
 				this.Bodypiece[3].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[4] = new PlaneRenderer(this, "Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[4] = new PlaneRenderer(this, "Cutie Mark", 0, 20, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[4].addSidePlane(-4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
 				this.Bodypiece[4].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[5] = new PlaneRenderer(this, "Cutie Mark", 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[5] = new PlaneRenderer(this, "Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[5].addSidePlane(4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
 				this.Bodypiece[5].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
