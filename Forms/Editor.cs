@@ -92,6 +92,7 @@ namespace MCSkin3D
 		int _selectedBackground = 0;
 		GLControl rendererControl;
 		Texture _toolboxUpNormal, _toolboxUpHover, _toolboxDownNormal, _toolboxDownHover;
+		Texture _font;
 
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
@@ -240,7 +241,7 @@ namespace MCSkin3D
 			Text = "MCSkin3D v" + Program.Version.ToString();
 
 #if BETA
-			Text += " [Beta] [Juddaba Edition]";
+			Text += " [Beta]";
 #endif
 
 			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
@@ -337,12 +338,12 @@ namespace MCSkin3D
 				ModelLoader.InvertBottomFaces();
 
 			this.mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mLINESIZEToolStripMenuItem_NumericBox_ValueChanged);
-			this.mOVERLAYSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mOVERLAYSIZEToolStripMenuItem_NumericBox_ValueChanged);
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged);
 			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
-			mOVERLAYSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlaySize;
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayTextSize;
 
-			mOVERLAYSIZEToolStripMenuItem.NumericBox.Minimum = 1;
-			mOVERLAYSIZEToolStripMenuItem.NumericBox.Maximum = 12;
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Minimum = 1;
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Maximum = 16;
 			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
 			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
 		}
@@ -1018,6 +1019,61 @@ namespace MCSkin3D
 			GL.End();
 		}
 
+		void DrawCharacter2D(Texture font, byte c, float xOfs, float yOfs, float width, float height)
+		{
+			font.Bind();
+
+			float tx = (((c - 32) % 16) * 8) / 128.0f;
+			float ty = (((c - 32) / 16) * 8) / 64.0f;
+			const float txw = 8.0f / 128.0f;
+			const float txh = 8.0f / 64.0f;
+
+			GL.Begin(BeginMode.Quads);
+			GL.TexCoord2(tx, ty);
+			GL.Vertex2(xOfs, yOfs);
+			GL.TexCoord2(tx + txw, ty);
+			GL.Vertex2(xOfs + width, yOfs);
+			GL.TexCoord2(tx + txw, ty + txh);
+			GL.Vertex2(xOfs + width, height + yOfs);
+			GL.TexCoord2(tx, ty + txh);
+			GL.Vertex2(xOfs, height + yOfs);
+			GL.End();
+		}
+
+		void DrawString(Texture font, string s, float spacing, float size)
+		{
+			float x = 0;
+			foreach (var c in s)
+			{
+				DrawCharacter2D(font, (byte)c, x, 0, size, size);
+				x += spacing;
+			}
+
+			TextureGL.Unbind();
+		}
+
+		void DrawStringWithinRectangle(Texture font, Rectangle rect, string s, float spacing, float size)
+		{
+			float x = rect.X;
+			float y = rect.Y;
+			foreach (var c in s)
+			{
+				DrawCharacter2D(font, (byte)c, x, y, size, size);
+				x += spacing;
+
+				if ((x + spacing) > rect.X + rect.Width)
+				{
+					x = rect.X;
+					y += spacing;
+				}
+
+				if ((y + spacing) > rect.Y + rect.Height)
+					break;
+			}
+
+			TextureGL.Unbind();
+		}
+
 		void DrawPlayer2D(Texture tex, Skin skin, bool pickView)
 		{
 			if (!pickView && GlobalSettings.AlphaCheckerboard)
@@ -1061,46 +1117,75 @@ namespace MCSkin3D
 
 			TextureGL.Unbind();
 
-			GL.PushMatrix();
-			//GL.LineWidth(2);
-			//GL.Translate(-(skin.Width / 2), -(skin.Height / 2), 0);
-			if (!pickView && GlobalSettings.TextureOverlay && skin != null &&
-				_backgrounds[_selectedBackground].GLImage != null)
+			if (!pickView && GlobalSettings.TextureOverlay && skin != null)
 			{
-				/*var stub = (1.0f / _2dZoom);
-
-				foreach (var mesh in CurrentModel.Meshes)
+				if (_backgrounds[_selectedBackground] == _dynamicOverlay)
 				{
-					foreach (var face in mesh.Faces)
+					GL.PushMatrix();
+					GL.Translate(-(skin.Width / 2), -(skin.Height / 2), 0);
+
+					var stub = (GlobalSettings.DynamicOverlayLineSize / _2dZoom);
+					var one = (1.0f / _2dZoom);
+
+					List<Rectangle> done = new List<Rectangle>();
+					foreach (var mesh in CurrentModel.Meshes)
 					{
-						var toint = face.TexCoordsToInteger(skin.Width, skin.Height);
+						foreach (var face in mesh.Faces)
+						{
+							var toint = face.TexCoordsToInteger(skin.Width, skin.Height);
 
-						GL.Begin(BeginMode.Quads);
-						GL.Vertex2(toint.X, toint.Y);
-						GL.Vertex2(toint.X + toint.Width, toint.Y);
-						GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
-						GL.Vertex2(toint.X, toint.Y + stub);
+							if (toint.Width == 0 ||
+								toint.Height == 0)
+								continue;
+							if (done.Contains(toint))
+								continue;
 
-						GL.Vertex2(toint.X, toint.Y);
-						GL.Vertex2(toint.X + stub, toint.Y);
-						GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
-						GL.Vertex2(toint.X, toint.Y + toint.Height);
-						GL.End();
+							done.Add(toint);
+
+							GL.Color4(GlobalSettings.DynamicOverlayLineColor);
+							GL.Begin(BeginMode.Quads);
+							GL.Vertex2(toint.X, toint.Y);
+							GL.Vertex2(toint.X + toint.Width, toint.Y);
+							GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
+							GL.Vertex2(toint.X, toint.Y + stub);
+
+							GL.Vertex2(toint.X, toint.Y);
+							GL.Vertex2(toint.X + stub, toint.Y);
+							GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
+							GL.Vertex2(toint.X, toint.Y + toint.Height);
+
+							GL.Vertex2(toint.X + toint.Width + one, toint.Y);
+							GL.Vertex2(toint.X + toint.Width + one, toint.Y + toint.Height);
+							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y + toint.Height);
+							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y);
+
+							GL.Vertex2(toint.X, toint.Y + toint.Height + one);
+							GL.Vertex2(toint.X, toint.Y + toint.Height + one - stub);
+							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one - stub);
+							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one);
+							GL.End();
+							GL.Color4(Color.White);
+
+							GL.Color4(GlobalSettings.DynamicOverlayTextColor);
+							DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal), (6 * GlobalSettings.DynamicOverlayTextSize) / _2dZoom, (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2dZoom);
+							GL.Color4(Color.White);
+						}
 					}
-				}*/
 
-				//GL.BlendFunc(BlendingFactorSrc.OneMinusDstColor, BlendingFactorDest.OneMinusSrcAlpha);
-				_backgrounds[_selectedBackground].GLImage.Bind();
+					GL.PopMatrix();
+				}
+				else
+				{
+					_backgrounds[_selectedBackground].GLImage.Bind();
 
-				GL.Begin(BeginMode.Quads);
-				GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
-				GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
-				GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
-				GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
-				GL.End();
-				//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+					GL.Begin(BeginMode.Quads);
+					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
+					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
+					GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
+					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
+					GL.End();
+				}
 			}
-			GL.PopMatrix();
 
 			GL.PopMatrix();
 
@@ -2694,6 +2779,10 @@ namespace MCSkin3D
 			_toolboxDownNormal = new TextureGL(Properties.Resources.buttong_down);
 			_toolboxDownHover = new TextureGL(Properties.Resources.buttong_down2);
 
+			_font = new TextureGL(Properties.Resources.tinyfont);
+			_font.SetMipmapping(false);
+			_font.SetRepeat(false);
+
 			_grassTop = new TextureGL("grass.png");
 			_grassTop.SetMipmapping(false);
 			_grassTop.SetRepeat(true);
@@ -4211,9 +4300,9 @@ namespace MCSkin3D
 			SetModel(CurrentModel);
 		}
 
-		void mOVERLAYSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
+		void mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
-			GlobalSettings.DynamicOverlaySize = (int)mOVERLAYSIZEToolStripMenuItem.NumericBox.Value;
+			GlobalSettings.DynamicOverlayTextSize = (int)mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value;
 
 			SetModel(CurrentModel);
 		}
@@ -4228,7 +4317,7 @@ namespace MCSkin3D
 			if (_dynamicOverlay.GLImage != null)
 				_dynamicOverlay.GLImage.Dispose();
 
-			_dynamicOverlay.GLImage = new TextureGL(Model.GenerateOverlay(GlobalSettings.DynamicOverlayLineColor, GlobalSettings.DynamicOverlayTextColor, Model.AspectRatio, 1 << GlobalSettings.DynamicOverlaySize, GlobalSettings.DynamicOverlayLineSize));
+			_dynamicOverlay.GLImage = new TextureGL(Model.GenerateOverlay(GlobalSettings.DynamicOverlayLineColor, GlobalSettings.DynamicOverlayTextColor, Model.AspectRatio, 1 << GlobalSettings.DynamicOverlayTextSize, GlobalSettings.DynamicOverlayLineSize));
 			_dynamicOverlay.GLImage.SetMipmapping(false);
 			_dynamicOverlay.GLImage.SetRepeat(false);
 

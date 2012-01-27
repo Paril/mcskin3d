@@ -470,7 +470,7 @@ namespace Paril.OpenGL
 			return b;
 		}
 
-		static string SideFromNormal(Vector3 vector3)
+		public static string SideFromNormal(Vector3 vector3)
 		{
 			Vector3[] vecs = new Vector3[]
 			{
