@@ -1,0 +1,124 @@
+﻿<Model Name="Cloak" AspectRatio="2">
+	<Mesh Name="Cloak" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftLegFlag">
+		<Face>
+			<Vertices>
+				<Vertex>5 0 0</Vertex>
+				<Vertex>5 0 -1</Vertex>
+				<Vertex>5 16 -1</Vertex>
+				<Vertex>5 16 0</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.1875 0.03125</Coord>
+				<Coord>0.171875 0.03125</Coord>
+				<Coord>0.171875 0.53125</Coord>
+				<Coord>0.1875 0.53125</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>0</Index>
+				<Index>1</Index>
+				<Index>2</Index>
+				<Index>3</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>-5 0 -1</Vertex>
+				<Vertex>-5 0 0</Vertex>
+				<Vertex>-5 16 0</Vertex>
+				<Vertex>-5 16 -1</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.015625 0.03125</Coord>
+				<Coord>0 0.03125</Coord>
+				<Coord>0 0.53125</Coord>
+				<Coord>0.015625 0.53125</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>0</Index>
+				<Index>1</Index>
+				<Index>2</Index>
+				<Index>3</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>5 0 0</Vertex>
+				<Vertex>-5 0 0</Vertex>
+				<Vertex>-5 0 -1</Vertex>
+				<Vertex>5 0 -1</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.171875 0</Coord>
+				<Coord>0.015625 0</Coord>
+				<Coord>0.015625 0.03125</Coord>
+				<Coord>0.171875 0.03125</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>0</Index>
+				<Index>1</Index>
+				<Index>2</Index>
+				<Index>3</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>5 16 -1</Vertex>
+				<Vertex>-5 16 -1</Vertex>
+				<Vertex>-5 16 0</Vertex>
+				<Vertex>5 16 0</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.328125 0.03125</Coord>
+				<Coord>0.171875 0.03125</Coord>
+				<Coord>0.171875 0</Coord>
+				<Coord>0.328125 0</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>0</Index>
+				<Index>1</Index>
+				<Index>2</Index>
+				<Index>3</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>5 0 -1</Vertex>
+				<Vertex>-5 0 -1</Vertex>
+				<Vertex>-5 16 -1</Vertex>
+				<Vertex>5 16 -1</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.171875 0.03125</Coord>
+				<Coord>0.015625 0.03125</Coord>
+				<Coord>0.015625 0.53125</Coord>
+				<Coord>0.171875 0.53125</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>0</Index>
+				<Index>1</Index>
+				<Index>2</Index>
+				<Index>3</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>-5 0 0</Vertex>
+				<Vertex>5 0 0</Vertex>
+				<Vertex>5 16 0</Vertex>
+				<Vertex>-5 16 0</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.34375 0.03125</Coord>
+				<Coord>0.1875 0.03125</Coord>
+				<Coord>0.1875 0.53125</Coord>
+				<Coord>0.34375 0.53125</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>0</Index>
+				<Index>1</Index>
+				<Index>2</Index>
+				<Index>3</Index>
+			</Indices>
+		</Face>
+	</Mesh>
+</Model>

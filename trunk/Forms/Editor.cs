@@ -4321,14 +4321,18 @@ namespace MCSkin3D
 			_dynamicOverlay.GLImage.SetMipmapping(false);
 			_dynamicOverlay.GLImage.SetRepeat(false);
 
-			if (_lastSkin.Model == Model)
+			if (_oldModel != null &&
+				_oldModel.Model == Model)
 				return;
 
-			_lastSkin.Model = Model;
+			if (_lastSkin.Model != Model)
+			{
+				_lastSkin.Model = Model;
 
-			_lastSkin.Dirty = true;
-			SetCanSave(true);
-			CheckUndo();
+				_lastSkin.Dirty = true;
+				SetCanSave(true);
+				CheckUndo();
+			}
 
 			if (_oldModel != null)
 			{
