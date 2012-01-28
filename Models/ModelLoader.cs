@@ -944,6 +944,18 @@ namespace MCSkin3D
 			}
 		}
 
+
+		public class ModelCloak : ModelBase
+		{
+			public ModelRenderer bipedCloak;
+
+			public ModelCloak()
+			{
+				bipedCloak = new ModelRenderer(this, 0, 0, VisiblePartFlags.LeftLegFlag, false, false);
+				bipedCloak.addBox("Cloak", -5F, 0.0F, -1F, 10, 16, 1, 0);
+			}
+		}
+
 		public class ModelVillager : ModelBase
 		{
 			public ModelRenderer head;
@@ -3092,6 +3104,7 @@ namespace MCSkin3D
 			new ModelSpider().Compile("Spider", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Spider.xml");
 			new ModelZombie().Compile("Zombie", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Zombie.xml");
 			new ModelSkeleton().Compile("Skeleton", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
+			new ModelCloak().Compile("Cloak", 1, 64.0f / 32.0f).Save("Models\\Other\\Cloak.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f / 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
 
