@@ -14,7 +14,7 @@ namespace Paril.OpenGL
 
 		int _width, _height;
 
-		public int Width
+		public override int Width
 		{
 			get
 			{
@@ -25,7 +25,7 @@ namespace Paril.OpenGL
 			}
 		}
 
-		public int Height
+		public override int Height
 		{
 			get
 			{

@@ -29,8 +29,6 @@ using System.Security.Permissions;
 
 namespace Paril.Controls.Color
 {
-	using Color = System.Drawing.Color;
-
 	public partial class ColorPicker : Form
 	{
 		public ColorPicker()
@@ -79,11 +77,11 @@ namespace Paril.Controls.Color
 			get { return new HSL(colorSquare1.CurrentHue, (float)colorSquare1.CurrentSat / 240.0f, (float)saturationSlider1.CurrentLum / 240.0f); }
 		}
 
-		public Color CurrentColor
+		public System.Drawing.Color CurrentColor
 		{
 			get
 			{
-				return Color.FromArgb((int)numericUpDown4.Value, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor());
+				return System.Drawing.Color.FromArgb((int)numericUpDown4.Value, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor());
 			}
 		}
 
@@ -143,7 +141,7 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			var asRGB = Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
+			var asRGB = System.Drawing.Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(asRGB);
 
 			_skipSet = true;
@@ -166,7 +164,7 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			var asRGB = Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
+			var asRGB = System.Drawing.Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(asRGB);
 
 			_skipSet = true;
@@ -189,7 +187,7 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			var asRGB = Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
+			var asRGB = System.Drawing.Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
 			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(asRGB);
 
 			_skipSet = true;
