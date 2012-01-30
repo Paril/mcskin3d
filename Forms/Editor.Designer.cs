@@ -193,6 +193,7 @@
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+			this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
@@ -593,19 +594,19 @@
 			this.mTEXTCOLORToolStripMenuItem.Text = "M_TEXTCOLOR";
 			this.mTEXTCOLORToolStripMenuItem.Click += new System.EventHandler(this.mTEXTCOLORToolStripMenuItem_Click);
 			// 
-			// mOVERLAYTEXTSIZEToolStripMenuItem
-			// 
-			this.mOVERLAYTEXTSIZEToolStripMenuItem.Name = "mOVERLAYTEXTSIZEToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.mOVERLAYTEXTSIZEToolStripMenuItem, "Text");
-			this.mOVERLAYTEXTSIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
-			this.mOVERLAYTEXTSIZEToolStripMenuItem.Text = "M_OVERLAYTEXTSIZE";
-			// 
 			// mLINESIZEToolStripMenuItem
 			// 
 			this.mLINESIZEToolStripMenuItem.Name = "mLINESIZEToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mLINESIZEToolStripMenuItem, "Text");
 			this.mLINESIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
 			this.mLINESIZEToolStripMenuItem.Text = "M_LINESIZE";
+			// 
+			// mOVERLAYTEXTSIZEToolStripMenuItem
+			// 
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.Name = "mOVERLAYTEXTSIZEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mOVERLAYTEXTSIZEToolStripMenuItem, "Text");
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.Text = "M_OVERLAYTEXTSIZE";
 			// 
 			// toolStripMenuItem2
 			// 
@@ -1712,6 +1713,7 @@
             this.saveToolStripButton,
             this.saveAlltoolStripButton,
             this.toolStripSeparator6,
+            this.toolStripSplitButton1,
             this.undoToolStripButton,
             this.redoToolStripButton,
             this.toolStripSeparator1,
@@ -1954,6 +1956,15 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
+			// toolStripSplitButton1
+			// 
+			this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripSplitButton1.Image = global::MCSkin3D.Properties.Resources.Edit_UndoHS;
+			this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripSplitButton1.Name = "toolStripSplitButton1";
+			this.toolStripSplitButton1.Size = new System.Drawing.Size(32, 22);
+			this.toolStripSplitButton1.Text = "toolStripSplitButton1";
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2172,6 +2183,7 @@
 		private Paril.Controls.NumericUpDownMenuItem mLINESIZEToolStripMenuItem;
 		private Paril.Controls.NumericUpDownMenuItem mOVERLAYTEXTSIZEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+		private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
 	}
 }
 

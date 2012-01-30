@@ -10,7 +10,10 @@ namespace Paril.OpenGL
 {
 	// Renderer-independent texture class
 	public abstract class Texture : IDisposable
-	{	
+	{
+		public abstract int Width { get; }
+		public abstract int Height { get; }
+
 		public void Load(string fileName)
 		{
 			// re-write the file if it's indexed

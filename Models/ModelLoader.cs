@@ -883,7 +883,6 @@ namespace MCSkin3D
 
 		public class ModelBiped : ModelBase
 		{
-
 			public ModelRenderer bipedHead;
 			public ModelRenderer bipedHeadwear;
 			public ModelRenderer bipedBody;
@@ -944,6 +943,20 @@ namespace MCSkin3D
 			}
 		}
 
+		public class ModelArmor : ModelBiped
+		{
+			public ModelArmor() :
+				base(0.5f)
+			{
+				bipedHead.Helmet = true;
+				boxList.Remove(bipedHeadwear);
+				bipedBody.Helmet = true;
+				bipedRightArm.Helmet = true;
+				bipedRightLeg.Helmet = true;
+				bipedLeftArm.Helmet = true;
+				bipedLeftLeg.Helmet = true;
+			}
+		}
 
 		public class ModelCloak : ModelBase
 		{
@@ -2945,126 +2958,6 @@ namespace MCSkin3D
 					}
 				}
 			}
-
-			/*
-		  public void render(AniParams ani, boolean thirdperson)
-		  {
-			if (thirdperson)
-			{
-			  this.head.a(this.scale);
-
-			  this.headpiece[0].a(this.scale);
-			  this.headpiece[1].a(this.scale);
-			  if (this.isUnicorn)
-			  {
-				this.headpiece[2].a(this.scale);
-			  }
-
-			  this.helmet.a(this.scale);
-			  this.Body.a(this.scale);
-			  for (int i = 0; i < this.Bodypiece.Length; i++)
-			  {
-				this.Bodypiece[i].render(this.scale);
-			  }
-			  this.LeftArm.a(this.scale);
-			  this.rightarm.a(this.scale);
-			  this.LeftLeg.a(this.scale);
-			  this.RightLeg.a(this.scale);
-			  for (int i = 0; i < this.Tail.Length; i++)
-			  {
-				this.Tail[i].render(this.scale);
-			  }
-
-			  if (this.isPegasus)
-				if ((this.isFlying) || (this.issneak))
-				{
-				  for (int i = 0; i < this.LeftWingExt.Length; i++)
-				  {
-					this.LeftWingExt[i].a(this.scale);
-				  }
-				  for (int i = 0; i < this.RightWingExt.Length; i++)
-				  {
-					this.RightWingExt[i].a(this.scale);
-				  }
-				}
-				else {
-				  for (int i = 0; i < this.LeftWing.Length; i++)
-				  {
-					this.LeftWing[i].a(this.scale);
-				  }
-				  for (int i = 0; i < this.RightWing.Length; i++)
-				  {
-					this.RightWing[i].a(this.scale);
-				  }
-				}
-			}
-			else {
-			  this.SteveArm.a(this.scale);
-			}
-		  }
-
-		  public void specials(wb renderman, vi player)
-		  {
-			if (!this.isSleeping) {
-			  if (this.isUnicorn) {
-				if (this.aimedBow)
-				{
-				  renderDrop(renderman, player, this.unicornarm, 1.0F, 0.15F, 0.9375F, 0.0625F);
-				}
-				else renderDrop(renderman, player, this.unicornarm, 1.0F, 0.35F, 0.5375F, -0.45F);
-
-			  }
-			  else
-			  {
-				renderDrop(renderman, player, this.rightarm, 1.0F, -0.0625F, 0.8375F, 0.0625F);
-			  }
-
-			}
-
-			renderPumpkin(renderman, player, this.head, 0.625F, 0.0F, 0.0F, -0.15F);
-		  }
-
-		  protected void renderGlow(wb renderman, vi player)
-		  {
-			dk drop = player.by.a();
-			if (drop == null)
-			  return;
-			GL11.glPushMatrix();
-			double d = player.s;
-			double d1 = player.t;
-			double d2 = player.u;
-			GL11.glEnable(32826);
-			GL11.glTranslatef((float)d + 0.0F, (float)d1 + 2.3F, (float)d2);
-
-			GL11.glScalef(5.0F, 5.0F, 5.0F);
-			GL11.glRotatef(-renderman.i, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(renderman.j, 1.0F, 0.0F, 0.0F);
-
-			zh renderengine = renderman.e;
-			renderengine.b(renderengine.b("/fx/glow.png"));
-			cv tessellator = cv.a;
-
-			float f2 = 0.0F;
-
-			float f3 = 0.25F;
-
-			float f4 = 0.0F;
-
-			float f5 = 0.25F;
-			float f6 = 1.0F;
-			float f7 = 0.5F;
-			float f8 = 0.25F;
-			tessellator.b();
-			tessellator.b(0.0F, 1.0F, 0.0F);
-
-			tessellator.a(-1.0D, -1.0D, 0.0D, 0.0D, 1.0D);
-			tessellator.a(-1.0D, 1.0D, 0.0D, 1.0D, 1.0D);
-			tessellator.a(1.0D, 1.0D, 0.0D, 1.0D, 0.0D);
-			tessellator.a(1.0D, -1.0D, 0.0D, 0.0D, 0.0D);
-			tessellator.a();
-			GL11.glDisable(32826);
-			GL11.glPopMatrix();
-		  }*/
 		}
 
 		public static void LoadModels()
@@ -3105,6 +2998,7 @@ namespace MCSkin3D
 			new ModelZombie().Compile("Zombie", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Zombie.xml");
 			new ModelSkeleton().Compile("Skeleton", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
 			new ModelCloak().Compile("Cloak", 1, 64.0f / 32.0f).Save("Models\\Other\\Cloak.xml");
+			new ModelArmor().Compile("Armor", 1, 64.0f / 32.0f).Save("Models\\Other\\Armor.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f / 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
 

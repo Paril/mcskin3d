@@ -165,12 +165,39 @@
     <Compile Include="Paril\Controls\NumericUpDownMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Paril\Controls\UndoRedoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Paril\Controls\UndoRedoPanel.Designer.cs">
+      <DependentUpon>UndoRedoPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Paril\Cryptography\Crc32.cs" />
     <Compile Include="Paril\Drawing\Bounds.cs" />
     <Compile Include="Paril\Imaging\PNGMetadata.cs" />
     <Compile Include="Paril\Net\WebHelpers.cs" />
     <Compile Include="Paril\OpenGL\Texture.cs" />
     <Compile Include="Paril\OpenGL\TextureGL.cs" />
+    <Compile Include="PopupControl\ComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PopupControl\ComboBox.designer.cs">
+      <DependentUpon>ComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PopupControl\GripBounds.cs" />
+    <Compile Include="PopupControl\NativeMethods.cs" />
+    <Compile Include="PopupControl\Popup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PopupControl\Popup.designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PopupControl\PopupAnimations.cs" />
+    <Compile Include="PopupControl\PopupComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PopupControl\PopupComboBox.designer.cs">
+      <DependentUpon>PopupComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="SVN.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
@@ -426,6 +453,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Paril\Components\Shortcuts\ShortcutEditor.resx">
       <DependentUpon>ShortcutEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Paril\Controls\UndoRedoPanel.resx">
+      <DependentUpon>UndoRedoPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

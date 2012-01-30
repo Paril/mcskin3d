@@ -52,6 +52,7 @@ using System.Globalization;
 using MCSkin3D.Forms;
 using Version = Paril.Components.Update.Version;
 using Paril.Drawing;
+using Paril.Controls;
 
 namespace MCSkin3D
 {
@@ -332,7 +333,7 @@ namespace MCSkin3D
 			_watcher.Deleted += _watcher_Deleted;
 			_watcher.Renamed += _watcher_Renamed;
 			_watcher.IncludeSubdirectories = true;
-			_watcher.EnableRaisingEvents = true;
+			//_watcher.EnableRaisingEvents = true;
 
 			if (GlobalSettings.OnePointOhMode)
 				ModelLoader.InvertBottomFaces();
@@ -346,6 +347,16 @@ namespace MCSkin3D
 			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Maximum = 16;
 			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
 			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
+
+			var undoListBox = new UndoRedoPanel();
+
+			undoListBox.ActionString = "Undo {0} actions";
+
+			for (int i = 0; i < 100; ++i)
+				undoListBox.ListBox.Items.Add("Test " + i.ToString());
+
+			PopupControl.Popup p = new PopupControl.Popup(undoListBox);
+			toolStripSplitButton1.DropDown = p;
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -1199,6 +1210,7 @@ namespace MCSkin3D
 
 		void DrawPlayer(Texture tex, Skin skin, bool pickView)
 		{
+			TextureGL.Unbind();
 			bool grass = !pickView && grassToolStripMenuItem.Checked;
 
 			var clPt = rendererControl.PointToClient(Cursor.Position);
@@ -2083,7 +2095,7 @@ namespace MCSkin3D
 			string folderLocation;
 			TreeNodeCollection collection;
 
-			if (_rightClickedNode == null)
+			if (_rightClickedNode == null || _rightClickedNode.Parent == null)
 				_rightClickedNode = treeView1.SelectedNode;
 
 			if (_rightClickedNode != null)
@@ -2115,6 +2127,7 @@ namespace MCSkin3D
 			while (Directory.Exists(folderLocation + newFolderName))
 				newFolderName = newFolderName.Insert(0, Editor.GetLanguageString("C_NEW"));
 
+			AddIgnoreFile(folderLocation + newFolderName);
 			Directory.CreateDirectory(folderLocation + newFolderName);
 			var newNode = new FolderNode(newFolderName);
 			collection.Add(newNode);
@@ -3026,11 +3039,8 @@ namespace MCSkin3D
 
 			GL.LoadMatrix(ref viewMatrix);
 
-			cameraMatrix =
-				Matrix4.CreateTranslation(-vec.X, -vec.Y, 0) *
-				Matrix4.CreateTranslation(0, 0, _3dZoom) *
-				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
-				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX));
+			cameraMatrix = viewMatrix;
+			cameraMatrix.Invert();
 
 			CameraPosition = Vector3.TransformPosition(Vector3.Zero, cameraMatrix);
 		}
@@ -4297,14 +4307,14 @@ namespace MCSkin3D
 		{
 			GlobalSettings.DynamicOverlayLineSize = (int)mLINESIZEToolStripMenuItem.NumericBox.Value;
 
-			SetModel(CurrentModel);
+			//SetModel(CurrentModel);
 		}
 
 		void mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayTextSize = (int)mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value;
 
-			SetModel(CurrentModel);
+			//SetModel(CurrentModel);
 		}
 
 		ModelToolStripMenuItem _oldModel = null;
@@ -4314,12 +4324,12 @@ namespace MCSkin3D
 			if (_lastSkin == null)
 				return;
 
-			if (_dynamicOverlay.GLImage != null)
-				_dynamicOverlay.GLImage.Dispose();
+			//if (_dynamicOverlay.GLImage != null)
+			//	_dynamicOverlay.GLImage.Dispose();
 
-			_dynamicOverlay.GLImage = new TextureGL(Model.GenerateOverlay(GlobalSettings.DynamicOverlayLineColor, GlobalSettings.DynamicOverlayTextColor, Model.AspectRatio, 1 << GlobalSettings.DynamicOverlayTextSize, GlobalSettings.DynamicOverlayLineSize));
-			_dynamicOverlay.GLImage.SetMipmapping(false);
-			_dynamicOverlay.GLImage.SetRepeat(false);
+			//_dynamicOverlay.GLImage = new TextureGL(Model.GenerateOverlay(GlobalSettings.DynamicOverlayLineColor, GlobalSettings.DynamicOverlayTextColor, Model.AspectRatio, 1 << GlobalSettings.DynamicOverlayTextSize, GlobalSettings.DynamicOverlayLineSize));
+			//_dynamicOverlay.GLImage.SetMipmapping(false);
+			//_dynamicOverlay.GLImage.SetRepeat(false);
 
 			if (_oldModel != null &&
 				_oldModel.Model == Model)
@@ -4391,6 +4401,10 @@ namespace MCSkin3D
 					rendererControl.Invalidate();
 				}
 			}
+		}
+
+		private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
+		{
 		}
 	}
 }
