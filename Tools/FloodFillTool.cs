@@ -41,7 +41,7 @@ namespace MCSkin3D
 
 		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
-			_undo = new PixelsChangedUndoable();
+			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"), Editor.MainForm.SelectedTool.MenuItem.Text);
 			_boundBox = new Rectangle(0, 0, skin.Width, skin.Height);
 
 			if ((Control.ModifierKeys & Keys.Control) != 0)

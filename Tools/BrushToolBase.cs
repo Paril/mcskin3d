@@ -36,7 +36,7 @@ namespace MCSkin3D
 		Point _oldPixel = new Point(-1, -1);
 		public virtual void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
-			_undo = new PixelsChangedUndoable();
+			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"), Editor.MainForm.SelectedTool.MenuItem.Text);
 		}
 
 		public virtual void MouseMove(Skin skin, MouseEventArgs e)

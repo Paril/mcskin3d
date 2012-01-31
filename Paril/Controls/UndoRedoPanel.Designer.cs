@@ -28,9 +28,20 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.listBox1 = new Paril.Controls.SelectionListBox();
 			this.SuspendLayout();
+			// 
+			// label1
+			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label1.Location = new System.Drawing.Point(0, 109);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(199, 19);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "Undo x actions";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// listBox1
 			// 
@@ -46,17 +57,6 @@
 			this.listBox1.Size = new System.Drawing.Size(199, 106);
 			this.listBox1.TabIndex = 0;
 			// 
-			// label1
-			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label1.Location = new System.Drawing.Point(0, 109);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(199, 19);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Undo x actions";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
 			// UndoRedoPanel
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -71,7 +71,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.ListBox listBox1;
+		private SelectionListBox listBox1;
 		private System.Windows.Forms.Label label1;
 	}
 }

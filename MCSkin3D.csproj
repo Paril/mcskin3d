@@ -360,6 +360,7 @@
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\ITool.cs" />
+    <Compile Include="Tools\Stamp.cs" />
     <Compile Include="Tools\ToolIndex.cs" />
     <Compile Include="Controls\Tools\ToolOptionBase.cs">
       <SubType>UserControl</SubType>
@@ -376,6 +377,7 @@
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
     <Content Include="Icon_new.ico" />
+    <None Include="Resources\stamp_pattern.png" />
     <None Include="Resources\tinyfont.png" />
     <None Include="Resources\FFFATLAN.TTF" />
     <None Include="Resources\ProggyTinySZ.ttf" />

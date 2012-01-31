@@ -24,7 +24,7 @@ namespace Paril.Controls
 			set { _actionString = value; ResetString(); }
 		}
 
-		public ListBox ListBox
+		public SelectionListBox ListBox
 		{
 			get { return listBox1; }
 		}
@@ -37,6 +37,59 @@ namespace Paril.Controls
 		void listBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			ResetString();
+		}
+
+		protected override void OnLostFocus(EventArgs e)
+		{
+			base.OnLostFocus(e);
+			ListBox.SelectItems(-1);
+		}
+	}
+
+	public class SelectionListBox : ListBox
+	{
+		public SelectionListBox()
+		{
+			SetStyle(ControlStyles.UserMouse, true);
+		}
+
+		public int HighestItemSelected
+		{
+			get;
+			private set;
+		}
+
+		internal void SelectItems(int highItem)
+		{
+			if (HighestItemSelected <= highItem)
+			{
+				for (int i = HighestItemSelected; i <= highItem; ++i)
+					SelectedIndices.Add(i);
+			}
+			else
+			{
+				for (int i = HighestItemSelected; i > highItem; --i)
+					SelectedIndices.Remove(i);
+			}
+
+			HighestItemSelected = highItem;
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			var highItem = IndexFromPoint(e.Location);
+
+			if (highItem != -1)
+				SelectItems(highItem);
+
+			base.OnMouseMove(e);
+		}
+
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			//SelectItems(-1);
+
+			base.OnMouseLeave(e);
 		}
 	}
 }
