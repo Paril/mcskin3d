@@ -42,6 +42,17 @@ namespace MCSkin3D
 	public class PixelsChangedUndoable : IUndoable
 	{
 		public Dictionary<Point, Tuple<Color, ColorAlpha>> Points = new Dictionary<Point, Tuple<Color, ColorAlpha>>();
+		public string Action { get; private set; }
+
+		public PixelsChangedUndoable(string action)
+		{
+			Action = action + " [" + DateTime.Now.ToString("h:mm:ss") + "]";
+		}
+
+		public PixelsChangedUndoable(string action, string tool) :
+			this(action + " (" + tool + ")")
+		{
+		}
 
 		public void Undo(object obj)
 		{

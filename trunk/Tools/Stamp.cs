@@ -17,14 +17,35 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Drawing;
+using Paril.Compatibility;
+using System.Windows.Forms;
 
-namespace Paril.Components
+namespace MCSkin3D
 {
-	public interface IUndoable
+	public class StampTool : BrushToolBase
 	{
-		string Action { get; }
+		public override bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		{
+			return MouseMoveOnSkin(ref pixels, skin, x, y, GlobalSettings.PencilIncremental);
+		}
 
-		void Undo(object obj);
-		void Redo(object obj);
+		public override Color BlendColor(Color l, Color r)
+		{
+			return (Color)ColorBlending.AlphaBlend(l, r);
+		}
+
+		public override Color GetLeftColor()
+		{
+			return ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
+		}
+
+		public override string GetStatusLabelText()
+		{
+			return Editor.GetLanguageString("T_STAMP");
+		}
 	}
 }

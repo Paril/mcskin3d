@@ -37,7 +37,7 @@ namespace PopupControl
     /// <summary>
     /// Represents a pop-up window.
     /// </summary>
-    [CLSCompliant(true), ToolboxItem(false)]
+    [ToolboxItem(false)]
     public partial class Popup : ToolStripDropDown
     {
         #region " Fields & Properties "

@@ -543,6 +543,20 @@ namespace Paril.OpenGL
 			);
 		}
 
+		float lerp(float min, float max, float value)
+		{
+			return min + value * (max - min);
+		}
+
+		Color4 GetHeatMap(int count, int index)
+		{
+			Color4 blue = Color4.Blue;
+			Color4 red = Color4.Red;
+			float l = lerp(0, 1.0f, (float)index / (float)count);
+
+			return new Color4(l, 0, (1 - l), 255);
+		}
+
 		public void Render()
 		{
 			Sort();
@@ -552,8 +566,17 @@ namespace Paril.OpenGL
 			foreach (var mesh in OpaqueMeshes)
 				RenderMesh(mesh);
 			GL.Enable(EnableCap.Blend);
+			
 			foreach (var mesh in TransparentMeshes)
+			{
+				/*foreach (var f in mesh.Faces)
+					for (int i = 0; i < f.Colors.Length; ++i)
+						f.Colors[i] = GetHeatMap(TransparentMeshes.Count, TransparentMeshes.IndexOf(mesh));
+				*/
+
 				RenderMesh(mesh);
+			}
+
 			GL.Disable(EnableCap.Blend);
 	
 			PostRender();

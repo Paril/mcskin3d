@@ -29,6 +29,32 @@ namespace Paril.Components
 		public int _depth = -1;
 		public object Object;
 
+		public IEnumerable<IUndoable> UndoList
+		{
+			get
+			{
+				if (_depth == -1)
+				{
+					foreach (var x in Undos)
+						yield return x;
+				}
+				else
+				{
+					for (int i = 0; i < CurrentIndex; ++i)
+						yield return Undos[i];
+				}
+			}
+		}
+
+		public IEnumerable<IUndoable> RedoList
+		{
+			get
+			{
+				for (int i = Undos.Count - 1; i >= CurrentIndex; --i)
+					yield return Undos[i];
+			}
+		}
+
 		public int CurrentIndex
 		{
 			get

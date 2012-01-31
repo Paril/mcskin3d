@@ -98,7 +98,10 @@ namespace MCSkin3D
 		List<ToolIndex> _tools = new List<ToolIndex>();
 		ToolIndex _selectedTool;
 		FileSystemWatcher _watcher;
+		UndoRedoPanel _undoListBox, _redoListBox;
 		#endregion
+
+		public ToolIndex SelectedTool { get { return _selectedTool; } }
 
 		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
 		public DarkenLightenOptions DarkenLightenOptions { get; private set; }
@@ -157,6 +160,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
 			_tools.Add(new ToolIndex(new NoiseTool(), NoiseOptions, "T_TOOL_NOISE", Properties.Resources.noise, Keys.N));
+			_tools.Add(new ToolIndex(new StampTool(), null, "T_TOOL_STAMP", Properties.Resources.stamp_pattern, Keys.M));
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -213,7 +217,7 @@ namespace MCSkin3D
 			{
 				toolToolStripMenuItem.DropDownItems.Insert(0, _tools[i].MenuItem);
 				_tools[i].MenuItem.Click += ToolMenuItemClicked;
-				toolStrip1.Items.Insert(6, _tools[i].Button);
+				toolStrip1.Items.Insert(toolStrip1.Items.IndexOf(toolStripSeparator1) + 1, _tools[i].Button);
 				_tools[i].Button.Click += ToolMenuItemClicked;
 
 				languageProvider1.SetPropertyNames(_tools[i].MenuItem, "Text");
@@ -348,15 +352,23 @@ namespace MCSkin3D
 			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
 			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
 
-			var undoListBox = new UndoRedoPanel();
+			_undoListBox = new UndoRedoPanel();
+			_undoListBox.ActionString = "Undo {0} actions";
 
-			undoListBox.ActionString = "Undo {0} actions";
+			_undoListBox.ListBox.MouseClick += new MouseEventHandler(UndoListBox_MouseClick);
 
-			for (int i = 0; i < 100; ++i)
-				undoListBox.ListBox.Items.Add("Test " + i.ToString());
+			undoToolStripButton.DropDown = new PopupControl.Popup(_undoListBox);
+			undoToolStripButton.DropDownOpening += new EventHandler(undoToolStripButton_DropDownOpening);
 
-			PopupControl.Popup p = new PopupControl.Popup(undoListBox);
-			toolStripSplitButton1.DropDown = p;
+			_redoListBox = new UndoRedoPanel();
+			_redoListBox.ActionString = "Redo {0} actions";
+
+			_redoListBox.ListBox.MouseClick += new MouseEventHandler(RedoListBox_MouseClick);
+
+			redoToolStripButton.DropDown = new PopupControl.Popup(_redoListBox);
+			redoToolStripButton.DropDownOpening += new EventHandler(redoToolStripButton_DropDownOpening);
+
+			undoToolStripButton.DropDown.AutoClose = redoToolStripButton.DropDown.AutoClose = false;
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -1282,11 +1294,12 @@ namespace MCSkin3D
 				Skin skin = _lastSkin;
 
 				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
-				currentSkin.Load();
 
 				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
 
+				if (pick)
 				{
+					currentSkin.Load();
 					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
 					{
 						currentSkin.Texture = _previewPaint;
@@ -1297,6 +1310,13 @@ namespace MCSkin3D
 						currentSkin.Texture = _previewPaint;
 						currentSkin.Save();
 					}
+				}
+				else
+				{
+					currentSkin.Texture = _lastSkin.GLImage;
+					currentSkin.Load();
+					currentSkin.Texture = _previewPaint;
+					currentSkin.Save();
 				}
 			}
 		}
@@ -1650,7 +1670,8 @@ namespace MCSkin3D
 
 		public bool GetPick(int x, int y, ref Point hitPixel)
 		{
-			if (x == -1 || y == -1)
+			if (x < 0 || y < 0
+				|| x > rendererControl.Width || y > rendererControl.Height)
 				return false;
 
 			rendererControl.MakeCurrent();
@@ -2340,6 +2361,7 @@ namespace MCSkin3D
 		void SetCanSave(bool value)
 		{
 			saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = value;
+			CheckUndo();
 		}
 
 		void PerformSaveAs()
@@ -2448,40 +2470,100 @@ namespace MCSkin3D
 		}
 		#endregion
 
-		void PerformUndo()
+		void BeginUndo()
 		{
 			if (!_currentUndoBuffer.CanUndo)
 				return;
 
 			rendererControl.MakeCurrent();
+		}
+
+		void DoUndo()
+		{
+			if (!_currentUndoBuffer.CanUndo)
+				throw new Exception();
 
 			_currentUndoBuffer.Undo();
+		}
 
+		void EndUndo()
+		{
 			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
 			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
 
-			Skin current = _lastSkin;
-			SetCanSave(current.Dirty = true);
+			SetCanSave(_lastSkin.Dirty = true);
+
+			rendererControl.Invalidate();
+		}
+
+		void PerformUndo()
+		{
+			BeginUndo();
+			DoUndo();
+			EndUndo();
+		}
+
+		void UndoListBox_MouseClick(object sender, MouseEventArgs e)
+		{
+			undoToolStripButton.DropDown.Close();
+
+			BeginUndo();
+			for (int i = 0; i <= _undoListBox.ListBox.HighestItemSelected; ++i)
+				DoUndo();
+			EndUndo();
+		}
+
+		void undoToolStripButton_DropDownOpening(object sender, EventArgs e)
+		{
+			_undoListBox.ListBox.Items.Clear();
+
+			foreach (var x in _currentUndoBuffer.UndoList)
+				_undoListBox.ListBox.Items.Insert(0, x.Action);
+		}
+
+		void BeginRedo()
+		{
+			if (!_currentUndoBuffer.CanRedo)
+				return;
+
+			rendererControl.MakeCurrent();
+		}
+
+		void DoRedo()
+		{
+			_currentUndoBuffer.Redo();
+		}
+
+		void EndRedo()
+		{
+			SetCanSave(_lastSkin.Dirty = true);
 
 			rendererControl.Invalidate();
 		}
 
 		void PerformRedo()
 		{
-			if (!_currentUndoBuffer.CanRedo)
-				return;
+			BeginRedo();
+			DoRedo();
+			EndRedo();
+		}
 
-			rendererControl.MakeCurrent();
+		void RedoListBox_MouseClick(object sender, MouseEventArgs e)
+		{
+			redoToolStripButton.DropDown.Close();
 
-			_currentUndoBuffer.Redo();
+			BeginRedo();
+			for (int i = 0; i <= _redoListBox.ListBox.HighestItemSelected; ++i)
+				DoRedo();
+			EndRedo();
+		}
 
-			Skin current = _lastSkin;
-			SetCanSave(current.Dirty = true);
+		void redoToolStripButton_DropDownOpening(object sender, EventArgs e)
+		{
+			_redoListBox.ListBox.Items.Clear();
 
-			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
-			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
-
-			rendererControl.Invalidate();
+			foreach (var x in _currentUndoBuffer.RedoList)
+				_redoListBox.ListBox.Items.Insert(0, x.Action);
 		}
 
 		Paril.Controls.Color.ColorPreview SelectedColorPreview
@@ -2956,6 +3038,8 @@ namespace MCSkin3D
 
 		void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
+			_mousePoint = rendererControl.PointToClient(MousePosition);
+
 			rendererControl.MakeCurrent();
 			SetPreview();
 
@@ -3241,8 +3325,16 @@ namespace MCSkin3D
 
 		public void CheckUndo()
 		{
-			undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
-			redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+			if (_currentUndoBuffer != null)
+			{
+				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = _currentUndoBuffer.CanUndo;
+				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = _currentUndoBuffer.CanRedo;
+			}
+			else
+			{
+				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = false;
+				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = false;
+			}
 		}
 
 		void rendererControl_MouseLeave(object sender, EventArgs e)
@@ -3388,7 +3480,7 @@ namespace MCSkin3D
 			}
 		}
 
-		void undoToolStripButton_Click(object sender, EventArgs e)
+		void undoToolStripButton_ButtonClick(object sender, EventArgs e)
 		{
 			PerformUndo();
 		}
@@ -4181,9 +4273,9 @@ namespace MCSkin3D
 
 				treeView1.Invalidate();
 			}
-			catch
+			catch (Exception ex)
 			{
-				MessageBox.Show(this, GetLanguageString("M_SKINERROR"));
+				MessageBox.Show(this, GetLanguageString("M_SKINERROR") + "\r\n" + ex.ToString());
 				return;
 			}
 		}
@@ -4276,7 +4368,7 @@ namespace MCSkin3D
 				}
 			}
 
-			PixelsChangedUndoable undoable = new PixelsChangedUndoable();
+			PixelsChangedUndoable undoable = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"), Editor.GetLanguageString("M_INVERTBOTTOM"));
 
 			foreach (var rect in toInvert)
 			{
@@ -4403,8 +4495,9 @@ namespace MCSkin3D
 			}
 		}
 
-		private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
+		private void splitContainer4_Panel2_Paint(object sender, PaintEventArgs e)
 		{
+
 		}
 	}
 }

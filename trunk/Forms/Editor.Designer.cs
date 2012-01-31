@@ -173,8 +173,8 @@
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.undoToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.redoToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.undoToolStripButton = new System.Windows.Forms.ToolStripSplitButton();
+			this.redoToolStripButton = new System.Windows.Forms.ToolStripSplitButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.perspectiveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -193,7 +193,6 @@
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-			this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
@@ -1681,6 +1680,7 @@
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.statusStrip1);
+			this.splitContainer4.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer4_Panel2_Paint);
 			this.splitContainer4.Size = new System.Drawing.Size(693, 619);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
@@ -1713,7 +1713,6 @@
             this.saveToolStripButton,
             this.saveAlltoolStripButton,
             this.toolStripSeparator6,
-            this.toolStripSplitButton1,
             this.undoToolStripButton,
             this.redoToolStripButton,
             this.toolStripSeparator1,
@@ -1775,9 +1774,9 @@
 			this.undoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.undoToolStripButton.Name = "undoToolStripButton";
 			this.languageProvider1.SetPropertyNames(this.undoToolStripButton, "Text");
-			this.undoToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.undoToolStripButton.Size = new System.Drawing.Size(32, 22);
 			this.undoToolStripButton.Text = "T_UNDO";
-			this.undoToolStripButton.Click += new System.EventHandler(this.undoToolStripButton_Click);
+			this.undoToolStripButton.ButtonClick += new System.EventHandler(this.undoToolStripButton_ButtonClick);
 			// 
 			// redoToolStripButton
 			// 
@@ -1786,9 +1785,8 @@
 			this.redoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.redoToolStripButton.Name = "redoToolStripButton";
 			this.languageProvider1.SetPropertyNames(this.redoToolStripButton, "Text");
-			this.redoToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.redoToolStripButton.Size = new System.Drawing.Size(32, 22);
 			this.redoToolStripButton.Text = "T_REDO";
-			this.redoToolStripButton.Click += new System.EventHandler(this.redoToolStripButton_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -1956,15 +1954,6 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
-			// toolStripSplitButton1
-			// 
-			this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripSplitButton1.Image = global::MCSkin3D.Properties.Resources.Edit_UndoHS;
-			this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-			this.toolStripSplitButton1.Size = new System.Drawing.Size(32, 22);
-			this.toolStripSplitButton1.Text = "toolStripSplitButton1";
-			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2119,8 +2108,6 @@
 		private System.Windows.Forms.ToolStripButton saveToolStripButton;
 		private System.Windows.Forms.ToolStripButton saveAlltoolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripButton undoToolStripButton;
-		private System.Windows.Forms.ToolStripButton redoToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripButton perspectiveToolStripButton;
@@ -2183,7 +2170,8 @@
 		private Paril.Controls.NumericUpDownMenuItem mLINESIZEToolStripMenuItem;
 		private Paril.Controls.NumericUpDownMenuItem mOVERLAYTEXTSIZEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
-		private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
+		private System.Windows.Forms.ToolStripSplitButton undoToolStripButton;
+		private System.Windows.Forms.ToolStripSplitButton redoToolStripButton;
 	}
 }
 

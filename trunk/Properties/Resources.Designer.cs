@@ -473,6 +473,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap stamp_pattern {
+            get {
+                object obj = ResourceManager.GetObject("stamp_pattern", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap tinyfont {
             get {
                 object obj = ResourceManager.GetObject("tinyfont", resourceCulture);
