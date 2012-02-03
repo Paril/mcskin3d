@@ -1284,24 +1284,6 @@ namespace MCSkin3D
 				_renderer.Render();
 			else
 				_renderer.RenderWithoutTransparency();
-
-			TextureGL.Unbind();
-			GL.Color3(255, 255, 255);
-			GL.PointSize(4);
-			GL.Begin(BeginMode.Points);
-			var bnds = Bounds3.EmptyBounds;
-			foreach (var mes in CurrentModel.Meshes)
-			{
-				bnds += mes.Bounds;
-				//foreach (var fac in mes.Faces)
-				//{
-					//foreach (var ver in fac.Vertices)
-					//{
-				//}
-				//}
-			}
-			GL.Vertex3(bnds.Center);
-			GL.End();
 		}
 
 		Point _pickPosition = new Point(-1, -1);
@@ -3142,7 +3124,11 @@ namespace MCSkin3D
 				}
 			}
 
-			GrassY = vec.Maxs.Y;
+			var allBounds = Bounds3.EmptyBounds;
+			foreach (var mesh in CurrentModel.Meshes)
+				allBounds += mesh.Bounds;
+
+			GrassY = allBounds.Maxs.Y;
 			var center = vec.Center;
 
 			// FIXME: calculate these only on change
