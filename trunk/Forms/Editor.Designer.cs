@@ -194,6 +194,8 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.mSHAREDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mINFINITEMOUSEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -358,6 +360,7 @@
             this.toolStripSeparator3,
             this.threeDToolStripMenuItem,
             this.twoDToolStripMenuItem,
+            this.mSHAREDToolStripMenuItem,
             this.toolStripSeparator8,
             this.transparencyModeToolStripMenuItem,
             this.visiblePartsToolStripMenuItem});
@@ -1680,7 +1683,6 @@
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.statusStrip1);
-			this.splitContainer4.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer4_Panel2_Paint);
 			this.splitContainer4.Size = new System.Drawing.Size(693, 619);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
@@ -1954,6 +1956,23 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
+			// mSHAREDToolStripMenuItem
+			// 
+			this.mSHAREDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mINFINITEMOUSEToolStripMenuItem});
+			this.mSHAREDToolStripMenuItem.Name = "mSHAREDToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mSHAREDToolStripMenuItem, "Text");
+			this.mSHAREDToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.mSHAREDToolStripMenuItem.Text = "M_SHARED";
+			// 
+			// mINFINITEMOUSEToolStripMenuItem
+			// 
+			this.mINFINITEMOUSEToolStripMenuItem.Name = "mINFINITEMOUSEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mINFINITEMOUSEToolStripMenuItem, "Text");
+			this.mINFINITEMOUSEToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.mINFINITEMOUSEToolStripMenuItem.Text = "M_INFINITEMOUSE";
+			this.mINFINITEMOUSEToolStripMenuItem.Click += new System.EventHandler(this.mINFINITEMOUSEToolStripMenuItem_Click);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2172,6 +2191,8 @@
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
 		private System.Windows.Forms.ToolStripSplitButton undoToolStripButton;
 		private System.Windows.Forms.ToolStripSplitButton redoToolStripButton;
+		private System.Windows.Forms.ToolStripMenuItem mSHAREDToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mINFINITEMOUSEToolStripMenuItem;
 	}
 }
 

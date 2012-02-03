@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
-using Paril.OpenGL;
 
-namespace MCSkin3D
+namespace Paril.OpenGL
 {
 	[StructLayout(LayoutKind.Explicit)]
 	public struct ColorPixel
@@ -111,10 +110,7 @@ namespace MCSkin3D
 		public ColorPixel[] Array
 		{
 			get { return _array; }
-			set
-			{
-				value.CopyTo(_array, 0);
-			}
+			set { value.CopyTo(_array, 0); }
 		}
 	}
 }

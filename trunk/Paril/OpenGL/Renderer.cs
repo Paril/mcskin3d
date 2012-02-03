@@ -172,16 +172,9 @@ namespace Paril.OpenGL
 				{
 					count++;
 
-					var m =
-					//Matrix4.CreateTranslation(-mesh.Pivot) *
-			Matrix4.CreateRotationX(MathHelper.DegreesToRadians(Rotate.X)) *
-				Matrix4.CreateRotationY(MathHelper.DegreesToRadians(Rotate.Y)) *
-				Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotate.Z)) *
-						//Matrix4.CreateTranslation(mesh.Pivot) *
-				Matrix4.CreateTranslation(Translate);
-
-					Center += Vector3.Transform(v, m);
-					Bounds += Vector3.Transform(v, m);
+					var transformed = Model.TranslateVertex(Translate, Rotate, Pivot, v);
+					Center += transformed;
+					Bounds += transformed;
 				}
 			}
 
@@ -281,14 +274,12 @@ namespace Paril.OpenGL
 			}
 		}
 
-		static Vector3 TranslateVertex(Vector3 Translate, Vector3 Rotate, Vector3 Pivot, Vector3 v)
+		public static Vector3 TranslateVertex(Vector3 Translate, Vector3 Rotate, Vector3 Pivot, Vector3 v)
 		{
 			var m =
-				//Matrix4.CreateTranslation(-mesh.Pivot) *
 				Matrix4.CreateRotationX(MathHelper.DegreesToRadians(Rotate.X)) *
 				Matrix4.CreateRotationY(MathHelper.DegreesToRadians(Rotate.Y)) *
 				Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotate.Z)) *
-				//Matrix4.CreateTranslation(mesh.Pivot) *
 				Matrix4.CreateTranslation(Translate);
 
 			return Vector3.Transform(v, m);

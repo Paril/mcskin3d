@@ -162,8 +162,12 @@ namespace MCSkin3D
 		public static int DynamicOverlayLineSize { get; set; }
 
 		[Savable]
-		[DefaultValue(2)]
+		[DefaultValue(1)]
 		public static int DynamicOverlayTextSize { get; set; }
+
+		[Savable]
+		[DefaultValue(true)]
+		public static bool InfiniteMouse { get; set; }
 
 		static Settings Settings = null;
 

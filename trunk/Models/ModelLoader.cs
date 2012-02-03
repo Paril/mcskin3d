@@ -27,6 +27,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace MCSkin3D
 {
@@ -3001,6 +3002,11 @@ namespace MCSkin3D
 			new ModelArmor().Compile("Armor", 1, 64.0f / 32.0f).Save("Models\\Other\\Armor.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f / 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
+
+			var psi = new ProcessStartInfo("flate.exe", "models\\*.xml e");
+			psi.CreateNoWindow = true;
+			psi.UseShellExecute = false;
+			Process.Start(psi).WaitForExit();
 
 			Directory.CreateDirectory("Models");
 

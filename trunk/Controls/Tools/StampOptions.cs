@@ -18,52 +18,41 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
-using Paril.OpenGL;
 
 namespace MCSkin3D
 {
-	public class DropperTool : ITool
+	public partial class StampOptions : ToolOptionBase
 	{
-		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
+		public StampOptions()
 		{
+			InitializeComponent();
 		}
 
-		public void MouseMove(Skin skin, MouseEventArgs e)
+		private void StampOptions_Load(object sender, EventArgs e)
 		{
+			checkBox1.Checked = GlobalSettings.PencilIncremental;
 		}
 
-		public void SelectedBrushChanged() { }
-
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		private void checkBox1_CheckedChanged(object sender, EventArgs e)
 		{
-			var c = pixels[x, y];
-			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-
-			if ((Control.ModifierKeys & Keys.Shift) != 0)
-				Editor.MainForm.UnselectedColor = oldColor;
-			else
-				Editor.MainForm.SelectedColor = oldColor;
-			return false;
+			GlobalSettings.PencilIncremental = checkBox1.Checked;
 		}
 
-		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public override void BoxShown()
 		{
-			return false;
+			groupBox1.Controls.Add(Brushes.BrushBox);
+			Brushes.BrushBox.Location = new Point(9, 19);
 		}
 
-		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public override void BoxHidden()
 		{
-			return false;
-		}
-
-		public string GetStatusLabelText()
-		{
-			return Editor.GetLanguageString("T_DROPPER");
+			groupBox1.Controls.Remove(Brushes.BrushBox);
 		}
 	}
 }

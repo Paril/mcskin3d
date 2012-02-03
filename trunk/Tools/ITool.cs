@@ -19,6 +19,7 @@
 using System;
 using System.Windows.Forms;
 using System.Drawing;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -30,5 +31,6 @@ namespace MCSkin3D
 		bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y);
 		bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e);
 		string GetStatusLabelText();
+		void SelectedBrushChanged();
 	}
 }

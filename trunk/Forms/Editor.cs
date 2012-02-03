@@ -109,6 +109,7 @@ namespace MCSkin3D
 		public FloodFillOptions FloodFillOptions { get; private set; }
 		public NoiseOptions NoiseOptions { get; private set; }
 		public EraserOptions EraserOptions { get; private set; }
+		public StampOptions StampOptions { get; private set; }
 
 		public static Editor MainForm { get; private set; }
 
@@ -151,6 +152,7 @@ namespace MCSkin3D
 			FloodFillOptions = new FloodFillOptions();
 			NoiseOptions = new NoiseOptions();
 			EraserOptions = new EraserOptions();
+			StampOptions = new StampOptions();
 
 			_tools.Add(new ToolIndex(new CameraTool(), null, "T_TOOL_CAMERA", Properties.Resources.eye__1_, Keys.C));
 			_tools.Add(new ToolIndex(new PencilTool(), PencilOptions, "T_TOOL_PENCIL", Properties.Resources.pen, Keys.P));
@@ -160,7 +162,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Properties.Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Properties.Resources.fill_bucket, Keys.F));
 			_tools.Add(new ToolIndex(new NoiseTool(), NoiseOptions, "T_TOOL_NOISE", Properties.Resources.noise, Keys.N));
-			_tools.Add(new ToolIndex(new StampTool(), null, "T_TOOL_STAMP", Properties.Resources.stamp_pattern, Keys.M));
+			_tools.Add(new ToolIndex(new StampTool(), StampOptions, "T_TOOL_STAMP", Properties.Resources.stamp_pattern, Keys.M));
 
 			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
 			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
@@ -353,7 +355,8 @@ namespace MCSkin3D
 			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
 
 			_undoListBox = new UndoRedoPanel();
-			_undoListBox.ActionString = "Undo {0} actions";
+			_undoListBox.ActionString = "L_UNDOACTIONS";
+			languageProvider1.SetPropertyNames(_undoListBox, "ActionString");
 
 			_undoListBox.ListBox.MouseClick += new MouseEventHandler(UndoListBox_MouseClick);
 
@@ -361,7 +364,8 @@ namespace MCSkin3D
 			undoToolStripButton.DropDownOpening += new EventHandler(undoToolStripButton_DropDownOpening);
 
 			_redoListBox = new UndoRedoPanel();
-			_redoListBox.ActionString = "Redo {0} actions";
+			_redoListBox.ActionString = "L_REDOACTIONS";
+			languageProvider1.SetPropertyNames(_redoListBox, "ActionString");
 
 			_redoListBox.ListBox.MouseClick += new MouseEventHandler(RedoListBox_MouseClick);
 
@@ -369,6 +373,8 @@ namespace MCSkin3D
 			redoToolStripButton.DropDownOpening += new EventHandler(redoToolStripButton_DropDownOpening);
 
 			undoToolStripButton.DropDown.AutoClose = redoToolStripButton.DropDown.AutoClose = false;
+
+			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -940,6 +946,7 @@ namespace MCSkin3D
 			twoDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
+			mSHAREDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 
 			optionsToolStripMenuItem.DropDown.Closing += (sender, args) =>
 			{
@@ -1235,7 +1242,7 @@ namespace MCSkin3D
 				GL.Disable(EnableCap.Blend);
 
 			if (grass)
-				DrawSkinnedRectangle(0, 24, 0, 1024, 4, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
+				DrawSkinnedRectangle(0, GrassY, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
 
 			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
 			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
@@ -1277,6 +1284,24 @@ namespace MCSkin3D
 				_renderer.Render();
 			else
 				_renderer.RenderWithoutTransparency();
+
+			TextureGL.Unbind();
+			GL.Color3(255, 255, 255);
+			GL.PointSize(4);
+			GL.Begin(BeginMode.Points);
+			var bnds = Bounds3.EmptyBounds;
+			foreach (var mes in CurrentModel.Meshes)
+			{
+				bnds += mes.Bounds;
+				//foreach (var fac in mes.Faces)
+				//{
+					//foreach (var ver in fac.Vertices)
+					//{
+				//}
+				//}
+			}
+			GL.Vertex3(bnds.Center);
+			GL.End();
 		}
 
 		Point _pickPosition = new Point(-1, -1);
@@ -1297,7 +1322,7 @@ namespace MCSkin3D
 
 				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
 
-				if (pick)
+				//if (pick)
 				{
 					currentSkin.Load();
 					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
@@ -1311,13 +1336,13 @@ namespace MCSkin3D
 						currentSkin.Save();
 					}
 				}
-				else
+				/*else
 				{
 					currentSkin.Texture = _lastSkin.GLImage;
 					currentSkin.Load();
 					currentSkin.Texture = _previewPaint;
 					currentSkin.Save();
-				}
+				}*/
 			}
 		}
 
@@ -1672,7 +1697,10 @@ namespace MCSkin3D
 		{
 			if (x < 0 || y < 0
 				|| x > rendererControl.Width || y > rendererControl.Height)
+			{
+				hitPixel = new Point(-1, -1);
 				return false;
+			}
 
 			rendererControl.MakeCurrent();
 
@@ -1721,6 +1749,7 @@ namespace MCSkin3D
 				return true;
 			}
 
+			hitPixel = new Point(-1, -1);
 			return false;
 		}
 
@@ -2362,6 +2391,8 @@ namespace MCSkin3D
 		{
 			saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = value;
 			CheckUndo();
+
+			//treeView1.Invalidate();
 		}
 
 		void PerformSaveAs()
@@ -3100,23 +3131,23 @@ namespace MCSkin3D
 
 			_currentViewport = viewport;
 
-			Vector3 vec = new Vector3();
+			Bounds3 vec = Bounds3.EmptyBounds;
 			int count = 0;
 			foreach (var mesh in CurrentModel.Meshes)
 			{
 				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
 				{
-					vec += mesh.Center;
+					vec += mesh.Bounds;
 					count++;
 				}
 			}
 
-			if (count != 0)
-				vec /= count;
+			GrassY = vec.Maxs.Y;
+			var center = vec.Center;
 
 			// FIXME: calculate these only on change
 			viewMatrix =
-				Matrix4.CreateTranslation(-vec.X, -vec.Y, 0) *
+				Matrix4.CreateTranslation(-center.X, -center.Y, -center.Z) *
 				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
 				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
 				Matrix4.CreateTranslation(0, 0, _3dZoom);
@@ -3321,6 +3352,7 @@ namespace MCSkin3D
 			}
 
 			_mouseIsDown = false;
+			treeView1.Invalidate();
 		}
 
 		public void CheckUndo()
@@ -4066,6 +4098,7 @@ namespace MCSkin3D
 				MainForm.login.languageProvider1.LanguageChanged(value);
 				MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
 				MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
+				MainForm.StampOptions.languageProvider1.LanguageChanged(value);
 				MainForm._importFromSite.languageProvider1.LanguageChanged(value);
 
 				if (MainForm._selectedTool != null)
@@ -4458,6 +4491,12 @@ namespace MCSkin3D
 			private set;
 		}
 
+		public static float GrassY
+		{
+			get;
+			private set;
+		}
+
 		private void resetCameraToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformResetCamera();
@@ -4495,9 +4534,10 @@ namespace MCSkin3D
 			}
 		}
 
-		private void splitContainer4_Panel2_Paint(object sender, PaintEventArgs e)
+		private void mINFINITEMOUSEToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
+			mINFINITEMOUSEToolStripMenuItem.Checked = !mINFINITEMOUSEToolStripMenuItem.Checked;
+			GlobalSettings.InfiniteMouse = mINFINITEMOUSEToolStripMenuItem.Checked;
 		}
 	}
 }

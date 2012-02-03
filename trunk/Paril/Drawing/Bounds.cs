@@ -5,6 +5,8 @@ namespace Paril.Drawing
 {
 	public struct Bounds3
 	{
+		public static readonly Bounds3 EmptyBounds = new Bounds3(new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), new Vector3(float.MinValue, float.MinValue, float.MinValue));
+
 		public Vector3 Mins;
 		public Vector3 Maxs;
 
