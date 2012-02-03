@@ -24,6 +24,7 @@ using System.Drawing;
 using Paril.Compatibility;
 using System.Windows.Forms;
 using Devcorp.Controls.Design;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {

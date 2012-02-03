@@ -103,7 +103,16 @@ namespace MCSkin3D
 
 		public static Brush SelectedBrush
 		{
-			get { return (Brush)BrushBox.SelectedItem; }
+			get;
+			private set;
+		}
+
+		static void BrushBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SelectedBrush = (Brush)BrushBox.SelectedItem;
+
+			if (Editor.MainForm.SelectedTool != null)
+				Editor.MainForm.SelectedTool.Tool.SelectedBrushChanged();
 		}
 
 		static Brush GenerateSquare(int size)
@@ -218,6 +227,7 @@ namespace MCSkin3D
 			foreach (var b in BrushList)
 				BrushBox.Items.Add(b);
 
+			BrushBox.SelectedIndexChanged += new EventHandler(BrushBox_SelectedIndexChanged);
 			BrushBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			BrushBox.SelectedIndex = 0;
 			BrushBox.Width = 44;

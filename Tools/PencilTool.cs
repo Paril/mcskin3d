@@ -23,6 +23,7 @@ using System.Text;
 using System.Drawing;
 using Paril.Compatibility;
 using System.Windows.Forms;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {

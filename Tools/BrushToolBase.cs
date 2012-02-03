@@ -23,6 +23,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using Paril.Compatibility;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -42,6 +43,8 @@ namespace MCSkin3D
 		public virtual void MouseMove(Skin skin, MouseEventArgs e)
 		{
 		}
+
+		public void SelectedBrushChanged() { }
 
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
 		{

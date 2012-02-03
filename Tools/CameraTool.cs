@@ -23,6 +23,7 @@ using System.Text;
 using System.Drawing;
 using Paril.Compatibility;
 using System.Windows.Forms;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -33,6 +34,8 @@ namespace MCSkin3D
 			_oldMouse = e.Location;
 		}
 
+		public void SelectedBrushChanged() { }
+
 		Point _oldMouse;
 		public void MouseMove(Skin skin, MouseEventArgs e)
 		{
@@ -42,6 +45,11 @@ namespace MCSkin3D
 				Editor.MainForm.RotateView(delta, 1);
 			else if (e.Button == Editor.MainForm.CameraZoom)
 				Editor.MainForm.ScaleView(delta, 1);
+
+			if (GlobalSettings.InfiniteMouse)
+			{
+
+			}
 
 			_oldMouse = e.Location;
 		}

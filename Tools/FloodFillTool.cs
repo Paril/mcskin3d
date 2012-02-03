@@ -24,6 +24,7 @@ using System.Drawing;
 using Paril.Compatibility;
 using System.Windows.Forms;
 using OpenTK;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -38,6 +39,8 @@ namespace MCSkin3D
 		PixelsChangedUndoable _undo;
 		Rectangle _boundBox;
 		bool _done = false;
+
+		public void SelectedBrushChanged() { }
 
 		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
