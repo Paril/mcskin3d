@@ -973,15 +973,15 @@ namespace MCSkin3D
 		public class ModelVillager : ModelBase
 		{
 			public ModelRenderer head;
-			public ModelRenderer body;
+			public ModelRenderer body, bodyOverwear;
 			public ModelRenderer arms;
 			public ModelRenderer field_40336_d;
 			public ModelRenderer field_40337_e;
-			public int field_40334_f;
 			public int field_40335_g;
 			public bool field_40341_n;
 			public bool field_40342_o;
 
+			public int field_40334_f;
 			public ModelVillager() :
 				this(0)
 			{
@@ -1018,10 +1018,12 @@ namespace MCSkin3D
 				field_40337_e.mirror = true;
 				field_40337_e.setRotationPoint(2.0F, 12F + f1, 0.0F);
 				field_40337_e.addBox("Left Leg", -2F, 0.0F, -2F, 4, 12, 4, f);
-				body = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, true, false)).setTextureSize(byte0, byte1);
+				body = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				body.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
 				body.setTextureOffset(16, 20).addBox("Body", -4F, 0.0F, -3F, 8, 12, 6, f);
-				body.setTextureOffset(0, 38).addBox("Overwear", -4F, 0.0F, -3F, 8, 18, 6, f + 0.5F);
+				bodyOverwear = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, true, false)).setTextureSize(byte0, byte1);
+				bodyOverwear.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
+				bodyOverwear.setTextureOffset(0, 38).addBox("Overwear", -4F, 0.0F, -3F, 8, 18, 6, f + 0.5F);
 			}
 		}
 
@@ -1367,8 +1369,6 @@ namespace MCSkin3D
 				bipedHeadwear = new ModelRenderer(this, 0, 16, VisiblePartFlags.HelmetFlag, true, false);
 				bipedHeadwear.addBox("Jaw", -4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
 				bipedHeadwear.setRotationPoint(0.0F, 0.0F + f, 0.0F);
-				boxList.Remove(bipedHead);
-				boxList.Add(bipedHead);
 				boxList.Remove(bipedBody);
 				bipedBody = new ModelRenderer(this, 32, 16, VisiblePartFlags.ChestFlag, false, false);
 				bipedBody.addBox("Body", -4F, 0.0F, -2F, 8, 12, 4, f1);
@@ -1898,6 +1898,7 @@ namespace MCSkin3D
 		{
 			public ModelZombie()
 			{
+				boxList.Remove(bipedHeadwear);
 				setRotationAngles(0, 0, 0, 0, 0, 0);
 			}
 
@@ -1943,6 +1944,8 @@ namespace MCSkin3D
 				bipedLeftLeg.mirror = true;
 				bipedLeftLeg.addBox("Left Leg", -1F, 0.0F, -1F, 2, 12, 2, f);
 				bipedLeftLeg.setRotationPoint(2.0F, 12F, 0.0F);
+
+				bipedBody.Helmet = true;
 
 				setRotationAngles(0, 0, 0, 0, 0, 0);
 			}
@@ -2961,6 +2964,164 @@ namespace MCSkin3D
 			}
 		}
 
+		public class ModelOzelot : ModelBase
+		{
+			ModelRenderer a;
+			ModelRenderer b;
+			ModelRenderer c;
+			ModelRenderer d;
+			ModelRenderer e;
+			ModelRenderer f;
+			ModelRenderer g;
+			ModelRenderer n;
+			int o;
+
+			public ModelOzelot()
+			{
+				o = 0;
+				g = new ModelRenderer(this, "head", VisiblePartFlags.HeadFlag, false, false);
+				g.setTextureOffset(0, 0).addBox("main", -2.5F, -2F, -3F, 5, 4, 5);
+				g.setTextureOffset(0, 24).addBox("nose", -1.5F, 0.0F, -4F, 3, 2, 2);
+				g.setTextureOffset(0, 10).addBox("ear1", -2F, -3F, 0.0F, 1, 1, 2);
+				g.setTextureOffset(6, 10).addBox("ear2", 1.0F, -3F, 0.0F, 1, 1, 2);
+				g.setRotationPoint(0.0F, 15F, -9F);
+				n = new ModelRenderer(this, 20, 0, VisiblePartFlags.HeadFlag, false, false);
+				n.addBox("?", -2F, 3F, -8F, 4, 16, 6, 0.0F);
+				n.setRotationPoint(0.0F, 12F, -10F);
+				e = new ModelRenderer(this, 0, 15, VisiblePartFlags.HeadFlag, false, false);
+				e.addBox("?", -0.5F, 0.0F, 0.0F, 1, 8, 1);
+				e.rotateAngleX = 0.9F;
+				e.setRotationPoint(0.0F, 15F, 8F);
+				f = new ModelRenderer(this, 4, 15, VisiblePartFlags.HeadFlag, false, false);
+				f.addBox("?", -0.5F, 0.0F, 0.0F, 1, 8, 1);
+				f.setRotationPoint(0.0F, 20F, 14F);
+				a = new ModelRenderer(this, 8, 13, VisiblePartFlags.HeadFlag, false, false);
+				a.addBox("?", -1F, 0.0F, 1.0F, 2, 6, 2);
+				a.setRotationPoint(1.1F, 18F, 5F);
+				b = new ModelRenderer(this, 8, 13, VisiblePartFlags.HeadFlag, false, false);
+				b.addBox("?", -1F, 0.0F, 1.0F, 2, 6, 2);
+				b.setRotationPoint(-1.1F, 18F, 5F);
+				c = new ModelRenderer(this, 40, 0, VisiblePartFlags.HeadFlag, false, false);
+				c.addBox("?", -1F, 0.0F, 0.0F, 2, 10, 2);
+				c.setRotationPoint(1.2F, 13.8F, -5F);
+				d = new ModelRenderer(this, 40, 0, VisiblePartFlags.HeadFlag, false, false);
+				d.addBox("?", -1F, 0.0F, 0.0F, 2, 10, 2);
+				d.setRotationPoint(-1.2F, 13.8F, -5F);
+
+				setup2(0, 0, 0, 0, 0, 0);
+			}
+
+			public void setup2(float f1, float f2, float f3, float f4, float f5, float f6)
+			{
+				setup(f1, f2, f3, f4, f5, f6);
+				setup3(f1, f2, f3);
+			}
+
+			public void setup(float f1, float f2, float f3, float f4, float f5, float f6)
+			{
+				g.rotateAngleX = f5 / 57.29578F;
+				g.rotateAngleY = f4 / 57.29578F;
+				if (o != 3)
+				{
+					n.rotateAngleX = 1.570796F;
+					if (o == 2)
+					{
+						a.rotateAngleX = (f1 * 0.6662F) * 1.0F * f2;
+						b.rotateAngleX = (f1 * 0.6662F + 0.3F) * 1.0F * f2;
+						c.rotateAngleX = (f1 * 0.6662F + 3.141593F + 0.3F) * 1.0F * f2;
+						d.rotateAngleX = (f1 * 0.6662F + 3.141593F) * 1.0F * f2;
+						f.rotateAngleX = 1.727876F + 0.3141593F * (f1) * f2;
+					}
+					else
+					{
+						a.rotateAngleX = (f1 * 0.6662F) * 1.0F * f2;
+						b.rotateAngleX = (f1 * 0.6662F + 3.141593F) * 1.0F * f2;
+						c.rotateAngleX = (f1 * 0.6662F + 3.141593F) * 1.0F * f2;
+						d.rotateAngleX = (f1 * 0.6662F) * 1.0F * f2;
+						if (o == 1)
+						{
+							f.rotateAngleX = 1.727876F + 0.7853982F * (f1) * f2;
+						}
+						else
+						{
+							f.rotateAngleX = 1.727876F + 0.4712389F * (f1) * f2;
+						}
+					}
+				}
+			}
+
+			public void setup3(float f1, float f2, float f3)
+			{
+				if (/*itemfishingrod.Z()*/true)
+				{
+					n.rotationPointY = 13F;
+					g.rotationPointY = 17F;
+					e.rotationPointY = 16F;
+					e.rotationPointZ = 8F;
+					f.rotationPointY = 16F;
+					f.rotationPointZ = 16F;
+					e.rotateAngleX = 1.570796F;
+					f.rotateAngleX = 1.570796F;
+					c.rotationPointY = d.rotationPointY = 13.8F;
+					a.rotationPointY = b.rotationPointY = 18F;
+					a.rotationPointZ = b.rotationPointZ = 5F;
+					o = 0;
+				}
+				else if (/*itemfishingrod.aa()*/false)
+				{
+					n.rotationPointY = 12F;
+					g.rotationPointY = 15F;
+					e.rotationPointY = 15F;
+					f.rotationPointY = 15F;
+					f.rotationPointZ = 16F;
+					e.rotateAngleX = 1.570796F;
+					f.rotateAngleX = 1.570796F;
+					c.rotationPointY = d.rotationPointY = 13.8F;
+					a.rotationPointY = b.rotationPointY = 18F;
+					a.rotationPointZ = b.rotationPointZ = 5F;
+					o = 2;
+				}
+				else if (/*itemfishingrod.ah()*/false)
+				{
+					n.rotateAngleX = 0.7853982F;
+					n.rotationPointY = 8F;
+					n.rotationPointZ = -5F;
+					g.rotationPointY = 11.7F;
+					g.rotationPointZ = -8F;
+					e.rotationPointY = 23F;
+					e.rotationPointZ = 6F;
+					f.rotationPointY = 22F;
+					f.rotationPointZ = 13.2F;
+					e.rotateAngleX = 1.727876F;
+					f.rotateAngleX = 2.670354F;
+					a.rotateAngleX = b.rotateAngleX = -1.570796F;
+					a.rotationPointZ = b.rotationPointZ = 4F;
+					c.rotateAngleX = d.rotateAngleX = -0.1570796F;
+					c.rotationPointY = d.rotationPointY = 15.8F;
+					c.rotationPointZ = d.rotationPointZ = -7F;
+					a.rotationPointY = b.rotationPointY = 21F;
+					a.rotationPointZ = b.rotationPointZ = 1.0F;
+					o = 3;
+				}
+				else
+				{
+					n.rotationPointY = 12F;
+					n.rotationPointZ = -10F;
+					g.rotationPointY = 15F;
+					g.rotationPointZ = -9F;
+					e.rotationPointY = 15F;
+					e.rotationPointZ = 8F;
+					f.rotationPointY = 20F;
+					f.rotationPointZ = 14F;
+					c.rotationPointY = d.rotationPointY = 13.8F;
+					a.rotationPointY = b.rotationPointY = 18F;
+					a.rotationPointZ = b.rotationPointZ = 5F;
+					e.rotateAngleX = 0.9F;
+					o = 1;
+				}
+			}
+		}
+
 		public static void LoadModels()
 		{
 			new ModelPig().Compile("Pig", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
@@ -3000,6 +3161,8 @@ namespace MCSkin3D
 			new ModelSkeleton().Compile("Skeleton", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
 			new ModelCloak().Compile("Cloak", 1, 64.0f / 32.0f).Save("Models\\Other\\Cloak.xml");
 			new ModelArmor().Compile("Armor", 1, 64.0f / 32.0f).Save("Models\\Other\\Armor.xml");
+
+			new ModelOzelot().Compile("Ozelot", 1, 64.0f / 32.0f).Save("Models\\Ozelot.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f / 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
 

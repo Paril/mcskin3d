@@ -24,6 +24,7 @@ using System.Drawing;
 using Paril.Compatibility;
 using System.Windows.Forms;
 using Paril.OpenGL;
+using MCSkin3D.lemon42;
 
 namespace MCSkin3D
 {
@@ -42,7 +43,7 @@ namespace MCSkin3D
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			var c = pixels[x, y];
-			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+			var oldColor = ColorManager.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha);
 
 			if ((Control.ModifierKeys & Keys.Shift) != 0)
 				Editor.MainForm.UnselectedColor = oldColor;

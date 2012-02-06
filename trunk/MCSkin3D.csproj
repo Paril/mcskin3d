@@ -109,6 +109,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
+    <Compile Include="lemon42\Color\ColorManager.cs" />
+    <Compile Include="lemon42\Color\ColorPick.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="lemon42\Color\ColorPick.designer.cs">
+      <DependentUpon>ColorPick.cs</DependentUpon>
+    </Compile>
+    <Compile Include="lemon42\Color\ColorPickUtil.cs" />
     <Compile Include="Paril\OpenGL\ColorGrabber.cs" />
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
@@ -443,6 +451,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lemon42\Color\ColorPick.resx">
+      <DependentUpon>ColorPick.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Paril\Controls\Color\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>

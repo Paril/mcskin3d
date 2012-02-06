@@ -25,6 +25,7 @@ using Paril.Compatibility;
 using System.Windows.Forms;
 using OpenTK;
 using Paril.OpenGL;
+using MCSkin3D.lemon42;
 
 namespace MCSkin3D
 {
@@ -85,7 +86,7 @@ namespace MCSkin3D
 		}
 
 		byte _threshold;
-		private void recursiveFill(int x, int y, Color oldColor, Color newColor, ref ColorGrabber pixels, bool[,] hitPixels, Skin skin)
+		private void recursiveFill(int x, int y, Color oldColor, ColorManager newColor, ref ColorGrabber pixels, bool[,] hitPixels, Skin skin)
 		{
 			if (!_boundBox.Contains(x, y))
 				return;
@@ -100,9 +101,9 @@ namespace MCSkin3D
 				return;
 
 			if (!_undo.Points.ContainsKey(new Point(x, y)))
-				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor, 0)));
+				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor.RGB, 0)));
 
-			pixels[x, y] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
+			pixels[x, y] = new ColorPixel(newColor.RGB.R | (newColor.RGB.G << 8) | (newColor.RGB.B << 16) | (newColor.RGB.A << 24));
 			hitPixels[x, y] = true;
 
             recursiveFill(x, y - 1, oldColor, newColor, ref pixels, hitPixels, skin);
@@ -158,7 +159,7 @@ namespace MCSkin3D
 
 			}
 
-			newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor;
+			newColor = (((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor).RGB;
 			pixels[x, y] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 			return true;
 		}

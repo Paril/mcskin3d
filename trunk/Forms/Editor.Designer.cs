@@ -72,6 +72,8 @@
 			this.mLINESIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.mOVERLAYTEXTSIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.mSHAREDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mINFINITEMOUSEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.transparencyModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,10 +139,9 @@
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.rgbTabPage = new System.Windows.Forms.TabPage();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.colorPick1 = new MCSkin3D.lemon42.ColorPick();
 			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
-			this.colorSquare = new Paril.Controls.Color.ColorSquare();
 			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
-			this.saturationSlider = new Paril.Controls.Color.SaturationSlider();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.redColorSlider = new MB.Controls.ColorSlider();
 			this.label9 = new System.Windows.Forms.Label();
@@ -155,17 +156,17 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.blueNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.label4 = new System.Windows.Forms.Label();
-			this.hslTabPage = new System.Windows.Forms.TabPage();
+			this.hsvTabPage = new System.Windows.Forms.TabPage();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.hueNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.hueColorSlider = new MB.Controls.ColorSlider();
 			this.label6 = new System.Windows.Forms.Label();
-			this.lightnessColorSlider = new MB.Controls.ColorSlider();
+			this.valueColorSlider = new MB.Controls.ColorSlider();
 			this.saturationNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.saturationColorSlider = new MB.Controls.ColorSlider();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
-			this.luminanceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.valueNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -194,8 +195,6 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.mSHAREDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mINFINITEMOUSEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -214,11 +213,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.greenNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.alphaNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.blueNumericUpDown)).BeginInit();
-			this.hslTabPage.SuspendLayout();
+			this.hsvTabPage.SuspendLayout();
 			this.panel3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.luminanceNumericUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).BeginInit();
 			this.splitContainer4.Panel2.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -614,6 +613,23 @@
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(222, 6);
+			// 
+			// mSHAREDToolStripMenuItem
+			// 
+			this.mSHAREDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mINFINITEMOUSEToolStripMenuItem});
+			this.mSHAREDToolStripMenuItem.Name = "mSHAREDToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mSHAREDToolStripMenuItem, "Text");
+			this.mSHAREDToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.mSHAREDToolStripMenuItem.Text = "M_SHARED";
+			// 
+			// mINFINITEMOUSEToolStripMenuItem
+			// 
+			this.mINFINITEMOUSEToolStripMenuItem.Name = "mINFINITEMOUSEToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mINFINITEMOUSEToolStripMenuItem, "Text");
+			this.mINFINITEMOUSEToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.mINFINITEMOUSEToolStripMenuItem.Text = "M_INFINITEMOUSE";
+			this.mINFINITEMOUSEToolStripMenuItem.Click += new System.EventHandler(this.mINFINITEMOUSEToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator8
 			// 
@@ -1222,7 +1238,7 @@
 			// 
 			this.colorTabControl.Controls.Add(this.swatchTabPage);
 			this.colorTabControl.Controls.Add(this.rgbTabPage);
-			this.colorTabControl.Controls.Add(this.hslTabPage);
+			this.colorTabControl.Controls.Add(this.hsvTabPage);
 			this.colorTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.colorTabControl.Location = new System.Drawing.Point(0, 0);
 			this.colorTabControl.Name = "colorTabControl";
@@ -1276,10 +1292,9 @@
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.colorPick1);
 			this.panel2.Controls.Add(this.colorPreview1);
-			this.panel2.Controls.Add(this.colorSquare);
 			this.panel2.Controls.Add(this.colorPreview2);
-			this.panel2.Controls.Add(this.saturationSlider);
 			this.panel2.Controls.Add(this.textBox1);
 			this.panel2.Controls.Add(this.redColorSlider);
 			this.panel2.Controls.Add(this.label9);
@@ -1300,6 +1315,18 @@
 			this.panel2.Size = new System.Drawing.Size(288, 245);
 			this.panel2.TabIndex = 1;
 			// 
+			// colorPick1
+			// 
+			this.colorPick1.CurrentAlpha = ((short)(255));
+			this.colorPick1.CurrentHue = ((short)(0));
+			this.colorPick1.CurrentSat = ((short)(0));
+			this.colorPick1.CurrentVal = ((short)(0));
+			this.colorPick1.Location = new System.Drawing.Point(32, 6);
+			this.colorPick1.Name = "colorPick1";
+			this.colorPick1.Size = new System.Drawing.Size(147, 150);
+			this.colorPick1.TabIndex = 21;
+			this.colorPick1.HSVChanged += new System.EventHandler(this.colorPick1_HSVChanged);
+			// 
 			// colorPreview1
 			// 
 			this.colorPreview1.Location = new System.Drawing.Point(210, 32);
@@ -1309,19 +1336,6 @@
 			this.colorPreview1.Text = "colorPreview1";
 			this.colorPreview1.Click += new System.EventHandler(this.colorPreview1_Click);
 			// 
-			// colorSquare
-			// 
-			this.colorSquare.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("colorSquare.BackgroundImage")));
-			this.colorSquare.CurrentHue = 0;
-			this.colorSquare.CurrentSat = 0;
-			this.colorSquare.Location = new System.Drawing.Point(20, 3);
-			this.colorSquare.Name = "colorSquare";
-			this.colorSquare.Size = new System.Drawing.Size(128, 128);
-			this.colorSquare.TabIndex = 9;
-			this.colorSquare.Text = "colorSquare";
-			this.colorSquare.HueChanged += new System.EventHandler(this.colorSquare_HueChanged);
-			this.colorSquare.SatChanged += new System.EventHandler(this.colorSquare_SatChanged);
-			// 
 			// colorPreview2
 			// 
 			this.colorPreview2.Location = new System.Drawing.Point(225, 47);
@@ -1330,17 +1344,6 @@
 			this.colorPreview2.TabIndex = 20;
 			this.colorPreview2.Text = "colorPreview2";
 			this.colorPreview2.Click += new System.EventHandler(this.colorPreview2_Click);
-			// 
-			// saturationSlider
-			// 
-			this.saturationSlider.BackColor = System.Drawing.SystemColors.Window;
-			this.saturationSlider.CurrentLum = 120;
-			this.saturationSlider.Location = new System.Drawing.Point(149, 3);
-			this.saturationSlider.Name = "saturationSlider";
-			this.saturationSlider.Size = new System.Drawing.Size(23, 128);
-			this.saturationSlider.TabIndex = 10;
-			this.saturationSlider.Text = "saturationSlider";
-			this.saturationSlider.LumChanged += new System.EventHandler(this.saturationSlider_LumChanged);
 			// 
 			// textBox1
 			// 
@@ -1378,7 +1381,7 @@
 			// 
 			this.blueColorSlider.BackColor = System.Drawing.Color.Transparent;
 			this.blueColorSlider.LargeChange = ((uint)(5u));
-			this.blueColorSlider.Location = new System.Drawing.Point(23, 198);
+			this.blueColorSlider.Location = new System.Drawing.Point(24, 198);
 			this.blueColorSlider.Maximum = 255;
 			this.blueColorSlider.Name = "blueColorSlider";
 			this.blueColorSlider.Size = new System.Drawing.Size(204, 20);
@@ -1431,7 +1434,7 @@
 			// 
 			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
 			this.alphaColorSlider.LargeChange = ((uint)(5u));
-			this.alphaColorSlider.Location = new System.Drawing.Point(23, 218);
+			this.alphaColorSlider.Location = new System.Drawing.Point(24, 218);
 			this.alphaColorSlider.Maximum = 255;
 			this.alphaColorSlider.Name = "alphaColorSlider";
 			this.alphaColorSlider.Size = new System.Drawing.Size(204, 20);
@@ -1521,28 +1524,28 @@
 			this.label4.TabIndex = 6;
 			this.label4.Text = "B";
 			// 
-			// hslTabPage
+			// hsvTabPage
 			// 
-			this.hslTabPage.Controls.Add(this.panel3);
-			this.hslTabPage.Location = new System.Drawing.Point(4, 22);
-			this.hslTabPage.Name = "hslTabPage";
-			this.hslTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.hslTabPage.Size = new System.Drawing.Size(294, 251);
-			this.hslTabPage.TabIndex = 2;
-			this.hslTabPage.Text = "HSLA";
-			this.hslTabPage.UseVisualStyleBackColor = true;
+			this.hsvTabPage.Controls.Add(this.panel3);
+			this.hsvTabPage.Location = new System.Drawing.Point(4, 22);
+			this.hsvTabPage.Name = "hsvTabPage";
+			this.hsvTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.hsvTabPage.Size = new System.Drawing.Size(294, 251);
+			this.hsvTabPage.TabIndex = 2;
+			this.hsvTabPage.Text = "HSVA";
+			this.hsvTabPage.UseVisualStyleBackColor = true;
 			// 
 			// panel3
 			// 
 			this.panel3.Controls.Add(this.hueNumericUpDown);
 			this.panel3.Controls.Add(this.hueColorSlider);
 			this.panel3.Controls.Add(this.label6);
-			this.panel3.Controls.Add(this.lightnessColorSlider);
+			this.panel3.Controls.Add(this.valueColorSlider);
 			this.panel3.Controls.Add(this.saturationNumericUpDown);
 			this.panel3.Controls.Add(this.saturationColorSlider);
 			this.panel3.Controls.Add(this.label7);
 			this.panel3.Controls.Add(this.label8);
-			this.panel3.Controls.Add(this.luminanceNumericUpDown);
+			this.panel3.Controls.Add(this.valueNumericUpDown);
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel3.Location = new System.Drawing.Point(3, 3);
 			this.panel3.Name = "panel3";
@@ -1589,32 +1592,26 @@
 			this.label6.TabIndex = 17;
 			this.label6.Text = "H";
 			// 
-			// lightnessColorSlider
+			// valueColorSlider
 			// 
-			this.lightnessColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.lightnessColorSlider.LargeChange = ((uint)(5u));
-			this.lightnessColorSlider.Location = new System.Drawing.Point(23, 198);
-			this.lightnessColorSlider.Maximum = 240;
-			this.lightnessColorSlider.Name = "lightnessColorSlider";
-			this.lightnessColorSlider.Size = new System.Drawing.Size(204, 20);
-			this.lightnessColorSlider.SmallChange = ((uint)(1u));
-			this.lightnessColorSlider.TabIndex = 25;
-			this.lightnessColorSlider.Text = "colorSlider2";
-			this.lightnessColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.lightnessColorSlider_Scroll);
+			this.valueColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.valueColorSlider.LargeChange = ((uint)(5u));
+			this.valueColorSlider.Location = new System.Drawing.Point(24, 198);
+			this.valueColorSlider.Name = "valueColorSlider";
+			this.valueColorSlider.Size = new System.Drawing.Size(204, 20);
+			this.valueColorSlider.SmallChange = ((uint)(1u));
+			this.valueColorSlider.TabIndex = 25;
+			this.valueColorSlider.Text = "colorSlider2";
+			this.valueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.lightnessColorSlider_Scroll);
 			// 
 			// saturationNumericUpDown
 			// 
 			this.saturationNumericUpDown.Location = new System.Drawing.Point(233, 178);
-			this.saturationNumericUpDown.Maximum = new decimal(new int[] {
-            240,
-            0,
-            0,
-            0});
 			this.saturationNumericUpDown.Name = "saturationNumericUpDown";
 			this.saturationNumericUpDown.Size = new System.Drawing.Size(49, 20);
 			this.saturationNumericUpDown.TabIndex = 18;
 			this.saturationNumericUpDown.Value = new decimal(new int[] {
-            240,
+            100,
             0,
             0,
             0});
@@ -1625,7 +1622,6 @@
 			this.saturationColorSlider.BackColor = System.Drawing.Color.Transparent;
 			this.saturationColorSlider.LargeChange = ((uint)(5u));
 			this.saturationColorSlider.Location = new System.Drawing.Point(24, 178);
-			this.saturationColorSlider.Maximum = 240;
 			this.saturationColorSlider.Name = "saturationColorSlider";
 			this.saturationColorSlider.Size = new System.Drawing.Size(203, 20);
 			this.saturationColorSlider.SmallChange = ((uint)(1u));
@@ -1647,27 +1643,22 @@
 			this.label8.AutoSize = true;
 			this.label8.Location = new System.Drawing.Point(3, 200);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(13, 13);
+			this.label8.Size = new System.Drawing.Size(14, 13);
 			this.label8.TabIndex = 21;
-			this.label8.Text = "L";
+			this.label8.Text = "V";
 			// 
-			// luminanceNumericUpDown
+			// valueNumericUpDown
 			// 
-			this.luminanceNumericUpDown.Location = new System.Drawing.Point(233, 198);
-			this.luminanceNumericUpDown.Maximum = new decimal(new int[] {
-            240,
+			this.valueNumericUpDown.Location = new System.Drawing.Point(233, 198);
+			this.valueNumericUpDown.Name = "valueNumericUpDown";
+			this.valueNumericUpDown.Size = new System.Drawing.Size(49, 20);
+			this.valueNumericUpDown.TabIndex = 20;
+			this.valueNumericUpDown.Value = new decimal(new int[] {
+            100,
             0,
             0,
             0});
-			this.luminanceNumericUpDown.Name = "luminanceNumericUpDown";
-			this.luminanceNumericUpDown.Size = new System.Drawing.Size(49, 20);
-			this.luminanceNumericUpDown.TabIndex = 20;
-			this.luminanceNumericUpDown.Value = new decimal(new int[] {
-            240,
-            0,
-            0,
-            0});
-			this.luminanceNumericUpDown.ValueChanged += new System.EventHandler(this.luminanceNumericUpDown_ValueChanged);
+			this.valueNumericUpDown.ValueChanged += new System.EventHandler(this.luminanceNumericUpDown_ValueChanged);
 			// 
 			// splitContainer4
 			// 
@@ -1956,23 +1947,6 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
-			// mSHAREDToolStripMenuItem
-			// 
-			this.mSHAREDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mINFINITEMOUSEToolStripMenuItem});
-			this.mSHAREDToolStripMenuItem.Name = "mSHAREDToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.mSHAREDToolStripMenuItem, "Text");
-			this.mSHAREDToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-			this.mSHAREDToolStripMenuItem.Text = "M_SHARED";
-			// 
-			// mINFINITEMOUSEToolStripMenuItem
-			// 
-			this.mINFINITEMOUSEToolStripMenuItem.Name = "mINFINITEMOUSEToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.mINFINITEMOUSEToolStripMenuItem, "Text");
-			this.mINFINITEMOUSEToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-			this.mINFINITEMOUSEToolStripMenuItem.Text = "M_INFINITEMOUSE";
-			this.mINFINITEMOUSEToolStripMenuItem.Click += new System.EventHandler(this.mINFINITEMOUSEToolStripMenuItem_Click);
-			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2007,12 +1981,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.greenNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.alphaNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.blueNumericUpDown)).EndInit();
-			this.hslTabPage.ResumeLayout(false);
+			this.hsvTabPage.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
 			this.panel3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.luminanceNumericUpDown)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).EndInit();
 			this.splitContainer4.Panel2.ResumeLayout(false);
 			this.splitContainer4.Panel2.PerformLayout();
 			this.splitContainer4.ResumeLayout(false);
@@ -2039,8 +2013,6 @@
 		private System.Windows.Forms.NumericUpDown greenNumericUpDown;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown redNumericUpDown;
-		private Paril.Controls.Color.ColorSquare colorSquare;
-		private Paril.Controls.Color.SaturationSlider saturationSlider;
 		private System.Windows.Forms.ToolStripMenuItem threeDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem animateToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem followCursorToolStripMenuItem;
@@ -2090,15 +2062,15 @@
 		private System.Windows.Forms.ToolStripMenuItem changeNameToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem cloneToolStripMenuItem;
-		private System.Windows.Forms.TabPage hslTabPage;
+		private System.Windows.Forms.TabPage hsvTabPage;
 		private System.Windows.Forms.NumericUpDown hueNumericUpDown;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.NumericUpDown saturationNumericUpDown;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.NumericUpDown luminanceNumericUpDown;
+		private System.Windows.Forms.NumericUpDown valueNumericUpDown;
 		private System.Windows.Forms.Label label8;
 		private MB.Controls.ColorSlider saturationColorSlider;
-		private MB.Controls.ColorSlider lightnessColorSlider;
+		private MB.Controls.ColorSlider valueColorSlider;
 		private MB.Controls.ColorSlider hueColorSlider;
 		private System.Windows.Forms.ToolStripMenuItem automaticallyCheckForUpdatesToolStripMenuItem;
 		private SkinTreeView treeView1;
@@ -2193,6 +2165,7 @@
 		private System.Windows.Forms.ToolStripSplitButton redoToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem mSHAREDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mINFINITEMOUSEToolStripMenuItem;
+		private lemon42.ColorPick colorPick1;
 	}
 }
 
