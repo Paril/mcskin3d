@@ -44,7 +44,7 @@ namespace MCSkin3D.lemon42
 				return c.ToColor();
 			}
 
-			public static implicit operator HSVColor(RGBColor c)
+			public static explicit operator HSVColor(RGBColor c)
 			{
 				return c.ToHSVColor();
 			}
@@ -94,17 +94,17 @@ namespace MCSkin3D.lemon42
 			public byte V;
 			public byte A;
 
-			public static implicit operator Color(HSVColor c)
+			public static explicit operator Color(HSVColor c)
 			{
 				return c.ToColor();
 			}
 
-			public static implicit operator RGBColor(HSVColor c)
+			public static explicit operator RGBColor(HSVColor c)
 			{
 				return c.ToRGBColor();
 			}
 
-			public static implicit operator HSVColor(Color c)
+			public static explicit operator HSVColor(Color c)
 			{
 				return RGBtoHSV(c);
 			}
@@ -251,6 +251,13 @@ namespace MCSkin3D.lemon42
 			_colorspace = ColorSpace.RGB;
 			_rgb = rgb;
 			_hsv = _rgb.ToHSVColor();
+		}
+
+		public ColorManager(HSVColor hsv)
+		{
+			_colorspace = ColorSpace.HSV;
+			_hsv = hsv;
+			_rgb = _hsv.ToRGBColor();
 		}
 
 		public ColorSpace CurrentSpace
