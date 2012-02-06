@@ -18,14 +18,17 @@ namespace MCSkin3D.lemon42
                 int yd = p2.Y - p1.Y;
 	            return (int)Math.Sqrt(xd*xd + yd*yd);
         }
+
         public static PointF RotatePoint(PointF p, PointF p2, double angle)
         { //angle in radians.
             return new PointF((float)(Math.Cos(angle) * (p.X - p2.X) - Math.Sin(angle) * (p.Y - p2.Y) + p2.X), (float)(Math.Sin(angle) * (p.X - p2.X) + Math.Cos(angle) * (p.Y - p2.Y) + p2.Y));
         }
+
         public static Point RotatePoint(Point p, Point p2, double angle)
         { //angle in radians.
             return new Point((int)(Math.Cos(angle) * (p.X - p2.X) - Math.Sin(angle) * (p.Y - p2.Y) + p2.X), (int)(Math.Sin(angle) * (p.X - p2.X) + Math.Cos(angle) * (p.Y - p2.Y) + p2.Y));
         }
+
         public static Bitmap ResizeImage(Image image, int size)
         {
             Bitmap result = new Bitmap(size, size);
@@ -39,6 +42,7 @@ namespace MCSkin3D.lemon42
             }
             return result;
         }
+
         public static Bitmap rotateImage(Bitmap b, float angle)
         {
             Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
@@ -51,10 +55,12 @@ namespace MCSkin3D.lemon42
             }
             return returnBitmap;
         }
+
         public static double DegreeToRadian(double angle)
         {
             return Math.PI * angle / 180.0;
         }
+
         public static double RadianToDegree(double angle)
         {
             return angle * 180.0 / Math.PI;

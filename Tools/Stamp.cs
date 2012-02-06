@@ -106,7 +106,7 @@ namespace MCSkin3D
 					var color = Color.FromArgb(_stampedBrush[rx, ry].Alpha, _stampedBrush[rx, ry].Red, _stampedBrush[rx, ry].Green, _stampedBrush[rx, ry].Blue);
 
 					var maxAlpha = color.A;
-					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Editor.MainForm.SelectedColor.A / 255.0f));
+					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Editor.MainForm.SelectedColor.RGB.A / 255.0f));
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
 						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
