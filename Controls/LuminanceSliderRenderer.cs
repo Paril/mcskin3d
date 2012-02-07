@@ -21,25 +21,25 @@ using MB.Controls;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using MCSkin3D.lemon42;
 
 namespace MCSkin3D
 {
-	public class LuminanceSliderRenderer : SliderRenderer
+	public class ValueSliderRenderer : SliderRenderer
 	{
-		public LuminanceSliderRenderer(ColorSlider slider) :
+		public ValueSliderRenderer(ColorSlider slider) :
 			base(slider)
 		{
 		}
 
-		public int Hue { get; set; }
-		public int Saturation { get; set; }
+		public ColorManager CurrentColor { get; set; }
 
         public override void Render(Graphics g)
         {
             //theCode, love theVariableNames :D [Xylem]
             //Set the hue shades with the correct saturation and hue
             Color[] theColors = {Color.Black,
-                           Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(new Devcorp.Controls.Design.HSL(Hue, Saturation/240.0f, 0.5f)),
+                           new ColorManager.HSVColor(CurrentColor.HSV.H, CurrentColor.HSV.S, 50).ToColor(),
                            Color.White};
             //Calculate positions
             float[] thePositions = { 0.0f, 0.5f, 1.0f };
