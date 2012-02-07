@@ -68,7 +68,7 @@ namespace MCSkin3D
 		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
 		HueSliderRenderer hueRenderer;
 		SaturationSliderRenderer saturationRenderer;
-		LuminanceSliderRenderer lightnessRenderer;
+		ValueSliderRenderer valueRenderer;
 
 		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
 		Texture _grassTop, _alphaTex, _previewPaint;
@@ -247,7 +247,7 @@ namespace MCSkin3D
 
 			hueColorSlider.Renderer = hueRenderer = new HueSliderRenderer(hueColorSlider);
 			saturationColorSlider.Renderer = saturationRenderer = new SaturationSliderRenderer(saturationColorSlider);
-			valueColorSlider.Renderer = lightnessRenderer = new LuminanceSliderRenderer(valueColorSlider);
+			valueColorSlider.Renderer = valueRenderer = new ValueSliderRenderer(valueColorSlider);
 
 			KeyPreview = true;
 			Text = "MCSkin3D v" + Program.Version.ToString();
@@ -2621,14 +2621,9 @@ namespace MCSkin3D
 			greenRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, 255, currentColor.RGB.B);
 			blueRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 255);
 
-			hueRenderer.Saturation = currentColor.HSV.S;
-			hueRenderer.Luminance = currentColor.HSV.V;
-
-			saturationRenderer.Luminance = currentColor.HSV.V;
-			saturationRenderer.Hue = currentColor.HSV.H;
-
-			lightnessRenderer.Hue = currentColor.HSV.H;
-			lightnessRenderer.Saturation = currentColor.HSV.S;
+			hueRenderer.CurrentColor = currentColor;
+			saturationRenderer.CurrentColor = currentColor;
+			valueRenderer.CurrentColor = currentColor;
 
 			redColorSlider.Value = currentColor.RGB.R;
 			greenColorSlider.Value = currentColor.RGB.G;

@@ -157,14 +157,15 @@ namespace MCSkin3D.lemon42
 			base.OnPaint(e);
 			Graphics g = e.Graphics;
 			using (Bitmap triangle = ColorPickRenderer.ColorTriangle(_currentHue, Width - thickness * 2, 3))
-			{
 				g.DrawImageUnscaled(triangle, thickness, thickness);
-			}
 			g.DrawImageUnscaled(wheel, 0, 0);
+
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+
 			if (drawPoint)
 			{
 				Point p = ColorPickUtil.RotatePoint(clickPoint, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
-				g.DrawEllipse(new Pen(Negative(ColorHSVForLocation(p.X, p.Y, _currentHue))), new Rectangle(p.X - 2, p.Y - 2, 4, 4));
+				g.DrawEllipse(new Pen(Negative(ColorHSVForLocation(p.X, p.Y, _currentHue)), 2), new Rectangle(p.X - 3, p.Y - 3, 6, 6));
 
 			}
 
@@ -264,24 +265,29 @@ namespace MCSkin3D.lemon42
 		{
 			wheel = ColorPickRenderer.ColorWheel(Width, 14, 4);
 		}
+
 		//check if point in circle
 		public bool InCircle(Point p, Point center, int radius)
 		{
 			return Math.Pow(p.X - center.X, 2) + Math.Pow(p.Y - center.Y, 2) <= Math.Pow(radius, 2);
 		}
+
 		//check if point in triangle
 		public int dot(Point p1, Point p2)
 		{
 			return p1.X * p2.X + p1.Y * p2.Y;
 		}
+
 		public Point sub(Point p1, Point p2)
 		{
 			return new Point(p1.X - p2.X, p1.Y - p2.Y);
 		}
+
 		public Point add(Point p1, Point p2)
 		{
 			return new Point(p1.X + p2.X, p1.Y + p2.Y);
 		}
+
 		public bool InTriangle(Point p, Point[] t)
 		{
 			Point v0 = sub(t[1], t[0]);
@@ -299,19 +305,18 @@ namespace MCSkin3D.lemon42
 			double v = ((double)dot00 * dot12 - dot01 * dot02) * (double)invDenom;
 
 			return (u >= 0) && (v >= 0) && (u + v < 1);
-
 		}
+
 		public Point[] Triangle(int angle)
 		{
 			Point first = ColorPickUtil.RotatePoint(new Point(Width - thickness, (Width - thickness) / 2), new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(angle + 7));
 			return new Point[3] { first, ColorPickUtil.RotatePoint(first, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(120)), ColorPickUtil.RotatePoint(first, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(240)) };
 		}
+
 		public Point ClipPoint(Point p, int angle)
 		{
 			if (InTriangle(p, Triangle(angle)))
-			{
 				return p;
-			}
 			else
 			{
 				Point _clickPosition = ColorPickUtil.RotatePoint(p, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(-angle));
@@ -349,13 +354,9 @@ namespace MCSkin3D.lemon42
 		public static Color Negative(ColorManager.HSVColor c)
 		{
 			if (c.V <= 60)
-			{
 				return Color.White;
-			}
 			else
-			{
 				return Color.Black;
-			}
 		}
 	}
 
@@ -363,25 +364,29 @@ namespace MCSkin3D.lemon42
 	{
 		public static Bitmap ColorWheel(int size, int width, int multisampling) //4x multisampling recomended for optimum quality and speed.
 		{
-			if (width < 1 || size < 1) { return null; }
+			if (width < 1 || size < 1)
+				return null;
+
 			int m = multisampling;
 			size = size * m;
 			width = width * m;
+
 			using (Bitmap b = new Bitmap(size, size))
 			{
 				using (Graphics g = Graphics.FromImage(b))
 				{
+					g.Clear(Color.Transparent);
 					Rectangle rect = new Rectangle(0, 0, size - m, size - m);
 					using (GraphicsPath wheel_path = new GraphicsPath())
 					{
 						wheel_path.AddEllipse(rect);
 						wheel_path.Flatten();
+
 						int num_pts = (wheel_path.PointCount - 1);
 						Color[] surround_colors = new Color[wheel_path.PointCount];
 						for (int i = 0; i < wheel_path.PointCount; i++)
-						{
 							surround_colors[i] = new ColorManager.HSVColor((short)((double)i / num_pts * 360), (byte)100, (byte)100).ToColor();
-						}
+
 						using (PathGradientBrush brush = new PathGradientBrush(wheel_path))
 						{
 							brush.CenterColor = SystemColors.Window;
@@ -390,9 +395,8 @@ namespace MCSkin3D.lemon42
 							g.FillEllipse(brush, rect);
 						}
 						using (SolidBrush brush = new SolidBrush(Color.White))
-						{
 							g.FillEllipse(brush, new Rectangle(width, width, size - width * 2, size - width * 2));
-						}
+
 						//replace all the white with color.transparent :)
 						b.MakeTransparent(Color.White);
 					}
