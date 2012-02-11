@@ -37,7 +37,7 @@ namespace MCSkin3D.lemon42
 		short thickness;
 		bool clickCircle, clickTriangle, clickNothing;
 		bool rawCircle, rawTriangle, rawInner;
-		Point clickPoint;
+		PointF clickPoint;
 		bool drawPoint, rotatePoint;
 		short initRot;
 		Bitmap wheel;
@@ -164,8 +164,8 @@ namespace MCSkin3D.lemon42
 
 			if (drawPoint)
 			{
-				Point p = ColorPickUtil.RotatePoint(clickPoint, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
-				g.DrawEllipse(new Pen(Negative(ColorHSVForLocation(p.X, p.Y, _currentHue)), 2), new Rectangle(p.X - 3, p.Y - 3, 6, 6));
+				PointF p = ColorPickUtil.RotatePoint(clickPoint, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
+				g.DrawEllipse(new Pen(Negative(ColorHSVForLocation(p.X, p.Y, _currentHue)), 2), new RectangleF(p.X - 3, p.Y - 3, 6, 6));
 
 			}
 
@@ -241,21 +241,21 @@ namespace MCSkin3D.lemon42
 			Invalidate();
 		}
 
-		public ColorManager.HSVColor ColorHSVForLocation(int x, int y, short angle)
+		public ColorManager.HSVColor ColorHSVForLocation(float x, float y, short angle)
 		{
-			Point p = ColorPickUtil.RotatePoint(new Point(x, y), new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(-angle));
-			Point[] polygon = Triangle(0);
+			PointF p = ColorPickUtil.RotatePoint(new PointF(x, y), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
+			PointF[] polygon = Triangle(0);
 			short hue = angle;
 			byte saturation = (byte)(Math.Round((double)(p.X - polygon[1].X) / (polygon[0].X - polygon[1].X) * 100)); // left 0 - right 100
 			if (p.X < polygon[1].X || saturation < 0 || saturation == 255) { saturation = 0; }
 			if (p.X > polygon[0].X || saturation > 100) { saturation = 100; }
 			//Y calcs
-			int width = (int)(polygon[0].X - polygon[1].X);
-			int height = (int)(polygon[1].Y - polygon[2].Y);
-			int maxY = (int)(((polygon[0].X - p.X) / (float)width) * (float)height);
-			int min = polygon[0].Y - (maxY - (maxY / 2));
-			int max =  polygon[0].Y + maxY - (maxY / 2);
-			int valueRaw = ColorPickUtil.RotatePoint(new Point(x, y), new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(-angle + 30)).Y;
+			float width = (polygon[0].X - polygon[1].X);
+			float height = (polygon[1].Y - polygon[2].Y);
+			float maxY = (((polygon[0].X - p.X) / (float)width) * (float)height);
+			float min = polygon[0].Y - (maxY - (maxY / 2));
+			float max =  polygon[0].Y + maxY - (maxY / 2);
+			float valueRaw = ColorPickUtil.RotatePoint(new PointF(x, y), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle + 30)).Y;
 			byte value = (byte)(Math.Round((double)(valueRaw - thickness) / (Triangle(30)[1].Y - thickness) * 100));
 			if (max == min) { value = 100; } if (valueRaw > Triangle(30)[1].Y) { value = 100; } if (valueRaw - thickness < 0) { value = 0; }
 			return new ColorManager.HSVColor(hue, saturation, value, (byte)_currentAlpha);
@@ -288,17 +288,32 @@ namespace MCSkin3D.lemon42
 			return new Point(p1.X + p2.X, p1.Y + p2.Y);
 		}
 
-		public bool InTriangle(Point p, Point[] t)
+		public float dot(PointF p1, PointF p2)
 		{
-			Point v0 = sub(t[1], t[0]);
-			Point v1 = sub(t[2], t[0]);
-			Point v2 = sub(p, t[0]);
+			return p1.X * p2.X + p1.Y * p2.Y;
+		}
 
-			int dot00 = dot(v0, v0);
-			int dot01 = dot(v0, v1);
-			int dot02 = dot(v0, v2);
-			int dot11 = dot(v1, v1);
-			int dot12 = dot(v1, v2);
+		public PointF sub(PointF p1, PointF p2)
+		{
+			return new PointF(p1.X - p2.X, p1.Y - p2.Y);
+		}
+
+		public PointF add(PointF p1, PointF p2)
+		{
+			return new PointF(p1.X + p2.X, p1.Y + p2.Y);
+		}
+
+		public bool InTriangle(PointF p, PointF[] t)
+		{
+			PointF v0 = sub(t[1], t[0]);
+			PointF v1 = sub(t[2], t[0]);
+			PointF v2 = sub(p, t[0]);
+
+			float dot00 = dot(v0, v0);
+			float dot01 = dot(v0, v1);
+			float dot02 = dot(v0, v2);
+			float dot11 = dot(v1, v1);
+			float dot12 = dot(v1, v2);
 
 			double invDenom =(double)1 / (dot00 * dot11 - dot01 * dot01);
 			double u = ((double)dot11 * dot02 - dot01 * dot12) * (double)invDenom;
@@ -307,48 +322,48 @@ namespace MCSkin3D.lemon42
 			return (u >= 0) && (v >= 0) && (u + v < 1);
 		}
 
-		public Point[] Triangle(int angle)
+		public PointF[] Triangle(int angle)
 		{
-			Point first = ColorPickUtil.RotatePoint(new Point(Width - thickness, (Width - thickness) / 2), new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(angle + 7));
-			return new Point[3] { first, ColorPickUtil.RotatePoint(first, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(120)), ColorPickUtil.RotatePoint(first, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(240)) };
+			PointF first = ColorPickUtil.RotatePoint(new PointF(Width - thickness, (Width - thickness) / 2.0f), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle + 7));
+			return new PointF[3] { first, ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(120)), ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(240)) };
 		}
 
-		public Point ClipPoint(Point p, int angle)
+		public PointF ClipPoint(PointF p, int angle)
 		{
 			if (InTriangle(p, Triangle(angle)))
 				return p;
 			else
 			{
-				Point _clickPosition = ColorPickUtil.RotatePoint(p, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(-angle));
-				Point[] polygon = Triangle(0);
+				PointF _clickPosition = ColorPickUtil.RotatePoint(p, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
+				PointF[] polygon = Triangle(0);
 				int width = (int)(polygon[0].X - polygon[1].X);
 				int height = (int)(polygon[1].Y - polygon[2].Y);
 
-				Point offsetFromPoint = new Point((int)polygon[0].X - _clickPosition.X, (int)polygon[0].Y - _clickPosition.Y);
+				PointF offsetFromPoint = new PointF(polygon[0].X - _clickPosition.X, polygon[0].Y - _clickPosition.Y);
 
-				int maxY = (int)(((polygon[0].X - _clickPosition.X) / (float)width) * (float)height);
-				int highestY = (int)(((polygon[0].X - polygon[1].X) / (float)width) * (float)height);
+				float maxY = (((polygon[0].X - _clickPosition.X) / (float)width) * (float)height);
+				float highestY = (((polygon[0].X - polygon[1].X) / (float)width) * (float)height);
 
-				Point clippedPosition = _clickPosition;
+				PointF clippedPosition = _clickPosition;
 
 				if (offsetFromPoint.X > width)
 				{
-					clippedPosition.X = (int)polygon[1].X;
+					clippedPosition.X = polygon[1].X;
 					maxY = highestY;
 				}
 
 				if (offsetFromPoint.Y > maxY - (maxY / 2))
-					clippedPosition.Y = (int)(polygon[0].Y - (maxY - (maxY / 2)));
+					clippedPosition.Y = (polygon[0].Y - (maxY - (maxY / 2)));
 				else if (offsetFromPoint.Y < -(maxY - (maxY / 2)))
-					clippedPosition.Y = (int)(polygon[0].Y + (maxY - (maxY / 2)));
+					clippedPosition.Y = (polygon[0].Y + (maxY - (maxY / 2)));
 
 				if (clippedPosition.X > Width - thickness)
 				{
 					clippedPosition.X = Width - thickness;
-					clippedPosition.Y = Width / 2;
+					clippedPosition.Y = Width / 2.0f;
 				}
 
-				return ColorPickUtil.RotatePoint(clippedPosition, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(angle));
+				return ColorPickUtil.RotatePoint(clippedPosition, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle));
 			}
 		}
 		public static Color Negative(ColorManager.HSVColor c)

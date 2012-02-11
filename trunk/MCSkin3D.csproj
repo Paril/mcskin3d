@@ -391,6 +391,7 @@
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
     <Content Include="Icon_new.ico" />
+    <None Include="Resources\browseto.png" />
     <None Include="Resources\stamp_pattern.png" />
     <None Include="Resources\tinyfont.png" />
     <None Include="Resources\FFFATLAN.TTF" />
