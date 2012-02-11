@@ -4522,5 +4522,23 @@ namespace MCSkin3D
 			mINFINITEMOUSEToolStripMenuItem.Checked = !mINFINITEMOUSEToolStripMenuItem.Checked;
 			GlobalSettings.InfiniteMouse = mINFINITEMOUSEToolStripMenuItem.Checked;
 		}
+
+		void PerformBrowseTo()
+		{
+			if (treeView1.SelectedNode is Skin)
+				Process.Start("explorer.exe", "/select,\"" + ((Skin)treeView1.SelectedNode).File.FullName + "\"");
+			else
+				Process.Start("explorer.exe", ((FolderNode)treeView1.SelectedNode).Directory.FullName);
+		}
+
+		private void bROWSEIDToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PerformBrowseTo();
+		}
+
+		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+		{
+			bROWSEIDToolStripMenuItem.Text = string.Format(GetLanguageString("M_BROWSE"), (treeView1.SelectedNode is Skin) ? GetLanguageString("M_SKIN") : GetLanguageString("M_FOLDER"));
+		}
 	}
 }

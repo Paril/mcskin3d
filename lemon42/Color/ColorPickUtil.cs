@@ -24,11 +24,6 @@ namespace MCSkin3D.lemon42
             return new PointF((float)(Math.Cos(angle) * (p.X - p2.X) - Math.Sin(angle) * (p.Y - p2.Y) + p2.X), (float)(Math.Sin(angle) * (p.X - p2.X) + Math.Cos(angle) * (p.Y - p2.Y) + p2.Y));
         }
 
-        public static Point RotatePoint(Point p, Point p2, double angle)
-        { //angle in radians.
-            return new Point((int)(Math.Cos(angle) * (p.X - p2.X) - Math.Sin(angle) * (p.Y - p2.Y) + p2.X), (int)(Math.Sin(angle) * (p.X - p2.X) + Math.Cos(angle) * (p.Y - p2.Y) + p2.Y));
-        }
-
         public static Bitmap ResizeImage(Image image, int size)
         {
             Bitmap result = new Bitmap(size, size);

@@ -111,6 +111,7 @@
 			this.mINCRESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
 			this.mFETCHNAMEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.bROWSEIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new Paril.Controls.VisibleSplitContainer();
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
@@ -868,9 +869,11 @@
             this.mDECRESToolStripMenuItem,
             this.mINCRESToolStripMenuItem,
             this.toolStripMenuItem5,
-            this.mFETCHNAMEToolStripMenuItem});
+            this.mFETCHNAMEToolStripMenuItem,
+            this.bROWSEIDToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 220);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 264);
+			this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
 			// 
 			// importHereToolStripMenuItem
 			// 
@@ -970,6 +973,14 @@
 			this.mFETCHNAMEToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.mFETCHNAMEToolStripMenuItem.Text = "M_FETCH_NAME";
 			this.mFETCHNAMEToolStripMenuItem.Click += new System.EventHandler(this.mFETCHNAMEToolStripMenuItem_Click);
+			// 
+			// bROWSEIDToolStripMenuItem
+			// 
+			this.bROWSEIDToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.browseto;
+			this.bROWSEIDToolStripMenuItem.Name = "bROWSEIDToolStripMenuItem";
+			this.bROWSEIDToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.bROWSEIDToolStripMenuItem.Text = "BROWSE_ID";
+			this.bROWSEIDToolStripMenuItem.Click += new System.EventHandler(this.bROWSEIDToolStripMenuItem_Click);
 			// 
 			// splitContainer1
 			// 
@@ -2166,6 +2177,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mSHAREDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mINFINITEMOUSEToolStripMenuItem;
 		private lemon42.ColorPick colorPick1;
+		private System.Windows.Forms.ToolStripMenuItem bROWSEIDToolStripMenuItem;
 	}
 }
 
