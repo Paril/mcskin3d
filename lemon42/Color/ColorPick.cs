@@ -253,17 +253,18 @@ namespace MCSkin3D.lemon42
         public PointF LocationForColorHSV(ColorManager.HSVColor hsv)
         {
             PointF[] polygon = Triangle(0);
-            float x = (float)(((float)hsv.S / 100 * (polygon[0].X - polygon[1].X)) + polygon[1].X);
-            if (x > polygon[0].X)
-                x = polygon[0].X;
-
+			float x = (float)((((float)hsv.S / 100.0f) * (polygon[0].X - polygon[1].X)) + polygon[1].X);
+            //if (x > polygon[0].X)
+            //    x = polygon[0].X;
+			
             PointF p = ColorPickUtil.RotatePoint(polygon[0], new PointF(Width / 2, Height / 2), ColorPickUtil.DegreeToRadian(30));
 
-            float y = (float)((float)hsv.V / 100 * (Triangle(30)[1].Y) + thickness);
-            if (y > Triangle(30)[1].Y)
-                y = Triangle(30)[1].Y;
+            float y = (float)(((float)hsv.V / 100.0f) * (Triangle(30)[1].Y + thickness));
+            //if (y > Triangle(30)[1].Y)
+            //    y = Triangle(30)[1].Y;
 
-            p.Y = y;
+			float height = (polygon[1].Y - polygon[2].Y - thickness);
+			p.Y = y + (height / 2);
 
             p = ColorPickUtil.RotatePoint(p, new PointF(Width/2, Height/2), ColorPickUtil.DegreeToRadian(-30));
 

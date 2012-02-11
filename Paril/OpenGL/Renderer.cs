@@ -208,6 +208,14 @@ namespace Paril.OpenGL
 				_maxs.Y = p.Y;
 		}
 
+		public static Bounds operator+ (Bounds left, Rectangle right)
+		{
+			left.AddPoint(new Point(right.Left, right.Top));
+			left.AddPoint(new Point(right.Right, right.Bottom));
+
+			return left;
+		}
+
 		public Rectangle ToRectangle()
 		{
 			Rectangle r = new Rectangle();

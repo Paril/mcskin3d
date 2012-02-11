@@ -7,15 +7,15 @@
 *- Deleting all skins (folders, etC) causes errors.
 *- Drag-drop from program to folder
 *- Pick up on external file changes (this might be really tough to do in a non-Windows environment)
-   -- NOTE: STILL NOT PERFECT
+   -- NOTE: DISABLED, RE-CODE
 *- Depth-sort alpha
    -- NOTE: per face? D:
 *- Make 1x1 the default brush
 *- Check upload size (apparently is broken)
 *- Hex issues (more than 10 symbols = crash)
-?- Fully dynamic overlay generation
--- Find a proper way of text'ing the top corners of each overlay
--- Line/Text Color
+*- Fully dynamic overlay generation
+*-- Find a proper way of text'ing the top corners of each overlay
+*-- Line/Text Color
 ?- Automatic compilation of skin overlays
 ?- Change colorsquare/saturation slider to something better.
 ?- Clear skin option
