@@ -42,6 +42,13 @@ namespace MCSkin3D.lemon42
 		short initRot;
 		Bitmap wheel;
 
+        public void setPoint()
+        {
+            rotatePoint = false;
+            clickPoint = LocationForColorHSV(CurrentHSV);
+            drawPoint = true;
+        }
+
 		public short CurrentHue
 		{
 			get { return _currentHue; }
@@ -112,7 +119,7 @@ namespace MCSkin3D.lemon42
 				_currentSat = value.S;
 				_currentVal = value.V;
 				_currentAlpha = value.A;
-
+                setPoint();
 				OnHSVChanged(EventArgs.Empty);
 			}
 		}
@@ -156,11 +163,13 @@ namespace MCSkin3D.lemon42
 		{
 			base.OnPaint(e);
 			Graphics g = e.Graphics;
-			using (Bitmap triangle = ColorPickRenderer.ColorTriangle(_currentHue, Width - thickness * 2, 3))
+			using (Bitmap triangle = ColorPickRenderer.ColorTriangle(_currentHue, Width - thickness * 2, 2))
 				g.DrawImageUnscaled(triangle, thickness, thickness);
 			g.DrawImageUnscaled(wheel, 0, 0);
 
 			g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            //TODO: Draw line on hue circle
 
 			if (drawPoint)
 			{
@@ -241,6 +250,25 @@ namespace MCSkin3D.lemon42
 			Invalidate();
 		}
 
+        public PointF LocationForColorHSV(ColorManager.HSVColor hsv)
+        {
+            PointF[] polygon = Triangle(0);
+            float x = (float)(((float)hsv.S / 100 * (polygon[0].X - polygon[1].X)) + polygon[1].X);
+            if (x > polygon[0].X)
+                x = polygon[0].X;
+
+            PointF p = ColorPickUtil.RotatePoint(polygon[0], new PointF(Width / 2, Height / 2), ColorPickUtil.DegreeToRadian(30));
+
+            float y = (float)((float)hsv.V / 100 * (Triangle(30)[1].Y) + thickness);
+            if (y > Triangle(30)[1].Y)
+                y = Triangle(30)[1].Y;
+
+            p.Y = y;
+
+            p = ColorPickUtil.RotatePoint(p, new PointF(Width/2, Height/2), ColorPickUtil.DegreeToRadian(-30));
+
+            return new PointF(x, p.Y);
+        }
 		public ColorManager.HSVColor ColorHSVForLocation(float x, float y, short angle)
 		{
 			PointF p = ColorPickUtil.RotatePoint(new PointF(x, y), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
@@ -385,7 +413,7 @@ namespace MCSkin3D.lemon42
 				return ColorPickUtil.RotatePoint(clippedPosition, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle));
 			}
 		}
-		public static Color Negative(ColorManager.HSVColor c)
+		public static Color Negative(ColorManager.HSVColor c) //haha this isnt even negative LOL
 		{
 			if (c.V <= 60)
 				return Color.White;
@@ -463,6 +491,6 @@ namespace MCSkin3D.lemon42
 
 				}
 			}
-		} //3x multisampling recommended ;)
+		} //2-3x multisampling recommended ;)
 	}
 }
