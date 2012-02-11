@@ -247,17 +247,30 @@ namespace MCSkin3D.lemon42
 			PointF[] polygon = Triangle(0);
 			short hue = angle;
 			byte saturation = (byte)(Math.Round((double)(p.X - polygon[1].X) / (polygon[0].X - polygon[1].X) * 100)); // left 0 - right 100
-			if (p.X < polygon[1].X || saturation < 0 || saturation == 255) { saturation = 0; }
-			if (p.X > polygon[0].X || saturation > 100) { saturation = 100; }
+
+			if (p.X < polygon[1].X || saturation < 0 || saturation == 255)
+				saturation = 0;
+
+			if (p.X > polygon[0].X || saturation > 100)
+				saturation = 100;
+
 			//Y calcs
 			float width = (polygon[0].X - polygon[1].X);
 			float height = (polygon[1].Y - polygon[2].Y);
 			float maxY = (((polygon[0].X - p.X) / (float)width) * (float)height);
 			float min = polygon[0].Y - (maxY - (maxY / 2));
 			float max =  polygon[0].Y + maxY - (maxY / 2);
+
 			float valueRaw = ColorPickUtil.RotatePoint(new PointF(x, y), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle + 30)).Y;
 			byte value = (byte)(Math.Round((double)(valueRaw - thickness) / (Triangle(30)[1].Y - thickness) * 100));
-			if (max == min) { value = 100; } if (valueRaw > Triangle(30)[1].Y) { value = 100; } if (valueRaw - thickness < 0) { value = 0; }
+
+			if (max == min)
+				value = 100;
+			if (valueRaw > Triangle(30)[1].Y)
+				value = 100;
+			if (valueRaw - thickness < 0)
+				value = 0;
+
 			return new ColorManager.HSVColor(hue, saturation, value, (byte)_currentAlpha);
 		}
 
@@ -325,7 +338,13 @@ namespace MCSkin3D.lemon42
 		public PointF[] Triangle(int angle)
 		{
 			PointF first = ColorPickUtil.RotatePoint(new PointF(Width - thickness, (Width - thickness) / 2.0f), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle + 7));
-			return new PointF[3] { first, ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(120)), ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(240)) };
+
+			return new PointF[3]
+			{
+				first,
+				ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(120)),
+				ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(240))
+			};
 		}
 
 		public PointF ClipPoint(PointF p, int angle)
