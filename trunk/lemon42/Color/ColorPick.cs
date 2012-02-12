@@ -444,8 +444,8 @@ namespace MCSkin3D.lemon42
 			{
 				PointF _clickPosition = ColorPickUtil.RotatePoint(p, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
 				PointF[] polygon = Triangle(0);
-				int width = (int)(polygon[0].X - polygon[1].X);
-				int height = (int)(polygon[1].Y - polygon[2].Y);
+				float width = (polygon[0].X - polygon[1].X);
+				float height = (polygon[1].Y - polygon[2].Y);
 
 				PointF offsetFromPoint = new PointF(polygon[0].X - _clickPosition.X, polygon[0].Y - _clickPosition.Y);
 
@@ -465,11 +465,8 @@ namespace MCSkin3D.lemon42
 				else if (offsetFromPoint.Y < -(maxY - (maxY / 2)))
 					clippedPosition.Y = (polygon[0].Y + (maxY - (maxY / 2)));
 
-				if (clippedPosition.X > Width - thickness)
-				{
-					clippedPosition.X = Width - thickness;
-					clippedPosition.Y = Width / 2.0f;
-				}
+				if (clippedPosition.X > polygon[0].X)
+					clippedPosition = polygon[0];
 
 				return ColorPickUtil.RotatePoint(clippedPosition, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle));
 			}
