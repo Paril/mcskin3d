@@ -194,6 +194,8 @@ namespace MCSkin3D.lemon42
 					{
 						_currentHue = (short)WrapDegree((int)AngleFromPoints(e.Location));
 						rotatePoint = true;
+						OnHSVChanged(EventArgs.Empty);
+						setPoint();
 					}
 				}
 				if (!drawPoint) { drawPoint = clickTriangle; }
@@ -202,10 +204,9 @@ namespace MCSkin3D.lemon42
 					clickPoint = ClipPoint(e.Location, _currentHue);
 					rotatePoint = false;
 					initRot = _currentHue;
-				}
 
-				ColorManager.HSVColor hsv = ColorHSVForLocation(clickPoint.X, clickPoint.Y, _currentHue);
-				CurrentHSV = hsv;
+					CurrentHSV = ColorHSVForLocation(clickPoint.X, clickPoint.Y, _currentHue);
+				}
 			}
 		}
 		public int WrapDegree(int angle)
@@ -252,7 +253,7 @@ namespace MCSkin3D.lemon42
 
         public PointF LocationForColorHSV(ColorManager.HSVColor hsv)
         {
-            PointF[] polygon = Triangle(0);
+            /*PointF[] polygon = Triangle(0);
 			float x = (float)((((float)hsv.S / 100.0f) * (polygon[0].X - polygon[1].X)) + polygon[1].X);
             //if (x > polygon[0].X)
             //    x = polygon[0].X;
@@ -268,11 +269,30 @@ namespace MCSkin3D.lemon42
 
             p = ColorPickUtil.RotatePoint(p, new PointF(Width/2, Height/2), ColorPickUtil.DegreeToRadian(-30));
 
-            return new PointF(x, p.Y);
+            return new PointF(x, p.Y);*/
+			var InnerPoints = Triangle(0);
+			double h = hsv.H;
+			double s = (double)hsv.S / 100.0;
+			double v = (double)hsv.V / 100.0;
+
+			PointF vH = InnerPoints[0];
+			PointF vS = InnerPoints[1];
+			PointF vV = InnerPoints[2];
+
+			// saturation first, then value
+			// this design matches with the picture from wiki
+
+			PointF vStoH = new PointF((vH.X - vS.X) * (float)s, (vH.Y - vS.Y) * (float)s);
+			PointF vS2 = new PointF(vS.X + vStoH.X, vS.Y + vStoH.Y);
+			PointF vVtovS2 = new PointF((vS2.X - vV.X) * (float)v, (vS2.Y - vV.Y) * (float)v);
+			PointF final = new PointF(vV.X + vVtovS2.X, vV.Y + vVtovS2.Y);
+
+			return ColorPickUtil.RotatePoint(final, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(_currentHue));
         }
-		public ColorManager.HSVColor ColorHSVForLocation(float x, float y, short angle)
+
+		public ColorManager.HSVColor ColorHSVForLocation(float x, float y, short ang)
 		{
-			PointF p = ColorPickUtil.RotatePoint(new PointF(x, y), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
+			/*PointF p = ColorPickUtil.RotatePoint(new PointF(x, y), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
 			PointF[] polygon = Triangle(0);
 			short hue = angle;
 			byte saturation = (byte)(Math.Round((double)(p.X - polygon[1].X) / (polygon[0].X - polygon[1].X) * 100)); // left 0 - right 100
@@ -300,7 +320,47 @@ namespace MCSkin3D.lemon42
 			if (valueRaw - thickness < 0)
 				value = 0;
 
-			return new ColorManager.HSVColor(hue, saturation, value, (byte)_currentAlpha);
+			return new ColorManager.HSVColor(hue, saturation, value, (byte)_currentAlpha);*/
+
+			double h = CurrentHue;
+			var InnerPoints = Triangle(_currentHue);
+
+			PointF vH = InnerPoints[0];
+			PointF vV = InnerPoints[2];
+			PointF vS = InnerPoints[1];
+
+			PointF pt = new PointF(x, y);
+
+			PointF vVtoPoint = new PointF(pt.X - vV.X, pt.Y - vV.Y);
+			PointF vVtovS = new PointF(vS.X - vV.X, vS.Y - vV.Y);
+
+			// a *dot* b = ||a|| ||b|| cos(o)
+			// gonna find the angle between the 2 vectors: vV-> clicked point and vV -> vS
+			// then ratio it against PI / 3 (60 degree), I believed the ratio should be the same with the ratio on the vector vS -> vH 
+
+			double dotproduct = vVtoPoint.X * vVtovS.X + vVtoPoint.Y * vVtovS.Y;
+			double vVtoPointLength = Math.Sqrt(vVtoPoint.X * vVtoPoint.X + vVtoPoint.Y * vVtoPoint.Y);
+			double vVtovSLength = Math.Sqrt(vVtovS.X * vVtovS.X + vVtovS.Y * vVtovS.Y);
+			double angle = Math.Acos(dotproduct / (vVtoPointLength * vVtovSLength));
+			var s = angle / (Math.PI / 3); // use this ratio for saturation
+			s = s <= 1.0 ?
+				s >= 0 ? s : 0
+				: 1.0;
+
+
+
+
+			PointF vStovH = new PointF(vH.X - vS.X, vH.Y - vS.Y);
+			PointF vStovH2 = new PointF(vStovH.X * (float)s, vStovH.Y * (float)s); // apply scalar to get new vector
+			PointF vVtovH2 = new PointF(vVtovS.X + vStovH2.X, vVtovS.Y + vStovH2.Y);
+			double vVtovH2Length = Math.Sqrt(vVtovH2.X * vVtovH2.X + vVtovH2.Y * vVtovH2.Y);
+			var v = vVtoPointLength / vVtovH2Length; // ratio for value
+
+			v = v <= 1.0 ?
+				 v >= 0 ? v : 0
+				: 1.0;
+
+			return new ColorManager.HSVColor((short)h, (byte)(s * 100), (byte)(v * 100), (byte)_currentAlpha);
 		}
 
 		private void ColorPick_Load(object sender, EventArgs e)
