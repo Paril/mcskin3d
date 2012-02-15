@@ -117,7 +117,6 @@ namespace MCSkin3D.Language
 		}
 	}
 
-	// Provides a user interface for adjusting an angle value.
 	internal class LanguagePropertyChecker : System.Windows.Forms.UserControl
 	{
 		List<CheckBox> _boxes = new List<CheckBox>();
@@ -210,6 +209,12 @@ namespace MCSkin3D.Language
 
 					if (lang.StringTable.ContainsKey(strn))
 						obj.Value.PropertyNames[i].SetValue(obj.Value.Object, lang.StringTable[strn], null);
+					else
+					{
+#if BETA
+						MessageBox.Show("Stringtable string not found: " + strn);
+#endif
+					}
 				}
 			}
 		}

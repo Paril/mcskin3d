@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
+    <Compile Include="Controls\AlphaSliderRenderer.cs" />
     <Compile Include="lemon42\Color\ColorManager.cs" />
     <Compile Include="lemon42\Color\ColorPick.cs">
       <SubType>UserControl</SubType>

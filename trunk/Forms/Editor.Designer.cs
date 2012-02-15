@@ -150,7 +150,6 @@
 			this.redNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.greenColorSlider = new MB.Controls.ColorSlider();
 			this.label2 = new System.Windows.Forms.Label();
-			this.alphaColorSlider = new MB.Controls.ColorSlider();
 			this.greenNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.alphaNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
@@ -196,6 +195,7 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.alphaColorSlider = new MB.Controls.ColorSlider();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -1303,6 +1303,7 @@
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.alphaColorSlider);
 			this.panel2.Controls.Add(this.colorPick1);
 			this.panel2.Controls.Add(this.colorPreview1);
 			this.panel2.Controls.Add(this.colorPreview2);
@@ -1313,7 +1314,6 @@
 			this.panel2.Controls.Add(this.redNumericUpDown);
 			this.panel2.Controls.Add(this.greenColorSlider);
 			this.panel2.Controls.Add(this.label2);
-			this.panel2.Controls.Add(this.alphaColorSlider);
 			this.panel2.Controls.Add(this.greenNumericUpDown);
 			this.panel2.Controls.Add(this.alphaNumericUpDown);
 			this.panel2.Controls.Add(this.label3);
@@ -1373,7 +1373,7 @@
 			this.redColorSlider.Location = new System.Drawing.Point(24, 158);
 			this.redColorSlider.Maximum = 255;
 			this.redColorSlider.Name = "redColorSlider";
-			this.redColorSlider.Size = new System.Drawing.Size(203, 20);
+			this.redColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.redColorSlider.SmallChange = ((uint)(1u));
 			this.redColorSlider.TabIndex = 12;
 			this.redColorSlider.Text = "colorSlider1";
@@ -1426,7 +1426,7 @@
 			this.greenColorSlider.Location = new System.Drawing.Point(24, 178);
 			this.greenColorSlider.Maximum = 255;
 			this.greenColorSlider.Name = "greenColorSlider";
-			this.greenColorSlider.Size = new System.Drawing.Size(203, 20);
+			this.greenColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.greenColorSlider.SmallChange = ((uint)(1u));
 			this.greenColorSlider.TabIndex = 14;
 			this.greenColorSlider.Text = "colorSlider3";
@@ -1440,19 +1440,6 @@
 			this.label2.Size = new System.Drawing.Size(15, 13);
 			this.label2.TabIndex = 2;
 			this.label2.Text = "R";
-			// 
-			// alphaColorSlider
-			// 
-			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.alphaColorSlider.LargeChange = ((uint)(5u));
-			this.alphaColorSlider.Location = new System.Drawing.Point(24, 218);
-			this.alphaColorSlider.Maximum = 255;
-			this.alphaColorSlider.Name = "alphaColorSlider";
-			this.alphaColorSlider.Size = new System.Drawing.Size(204, 20);
-			this.alphaColorSlider.SmallChange = ((uint)(1u));
-			this.alphaColorSlider.TabIndex = 15;
-			this.alphaColorSlider.Text = "colorSlider2";
-			this.alphaColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alphaColorSlider_Scroll);
 			// 
 			// greenNumericUpDown
 			// 
@@ -1588,7 +1575,7 @@
 			this.hueColorSlider.Location = new System.Drawing.Point(24, 158);
 			this.hueColorSlider.Maximum = 360;
 			this.hueColorSlider.Name = "hueColorSlider";
-			this.hueColorSlider.Size = new System.Drawing.Size(203, 20);
+			this.hueColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.hueColorSlider.SmallChange = ((uint)(1u));
 			this.hueColorSlider.TabIndex = 24;
 			this.hueColorSlider.Text = "colorSlider1";
@@ -1634,7 +1621,7 @@
 			this.saturationColorSlider.LargeChange = ((uint)(5u));
 			this.saturationColorSlider.Location = new System.Drawing.Point(24, 178);
 			this.saturationColorSlider.Name = "saturationColorSlider";
-			this.saturationColorSlider.Size = new System.Drawing.Size(203, 20);
+			this.saturationColorSlider.Size = new System.Drawing.Size(204, 20);
 			this.saturationColorSlider.SmallChange = ((uint)(1u));
 			this.saturationColorSlider.TabIndex = 26;
 			this.saturationColorSlider.Text = "colorSlider3";
@@ -1958,6 +1945,19 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
+			// alphaColorSlider
+			// 
+			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.alphaColorSlider.LargeChange = ((uint)(5u));
+			this.alphaColorSlider.Location = new System.Drawing.Point(24, 218);
+			this.alphaColorSlider.Maximum = 255;
+			this.alphaColorSlider.Name = "alphaColorSlider";
+			this.alphaColorSlider.Size = new System.Drawing.Size(204, 20);
+			this.alphaColorSlider.SmallChange = ((uint)(1u));
+			this.alphaColorSlider.TabIndex = 22;
+			this.alphaColorSlider.Text = "Alpha";
+			this.alphaColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alphaColorSlider_Scroll);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2057,7 +2057,6 @@
 		private MB.Controls.ColorSlider blueColorSlider;
 		private MB.Controls.ColorSlider redColorSlider;
 		private MB.Controls.ColorSlider greenColorSlider;
-		private MB.Controls.ColorSlider alphaColorSlider;
 		private System.Windows.Forms.TabControl colorTabControl;
 		private System.Windows.Forms.TabPage swatchTabPage;
 		private System.Windows.Forms.TabPage rgbTabPage;
@@ -2178,6 +2177,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mINFINITEMOUSEToolStripMenuItem;
 		private lemon42.ColorPick colorPick1;
 		private System.Windows.Forms.ToolStripMenuItem bROWSEIDToolStripMenuItem;
+		private MB.Controls.ColorSlider alphaColorSlider;
 	}
 }
 

@@ -694,7 +694,8 @@ namespace MB.Controls
                 if (value >= barMinimum & value <= barMaximum)
                 {
                     trackerValue = value;
-                    if (ValueChanged != null) ValueChanged(this, new EventArgs());
+					if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.ThumbPosition, trackerValue));
+					if (ValueChanged != null) ValueChanged(this, new EventArgs());
 					SetThumbRect();
                     Invalidate();
                 }
@@ -723,7 +724,8 @@ namespace MB.Controls
                     if (trackerValue < barMinimum)
                     {
                         trackerValue = barMinimum;
-                        if (ValueChanged != null) ValueChanged(this, new EventArgs());
+						if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.First, trackerValue));
+						if (ValueChanged != null) ValueChanged(this, new EventArgs());
                     }
 					SetThumbRect();
 					Invalidate();
@@ -753,7 +755,8 @@ namespace MB.Controls
                     if (trackerValue > barMaximum)
                     {
                         trackerValue = barMaximum;
-                        if (ValueChanged != null) ValueChanged(this, new EventArgs());
+						if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.Last, trackerValue));
+						if (ValueChanged != null) ValueChanged(this, new EventArgs());
                     }
 					SetThumbRect();
 					Invalidate();
@@ -924,8 +927,8 @@ namespace MB.Controls
             if (e.Button == MouseButtons.Left)
             {
                 Capture = true;
-                if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, trackerValue));
-                if (ValueChanged != null) ValueChanged(this, new EventArgs());
+                //if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, trackerValue));
+                //if (ValueChanged != null) ValueChanged(this, new EventArgs());
                 OnMouseMove(e);
             }
         }
@@ -1070,6 +1073,8 @@ namespace MB.Controls
                     SetProperValue(Value + (int)largeChange);
                     if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.LargeIncrement, Value));
                     break;
+			default:
+					return;
             }
             if (Scroll != null && Value == barMinimum) Scroll(this, new ScrollEventArgs(ScrollEventType.First, Value));
             if (Scroll != null && Value == barMaximum) Scroll(this, new ScrollEventArgs(ScrollEventType.Last, Value));

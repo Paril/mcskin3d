@@ -15,6 +15,9 @@ Version 1.4
 - Added new split buttons for Undo/Redo, with a timeline history
 - Fixed the preview remaining when you leave the cursor on it
 - Stamp tool
+- Color wheel
+- Fixed the sliders mis-alignments and thumbs not appearing pressed
+- Changed HSL into HSV
 
 Version 1.3
 - Treeview skin selector
