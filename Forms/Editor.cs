@@ -79,7 +79,7 @@ namespace MCSkin3D
 		float _2dCamOffsetY = 0;
 		float _2dZoom = 8;
 		float _3dZoom = -80;
-		float _3dRotationX = 0, _3dRotationY = 180;
+		float _3dRotationX = 180, _3dRotationY = 0;
 		bool _mouseIsDown = false;
 		Point _mousePoint;
 		UndoBuffer _currentUndoBuffer = null;
@@ -596,8 +596,8 @@ namespace MCSkin3D
 			_2dCamOffsetY = 0;
 			_2dZoom = 8;
 			_3dZoom = -80;
-			_3dRotationX = 0;
-			_3dRotationY = 180;
+			_3dRotationX = 180;
+			_3dRotationY = 0;
 
 			rendererControl.Invalidate();
 		}
@@ -1046,10 +1046,10 @@ namespace MCSkin3D
 			float tsW = (float)topSkinW / skinW;
 			float tsH = (float)topSkinH / skinH;
 
-			GL.TexCoord2(tsX, tsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Top)
-			GL.TexCoord2(tsX + tsW - 0.00005, tsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Top)
-			GL.TexCoord2(tsX + tsW - 0.00005, tsY + tsH - 0.00005); GL.Vertex3(x + width, y + length, z + height);          // Bottom Left Of The Quad (Top)
 			GL.TexCoord2(tsX, tsY + tsH - 0.00005); GL.Vertex3(x - width, y + length, z + height);          // Bottom Right Of The Quad (Top)
+			GL.TexCoord2(tsX + tsW - 0.00005, tsY + tsH - 0.00005); GL.Vertex3(x + width, y + length, z + height);          // Bottom Left Of The Quad (Top)
+			GL.TexCoord2(tsX + tsW - 0.00005, tsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Top)
+			GL.TexCoord2(tsX, tsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Top)
 
 			GL.End();
 		}
@@ -3114,7 +3114,6 @@ namespace MCSkin3D
 			GL.Viewport(viewport);
 			var mat = OpenTK.Matrix4d.Perspective(45, (double)viewport.Width / (double)viewport.Height, 0.01, 100000);
 			GL.MultMatrix(ref mat);
-			GL.Scale(1, -1, 1);
 
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
@@ -3142,8 +3141,8 @@ namespace MCSkin3D
 			// FIXME: calculate these only on change
 			viewMatrix =
 				Matrix4.CreateTranslation(-center.X, -center.Y, -center.Z) *
-				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
-				Matrix4.CreateFromAxisAngle(new Vector3(-1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
 				Matrix4.CreateTranslation(0, 0, _3dZoom);
 
 			GL.LoadMatrix(ref viewMatrix);

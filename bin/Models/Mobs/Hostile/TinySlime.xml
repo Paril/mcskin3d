@@ -14,126 +14,6 @@
 				<Coord>0.375 0.5</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-4 16 -4</Vertex>
-				<Vertex>-4 16 4</Vertex>
-				<Vertex>-4 24 4</Vertex>
-				<Vertex>-4 24 -4</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.125 0.25</Coord>
-				<Coord>0 0.25</Coord>
-				<Coord>0 0.5</Coord>
-				<Coord>0.125 0.5</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4 16 4</Vertex>
-				<Vertex>-4 16 4</Vertex>
-				<Vertex>-4 16 -4</Vertex>
-				<Vertex>4 16 -4</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.25 0</Coord>
-				<Coord>0.125 0</Coord>
-				<Coord>0.125 0.25</Coord>
-				<Coord>0.25 0.25</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4 24 -4</Vertex>
-				<Vertex>-4 24 -4</Vertex>
-				<Vertex>-4 24 4</Vertex>
-				<Vertex>4 24 4</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.25</Coord>
-				<Coord>0.25 0.25</Coord>
-				<Coord>0.25 0</Coord>
-				<Coord>0.375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4 16 -4</Vertex>
-				<Vertex>-4 16 -4</Vertex>
-				<Vertex>-4 24 -4</Vertex>
-				<Vertex>4 24 -4</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.25 0.25</Coord>
-				<Coord>0.125 0.25</Coord>
-				<Coord>0.125 0.5</Coord>
-				<Coord>0.25 0.5</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-4 16 4</Vertex>
-				<Vertex>4 16 4</Vertex>
-				<Vertex>4 24 4</Vertex>
-				<Vertex>-4 24 4</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5 0.25</Coord>
-				<Coord>0.375 0.25</Coord>
-				<Coord>0.375 0.5</Coord>
-				<Coord>0.5 0.5</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4 16 4</Vertex>
-				<Vertex>4 16 -4</Vertex>
-				<Vertex>4 24 -4</Vertex>
-				<Vertex>4 24 4</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.25</Coord>
-				<Coord>0.25 0.25</Coord>
-				<Coord>0.25 0.5</Coord>
-				<Coord>0.375 0.5</Coord>
-			</TexCoords>
-			<Indices>
 				<Index>0</Index>
 				<Index>1</Index>
 				<Index>2</Index>
@@ -238,6 +118,126 @@
 				<Index>1</Index>
 				<Index>2</Index>
 				<Index>3</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>4 16 4</Vertex>
+				<Vertex>4 16 -4</Vertex>
+				<Vertex>4 24 -4</Vertex>
+				<Vertex>4 24 4</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.375 0.25</Coord>
+				<Coord>0.25 0.25</Coord>
+				<Coord>0.25 0.5</Coord>
+				<Coord>0.375 0.5</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>-4 16 -4</Vertex>
+				<Vertex>-4 16 4</Vertex>
+				<Vertex>-4 24 4</Vertex>
+				<Vertex>-4 24 -4</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.125 0.25</Coord>
+				<Coord>0 0.25</Coord>
+				<Coord>0 0.5</Coord>
+				<Coord>0.125 0.5</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>4 16 4</Vertex>
+				<Vertex>-4 16 4</Vertex>
+				<Vertex>-4 16 -4</Vertex>
+				<Vertex>4 16 -4</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.25 0</Coord>
+				<Coord>0.125 0</Coord>
+				<Coord>0.125 0.25</Coord>
+				<Coord>0.25 0.25</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>4 24 -4</Vertex>
+				<Vertex>-4 24 -4</Vertex>
+				<Vertex>-4 24 4</Vertex>
+				<Vertex>4 24 4</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.375 0.25</Coord>
+				<Coord>0.25 0.25</Coord>
+				<Coord>0.25 0</Coord>
+				<Coord>0.375 0</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>4 16 -4</Vertex>
+				<Vertex>-4 16 -4</Vertex>
+				<Vertex>-4 24 -4</Vertex>
+				<Vertex>4 24 -4</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.25 0.25</Coord>
+				<Coord>0.125 0.25</Coord>
+				<Coord>0.125 0.5</Coord>
+				<Coord>0.25 0.5</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
+			</Indices>
+		</Face>
+		<Face>
+			<Vertices>
+				<Vertex>-4 16 4</Vertex>
+				<Vertex>4 16 4</Vertex>
+				<Vertex>4 24 4</Vertex>
+				<Vertex>-4 24 4</Vertex>
+			</Vertices>
+			<TexCoords>
+				<Coord>0.5 0.25</Coord>
+				<Coord>0.375 0.25</Coord>
+				<Coord>0.375 0.5</Coord>
+				<Coord>0.5 0.5</Coord>
+			</TexCoords>
+			<Indices>
+				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 	</Mesh>
