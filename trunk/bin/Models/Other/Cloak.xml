@@ -14,10 +14,10 @@
 				<Coord>0.1875 0.53125</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>0</Index>
-				<Index>1</Index>
-				<Index>2</Index>
 				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 		<Face>
@@ -34,10 +34,10 @@
 				<Coord>0.015625 0.53125</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>0</Index>
-				<Index>1</Index>
-				<Index>2</Index>
 				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 		<Face>
@@ -54,10 +54,10 @@
 				<Coord>0.171875 0.03125</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>0</Index>
-				<Index>1</Index>
-				<Index>2</Index>
 				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 		<Face>
@@ -74,10 +74,10 @@
 				<Coord>0.328125 0</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>0</Index>
-				<Index>1</Index>
-				<Index>2</Index>
 				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 		<Face>
@@ -94,10 +94,10 @@
 				<Coord>0.171875 0.53125</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>0</Index>
-				<Index>1</Index>
-				<Index>2</Index>
 				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 		<Face>
@@ -114,10 +114,10 @@
 				<Coord>0.34375 0.53125</Coord>
 			</TexCoords>
 			<Indices>
-				<Index>0</Index>
-				<Index>1</Index>
-				<Index>2</Index>
 				<Index>3</Index>
+				<Index>2</Index>
+				<Index>1</Index>
+				<Index>0</Index>
 			</Indices>
 		</Face>
 	</Mesh>

@@ -739,7 +739,7 @@ namespace MCSkin3D
 										texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
 									}
 
-									Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
+									Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
 									mesh.Faces.Add(newFace);
 								}
 							}
@@ -755,7 +755,7 @@ namespace MCSkin3D
 									texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
 								}
 
-								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
+								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
 								mesh.Faces.Add(newFace);
 							}
 

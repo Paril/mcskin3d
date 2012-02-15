@@ -1,4 +1,5 @@
 1.4:
+?- Lighting options
 *- Better versioning system (minor/build as well)
 ?-- Update program
 *- Custom model support
