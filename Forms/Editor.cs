@@ -65,7 +65,8 @@ namespace MCSkin3D
 		#region Variables
 		Updater _updater;
 
-		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer, alphaRenderer;
+		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer;
+		AlphaSliderRenderer alphaRenderer;
 		HueSliderRenderer hueRenderer;
 		SaturationSliderRenderer saturationRenderer;
 		ValueSliderRenderer valueRenderer;
@@ -243,7 +244,7 @@ namespace MCSkin3D
 			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
 			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
 			blueColorSlider.Renderer = blueRenderer = new ColorSliderRenderer(blueColorSlider);
-			alphaColorSlider.Renderer = alphaRenderer = new ColorSliderRenderer(alphaColorSlider);
+			alphaColorSlider.Renderer = alphaRenderer = new AlphaSliderRenderer(alphaColorSlider);
 
 			hueColorSlider.Renderer = hueRenderer = new HueSliderRenderer(hueColorSlider);
 			saturationColorSlider.Renderer = saturationRenderer = new SaturationSliderRenderer(saturationColorSlider);
@@ -2605,10 +2606,6 @@ namespace MCSkin3D
 			blueNumericUpDown.Value = currentColor.RGB.B;
 			alphaNumericUpDown.Value = currentColor.RGB.A;
 
-			//colorSquare.CurrentHue = newColor.HSV.H;
-			//colorSquare.CurrentSat = newColor.HSV.S;
-			//saturationSlider.CurrentLum = newColor.HSV.V;
-
 			hueNumericUpDown.Value = currentColor.HSV.H;
 			saturationNumericUpDown.Value = currentColor.HSV.S;
 			valueNumericUpDown.Value = currentColor.HSV.V;
@@ -2620,6 +2617,8 @@ namespace MCSkin3D
 			redRenderer.EndColor = Color.FromArgb(255, 255, currentColor.RGB.G, currentColor.RGB.B);
 			greenRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, 255, currentColor.RGB.B);
 			blueRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 255);
+
+			alphaRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.ToColor());
 
 			hueRenderer.CurrentColor = currentColor;
 			saturationRenderer.CurrentColor = currentColor;
@@ -4093,7 +4092,14 @@ namespace MCSkin3D
 		public static string GetLanguageString(string id)
 		{
 			if (!_currentLanguage.StringTable.ContainsKey(id))
+			{
+#if BETA
+				MessageBox.Show("Stringtable string not found: " + id);
+#endif
+
 				return id;
+			}
+
 			return _currentLanguage.StringTable[id];
 		}
 

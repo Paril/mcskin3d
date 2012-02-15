@@ -20,6 +20,7 @@ using System;
 using MB.Controls;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace MCSkin3D
 {
@@ -50,7 +51,7 @@ namespace MCSkin3D
 			g.FillRectangle(brush, colorRect);
 			g.DrawRectangle(Pens.Black, colorRect);
 
-			TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
+			TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, (this.Slider.MouseInThumbRegion) ? (Form.MouseButtons & MouseButtons.Left) != 0 ? TrackBarThumbState.Pressed : TrackBarThumbState.Hot : TrackBarThumbState.Normal);
 		}
 	}
 }

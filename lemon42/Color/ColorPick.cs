@@ -64,6 +64,7 @@ namespace MCSkin3D.lemon42
 				OnHueChanged(EventArgs.Empty);
 			}
 		}
+
 		public short CurrentSat
 		{
 			get { return _currentSat; }
@@ -79,6 +80,7 @@ namespace MCSkin3D.lemon42
 				OnSatChanged(EventArgs.Empty);
 			}
 		}
+
 		public short CurrentVal
 		{
 			get { return _currentVal; }
@@ -94,6 +96,7 @@ namespace MCSkin3D.lemon42
 				OnValChanged(EventArgs.Empty);
 			}
 		}
+
 		public short CurrentAlpha
 		{
 			get { return _currentAlpha; }
@@ -115,12 +118,19 @@ namespace MCSkin3D.lemon42
 			get { return new ColorManager.HSVColor(_currentHue, (byte)_currentSat, (byte)_currentVal, (byte)_currentAlpha); }
 			set
 			{
-				_currentHue = value.H;
-				_currentSat = value.S;
-				_currentVal = value.V;
-				_currentAlpha = value.A;
-                setPoint();
-				OnHSVChanged(EventArgs.Empty);
+				if (_currentHue != value.H ||
+					_currentSat != value.S ||
+					_currentVal != value.S)
+				{
+					_currentHue = value.H;
+					_currentSat = value.S;
+					_currentVal = value.V;
+					setPoint();
+					OnHSVChanged(EventArgs.Empty);
+				}
+
+				if (_currentAlpha != value.A)
+					_currentAlpha = value.A;
 			}
 		}
 		public event EventHandler HueChanged;
@@ -132,29 +142,37 @@ namespace MCSkin3D.lemon42
 		protected virtual void OnHueChanged(EventArgs e)
 		{
 			Invalidate();
+
 			if (HueChanged != null)
 				HueChanged(this, e);
 		}
+
 		protected virtual void OnSatChanged(EventArgs e)
 		{
 			Invalidate();
+
 			if (SatChanged != null)
 				SatChanged(this, e);
 		}
+
 		protected virtual void OnValChanged(EventArgs e)
 		{
 			Invalidate();
+
 			if (ValChanged != null)
 				ValChanged(this, e);
 		}
+
 		protected virtual void OnAlphaChanged(EventArgs e)
 		{
 			if (AlphaChanged != null)
 				AlphaChanged(this, e);
 		}
+
 		protected virtual void OnHSVChanged(EventArgs e)
 		{
 			Invalidate();
+
 			if (HSVChanged != null)
 				HSVChanged(this, e);
 		}
@@ -163,21 +181,23 @@ namespace MCSkin3D.lemon42
 		{
 			base.OnPaint(e);
 			Graphics g = e.Graphics;
+
 			using (Bitmap triangle = ColorPickRenderer.ColorTriangle(_currentHue, Width - thickness * 2, 2))
 				g.DrawImageUnscaled(triangle, thickness, thickness);
+
 			g.DrawImageUnscaled(wheel, 0, 0);
 
 			g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            //TODO: Draw line on hue circle
+			PointF p = ColorPickUtil.RotatePoint(clickPoint, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
 
 			if (drawPoint)
-			{
-				PointF p = ColorPickUtil.RotatePoint(clickPoint, new Point(Width / 2, Width / 2), ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
-				g.DrawEllipse(new Pen(Negative(ColorHSVForLocation(p.X, p.Y, _currentHue)), 2), new RectangleF(p.X - 3, p.Y - 3, 6, 6));
+				g.DrawEllipse(new Pen(Negative(CurrentHSV), 2), new RectangleF(p.X - 3, p.Y - 3, 6, 6));
 
-			}
+			PointF start = ColorPickUtil.RotatePoint(new PointF(Width - thickness, (Height / 2.0f) - 1.5f), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(_currentHue));
+			PointF end = ColorPickUtil.RotatePoint(new PointF(Width, (Height / 2.0f) - 1.5f), new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(_currentHue));
 
+			g.DrawLine(new Pen(Negative(new ColorManager.HSVColor(CurrentHSV.H, 100, 100)), 2), start, end);
 		}
 		private double AngleFromPoints(Point p2)
 		{
@@ -347,9 +367,6 @@ namespace MCSkin3D.lemon42
 				s >= 0 ? s : 0
 				: 1.0;
 
-
-
-
 			PointF vStovH = new PointF(vH.X - vS.X, vH.Y - vS.Y);
 			PointF vStovH2 = new PointF(vStovH.X * (float)s, vStovH.Y * (float)s); // apply scalar to get new vector
 			PointF vVtovH2 = new PointF(vVtovS.X + vStovH2.X, vVtovS.Y + vStovH2.Y);
@@ -438,7 +455,7 @@ namespace MCSkin3D.lemon42
 
 		public PointF ClipPoint(PointF p, int angle)
 		{
-			if (InTriangle(p, Triangle(angle)))
+			/*if (InTriangle(p, Triangle(angle)))
 				return p;
 			else
 			{
@@ -469,14 +486,38 @@ namespace MCSkin3D.lemon42
 					clippedPosition = polygon[0];
 
 				return ColorPickUtil.RotatePoint(clippedPosition, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle));
-			}
+			}*/
+
+			PointF _clickPosition = ColorPickUtil.RotatePoint(p, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(-angle));
+			PointF[] polygon = Triangle(0);
+
+			if (_clickPosition.X < polygon[2].X)
+				_clickPosition.X = polygon[2].X;
+			if (_clickPosition.Y < polygon[2].Y)
+				_clickPosition.Y = polygon[2].Y;
+
+			return ColorPickUtil.RotatePoint(_clickPosition, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(angle));
 		}
+
+
+		// From GTK:
+		public static float Intensity(float r, float g, float b)
+		{
+			return ((r) * 0.30f + (g) * 0.59f + (b) * 0.11f);
+		}
+
+		public static float Intensity(byte r, byte g, byte b)
+		{
+			return Intensity((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f);
+		}
+
 		public static Color Negative(ColorManager.HSVColor c) //haha this isnt even negative LOL
 		{
-			if (c.V <= 60)
-				return Color.White;
-			else
+			var rgb = ColorManager.HSVtoRGB(c);
+			if (Intensity(rgb.R, rgb.G, rgb.B) > 0.5f)
 				return Color.Black;
+			else
+				return Color.White;
 		}
 	}
 
@@ -545,8 +586,8 @@ namespace MCSkin3D.lemon42
 						g.FillPath(pgb, gp);
 
 					}
-					return ColorPickUtil.ResizeImage(ColorPickUtil.rotateImage(b, (float)angle - 120), size / multisampling);
 
+					return ColorPickUtil.ResizeImage(ColorPickUtil.rotateImage(b, (float)angle - 120), size / multisampling);
 				}
 			}
 		} //2-3x multisampling recommended ;)

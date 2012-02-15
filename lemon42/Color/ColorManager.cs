@@ -229,7 +229,7 @@ namespace MCSkin3D.lemon42
 			g = Math.Round(g * 255);
 			b = Math.Round(b * 255);
 
-			return Color.FromArgb((byte)r, (byte)g, (byte)b);
+			return Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
 		}
 
 

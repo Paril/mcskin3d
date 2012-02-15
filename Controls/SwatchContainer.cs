@@ -123,6 +123,21 @@ namespace MCSkin3D
 		{
 			ZoomIn();
 		}
+
+		private void toolStripButton3_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void toolStripButton4_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void toolStripButton5_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 
 	public class SwatchFile
