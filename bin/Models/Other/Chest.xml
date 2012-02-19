@@ -1,4 +1,4 @@
-﻿<Model Name="Chest" AspectRatio="1">
+﻿<Model Name="Chest" DefaultWidth="64" DefaultHeight="64">
 	<Mesh Name="Lid" Mode="Quads" Translate="1 7 15" Pivot="1 7 15" IsHelmet="False" FollowCursor="True" RotateFactor="25" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

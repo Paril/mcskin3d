@@ -1,4 +1,4 @@
-﻿<Model Name="Blaze" AspectRatio="2">
+﻿<Model Name="Blaze" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Rod" Mode="Quads" Translate="9 -1 0" Pivot="9 -1 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="LeftArmFlag">
 		<Face>
 			<Vertices>

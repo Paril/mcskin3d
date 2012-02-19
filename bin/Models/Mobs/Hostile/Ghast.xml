@@ -1,4 +1,4 @@
-﻿<Model Name="Ghast" AspectRatio="2">
+﻿<Model Name="Ghast" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Body" Mode="Quads" Translate="0 8 0" Pivot="0 8 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>

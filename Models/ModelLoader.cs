@@ -693,11 +693,12 @@ namespace MCSkin3D
 				return (TextureOffset)field_39000_a[s];
 			}
 
-			public Model Compile(string name, float scale, float aspectRatio)
+			public Model Compile(string name, float scale, float defaultWidth, float defaultHeight)
 			{
 				var model = new Model();
 				model.Name = name;
-				model.AspectRatio = aspectRatio;
+				model.DefaultWidth = defaultWidth;
+				model.DefaultHeight = defaultHeight;
 
 				foreach (var boxObj in boxList)
 				{
@@ -3124,47 +3125,47 @@ namespace MCSkin3D
 
 		public static void LoadModels()
 		{
-			new ModelPig().Compile("Pig", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
-			new ModelBiped().Compile("Human", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Human.xml");
-			new ModelVillager().Compile("Villager", 1, 64.0f / 64.0f).Save("Models\\Mobs\\Passive\\Villager.xml");
-			new ModelCow().Compile("Cow", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Cow.xml");
-			new ModelChicken().Compile("Chicken", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Chicken.xml");
-			new ModelSquid().Compile("Squid", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Squid.xml");
-			new ModelWolf().Compile("Wolf", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Wolf.xml");
-			new ModelSheep1().Compile("Sheep Fur", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Sheep Fur.xml");
-			new ModelSheep2().Compile("Sheep", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Passive\\Sheep.xml");
-			new ModelSnowMan().Compile("SnowMan", 1, 64.0f / 64.0f).Save("Models\\Mobs\\Passive\\SnowMan.xml");
+			new ModelPig().Compile("Pig", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
+			new ModelBiped().Compile("Human", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Human.xml");
+			new ModelVillager().Compile("Villager", 1, 64.0f, 64.0f).Save("Models\\Mobs\\Passive\\Villager.xml");
+			new ModelCow().Compile("Cow", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Cow.xml");
+			new ModelChicken().Compile("Chicken", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Chicken.xml");
+			new ModelSquid().Compile("Squid", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Squid.xml");
+			new ModelWolf().Compile("Wolf", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Wolf.xml");
+			new ModelSheep1().Compile("Sheep Fur", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Sheep Fur.xml");
+			new ModelSheep2().Compile("Sheep", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Sheep.xml");
+			new ModelSnowMan().Compile("SnowMan", 1, 64.0f, 64.0f).Save("Models\\Mobs\\Passive\\SnowMan.xml");
 
-			new ModelChest().Compile("Chest", 1, 64.0f / 64.0f).Save("Models\\Other\\Chest.xml");
-			new ModelLargeChest().Compile("Large Chest", 1, 128.0f / 64.0f).Save("Models\\Other\\LargeChest.xml");
-			new ModelBoat().Compile("Boat", 1, 64.0f / 32.0f).Save("Models\\Other\\Boat.xml");
-			new SignModel().Compile("Sign", 1, 64.0f / 32.0f).Save("Models\\Other\\Sign.xml");
-			new ModelBook().Compile("Book", 1, 64.0f / 32.0f).Save("Models\\Other\\Book.xml");
-			new ModelMinecart().Compile("Minecart", 1, 64.0f / 32.0f).Save("Models\\Other\\Minecart.xml");
-			new ModelEnderCrystal().Compile("Ender Crystal", 1, 128.0f / 64.0f).Save("Models\\Other\\EnderCrystal.xml");
+			new ModelChest().Compile("Chest", 1, 64.0f, 64.0f).Save("Models\\Other\\Chest.xml");
+			new ModelLargeChest().Compile("Large Chest", 1, 128.0f, 64.0f).Save("Models\\Other\\LargeChest.xml");
+			new ModelBoat().Compile("Boat", 1, 64.0f, 32.0f).Save("Models\\Other\\Boat.xml");
+			new SignModel().Compile("Sign", 1, 64.0f, 32.0f).Save("Models\\Other\\Sign.xml");
+			new ModelBook().Compile("Book", 1, 64.0f, 32.0f).Save("Models\\Other\\Book.xml");
+			new ModelMinecart().Compile("Minecart", 1, 64.0f, 32.0f).Save("Models\\Other\\Minecart.xml");
+			new ModelEnderCrystal().Compile("Ender Crystal", 1, 128.0f, 64.0f).Save("Models\\Other\\EnderCrystal.xml");
 
-			new ModelCreeper().Compile("Creeper", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Creeper.xml");
-			new ModelSlime(0).Compile("Tiny Slime", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\TinySlime.xml");
-			new ModelSlime(16).Compile("Small Slime", 2, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\SmallSlime.xml");
-			new ModelSlime(16).Compile("Medium Slime", 3, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\MediumSlime.xml");
-			new ModelSlime(16).Compile("Huge Slime", 4, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\HugeSlime.xml");
-			new ModelMagmaCube().Compile("Tiny Magma Cube", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
-			new ModelMagmaCube().Compile("Small Magma Cube", 2, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
-			new ModelMagmaCube().Compile("Medium Magma Cube", 3, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
-			new ModelMagmaCube().Compile("Huge Magma Cube", 4, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
-			new ModelBlaze().Compile("Blaze", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Blaze.xml");
-			new ModelSilverfish().Compile("Silverfish", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Silverfish.xml");
-			new ModelEnderman().Compile("Enderman", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Enderman.xml");
-			new ModelGhast().Compile("Ghast", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Ghast.xml");
-			new ModelSpider().Compile("Spider", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Spider.xml");
-			new ModelZombie().Compile("Zombie", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Zombie.xml");
-			new ModelSkeleton().Compile("Skeleton", 1, 64.0f / 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
-			new ModelCloak().Compile("Cloak", 1, 64.0f / 32.0f).Save("Models\\Other\\Cloak.xml");
-			new ModelArmor().Compile("Armor", 1, 64.0f / 32.0f).Save("Models\\Other\\Armor.xml");
+			new ModelCreeper().Compile("Creeper", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Creeper.xml");
+			new ModelSlime(0).Compile("Tiny Slime", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\TinySlime.xml");
+			new ModelSlime(16).Compile("Small Slime", 2, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\SmallSlime.xml");
+			new ModelSlime(16).Compile("Medium Slime", 3, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\MediumSlime.xml");
+			new ModelSlime(16).Compile("Huge Slime", 4, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\HugeSlime.xml");
+			new ModelMagmaCube().Compile("Tiny Magma Cube", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
+			new ModelMagmaCube().Compile("Small Magma Cube", 2, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
+			new ModelMagmaCube().Compile("Medium Magma Cube", 3, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
+			new ModelMagmaCube().Compile("Huge Magma Cube", 4, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
+			new ModelBlaze().Compile("Blaze", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Blaze.xml");
+			new ModelSilverfish().Compile("Silverfish", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Silverfish.xml");
+			new ModelEnderman().Compile("Enderman", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Enderman.xml");
+			new ModelGhast().Compile("Ghast", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Ghast.xml");
+			new ModelSpider().Compile("Spider", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Spider.xml");
+			new ModelZombie().Compile("Zombie", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Zombie.xml");
+			new ModelSkeleton().Compile("Skeleton", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
+			new ModelCloak().Compile("Cloak", 1, 64.0f, 32.0f).Save("Models\\Other\\Cloak.xml");
+			new ModelArmor().Compile("Armor", 1, 64.0f, 32.0f).Save("Models\\Other\\Armor.xml");
 
-			new ModelOzelot().Compile("Ozelot", 1, 64.0f / 32.0f).Save("Models\\Ozelot.xml");
+			new ModelOzelot().Compile("Ozelot", 1, 64.0f, 32.0f).Save("Models\\Ozelot.xml");
 
-			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f / 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
+			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
 
 			var psi = new ProcessStartInfo("flate.exe", "models\\*.xml e");
 			psi.CreateNoWindow = true;

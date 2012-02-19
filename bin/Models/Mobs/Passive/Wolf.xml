@@ -1,4 +1,4 @@
-﻿<Model Name="Wolf" AspectRatio="2">
+﻿<Model Name="Wolf" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Head" Mode="Quads" Translate="-1 13.5 -7" Pivot="-1 13.5 -7" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

@@ -1,4 +1,4 @@
-﻿<Model Name="Spider" AspectRatio="2">
+﻿<Model Name="Spider" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Head" Mode="Quads" Translate="0 15 -3" Pivot="0 15 -3" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

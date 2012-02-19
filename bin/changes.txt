@@ -18,6 +18,10 @@ Version 1.4
 - Color wheel
 - Fixed the sliders mis-alignments and thumbs not appearing pressed
 - Changed HSL into HSV
+- High resolution skins no longer change the scale in the 2D view
+- Added support for .gpl, .gimp, .aco and .act swatch formats (GIMP and Photoshop).
+- Swatch editing features
+- Fixed color sliders not working on non-VisualStyle-enabled systems.
 
 Version 1.3
 - Treeview skin selector

@@ -214,6 +214,13 @@
       <DependentUpon>PopupComboBox.cs</DependentUpon>
     </Compile>
     <Compile Include="SVN.cs" />
+    <Compile Include="Swatches\ACOSwatch.cs" />
+    <Compile Include="Swatches\ACTSwatch.cs" />
+    <Compile Include="Swatches\GIMPSwatch.cs" />
+    <Compile Include="Swatches\ISwatch.cs" />
+    <Compile Include="Swatches\MCSwatch.cs" />
+    <Compile Include="Swatches\NamedColor.cs" />
+    <Compile Include="Swatches\SwatchBase.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
     <Compile Include="Devcorp\CIELab.cs" />
@@ -368,10 +375,10 @@
     <Compile Include="Controls\SkinTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\SwatchContainer.cs">
+    <Compile Include="Swatches\SwatchContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\SwatchContainer.Designer.cs">
+    <Compile Include="Swatches\SwatchContainer.Designer.cs">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\ITool.cs" />
@@ -486,7 +493,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SwatchContainer.resx">
+    <EmbeddedResource Include="Swatches\SwatchContainer.resx">
       <DependentUpon>SwatchContainer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Tools\PencilOptions.resx">

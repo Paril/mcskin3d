@@ -67,7 +67,7 @@ namespace MCSkin3D
             g.FillRectangle(theBrush, colorRect);
             //Draw border and trackbar
             g.DrawRectangle(Pens.Black, new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4));
-            TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
-        }
+			DrawThumb(g);
+		}
 	}
 }

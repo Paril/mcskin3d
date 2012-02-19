@@ -237,7 +237,6 @@ namespace MCSkin3D
 			_shortcutEditor.ShortcutExists += new EventHandler<ShortcutExistsEventArgs>(_shortcutEditor_ShortcutExists);
 			CurrentLanguage = useLanguage;
 			Brushes.LoadBrushes();
-			CurrentLanguage = useLanguage;
 
 			SetSelectedTool(_tools[0]);
 
@@ -378,9 +377,10 @@ namespace MCSkin3D
 			redoToolStripButton.DropDown = new PopupControl.Popup(_redoListBox);
 			redoToolStripButton.DropDownOpening += new EventHandler(redoToolStripButton_DropDownOpening);
 
-			undoToolStripButton.DropDown.AutoClose = redoToolStripButton.DropDown.AutoClose = false;
+			undoToolStripButton.DropDown.AutoClose = redoToolStripButton.DropDown.AutoClose = true;
 
 			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
+			CurrentLanguage = useLanguage;
 		}
 
 		static List<string> _ignoreFiles = new List<string>();
@@ -993,752 +993,6 @@ namespace MCSkin3D
 				checkbox.Checked = true;
 			else
 				checkbox.Checked = false;
-		}
-
-		Texture GetPaintTexture(int width, int height)
-		{
-			if (!_charPaintSizes.ContainsKey(new Size(width, height)))
-			{
-				var tex = new TextureGL();
-
-				int[] arra = new int[width * height];
-				unsafe
-				{
-					fixed (int* texData = arra)
-					{
-						int *d = texData;
-
-						for (int y = 0; y < height; ++y)
-							for (int x = 0; x < width; ++x)
-							{
-								*d = ((y * width) + x) | (255 << 24);
-								d++;
-							}
-					}
-				}
-
-				tex.Upload(arra, width, height);
-				tex.SetMipmapping(false);
-				tex.SetRepeat(false);
-
-				_charPaintSizes.Add(new Size(width, height), tex);
-
-				return tex;
-			}
-
-			return _charPaintSizes[new Size(width, height)];
-		}
-
-		void DrawSkinnedRectangle
-			(float x, float y, float z, float width, float length, float height,
-			int topSkinX, int topSkinY, int topSkinW, int topSkinH,
-			Texture texture, int skinW = 64, int skinH = 32)
-		{
-			texture.Bind();
-
-			GL.Begin(BeginMode.Quads);
-
-			width /= 2;
-			length /= 2;
-			height /= 2;
-
-			float tsX = (float)topSkinX / skinW;
-			float tsY = (float)topSkinY / skinH;
-			float tsW = (float)topSkinW / skinW;
-			float tsH = (float)topSkinH / skinH;
-
-			GL.TexCoord2(tsX, tsY + tsH - 0.00005); GL.Vertex3(x - width, y + length, z + height);          // Bottom Right Of The Quad (Top)
-			GL.TexCoord2(tsX + tsW - 0.00005, tsY + tsH - 0.00005); GL.Vertex3(x + width, y + length, z + height);          // Bottom Left Of The Quad (Top)
-			GL.TexCoord2(tsX + tsW - 0.00005, tsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Top)
-			GL.TexCoord2(tsX, tsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Top)
-
-			GL.End();
-		}
-
-		void DrawCharacter2D(Texture font, byte c, float xOfs, float yOfs, float width, float height)
-		{
-			font.Bind();
-
-			float tx = (((c - 32) % 16) * 8) / 128.0f;
-			float ty = (((c - 32) / 16) * 8) / 64.0f;
-			const float txw = 8.0f / 128.0f;
-			const float txh = 8.0f / 64.0f;
-
-			GL.Begin(BeginMode.Quads);
-			GL.TexCoord2(tx, ty);
-			GL.Vertex2(xOfs, yOfs);
-			GL.TexCoord2(tx + txw, ty);
-			GL.Vertex2(xOfs + width, yOfs);
-			GL.TexCoord2(tx + txw, ty + txh);
-			GL.Vertex2(xOfs + width, height + yOfs);
-			GL.TexCoord2(tx, ty + txh);
-			GL.Vertex2(xOfs, height + yOfs);
-			GL.End();
-		}
-
-		void DrawString(Texture font, string s, float spacing, float size)
-		{
-			float x = 0;
-			foreach (var c in s)
-			{
-				DrawCharacter2D(font, (byte)c, x, 0, size, size);
-				x += spacing;
-			}
-
-			TextureGL.Unbind();
-		}
-
-		void DrawStringWithinRectangle(Texture font, Rectangle rect, string s, float spacing, float size)
-		{
-			float x = rect.X;
-			float y = rect.Y;
-			foreach (var c in s)
-			{
-				DrawCharacter2D(font, (byte)c, x, y, size, size);
-				x += spacing;
-
-				if ((x + spacing) > rect.X + rect.Width)
-				{
-					x = rect.X;
-					y += spacing;
-				}
-
-				if ((y + spacing) > rect.Y + rect.Height)
-					break;
-			}
-
-			TextureGL.Unbind();
-		}
-
-		void DrawPlayer2D(Texture tex, Skin skin, bool pickView)
-		{
-			if (!pickView && GlobalSettings.AlphaCheckerboard)
-			{
-				_alphaTex.Bind();
-
-				GL.Begin(BeginMode.Quads);
-				GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
-				GL.TexCoord2(_currentViewport.Width / 32.0f, 0); GL.Vertex2(_currentViewport.Width, 0);
-				GL.TexCoord2(_currentViewport.Width / 32.0f, _currentViewport.Height / 32.0f); GL.Vertex2(_currentViewport.Width, _currentViewport.Height);
-				GL.TexCoord2(0, _currentViewport.Height / 32.0f); GL.Vertex2(0, _currentViewport.Height);
-				GL.End();
-			}
-
-			if (skin != null)
-				tex.Bind();
-
-			GL.PushMatrix();
-
-			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
-			GL.Translate((_currentViewport.Width / 2) + -_2dCamOffsetX, (_currentViewport.Height / 2) + -_2dCamOffsetY, 0);
-			GL.Scale(_2dZoom, _2dZoom, 1);
-
-			if (pickView)
-				GL.Disable(EnableCap.Blend);
-			else
-				GL.Enable(EnableCap.Blend);
-
-			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
-			if (skin != null)
-			{
-				float w = skin.Width;
-				float h = skin.Height;
-				GL.Begin(BeginMode.Quads);
-				GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
-				GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
-				GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
-				GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
-				GL.End();
-			}
-
-			TextureGL.Unbind();
-
-			if (!pickView && GlobalSettings.TextureOverlay && skin != null)
-			{
-				if (_backgrounds[_selectedBackground] == _dynamicOverlay)
-				{
-					GL.PushMatrix();
-					GL.Translate(-(skin.Width / 2), -(skin.Height / 2), 0);
-
-					var stub = (GlobalSettings.DynamicOverlayLineSize / _2dZoom);
-					var one = (1.0f / _2dZoom);
-
-					List<Rectangle> done = new List<Rectangle>();
-					foreach (var mesh in CurrentModel.Meshes)
-					{
-						foreach (var face in mesh.Faces)
-						{
-							var toint = face.TexCoordsToInteger(skin.Width, skin.Height);
-
-							if (toint.Width == 0 ||
-								toint.Height == 0)
-								continue;
-							if (done.Contains(toint))
-								continue;
-
-							done.Add(toint);
-
-							GL.Color4(GlobalSettings.DynamicOverlayLineColor);
-							GL.Begin(BeginMode.Quads);
-							GL.Vertex2(toint.X, toint.Y);
-							GL.Vertex2(toint.X + toint.Width, toint.Y);
-							GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
-							GL.Vertex2(toint.X, toint.Y + stub);
-
-							GL.Vertex2(toint.X, toint.Y);
-							GL.Vertex2(toint.X + stub, toint.Y);
-							GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
-							GL.Vertex2(toint.X, toint.Y + toint.Height);
-
-							GL.Vertex2(toint.X + toint.Width + one, toint.Y);
-							GL.Vertex2(toint.X + toint.Width + one, toint.Y + toint.Height);
-							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y + toint.Height);
-							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y);
-
-							GL.Vertex2(toint.X, toint.Y + toint.Height + one);
-							GL.Vertex2(toint.X, toint.Y + toint.Height + one - stub);
-							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one - stub);
-							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one);
-							GL.End();
-							GL.Color4(Color.White);
-
-							GL.Color4(GlobalSettings.DynamicOverlayTextColor);
-							DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal), (6 * GlobalSettings.DynamicOverlayTextSize) / _2dZoom, (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2dZoom);
-							GL.Color4(Color.White);
-						}
-					}
-
-					GL.PopMatrix();
-				}
-				else
-				{
-					_backgrounds[_selectedBackground].GLImage.Bind();
-
-					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(-(skin.Width / 2), -(skin.Height / 2));
-					GL.TexCoord2(1, 0); GL.Vertex2((skin.Width / 2), -(skin.Height / 2));
-					GL.TexCoord2(1, 1); GL.Vertex2((skin.Width / 2), (skin.Height / 2));
-					GL.TexCoord2(0, 1); GL.Vertex2(-(skin.Width / 2), (skin.Height / 2));
-					GL.End();
-				}
-			}
-
-			GL.PopMatrix();
-
-			GL.Disable(EnableCap.Blend);
-		}
-
-		public static Model CurrentModel
-		{
-			get { return MainForm._lastSkin == null ? null : MainForm._lastSkin.Model; }
-		}
-
-		void DrawPlayer(Texture tex, Skin skin, bool pickView)
-		{
-			TextureGL.Unbind();
-			bool grass = !pickView && grassToolStripMenuItem.Checked;
-
-			var clPt = rendererControl.PointToClient(Cursor.Position);
-			var x = clPt.X - (_currentViewport.Width / 2);
-			var y = clPt.Y - (_currentViewport.Height / 2);
-
-			if (!pickView && GlobalSettings.Transparency == TransparencyMode.All)
-				GL.Enable(EnableCap.Blend);
-			else
-				GL.Disable(EnableCap.Blend);
-
-			if (grass)
-				DrawSkinnedRectangle(0, GrassY, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
-
-			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
-			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
-
-			// draw non-transparent meshes
-			foreach (var mesh in CurrentModel.Meshes)
-			{
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
-					!(GlobalSettings.Ghost && !pickView))
-					continue;
-
-				var newMesh = mesh;
-
-				newMesh.Texture = tex;
-
-				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-					newMesh.Rotate += helmetRotate;
-
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
-				{
-					foreach (var f in mesh.Faces)
-						for (int i = 0; i < f.Colors.Length; ++i)
-							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
-				}
-				else
-				{
-					foreach (var f in mesh.Faces)
-						for (int i = 0; i < f.Colors.Length; ++i)
-							f.Colors[i] = Color4.White;
-				}
-
-				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
-
-				_renderer.AddMesh(newMesh);
-			}
-
-			if (!pickView)
-				_renderer.Render();
-			else
-				_renderer.RenderWithoutTransparency();
-		}
-
-		Point _pickPosition = new Point(-1, -1);
-		bool _isValidPick = false;
-
-		void SetPreview()
-		{
-			if (_lastSkin == null)
-			{
-				ColorGrabber preview = new ColorGrabber(_previewPaint, 64, 32);
-				preview.Save();
-			}
-			else
-			{
-				Skin skin = _lastSkin;
-
-				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
-
-				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
-
-				//if (pick)
-				{
-					currentSkin.Load();
-					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
-					{
-						currentSkin.Texture = _previewPaint;
-						currentSkin.Save();
-					}
-					else
-					{
-						currentSkin.Texture = _previewPaint;
-						currentSkin.Save();
-					}
-				}
-				/*else
-				{
-					currentSkin.Texture = _lastSkin.GLImage;
-					currentSkin.Load();
-					currentSkin.Texture = _previewPaint;
-					currentSkin.Save();
-				}*/
-			}
-		}
-
-		/*
-		** Invert 4x4 matrix.
-		** Contributed by David Moore (See Mesa bug #6748)
-		*/
-		static bool __gluInvertMatrixf(float[] m, float[] invOut)
-		{
-			float[] inv = new float[16];
-			float det;
-			int i;
-
-			inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15]
-					 + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10];
-			inv[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15]
-					 - m[8] * m[7] * m[14] - m[12] * m[6] * m[11] + m[12] * m[7] * m[10];
-			inv[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15]
-					 + m[8] * m[7] * m[13] + m[12] * m[5] * m[11] - m[12] * m[7] * m[9];
-			inv[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14]
-					 - m[8] * m[6] * m[13] - m[12] * m[5] * m[10] + m[12] * m[6] * m[9];
-			inv[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15]
-					 - m[9] * m[3] * m[14] - m[13] * m[2] * m[11] + m[13] * m[3] * m[10];
-			inv[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15]
-					 + m[8] * m[3] * m[14] + m[12] * m[2] * m[11] - m[12] * m[3] * m[10];
-			inv[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15]
-					 - m[8] * m[3] * m[13] - m[12] * m[1] * m[11] + m[12] * m[3] * m[9];
-			inv[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14]
-					 + m[8] * m[2] * m[13] + m[12] * m[1] * m[10] - m[12] * m[2] * m[9];
-			inv[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15]
-					 + m[5] * m[3] * m[14] + m[13] * m[2] * m[7] - m[13] * m[3] * m[6];
-			inv[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15]
-					 - m[4] * m[3] * m[14] - m[12] * m[2] * m[7] + m[12] * m[3] * m[6];
-			inv[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15]
-					 + m[4] * m[3] * m[13] + m[12] * m[1] * m[7] - m[12] * m[3] * m[5];
-			inv[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14]
-					 - m[4] * m[2] * m[13] - m[12] * m[1] * m[6] + m[12] * m[2] * m[5];
-			inv[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11]
-					 - m[5] * m[3] * m[10] - m[9] * m[2] * m[7] + m[9] * m[3] * m[6];
-			inv[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11]
-					 + m[4] * m[3] * m[10] + m[8] * m[2] * m[7] - m[8] * m[3] * m[6];
-			inv[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11]
-					 - m[4] * m[3] * m[9] - m[8] * m[1] * m[7] + m[8] * m[3] * m[5];
-			inv[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10]
-					 + m[4] * m[2] * m[9] + m[8] * m[1] * m[6] - m[8] * m[2] * m[5];
-
-			det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-			if (det == 0)
-				return false;
-
-			det = 1.0f / det;
-
-			for (i = 0; i < 16; i++)
-				invOut[i] = inv[i] * det;
-
-			return true;
-		}
-
-		static void __gluMultMatricesf(float[] a, float[] b,
-			float[] r)
-		{
-			int i, j;
-
-			for (i = 0; i < 4; i++)
-			{
-				for (j = 0; j < 4; j++)
-				{
-					r[i * 4 + j] =
-				 a[i * 4 + 0] * b[0 * 4 + j] +
-				 a[i * 4 + 1] * b[1 * 4 + j] +
-				 a[i * 4 + 2] * b[2 * 4 + j] +
-				 a[i * 4 + 3] * b[3 * 4 + j];
-				}
-			}
-		}
-
-		static void __gluMultMatrixVecf(float[] matrix, float[] inMatrix,
-				float[] outMatrix)
-		{
-			int i;
-
-			for (i = 0; i < 4; i++)
-			{
-				outMatrix[i] =
-			 inMatrix[0] * matrix[0 * 4 + i] +
-			 inMatrix[1] * matrix[1 * 4 + i] +
-			 inMatrix[2] * matrix[2 * 4 + i] +
-			 inMatrix[3] * matrix[3 * 4 + i];
-			}
-		}
-
-		static bool gluUnProject(float winx, float winy, float winz,
-		  float[] modelMatrix,
-		  float[] projMatrix, int[] viewport,
-				 out float objx, out float objy, out float objz)
-		{
-			objx = objy = objz = float.NaN;
-
-			float[] finalMatrix = new float[16];
-			float[] inMatrix = new float[4];
-			float[] outMatrix = new float[4];
-
-			__gluMultMatricesf(modelMatrix, projMatrix, finalMatrix);
-			if (!__gluInvertMatrixf(finalMatrix, finalMatrix))
-				return false;
-
-			inMatrix[0] = winx;
-			inMatrix[1] = winy;
-			inMatrix[2] = winz;
-			inMatrix[3] = 1.0f;
-
-			/* Map x and y from window coordinates */
-			inMatrix[0] = (inMatrix[0] - viewport[0]) / viewport[2];
-			inMatrix[1] = (inMatrix[1] - viewport[1]) / viewport[3];
-
-			/* Map to range -1 to 1 */
-			inMatrix[0] = inMatrix[0] * 2 - 1;
-			inMatrix[1] = inMatrix[1] * 2 - 1;
-			inMatrix[2] = inMatrix[2] * 2 - 1;
-
-			__gluMultMatrixVecf(finalMatrix, inMatrix, outMatrix);
-			if (outMatrix[3] == 0.0)
-				return false;
-			outMatrix[0] /= outMatrix[3];
-			outMatrix[1] /= outMatrix[3];
-			outMatrix[2] /= outMatrix[3];
-			objx = outMatrix[0];
-			objy = outMatrix[1];
-			objz = outMatrix[2];
-			return true;
-		}
-
-		/**
-			  *  Return true if triangle or quad intersects with segment and the distance is 
-			  *  stored in dist[0].
-			  * */
-
-		private static bool segmentAndPoly(Vector3d[] coordinates,
-				Vector3d start, Vector3d end, out double dist)
-		{
-			dist = float.NaN;
-			Vector3d vec0 = new Vector3d(); // Edge vector from point 0 to point 1;
-			Vector3d vec1 = new Vector3d(); // Edge vector from point 0 to point 2 or 3;
-			Vector3d pNrm = new Vector3d();
-			double absNrmX, absNrmY, absNrmZ, pD = 0.0;
-			Vector3d tempV3d = new Vector3d();
-			Vector3d direction = new Vector3d();
-			double pNrmDotrDir = 0.0;
-			int axis, nc, sh, nsh;
-
-			Vector3d iPnt = new Vector3d(); // Point of intersection.
-
-			double[] uCoor = new double[4]; // Only need to support up to quad.
-			double[] vCoor = new double[4];
-			double tempD;
-
-			int i, j;
-
-			// Compute plane normal.
-			for (i = 0; i < coordinates.Length - 1; )
-			{
-				vec0.X = coordinates[i + 1].X - coordinates[i].X;
-				vec0.Y = coordinates[i + 1].Y - coordinates[i].Y;
-				vec0.Z = coordinates[i + 1].Z - coordinates[i++].Z;
-				if (vec0.Length > 0.0)
-					break;
-			}
-
-			for (j = i; j < coordinates.Length - 1; j++)
-			{
-				vec1.X = coordinates[j + 1].X - coordinates[j].X;
-				vec1.Y = coordinates[j + 1].Y - coordinates[j].Y;
-				vec1.Z = coordinates[j + 1].Z - coordinates[j].Z;
-				if (vec1.Length > 0.0)
-					break;
-			}
-
-			if (j == (coordinates.Length - 1))
-			{
-				// System.out.println("(1) Degenerated polygon.");
-				return false; // Degenerated polygon.
-			}
-
-			/* 
-			   System.out.println("Triangle/Quad :");
-			   for(i=0; i<coordinates.length; i++) 
-			   System.out.println("P" + i + " " + coordinates[i]);
-			 */
-
-			pNrm = Vector3d.Cross(vec0, vec1);
-
-			if (pNrm.Length == 0.0)
-			{
-				// System.out.println("(2) Degenerated polygon.");
-				return false; // Degenerated polygon.
-			}
-			// Compute plane D.
-			tempV3d = new Vector3d(coordinates[0].X, coordinates[0].Y, coordinates[0].Z);
-			Vector3d.Dot(ref pNrm, ref tempV3d, out pD);
-
-			// System.out.println("Segment start : " + start + " end " + end);
-
-			direction.X = end.X - start.X;
-			direction.Y = end.Y - start.Y;
-			direction.Z = end.Z - start.Z;
-
-			Vector3d.Dot(ref pNrm, ref direction, out pNrmDotrDir);
-
-			// Segment is parallel to plane. 
-			if (pNrmDotrDir == 0.0)
-			{
-				// System.out.println("Segment is parallel to plane.");
-				return false;
-			}
-
-			tempV3d = new Vector3d(start.X, start.Y, start.Z);
-
-			dist = (pD - Vector3d.Dot(pNrm, tempV3d)) / pNrmDotrDir;
-
-			// Segment intersects the plane behind the segment's start.
-			// or exceed the segment's length.
-			if ((dist < 0.0) || (dist > 1.0))
-			{
-				// System.out.println("Segment intersects the plane behind the start or exceed end.");
-				return false;
-			}
-
-			// Now, one thing for sure the segment intersect the plane.
-			// Find the intersection point.
-			iPnt.X = start.X + direction.X * dist;
-			iPnt.Y = start.Y + direction.Y * dist;
-			iPnt.Z = start.Z + direction.Z * dist;
-
-			// System.out.println("dist " + dist[0] + " iPnt : " + iPnt);
-
-			// Project 3d points onto 2d plane and apply Jordan curve theorem. 
-			// Note : Area of polygon is not preserve in this projection, but
-			// it doesn't matter here. 
-
-			// Find the axis of projection.
-			absNrmX = Math.Abs(pNrm.X);
-			absNrmY = Math.Abs(pNrm.Y);
-			absNrmZ = Math.Abs(pNrm.Z);
-
-			if (absNrmX > absNrmY)
-				axis = 0;
-			else
-				axis = 1;
-
-			if (axis == 0)
-			{
-				if (absNrmX < absNrmZ)
-					axis = 2;
-			}
-			else if (axis == 1)
-			{
-				if (absNrmY < absNrmZ)
-					axis = 2;
-			}
-
-			// System.out.println("Normal " + pNrm + " axis " + axis );
-
-			for (i = 0; i < coordinates.Length; i++)
-			{
-				switch (axis)
-				{
-				case 0:
-					uCoor[i] = coordinates[i].Y - iPnt.Y;
-					vCoor[i] = coordinates[i].Z - iPnt.Z;
-					break;
-
-				case 1:
-					uCoor[i] = coordinates[i].X - iPnt.X;
-					vCoor[i] = coordinates[i].Z - iPnt.Z;
-					break;
-
-				case 2:
-					uCoor[i] = coordinates[i].X - iPnt.X;
-					vCoor[i] = coordinates[i].Y - iPnt.Y;
-					break;
-				}
-
-				// System.out.println("i " + i + " u " + uCoor[i] + " v " + vCoor[i]); 
-			}
-
-			// initialize number of crossing, nc.
-			nc = 0;
-
-			if (vCoor[0] < 0.0)
-				sh = -1;
-			else
-				sh = 1;
-
-			for (i = 0; i < coordinates.Length; i++)
-			{
-				j = i + 1;
-				if (j == coordinates.Length)
-					j = 0;
-
-				if (vCoor[j] < 0.0)
-					nsh = -1;
-				else
-					nsh = 1;
-
-				if (sh != nsh)
-				{
-					if ((uCoor[i] > 0.0) && (uCoor[j] > 0.0))
-					{
-						// This line must cross U+.
-						nc++;
-					}
-					else if ((uCoor[i] > 0.0) || (uCoor[j] > 0.0))
-					{
-						// This line might cross U+. We need to compute intersection on U azis.
-						tempD = uCoor[i] - vCoor[i] * (uCoor[j] - uCoor[i])
-								/ (vCoor[j] - vCoor[i]);
-						if (tempD > 0)
-							// This line cross U+.
-							nc++;
-					}
-					sh = nsh;
-				} // sh != nsh
-			}
-
-			// System.out.println("nc " + nc);
-
-			if ((nc % 2) == 1)
-			{
-
-				// calculate the distance
-				dist *= direction.Length;
-
-				// System.out.println("Segment Intersected!");	
-				/* 
-				   System.out.println("Segment orgin : " + start + " dir " + direction);
-				   System.out.println("Triangle/Quad :");
-				   for(i=0; i<coordinates.length; i++) 
-				   System.out.println("P" + i + " " + coordinates[i]);
-				   System.out.println("dist " + dist[0] + " iPnt : " + iPnt);
-				 */
-				return true;
-			}
-			else
-			{
-				// System.out.println("Segment Not Intersected!");
-				return false;
-			}
-		}
-
-
-		public bool GetPick(int x, int y, ref Point hitPixel)
-		{
-			if (x < 0 || y < 0
-				|| x > rendererControl.Width || y > rendererControl.Height)
-			{
-				hitPixel = new Point(-1, -1);
-				return false;
-			}
-
-			rendererControl.MakeCurrent();
-
-			GL.ClearColor(Color.White);
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.ClearColor(GlobalSettings.BackgroundColor);
-
-			var skin = _lastSkin;
-
-			if (skin == null)
-				return false;
-
-			if (_currentViewMode == ViewMode.Perspective)
-			{
-				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
-				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
-			}
-			else if (_currentViewMode == ViewMode.Orthographic)
-			{
-				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
-				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
-			}
-			else
-			{
-				int halfHeight = (int)Math.Ceiling(rendererControl.Height / 2.0f);
-
-				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
-				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
-
-				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
-				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
-			}
-
-			GL.Flush();
-
-			byte[] pixel = new byte[4];
-
-			GL.ReadPixels(x, rendererControl.Height - y, 1, 1,
-				PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
-
-			uint pixVal = BitConverter.ToUInt32(pixel, 0);
-
-			if (pixVal != 0xFFFFFF)
-			{
-				hitPixel = new Point((int)(pixVal % skin.Width), (int)(pixVal / skin.Width));
-				return true;
-			}
-
-			hitPixel = new Point(-1, -1);
-			return false;
 		}
 
 		public ColorManager SelectedColor
@@ -2577,6 +1831,11 @@ namespace MCSkin3D
 			EndRedo();
 		}
 
+		private void redoToolStripButton_ButtonClick(object sender, EventArgs e)
+		{
+			PerformRedo();
+		}
+
 		void redoToolStripButton_DropDownOpening(object sender, EventArgs e)
 		{
 			_redoListBox.ListBox.Items.Clear();
@@ -2996,6 +2255,412 @@ namespace MCSkin3D
 			item.Checked = true;
 		}
 
+
+		Texture GetPaintTexture(int width, int height)
+		{
+			if (!_charPaintSizes.ContainsKey(new Size(width, height)))
+			{
+				var tex = new TextureGL();
+
+				int[] arra = new int[width * height];
+				unsafe
+				{
+					fixed (int* texData = arra)
+					{
+						int *d = texData;
+
+						for (int y = 0; y < height; ++y)
+							for (int x = 0; x < width; ++x)
+							{
+								*d = ((y * width) + x) | (255 << 24);
+								d++;
+							}
+					}
+				}
+
+				tex.Upload(arra, width, height);
+				tex.SetMipmapping(false);
+				tex.SetRepeat(false);
+
+				_charPaintSizes.Add(new Size(width, height), tex);
+
+				return tex;
+			}
+
+			return _charPaintSizes[new Size(width, height)];
+		}
+
+		void DrawSkinnedRectangle
+			(float x, float y, float z, float width, float length, float height,
+			int topSkinX, int topSkinY, int topSkinW, int topSkinH,
+			Texture texture, int skinW = 64, int skinH = 32)
+		{
+			texture.Bind();
+
+			GL.Begin(BeginMode.Quads);
+
+			width /= 2;
+			length /= 2;
+			height /= 2;
+
+			float tsX = (float)topSkinX / skinW;
+			float tsY = (float)topSkinY / skinH;
+			float tsW = (float)topSkinW / skinW;
+			float tsH = (float)topSkinH / skinH;
+
+			GL.TexCoord2(tsX, tsY + tsH - 0.00005); GL.Vertex3(x - width, y + length, z + height);          // Bottom Right Of The Quad (Top)
+			GL.TexCoord2(tsX + tsW - 0.00005, tsY + tsH - 0.00005); GL.Vertex3(x + width, y + length, z + height);          // Bottom Left Of The Quad (Top)
+			GL.TexCoord2(tsX + tsW - 0.00005, tsY); GL.Vertex3(x + width, y + length, z - height);          // Top Left Of The Quad (Top)
+			GL.TexCoord2(tsX, tsY); GL.Vertex3(x - width, y + length, z - height);          // Top Right Of The Quad (Top)
+
+			GL.End();
+		}
+
+		void DrawCharacter2D(Texture font, byte c, float xOfs, float yOfs, float width, float height)
+		{
+			font.Bind();
+
+			float tx = (((c - 32) % 16) * 8) / 128.0f;
+			float ty = (((c - 32) / 16) * 8) / 64.0f;
+			const float txw = 8.0f / 128.0f;
+			const float txh = 8.0f / 64.0f;
+
+			GL.Begin(BeginMode.Quads);
+			GL.TexCoord2(tx, ty);
+			GL.Vertex2(xOfs, yOfs);
+			GL.TexCoord2(tx + txw, ty);
+			GL.Vertex2(xOfs + width, yOfs);
+			GL.TexCoord2(tx + txw, ty + txh);
+			GL.Vertex2(xOfs + width, height + yOfs);
+			GL.TexCoord2(tx, ty + txh);
+			GL.Vertex2(xOfs, height + yOfs);
+			GL.End();
+		}
+
+		void DrawString(Texture font, string s, float spacing, float size)
+		{
+			float x = 0;
+			foreach (var c in s)
+			{
+				DrawCharacter2D(font, (byte)c, x, 0, size, size);
+				x += spacing;
+			}
+
+			TextureGL.Unbind();
+		}
+
+		void DrawStringWithinRectangle(Texture font, Rectangle rect, string s, float spacing, float size)
+		{
+			float x = rect.X;
+			float y = rect.Y;
+			foreach (var c in s)
+			{
+				DrawCharacter2D(font, (byte)c, x, y, size, size);
+				x += spacing;
+
+				if ((x + spacing) > rect.X + rect.Width)
+				{
+					x = rect.X;
+					y += spacing;
+				}
+
+				if ((y + spacing) > rect.Y + rect.Height)
+					break;
+			}
+
+			TextureGL.Unbind();
+		}
+
+		void DrawPlayer2D(Texture tex, Skin skin, bool pickView)
+		{
+			if (!pickView && GlobalSettings.AlphaCheckerboard)
+			{
+				_alphaTex.Bind();
+
+				GL.Begin(BeginMode.Quads);
+				GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
+				GL.TexCoord2(_currentViewport.Width / 32.0f, 0); GL.Vertex2(_currentViewport.Width, 0);
+				GL.TexCoord2(_currentViewport.Width / 32.0f, _currentViewport.Height / 32.0f); GL.Vertex2(_currentViewport.Width, _currentViewport.Height);
+				GL.TexCoord2(0, _currentViewport.Height / 32.0f); GL.Vertex2(0, _currentViewport.Height);
+				GL.End();
+			}
+
+			if (skin != null)
+				tex.Bind();
+
+			GL.PushMatrix();
+
+			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
+			GL.Translate((_currentViewport.Width / 2) + -_2dCamOffsetX, (_currentViewport.Height / 2) + -_2dCamOffsetY, 0);
+			GL.Scale(_2dZoom, _2dZoom, 1);
+
+			if (pickView)
+				GL.Disable(EnableCap.Blend);
+			else
+				GL.Enable(EnableCap.Blend);
+
+			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
+			if (skin != null)
+			{
+				float w = skin.Width;
+				float h = skin.Height;
+				GL.Begin(BeginMode.Quads);
+				GL.TexCoord2(0, 0); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
+				GL.TexCoord2(1, 0); GL.Vertex2((CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
+				GL.TexCoord2(1, 1); GL.Vertex2((CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
+				GL.TexCoord2(0, 1); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
+				GL.End();
+			}
+
+			TextureGL.Unbind();
+
+			if (!pickView && GlobalSettings.TextureOverlay && skin != null)
+			{
+				if (_backgrounds[_selectedBackground] == _dynamicOverlay)
+				{
+					GL.PushMatrix();
+					GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
+
+					var stub = (GlobalSettings.DynamicOverlayLineSize / _2dZoom);
+					var one = (1.0f / _2dZoom);
+
+					List<Rectangle> done = new List<Rectangle>();
+					foreach (var mesh in CurrentModel.Meshes)
+					{
+						foreach (var face in mesh.Faces)
+						{
+							var toint = face.TexCoordsToInteger((int)CurrentModel.DefaultWidth, (int)CurrentModel.DefaultHeight);
+
+							if (toint.Width == 0 ||
+								toint.Height == 0)
+								continue;
+							if (done.Contains(toint))
+								continue;
+
+							done.Add(toint);
+
+							GL.Color4(GlobalSettings.DynamicOverlayLineColor);
+							GL.Begin(BeginMode.Quads);
+							GL.Vertex2(toint.X, toint.Y);
+							GL.Vertex2(toint.X + toint.Width, toint.Y);
+							GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
+							GL.Vertex2(toint.X, toint.Y + stub);
+
+							GL.Vertex2(toint.X, toint.Y);
+							GL.Vertex2(toint.X + stub, toint.Y);
+							GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
+							GL.Vertex2(toint.X, toint.Y + toint.Height);
+
+							GL.Vertex2(toint.X + toint.Width + one, toint.Y);
+							GL.Vertex2(toint.X + toint.Width + one, toint.Y + toint.Height);
+							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y + toint.Height);
+							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y);
+
+							GL.Vertex2(toint.X, toint.Y + toint.Height + one);
+							GL.Vertex2(toint.X, toint.Y + toint.Height + one - stub);
+							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one - stub);
+							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one);
+							GL.End();
+							GL.Color4(Color.White);
+
+							GL.Color4(GlobalSettings.DynamicOverlayTextColor);
+							DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal), (6 * GlobalSettings.DynamicOverlayTextSize) / _2dZoom, (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2dZoom);
+							GL.Color4(Color.White);
+						}
+					}
+
+					GL.PopMatrix();
+				}
+				else
+				{
+					_backgrounds[_selectedBackground].GLImage.Bind();
+
+					GL.Begin(BeginMode.Quads);
+					GL.TexCoord2(0, 0); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
+					GL.TexCoord2(1, 0); GL.Vertex2((CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
+					GL.TexCoord2(1, 1); GL.Vertex2((CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
+					GL.TexCoord2(0, 1); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
+					GL.End();
+				}
+			}
+
+			GL.PopMatrix();
+
+			GL.Disable(EnableCap.Blend);
+		}
+
+		public static Model CurrentModel
+		{
+			get { return MainForm._lastSkin == null ? null : MainForm._lastSkin.Model; }
+		}
+
+		void DrawPlayer(Texture tex, Skin skin, bool pickView)
+		{
+			TextureGL.Unbind();
+			bool grass = !pickView && grassToolStripMenuItem.Checked;
+
+			var clPt = rendererControl.PointToClient(Cursor.Position);
+			var x = clPt.X - (_currentViewport.Width / 2);
+			var y = clPt.Y - (_currentViewport.Height / 2);
+
+			if (!pickView && GlobalSettings.Transparency == TransparencyMode.All)
+				GL.Enable(EnableCap.Blend);
+			else
+				GL.Disable(EnableCap.Blend);
+
+			if (grass)
+				DrawSkinnedRectangle(0, GrassY, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
+
+			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
+			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
+
+			// add meshes
+			if (GlobalSettings.RenderBenchmark)
+				_compileTimer.Start();
+
+			foreach (var mesh in CurrentModel.Meshes)
+			{
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
+					!(GlobalSettings.Ghost && !pickView))
+					continue;
+
+				var newMesh = mesh;
+
+				newMesh.Texture = tex;
+
+				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
+					newMesh.Rotate += helmetRotate;
+
+				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
+				{
+					foreach (var f in mesh.Faces)
+						for (int i = 0; i < f.Colors.Length; ++i)
+							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
+				}
+				else
+				{
+					foreach (var f in mesh.Faces)
+						for (int i = 0; i < f.Colors.Length; ++i)
+							f.Colors[i] = Color4.White;
+				}
+
+				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+
+				_renderer.AddMesh(newMesh);
+			}
+
+			if (GlobalSettings.RenderBenchmark)
+				_compileTimer.Stop();
+
+			if (!pickView)
+				_renderer.Render();
+			else
+				_renderer.RenderWithoutTransparency();
+		}
+
+		Point _pickPosition = new Point(-1, -1);
+		bool _isValidPick = false;
+
+		void SetPreview()
+		{
+			if (_lastSkin == null)
+			{
+				ColorGrabber preview = new ColorGrabber(_previewPaint, 64, 32);
+				preview.Save();
+			}
+			else
+			{
+				Skin skin = _lastSkin;
+
+				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+
+				var pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
+
+				//if (pick)
+				{
+					currentSkin.Load();
+					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
+					{
+						currentSkin.Texture = _previewPaint;
+						currentSkin.Save();
+					}
+					else
+					{
+						currentSkin.Texture = _previewPaint;
+						currentSkin.Save();
+					}
+				}
+				/*else
+				{
+					currentSkin.Texture = _lastSkin.GLImage;
+					currentSkin.Load();
+					currentSkin.Texture = _previewPaint;
+					currentSkin.Save();
+				}*/
+			}
+		}
+
+		public bool GetPick(int x, int y, ref Point hitPixel)
+		{
+			if (x < 0 || y < 0
+				|| x > rendererControl.Width || y > rendererControl.Height)
+			{
+				hitPixel = new Point(-1, -1);
+				return false;
+			}
+
+			rendererControl.MakeCurrent();
+
+			GL.ClearColor(Color.White);
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			GL.ClearColor(GlobalSettings.BackgroundColor);
+
+			var skin = _lastSkin;
+
+			if (skin == null)
+				return false;
+
+			if (_currentViewMode == ViewMode.Perspective)
+			{
+				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
+			}
+			else if (_currentViewMode == ViewMode.Orthographic)
+			{
+				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
+			}
+			else
+			{
+				int halfHeight = (int)Math.Ceiling(rendererControl.Height / 2.0f);
+
+				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
+				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
+
+				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
+				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
+			}
+
+			GL.Flush();
+
+			byte[] pixel = new byte[4];
+
+			GL.ReadPixels(x, rendererControl.Height - y, 1, 1,
+				PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
+
+			uint pixVal = BitConverter.ToUInt32(pixel, 0);
+
+			if (pixVal != 0xFFFFFF)
+			{
+				hitPixel = new Point((int)(pixVal % skin.Width), (int)(pixVal / skin.Width));
+				return true;
+			}
+
+			hitPixel = new Point(-1, -1);
+			return false;
+		}
+
 		static bool _ddh = false;
 		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
@@ -3056,8 +2721,23 @@ namespace MCSkin3D
 
 		static bool _screenshotMode = false;
 
+		public static Stopwatch _renderTimer = new Stopwatch();
+		public static Stopwatch _sortTimer = new Stopwatch();
+		public static Stopwatch _batchTimer = new Stopwatch();
+		public static Stopwatch _compileTimer = new Stopwatch();
+
 		void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
+			if (GlobalSettings.RenderBenchmark)
+			{
+				_sortTimer.Reset();
+				_batchTimer.Reset();
+				_compileTimer.Reset();
+
+				_renderTimer.Reset();
+				_renderTimer.Start();
+			}
+
 			_mousePoint = rendererControl.PointToClient(MousePosition);
 
 			rendererControl.MakeCurrent();
@@ -3094,6 +2774,24 @@ namespace MCSkin3D
 			}
 
 			GL.PopMatrix();
+
+			if (GlobalSettings.RenderBenchmark)
+			{
+				GL.PushMatrix();
+				GL.Enable(EnableCap.Blend);
+				_renderTimer.Stop();
+
+				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+
+				DrawString(_font, "Compile Time: " + _compileTimer.Elapsed.ToString(), 6, 8);
+				GL.Translate(0, 8, 0);
+				DrawString(_font, "Batch Time: " + _batchTimer.Elapsed.ToString(), 6, 8);
+				GL.Translate(0, 8, 0);
+				DrawString(_font, "Sort Time: " + _sortTimer.Elapsed.ToString(), 6, 8);
+				GL.Translate(0, 8, 0);
+				DrawString(_font, "Total Frame Time: " + _renderTimer.Elapsed.ToString(), 6, 8);
+				GL.PopMatrix();
+			}
 
 			if (!_screenshotMode)
 				DrawGLToolbar();
@@ -4544,6 +4242,12 @@ namespace MCSkin3D
 		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
 		{
 			bROWSEIDToolStripMenuItem.Text = string.Format(GetLanguageString("M_BROWSE"), (treeView1.SelectedNode is Skin) ? GetLanguageString("M_SKIN") : GetLanguageString("M_FOLDER"));
+		}
+
+		private void mRENDERSTATSToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			mRENDERSTATSToolStripMenuItem.Checked = !mRENDERSTATSToolStripMenuItem.Checked;
+			GlobalSettings.RenderBenchmark = mRENDERSTATSToolStripMenuItem.Checked;
 		}
 	}
 }
