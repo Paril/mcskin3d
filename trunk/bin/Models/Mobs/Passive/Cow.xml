@@ -1,4 +1,4 @@
-﻿<Model Name="Cow" AspectRatio="2">
+﻿<Model Name="Cow" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Left Leg" Mode="Quads" Translate="-4 12 7" Pivot="-4 12 7" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 0 0" Part="LeftLegFlag">
 		<Face>
 			<Vertices>

@@ -1,4 +1,4 @@
-﻿<Model Name="Silverfish" AspectRatio="2">
+﻿<Model Name="Silverfish" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Body" Mode="Quads" Translate="0 22 -3.5" Pivot="0 22 -3.5" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
 		<Face>
 			<Vertices>

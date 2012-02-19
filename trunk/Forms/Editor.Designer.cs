@@ -140,6 +140,7 @@
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.rgbTabPage = new System.Windows.Forms.TabPage();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.alphaColorSlider = new MB.Controls.ColorSlider();
 			this.colorPick1 = new MCSkin3D.lemon42.ColorPick();
 			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
 			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
@@ -195,7 +196,7 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.alphaColorSlider = new MB.Controls.ColorSlider();
+			this.mRENDERSTATSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -618,7 +619,8 @@
 			// mSHAREDToolStripMenuItem
 			// 
 			this.mSHAREDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mINFINITEMOUSEToolStripMenuItem});
+            this.mINFINITEMOUSEToolStripMenuItem,
+            this.mRENDERSTATSToolStripMenuItem});
 			this.mSHAREDToolStripMenuItem.Name = "mSHAREDToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mSHAREDToolStripMenuItem, "Text");
 			this.mSHAREDToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
@@ -1326,6 +1328,19 @@
 			this.panel2.Size = new System.Drawing.Size(288, 245);
 			this.panel2.TabIndex = 1;
 			// 
+			// alphaColorSlider
+			// 
+			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.alphaColorSlider.LargeChange = ((uint)(5u));
+			this.alphaColorSlider.Location = new System.Drawing.Point(24, 218);
+			this.alphaColorSlider.Maximum = 255;
+			this.alphaColorSlider.Name = "alphaColorSlider";
+			this.alphaColorSlider.Size = new System.Drawing.Size(204, 20);
+			this.alphaColorSlider.SmallChange = ((uint)(1u));
+			this.alphaColorSlider.TabIndex = 22;
+			this.alphaColorSlider.Text = "Alpha";
+			this.alphaColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alphaColorSlider_Scroll);
+			// 
 			// colorPick1
 			// 
 			this.colorPick1.CurrentAlpha = ((short)(255));
@@ -1778,6 +1793,7 @@
 			this.languageProvider1.SetPropertyNames(this.redoToolStripButton, "Text");
 			this.redoToolStripButton.Size = new System.Drawing.Size(32, 22);
 			this.redoToolStripButton.Text = "T_REDO";
+			this.redoToolStripButton.ButtonClick += new System.EventHandler(this.redoToolStripButton_ButtonClick);
 			// 
 			// toolStripSeparator1
 			// 
@@ -1945,18 +1961,12 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
-			// alphaColorSlider
+			// mRENDERSTATSToolStripMenuItem
 			// 
-			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.alphaColorSlider.LargeChange = ((uint)(5u));
-			this.alphaColorSlider.Location = new System.Drawing.Point(24, 218);
-			this.alphaColorSlider.Maximum = 255;
-			this.alphaColorSlider.Name = "alphaColorSlider";
-			this.alphaColorSlider.Size = new System.Drawing.Size(204, 20);
-			this.alphaColorSlider.SmallChange = ((uint)(1u));
-			this.alphaColorSlider.TabIndex = 22;
-			this.alphaColorSlider.Text = "Alpha";
-			this.alphaColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alphaColorSlider_Scroll);
+			this.mRENDERSTATSToolStripMenuItem.Name = "mRENDERSTATSToolStripMenuItem";
+			this.mRENDERSTATSToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.mRENDERSTATSToolStripMenuItem.Text = "M_RENDERSTATS";
+			this.mRENDERSTATSToolStripMenuItem.Click += new System.EventHandler(this.mRENDERSTATSToolStripMenuItem_Click);
 			// 
 			// Editor
 			// 
@@ -2178,6 +2188,7 @@
 		private lemon42.ColorPick colorPick1;
 		private System.Windows.Forms.ToolStripMenuItem bROWSEIDToolStripMenuItem;
 		private MB.Controls.ColorSlider alphaColorSlider;
+		private System.Windows.Forms.ToolStripMenuItem mRENDERSTATSToolStripMenuItem;
 	}
 }
 

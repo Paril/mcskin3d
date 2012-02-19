@@ -169,6 +169,10 @@ namespace MCSkin3D
 		[DefaultValue(true)]
 		public static bool InfiniteMouse { get; set; }
 
+		[Savable]
+		[DefaultValue(false)]
+		public static bool RenderBenchmark { get; set; }
+
 		static Settings Settings = null;
 
 		public static bool Load()

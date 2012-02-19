@@ -1,4 +1,4 @@
-﻿<Model Name="Ender Crystal" AspectRatio="2">
+﻿<Model Name="Ender Crystal" DefaultWidth="128" DefaultHeight="64">
 	<Mesh Name="Glass" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="True" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

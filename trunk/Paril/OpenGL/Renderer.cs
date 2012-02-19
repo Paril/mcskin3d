@@ -233,7 +233,7 @@ namespace Paril.OpenGL
 	{
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
-		public float AspectRatio;
+		public float DefaultWidth, DefaultHeight;
 		public FileInfo File;
 
 		// P: polygon support required? used bounds 'n stuff but, you know...
@@ -273,7 +273,8 @@ namespace Paril.OpenGL
 			{
 				writer.WriteStartElement("Model");
 				writer.WriteAttributeString("Name", Name);
-				writer.WriteAttributeString("AspectRatio", AspectRatio.ToString());
+				writer.WriteAttributeString("DefaultWidth", DefaultWidth.ToString());
+				writer.WriteAttributeString("DefaultHeight", DefaultHeight.ToString());
 
 				foreach (var mesh in Meshes)
 					mesh.Write(writer);
@@ -317,8 +318,10 @@ namespace Paril.OpenGL
 
 			model.Name = document.DocumentElement.Attributes["Name"].InnerText;
 
-			if (document.DocumentElement.Attributes["AspectRatio"] != null)
-				model.AspectRatio = float.Parse(document.DocumentElement.Attributes["AspectRatio"].InnerText, CultureInfo.InvariantCulture);
+			if (document.DocumentElement.Attributes["DefaultWidth"] != null)
+				model.DefaultWidth = float.Parse(document.DocumentElement.Attributes["DefaultWidth"].InnerText, CultureInfo.InvariantCulture);
+			if (document.DocumentElement.Attributes["DefaultHeight"] != null)
+				model.DefaultHeight = float.Parse(document.DocumentElement.Attributes["DefaultHeight"].InnerText, CultureInfo.InvariantCulture);
 
 			foreach (XmlElement n in document.DocumentElement.ChildNodes)
 			{
@@ -531,6 +534,9 @@ namespace Paril.OpenGL
 				}
 			);*/
 
+			if (GlobalSettings.RenderBenchmark)
+				Editor._sortTimer.Start();
+
 			TransparentMeshes.Sort(
 				(left, right) =>
 				{
@@ -540,6 +546,9 @@ namespace Paril.OpenGL
 					return rightDist.CompareTo(leftDist);
 				}
 			);
+
+			if (GlobalSettings.RenderBenchmark)
+				Editor._sortTimer.Stop();
 		}
 
 		float lerp(float min, float max, float value)
@@ -560,12 +569,16 @@ namespace Paril.OpenGL
 		{
 			Sort();
 
+			if (GlobalSettings.RenderBenchmark)
+				Editor._batchTimer.Start();
+
 			PreRender();
 
 			foreach (var mesh in OpaqueMeshes)
-				RenderMesh(mesh);
+			RenderMesh(mesh);
+
 			GL.Enable(EnableCap.Blend);
-			
+
 			foreach (var mesh in TransparentMeshes)
 			{
 				/*foreach (var f in mesh.Faces)
@@ -579,6 +592,9 @@ namespace Paril.OpenGL
 			GL.Disable(EnableCap.Blend);
 	
 			PostRender();
+
+			if (GlobalSettings.RenderBenchmark)
+				Editor._batchTimer.Stop();
 
 			OpaqueMeshes.Clear();
 			TransparentMeshes.Clear();

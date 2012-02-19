@@ -1,4 +1,4 @@
-﻿<Model Name="Sheep Fur" AspectRatio="2">
+﻿<Model Name="Sheep Fur" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Head" Mode="Quads" Translate="0 6 -8" Pivot="0 6 -8" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

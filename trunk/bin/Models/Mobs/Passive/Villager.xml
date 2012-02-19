@@ -1,4 +1,4 @@
-﻿<Model Name="Villager" AspectRatio="1">
+﻿<Model Name="Villager" DefaultWidth="64" DefaultHeight="64">
 	<Mesh Name="Head" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

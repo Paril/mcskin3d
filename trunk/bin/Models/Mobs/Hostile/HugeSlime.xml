@@ -1,4 +1,4 @@
-﻿<Model Name="Huge Slime" AspectRatio="2">
+﻿<Model Name="Huge Slime" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Slime" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="True" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HeadFlag">
 		<Face>
 			<Vertices>

@@ -1,4 +1,4 @@
-﻿<Model Name="Sign" AspectRatio="2">
+﻿<Model Name="Sign" DefaultWidth="64" DefaultHeight="32">
 	<Mesh Name="Board" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
 		<Face>
 			<Vertices>

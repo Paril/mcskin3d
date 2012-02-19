@@ -39,10 +39,10 @@ namespace MCSkin3D
             //theCode, love theVariableNames :D [Xylem]
             //Set the hue shades with the correct saturation and hue
             Color[] theColors = {Color.Black,
-                           new ColorManager.HSVColor(CurrentColor.HSV.H, CurrentColor.HSV.S, 50).ToColor(),
-                           Color.White};
+                           new ColorManager.HSVColor(CurrentColor.HSV.H, CurrentColor.HSV.S, 100).ToColor()
+								};
             //Calculate positions
-            float[] thePositions = { 0.0f, 0.5f, 1.0f };
+            float[] thePositions = { 0.0f, 1.0f };
             //Set blend
             ColorBlend theBlend = new ColorBlend();
             theBlend.Colors = theColors;
@@ -58,7 +58,7 @@ namespace MCSkin3D
             g.FillRectangle(theBrush, colorRect);
             //Draw border and trackbar
             g.DrawRectangle(Pens.Black, new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4));
-            TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, System.Windows.Forms.VisualStyles.TrackBarThumbState.Normal);
-        }
+			DrawThumb(g);
+		}
 	}
 }

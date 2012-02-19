@@ -259,6 +259,10 @@ namespace MCSkin3D
 
 				Editor.AddIgnoreFile(File.FullName);
 				newBitmap.Save(File.FullName);
+
+				var md = new Dictionary<string, string>();
+				md.Add("Model", Model.Name);
+				PNGMetadata.WriteMetadata(File.FullName, md);
 			}
 
 			SetImages();

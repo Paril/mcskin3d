@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace MB.Controls
 {
@@ -39,6 +40,29 @@ namespace MB.Controls
 		}
 
 		public abstract void Render(Graphics g);
+
+		public void DrawThumb(Graphics g)
+		{
+			LinearGradientBrush brush;
+
+			if (TrackBarRenderer.IsSupported)
+				TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, (this.Slider.MouseInThumbRegion) ? (Form.MouseButtons & MouseButtons.Left) != 0 ? TrackBarThumbState.Pressed : TrackBarThumbState.Hot : TrackBarThumbState.Normal);
+			else
+			{
+				if (this.Slider.MouseInThumbRegion)
+				{
+					if ((Form.MouseButtons & MouseButtons.Left) != 0)
+						brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y), new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.White, SystemColors.Highlight);
+					else
+						brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y), new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), SystemColors.Highlight, Color.White);
+				}
+				else
+					brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y), new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.Gray, Color.White);
+				g.FillRectangle(brush, Slider.ThumbRect);
+
+				g.DrawRectangle(Pens.Black, Slider.ThumbRect);
+			}
+		}
 	}
 
 	public class DefaultSliderRenderer : SliderRenderer
