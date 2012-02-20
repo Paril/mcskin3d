@@ -508,6 +508,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap WindowsHS {
+            get {
+                object obj = ResourceManager.GetObject("WindowsHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap ZoomInHS {
             get {
                 object obj = ResourceManager.GetObject("ZoomInHS", resourceCulture);

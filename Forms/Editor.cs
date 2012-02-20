@@ -4249,5 +4249,41 @@ namespace MCSkin3D
 			mRENDERSTATSToolStripMenuItem.Checked = !mRENDERSTATSToolStripMenuItem.Checked;
 			GlobalSettings.RenderBenchmark = mRENDERSTATSToolStripMenuItem.Checked;
 		}
+
+		Form popoutForm = null;
+		private void toolStripButton7_Click(object sender, EventArgs e)
+		{
+			splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+
+			if (popoutForm == null)
+			{
+				var oldWidth = Width;
+				Width = helpToolStripMenuItem.Bounds.X + helpToolStripMenuItem.Bounds.Width + 18;
+
+				// Move the items to a new form
+				popoutForm = new Form();
+				popoutForm.Height = Height;
+				popoutForm.Width = (oldWidth - Width) + 4;
+				popoutForm.Text = "Render Window";
+				popoutForm.Icon = Icon;
+				popoutForm.ControlBox = false;
+				popoutForm.Show();
+				popoutForm.Location = new Point(Location.X + Width, Location.Y);
+
+				splitContainer1.Panel2.Controls.Remove(panel4);
+				popoutForm.Controls.Add(panel4);
+			}
+			else
+			{
+				popoutForm.Controls.Remove(panel4);
+				splitContainer1.Panel2.Controls.Add(panel4);
+
+				Width += popoutForm.Width - 4;
+
+				popoutForm.Close();
+				popoutForm.Dispose();
+				popoutForm = null;
+			}
+		}
 	}
 }

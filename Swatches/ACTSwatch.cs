@@ -20,9 +20,7 @@ namespace MCSkin3D.Swatches
 		{
 			using (EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Little, File.Open(FilePath, FileMode.Open, FileAccess.Read)))
 			{
-				var numColors = reader.BaseStream.Length / 3;
-
-				while (numColors-- != 0)
+				while ((reader.BaseStream.Length - reader.BaseStream.Position) >= 3)
 				{
 					byte r = reader.ReadByte();
 					byte g = reader.ReadByte();

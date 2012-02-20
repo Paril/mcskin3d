@@ -43,31 +43,33 @@ namespace MCSkin3D
 		public void MouseMove(Skin skin, MouseEventArgs e)
 		{
 			var delta = new Point(e.X - _oldMouse.X, e.Y - _oldMouse.Y);
+			var position = Cursor.Position;
 
 			if (GlobalSettings.InfiniteMouse)
 			{
 				Rectangle screenBounds = _clickedScreen.Bounds;
 				bool wasWrapped = false;
+				var oldMouseOnScreen = Editor.MainForm.Renderer.PointToScreen(_oldMouse);
 
-				if (Cursor.Position.X <= screenBounds.X && Editor.MainForm.Renderer.PointToScreen(_oldMouse).X > screenBounds.X)
+				if (position.X <= screenBounds.X && oldMouseOnScreen.X > screenBounds.X)
 				{
-					Cursor.Position = new Point(screenBounds.X + screenBounds.Width, Cursor.Position.Y);
+					Cursor.Position = new Point(screenBounds.X + screenBounds.Width, position.Y);
 					wasWrapped = true;
 				}
-				else if (Cursor.Position.X >= screenBounds.X + screenBounds.Width - 1 && Editor.MainForm.Renderer.PointToScreen(_oldMouse).X < screenBounds.X + screenBounds.Width - 1)
+				else if (position.X >= screenBounds.X + screenBounds.Width - 1 && oldMouseOnScreen.X < screenBounds.X + screenBounds.Width - 1)
 				{
-					Cursor.Position = new Point(screenBounds.X, Cursor.Position.Y);
+					Cursor.Position = new Point(screenBounds.X, position.Y);
 					wasWrapped = true;
 				}
 
-				if (Cursor.Position.Y <= screenBounds.Y && Editor.MainForm.Renderer.PointToScreen(_oldMouse).Y > screenBounds.Y)
+				if (position.Y <= screenBounds.Y && oldMouseOnScreen.Y > screenBounds.Y)
 				{
-					Cursor.Position = new Point(Cursor.Position.X, screenBounds.Y + screenBounds.Height);
+					Cursor.Position = new Point(position.X, screenBounds.Y + screenBounds.Height);
 					wasWrapped = true;
 				}
-				else if (Cursor.Position.Y >= screenBounds.X + screenBounds.Height - 1 && Editor.MainForm.Renderer.PointToScreen(_oldMouse).Y < screenBounds.Y + screenBounds.Height - 1)
+				else if (position.Y >= screenBounds.Y + screenBounds.Height - 1 && oldMouseOnScreen.Y < screenBounds.Y + screenBounds.Height - 1)
 				{
-					Cursor.Position = new Point(Cursor.Position.X, screenBounds.Y);
+					Cursor.Position = new Point(position.X, screenBounds.Y);
 					wasWrapped = true;
 				}
 

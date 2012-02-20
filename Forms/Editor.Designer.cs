@@ -74,6 +74,7 @@
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.mSHAREDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mINFINITEMOUSEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mRENDERSTATSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.transparencyModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.offToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,6 +169,7 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
 			this.valueNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.panel4 = new System.Windows.Forms.Panel();
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -195,8 +197,8 @@
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
-			this.mRENDERSTATSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -220,7 +222,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).BeginInit();
-			this.splitContainer4.Panel2.SuspendLayout();
+			this.panel4.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -238,7 +240,7 @@
             this.helpToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
-			this.mainMenuStrip.Size = new System.Drawing.Size(999, 24);
+			this.mainMenuStrip.Size = new System.Drawing.Size(1052, 24);
 			this.mainMenuStrip.TabIndex = 1;
 			this.mainMenuStrip.Text = "mainMenuStrip";
 			// 
@@ -634,6 +636,13 @@
 			this.mINFINITEMOUSEToolStripMenuItem.Text = "M_INFINITEMOUSE";
 			this.mINFINITEMOUSEToolStripMenuItem.Click += new System.EventHandler(this.mINFINITEMOUSEToolStripMenuItem_Click);
 			// 
+			// mRENDERSTATSToolStripMenuItem
+			// 
+			this.mRENDERSTATSToolStripMenuItem.Name = "mRENDERSTATSToolStripMenuItem";
+			this.mRENDERSTATSToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.mRENDERSTATSToolStripMenuItem.Text = "M_RENDERSTATS";
+			this.mRENDERSTATSToolStripMenuItem.Click += new System.EventHandler(this.mRENDERSTATSToolStripMenuItem_Click);
+			// 
 			// toolStripSeparator8
 			// 
 			this.toolStripSeparator8.Name = "toolStripSeparator8";
@@ -874,7 +883,7 @@
             this.mFETCHNAMEToolStripMenuItem,
             this.bROWSEIDToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 264);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(192, 242);
 			this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
 			// 
 			// importHereToolStripMenuItem
@@ -997,9 +1006,8 @@
 			// 
 			// splitContainer1.Panel2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
-			this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
-			this.splitContainer1.Size = new System.Drawing.Size(999, 644);
+			this.splitContainer1.Panel2.Controls.Add(this.panel4);
+			this.splitContainer1.Size = new System.Drawing.Size(1052, 644);
 			this.splitContainer1.SplitterDistance = 302;
 			this.splitContainer1.TabIndex = 4;
 			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
@@ -1673,6 +1681,17 @@
             0});
 			this.valueNumericUpDown.ValueChanged += new System.EventHandler(this.luminanceNumericUpDown_ValueChanged);
 			// 
+			// panel4
+			// 
+			this.panel4.Controls.Add(this.splitContainer4);
+			this.panel4.Controls.Add(this.statusStrip1);
+			this.panel4.Controls.Add(this.toolStrip1);
+			this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel4.Location = new System.Drawing.Point(0, 0);
+			this.panel4.Name = "panel4";
+			this.panel4.Size = new System.Drawing.Size(746, 644);
+			this.panel4.TabIndex = 1;
+			// 
 			// splitContainer4
 			// 
 			this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1683,11 +1702,7 @@
 			this.splitContainer4.Name = "splitContainer4";
 			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.splitContainer4.Panel1MinSize = 0;
-			// 
-			// splitContainer4.Panel2
-			// 
-			this.splitContainer4.Panel2.Controls.Add(this.statusStrip1);
-			this.splitContainer4.Size = new System.Drawing.Size(693, 619);
+			this.splitContainer4.Size = new System.Drawing.Size(746, 597);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
@@ -1697,9 +1712,9 @@
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 592);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 622);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(689, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(746, 22);
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
@@ -1738,10 +1753,11 @@
             this.toggleLeftLegToolStripButton,
             this.toggleRightLegToolStripButton,
             this.toolStripSeparator15,
-            this.toolStripDropDownButton1});
+            this.toolStripDropDownButton1,
+            this.toolStripButton7});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(693, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(746, 25);
 			this.toolStrip1.TabIndex = 5;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1961,18 +1977,22 @@
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(60, 22);
 			this.toolStripDropDownButton1.Text = "Human";
 			// 
-			// mRENDERSTATSToolStripMenuItem
+			// toolStripButton7
 			// 
-			this.mRENDERSTATSToolStripMenuItem.Name = "mRENDERSTATSToolStripMenuItem";
-			this.mRENDERSTATSToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-			this.mRENDERSTATSToolStripMenuItem.Text = "M_RENDERSTATS";
-			this.mRENDERSTATSToolStripMenuItem.Click += new System.EventHandler(this.mRENDERSTATSToolStripMenuItem_Click);
+			this.toolStripButton7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.toolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton7.Image = global::MCSkin3D.Properties.Resources.WindowsHS;
+			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton7.Name = "toolStripButton7";
+			this.toolStripButton7.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton7.Text = "W_POPOUT";
+			this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
 			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(999, 668);
+			this.ClientSize = new System.Drawing.Size(1052, 668);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
 			this.MainMenuStrip = this.mainMenuStrip;
@@ -1984,7 +2004,6 @@
 			this.contextMenuStrip1.ResumeLayout(false);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
-			this.splitContainer1.Panel2.PerformLayout();
 			this.splitContainer1.ResumeLayout(false);
 			this.splitContainer3.Panel1.ResumeLayout(false);
 			this.splitContainer3.Panel1.PerformLayout();
@@ -2008,8 +2027,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).EndInit();
-			this.splitContainer4.Panel2.ResumeLayout(false);
-			this.splitContainer4.Panel2.PerformLayout();
+			this.panel4.ResumeLayout(false);
+			this.panel4.PerformLayout();
 			this.splitContainer4.ResumeLayout(false);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
@@ -2189,6 +2208,8 @@
 		private System.Windows.Forms.ToolStripMenuItem bROWSEIDToolStripMenuItem;
 		private MB.Controls.ColorSlider alphaColorSlider;
 		private System.Windows.Forms.ToolStripMenuItem mRENDERSTATSToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton toolStripButton7;
+		private System.Windows.Forms.Panel panel4;
 	}
 }
 
