@@ -1,5 +1,6 @@
 1.4:
 ?- Lighting options
+?- Error reporting service
 *- Better versioning system (minor/build as well)
 ?-- Update program
 *- Custom model support
@@ -17,11 +18,12 @@
 *- Fully dynamic overlay generation
 *-- Find a proper way of text'ing the top corners of each overlay
 *-- Line/Text Color
-?- Automatic compilation of skin overlays
+/- Automatic compilation of skin overlays
 *- Change colorsquare/saturation slider to something better.
 ?- Clear skin option
 ?- Handle more upload errors
 ?- Selection tool, copy/paste
+?- Layers
 ?- Allow "old-style" drag/drop in case the COM entry for drag/drop is missing.
 ?- Allow change to main skin directory (hold multiple directories as well?)
 ?- Tutorial system
@@ -35,16 +37,19 @@
 /- Posing
 ?- Mineshafter support
 ?- Fit keyboard shortcuts into tooltips
-?- Automatically hide/show helmet based on transparency contained in helmet
+/- Automatically hide/show helmet based on transparency contained in helmet
+-- This will probably be included with automatic transparency detection
 ?- Smudge tool
 ?- Double-check language strings, ensure all English strings in source are language-ized
 ?- Ability to move the model around as well (change center)
 ?- Automated saving?
 ?- Make sure people are aware that new skins are added (select them, etc)
 ?- Reset camera button.
-?- Multi-monitor support
+*- Multi-monitor support
 /- Fix smooth brushes
 ?- Ability to see resolution/model from the treeview
+?- Dynamic detection of transparency of parts
+?- New part system
 
 1.3:
 ?- Hopefully, get an optimized color class (not super-high priority)

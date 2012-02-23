@@ -22,6 +22,8 @@ Version 1.4
 - Added support for .gpl, .gimp, .aco and .act swatch formats (GIMP and Photoshop).
 - Swatch editing features
 - Fixed color sliders not working on non-VisualStyle-enabled systems.
+- Added PopOut button for multi-monitor working
+- Fixed the last skin not showing properly in the treeview until another node was added/removed
 
 Version 1.3
 - Treeview skin selector

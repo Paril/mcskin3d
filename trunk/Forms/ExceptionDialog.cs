@@ -112,6 +112,7 @@ namespace Paril.Windows.Dialogs
 			{
 				sfd.RestoreDirectory = true;
 				sfd.Filter = "Text files (*.txt)|*.txt";
+				sfd.RestoreDirectory = true;
 
 				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 					System.IO.File.WriteAllText(sfd.FileName, _exception.ToString());

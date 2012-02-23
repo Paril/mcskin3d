@@ -54,6 +54,7 @@ using Version = Paril.Components.Update.Version;
 using Paril.Drawing;
 using Paril.Controls;
 using MCSkin3D.lemon42;
+using System.Reflection;
 
 namespace MCSkin3D
 {
@@ -81,6 +82,7 @@ namespace MCSkin3D
 		float _2dZoom = 8;
 		float _3dZoom = -80;
 		float _3dRotationX = 180, _3dRotationY = 0;
+		Vector3 _3dOffset = Vector3.Zero;
 		bool _mouseIsDown = false;
 		Point _mousePoint;
 		UndoBuffer _currentUndoBuffer = null;
@@ -143,6 +145,7 @@ namespace MCSkin3D
 		#region Constructor
 		public Editor()
 		{
+			Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			MainForm = this;
 			InitializeComponent();
 
@@ -599,6 +602,7 @@ namespace MCSkin3D
 			_3dZoom = -80;
 			_3dRotationX = 180;
 			_3dRotationY = 0;
+			_3dOffset = Vector3.Zero;
 
 			rendererControl.Invalidate();
 		}
@@ -936,12 +940,14 @@ namespace MCSkin3D
 			rendererControl.MakeCurrent();
 
 			List<Skin> skins = new List<Skin>();
+			treeView1.BeginUpdate();
 			RecurseAddDirectories("Skins", treeView1.Nodes, skins);
 
 			foreach (var s in skins)
 				s.SetImages();
 
 			treeView1.SelectedNode = _tempToSelect;
+			treeView1.EndUpdate();
 
 			SetColor(ColorManager.FromRGBA(255, 255, 255, 255));
 			SetVisibleParts();
@@ -1017,7 +1023,7 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 				return;
-
+			
 			if (_isValidPick)
 			{
 				Skin skin = _lastSkin;
@@ -1371,6 +1377,7 @@ namespace MCSkin3D
 			{
 				ofd.Filter = "Minecraft Skins|*.png";
 				ofd.Multiselect = true;
+				ofd.RestoreDirectory = true;
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
@@ -1674,6 +1681,7 @@ namespace MCSkin3D
 			using (SaveFileDialog sfd = new SaveFileDialog())
 			{
 				sfd.Filter = "Skin Image|*.png";
+				sfd.RestoreDirectory = true;
 
 				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 					b.Save(sfd.FileName);
@@ -2120,6 +2128,7 @@ namespace MCSkin3D
 			using (SaveFileDialog sfd = new SaveFileDialog())
 			{
 				sfd.Filter = "PNG Image|*.png";
+				sfd.RestoreDirectory = true;
 
 				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 				{
@@ -2837,7 +2846,7 @@ namespace MCSkin3D
 
 			// FIXME: calculate these only on change
 			viewMatrix =
-				Matrix4.CreateTranslation(-center.X, -center.Y, -center.Z) *
+				Matrix4.CreateTranslation(-center.X + _3dOffset.X, -center.Y + _3dOffset.Y, -center.Z + _3dOffset.Z) *
 				Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
 				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
 				Matrix4.CreateTranslation(0, 0, _3dZoom);
