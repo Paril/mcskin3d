@@ -33,102 +33,6 @@ namespace MCSkin3D
 {
 	public static class ModelLoader
 	{
-		// 3 = front-top-left
-		// 2 = front-top-right
-		// 1 = front-bottom-right
-		// 0 = front-bottom-left
-		// 7 = back-top-left
-		// 6 = back-top-right
-		// 5 = back-bottom-right
-		// 4 = back-bottom-left
-		static Vector3[] CreateBox(float width, float height, float length)
-		{
-			Vector3[] vertices = new Vector3[8];
-
-			width /= 2;
-			height /= 2;
-			length /= 2;
-
-			vertices[0] = new Vector3(-width, -height, length);
-			vertices[1] = new Vector3(width, -height, length);
-			vertices[2] = new Vector3(width, height, length);
-			vertices[3] = new Vector3(-width, height, length);
-
-			vertices[4] = new Vector3(-width, -height, -length);
-			vertices[5] = new Vector3(width, -height, -length);
-			vertices[6] = new Vector3(width, height, -length);
-			vertices[7] = new Vector3(-width, height, -length);
-
-			return vertices;
-		}
-
-		static Vector3[] CreateBox(float size)
-		{
-			return CreateBox(size, size, size);
-		}
-
-		enum FaceLocation
-		{
-			Front,
-			Back,
-			Top,
-			Bottom,
-			Left,
-			Right
-		}
-
-		static Vector3[] GetFace(FaceLocation location, Vector3[] box)
-		{
-			switch (location)
-			{
-			case FaceLocation.Front:
-				return new Vector3[] { box[3], box[2], box[1], box[0] };
-			case FaceLocation.Top:
-				return new Vector3[] { box[7], box[6], box[2], box[3] };
-			case FaceLocation.Bottom:
-				return new Vector3[] { box[5], box[4], box[0], box[1] };
-			case FaceLocation.Back:
-				return new Vector3[] { box[4], box[5], box[6], box[7] };
-			case FaceLocation.Left:
-				return new Vector3[] { box[7], box[3], box[0], box[4] };
-			case FaceLocation.Right:
-				return new Vector3[] { box[2], box[6], box[5], box[1] };
-			}
-
-			return null;
-		}
-
-		static Vector2[] TexCoordBox(int x, int y, int w, int h)
-		{
-			const float sw = 64.0f;
-			const float sh = 32.0f;
-
-			float rx = x / sw;
-			float ry = y / sh;
-			float rw = w / sw;
-			float rh = h / sh;
-
-			return new Vector2[]
-			{
-				new Vector2(rx, ry),
-				new Vector2(rx + rw, ry),
-				new Vector2(rx + rw, ry + rh),
-				new Vector2(rx, ry + rh),
-			};
-		}
-
-		static Vector2[] TexCoordBoxPrecise(int x, int y, int w, int h,
-			int i1, int i2, int i3, int i4)
-		{
-			var box = TexCoordBox(x, y, w, h);
-			return new Vector2[] { box[i1], box[i2], box[i3], box[i4] };
-		}
-
-		static Vector2[] InvertCoords(Vector2[] coords)
-		{
-			return new Vector2[] { coords[3], coords[2], coords[1], coords[0] };
-		}
-
 		public static Dictionary<string, Model> Models = new Dictionary<string, Model>();
 
 		public static void InvertBottomFaces()
@@ -3123,6 +3027,96 @@ namespace MCSkin3D
 			}
 		}
 
+		public class ModelGolem : ModelBase
+		{
+			public ModelRenderer a;
+			public ModelRenderer b;
+			public ModelRenderer c;
+			public ModelRenderer d;
+			public ModelRenderer e;
+			public ModelRenderer f;
+
+			public ModelGolem() :
+				this (0.0f)
+			{
+			}
+
+			public ModelGolem(float f1) :
+				this(f1, -7F)
+			{
+			}
+
+			public ModelGolem(float f1, float f2)
+			{
+				byte byte0 = 96;
+				byte byte1 = 96;
+				a = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				a.setRotationPoint(0.0F, 0.0F + f2, 0.0F);
+				a.setTextureOffset(0, 0).addBox("?", -4F, -12F, -7.5F, 8, 10, 8, f1);
+				a.setTextureOffset(24, 0).addBox("?", -1F, -5F, -9.5F, 2, 4, 2, f1);
+				b = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				b.setRotationPoint(0.0F, 0.0F + f2, 0.0F);
+				b.setTextureOffset(0, 40).addBox("?", -9F, -2F, -6F, 18, 12, 11, f1);
+				b.setTextureOffset(0, 70).addBox("?", -4.5F, 10F, -3F, 9, 5, 6, f1 + 0.5F);
+				c = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				c.setRotationPoint(0.0F, -7F, 0.0F);
+				c.setTextureOffset(60, 21).addBox("?", -13F, -2.5F, -3F, 4, 30, 6, f1);
+				d = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				d.setRotationPoint(0.0F, -7F, 0.0F);
+				d.setTextureOffset(60, 58).addBox("?", 9F, -2.5F, -3F, 4, 30, 6, f1);
+				e = (new ModelRenderer(this, 0, 22, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				e.setRotationPoint(-4F, 18F + f2, 0.0F);
+				e.setTextureOffset(37, 0).addBox("?", -3.5F, -3F, -3F, 6, 16, 5, f1);
+				f = (new ModelRenderer(this, 0, 22, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
+				f.mirror = true;
+				f.setTextureOffset(60, 0).setRotationPoint(4F, 18F + f2, 0.0F);
+				f.addBox("?", -3.5F, -3F, -3F, 6, 16, 5, f1);
+
+				setup1(0, 0, 0, 0, 0, 0);
+				setup2(0, 0, 0);
+			}
+
+			public void setup1(float f1, float f2, float f3, float f4, float f5, float f6)
+			{
+				a.rotateAngleY = f4 / 57.29578F;
+				a.rotateAngleX = f5 / 57.29578F;
+				e.rotateAngleX = -1.5F * getValue(f1, 13F) * f2;
+				f.rotateAngleX = 1.5F * getValue(f1, 13F) * f2;
+				e.rotateAngleY = 0.0F;
+				f.rotateAngleY = 0.0F;
+			}
+
+			public void setup2(float f1, float f2, float f3)
+			{
+				int i = 0;
+				if (i > 0)
+				{
+					c.rotateAngleX = -2F + 1.5F * getValue((float)i - f3, 10F);
+					d.rotateAngleX = -2F + 1.5F * getValue((float)i - f3, 10F);
+				}
+				else
+				{
+					int j = 0;//tg1.D_();
+					if (j > 0)
+					{
+						c.rotateAngleX = -0.8F + 0.025F * getValue(j, 70F);
+						d.rotateAngleX = 0.0F;
+					}
+					else
+					{
+						c.rotateAngleX = (-0.2F + 1.5F * getValue(f1, 13F)) * f2;
+						d.rotateAngleX = (-0.2F - 1.5F * getValue(f1, 13F)) * f2;
+					}
+				}
+			}
+
+			private float getValue(float f1, float f2)
+			{
+				return (Math.Abs(f1 % f2 - f2 * 0.5F) - f2 * 0.25F) / (f2 * 0.25F);
+			}
+		}
+
+
 		public static void LoadModels()
 		{
 			new ModelPig().Compile("Pig", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
@@ -3164,6 +3158,7 @@ namespace MCSkin3D
 			new ModelArmor().Compile("Armor", 1, 64.0f, 32.0f).Save("Models\\Other\\Armor.xml");
 
 			new ModelOzelot().Compile("Ozelot", 1, 64.0f, 32.0f).Save("Models\\Ozelot.xml");
+			new ModelGolem().Compile("Golem", 1, 96, 96).Save("Models\\Golem.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
 

@@ -208,7 +208,6 @@ namespace MCSkin3D
 						}
 				}
 
-				Editor.AddIgnoreFile(File.FullName);
 				newBitmap.Save(File.FullName);
 				newBitmap.Dispose();
 
@@ -236,7 +235,6 @@ namespace MCSkin3D
 			if (System.IO.File.Exists(Directory.FullName + "\\" + newName))
 				return false;
 
-			Editor.AddIgnoreFile(Directory.FullName + "\\" + newName);
 			File.MoveToParent(newName);
 			Name = Path.GetFileNameWithoutExtension(newName);
 
@@ -257,7 +255,6 @@ namespace MCSkin3D
 						g.DrawImage(temp, 0, 0, newBitmap.Width, newBitmap.Height);
 				}
 
-				Editor.AddIgnoreFile(File.FullName);
 				newBitmap.Save(File.FullName);
 
 				var md = new Dictionary<string, string>();
@@ -273,7 +270,6 @@ namespace MCSkin3D
 
 		public void Delete()
 		{
-			Editor.AddIgnoreFile(File.FullName);
 			File.Delete();
 		}
 	}

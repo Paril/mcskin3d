@@ -120,7 +120,7 @@ namespace MCSkin3D.lemon42
 			{
 				if (_currentHue != value.H ||
 					_currentSat != value.S ||
-					_currentVal != value.S)
+					_currentVal != value.V)
 				{
 					_currentHue = value.H;
 					_currentSat = value.S;
@@ -221,11 +221,11 @@ namespace MCSkin3D.lemon42
 				if (!drawPoint) { drawPoint = clickTriangle; }
 				if (clickTriangle)
 				{
-					clickPoint = ClipPoint(e.Location, _currentHue);
+					var pt = ClipPoint(e.Location, _currentHue);
 					rotatePoint = false;
 					initRot = _currentHue;
 
-					CurrentHSV = ColorHSVForLocation(clickPoint.X, clickPoint.Y, _currentHue);
+					CurrentHSV = ColorHSVForLocation(pt.X, pt.Y, _currentHue);
 				}
 			}
 		}

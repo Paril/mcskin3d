@@ -71,6 +71,26 @@ namespace Paril.OpenGL
 
 			return new Rectangle((int)(minX * width), (int)(minY * height), (int)((maxX - minX) * width), (int)((maxY - minY) * height));
 		}
+
+		public RectangleF TexCoordsToFloat(int width, int height)
+		{
+			float minX = 1, minY = 1, maxX = 0, maxY = 0;
+
+			foreach (var x in TexCoords)
+			{
+				if (x.X < minX)
+					minX = x.X;
+				if (x.X > maxX)
+					maxX = x.X;
+
+				if (x.Y < minY)
+					minY = x.Y;
+				if (x.Y > maxY)
+					maxY = x.Y;
+			}
+
+			return new RectangleF((minX * width), (minY * height), ((maxX - minX) * width), ((maxY - minY) * height));
+		}
 	}
 
 	public struct Mesh
