@@ -249,6 +249,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap empty_box_update {
+            get {
+                object obj = ResourceManager.GetObject("empty_box_update", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static byte[] English {
             get {
                 object obj = ResourceManager.GetObject("English", resourceCulture);
@@ -305,6 +312,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Generic_Application {
+            get {
+                object obj = ResourceManager.GetObject("Generic_Application", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap hybrid {
             get {
                 object obj = ResourceManager.GetObject("hybrid", resourceCulture);
@@ -336,6 +350,20 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap incres {
             get {
                 object obj = ResourceManager.GetObject("incres", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap language_update {
+            get {
+                object obj = ResourceManager.GetObject("language_update", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap model_pack_update {
+            get {
+                object obj = ResourceManager.GetObject("model_pack_update", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -375,6 +403,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap other_update {
+            get {
+                object obj = ResourceManager.GetObject("other_update", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap pen {
             get {
                 object obj = ResourceManager.GetObject("pen", resourceCulture);
@@ -385,6 +420,13 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap pipette {
             get {
                 object obj = ResourceManager.GetObject("pipette", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap program_update {
+            get {
+                object obj = ResourceManager.GetObject("program_update", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -473,10 +515,24 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap skin_pack_update {
+            get {
+                object obj = ResourceManager.GetObject("skin_pack_update", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static byte[] slkscr {
             get {
                 object obj = ResourceManager.GetObject("slkscr", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap smaller3D {
+            get {
+                object obj = ResourceManager.GetObject("smaller3D", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

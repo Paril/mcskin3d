@@ -712,7 +712,6 @@ namespace MCSkin3D
 					while (File.Exists(folderLocation + name + ".png"))
 						name += " (" + Editor.GetLanguageString("C_NEW") + ")";
 
-					Editor.AddIgnoreFile(folderLocation + name + ".png");
 					File.Copy(f, folderLocation + name + ".png");
 
 					Skin skin = new Skin(folderLocation + name + ".png");
@@ -769,8 +768,6 @@ namespace MCSkin3D
 				while (File.Exists(((Skin)from).File.Directory.FullName + "\\" + newPath + ".png"))
 					newPath += " - Moved";
 
-				Editor.AddIgnoreFile(oldPath);
-				Editor.AddIgnoreFile(((Skin)from).File.Directory.FullName + "\\" + newPath + ".png");
 				File.Move(oldPath, ((Skin)from).File.Directory.FullName + "\\" + newPath + ".png");
 				((Skin)from).Name = newPath;
 			}
@@ -781,8 +778,6 @@ namespace MCSkin3D
 				while (Directory.Exists(((FolderNode)from).Directory.Parent.FullName + "\\" + newPath))
 					newPath += " - Moved";
 
-				Editor.AddIgnoreFile(oldPath);
-				Editor.AddIgnoreFile(((FolderNode)from).Directory.Parent.FullName + "\\" + newPath);
 				Directory.Move(oldPath, ((FolderNode)from).Directory.Parent.FullName + "\\" + newPath);
 				((FolderNode)from).Text = ((FolderNode)from).Name = newPath;
 			}

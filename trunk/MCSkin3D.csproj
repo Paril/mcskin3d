@@ -110,6 +110,9 @@
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
     <Compile Include="Controls\AlphaSliderRenderer.cs" />
+    <Compile Include="Controls\ListViewExpanded.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="lemon42\Color\ColorManager.cs" />
     <Compile Include="lemon42\Color\ColorPick.cs">
       <SubType>UserControl</SubType>
@@ -118,6 +121,98 @@
       <DependentUpon>ColorPick.cs</DependentUpon>
     </Compile>
     <Compile Include="lemon42\Color\ColorPickUtil.cs" />
+    <Compile Include="ObjectListView\CellEditing\CellEditKeyEngine.cs" />
+    <Compile Include="ObjectListView\CellEditing\CellEditors.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\CellEditing\EditorRegistry.cs" />
+    <Compile Include="ObjectListView\DataListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\DragDrop\DragSource.cs" />
+    <Compile Include="ObjectListView\DragDrop\DropSink.cs" />
+    <Compile Include="ObjectListView\DragDrop\OLVDataObject.cs" />
+    <Compile Include="ObjectListView\FastDataListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\FastObjectListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Filtering\Cluster.cs" />
+    <Compile Include="ObjectListView\Filtering\ClusteringStrategy.cs" />
+    <Compile Include="ObjectListView\Filtering\ClustersFromGroupsStrategy.cs" />
+    <Compile Include="ObjectListView\Filtering\DateTimeClusteringStrategy.cs" />
+    <Compile Include="ObjectListView\Filtering\FilterMenuBuilder.cs" />
+    <Compile Include="ObjectListView\Filtering\Filters.cs" />
+    <Compile Include="ObjectListView\Filtering\ICluster.cs" />
+    <Compile Include="ObjectListView\Filtering\IClusteringStrategy.cs" />
+    <Compile Include="ObjectListView\Filtering\TextMatchFilter.cs" />
+    <Compile Include="ObjectListView\Implementation\Attributes.cs" />
+    <Compile Include="ObjectListView\Implementation\Comparers.cs" />
+    <Compile Include="ObjectListView\Implementation\DataSourceAdapter.cs" />
+    <Compile Include="ObjectListView\Implementation\Delegates.cs" />
+    <Compile Include="ObjectListView\Implementation\Enums.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Implementation\Events.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Implementation\GroupingParameters.cs" />
+    <Compile Include="ObjectListView\Implementation\Groups.cs" />
+    <Compile Include="ObjectListView\Implementation\Munger.cs" />
+    <Compile Include="ObjectListView\Implementation\NativeMethods.cs" />
+    <Compile Include="ObjectListView\Implementation\NullableDictionary.cs" />
+    <Compile Include="ObjectListView\Implementation\OLVListItem.cs" />
+    <Compile Include="ObjectListView\Implementation\OLVListSubItem.cs" />
+    <Compile Include="ObjectListView\Implementation\OlvListViewHitTestInfo.cs" />
+    <Compile Include="ObjectListView\Implementation\VirtualGroups.cs" />
+    <Compile Include="ObjectListView\Implementation\VirtualListDataSource.cs" />
+    <Compile Include="ObjectListView\ObjectListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\ObjectListView.DesignTime.cs" />
+    <Compile Include="ObjectListView\ObjectListViewResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ObjectListViewResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectListView\OLVColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Rendering\Adornments.cs" />
+    <Compile Include="ObjectListView\Rendering\Decorations.cs" />
+    <Compile Include="ObjectListView\Rendering\Overlays.cs" />
+    <Compile Include="ObjectListView\Rendering\Renderers.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Rendering\Styles.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Rendering\TreeRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Subcontrols\GlassPanelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Subcontrols\HeaderControl.cs" />
+    <Compile Include="ObjectListView\Subcontrols\ToolStripCheckedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Subcontrols\ToolTipControl.cs" />
+    <Compile Include="ObjectListView\TreeListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Utilities\ColumnSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ObjectListView\Utilities\ColumnSelectionForm.Designer.cs">
+      <DependentUpon>ColumnSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectListView\Utilities\Generator.cs" />
+    <Compile Include="ObjectListView\Utilities\TypedObjectListView.cs" />
+    <Compile Include="ObjectListView\VirtualObjectListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Paril\OpenGL\ColorGrabber.cs" />
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>
@@ -395,10 +490,39 @@
     <Compile Include="Controls\Tools\PencilOptions.Designer.cs">
       <DependentUpon>PencilOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Updater\Updater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Updater\Updater.Designer.cs">
+      <DependentUpon>Updater.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="icons\smaller3D.png" />
     <Content Include="Icon_new.ico" />
+    <None Include="Resources\Generic_Application.png" />
+    <None Include="Resources\sort-descending.png" />
+    <None Include="Resources\sort-ascending.png" />
+    <None Include="Resources\filter-icons3.png" />
+    <None Include="Resources\filter.png" />
+    <None Include="Resources\clear-filter.png" />
+    <None Include="Resources\language_update.png" />
+    <None Include="Resources\program_update.png" />
+    <None Include="Resources\model_pack_update.png" />
+    <None Include="Resources\skin_pack_update.png" />
+    <None Include="Resources\other_update.png" />
+    <None Include="Resources\empty_box_update.png" />
+    <EmbeddedResource Include="ObjectListView\ObjectListViewResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ObjectListViewResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectListView\Utilities\ColumnSelectionForm.resx">
+      <DependentUpon>ColumnSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Updater\Updater.resx">
+      <DependentUpon>Updater.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Resources\WindowsHS.png" />
     <None Include="Resources\browseto.png" />
     <None Include="Resources\stamp_pattern.png" />
