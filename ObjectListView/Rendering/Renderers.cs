@@ -1076,7 +1076,7 @@ namespace BrightIdeasSoftware
             Color backgroundColor = this.GetBackgroundColor();
 
             using (Brush brush = new SolidBrush(backgroundColor)) {
-                g.FillRectangle(brush, r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
+                g.FillRectangle(brush, r.X - 1, r.Y, r.Width + 2, r.Height + 1);
             }
         }
 

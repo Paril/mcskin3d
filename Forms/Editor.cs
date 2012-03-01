@@ -447,7 +447,7 @@ namespace MCSkin3D
 			this.Invoke(delegate()
 			{
 				if (MessageBox.Show(this, GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-					Process.Start("http://www.minecraftforum.net/topic/746941-mcskin3d-new-skinning-program/");
+					ShowUpdater();
 			});
 		}
 		#endregion
@@ -3314,13 +3314,31 @@ namespace MCSkin3D
 			ToggleOverlay();
 		}
 
+		void ShowUpdater()
+		{
+			Hide();
+			
+			using (var upd = new MCSkin3D.UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml"))
+			{
+				if (upd.ShowDialog() == DialogResult.Cancel)
+					Show();
+				else
+					Close();
+			}
+		}
+
 		void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (_updater.Checking)
+			{
+				_updater.Abort();
+				ShowUpdater();
 				return;
+			}
 
-			_updater.PrintOnEqual = true;
-			_updater.CheckForUpdate();
+			//_updater.PrintOnEqual = true;
+			//_updater.CheckForUpdate();
+			ShowUpdater();
 		}
 
 		void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3626,9 +3644,6 @@ namespace MCSkin3D
 
 		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
-			var up = new UpdateSystem.Updater();
-			up.UpdateXMLURL = "http://alteredsoftworks.com/mcskin3d/updates.xml";
-			up.ShowDialog();
 		}
 
 		void languageToolStripMenuItem_Click(object sender, EventArgs e)

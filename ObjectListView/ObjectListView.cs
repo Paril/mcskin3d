@@ -7631,14 +7631,14 @@ namespace BrightIdeasSoftware
             // Except with Mono, which doesn't seem to handle double buffering at all :-(
             Graphics g = e.Graphics;
             BufferedGraphics buffer = null;
-            bool avoidFlickerMode = true; // set this to false to see the problems with flicker
+            bool avoidFlickerMode = false; // set this to false to see the problems with flicker
             if (avoidFlickerMode) {
                 buffer = BufferedGraphicsManager.Current.Allocate(e.Graphics, r);
                 g = buffer.Graphics;
             }
 
             g.TextRenderingHint = ObjectListView.TextRenderingHint;
-            g.SmoothingMode = ObjectListView.SmoothingMode;
+            //g.SmoothingMode = ObjectListView.SmoothingMode;
 
             // Finally, give the renderer a chance to draw something
             e.DrawDefault = !renderer.RenderSubItem(e, g, r, ((OLVListItem)e.Item).RowObject);
