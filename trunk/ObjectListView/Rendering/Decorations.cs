@@ -467,6 +467,8 @@ namespace BrightIdeasSoftware
                 }
             }
 
+			bounds.Height--;
+
             return bounds;
         }
     }
