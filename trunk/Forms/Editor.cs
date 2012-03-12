@@ -798,6 +798,8 @@ namespace MCSkin3D
 				MessageBox.Show(GetLanguageString("M_TEMP"));
 				Application.Exit();
 			}
+
+			new GUIDPicker("..\\update_guids.txt").ShowDialog();
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -3318,7 +3320,7 @@ namespace MCSkin3D
 		{
 			Hide();
 			
-			using (var upd = new MCSkin3D.UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml"))
+			using (var upd = new MCSkin3D.UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml", "__installedupdates"))
 			{
 				if (upd.ShowDialog() == DialogResult.Cancel)
 					Show();

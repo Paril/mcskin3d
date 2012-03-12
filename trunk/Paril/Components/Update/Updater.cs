@@ -36,7 +36,7 @@ namespace Paril.Components.Update
 		public Thread Thread { get; set; }
 		
 		bool _checking = false;
-
+		
 		public Updater(string url, string currentVersion)
 		{
 			URL = url;

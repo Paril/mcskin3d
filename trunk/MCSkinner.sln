@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "flate", "flate\flate.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTest", "ErrorReporter\ClientTest.csproj", "{04A45973-57A2-435B-8264-8A2BAD5BFF89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTest", "ErrorReporter\ServerTest.csproj", "{E45C3449-EB84-4436-B78A-527571F9601D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,24 @@ Global
 		{04A45973-57A2-435B-8264-8A2BAD5BFF89}.Release|Win32.ActiveCfg = Release|x86
 		{04A45973-57A2-435B-8264-8A2BAD5BFF89}.Release|x86.ActiveCfg = Release|x86
 		{04A45973-57A2-435B-8264-8A2BAD5BFF89}.Release|x86.Build.0 = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Debug|Win32.ActiveCfg = Debug|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Debug|x86.ActiveCfg = Debug|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Debug|x86.Build.0 = Debug|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release Beta|Any CPU.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release Beta|Mixed Platforms.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release Beta|Mixed Platforms.Build.0 = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release Beta|Win32.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release Beta|x86.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release Beta|x86.Build.0 = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release|Any CPU.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release|Win32.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release|x86.ActiveCfg = Release|x86
+		{E45C3449-EB84-4436-B78A-527571F9601D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
