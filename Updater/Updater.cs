@@ -21,15 +21,26 @@ namespace MCSkin3D.UpdateSystem
 	{
 		public string UpdateXMLURL { get; set; }
 
+		public List<Guid> InstalledUpdates
+		{
+			get;
+			set;
+		}
+
 		public Updater()
 		{
 			InitializeComponent();
 		}
 
-		public Updater(string url) :
+		public Updater(string url, string installedUpdatesFiles) :
 			this()
 		{
 			UpdateXMLURL = url;
+
+			InstalledUpdates = new List<Guid>();
+			if (installedUpdatesFiles != null)
+				using (StreamReader sr = new StreamReader(installedUpdatesFiles))
+					InstalledUpdates.Add(new Guid(sr.ReadLine()));
 		}
 
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -48,6 +59,7 @@ namespace MCSkin3D.UpdateSystem
 			public string GroupImageURL { get; set; }
 			public int Progress { get; set; }
 			public DateTime RealDate { get; set; }
+			public Guid Guid { get; set; }
 
 			public int ImageIndex { get; set; }
 
@@ -100,6 +112,8 @@ namespace MCSkin3D.UpdateSystem
 							item.DownloadURL = subNode.InnerText;
 						else if (subNode.Name.ToLower() == "groupimageurl")
 							item.GroupImageURL = subNode.InnerText;
+						else if (subNode.Name.ToLower() == "guid")
+							item.Guid = new Guid(subNode.InnerText);
 					}
 
 					items.Add(item);
@@ -134,6 +148,10 @@ namespace MCSkin3D.UpdateSystem
 			}
 
 			_updates = LoadUpdates(doc);
+			_updates.RemoveAll(delegate(UpdateItem item)
+			{
+				return InstalledUpdates.Contains(item.Guid);
+			});
 			_updates.Sort();
 
 			List<string> fileNames = new List<string>();

@@ -113,6 +113,12 @@
     <Compile Include="Controls\ListViewExpanded.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\GUIDPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GUIDPicker.Designer.cs">
+      <DependentUpon>GUIDPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="lemon42\Color\ColorManager.cs" />
     <Compile Include="lemon42\Color\ColorPick.cs">
       <SubType>UserControl</SubType>
@@ -513,6 +519,9 @@
     <None Include="Resources\skin_pack_update.png" />
     <None Include="Resources\other_update.png" />
     <None Include="Resources\empty_box_update.png" />
+    <EmbeddedResource Include="Forms\GUIDPicker.resx">
+      <DependentUpon>GUIDPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ObjectListView\ObjectListViewResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ObjectListViewResources.Designer.cs</LastGenOutput>
