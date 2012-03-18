@@ -382,9 +382,9 @@ namespace MCSkin3D
 					else
 					{
 						if (SelectedNode.IsExpanded)
-							prevImage = Properties.Resources.FolderOpen_32x32_72_image;
+							prevImage = Properties.Resources.FolderOpen_32x32_72;
 						else
-							prevImage = Properties.Resources.Folder_32x32_image;
+							prevImage = Properties.Resources.Folder_32x32;
 					}
 
 					g.DrawImage(prevImage, new Rectangle(0, 0, 32, 32), new Rectangle(0, 0, prevImage.Width, prevImage.Height), GraphicsUnit.Pixel);
@@ -460,6 +460,9 @@ namespace MCSkin3D
 					e.Graphics.DrawImage(Properties.Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, ItemHeight, ItemHeight);
 				else
 					e.Graphics.DrawImage(Properties.Resources.Folder_32x32, realX, e.Bounds.Y, ItemHeight, ItemHeight);
+
+				if (e.Node.Level == 0 && !Editor.HasOneRoot)
+					e.Graphics.DrawImage(Properties.Resources.clone, realX + (ItemHeight - Properties.Resources.clone.Width), e.Bounds.Y + (ItemHeight - Properties.Resources.clone.Height), Properties.Resources.clone.Width, Properties.Resources.clone.Height);
 			}
 			else
 			{
@@ -488,9 +491,11 @@ namespace MCSkin3D
 				}
 			}
 
-			string text = (skin == null) ? e.Node.Text : skin.ToString();
+			string text = e.Node.ToString();
 
 			TextRenderer.DrawText(e.Graphics, text, Font, new Rectangle(realX + ItemHeight + 1, e.Bounds.Y, Width, e.Bounds.Height), (e.Node.IsSelected || e.Node == _overNode) ? Color.White : Color.Black, TextFormatFlags.VerticalCenter);
+
+			//TextRenderer.DrawText(e.Graphics, "64x32", new Font(Font.FontFamily, 7), new Rectangle(e.Bounds.X, e.Bounds.Y, Width - 20, e.Bounds.Height), (e.Node.IsSelected || e.Node == _overNode) ? Color.White : Color.Black, TextFormatFlags.Right | TextFormatFlags.VerticalCenter);
 		}
 
 		public TreeNode GetSelectedNodeAt(Point p)
@@ -569,9 +574,9 @@ namespace MCSkin3D
 				else if ((ModifierKeys & Keys.Control) != 0)
 				{
 					if (selectedNode == null)
-						location = "Skins";
+						location = Editor.RootFolderString;
 					else if (selectedNode is Skin)
-						location = (selectedNode.Parent != null) ? selectedNode.Parent.Text : "Skins";
+						location = (selectedNode.Parent != null) ? selectedNode.Parent.Text : Editor.RootFolderString;
 					else if (selectedNode is FolderNode)
 						location = selectedNode.Text;
 
@@ -596,7 +601,12 @@ namespace MCSkin3D
 				return;
 
 			var node = GetSelectedNodeAt(PointToClient(Cursor.Position));
-			string nodeName = (node == null) ? "Skins" : (node is Skin) ? (node.Parent != null) ? node.Parent.Text : "Skins" : node.Text;
+			string nodeName;
+			
+			if (node == null)
+				nodeName = Editor.HasOneRoot ? Editor.RootFolderString : "root";
+			else
+				nodeName = (node is Skin) ? ((node.Parent != null) ? node.Parent.Text : Editor.RootFolderString) : node.Text;
 
 			if (effect == DragDropEffects.None)
 				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_CANTMOVE") + " %1", nodeName);
@@ -643,7 +653,9 @@ namespace MCSkin3D
 
 		bool DropValid(TreeNode node, TreeNode selectedNode)
 		{
-			if (node is Skin && selectedNode is Skin)
+			if (selectedNode == null && !Editor.HasOneRoot)
+				return false;
+			else if (node is Skin && selectedNode is Skin)
 			{
 				if (node.GetParentCollection() == selectedNode.GetParentCollection())
 					return false;
@@ -691,19 +703,7 @@ namespace MCSkin3D
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
 
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				string folderLocation;
-
-				if (_overNode != null)
-				{
-					if (!(_overNode is Skin))
-						folderLocation = "Skins\\" + _overNode.FullPath + '\\';
-					else if (_overNode.Parent != null)
-						folderLocation = "Skins\\" + _overNode.Parent.FullPath + '\\';
-					else
-						folderLocation = "Skins\\";
-				}
-				else
-					folderLocation = "Skins\\";
+				string folderLocation = Editor.GetFolderLocationForNode(_overNode);
 
 				foreach (var f in files)
 				{

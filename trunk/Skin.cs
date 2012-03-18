@@ -76,9 +76,12 @@ namespace MCSkin3D
 			get
 			{
 				if (Level == 0)
-					return new DirectoryInfo("Skins");
+					return new DirectoryInfo(Editor.RootFolderString);
 
-				return new DirectoryInfo("Skins\\" + ((this.Parent != null) ? this.Parent.FullPath : ""));
+				if (Editor.HasOneRoot)
+					return new DirectoryInfo(Editor.RootFolderString + '\\' + ((this.Parent != null) ? Editor.GetFolderForNode(this.Parent) : ""));
+
+				return new DirectoryInfo(((this.Parent != null) ? Editor.GetFolderForNode(this.Parent) : ""));
 			}
 		}
 

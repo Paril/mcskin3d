@@ -43,7 +43,22 @@ namespace ClientTest
 			try
 			{
 				TcpClient client = new TcpClient();
-				client.Connect(EndPoint);
+				IAsyncResult ar = client.BeginConnect(EndPoint.Address, EndPoint.Port, null, null);
+				System.Threading.WaitHandle wh = ar.AsyncWaitHandle;
+				try
+				{
+					if (!ar.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5), false))
+					{
+						client.Close();
+						throw new TimeoutException();
+					}
+
+					client.EndConnect(ar);
+				}
+				finally
+				{
+					wh.Close();
+				} 
 
 				var stream = client.GetStream();
 

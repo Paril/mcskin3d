@@ -28,17 +28,24 @@ namespace MCSkin3D
 	[Serializable]
 	public class FolderNode : TreeNode
 	{
-		public FolderNode(string name) :
-			base(name)
+		string _path;
+
+		public FolderNode(string name)
 		{
-			Name = name;
+			_path = name;
+			Name = Text = new DirectoryInfo(name).Name;
+		}
+
+		public override string ToString()
+		{
+			return Name;
 		}
 
 		public DirectoryInfo Directory
 		{
 			get
 			{
-				return new DirectoryInfo("Skins\\" + FullPath);
+				return new DirectoryInfo(_path);
 			}
 		}
 	}

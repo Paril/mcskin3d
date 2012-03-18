@@ -86,8 +86,6 @@ namespace ClientTest
 			linkLabel1.Location = new Point(label2.Location.X + label2.Width - 4, label2.Location.Y);
 		}
 
-		Client _client;
-
 		//private void button2_Click(object sender, EventArgs e)
 		//{
 			/*button2.Enabled = false;
@@ -136,11 +134,31 @@ namespace ClientTest
 		}
 
 		bool _sentReport = false;
+		Client _client;
+
+		ErrorReport BuildErrorReport(Exception ex)
+		{
+			ErrorReport report = new ErrorReport();
+
+			report.Name = textBox1.Text;
+			report.Email = textBox2.Text;
+			report.ExtraInfo = textBox3.Text;
+			report.HardwareInfo = checkBox1.Checked ? GetHardwareInfo() : null;
+			report.SoftwareInfo = Environment.OSVersion + "\r\n" + "x64: " + (Environment.Is64BitOperatingSystem ? "Yes" : "No") + "\r\n" + ".NET Version: " + Environment.Version.ToString() + "\r\n" + "Software Version: " + "???";
+			report.Exception = ex.ToString();
+
+			return report;
+		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			panel4.Visible = false;
+			panel6.Visible = false;
+			panel5.Visible = true;
 			button1.Enabled = false;
+
+			_client = new Client(BuildErrorReport(new EntryPointNotFoundException()), "192.168.0.102", 8888);
+			_client.SendFinished += new EventHandler<SendEventArgs>(_client_SendFinished);
+			_client.SendToServer();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
