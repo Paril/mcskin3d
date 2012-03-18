@@ -23,6 +23,8 @@ using System.Windows.Forms;
 using System.Reflection;
 using Version = Paril.Components.Update.Version;
 using System.Runtime.CompilerServices;
+using MCSkin3D.ExceptionHandler;
+using System.Media;
 
 namespace MCSkin3D
 {
@@ -79,14 +81,22 @@ namespace MCSkin3D
 			}
 			catch (Exception ex)
 			{
-				Paril.Windows.Dialogs.ExceptionDialog.Show(ex);
+				ExceptionForm form = new ExceptionForm();
+				form.Exception = ex;
+				form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
+				SystemSounds.Asterisk.Play();
+				form.ShowDialog();
 			}
 #endif
 		}
 
 		static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			Paril.Windows.Dialogs.ExceptionDialog.Show(e.Exception);
+			ExceptionForm form = new ExceptionForm();
+			form.Exception = e.Exception;
+			form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
+			SystemSounds.Asterisk.Play();
+			form.ShowDialog();
 		}
 	}
 }

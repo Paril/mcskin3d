@@ -37,7 +37,7 @@
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
-			this.languageProvider1 = new Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -100,7 +100,7 @@
 			// button1
 			// 
 			this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.button1.Location = new System.Drawing.Point(97, 166);
+			this.button1.Location = new System.Drawing.Point(178, 167);
 			this.button1.Name = "button1";
 			this.languageProvider1.SetPropertyNames(this.button1, "Text");
 			this.button1.Size = new System.Drawing.Size(75, 23);
@@ -111,7 +111,7 @@
 			// 
 			// button2
 			// 
-			this.button2.Location = new System.Drawing.Point(178, 166);
+			this.button2.Location = new System.Drawing.Point(97, 167);
 			this.button2.Name = "button2";
 			this.languageProvider1.SetPropertyNames(this.button2, "Text");
 			this.button2.Size = new System.Drawing.Size(75, 23);

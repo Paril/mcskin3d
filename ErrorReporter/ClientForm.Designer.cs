@@ -50,12 +50,18 @@
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
+			this.panel5 = new System.Windows.Forms.Panel();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.label8 = new System.Windows.Forms.Label();
+			this.panel6 = new System.Windows.Forms.Panel();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.panel1.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.panel3.SuspendLayout();
+			this.panel5.SuspendLayout();
+			this.panel6.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pictureBox1
@@ -82,14 +88,8 @@
 			// 
 			// panel4
 			// 
-			this.panel4.Controls.Add(this.label4);
-			this.panel4.Controls.Add(this.textBox3);
-			this.panel4.Controls.Add(this.textBox1);
-			this.panel4.Controls.Add(this.label7);
-			this.panel4.Controls.Add(this.label5);
-			this.panel4.Controls.Add(this.checkBox1);
-			this.panel4.Controls.Add(this.textBox2);
-			this.panel4.Controls.Add(this.label6);
+			this.panel4.Controls.Add(this.panel6);
+			this.panel4.Controls.Add(this.panel5);
 			this.panel4.Location = new System.Drawing.Point(15, 166);
 			this.panel4.Name = "panel4";
 			this.panel4.Size = new System.Drawing.Size(322, 165);
@@ -261,7 +261,7 @@
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 24);
 			this.button2.TabIndex = 2;
-			this.button2.Text = "Cancel";
+			this.button2.Text = "Close";
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
@@ -276,6 +276,55 @@
 			this.button1.Text = "Send error report\r\n";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// panel5
+			// 
+			this.panel5.Controls.Add(this.label8);
+			this.panel5.Controls.Add(this.progressBar1);
+			this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel5.Location = new System.Drawing.Point(0, 0);
+			this.panel5.Name = "panel5";
+			this.panel5.Size = new System.Drawing.Size(322, 165);
+			this.panel5.TabIndex = 4;
+			this.panel5.Visible = false;
+			// 
+			// progressBar1
+			// 
+			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.progressBar1.Location = new System.Drawing.Point(0, 37);
+			this.progressBar1.MarqueeAnimationSpeed = 25;
+			this.progressBar1.Name = "progressBar1";
+			this.progressBar1.Size = new System.Drawing.Size(322, 16);
+			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+			this.progressBar1.TabIndex = 0;
+			// 
+			// label8
+			// 
+			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label8.Location = new System.Drawing.Point(3, 21);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(316, 13);
+			this.label8.TabIndex = 1;
+			this.label8.Text = "Sending error report...";
+			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// panel6
+			// 
+			this.panel6.Controls.Add(this.label4);
+			this.panel6.Controls.Add(this.textBox3);
+			this.panel6.Controls.Add(this.label6);
+			this.panel6.Controls.Add(this.textBox1);
+			this.panel6.Controls.Add(this.textBox2);
+			this.panel6.Controls.Add(this.label7);
+			this.panel6.Controls.Add(this.checkBox1);
+			this.panel6.Controls.Add(this.label5);
+			this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel6.Location = new System.Drawing.Point(0, 0);
+			this.panel6.Name = "panel6";
+			this.panel6.Size = new System.Drawing.Size(322, 165);
+			this.panel6.TabIndex = 4;
 			// 
 			// ClientForm
 			// 
@@ -300,12 +349,14 @@
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.panel4.ResumeLayout(false);
-			this.panel4.PerformLayout();
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.panel3.ResumeLayout(false);
 			this.panel3.PerformLayout();
+			this.panel5.ResumeLayout(false);
+			this.panel6.ResumeLayout(false);
+			this.panel6.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -333,6 +384,10 @@
 		private System.Windows.Forms.TextBox textBox3;
 		private System.Windows.Forms.CheckBox checkBox2;
 		private System.Windows.Forms.Panel panel4;
+		private System.Windows.Forms.Panel panel5;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.Panel panel6;
 
 	}
 }

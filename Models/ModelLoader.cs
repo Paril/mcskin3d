@@ -2869,6 +2869,1196 @@ namespace MCSkin3D
 			}
 		}
 
+
+		// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+		// Jad home page: http://www.kpdus.com/jad.html
+		// Decompiler options: packimports(3) braces deadcode fieldsfirst
+
+		// Referenced classes of package net.minecraft.src:
+		//                  ModelPlayer, ModelRenderer, PlaneRenderer, AniParams,
+		//                  MathHelper, EntityPlayer, InventoryPlayer, ItemStack,
+		//                  RenderManager, RenderEngine, Tessellator
+
+		public class pm_newPonyAdv : ModelBase
+		{
+
+			private bool rainboom;
+			private const float Pi = 3.141593F;
+			private float WingRotateAngleX;
+			private float WingRotateAngleY;
+			private float WingRotateAngleZ;
+			private float TailRotateAngleY;
+			private float NeckRotX = 0.166F;
+			public int tailstop = 0;
+			public ModelRenderer head;
+			public ModelRenderer[] headpiece;
+			public ModelRenderer helmet;
+			public ModelRenderer Body;
+			public PlaneRenderer[] Bodypiece;
+			public PlaneRenderer[] BodypieceNeck;
+			public PlaneRenderer[] MuzzleFemale;
+			public PlaneRenderer[] MuzzleMale;
+			public ModelRenderer rightarm;
+			public ModelRenderer LeftArm;
+			public ModelRenderer RightLeg;
+			public ModelRenderer LeftLeg;
+			public ModelRenderer SteveArm;
+			public ModelRenderer unicornarm;
+			public PlaneRenderer[] Tail;
+			public ModelRenderer[] LeftWing;
+			public ModelRenderer[] RightWing;
+			public ModelRenderer[] LeftWingExt;
+			public ModelRenderer[] RightWingExt;
+			float strech;
+
+			public pm_newPonyAdv()
+			{
+				//            super(s);
+			}
+
+			public void init()
+			{
+				init(0.0F);
+			}
+
+			public void init(float f)
+			{
+				init(f, 0.0F);
+			}
+
+			public pm_newPonyAdv init(float f, float f1)
+			{
+				strech = f1;
+				float f2 = 0.0F;
+				float f3 = 0.0F;
+				float f4 = 0.0F;
+				head = new ModelRenderer(this, 0, 0, VisiblePartFlags.HeadFlag, false, false);
+				head.addBox("Head", -4F, -5F, -6F, 8, 8, 8, strech);
+				head.setRotationPoint(f2, f3 + f, f4);
+				headpiece = new ModelRenderer[3];
+				headpiece[0] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HeadFlag, false, false);
+				headpiece[0].addBox("Ear", -4F, -7F, -1F, 2, 2, 2, strech);
+				headpiece[0].setRotationPoint(f2, f3 + f, f4);
+				headpiece[1] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HeadFlag, false, false);
+				headpiece[1].mirror = true;
+				headpiece[1].addBox("Ear", 2.0F, -7F, -1F, 2, 2, 2, strech);
+				headpiece[1].setRotationPoint(f2, f3 + f, f4);
+				headpiece[2] = new ModelRenderer(this, 0, 3, VisiblePartFlags.HeadFlag, true, false);
+				headpiece[2].addBox("Horn", -0.5F, -11F, -3.5F, 1, 4, 1, strech);
+				headpiece[2].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale = new PlaneRenderer[10];
+				MuzzleFemale[0] = new PlaneRenderer(this, "Muzzle", 10, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[0].addBackPlane(-2F, 1.0F, -7F, 4, 2, 0, strech);
+				MuzzleFemale[0].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[1] = new PlaneRenderer(this, "Muzzle", 11, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[1].addBackPlane(-1F, 0F, -7F, 2, 1, 0, strech);
+				MuzzleFemale[1].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[2] = new PlaneRenderer(this, "Muzzle", 9, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[2].addTopPlane(-2F, 1.0F, -7F, 1, 0, 1, strech);
+				MuzzleFemale[2].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[3] = new PlaneRenderer(this, "Muzzle", 14, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[3].addTopPlane(1.0F, 1.0F, -7F, 1, 0, 1, strech);
+				MuzzleFemale[3].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[4] = new PlaneRenderer(this, "Muzzle", 11, 12, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[4].addTopPlane(-1F, 0F, -7F, 2, 0, 1, strech);
+				MuzzleFemale[4].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[5] = new PlaneRenderer(this, "Muzzle", 18, 7, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[5].addTopPlane(-2F, 3F, -7F, 4, 0, 1, strech);
+				MuzzleFemale[5].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[6] = new PlaneRenderer(this, "Muzzle", 9, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[6].addSidePlane(-2F, 1.0F, -7F, 0, 2, 1, strech);
+				MuzzleFemale[6].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[7] = new PlaneRenderer(this, "Muzzle", 14, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[7].addSidePlane(2.0F, 1.0F, -7F, 0, 2, 1, strech);
+				MuzzleFemale[7].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[8] = new PlaneRenderer(this, "Muzzle", 11, 12, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[8].addSidePlane(-1F, 0F, -7F, 0, 1, 1, strech);
+				MuzzleFemale[8].setRotationPoint(f2, f3 + f, f4);
+				MuzzleFemale[9] = new PlaneRenderer(this, "Muzzle", 12, 12, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[9].addSidePlane(1.0F, 0F, -7F, 0, 1, 1, strech);
+				MuzzleFemale[9].setRotationPoint(f2, f3 + f, f4);
+				MuzzleMale = new PlaneRenderer[5];
+				MuzzleMale[0] = new PlaneRenderer(this, "Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[0].addBackPlane(-2.0F, 0F, -7.0F, 4, 3, 0, strech);
+				MuzzleMale[0].setRotationPoint(f2, f3 + f, f4);
+				MuzzleMale[1] = new PlaneRenderer(this, "Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[1].addTopPlane(-2.0F, 0F, -7.0F, 4, 0, 1, strech);
+				MuzzleMale[1].setRotationPoint(f2, f3 + f, f4);
+				MuzzleMale[2] = new PlaneRenderer(this, "Muzzle", 18, 7, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[2].addTopPlane(-2.0F, 3.0F, -7.0F, 4, 0, 1, strech);
+				MuzzleMale[2].setRotationPoint(f2, f3 + f, f4);
+				MuzzleMale[3] = new PlaneRenderer(this, "Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[3].addSidePlane(-2.0F, 0F, -7.0F, 0, 3, 1, strech);
+				MuzzleMale[3].setRotationPoint(f2, f3 + f, f4);
+				MuzzleMale[4] = new PlaneRenderer(this, "Muzzle", 13, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[4].addSidePlane(2.0F, 0F, -7.0F, 0, 3, 1, strech);
+				MuzzleMale[4].setRotationPoint(f2, f3 + f, f4);
+				helmet = new ModelRenderer(this, 32, 0, VisiblePartFlags.HeadFlag, true, false);
+				helmet.addBox("Hair", -4F, -5F, -6F, 8, 8, 8, strech + 0.5F);
+				helmet.setRotationPoint(f2, f3 + f, f4);
+				float f5 = 0.0F;
+				float f6 = 0.0F;
+				float f7 = 0.0F;
+				Body = new ModelRenderer(this, 16, 16, VisiblePartFlags.HeadFlag, false, false);
+				Body.addBox("Body", -4F, 4F, -2F, 8, 8, 4, strech);
+				Body.setRotationPoint(f5, f6 + f, f7);
+				Bodypiece = new PlaneRenderer[14];
+				Bodypiece[0] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[0].addSidePlane(-4F, 4F, 2.0F, 0, 8, 8, strech);
+				Bodypiece[0].setRotationPoint(f5, f6 + f, f7);
+				Bodypiece[1] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[1].addSidePlane(4F, 4F, 2.0F, 0, 8, 8, strech);
+				Bodypiece[1].setRotationPoint(f5, f6 + f, f7);
+				Bodypiece[2] = new PlaneRenderer(this, "Body", 32, 20, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[2].addTopPlane(-4F, 4F, 2.0F, 8, 0, 12, strech);
+				Bodypiece[2].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[3] = new PlaneRenderer(this, "Body", 56, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[3].addTopPlane(-4F, 12F, 2.0F, 8, 0, 8, strech);
+				Bodypiece[3].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[4] = new PlaneRenderer(this, "Cutiemark", 4, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[4].addSidePlane(-4F, 4F, 10F, 0, 8, 4, strech);
+				Bodypiece[4].setRotationPoint(f5, f6 + f, f7);
+				Bodypiece[5] = new PlaneRenderer(this, "Body", 4, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[5].addSidePlane(4F, 4F, 10F, 0, 8, 4, strech);
+				Bodypiece[5].setRotationPoint(f5, f6 + f, f7);
+				Bodypiece[6] = new PlaneRenderer(this, "Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[6].addBackPlane(-4F, 4F, 14F, 8, 4, 0, strech);
+				Bodypiece[6].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[7] = new PlaneRenderer(this, "Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[7].addTopPlane(-4F, 12F, 10F, 8, 0, 4, strech);
+				Bodypiece[7].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[8] = new PlaneRenderer(this, "Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[8].addBackPlane(-4F, 8F, 14F, 8, 4, 0, strech);
+				Bodypiece[8].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[9] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[9].addTopPlane(-1F, 10F, 8F, 2, 0, 6, strech);
+				Bodypiece[9].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[10] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[10].addTopPlane(-1F, 12F, 8F, 2, 0, 6, strech);
+				Bodypiece[10].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[11] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[11].mirror = true;
+				Bodypiece[11].addSidePlane(-1F, 10F, 8F, 0, 2, 6, strech);
+				Bodypiece[11].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[12] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[12].addSidePlane(1.0F, 10F, 8F, 0, 2, 6, strech);
+				Bodypiece[12].setRotationPoint(f2, f3 + f, f4);
+				Bodypiece[13] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[13].addBackPlane(-1F, 10F, 14F, 2, 2, 0, strech);
+				Bodypiece[13].setRotationPoint(f2, f3 + f, f4);
+
+				BodypieceNeck = new PlaneRenderer[4];
+				BodypieceNeck[0] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[0].addBackPlane(-2F, 1.2F, -2.8F, 4, 4, 0, strech);
+				BodypieceNeck[0].setRotationPoint(f2, f3 + f, f4);
+				BodypieceNeck[1] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[1].addBackPlane(-2F, 1.2F, 1.2F, 4, 4, 0, strech);
+				BodypieceNeck[1].setRotationPoint(f2, f3 + f, f4);
+				BodypieceNeck[2] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[2].addSidePlane(-2F, 1.2F, -2.8F, 0, 4, 4, strech);
+				BodypieceNeck[2].setRotationPoint(f2, f3 + f, f4);
+				BodypieceNeck[3] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[3].addSidePlane(2F, 1.2F, -2.8F, 0, 4, 4, strech);
+				BodypieceNeck[3].setRotationPoint(f2, f3 + f, f4);
+
+				BodypieceNeck[0].rotateAngleX = NeckRotX;
+				BodypieceNeck[1].rotateAngleX = NeckRotX;
+				BodypieceNeck[2].rotateAngleX = NeckRotX;
+				BodypieceNeck[3].rotateAngleX = NeckRotX;
+
+				rightarm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
+				rightarm.addBox("Leg", -2F, 4F, -2F, 4, 12, 4, strech);
+				rightarm.setRotationPoint(-3F, 8F + f, 0.0F);
+				LeftArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
+				LeftArm.mirror = true;
+				LeftArm.addBox("Leg", -2F, 4F, -2F, 4, 12, 4, strech);
+				LeftArm.setRotationPoint(3F, 8F + f, 0.0F);
+				RightLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				RightLeg.addBox("Leg", -2F, 4F, -2F, 4, 12, 4, strech);
+				RightLeg.setRotationPoint(-3F, 0.0F + f, 0.0F);
+				LeftLeg = new ModelRenderer(this, 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				LeftLeg.mirror = true;
+				LeftLeg.addBox("Leg", -2F, 4F, -2F, 4, 12, 4, strech);
+				LeftLeg.setRotationPoint(3F, 0.0F + f, 0.0F);
+				SteveArm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
+				SteveArm.addBox("", -3F, -2F, -2F, 4, 12, 4, strech);
+				SteveArm.setRotationPoint(-5F, 2.0F + f, 0.0F);
+				this.boxList.Remove(SteveArm);
+				unicornarm = new ModelRenderer(this, 40, 16, VisiblePartFlags.HeadFlag, false, false);
+				unicornarm.addBox("", -3F, -2F, -2F, 4, 12, 4, strech);
+				unicornarm.setRotationPoint(-5F, 2.0F + f, 0.0F);
+				this.boxList.Remove(unicornarm);
+				float f8 = 0.0F;
+				float f9 = 8F;
+				float f10 = -14F;
+				float f11 = 0.0F - f8;
+				float f12 = 8.8F - f9;
+				float f13 = 0.0F;
+
+				Tail = new PlaneRenderer[21];
+				Tail[0] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[0].addTopPlane(-2F + f8, -7F + f9, 16F + f10, 4, 0, 4, strech);
+				Tail[0].setRotationPoint(f11, f12 + f, f13);
+				Tail[1] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[1].addSidePlane(-2F + f8, -7F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[1].setRotationPoint(f11, f12 + f, f13);
+				Tail[2] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[2].addBackPlane(-2F + f8, -7F + f9, 16F + f10, 4, 4, 0, strech);
+				Tail[2].setRotationPoint(f11, f12 + f, f13);
+				Tail[3] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[3].addSidePlane(2F + f8, -7F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[3].setRotationPoint(f11, f12 + f, f13);
+				Tail[4] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[4].addBackPlane(-2F + f8, -7F + f9, 20F + f10, 4, 4, 0, strech);
+				Tail[4].setRotationPoint(f11, f12 + f, f13);
+				Tail[5] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[5].addTopPlane(-2F + f8, -3F + f9, 16F + f10, 4, 0, 4, strech);
+				Tail[5].setRotationPoint(f11, f12 + f, f13);
+				Tail[6] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[6].addSidePlane(-2F + f8, -3F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[6].setRotationPoint(f11, f12 + f, f13);
+				Tail[7] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[7].addBackPlane(-2F + f8, -3F + f9, 16F + f10, 4, 4, 0, strech);
+				Tail[7].setRotationPoint(f11, f12 + f, f13);
+				Tail[8] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[8].addSidePlane(2F + f8, -3F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[8].setRotationPoint(f11, f12 + f, f13);
+				Tail[9] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[9].addBackPlane(-2F + f8, -3F + f9, 20F + f10, 4, 4, 0, strech);
+				Tail[9].setRotationPoint(f11, f12 + f, f13);
+				Tail[10] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[10].addTopPlane(-2F + f8, 1F + f9, 16F + f10, 4, 0, 4, strech);
+				Tail[10].setRotationPoint(f11, f12 + f, f13);
+				Tail[11] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[11].addSidePlane(-2F + f8, 1F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[11].setRotationPoint(f11, f12 + f, f13);
+				Tail[12] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[12].addBackPlane(-2F + f8, 1F + f9, 16F + f10, 4, 4, 0, strech);
+				Tail[12].setRotationPoint(f11, f12 + f, f13);
+				Tail[13] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[13].addSidePlane(2F + f8, 1F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[13].setRotationPoint(f11, f12 + f, f13);
+				Tail[14] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[14].addBackPlane(-2F + f8, 1F + f9, 20F + f10, 4, 4, 0, strech);
+				Tail[14].setRotationPoint(f11, f12 + f, f13);
+				Tail[15] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[15].addTopPlane(-2F + f8, 5F + f9, 16F + f10, 4, 0, 4, strech);
+				Tail[15].setRotationPoint(f11, f12 + f, f13);
+				Tail[16] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[16].addSidePlane(-2F + f8, 5F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[16].setRotationPoint(f11, f12 + f, f13);
+				Tail[17] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[17].addBackPlane(-2F + f8, 5F + f9, 16F + f10, 4, 4, 0, strech);
+				Tail[17].setRotationPoint(f11, f12 + f, f13);
+				Tail[18] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[18].addSidePlane(2F + f8, 5F + f9, 16F + f10, 0, 4, 4, strech);
+				Tail[18].setRotationPoint(f11, f12 + f, f13);
+				Tail[19] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[19].addBackPlane(-2F + f8, 5F + f9, 20F + f10, 4, 4, 0, strech);
+				Tail[19].setRotationPoint(f11, f12 + f, f13);
+				Tail[20] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[20].addTopPlane(-2F + f8, 9F + f9, 16F + f10, 4, 0, 4, strech);
+				Tail[20].setRotationPoint(f11, f12 + f, f13);
+
+				TailRotateAngleY = Tail[0].rotateAngleY;
+
+				float f14 = 0.0F;
+				float f15 = 0.0F;
+				float f16 = 0.0F;
+				LeftWing = new ModelRenderer[3];
+				LeftWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
+				LeftWing[0].mirror = true;
+				LeftWing[0].addBox("Wing", 4F, 5F, 2.0F, 2, 6, 2, strech);
+				LeftWing[0].setRotationPoint(f14, f15 + f, f16);
+				LeftWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
+				LeftWing[1].mirror = true;
+				LeftWing[1].addBox("Wing", 4F, 5F, 4F, 2, 8, 2, strech);
+				LeftWing[1].setRotationPoint(f14, f15 + f, f16);
+				LeftWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
+				LeftWing[2].mirror = true;
+				LeftWing[2].addBox("Wing", 4F, 5F, 6F, 2, 6, 2, strech);
+				LeftWing[2].setRotationPoint(f14, f15 + f, f16);
+				RightWing = new ModelRenderer[3];
+				RightWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
+				RightWing[0].addBox("Wing", -6F, 5F, 2.0F, 2, 6, 2, strech);
+				RightWing[0].setRotationPoint(f14, f15 + f, f16);
+				RightWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
+				RightWing[1].addBox("Wing", -6F, 5F, 4F, 2, 8, 2, strech);
+				RightWing[1].setRotationPoint(f14, f15 + f, f16);
+				RightWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
+				RightWing[2].addBox("Wing", -6F, 5F, 6F, 2, 6, 2, strech);
+				RightWing[2].setRotationPoint(f14, f15 + f, f16);
+				float f17 = f2 + 4.5F;
+				float f18 = f3 + 5F;
+				float f19 = f4 + 6F;
+				LeftWingExt = new ModelRenderer[7];
+				LeftWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[0].mirror = true;
+				LeftWingExt[0].addBox("Wing", 0.0F, 0.0F, 0.0F, 1, 8, 2, strech + 0.1F);
+				LeftWingExt[0].setRotationPoint(f17, f18 + f, f19);
+				LeftWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[1].mirror = true;
+				LeftWingExt[1].addBox("Wing", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
+				LeftWingExt[1].setRotationPoint(f17, f18 + f, f19);
+				LeftWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[2].mirror = true;
+				LeftWingExt[2].addBox("Wing", 0.0F, -1.2F, -0.2F, 1, 8, 2, strech - 0.2F);
+				LeftWingExt[2].setRotationPoint(f17, f18 + f, f19);
+				LeftWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[3].mirror = true;
+				LeftWingExt[3].addBox("Wing", 0.0F, 1.8F, 1.3F, 1, 8, 2, strech - 0.1F);
+				LeftWingExt[3].setRotationPoint(f17, f18 + f, f19);
+				LeftWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[4].mirror = true;
+				LeftWingExt[4].addBox("Wing", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
+				LeftWingExt[4].setRotationPoint(f17, f18 + f, f19);
+				LeftWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[5].mirror = true;
+				LeftWingExt[5].addBox("Wing", 0.0F, 0.0F, -0.2F, 1, 6, 2, strech + 0.3F);
+				LeftWingExt[5].setRotationPoint(f17, f18 + f, f19);
+				LeftWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				LeftWingExt[6].mirror = true;
+				LeftWingExt[6].addBox("Wing", 0.0F, 0.0F, 0.2F, 1, 3, 2, strech + 0.2F);
+				LeftWingExt[6].setRotationPoint(f17, f18 + f, f19);
+				float f20 = f2 - 4.5F;
+				float f21 = f3 + 5F;
+				float f22 = f4 + 6F;
+				RightWingExt = new ModelRenderer[7];
+				RightWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[0].mirror = true;
+				RightWingExt[0].addBox("Wing", 0.0F, 0.0F, 0.0F, 1, 8, 2, strech + 0.1F);
+				RightWingExt[0].setRotationPoint(f20, f21 + f, f22);
+				RightWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[1].mirror = true;
+				RightWingExt[1].addBox("Wing", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
+				RightWingExt[1].setRotationPoint(f20, f21 + f, f22);
+				RightWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[2].mirror = true;
+				RightWingExt[2].addBox("Wing", 0.0F, -1.2F, -0.2F, 1, 8, 2, strech - 0.2F);
+				RightWingExt[2].setRotationPoint(f20, f21 + f, f22);
+				RightWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[3].mirror = true;
+				RightWingExt[3].addBox("Wing", 0.0F, 1.8F, 1.3F, 1, 8, 2, strech - 0.1F);
+				RightWingExt[3].setRotationPoint(f20, f21 + f, f22);
+				RightWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[4].mirror = true;
+				RightWingExt[4].addBox("Wing", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
+				RightWingExt[4].setRotationPoint(f20, f21 + f, f22);
+				RightWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[5].mirror = true;
+				RightWingExt[5].addBox("Wing", 0.0F, 0.0F, -0.2F, 1, 6, 2, strech + 0.3F);
+				RightWingExt[5].setRotationPoint(f20, f21 + f, f22);
+				RightWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
+				RightWingExt[6].mirror = true;
+				RightWingExt[6].addBox("Wing", 0.0F, 0.0F, 0.2F, 1, 3, 2, strech + 0.2F);
+				RightWingExt[6].setRotationPoint(f20, f21 + f, f22);
+				WingRotateAngleX = LeftWingExt[0].rotateAngleX;
+				WingRotateAngleY = LeftWingExt[0].rotateAngleY;
+				WingRotateAngleZ = LeftWingExt[0].rotateAngleZ;
+
+				animate();
+
+				return this;
+			}
+
+			public void animate()
+			{
+				bool isSleeping = false;
+				bool isMale = true;
+				bool isFlying = false;
+				bool isPegasus = true;
+				bool isUnicorn = true;
+				bool issneak = false;
+				int wantTail = 0;
+				int heldItemRight = 0;
+				bool aimedBow = false;
+
+				float f = 0;
+				float f1 = 0;
+				float f2 = 0;
+				float f3 = 0;
+				float f4 = 0;
+				float f5 = onGround;
+				rainboom = false;
+				float f6;
+				float f7;
+				if (isSleeping)
+				{
+					f6 = 1.4F;
+					f7 = 0.1F;
+				}
+				else
+				{
+					f6 = f3 / 57.29578F;
+					f7 = f4 / 57.29578F;
+				}
+
+				if (f7 > .5F)
+				{
+					f7 = .5F;
+				}
+
+				if (f7 < -.5F)
+				{
+					f7 = -.5F;
+				}
+
+				head.rotateAngleY = f6;
+				head.rotateAngleX = f7;
+
+				if (isMale)
+				{
+					for (int i = 0; i < MuzzleMale.Length; i++)
+					{
+						MuzzleMale[i].rotateAngleY = f6;
+						MuzzleMale[i].rotateAngleX = f7;
+					}
+				}
+				else
+				{
+					for (int i = 0; i < MuzzleFemale.Length; i++)
+					{
+						MuzzleFemale[i].rotateAngleY = f6;
+						MuzzleFemale[i].rotateAngleX = f7;
+					}
+				}
+
+				headpiece[0].rotateAngleY = f6;
+				headpiece[0].rotateAngleX = f7;
+				headpiece[1].rotateAngleY = f6;
+				headpiece[1].rotateAngleX = f7;
+				headpiece[2].rotateAngleY = f6;
+				headpiece[2].rotateAngleX = f7;
+				helmet.rotateAngleY = f6;
+				helmet.rotateAngleX = f7;
+				headpiece[2].rotateAngleX = f7 + 0.5F;
+				float f8;
+				float f9;
+				float f10;
+				float f11;
+				if (!isFlying || !isPegasus)
+				{
+					f8 = (float)Math.Cos(f * 0.6662F + 3.141593F) * 0.6F * f1;
+					f9 = (float)Math.Cos(f * 0.6662F) * 0.6F * f1;
+					f10 = (float)Math.Cos(f * 0.6662F) * 0.3F * f1;
+					f11 = (float)Math.Cos(f * 0.6662F + 3.141593F) * 0.3F * f1;
+					rightarm.rotateAngleY = 0.0F;
+					SteveArm.rotateAngleY = 0.0F;
+					unicornarm.rotateAngleY = 0.0F;
+					LeftArm.rotateAngleY = 0.0F;
+					RightLeg.rotateAngleY = 0.0F;
+					LeftLeg.rotateAngleY = 0.0F;
+				}
+				else
+				{
+					if (f1 < 0.9999F)
+					{
+						rainboom = false;
+						f8 = (float)Math.Sin(0.0F - f1 * 0.5F);
+						f9 = (float)Math.Sin(0.0F - f1 * 0.5F);
+						f10 = (float)Math.Sin(f1 * 0.5F);
+						f11 = (float)Math.Sin(f1 * 0.5F);
+					}
+					else
+					{
+						rainboom = true;
+						f8 = 4.712F;
+						f9 = 4.712F;
+						f10 = 1.571F;
+						f11 = 1.571F;
+					}
+					rightarm.rotateAngleY = 0.2F;
+					SteveArm.rotateAngleY = 0.2F;
+					LeftArm.rotateAngleY = -0.2F;
+					RightLeg.rotateAngleY = -0.2F;
+					LeftLeg.rotateAngleY = 0.2F;
+				}
+				if (isSleeping)
+				{
+					f8 = 4.712F;
+					f9 = 4.712F;
+					f10 = 1.571F;
+					f11 = 1.571F;
+				}
+				rightarm.rotateAngleX = f8;
+				SteveArm.rotateAngleX = f8;
+				unicornarm.rotateAngleX = 0.0F;
+				LeftArm.rotateAngleX = f9;
+				RightLeg.rotateAngleX = f10;
+				LeftLeg.rotateAngleX = f11;
+				rightarm.rotateAngleZ = 0.0F;
+				SteveArm.rotateAngleZ = 0.0F;
+				unicornarm.rotateAngleZ = 0.0F;
+				LeftArm.rotateAngleZ = 0.0F;
+
+				tailstop = 0;
+				tailstop = Tail.Length - (wantTail * 5);
+				if (tailstop <= 1) { tailstop = 0; }
+				for (int j = 0; j < tailstop; j++)
+				{
+					if (rainboom)
+					{
+						Tail[j].rotateAngleZ = 0.0F;
+					}
+					else
+					{
+						Tail[j].rotateAngleZ = (float)Math.Cos(f * 0.8F) * 0.2F * f1;
+					}
+				}
+
+				if (heldItemRight != 0 && !rainboom && !isUnicorn)
+				{
+					rightarm.rotateAngleX = rightarm.rotateAngleX * 0.5F - 0.3141593F;
+					SteveArm.rotateAngleX = SteveArm.rotateAngleX * 0.5F - 0.3141593F;
+				}
+				float f12 = 0.0F;
+				if (f5 > -9990F && !isUnicorn)
+				{
+					f12 = (float)Math.Sin(Math.Sqrt(f5) * 3.141593F * 2.0F) * 0.2F;
+				}
+				Body.rotateAngleY = (float)((double)f12 * 0.20000000000000001D);
+				for (int k = 0; k < Bodypiece.Length; k++)
+				{
+					Bodypiece[k].rotateAngleY = (float)((double)f12 * 0.20000000000000001D);
+				}
+				for (int kk = 0; kk < BodypieceNeck.Length; kk++)
+				{
+					BodypieceNeck[kk].rotateAngleY = (float)((double)f12 * 0.20000000000000001D);
+				}
+
+				for (int l = 0; l < LeftWing.Length; l++)
+				{
+					LeftWing[l].rotateAngleY = (float)((double)f12 * 0.20000000000000001D);
+				}
+
+				for (int i1 = 0; i1 < RightWing.Length; i1++)
+				{
+					RightWing[i1].rotateAngleY = (float)((double)f12 * 0.20000000000000001D);
+				}
+
+				tailstop = 0;
+				tailstop = Tail.Length - (wantTail * 5);
+				if (tailstop <= 1) { tailstop = 0; }
+				for (int j1 = 0; j1 < tailstop; j1++)
+				{
+					Tail[j1].rotateAngleY = f12;
+				}
+
+				float f13 = (float)Math.Sin(Body.rotateAngleY) * 5F;
+				float f14 = (float)Math.Cos(Body.rotateAngleY) * 5F;
+				float f15 = 4F;
+				if (issneak && !isFlying)
+				{
+					f15 = 0.0F;
+				}
+				if (isSleeping)
+				{
+					f15 = 2.6F;
+				}
+				if (rainboom)
+				{
+					rightarm.rotationPointZ = f13 + 2.0F;
+					SteveArm.rotationPointZ = f13 + 2.0F;
+					LeftArm.rotationPointZ = (0.0F - f13) + 2.0F;
+				}
+				else
+				{
+					rightarm.rotationPointZ = f13 + 1.0F;
+					SteveArm.rotationPointZ = f13 + 1.0F;
+					LeftArm.rotationPointZ = (0.0F - f13) + 1.0F;
+				}
+				rightarm.rotationPointX = (0.0F - f14 - 1.0F) + f15;
+				SteveArm.rotationPointX = 0.0F - f14;
+				LeftArm.rotationPointX = (f14 + 1.0F) - f15;
+				RightLeg.rotationPointX = (0.0F - f14 - 1.0F) + f15;
+				LeftLeg.rotationPointX = (f14 + 1.0F) - f15;
+				rightarm.rotateAngleY += Body.rotateAngleY;
+				LeftArm.rotateAngleY += Body.rotateAngleY;
+				LeftArm.rotateAngleX += Body.rotateAngleY;
+				rightarm.rotationPointY = 8F;
+				LeftArm.rotationPointY = 8F;
+				RightLeg.rotationPointY = 4F;
+				LeftLeg.rotationPointY = 4F;
+				if (f5 > -9990F)
+				{
+					float f16 = f5;
+					f16 = 1.0F - f5;
+					f16 *= f16 * f16;
+					f16 = 1.0F - f16;
+					float f22 = (float)Math.Sin(f16 * 3.141593F);
+					float f28 = (float)Math.Sin(f5 * 3.141593F);
+					float f33 = f28 * -(head.rotateAngleX - 0.7F) * 0.75F;
+					if (isUnicorn)
+					{
+						unicornarm.rotateAngleX -= (float)((double)f22 * 1.2D + (double)f33);
+						unicornarm.rotateAngleY += Body.rotateAngleY * 2.0F;
+						unicornarm.rotateAngleZ = f28 * -0.4F;
+					}
+					else
+					{
+						rightarm.rotateAngleX -= (float)((double)f22 * 1.2D + (double)f33);
+						rightarm.rotateAngleY += Body.rotateAngleY * 2.0F;
+						rightarm.rotateAngleZ = f28 * -0.4F;
+						SteveArm.rotateAngleX -= (float)((double)f22 * 1.2D + (double)f33);
+						SteveArm.rotateAngleY += Body.rotateAngleY * 2.0F;
+						SteveArm.rotateAngleZ = f28 * -0.4F;
+					}
+				}
+				if (issneak && !isFlying)
+				{
+					float f17 = 0.4F;
+					float f23 = 7F;
+					float f29 = -4F;
+					Body.rotateAngleX = f17;
+					Body.rotationPointY = f23;
+					Body.rotationPointZ = f29;
+					for (int k3 = 0; k3 < Bodypiece.Length; k3++)
+					{
+						Bodypiece[k3].rotateAngleX = f17;
+						Bodypiece[k3].rotationPointY = f23;
+						Bodypiece[k3].rotationPointZ = f29;
+					}
+
+					for (int k3 = 0; k3 < BodypieceNeck.Length; k3++)
+					{
+						BodypieceNeck[k3].rotateAngleX = NeckRotX + f17;
+						BodypieceNeck[k3].rotationPointY = f23;
+						BodypieceNeck[k3].rotationPointZ = f29;
+					}
+
+					float f34 = 3.5F;
+					float f37 = 6F;
+					for (int k4 = 0; k4 < LeftWingExt.Length; k4++)
+					{
+						LeftWingExt[k4].rotateAngleX = (float)((double)f17 + 2.3561947345733643D);
+						LeftWingExt[k4].rotationPointY = f23 + f34;
+						LeftWingExt[k4].rotationPointZ = f29 + f37;
+						LeftWingExt[k4].rotateAngleX = 2.5F;
+						LeftWingExt[k4].rotateAngleZ = -6F;
+					}
+
+					float f40 = 4.5F;
+					float f43 = 6F;
+					for (int k5 = 0; k5 < LeftWingExt.Length; k5++)
+					{
+						RightWingExt[k5].rotateAngleX = (float)((double)f17 + 2.3561947345733643D);
+						RightWingExt[k5].rotationPointY = f23 + f40;
+						RightWingExt[k5].rotationPointZ = f29 + f43;
+						RightWingExt[k5].rotateAngleX = 2.5F;
+						RightWingExt[k5].rotateAngleZ = 6F;
+					}
+
+					RightLeg.rotateAngleX -= 0.0F;
+					LeftLeg.rotateAngleX -= 0.0F;
+					rightarm.rotateAngleX -= 0.4F;
+					SteveArm.rotateAngleX += 0.4F;
+					unicornarm.rotateAngleX += 0.4F;
+					LeftArm.rotateAngleX -= 0.4F;
+					RightLeg.rotationPointZ = 10F;
+					LeftLeg.rotationPointZ = 10F;
+					RightLeg.rotationPointY = 7F;
+					LeftLeg.rotationPointY = 7F;
+					float f46;
+					float f48;
+					float f50;
+					if (isSleeping)
+					{
+						f46 = 2.0F;
+						f48 = -1F;
+						f50 = 1.0F;
+					}
+					else
+					{
+						f46 = 6F;
+						f48 = -2F;
+						f50 = 0.0F;
+					}
+					head.rotationPointY = f46;
+					head.rotationPointZ = f48;
+					head.rotationPointX = f50;
+					helmet.rotationPointY = f46;
+					helmet.rotationPointZ = f48;
+					helmet.rotationPointX = f50;
+					headpiece[0].rotationPointY = f46;
+					headpiece[0].rotationPointZ = f48;
+					headpiece[0].rotationPointX = f50;
+					headpiece[1].rotationPointY = f46;
+					headpiece[1].rotationPointZ = f48;
+					headpiece[1].rotationPointX = f50;
+					headpiece[2].rotationPointY = f46;
+					headpiece[2].rotationPointZ = f48;
+					headpiece[2].rotationPointX = f50;
+
+					if (isMale)
+					{
+						for (int j6 = 0; j6 < MuzzleMale.Length; j6++)
+						{
+							MuzzleMale[j6].rotationPointY = f46;
+							MuzzleMale[j6].rotationPointX = f50;
+							MuzzleMale[j6].rotationPointZ = f48;
+						}
+					}
+					else
+					{
+						for (int j6 = 0; j6 < MuzzleFemale.Length; j6++)
+						{
+							MuzzleFemale[j6].rotationPointY = f46;
+							MuzzleFemale[j6].rotationPointX = f50;
+							MuzzleFemale[j6].rotationPointZ = f48;
+						}
+					}
+
+					float f52 = 0.0F;
+					float f54 = 8F;
+					float f56 = -14F;
+					float f58 = 0.0F - f52;
+					float f60 = 8.8F - f54;
+					float f62 = -4F - f56;
+					float f63 = 0.0F;
+					tailstop = 0;
+					tailstop = Tail.Length - (wantTail * 5);
+					if (tailstop <= 1) { tailstop = 0; }
+					for (int i7 = 0; i7 < tailstop; i7++)
+					{
+						Tail[i7].rotationPointX = f58;
+						Tail[i7].rotationPointY = f60;
+						Tail[i7].rotationPointZ = f62;
+						Tail[i7].rotateAngleX = f63;
+					}
+
+				}
+				else
+				{
+					float f18 = 0.0F;
+					float f24 = 0.0F;
+					float f30 = 0.0F;
+					Body.rotateAngleX = f18;
+					Body.rotationPointY = f24;
+					Body.rotationPointZ = f30;
+					for (int l3 = 0; l3 < Bodypiece.Length; l3++)
+					{
+						Bodypiece[l3].rotateAngleX = f18;
+						Bodypiece[l3].rotationPointY = f24;
+						Bodypiece[l3].rotationPointZ = f30;
+					}
+					for (int l3 = 0; l3 < BodypieceNeck.Length; l3++)
+					{
+						BodypieceNeck[l3].rotateAngleX = NeckRotX + f18;
+						BodypieceNeck[l3].rotationPointY = f24;
+						BodypieceNeck[l3].rotationPointZ = f30;
+					}
+
+
+					if (isPegasus)
+					{
+						if (!isFlying)
+						{
+							for (int i4 = 0; i4 < LeftWing.Length; i4++)
+							{
+								LeftWing[i4].rotateAngleX = (float)((double)f18 + 1.5707964897155762D);
+								LeftWing[i4].rotationPointY = f24 + 13F;
+								LeftWing[i4].rotationPointZ = f30 - 3F;
+							}
+
+							for (int j4 = 0; j4 < RightWing.Length; j4++)
+							{
+								RightWing[j4].rotateAngleX = (float)((double)f18 + 1.5707964897155762D);
+								RightWing[j4].rotationPointY = f24 + 13F;
+								RightWing[j4].rotationPointZ = f30 - 3F;
+							}
+
+						}
+						else
+						{
+							float f35 = 5.5F;
+							float f38 = 3F;
+							for (int l4 = 0; l4 < LeftWingExt.Length; l4++)
+							{
+								LeftWingExt[l4].rotateAngleX = (float)((double)f18 + 1.5707964897155762D);
+								LeftWingExt[l4].rotationPointY = f24 + f35;
+								LeftWingExt[l4].rotationPointZ = f30 + f38;
+							}
+
+							float f41 = 6.5F;
+							float f44 = 3F;
+							for (int l5 = 0; l5 < RightWingExt.Length; l5++)
+							{
+								RightWingExt[l5].rotateAngleX = (float)((double)f18 + 1.5707964897155762D);
+								RightWingExt[l5].rotationPointY = f24 + f41;
+								RightWingExt[l5].rotationPointZ = f30 + f44;
+							}
+
+						}
+					}
+					RightLeg.rotationPointZ = 10F;
+					LeftLeg.rotationPointZ = 10F;
+					RightLeg.rotationPointY = 8F;
+					LeftLeg.rotationPointY = 8F;
+					float f36 = (float)Math.Cos(f2 * 0.09F) * 0.05F + 0.05F;
+					float f39 = (float)Math.Sin(f2 * 0.067F) * 0.05F;
+					SteveArm.rotateAngleZ += f36;
+					unicornarm.rotateAngleZ += f36;
+					SteveArm.rotateAngleX += f39;
+					unicornarm.rotateAngleX += f39;
+					if (isPegasus && isFlying)
+					{
+						WingRotateAngleY = (float)Math.Sin(f2 * 0.067F * 8F) * 1.0F;
+						WingRotateAngleZ = (float)Math.Sin(f2 * 0.067F * 8F) * 1.0F;
+						for (int i5 = 0; i5 < LeftWingExt.Length; i5++)
+						{
+							LeftWingExt[i5].rotateAngleX = 2.5F;
+							LeftWingExt[i5].rotateAngleZ = -WingRotateAngleZ - 4.712F - 0.4F;
+						}
+
+						for (int j5 = 0; j5 < RightWingExt.Length; j5++)
+						{
+							RightWingExt[j5].rotateAngleX = 2.5F;
+							RightWingExt[j5].rotateAngleZ = WingRotateAngleZ + 4.712F + 0.4F;
+						}
+
+					}
+					float f42;
+					float f45;
+					float f47;
+					if (isSleeping)
+					{
+						f42 = 2.0F;
+						f45 = 1.0F;
+						f47 = 1.0F;
+					}
+					else
+					{
+						f42 = 0.0F;
+						f45 = 0.0F;
+						f47 = 0.0F;
+					}
+					head.rotationPointY = f42;
+					head.rotationPointZ = f45;
+					head.rotationPointX = f47;
+					helmet.rotationPointY = f42;
+					helmet.rotationPointZ = f45;
+					helmet.rotationPointX = f47;
+					headpiece[0].rotationPointY = f42;
+					headpiece[0].rotationPointZ = f45;
+					headpiece[0].rotationPointX = f47;
+					headpiece[1].rotationPointY = f42;
+					headpiece[1].rotationPointZ = f45;
+					headpiece[1].rotationPointX = f47;
+					headpiece[2].rotationPointY = f42;
+					headpiece[2].rotationPointZ = f45;
+					headpiece[2].rotationPointX = f47;
+
+					if (isMale)
+					{
+						for (int i6 = 0; i6 < MuzzleMale.Length; i6++)
+						{
+							MuzzleMale[i6].rotationPointY = f42;
+							MuzzleMale[i6].rotationPointX = f45;
+							MuzzleMale[i6].rotationPointZ = f47;
+						}
+					}
+					else
+					{
+						for (int i6 = 0; i6 < MuzzleFemale.Length; i6++)
+						{
+							MuzzleFemale[i6].rotationPointY = f42;
+							MuzzleFemale[i6].rotationPointX = f45;
+							MuzzleFemale[i6].rotationPointZ = f47;
+						}
+					}
+
+					float f49 = 0.0F;
+					float f51 = 8F;
+					float f53 = -14F;
+					float f55 = 0.0F - f49;
+					float f57 = 8.8F - f51;
+					float f59 = 0.0F - f53;
+					float f61 = 0.5F * f1;
+					tailstop = 0;
+					tailstop = Tail.Length - (wantTail * 5);
+					if (tailstop <= 1) { tailstop = 0; }
+					for (int k6 = 0; k6 < tailstop; k6++)
+					{
+						Tail[k6].rotationPointX = f55;
+						Tail[k6].rotationPointY = f57;
+						Tail[k6].rotationPointZ = f59;
+						if (rainboom)
+						{
+							Tail[k6].rotateAngleX = 1.571F + 0.1F * (float)Math.Sin(f);
+						}
+						else
+						{
+							Tail[k6].rotateAngleX = f61;
+						}
+					}
+
+					tailstop = 0;
+					tailstop = Tail.Length - (wantTail * 5);
+					if (tailstop <= 1) { tailstop = 0; }
+					for (int l6 = 0; l6 < tailstop; l6++)
+					{
+						if (!rainboom)
+						{
+							Tail[l6].rotateAngleX += f39;
+						}
+					}
+
+				}
+				LeftWingExt[2].rotateAngleX = LeftWingExt[2].rotateAngleX - 0.85F;
+				LeftWingExt[3].rotateAngleX = LeftWingExt[3].rotateAngleX - 0.75F;
+				LeftWingExt[4].rotateAngleX = LeftWingExt[4].rotateAngleX - 0.5F;
+				LeftWingExt[6].rotateAngleX = LeftWingExt[6].rotateAngleX - 0.85F;
+				RightWingExt[2].rotateAngleX = RightWingExt[2].rotateAngleX - 0.85F;
+				RightWingExt[3].rotateAngleX = RightWingExt[3].rotateAngleX - 0.75F;
+				RightWingExt[4].rotateAngleX = RightWingExt[4].rotateAngleX - 0.5F;
+				RightWingExt[6].rotateAngleX = RightWingExt[6].rotateAngleX - 0.85F;
+				Bodypiece[9].rotateAngleX = Bodypiece[9].rotateAngleX + 0.5F;
+				Bodypiece[10].rotateAngleX = Bodypiece[10].rotateAngleX + 0.5F;
+				Bodypiece[11].rotateAngleX = Bodypiece[11].rotateAngleX + 0.5F;
+				Bodypiece[12].rotateAngleX = Bodypiece[12].rotateAngleX + 0.5F;
+				Bodypiece[13].rotateAngleX = Bodypiece[13].rotateAngleX + 0.5F;
+
+				if (rainboom)
+				{
+					tailstop = 0;
+					tailstop = Tail.Length - (wantTail * 5);
+					if (tailstop <= 1) { tailstop = 0; }
+					for (int k1 = 0; k1 < tailstop; k1++)
+					{
+						Tail[k1].rotationPointY = Tail[k1].rotationPointY + 6F;
+						Tail[k1].rotationPointZ = Tail[k1].rotationPointZ + 1.0F;
+					}
+
+				}
+				if (isRiding)
+				{
+					float f19 = -10F;
+					float f25 = -10F;
+					head.rotationPointY = head.rotationPointY + f19;
+					head.rotationPointZ = head.rotationPointZ + f25;
+					headpiece[0].rotationPointY = headpiece[0].rotationPointY + f19;
+					headpiece[0].rotationPointZ = headpiece[0].rotationPointZ + f25;
+					headpiece[1].rotationPointY = headpiece[1].rotationPointY + f19;
+					headpiece[1].rotationPointZ = headpiece[1].rotationPointZ + f25;
+					headpiece[2].rotationPointY = headpiece[2].rotationPointY + f19;
+					headpiece[2].rotationPointZ = headpiece[2].rotationPointZ + f25;
+
+					if (isMale)
+					{
+						for (int l1 = 0; l1 < MuzzleMale.Length; l1++)
+						{
+							MuzzleMale[l1].rotationPointY = MuzzleMale[l1].rotationPointY + f19;
+							MuzzleMale[l1].rotationPointZ = MuzzleMale[l1].rotationPointZ + f25;
+						}
+					}
+					else
+					{
+						for (int l1 = 0; l1 < MuzzleFemale.Length; l1++)
+						{
+							MuzzleFemale[l1].rotationPointY = MuzzleFemale[l1].rotationPointY + f19;
+							MuzzleFemale[l1].rotationPointZ = MuzzleFemale[l1].rotationPointZ + f25;
+						}
+					}
+
+					helmet.rotationPointY = helmet.rotationPointY + f19;
+					helmet.rotationPointZ = helmet.rotationPointZ + f25;
+					Body.rotationPointY = Body.rotationPointY + f19;
+					Body.rotationPointZ = Body.rotationPointZ + f25;
+					for (int i2 = 0; i2 < Bodypiece.Length; i2++)
+					{
+						Bodypiece[i2].rotationPointY = Bodypiece[i2].rotationPointY + f19;
+						Bodypiece[i2].rotationPointZ = Bodypiece[i2].rotationPointZ + f25;
+					}
+
+					LeftArm.rotationPointY = LeftArm.rotationPointY + f19;
+					LeftArm.rotationPointZ = LeftArm.rotationPointZ + f25;
+					rightarm.rotationPointY = rightarm.rotationPointY + f19;
+					rightarm.rotationPointZ = rightarm.rotationPointZ + f25;
+					LeftLeg.rotationPointY = LeftLeg.rotationPointY + f19;
+					LeftLeg.rotationPointZ = LeftLeg.rotationPointZ + f25;
+					RightLeg.rotationPointY = RightLeg.rotationPointY + f19;
+					RightLeg.rotationPointZ = RightLeg.rotationPointZ + f25;
+					tailstop = 0;
+					tailstop = Tail.Length - (wantTail * 5);
+					if (tailstop <= 1) { tailstop = 0; }
+					for (int j2 = 0; j2 < tailstop; j2++)
+					{
+						Tail[j2].rotationPointY = Tail[j2].rotationPointY + f19;
+						Tail[j2].rotationPointZ = Tail[j2].rotationPointZ + f25;
+					}
+
+					for (int k2 = 0; k2 < LeftWing.Length; k2++)
+					{
+						LeftWing[k2].rotationPointY = LeftWing[k2].rotationPointY + f19;
+						LeftWing[k2].rotationPointZ = LeftWing[k2].rotationPointZ + f25;
+					}
+
+					for (int l2 = 0; l2 < RightWing.Length; l2++)
+					{
+						RightWing[l2].rotationPointY = RightWing[l2].rotationPointY + f19;
+						RightWing[l2].rotationPointZ = RightWing[l2].rotationPointZ + f25;
+					}
+
+					for (int i3 = 0; i3 < LeftWingExt.Length; i3++)
+					{
+						LeftWingExt[i3].rotationPointY = LeftWingExt[i3].rotationPointY + f19;
+						LeftWingExt[i3].rotationPointZ = LeftWingExt[i3].rotationPointZ + f25;
+					}
+
+					for (int j3 = 0; j3 < RightWingExt.Length; j3++)
+					{
+						RightWingExt[j3].rotationPointY = RightWingExt[j3].rotationPointY + f19;
+						RightWingExt[j3].rotationPointZ = RightWingExt[j3].rotationPointZ + f25;
+					}
+
+				}
+				if (isSleeping)
+				{
+					rightarm.rotationPointZ = rightarm.rotationPointZ + 6F;
+					LeftArm.rotationPointZ = LeftArm.rotationPointZ + 6F;
+					RightLeg.rotationPointZ = RightLeg.rotationPointZ - 8F;
+					LeftLeg.rotationPointZ = LeftLeg.rotationPointZ - 8F;
+					rightarm.rotationPointY = rightarm.rotationPointY + 2.0F;
+					LeftArm.rotationPointY = LeftArm.rotationPointY + 2.0F;
+					RightLeg.rotationPointY = RightLeg.rotationPointY + 2.0F;
+					LeftLeg.rotationPointY = LeftLeg.rotationPointY + 2.0F;
+				}
+				if (aimedBow)
+				{
+					if (isUnicorn)
+					{
+						float f20 = 0.0F;
+						float f26 = 0.0F;
+						unicornarm.rotateAngleZ = 0.0F;
+						unicornarm.rotateAngleY = -(0.1F - f20 * 0.6F) + head.rotateAngleY;
+						unicornarm.rotateAngleX = 4.712F + head.rotateAngleX;
+						unicornarm.rotateAngleX -= f20 * 1.2F - f26 * 0.4F;
+						float f31 = 0;
+						unicornarm.rotateAngleZ += (float)Math.Cos(f31 * 0.09F) * 0.05F + 0.05F;
+						unicornarm.rotateAngleX += (float)Math.Sin(f31 * 0.067F) * 0.05F;
+					}
+					else
+					{
+						float f21 = 0.0F;
+						float f27 = 0.0F;
+						rightarm.rotateAngleZ = 0.0F;
+						rightarm.rotateAngleY = -(0.1F - f21 * 0.6F) + head.rotateAngleY;
+						rightarm.rotateAngleX = 4.712F + head.rotateAngleX;
+						rightarm.rotateAngleX -= f21 * 1.2F - f27 * 0.4F;
+						float f32 = 0;
+						rightarm.rotateAngleZ += (float)Math.Cos(f32 * 0.09F) * 0.05F + 0.05F;
+						rightarm.rotateAngleX += (float)Math.Sin(f32 * 0.067F) * 0.05F;
+						rightarm.rotationPointZ = rightarm.rotationPointZ + 1.0F;
+					}
+				}
+			}
+
+			/*
+			public void render(AniParams aniparams, boolean flag)
+			{
+					if(flag)
+					{
+							head.render(scale);
+							headpiece[0].render(scale);
+							headpiece[1].render(scale);
+							if(isUnicorn)
+							{
+									headpiece[2].render(scale);
+							}
+
+					if(isMale)
+					{
+						for(int i = 0; i < MuzzleMale.length; i++)
+						{
+							MuzzleMale[i].render(scale);
+						}
+					} else {
+						for(int i = 0; i < MuzzleFemale.length; i++)
+						{
+							MuzzleFemale[i].render(scale);
+						}
+					}
+
+							helmet.render(scale);
+							Body.render(scale);
+							for(int j = 0; j < Bodypiece.length; j++)
+							{
+									Bodypiece[j].render(scale);
+							}
+
+							for(int j = 0; j < BodypieceNeck.length; j++)
+							{
+									BodypieceNeck[j].render(scale);
+							}            
+            
+							LeftArm.render(scale);
+							rightarm.render(scale);
+							LeftLeg.render(scale);
+							RightLeg.render(scale);
+					int tailstop = 0;
+					tailstop = Tail.length - (wantTail * 5);
+					if(tailstop <= 1) {tailstop = 0;}
+							for(int k = 0; k < tailstop; k++)
+							{
+									Tail[k].render(scale);
+							}
+
+							if(isPegasus)
+							{
+									if(isFlying || issneak)
+									{
+											for(int l = 0; l < LeftWingExt.length; l++)
+											{
+													LeftWingExt[l].render(scale);
+											}
+
+											for(int i1 = 0; i1 < RightWingExt.length; i1++)
+											{
+													RightWingExt[i1].render(scale);
+											}
+
+									} else
+									{
+											for(int j1 = 0; j1 < LeftWing.length; j1++)
+											{
+													LeftWing[j1].render(scale);
+											}
+
+											for(int k1 = 0; k1 < RightWing.length; k1++)
+											{
+													RightWing[k1].render(scale);
+											}
+
+									}
+							}
+					} else
+					{
+							SteveArm.render(scale);
+					}
+			}
+
+			public void specials(RenderManager rendermanager, EntityPlayer entityplayer)
+			{
+					if(!isSleeping)
+					{
+							if(isUnicorn)
+							{
+									if(aimedBow)
+									{
+											renderDrop(rendermanager, entityplayer, unicornarm, 1.0F, 0.15F, 0.9375F, 0.0625F);
+									} else
+									{
+											renderDrop(rendermanager, entityplayer, unicornarm, 1.0F, 0.35F, 0.5375F, -0.45F);
+									}
+							} else
+							{
+									renderDrop(rendermanager, entityplayer, rightarm, 1.0F, -0.0625F, 0.8375F, 0.0625F);
+							}
+					}
+					renderPumpkin(rendermanager, entityplayer, head, 0.625F, 0.0F, -0.08F, -0.15F);
+			}*/
+		}
+
 		public class ModelOzelot : ModelBase
 		{
 			ModelRenderer a;
@@ -3157,10 +4347,11 @@ namespace MCSkin3D
 			new ModelCloak().Compile("Cloak", 1, 64.0f, 32.0f).Save("Models\\Other\\Cloak.xml");
 			new ModelArmor().Compile("Armor", 1, 64.0f, 32.0f).Save("Models\\Other\\Armor.xml");
 
-			new ModelOzelot().Compile("Ozelot", 1, 64.0f, 32.0f).Save("Models\\Ozelot.xml");
-			new ModelGolem().Compile("Golem", 1, 96, 96).Save("Models\\Golem.xml");
+			new ModelOzelot().Compile("Ozelot", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Ozelot.xml");
+			new ModelGolem().Compile("Golem", 1, 96, 96).Save("Models\\Mobs\\Passive\\Golem.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
+			new pm_newPonyAdv().init(0, 0).Compile("New Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\New Pony.xml");
 
 			var psi = new ProcessStartInfo("flate.exe", "models\\*.xml e");
 			psi.CreateNoWindow = true;

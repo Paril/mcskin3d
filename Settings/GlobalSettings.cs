@@ -144,8 +144,8 @@ namespace MCSkin3D
 		public static string[] SkinDirectories { get; set; }
 
 		[Savable]
-		[DefaultValue(true)]
-		public static bool OnePointOhMode { get; set; }
+		[DefaultValue(false)]
+		public static bool OnePointEightMode { get; set; }
 
 		[Savable]
 		[DefaultValue("255 255 255 255")]

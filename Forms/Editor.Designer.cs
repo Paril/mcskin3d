@@ -1257,9 +1257,9 @@
 			// 
 			// colorTabControl
 			// 
-			this.colorTabControl.Controls.Add(this.swatchTabPage);
 			this.colorTabControl.Controls.Add(this.rgbTabPage);
 			this.colorTabControl.Controls.Add(this.hsvTabPage);
+			this.colorTabControl.Controls.Add(this.swatchTabPage);
 			this.colorTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.colorTabControl.Location = new System.Drawing.Point(0, 0);
 			this.colorTabControl.Name = "colorTabControl";

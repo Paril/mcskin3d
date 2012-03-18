@@ -179,7 +179,7 @@ namespace MCSkin3D
 
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
-			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointOhMode;
+			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointEightMode;
 
 			SetCheckbox(VisiblePartFlags.HeadFlag, headToolStripMenuItem);
 			SetCheckbox(VisiblePartFlags.ChestFlag, chestToolStripMenuItem);
@@ -258,11 +258,13 @@ namespace MCSkin3D
 			Text += " [Beta]";
 #endif
 
-			if (!Directory.Exists("Swatches") || !Directory.Exists("Skins"))
+			if (!Directory.Exists("Swatches"))
 				MessageBox.Show(this, GetLanguageString("B_MSG_DIRMISSING"));
 
 			Directory.CreateDirectory("Swatches");
-			Directory.CreateDirectory("Skins");
+
+			foreach (var x in GlobalSettings.SkinDirectories)
+				Directory.CreateDirectory(x);
 			swatchContainer.AddDirectory("Swatches");
 
 			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", Program.Version.ToString());
@@ -304,7 +306,8 @@ namespace MCSkin3D
 			SetSampleMenuItem(GlobalSettings.Multisamples);
 
 			// set up the GL control
-			rendererControl = new GLControl(new GraphicsMode(new ColorFormat(32), 24, 8, GlobalSettings.Multisamples));
+			var mode = new GraphicsMode();
+			rendererControl = new GLControl(new GraphicsMode(mode.ColorFormat, mode.Depth, mode.Stencil, GlobalSettings.Multisamples));
 			rendererControl.BackColor = System.Drawing.Color.Black;
 			rendererControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			rendererControl.Location = new System.Drawing.Point(0, 25);
@@ -340,7 +343,7 @@ namespace MCSkin3D
 			treeView1.Scrollable = true;
 			splitContainer4.SplitterDistance = 74;
 
-			if (GlobalSettings.OnePointOhMode)
+			if (GlobalSettings.OnePointEightMode)
 				ModelLoader.InvertBottomFaces();
 
 			this.mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mLINESIZEToolStripMenuItem_NumericBox_ValueChanged);
@@ -719,6 +722,9 @@ namespace MCSkin3D
 			_updater.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
+			if (_newSkinDirs != null)
+				GlobalSettings.SkinDirectories = _newSkinDirs;
+
 			GlobalSettings.Save();
 		}
 
@@ -745,7 +751,7 @@ namespace MCSkin3D
 				if ((dir.Attributes & FileAttributes.Hidden) != 0)
 					continue;
 
-				FolderNode folderNode = new FolderNode(dir.Name);
+				FolderNode folderNode = new FolderNode(dir.FullName);
 				RecurseAddDirectories(dir.FullName, folderNode.Nodes, skins);
 				nodes.Add(folderNode);
 			}
@@ -762,13 +768,24 @@ namespace MCSkin3D
 
 			List<Skin> skins = new List<Skin>();
 			treeView1.BeginUpdate();
-			RecurseAddDirectories("Skins", treeView1.Nodes, skins);
+
+			if (Editor.HasOneRoot)
+				RecurseAddDirectories(Editor.RootFolderString, treeView1.Nodes, skins);
+			else
+			{
+				foreach (var x in GlobalSettings.SkinDirectories)
+				{
+					FolderNode folder = new FolderNode(x);
+					RecurseAddDirectories(x, folder.Nodes, skins);
+					treeView1.Nodes.Add(folder);
+				}
+			}
 
 			foreach (var s in skins)
 				s.SetImages();
 
-			treeView1.SelectedNode = _tempToSelect;
 			treeView1.EndUpdate();
+			treeView1.SelectedNode = _tempToSelect;
 
 			SetColor(ColorManager.FromRGBA(255, 255, 255, 255));
 			SetVisibleParts();
@@ -799,7 +816,7 @@ namespace MCSkin3D
 				Application.Exit();
 			}
 
-			new GUIDPicker("..\\update_guids.txt").ShowDialog();
+			//new GUIDPicker("..\\update_guids.txt").ShowDialog();
 		}
 
 		void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -1143,7 +1160,7 @@ namespace MCSkin3D
 			ModelLoader.InvertBottomFaces();
 
 			modeToolStripMenuItem1.Checked = !modeToolStripMenuItem1.Checked;
-			GlobalSettings.OnePointOhMode = modeToolStripMenuItem1.Checked;
+			GlobalSettings.OnePointEightMode = modeToolStripMenuItem1.Checked;
 
 			rendererControl.Invalidate();
 		}
@@ -1174,20 +1191,75 @@ namespace MCSkin3D
 			treeView1.SelectedNode = skin;
 		}
 
+		public static string GetFolderForNode(TreeNode node)
+		{
+			if (node == null)
+				return Editor.RootFolderString;
+			else if (node is Skin)
+			{
+				if (node.Parent == null)
+				{
+					if (Editor.HasOneRoot)
+						return Editor.RootFolderString;
+
+					throw new Exception();
+				}
+				else
+					return GetFolderForNode(node.Parent);
+			}
+			else if (node is FolderNode)
+			{
+				FolderNode folder = (FolderNode)node;
+				return folder.Directory.FullName;
+			}
+
+			throw new Exception();
+		}
+
+		public static string GetFolderLocationForNode(TreeNode node)
+		{
+			string folderLocation = "";
+
+			if (node != null)
+			{
+				if (!(node is Skin))
+					folderLocation = GetFolderForNode(node) + '\\';
+				else if (node.Parent != null)
+					folderLocation = GetFolderForNode(node.Parent) + '\\';
+			}
+
+			if (Editor.HasOneRoot)
+				folderLocation = Editor.RootFolderString + '\\' + folderLocation;
+
+			return folderLocation;
+		}
+
+		public static void GetFolderLocationAndCollectionForNode(TreeView treeView, TreeNode _rightClickedNode, out string folderLocation, out TreeNodeCollection collection)
+		{
+			folderLocation = "";
+			collection = treeView.Nodes;
+
+			if (_rightClickedNode != null)
+			{
+				if (!(_rightClickedNode is Skin))
+				{
+					folderLocation = GetFolderForNode(_rightClickedNode) + '\\';
+					collection = _rightClickedNode.Nodes;
+				}
+				else if (_rightClickedNode.Parent != null)
+				{
+					folderLocation = GetFolderForNode(_rightClickedNode.Parent) + '\\';
+					collection = _rightClickedNode.Parent.Nodes;
+				}
+			}
+
+			if (Editor.HasOneRoot)
+				folderLocation = Editor.RootFolderString + '\\' + folderLocation;
+		}
+
 		void ImportSkins(string[] fileName, TreeNode parentNode)
 		{
-			string folderLocation;
-			if (parentNode != null)
-			{
-				if (!(parentNode is Skin))
-					folderLocation = "Skins\\" + parentNode.FullPath + '\\';
-				else if (parentNode.Parent != null)
-					folderLocation = "Skins\\" + parentNode.Parent.FullPath + '\\';
-				else
-					folderLocation = "Skins\\";
-			}
-			else
-				folderLocation = "Skins\\";
+			var folderLocation = GetFolderLocationForNode(parentNode);
 
 			foreach (var f in fileName)
 				ImportSkin(f, folderLocation, parentNode);
@@ -1219,29 +1291,7 @@ namespace MCSkin3D
 			if (_rightClickedNode == null || _rightClickedNode.Parent == null)
 				_rightClickedNode = treeView1.SelectedNode;
 
-			if (_rightClickedNode != null)
-			{
-				if (!(_rightClickedNode is Skin))
-				{
-					folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
-					collection = _rightClickedNode.Nodes;
-				}
-				else if (_rightClickedNode.Parent != null)
-				{
-					folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
-					collection = _rightClickedNode.Parent.Nodes;
-				}
-				else
-				{
-					folderLocation = "Skins\\";
-					collection = treeView1.Nodes;
-				}
-			}
-			else
-			{
-				folderLocation = "Skins\\";
-				collection = treeView1.Nodes;
-			}
+			GetFolderLocationAndCollectionForNode(treeView1, _rightClickedNode, out folderLocation, out collection);
 
 			string newFolderName = "New Folder";
 
@@ -1249,7 +1299,7 @@ namespace MCSkin3D
 				newFolderName = newFolderName.Insert(0, Editor.GetLanguageString("C_NEW"));
 
 			Directory.CreateDirectory(folderLocation + newFolderName);
-			var newNode = new FolderNode(newFolderName);
+			var newNode = new FolderNode(folderLocation + newFolderName);
 			collection.Add(newNode);
 
 			newNode.EnsureVisible();
@@ -1267,29 +1317,7 @@ namespace MCSkin3D
 			if (_rightClickedNode == null)
 				_rightClickedNode = treeView1.SelectedNode;
 
-			if (_rightClickedNode != null)
-			{
-				if (!(_rightClickedNode is Skin))
-				{
-					folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
-					collection = _rightClickedNode.Nodes;
-				}
-				else if (_rightClickedNode.Parent != null)
-				{
-					folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
-					collection = _rightClickedNode.Parent.Nodes;
-				}
-				else
-				{
-					folderLocation = "Skins\\";
-					collection = treeView1.Nodes;
-				}
-			}
-			else
-			{
-				folderLocation = "Skins\\";
-				collection = treeView1.Nodes;
-			}
+			GetFolderLocationAndCollectionForNode(treeView1, _rightClickedNode, out folderLocation, out collection);
 
 			string newSkinName = "New Skin";
 
@@ -1337,7 +1365,7 @@ namespace MCSkin3D
 				}
 			}
 
-			Directory.Delete("Skins\\" + node.FullPath, true);
+			Directory.Delete(GetFolderForNode(node), true);
 		}
 
 		void PerformDeleteSkin()
@@ -1361,7 +1389,7 @@ namespace MCSkin3D
 			{
 				if (MessageBox.Show(this, GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
 				{
-					DirectoryInfo folder = new DirectoryInfo("Skins\\" + treeView1.SelectedNode.FullPath);
+					DirectoryInfo folder = new DirectoryInfo(GetFolderForNode(treeView1.SelectedNode));
 
 					RecursiveDeleteSkins(treeView1.SelectedNode);
 
@@ -1434,8 +1462,9 @@ namespace MCSkin3D
 			else
 			{
 				string folderName = _currentlyEditing.Text;
-				var folder = new DirectoryInfo("skins\\" + _currentlyEditing.FullPath);
-				var newFolder = new DirectoryInfo("skins\\" + ((_currentlyEditing.Parent != null) ? (_currentlyEditing.Parent.FullPath + '\\' + newName) : newName));
+
+				var folder = new DirectoryInfo(GetFolderForNode(_currentlyEditing));
+				var newFolder = new DirectoryInfo(((_currentlyEditing.Parent != null) ? (GetFolderForNode(_currentlyEditing.Parent) + '\\' + newName) : newName));
 
 				if (folderName == newName)
 					return;
@@ -2343,6 +2372,7 @@ namespace MCSkin3D
 			if (GlobalSettings.RenderBenchmark)
 				_compileTimer.Start();
 
+			if (CurrentModel != null)
 			foreach (var mesh in CurrentModel.Meshes)
 			{
 				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
@@ -2643,19 +2673,20 @@ namespace MCSkin3D
 			_currentViewport = viewport;
 
 			Bounds3 vec = Bounds3.EmptyBounds;
+			var allBounds = Bounds3.EmptyBounds;
 			int count = 0;
+
+			if (CurrentModel != null)
 			foreach (var mesh in CurrentModel.Meshes)
 			{
+				allBounds += mesh.Bounds;
+
 				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
 				{
 					vec += mesh.Bounds;
 					count++;
 				}
 			}
-
-			var allBounds = Bounds3.EmptyBounds;
-			foreach (var mesh in CurrentModel.Meshes)
-				allBounds += mesh.Bounds;
 
 			GrassY = allBounds.Maxs.Y;
 			var center = vec.Center;
@@ -3318,6 +3349,8 @@ namespace MCSkin3D
 
 		void ShowUpdater()
 		{
+			MessageBox.Show("Not finished!");
+
 			Hide();
 			
 			using (var upd = new MCSkin3D.UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml", "__installedupdates"))
@@ -3422,7 +3455,7 @@ namespace MCSkin3D
 
 		void colorTabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (colorTabControl.SelectedIndex == 1 || colorTabControl.SelectedIndex == 2)
+			if (colorTabControl.SelectedIndex == 0 || colorTabControl.SelectedIndex == 1)
 			{
 				var panel = (Panel)colorTabControl.SelectedTab.Controls[0];
 
@@ -3793,29 +3826,7 @@ namespace MCSkin3D
 			if (_rightClickedNode == null)
 				_rightClickedNode = treeView1.SelectedNode;
 
-			if (_rightClickedNode != null)
-			{
-				if (!(_rightClickedNode is Skin))
-				{
-					folderLocation = "Skins\\" + _rightClickedNode.FullPath + '\\';
-					collection = _rightClickedNode.Nodes;
-				}
-				else if (_rightClickedNode.Parent != null)
-				{
-					folderLocation = "Skins\\" + _rightClickedNode.Parent.FullPath + '\\';
-					collection = _rightClickedNode.Parent.Nodes;
-				}
-				else
-				{
-					folderLocation = "Skins\\";
-					collection = treeView1.Nodes;
-				}
-			}
-			else
-			{
-				folderLocation = "Skins\\";
-				collection = treeView1.Nodes;
-			}
+			GetFolderLocationAndCollectionForNode(treeView1, _rightClickedNode, out folderLocation, out collection);
 
 			string newSkinName = accountName;
 
@@ -3887,16 +3898,41 @@ namespace MCSkin3D
 
 		}
 
+		bool _waitingForRestart = false;
+		string[] _newSkinDirs = null;
+
 		private void mSKINDIRSToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			if (_waitingForRestart)
+			{
+				MessageBox.Show(GetLanguageString("C_RESTART"), GetLanguageString("C_RESTART_CAPTION"), MessageBoxButtons.OK);
+				return;
+			}
+
 			using (DirectoryList dl = new DirectoryList())
 			{
 				dl.StartPosition = FormStartPosition.CenterParent;
-				foreach (var dir in GlobalSettings.SkinDirectories)
+				foreach (var dir in GlobalSettings.SkinDirectories.OrderBy(x => x))
 					dl.Directories.Add(dir);
 
 				if (dl.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					if (RecursiveNodeIsDirty(treeView1.Nodes))
+					{
+						var mb = MessageBox.Show(GetLanguageString("D_UNSAVED"), GetLanguageString("D_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+						switch (mb)
+						{
+						case System.Windows.Forms.DialogResult.No:
+							_waitingForRestart = true;
+							_newSkinDirs = dl.Directories.ToArray();
+							return;
+						case System.Windows.Forms.DialogResult.Cancel:
+							return;
+						}
+					}
+
 					GlobalSettings.SkinDirectories = dl.Directories.ToArray();
+				}
 			}
 		}
 
@@ -4127,6 +4163,22 @@ namespace MCSkin3D
 				popoutForm.Dispose();
 				popoutForm = null;
 			}
+		}
+
+		public static string RootFolderString
+		{
+			get
+			{
+				if (HasOneRoot)
+					return Path.GetDirectoryName(GlobalSettings.SkinDirectories[0]);
+
+				throw new InvalidOperationException();
+			}
+		}
+
+		public static bool HasOneRoot
+		{
+			get { return GlobalSettings.SkinDirectories.Length == 1; }
 		}
 	}
 }
