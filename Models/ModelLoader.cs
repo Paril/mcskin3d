@@ -1803,7 +1803,7 @@ namespace MCSkin3D
 		{
 			public ModelZombie()
 			{
-				boxList.Remove(bipedHeadwear);
+				//boxList.Remove(bipedHeadwear);
 				setRotationAngles(0, 0, 0, 0, 0, 0);
 			}
 
@@ -4081,26 +4081,26 @@ namespace MCSkin3D
 				g.setTextureOffset(6, 10).addBox("ear2", 1.0F, -3F, 0.0F, 1, 1, 2);
 				g.setRotationPoint(0.0F, 15F, -9F);
 				n = new ModelRenderer(this, 20, 0, VisiblePartFlags.HeadFlag, false, false);
-				n.addBox("?", -2F, 3F, -8F, 4, 16, 6, 0.0F);
+				n.addBox("Body", -2F, 3F, -8F, 4, 16, 6, 0.0F);
 				n.setRotationPoint(0.0F, 12F, -10F);
 				e = new ModelRenderer(this, 0, 15, VisiblePartFlags.HeadFlag, false, false);
-				e.addBox("?", -0.5F, 0.0F, 0.0F, 1, 8, 1);
+				e.addBox("Tail", -0.5F, 0.0F, 0.0F, 1, 8, 1);
 				e.rotateAngleX = 0.9F;
 				e.setRotationPoint(0.0F, 15F, 8F);
 				f = new ModelRenderer(this, 4, 15, VisiblePartFlags.HeadFlag, false, false);
-				f.addBox("?", -0.5F, 0.0F, 0.0F, 1, 8, 1);
+				f.addBox("Tail", -0.5F, 0.0F, 0.0F, 1, 8, 1);
 				f.setRotationPoint(0.0F, 20F, 14F);
 				a = new ModelRenderer(this, 8, 13, VisiblePartFlags.HeadFlag, false, false);
-				a.addBox("?", -1F, 0.0F, 1.0F, 2, 6, 2);
+				a.addBox("Leg", -1F, 0.0F, 1.0F, 2, 6, 2);
 				a.setRotationPoint(1.1F, 18F, 5F);
 				b = new ModelRenderer(this, 8, 13, VisiblePartFlags.HeadFlag, false, false);
-				b.addBox("?", -1F, 0.0F, 1.0F, 2, 6, 2);
+				b.addBox("Leg", -1F, 0.0F, 1.0F, 2, 6, 2);
 				b.setRotationPoint(-1.1F, 18F, 5F);
 				c = new ModelRenderer(this, 40, 0, VisiblePartFlags.HeadFlag, false, false);
-				c.addBox("?", -1F, 0.0F, 0.0F, 2, 10, 2);
+				c.addBox("Leg", -1F, 0.0F, 0.0F, 2, 10, 2);
 				c.setRotationPoint(1.2F, 13.8F, -5F);
 				d = new ModelRenderer(this, 40, 0, VisiblePartFlags.HeadFlag, false, false);
-				d.addBox("?", -1F, 0.0F, 0.0F, 2, 10, 2);
+				d.addBox("Leg", -1F, 0.0F, 0.0F, 2, 10, 2);
 				d.setRotationPoint(-1.2F, 13.8F, -5F);
 
 				setup2(0, 0, 0, 0, 0, 0);
@@ -4242,25 +4242,25 @@ namespace MCSkin3D
 				byte byte1 = 96;
 				a = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				a.setRotationPoint(0.0F, 0.0F + f2, 0.0F);
-				a.setTextureOffset(0, 0).addBox("?", -4F, -12F, -7.5F, 8, 10, 8, f1);
-				a.setTextureOffset(24, 0).addBox("?", -1F, -5F, -9.5F, 2, 4, 2, f1);
+				a.setTextureOffset(0, 0).addBox("Head", -4F, -12F, -7.5F, 8, 10, 8, f1);
+				a.setTextureOffset(24, 0).addBox("Nose", -1F, -5F, -9.5F, 2, 4, 2, f1);
 				b = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				b.setRotationPoint(0.0F, 0.0F + f2, 0.0F);
-				b.setTextureOffset(0, 40).addBox("?", -9F, -2F, -6F, 18, 12, 11, f1);
-				b.setTextureOffset(0, 70).addBox("?", -4.5F, 10F, -3F, 9, 5, 6, f1 + 0.5F);
+				b.setTextureOffset(0, 40).addBox("Chest", -9F, -2F, -6F, 18, 12, 11, f1);
+				b.setTextureOffset(0, 70).addBox("Stomach", -4.5F, 10F, -3F, 9, 5, 6, f1 + 0.5F);
 				c = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				c.setRotationPoint(0.0F, -7F, 0.0F);
-				c.setTextureOffset(60, 21).addBox("?", -13F, -2.5F, -3F, 4, 30, 6, f1);
+				c.setTextureOffset(60, 21).addBox("Right Arm", -13F, -2.5F, -3F, 4, 30, 6, f1);
 				d = (new ModelRenderer(this, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				d.setRotationPoint(0.0F, -7F, 0.0F);
-				d.setTextureOffset(60, 58).addBox("?", 9F, -2.5F, -3F, 4, 30, 6, f1);
+				d.setTextureOffset(60, 58).addBox("Left Arm", 9F, -2.5F, -3F, 4, 30, 6, f1);
 				e = (new ModelRenderer(this, 0, 22, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				e.setRotationPoint(-4F, 18F + f2, 0.0F);
-				e.setTextureOffset(37, 0).addBox("?", -3.5F, -3F, -3F, 6, 16, 5, f1);
+				e.setTextureOffset(37, 0).addBox("Right Leg", -3.5F, -3F, -3F, 6, 16, 5, f1);
 				f = (new ModelRenderer(this, 0, 22, VisiblePartFlags.ChestFlag, false, false)).setTextureSize(byte0, byte1);
 				f.mirror = true;
 				f.setTextureOffset(60, 0).setRotationPoint(4F, 18F + f2, 0.0F);
-				f.addBox("?", -3.5F, -3F, -3F, 6, 16, 5, f1);
+				f.addBox("Left Leg", -3.5F, -3F, -3F, 6, 16, 5, f1);
 
 				setup1(0, 0, 0, 0, 0, 0);
 				setup2(0, 0, 0);

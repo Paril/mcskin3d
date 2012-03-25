@@ -514,6 +514,8 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\deleteswatch.png" />
+    <None Include="Resources\newswatch.png" />
     <None Include="icons\smaller3D.png" />
     <Content Include="Icon_new.ico" />
     <None Include="Resources\Generic_Application.png" />

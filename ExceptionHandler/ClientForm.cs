@@ -10,6 +10,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
+using OpenTK.Graphics.OpenGL;
 
 namespace MCSkin3D.ExceptionHandler
 {
@@ -63,6 +64,19 @@ namespace MCSkin3D.ExceptionHandler
 						if (prop.Value != null &&
 							prop.Name != "SystemName")
 							info += prop.Name + ": " + prop.Value.ToString() + "\r\n";
+				}
+
+				try
+				{
+					info += "\r\nGL Data:\r\n";
+					info += "Vendor: " + GL.GetString(StringName.Vendor) + "\r\n";
+					info += "Version: " + GL.GetString(StringName.Version) + "\r\n";
+					info += "Renderer: " + GL.GetString(StringName.Renderer) + "\r\n";
+					info += "Extensions: " + GL.GetString(StringName.Extensions) + "\r\n";
+				}
+				catch (Exception ex)
+				{
+					info += "Couldn't get GL data\r\n";
 				}
 
 				return info;

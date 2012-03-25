@@ -6,13 +6,12 @@ using System.Drawing;
 
 namespace MCSkin3D.Swatches
 {
-	public struct NamedColor
+	public class NamedColor
 	{
 		public string Name { get; set; }
 		public Color Color { get; set; }
 
-		public NamedColor(string name, Color color) :
-			this()
+		public NamedColor(string name, Color color)
 		{
 			Name = name;
 			Color = color;

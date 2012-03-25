@@ -30,6 +30,16 @@ namespace MCSkin3D.Swatches
 			return str;
 		}
 
+		static void WriteString(EndianBinaryWriter writer, string s)
+		{
+			//writer.Write((ushort)0);
+			writer.Write((ushort)s.Length + 1);
+
+			for (ushort i = 0; i < s.Length; ++i)
+				writer.Write((ushort)s[i]);
+			writer.Write((ushort)0);
+		}
+
 		static Color ReadRGBColor(EndianBinaryReader reader)
 		{
 			ushort r = reader.ReadUInt16();
@@ -157,16 +167,6 @@ namespace MCSkin3D.Swatches
 				version = reader.ReadUInt16();
 				LoadACOData(reader, version);
 			}
-		}
-
-		static void WriteString(EndianBinaryWriter writer, string s)
-		{
-			writer.Write((ushort)0);
-			writer.Write((ushort)s.Length);
-
-			for (ushort i = 0; i < s.Length; ++i)
-				writer.Write((ushort)s[i]);
-			writer.Write((ushort)0);
 		}
 
 		private void WriteRGBColor(EndianBinaryWriter writer, NamedColor c)
