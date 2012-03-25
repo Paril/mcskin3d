@@ -2305,7 +2305,7 @@ namespace MCSkin3D
 				// Grid test
 				TextureGL.Unbind();
 
-				GL.Color3(Color.Black);
+				/*GL.Color3(Color.Black);
 				GL.PushMatrix();
 				GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
 				GL.Begin(BeginMode.Lines);
@@ -2323,7 +2323,7 @@ namespace MCSkin3D
 
 
 				GL.End();
-				GL.PopMatrix();
+				GL.PopMatrix();*/
 				// Grid test end
 
 				if (GlobalSettings.TextureOverlay && skin != null)
