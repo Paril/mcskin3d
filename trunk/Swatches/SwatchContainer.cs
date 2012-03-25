@@ -30,22 +30,40 @@ namespace MCSkin3D
 {
 	public partial class SwatchContainer : UserControl
 	{
+		private SwatchDisplayer _swatchDisplayer;
+
 		public SwatchContainer()
 		{
 			InitializeComponent();
-			swatchDisplayer1.ScrollBar = vScrollBar1;
+
+			// 
+			// swatchDisplayer1
+			// 
+			_swatchDisplayer = new MCSkin3D.SwatchDisplayer();
+			_swatchDisplayer.Dock = System.Windows.Forms.DockStyle.Fill;
+			_swatchDisplayer.Location = new System.Drawing.Point(0, 0);
+			_swatchDisplayer.Name = "swatchDisplayer1";
+			_swatchDisplayer.Scale = 0;
+			_swatchDisplayer.ScrollBar = null;
+			_swatchDisplayer.Size = new System.Drawing.Size(251, 138);
+			_swatchDisplayer.Swatch = null;
+			_swatchDisplayer.TabIndex = 1;
+			_swatchDisplayer.Text = "swatchDisplayer1";
+			_swatchDisplayer.ScrollBar = vScrollBar1;
+
+			this.panel1.Controls.Add(_swatchDisplayer);
 		}
 
 		public event EventHandler<SwatchChangedEventArgs> SwatchChanged
 		{
 			add
 			{
-				swatchDisplayer1.SwatchChanged += value;
+				_swatchDisplayer.SwatchChanged += value;
 			}
 
 			remove
 			{
-				swatchDisplayer1.SwatchChanged -= value;
+				_swatchDisplayer.SwatchChanged -= value;
 			}
 		}
 
@@ -91,33 +109,33 @@ namespace MCSkin3D
 		{
 			if (comboBox1.SelectedItem == null)
 			{
-				swatchDisplayer1.Swatch = null;
+				_swatchDisplayer.Swatch = null;
 				return;
 			}
 
-			swatchDisplayer1.Swatch = (comboBox1.SelectedItem as ISwatch);
+			_swatchDisplayer.Swatch = (comboBox1.SelectedItem as ISwatch);
 		}
 
 		void SetZoomAbility()
 		{
-			toolStripButton1.Enabled = (swatchDisplayer1.Scale != 0);
+			toolStripButton1.Enabled = (_swatchDisplayer.Scale != 0);
 		}
 
 		public void ZoomOut()
 		{
-			swatchDisplayer1.ZoomOut();
+			_swatchDisplayer.ZoomOut();
 			SetZoomAbility();
 		}
 
 		public void ZoomIn()
 		{
-			swatchDisplayer1.ZoomIn();
+			_swatchDisplayer.ZoomIn();
 			SetZoomAbility();
 		}
 
 		public SwatchDisplayer SwatchDisplayer
 		{
-			get { return swatchDisplayer1; }
+			get { return _swatchDisplayer; }
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
@@ -131,6 +149,11 @@ namespace MCSkin3D
 		}
 
 		public bool InEditMode { get { return toolStripButton3.Checked; } }
+
+		private void panel1_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
 	}
 
 	public class SwatchChangedEventArgs : EventArgs
@@ -250,13 +273,13 @@ namespace MCSkin3D
 
 		public Color PrimaryColor
 		{
-			get { return Swatch[_lastLeftSwatch].Color; }
+			get { if (Swatch == null) return Color.White; return Swatch[_lastLeftSwatch].Color; }
 			set { Swatch[_lastLeftSwatch].Color = value; }
 		}
 
 		public Color SecondaryColor
 		{
-			get { return Swatch[_lastRightSwatch].Color; }
+			get { if (Swatch == null) return Color.White; return Swatch[_lastRightSwatch].Color; }
 			set { Swatch[_lastRightSwatch].Color = value; }
 		}
 
