@@ -2300,75 +2300,100 @@ namespace MCSkin3D
 				GL.End();
 			}
 
-			TextureGL.Unbind();
-
-			if (!pickView && GlobalSettings.TextureOverlay && skin != null)
+			if (!pickView)
 			{
-				if (_backgrounds[_selectedBackground] == _dynamicOverlay)
+				// Grid test
+				TextureGL.Unbind();
+
+				GL.Color3(Color.Black);
+				GL.PushMatrix();
+				GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
+				GL.Begin(BeginMode.Lines);
+
+
+				GL.Vertex2(0, 0);
+				GL.Vertex2(0, CurrentModel.DefaultHeight);
+				GL.Vertex2(1, 0);
+				GL.Vertex2(1, CurrentModel.DefaultHeight);
+
+				GL.Vertex2(0, 0);
+				GL.Vertex2(CurrentModel.DefaultWidth, 0);
+				GL.Vertex2(0, 1);
+				GL.Vertex2(CurrentModel.DefaultWidth, 1);
+
+
+				GL.End();
+				GL.PopMatrix();
+				// Grid test end
+
+				if (GlobalSettings.TextureOverlay && skin != null)
 				{
-					GL.PushMatrix();
-					GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
-
-					var stub = (GlobalSettings.DynamicOverlayLineSize / _2dZoom);
-					var one = (1.0f / _2dZoom);
-
-					List<RectangleF> done = new List<RectangleF>();
-					foreach (var mesh in CurrentModel.Meshes)
+					if (_backgrounds[_selectedBackground] == _dynamicOverlay)
 					{
-						foreach (var face in mesh.Faces)
+						GL.PushMatrix();
+						GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
+
+						var stub = (GlobalSettings.DynamicOverlayLineSize / _2dZoom);
+						var one = (1.0f / _2dZoom);
+
+						List<RectangleF> done = new List<RectangleF>();
+						foreach (var mesh in CurrentModel.Meshes)
 						{
-							var toint = face.TexCoordsToFloat((int)CurrentModel.DefaultWidth, (int)CurrentModel.DefaultHeight);
+							foreach (var face in mesh.Faces)
+							{
+								var toint = face.TexCoordsToFloat((int)CurrentModel.DefaultWidth, (int)CurrentModel.DefaultHeight);
 
-							if (toint.Width == 0 ||
-								toint.Height == 0)
-								continue;
-							if (done.Contains(toint))
-								continue;
+								if (toint.Width == 0 ||
+									toint.Height == 0)
+									continue;
+								if (done.Contains(toint))
+									continue;
 
-							done.Add(toint);
+								done.Add(toint);
 
-							GL.Color4(GlobalSettings.DynamicOverlayLineColor);
-							GL.Begin(BeginMode.Quads);
-							GL.Vertex2(toint.X, toint.Y);
-							GL.Vertex2(toint.X + toint.Width, toint.Y);
-							GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
-							GL.Vertex2(toint.X, toint.Y + stub);
+								GL.Color4(GlobalSettings.DynamicOverlayLineColor);
+								GL.Begin(BeginMode.Quads);
+								GL.Vertex2(toint.X, toint.Y);
+								GL.Vertex2(toint.X + toint.Width, toint.Y);
+								GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
+								GL.Vertex2(toint.X, toint.Y + stub);
 
-							GL.Vertex2(toint.X, toint.Y);
-							GL.Vertex2(toint.X + stub, toint.Y);
-							GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
-							GL.Vertex2(toint.X, toint.Y + toint.Height);
+								GL.Vertex2(toint.X, toint.Y);
+								GL.Vertex2(toint.X + stub, toint.Y);
+								GL.Vertex2(toint.X + stub, toint.Y + toint.Height);
+								GL.Vertex2(toint.X, toint.Y + toint.Height);
 
-							GL.Vertex2(toint.X + toint.Width + one, toint.Y);
-							GL.Vertex2(toint.X + toint.Width + one, toint.Y + toint.Height);
-							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y + toint.Height);
-							GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y);
+								GL.Vertex2(toint.X + toint.Width + one, toint.Y);
+								GL.Vertex2(toint.X + toint.Width + one, toint.Y + toint.Height);
+								GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y + toint.Height);
+								GL.Vertex2(toint.X + toint.Width + one - stub, toint.Y);
 
-							GL.Vertex2(toint.X, toint.Y + toint.Height + one);
-							GL.Vertex2(toint.X, toint.Y + toint.Height + one - stub);
-							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one - stub);
-							GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one);
-							GL.End();
-							GL.Color4(Color.White);
+								GL.Vertex2(toint.X, toint.Y + toint.Height + one);
+								GL.Vertex2(toint.X, toint.Y + toint.Height + one - stub);
+								GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one - stub);
+								GL.Vertex2(toint.X + toint.Width, toint.Y + toint.Height + one);
+								GL.End();
+								GL.Color4(Color.White);
 
-							GL.Color4(GlobalSettings.DynamicOverlayTextColor);
-							DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal), (6 * GlobalSettings.DynamicOverlayTextSize) / _2dZoom, (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2dZoom);
-							GL.Color4(Color.White);
+								GL.Color4(GlobalSettings.DynamicOverlayTextColor);
+								DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal), (6 * GlobalSettings.DynamicOverlayTextSize) / _2dZoom, (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2dZoom);
+								GL.Color4(Color.White);
+							}
 						}
+
+						GL.PopMatrix();
 					}
+					else
+					{
+						_backgrounds[_selectedBackground].GLImage.Bind();
 
-					GL.PopMatrix();
-				}
-				else
-				{
-					_backgrounds[_selectedBackground].GLImage.Bind();
-
-					GL.Begin(BeginMode.Quads);
-					GL.TexCoord2(0, 0); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
-					GL.TexCoord2(1, 0); GL.Vertex2((CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
-					GL.TexCoord2(1, 1); GL.Vertex2((CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
-					GL.TexCoord2(0, 1); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
-					GL.End();
+						GL.Begin(BeginMode.Quads);
+						GL.TexCoord2(0, 0); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
+						GL.TexCoord2(1, 0); GL.Vertex2((CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
+						GL.TexCoord2(1, 1); GL.Vertex2((CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
+						GL.TexCoord2(0, 1); GL.Vertex2(-(CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
+						GL.End();
+					}
 				}
 			}
 

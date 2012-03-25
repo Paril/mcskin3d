@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.swatchDisplayer1 = new MCSkin3D.SwatchDisplayer();
 			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
 			this.toolStrip1 = new Paril.Controls.NativeToolStrip();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -54,25 +53,13 @@
 			// 
 			this.panel1.BackColor = System.Drawing.SystemColors.Window;
 			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Controls.Add(this.swatchDisplayer1);
 			this.panel1.Controls.Add(this.vScrollBar1);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 50);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(270, 140);
 			this.panel1.TabIndex = 1;
-			// 
-			// swatchDisplayer1
-			// 
-			this.swatchDisplayer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.swatchDisplayer1.Location = new System.Drawing.Point(0, 0);
-			this.swatchDisplayer1.Name = "swatchDisplayer1";
-			this.swatchDisplayer1.Scale = 0;
-			this.swatchDisplayer1.ScrollBar = null;
-			this.swatchDisplayer1.Size = new System.Drawing.Size(251, 138);
-			this.swatchDisplayer1.Swatch = null;
-			this.swatchDisplayer1.TabIndex = 1;
-			this.swatchDisplayer1.Text = "swatchDisplayer1";
+			this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
 			// 
 			// vScrollBar1
 			// 
@@ -247,6 +234,5 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton7;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.ComboBox comboBox1;
-		private SwatchDisplayer swatchDisplayer1;
 	}
 }
