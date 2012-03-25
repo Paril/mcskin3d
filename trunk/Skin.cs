@@ -78,9 +78,6 @@ namespace MCSkin3D
 				if (Level == 0)
 					return new DirectoryInfo(Editor.RootFolderString);
 
-				if (Editor.HasOneRoot)
-					return new DirectoryInfo(Editor.RootFolderString + '\\' + ((this.Parent != null) ? Editor.GetFolderForNode(this.Parent) : ""));
-
 				return new DirectoryInfo(((this.Parent != null) ? Editor.GetFolderForNode(this.Parent) : ""));
 			}
 		}

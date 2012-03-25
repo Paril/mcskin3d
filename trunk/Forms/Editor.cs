@@ -722,6 +722,8 @@ namespace MCSkin3D
 			_updater.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
+			swatchContainer.SaveSwatches();
+
 			if (_newSkinDirs != null)
 				GlobalSettings.SkinDirectories = _newSkinDirs;
 
@@ -740,7 +742,7 @@ namespace MCSkin3D
 
 				if (_tempToSelect == null)
 					_tempToSelect = skin;
-				else if (GlobalSettings.LastSkin == skin.Name)
+				else if (GlobalSettings.LastSkin == skin.File.ToString())
 					_tempToSelect = skin;
 
 				skins.Add(skin);
@@ -853,9 +855,25 @@ namespace MCSkin3D
 			set
 			{
 				if (_secondaryIsFront)
+				{
+					if (swatchContainer.InEditMode)
+					{
+						if (swatchContainer.SwatchDisplayer.HasPrimaryColor)
+							swatchContainer.SwatchDisplayer.PrimaryColor = value.RGB;
+					}
+
 					SetColor(colorPreview1, ref _primaryColor, value);
+				}
 				else
+				{
+					if (swatchContainer.InEditMode)
+					{
+						if (swatchContainer.SwatchDisplayer.HasSecondaryColor)
+							swatchContainer.SwatchDisplayer.SecondaryColor = value.RGB;
+					}
+
 					SetColor(colorPreview2, ref _secondaryColor, value);
+				}
 			}
 		}
 
@@ -1098,7 +1116,7 @@ namespace MCSkin3D
 			else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
 			{
 				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				GlobalSettings.LastSkin = _lastSkin.Name;
+				GlobalSettings.LastSkin = _lastSkin.File.ToString();
 				treeView1.Invalidate();
 			}
 
@@ -1754,9 +1772,25 @@ namespace MCSkin3D
 		void SetColor(ColorManager c)
 		{
 			if (_secondaryIsFront)
+			{
+				if (swatchContainer.InEditMode)
+				{
+					if (swatchContainer.SwatchDisplayer.HasSecondaryColor)
+						swatchContainer.SwatchDisplayer.SecondaryColor = c.RGB;
+				}
+
 				SetColor(colorPreview2, ref _secondaryColor, c);
+			}
 			else
+			{
+				if (swatchContainer.InEditMode)
+				{
+					if (swatchContainer.SwatchDisplayer.HasPrimaryColor)
+						swatchContainer.SwatchDisplayer.PrimaryColor = c.RGB;
+				}
+
 				SetColor(colorPreview1, ref _primaryColor, c);
+			}
 		}
 
 		private void colorPick1_HSVChanged(object sender, EventArgs e)

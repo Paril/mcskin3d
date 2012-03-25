@@ -81,6 +81,12 @@ namespace MCSkin3D
 			}
 		}
 
+		public void SaveSwatches()
+		{
+			foreach (ISwatch swatch in comboBox1.Items)
+				swatch.Save();
+		}
+
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (comboBox1.SelectedItem == null)
@@ -124,20 +130,7 @@ namespace MCSkin3D
 			ZoomIn();
 		}
 
-		private void toolStripButton3_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void toolStripButton4_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void toolStripButton5_Click(object sender, EventArgs e)
-		{
-
-		}
+		public bool InEditMode { get { return toolStripButton3.Checked; } }
 	}
 
 	public class SwatchChangedEventArgs : EventArgs
@@ -251,6 +244,21 @@ namespace MCSkin3D
 		}
 
 		int _lastLeftSwatch = -1, _lastRightSwatch = -1;
+
+		public bool HasPrimaryColor { get { return _lastLeftSwatch != -1; } }
+		public bool HasSecondaryColor { get { return _lastRightSwatch != -1; } }
+
+		public Color PrimaryColor
+		{
+			get { return Swatch[_lastLeftSwatch].Color; }
+			set { Swatch[_lastLeftSwatch].Color = value; }
+		}
+
+		public Color SecondaryColor
+		{
+			get { return Swatch[_lastRightSwatch].Color; }
+			set { Swatch[_lastRightSwatch].Color = value; }
+		}
 
 		protected override void OnMouseClick(MouseEventArgs e)
 		{

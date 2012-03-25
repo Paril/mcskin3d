@@ -451,27 +451,25 @@ namespace MCSkin3D
 
 			if (e.Node.IsSelected || e.Node == _overNode)
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width, e.Bounds.Height - 1);
-			else if (skin != null && skin.Name == GlobalSettings.LastSkin)
+			else if (skin != null && skin.File.ToString() == GlobalSettings.LastSkin)
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width, e.Bounds.Height - 1);
+
+			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
 			if (skin == null)
 			{
 				if (e.Node.IsExpanded)
-					e.Graphics.DrawImage(Properties.Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, ItemHeight, ItemHeight);
+					e.Graphics.DrawImage(Properties.Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
 				else
-					e.Graphics.DrawImage(Properties.Resources.Folder_32x32, realX, e.Bounds.Y, ItemHeight, ItemHeight);
+					e.Graphics.DrawImage(Properties.Resources.Folder_32x32, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
 
 				if (e.Node.Level == 0 && !Editor.HasOneRoot)
-					e.Graphics.DrawImage(Properties.Resources.clone, realX + (ItemHeight - Properties.Resources.clone.Width), e.Bounds.Y + (ItemHeight - Properties.Resources.clone.Height), Properties.Resources.clone.Width, Properties.Resources.clone.Height);
+					e.Graphics.DrawImage(Properties.Resources.clone, realX + (ItemHeight - Properties.Resources.clone.Width) - 1, e.Bounds.Y + (ItemHeight - Properties.Resources.clone.Height) - 1, Properties.Resources.clone.Width, Properties.Resources.clone.Height);
 			}
 			else
-			{
-				e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-				e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-
-				e.Graphics.DrawImage(skin.Head, realX, e.Bounds.Y, ItemHeight, ItemHeight);
-			}
+				e.Graphics.DrawImage(skin.Head, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
 
 			if (skin == null && e.Node.Nodes.Count != 0)
 			{
