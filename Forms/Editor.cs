@@ -1270,9 +1270,8 @@ namespace MCSkin3D
 					collection = _rightClickedNode.Parent.Nodes;
 				}
 			}
-
-			if (Editor.HasOneRoot)
-				folderLocation = Editor.RootFolderString + '\\' + folderLocation;
+			else
+				folderLocation = Editor.RootFolderString + '\\';
 		}
 
 		void ImportSkins(string[] fileName, TreeNode parentNode)
