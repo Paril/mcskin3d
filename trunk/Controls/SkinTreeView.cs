@@ -23,9 +23,6 @@ using System.Drawing;
 using System;
 using System.Drawing.Drawing2D;
 using System.IO;
-using DragDropLib;
-using ComIDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
-using DataObject = System.Windows.Forms.DataObject;
 using System.Collections.Generic;
 using Paril.Extensions;
 
@@ -390,16 +387,29 @@ namespace MCSkin3D
 					g.DrawImage(prevImage, new Rectangle(0, 0, 32, 32), new Rectangle(0, 0, prevImage.Width, prevImage.Height), GraphicsUnit.Pixel);
 				}
 
-				var kvps = new List<KeyValuePair<string, object>>();
+				/*var kvps = new List<KeyValuePair<string, object>>();
 
 				kvps.Add(new KeyValuePair<string, object>("MCSkin3D.Skin", SelectedNode));
 
 				if (SelectedNode is Skin)
 					kvps.Add(new KeyValuePair<string, object>(DataFormats.FileDrop, new string[] { ((Skin)SelectedNode).File.FullName }));
+				
+				DragSourceHelper.DoDragDrop(Editor.MainForm, _dragBitmap, new Point((_dragBitmap.Width / 2), _dragBitmap.Height), DragDropEffects.Move | DragDropEffects.Copy,
+					kvps.ToArray());*/
 
 				_dragNode = SelectedNode;
-				DragSourceHelper.DoDragDrop(Editor.MainForm, _dragBitmap, new Point((_dragBitmap.Width / 2), _dragBitmap.Height), DragDropEffects.Move | DragDropEffects.Copy,
-					kvps.ToArray());
+				DataObject obj = new DataObject();
+
+				obj.SetData("MCSkin3D.Skin", SelectedNode.FullPath);
+
+				if (SelectedNode is Skin)
+				{
+					var strs = new System.Collections.Specialized.StringCollection();
+					strs.Add(((Skin)SelectedNode).File.FullName);
+					obj.SetFileDropList(strs);
+				}
+
+				DoDragDrop(obj, DragDropEffects.Move | DragDropEffects.Copy);
 			}
 		}
 
@@ -588,7 +598,7 @@ namespace MCSkin3D
 			else if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
-				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect, Editor.GetLanguageString("C_IMPORTTO") + " %1", "MCSkin3D");
+				//DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect, Editor.GetLanguageString("C_IMPORTTO") + " %1", "MCSkin3D");
 			}
 		}
 
@@ -606,12 +616,12 @@ namespace MCSkin3D
 			else
 				nodeName = (node is Skin) ? ((node.Parent != null) ? node.Parent.Text : Editor.RootFolderString) : node.Text;
 
-			if (effect == DragDropEffects.None)
+			/*if (effect == DragDropEffects.None)
 				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_CANTMOVE") + " %1", nodeName);
 			else if (effect == DragDropEffects.Copy)
 				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_COPYTO") + " %1", nodeName);
 			else if (effect == DragDropEffects.Move)
-				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_MOVETO") + " %1", nodeName);
+				DropTargetHelper.DragEnter(this, data, p, effect, Editor.GetLanguageString("C_MOVETO") + " %1", nodeName);*/
 
 			_oldEffects = effect;
 			_overNode = node;
@@ -646,7 +656,7 @@ namespace MCSkin3D
 				e.Effect = DragDropEffects.None;
 
 			SetDragEnter(e.Effect, new Point(e.X, e.Y), e.Data);
-			DropTargetHelper.DragOver(new Point(e.X, e.Y), e.Effect);
+			//DropTargetHelper.DragOver(new Point(e.X, e.Y), e.Effect);
 		}
 
 		bool DropValid(TreeNode node, TreeNode selectedNode)
@@ -684,7 +694,7 @@ namespace MCSkin3D
 
 		protected override void OnDragLeave(EventArgs e)
 		{
-			DropTargetHelper.DragLeave(this);
+			//DropTargetHelper.DragLeave(this);
 			dragDropOverFolder = 0;
 			dragTimer.Stop();
 			//_dragNode = null;
@@ -741,7 +751,7 @@ namespace MCSkin3D
 				}
 			}
 			
-			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
+			//DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
 
 			_dragNode = null;
 			_overNode = null;
