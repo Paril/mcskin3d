@@ -122,23 +122,20 @@
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
 			this.importToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+			this.newSkinToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.newFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.renameToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.deleteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.cloneToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.decResToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.incResToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.fetchToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.colorTabControl = new System.Windows.Forms.TabControl();
-			this.swatchTabPage = new System.Windows.Forms.TabPage();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.rgbTabPage = new System.Windows.Forms.TabPage();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.alphaColorSlider = new MB.Controls.ColorSlider();
@@ -169,6 +166,9 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
 			this.valueNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.swatchTabPage = new System.Windows.Forms.TabPage();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -209,8 +209,6 @@
 			this.splitContainer3.SuspendLayout();
 			this.toolStrip2.SuspendLayout();
 			this.colorTabControl.SuspendLayout();
-			this.swatchTabPage.SuspendLayout();
-			this.panel1.SuspendLayout();
 			this.rgbTabPage.SuspendLayout();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.redNumericUpDown)).BeginInit();
@@ -222,6 +220,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).BeginInit();
+			this.swatchTabPage.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -1074,18 +1074,18 @@
             this.toolStripButton1,
             this.toolStripSeparator13,
             this.importToolStripButton,
-            this.toolStripButton5,
+            this.newSkinToolStripButton,
             this.newFolderToolStripButton,
             this.toolStripSeparator11,
             this.renameToolStripButton,
             this.deleteToolStripButton,
             this.cloneToolStripButton,
             this.toolStripSeparator14,
-            this.toolStripButton4,
-            this.toolStripButton3,
+            this.decResToolStripButton,
+            this.incResToolStripButton,
             this.toolStripSeparator12,
             this.uploadToolStripButton,
-            this.toolStripButton6});
+            this.fetchToolStripButton});
 			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip2.Name = "toolStrip2";
 			this.toolStrip2.Size = new System.Drawing.Size(302, 25);
@@ -1130,16 +1130,16 @@
 			this.importToolStripButton.Text = "T_TREE_IMPORTHERE";
 			this.importToolStripButton.Click += new System.EventHandler(this.importToolStripButton_Click);
 			// 
-			// toolStripButton5
+			// newSkinToolStripButton
 			// 
-			this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton5.Image = global::MCSkin3D.Properties.Resources.newskin;
-			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton5.Name = "toolStripButton5";
-			this.languageProvider1.SetPropertyNames(this.toolStripButton5, "Text");
-			this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton5.Text = "M_NEWSKIN_HERE";
-			this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
+			this.newSkinToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.newSkinToolStripButton.Image = global::MCSkin3D.Properties.Resources.newskin;
+			this.newSkinToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.newSkinToolStripButton.Name = "newSkinToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.newSkinToolStripButton, "Text");
+			this.newSkinToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.newSkinToolStripButton.Text = "M_NEWSKIN_HERE";
+			this.newSkinToolStripButton.Click += new System.EventHandler(this.toolStripButton5_Click);
 			// 
 			// newFolderToolStripButton
 			// 
@@ -1195,27 +1195,27 @@
 			this.toolStripSeparator14.Name = "toolStripSeparator14";
 			this.toolStripSeparator14.Size = new System.Drawing.Size(6, 25);
 			// 
-			// toolStripButton4
+			// decResToolStripButton
 			// 
-			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton4.Image = global::MCSkin3D.Properties.Resources.incres;
-			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton4.Name = "toolStripButton4";
-			this.languageProvider1.SetPropertyNames(this.toolStripButton4, "Text");
-			this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton4.Text = "T_DECRES";
-			this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+			this.decResToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.decResToolStripButton.Image = global::MCSkin3D.Properties.Resources.incres;
+			this.decResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.decResToolStripButton.Name = "decResToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.decResToolStripButton, "Text");
+			this.decResToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.decResToolStripButton.Text = "T_DECRES";
+			this.decResToolStripButton.Click += new System.EventHandler(this.toolStripButton4_Click);
 			// 
-			// toolStripButton3
+			// incResToolStripButton
 			// 
-			this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton3.Image = global::MCSkin3D.Properties.Resources.decres;
-			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton3.Name = "toolStripButton3";
-			this.languageProvider1.SetPropertyNames(this.toolStripButton3, "Text");
-			this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton3.Text = "T_INCRES";
-			this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
+			this.incResToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.incResToolStripButton.Image = global::MCSkin3D.Properties.Resources.decres;
+			this.incResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.incResToolStripButton.Name = "incResToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.incResToolStripButton, "Text");
+			this.incResToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.incResToolStripButton.Text = "T_INCRES";
+			this.incResToolStripButton.Click += new System.EventHandler(this.toolStripButton3_Click);
 			// 
 			// toolStripSeparator12
 			// 
@@ -1233,16 +1233,16 @@
 			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
 			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
 			// 
-			// toolStripButton6
+			// fetchToolStripButton
 			// 
-			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton6.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
-			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton6.Name = "toolStripButton6";
-			this.languageProvider1.SetPropertyNames(this.toolStripButton6, "Text");
-			this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton6.Text = "M_FETCH_NAME";
-			this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+			this.fetchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.fetchToolStripButton.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
+			this.fetchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.fetchToolStripButton.Name = "fetchToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.fetchToolStripButton, "Text");
+			this.fetchToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.fetchToolStripButton.Text = "M_FETCH_NAME";
+			this.fetchToolStripButton.Click += new System.EventHandler(this.toolStripButton6_Click);
 			// 
 			// hScrollBar1
 			// 
@@ -1269,36 +1269,6 @@
 			this.colorTabControl.TabIndex = 1;
 			this.colorTabControl.SelectedIndexChanged += new System.EventHandler(this.colorTabControl_SelectedIndexChanged);
 			this.colorTabControl.Resize += new System.EventHandler(this.colorTabControl_Resize);
-			// 
-			// swatchTabPage
-			// 
-			this.swatchTabPage.Controls.Add(this.panel1);
-			this.swatchTabPage.Location = new System.Drawing.Point(4, 22);
-			this.swatchTabPage.Name = "swatchTabPage";
-			this.swatchTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.languageProvider1.SetPropertyNames(this.swatchTabPage, "Text");
-			this.swatchTabPage.Size = new System.Drawing.Size(294, 251);
-			this.swatchTabPage.TabIndex = 0;
-			this.swatchTabPage.Text = "T_SWATCHES";
-			this.swatchTabPage.UseVisualStyleBackColor = true;
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.swatchContainer);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(3, 3);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(288, 245);
-			this.panel1.TabIndex = 1;
-			// 
-			// swatchContainer
-			// 
-			this.swatchContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.swatchContainer.Location = new System.Drawing.Point(0, 0);
-			this.swatchContainer.Name = "swatchContainer";
-			this.swatchContainer.Size = new System.Drawing.Size(288, 245);
-			this.swatchContainer.TabIndex = 0;
-			this.swatchContainer.SwatchChanged += new System.EventHandler<MCSkin3D.SwatchChangedEventArgs>(this.swatchContainer_SwatchChanged);
 			// 
 			// rgbTabPage
 			// 
@@ -1681,6 +1651,36 @@
             0});
 			this.valueNumericUpDown.ValueChanged += new System.EventHandler(this.luminanceNumericUpDown_ValueChanged);
 			// 
+			// swatchTabPage
+			// 
+			this.swatchTabPage.Controls.Add(this.panel1);
+			this.swatchTabPage.Location = new System.Drawing.Point(4, 22);
+			this.swatchTabPage.Name = "swatchTabPage";
+			this.swatchTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.languageProvider1.SetPropertyNames(this.swatchTabPage, "Text");
+			this.swatchTabPage.Size = new System.Drawing.Size(294, 251);
+			this.swatchTabPage.TabIndex = 0;
+			this.swatchTabPage.Text = "T_SWATCHES";
+			this.swatchTabPage.UseVisualStyleBackColor = true;
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.swatchContainer);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(288, 245);
+			this.panel1.TabIndex = 1;
+			// 
+			// swatchContainer
+			// 
+			this.swatchContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.swatchContainer.Location = new System.Drawing.Point(0, 0);
+			this.swatchContainer.Name = "swatchContainer";
+			this.swatchContainer.Size = new System.Drawing.Size(288, 245);
+			this.swatchContainer.TabIndex = 0;
+			this.swatchContainer.SwatchChanged += new System.EventHandler<MCSkin3D.SwatchChangedEventArgs>(this.swatchContainer_SwatchChanged);
+			// 
 			// panel4
 			// 
 			this.panel4.Controls.Add(this.splitContainer4);
@@ -2012,8 +2012,6 @@
 			this.toolStrip2.ResumeLayout(false);
 			this.toolStrip2.PerformLayout();
 			this.colorTabControl.ResumeLayout(false);
-			this.swatchTabPage.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
 			this.rgbTabPage.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
@@ -2027,6 +2025,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.hueNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.saturationNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).EndInit();
+			this.swatchTabPage.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
 			this.splitContainer4.ResumeLayout(false);
@@ -2179,11 +2179,11 @@
 		private System.Windows.Forms.ToolStripMenuItem mDECRESToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mINCRESToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
-		private System.Windows.Forms.ToolStripButton toolStripButton4;
-		private System.Windows.Forms.ToolStripButton toolStripButton3;
-		private System.Windows.Forms.ToolStripButton toolStripButton5;
+		private System.Windows.Forms.ToolStripButton decResToolStripButton;
+		private System.Windows.Forms.ToolStripButton incResToolStripButton;
+		private System.Windows.Forms.ToolStripButton newSkinToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-		private System.Windows.Forms.ToolStripButton toolStripButton6;
+		private System.Windows.Forms.ToolStripButton fetchToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;

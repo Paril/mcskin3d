@@ -272,5 +272,13 @@ namespace MCSkin3D
 		{
 			File.Delete();
 		}
+
+		public void MoveTo(string newPath)
+		{
+			while (System.IO.File.Exists(newPath))
+				newPath = newPath.Insert(newPath.Length - 4, " - Moved");
+
+			File.MoveTo(newPath);
+		}
 	}
 }

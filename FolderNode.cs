@@ -48,5 +48,27 @@ namespace MCSkin3D
 				return new DirectoryInfo(_path);
 			}
 		}
+
+		public void MoveTo(string newFolderString)
+		{
+			string folderName = Text;
+
+			var newFolder = new DirectoryInfo(newFolderString);
+
+			if (folderName == newFolder.Name)
+				return;
+
+			while (System.IO.Directory.Exists(newFolder.FullName))
+			{
+				newFolderString += " - Moved";
+				newFolder = new DirectoryInfo(newFolderString);
+				//System.Media.SystemSounds.Beep.Play();
+				//return;
+			}
+
+			Directory.MoveTo(newFolder.FullName);
+			Text = Name = newFolder.Name;
+			_path = newFolderString;
+		}
 	}
 }
