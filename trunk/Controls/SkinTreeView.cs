@@ -705,6 +705,7 @@ namespace MCSkin3D
 		{
             dragDropOverFolder = 0;
             dragTimer.Stop();
+
 			if (e.Data.GetDataPresent(DataFormats.FileDrop) &&
 				!e.Data.GetDataPresent("MCSkin3D.Skin"))
 			{
@@ -712,6 +713,9 @@ namespace MCSkin3D
 
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				string folderLocation = Editor.GetFolderLocationForNode(_overNode);
+
+				if (string.IsNullOrEmpty(folderLocation))
+					return;
 
 				foreach (var f in files)
 				{
@@ -757,7 +761,7 @@ namespace MCSkin3D
 			_overNode = null;
 		}
 
-		void MoveNode(TreeNode from, TreeNodeCollection to)
+		void MoveNode(TreeNode from, TreeNodeCollection to, TreeNode toNode)
 		{
 			string oldPath, newPath;
 
@@ -766,43 +770,36 @@ namespace MCSkin3D
 			else
 				oldPath = ((FolderNode)from).Directory.FullName;
 
-			from.Remove();
-			to.Add(from);
+			string path = Editor.GetFolderForNode(toNode);
+
+			if (string.IsNullOrEmpty(path))
+				throw new InvalidOperationException();
 
 			if (from is Skin)
 			{
 				newPath = Path.GetFileNameWithoutExtension(((Skin)from).File.Name);
 
-				while (File.Exists(((Skin)from).File.Directory.FullName + "\\" + newPath + ".png"))
-					newPath += " - Moved";
-
-				File.Move(oldPath, ((Skin)from).File.Directory.FullName + "\\" + newPath + ".png");
-				((Skin)from).Name = newPath;
+				((Skin)from).MoveTo(path + "\\" + newPath + ".png");
 			}
 			else
-			{
-				newPath = ((FolderNode)from).Directory.Name;
+				((FolderNode)from).MoveTo(path + "\\" + ((FolderNode)from).Directory.Name);
 
-				while (Directory.Exists(((FolderNode)from).Directory.Parent.FullName + "\\" + newPath))
-					newPath += " - Moved";
-
-				Directory.Move(oldPath, ((FolderNode)from).Directory.Parent.FullName + "\\" + newPath);
-				((FolderNode)from).Text = ((FolderNode)from).Name = newPath;
-			}
+			from.Remove();
+			to.Add(from);
 		}
 
 		void MoveNode(TreeNode from, TreeNode to)
 		{
 			if (from is Skin && to is Skin)
-				MoveNode(from, to.GetParentCollection());
+				MoveNode(from, to.GetParentCollection(), to);
 			else if (from is Skin && to is FolderNode)
-				MoveNode(from, to.Nodes);
+				MoveNode(from, to.Nodes, to);
 			else if (from is FolderNode && to is Skin)
-				MoveNode(from, to.GetParentCollection());
+				MoveNode(from, to.GetParentCollection(), to);
 			else if (from is FolderNode && to is FolderNode)
-				MoveNode(from, to.Nodes);
+				MoveNode(from, to.Nodes, to);
 			else if ((from is Skin || from is FolderNode) && to == null)
-				MoveNode(from, Nodes);
+				MoveNode(from, Nodes, to);
 		}
 
 		/// <summary>

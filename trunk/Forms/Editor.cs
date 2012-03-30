@@ -1243,6 +1243,8 @@ namespace MCSkin3D
 					folderLocation = GetFolderForNode(node) + '\\';
 				else if (node.Parent != null)
 					folderLocation = GetFolderForNode(node.Parent) + '\\';
+				else if (Editor.HasOneRoot)
+					folderLocation = Editor.RootFolderString + '\\';
 			}
 			else
 				folderLocation = Editor.RootFolderString + '\\';
@@ -1267,6 +1269,8 @@ namespace MCSkin3D
 					folderLocation = GetFolderForNode(_rightClickedNode.Parent) + '\\';
 					collection = _rightClickedNode.Parent.Nodes;
 				}
+				else if (Editor.HasOneRoot)
+					folderLocation = Editor.RootFolderString + '\\';
 			}
 			else
 				folderLocation = Editor.RootFolderString + '\\';
@@ -1282,6 +1286,14 @@ namespace MCSkin3D
 
 		void PerformImportSkin()
 		{
+			if (_rightClickedNode == null)
+				_rightClickedNode = treeView1.SelectedNode;
+
+			var folderLocation = GetFolderLocationForNode(_rightClickedNode);
+
+			if (string.IsNullOrEmpty(folderLocation))
+				return;
+
 			using (var ofd = new OpenFileDialog())
 			{
 				ofd.Filter = "Minecraft Skins|*.png";
@@ -1289,12 +1301,7 @@ namespace MCSkin3D
 				ofd.RestoreDirectory = true;
 
 				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					if (_rightClickedNode == null)
-						_rightClickedNode = treeView1.SelectedNode;
-
 					ImportSkins(ofd.FileNames, _rightClickedNode);
-				}
 			}
 		}
 
@@ -1307,6 +1314,9 @@ namespace MCSkin3D
 				_rightClickedNode = treeView1.SelectedNode;
 
 			GetFolderLocationAndCollectionForNode(treeView1, _rightClickedNode, out folderLocation, out collection);
+
+			if (collection == null || string.IsNullOrEmpty(folderLocation))
+				return;
 
 			string newFolderName = "New Folder";
 
@@ -1333,6 +1343,9 @@ namespace MCSkin3D
 				_rightClickedNode = treeView1.SelectedNode;
 
 			GetFolderLocationAndCollectionForNode(treeView1, _rightClickedNode, out folderLocation, out collection);
+
+			if (collection == null || string.IsNullOrEmpty(folderLocation))
+				return;
 
 			string newSkinName = "New Skin";
 
@@ -1476,22 +1489,9 @@ namespace MCSkin3D
 			}
 			else
 			{
-				string folderName = _currentlyEditing.Text;
+				FolderNode folder = (FolderNode)_currentlyEditing;
 
-				var folder = new DirectoryInfo(GetFolderForNode(_currentlyEditing));
-				var newFolder = new DirectoryInfo(((_currentlyEditing.Parent != null) ? (GetFolderForNode(_currentlyEditing.Parent) + '\\' + newName) : newName));
-
-				if (folderName == newName)
-					return;
-
-				if (Directory.Exists(newFolder.FullName))
-				{
-					System.Media.SystemSounds.Beep.Play();
-					return;
-				}
-
-				folder.MoveTo(newFolder.FullName);
-				_currentlyEditing.Text = _currentlyEditing.Name = newFolder.Name;
+				folder.MoveTo(((_currentlyEditing.Parent != null) ? (GetFolderForNode(_currentlyEditing.Parent) + '\\' + newName) : newName));
 			}
 		}
 
@@ -2976,6 +2976,54 @@ namespace MCSkin3D
 			_mousePoint = new Point(-1, -1);
 		}
 
+		void VerifySelectionButtons()
+		{
+			changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = true;
+			mDECRESToolStripMenuItem.Enabled = mINCRESToolStripMenuItem.Enabled = true;
+
+			if (treeView1.SelectedNode == null)
+			{
+				mDECRESToolStripMenuItem.Enabled =
+					mINCRESToolStripMenuItem.Enabled =
+					changeNameToolStripMenuItem.Enabled =
+					deleteToolStripMenuItem.Enabled =
+					cloneToolStripMenuItem.Enabled =
+					cloneToolStripButton.Enabled = false;
+			}
+			else if (!(treeView1.SelectedNode is Skin))
+			{
+				mDECRESToolStripMenuItem.Enabled =
+					mINCRESToolStripMenuItem.Enabled =
+					cloneToolStripMenuItem.Enabled =
+					cloneToolStripButton.Enabled = false;
+			}
+			else if (treeView1.SelectedNode is Skin)
+			{
+				var skin = treeView1.SelectedNode as Skin;
+
+				if (skin.Width == 8 || skin.Height == 4)
+					mDECRESToolStripMenuItem.Enabled = false;
+				//else if (skin.Width == 256 || skin.Height == 128)
+				//	mINCRESToolStripMenuItem.Enabled = false;
+			}
+
+			var folderLocation = GetFolderLocationForNode(treeView1.SelectedNode);
+			bool canDoOperation = string.IsNullOrEmpty(folderLocation);
+
+			importToolStripButton.Enabled = !canDoOperation;
+			newSkinToolStripButton.Enabled = !canDoOperation;
+			newFolderToolStripButton.Enabled = !canDoOperation;
+			fetchToolStripButton.Enabled = !canDoOperation;
+
+			bool itemSelected = treeView1.SelectedNode == null;
+
+			renameToolStripButton.Enabled = !itemSelected;
+			deleteToolStripButton.Enabled = !itemSelected;
+			decResToolStripButton.Enabled = !itemSelected;
+			incResToolStripButton.Enabled = !itemSelected;
+			uploadToolStripButton.Enabled = !itemSelected;
+		}
+
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			if (_skipListbox || treeView1.SelectedNode == _lastSkin ||
@@ -3026,6 +3074,8 @@ namespace MCSkin3D
 
 			SetModel(skin.Model);
 			rendererControl.Invalidate();
+
+			VerifySelectionButtons();
 		}
 
 		void uploadButton_Click(object sender, EventArgs e)
@@ -3084,34 +3134,7 @@ namespace MCSkin3D
 		private void treeView1_MouseDown(object sender, MouseEventArgs e)
 		{
 			_rightClickedNode = treeView1.GetSelectedNodeAt(e.Location);
-			changeNameToolStripMenuItem.Enabled = deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = true;
-			mDECRESToolStripMenuItem.Enabled = mINCRESToolStripMenuItem.Enabled = true;
-
-			if (treeView1.SelectedNode == null)
-			{
-				mDECRESToolStripMenuItem.Enabled =
-					mINCRESToolStripMenuItem.Enabled =
-					changeNameToolStripMenuItem.Enabled =
-					deleteToolStripMenuItem.Enabled =
-					cloneToolStripMenuItem.Enabled =
-					cloneToolStripButton.Enabled = false;
-			}
-			else if (!(treeView1.SelectedNode is Skin))
-			{
-				mDECRESToolStripMenuItem.Enabled =
-					mINCRESToolStripMenuItem.Enabled =
-					cloneToolStripMenuItem.Enabled =
-					cloneToolStripButton.Enabled = false;
-			}
-			else if (treeView1.SelectedNode is Skin)
-			{
-				var skin = treeView1.SelectedNode as Skin;
-
-				if (skin.Width == 8 || skin.Height == 4)
-					mDECRESToolStripMenuItem.Enabled = false;
-				//else if (skin.Width == 256 || skin.Height == 128)
-				//	mINCRESToolStripMenuItem.Enabled = false;
-			}
+			VerifySelectionButtons();
 		}
 
 		void undoToolStripButton_ButtonClick(object sender, EventArgs e)
