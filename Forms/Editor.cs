@@ -45,7 +45,6 @@ using System.Drawing.Drawing2D;
 using Paril.OpenGL;
 using OpenTK.Graphics;
 using System.Windows.Forms.VisualStyles;
-using DragDropLib;
 using Paril.Extensions;
 using MCSkin3D.Language;
 using System.Globalization;
@@ -1245,9 +1244,8 @@ namespace MCSkin3D
 				else if (node.Parent != null)
 					folderLocation = GetFolderForNode(node.Parent) + '\\';
 			}
-
-			if (Editor.HasOneRoot)
-				folderLocation = Editor.RootFolderString + '\\' + folderLocation;
+			else
+				folderLocation = Editor.RootFolderString + '\\';
 
 			return folderLocation;
 		}
@@ -2579,7 +2577,7 @@ namespace MCSkin3D
 		{
 			if (!_ddh)
 			{
-				new DragDropHelper();
+				//new DragDropHelper();
 				_ddh = true;
 			}
 

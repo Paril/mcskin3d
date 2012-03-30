@@ -352,17 +352,6 @@
       <DependentUpon>DodgeBurnOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\DodgeBurnTool.cs" />
-    <Compile Include="DragDropLib\DataObject.cs" />
-    <Compile Include="DragDropLib\DataObjectExtensions.cs" />
-    <Compile Include="DragDropLib\DragDropHelper.cs" />
-    <Compile Include="DragDropLib\IDragSourceHelper.cs" />
-    <Compile Include="DragDropLib\IDropTargetHelper.cs" />
-    <Compile Include="DragDropLib\NativeStructures.cs" />
-    <Compile Include="DragDropLib\SwfDataObjectExtensions.cs" />
-    <Compile Include="DragDropLib\SwfDragDropLibExtensions.cs" />
-    <Compile Include="DragDropLib\SwfDragSourceHelper.cs" />
-    <Compile Include="DragDropLib\SwfDropTargetHelper.cs" />
-    <Compile Include="DragDropLib\SwfDropTargetHelperExtensions.cs" />
     <Compile Include="Tools\DropperTool.cs" />
     <Compile Include="Tools\EraserTool.cs" />
     <Compile Include="Tools\FloodFillTool.cs" />
