@@ -93,11 +93,17 @@ namespace Paril.OpenGL
 
 		public void Load()
 		{
+			if (_texture == null)
+				return;
+
 			_texture.Get(_array);
 		}
 
 		public void Save()
 		{
+			if (_texture == null)
+				return;
+
 			_texture.Upload(_array, _width, _height);
 		}
 

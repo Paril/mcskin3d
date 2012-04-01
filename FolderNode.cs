@@ -55,7 +55,7 @@ namespace MCSkin3D
 
 			var newFolder = new DirectoryInfo(newFolderString);
 
-			if (folderName == newFolder.Name)
+			if (Directory.FullName == newFolder.FullName)
 				return;
 
 			while (System.IO.Directory.Exists(newFolder.FullName))
