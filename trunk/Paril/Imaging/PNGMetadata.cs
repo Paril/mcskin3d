@@ -126,47 +126,54 @@ namespace Paril.Imaging
 
 		public static Dictionary<string, string> ReadMetadata(string fileName)
 		{
-			Dictionary<string, string> metadata = new Dictionary<string, string>();
-
-			using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-			using (var br = new EndianBinaryReader(EndianBitConverter.Big, fs))
+			try
 			{
-				br.ReadBytes(8);
+				Dictionary<string, string> metadata = new Dictionary<string, string>();
 
-				while (br.BaseStream.Position != br.BaseStream.Length)
+				using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+				using (var br = new EndianBinaryReader(EndianBitConverter.Big, fs))
 				{
-					uint len = br.ReadUInt32();
-					string type = Encoding.ASCII.GetString(br.ReadBytes(4));
+					br.ReadBytes(8);
 
-					if (type == "tEXt")
+					while (br.BaseStream.Position != br.BaseStream.Length)
 					{
-						string keyword = "";
-						uint count = 0;
-						char c = '\0';
+						uint len = br.ReadUInt32();
+						string type = Encoding.ASCII.GetString(br.ReadBytes(4));
 
-						while (true)
+						if (type == "tEXt")
 						{
-							c = (char)br.ReadByte();
+							string keyword = "";
+							uint count = 0;
+							char c = '\0';
 
-							count++;
+							while (true)
+							{
+								c = (char)br.ReadByte();
 
-							if (c == '\0')
-								break;
+								count++;
 
-							keyword += c;
-						};
+								if (c == '\0')
+									break;
 
-						string text = Encoding.ASCII.GetString(br.ReadBytes((int)(len - count)));
-						metadata.Add(keyword, text);
+								keyword += c;
+							};
+
+							string text = Encoding.ASCII.GetString(br.ReadBytes((int)(len - count)));
+							metadata.Add(keyword, text);
+						}
+						else
+							br.ReadBytes((int)len);
+
+						br.ReadInt32();
 					}
-					else
-						br.ReadBytes((int)len);
-
-					br.ReadInt32();
 				}
-			}
 
-			return metadata;
+				return metadata;
+			}
+			catch (Exception ex)
+			{
+				return new Dictionary<string, string>();
+			}
 		}
 
 		public static void WriteMetadata(string fileName, Dictionary<string, string> data)

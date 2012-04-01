@@ -1411,6 +1411,9 @@ namespace MCSkin3D
 					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
 
 					Invalidate();
+
+					if (_rightClickedNode == skin)
+						_rightClickedNode = null;
 				}
 			}
 			else
@@ -1424,6 +1427,9 @@ namespace MCSkin3D
 					treeView1.SelectedNode.Remove();
 					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
 					Invalidate();
+
+					if (_rightClickedNode == treeView1.SelectedNode)
+						_rightClickedNode = null;
 				}
 			}
 		}
@@ -1613,9 +1619,6 @@ namespace MCSkin3D
 
 		void BeginUndo()
 		{
-			if (!_currentUndoBuffer.CanUndo)
-				return;
-
 			rendererControl.MakeCurrent();
 		}
 
@@ -1639,6 +1642,9 @@ namespace MCSkin3D
 
 		void PerformUndo()
 		{
+			if (!_currentUndoBuffer.CanUndo)
+				return;
+
 			BeginUndo();
 			DoUndo();
 			EndUndo();
@@ -1647,6 +1653,9 @@ namespace MCSkin3D
 		void UndoListBox_MouseClick(object sender, MouseEventArgs e)
 		{
 			undoToolStripButton.DropDown.Close();
+
+			if (!_currentUndoBuffer.CanUndo)
+				return;
 
 			BeginUndo();
 			for (int i = 0; i <= _undoListBox.ListBox.HighestItemSelected; ++i)
