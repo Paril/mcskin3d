@@ -111,6 +111,9 @@
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
     <Compile Include="Controls\AlphaSliderRenderer.cs" />
+    <Compile Include="Controls\ColorToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ListViewExpanded.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -331,6 +334,7 @@
     <Compile Include="Swatches\MCSwatch.cs" />
     <Compile Include="Swatches\NamedColor.cs" />
     <Compile Include="Swatches\SwatchBase.cs" />
+    <Compile Include="Swatches\SwatchLoader.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
     <Compile Include="Devcorp\CIELab.cs" />

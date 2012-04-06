@@ -142,15 +142,13 @@ namespace MCSkin3D
 
 			if (metadata.ContainsKey("Model"))
 			{
-				Model model;
+				Model = ModelLoader.GetModelForPath(metadata["Model"]);
 
-				if (!ModelLoader.Models.TryGetValue(metadata["Model"], out model))
-					Model = ModelLoader.Models["Human"];
-				else
-					Model = model;
+				if (Model == null)
+					Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
 			}
 			else
-				Model = ModelLoader.Models["Human"];
+				Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
 
 			Size = Image.Size;
 
@@ -212,7 +210,7 @@ namespace MCSkin3D
 				newBitmap.Dispose();
 
 				var md = new Dictionary<string, string>();
-				md.Add("Model", Model.Name);
+				md.Add("Model", Model.Path);
 				PNGMetadata.WriteMetadata(File.FullName, md);
 
 				SetImages(true);

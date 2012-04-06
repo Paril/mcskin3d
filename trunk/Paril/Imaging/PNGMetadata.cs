@@ -170,7 +170,7 @@ namespace Paril.Imaging
 
 				return metadata;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return new Dictionary<string, string>();
 			}

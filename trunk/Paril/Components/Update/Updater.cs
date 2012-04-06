@@ -47,18 +47,26 @@ namespace Paril.Components.Update
 		{
 			var objs = ar.AsyncState as object[];
 			bool succeeded = false;
-			HttpWebRequest request = objs[0] as HttpWebRequest;
-			var response = (HttpWebResponse)request.GetResponse();
 			var updater = (Updater)objs[1];
+			try
+			{
+				HttpWebRequest request = objs[0] as HttpWebRequest;
+				var response = (HttpWebResponse)request.GetResponse();
 
-			if (response.StatusCode == HttpStatusCode.OK)
-				using (var stream = response.GetResponseStream())
-				{
-					using (StreamReader reader = new StreamReader(stream))
-						succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
-				}
-
-			updater.Done(succeeded);
+				if (response.StatusCode == HttpStatusCode.OK)
+					using (var stream = response.GetResponseStream())
+					{
+						using (StreamReader reader = new StreamReader(stream))
+							succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
+					}
+			}
+			catch (Exception)
+			{
+			}
+			finally
+			{
+				updater.Done(succeeded);
+			}
 
 			lock (waitObject)
 				Monitor.Pulse(waitObject);

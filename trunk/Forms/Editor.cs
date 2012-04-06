@@ -54,6 +54,7 @@ using Paril.Drawing;
 using Paril.Controls;
 using MCSkin3D.lemon42;
 using System.Reflection;
+using MCSkin3D.Swatches;
 
 namespace MCSkin3D
 {
@@ -118,6 +119,8 @@ namespace MCSkin3D
 		public StampOptions StampOptions { get; private set; }
 
 		public static Editor MainForm { get; private set; }
+
+		public static SwatchContainer SwatchContainer { get { return MainForm.swatchContainer; } }
 
 		public class ModelToolStripMenuItem : ToolStripMenuItem
 		{
@@ -264,7 +267,6 @@ namespace MCSkin3D
 
 			foreach (var x in GlobalSettings.SkinDirectories)
 				Directory.CreateDirectory(x);
-			swatchContainer.AddDirectory("Swatches");
 
 			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", Program.Version.ToString());
 			_updater.UpdateHandler = new AssemblyVersion();
@@ -313,7 +315,6 @@ namespace MCSkin3D
 			rendererControl.Name = "rendererControl";
 			rendererControl.Size = new System.Drawing.Size(641, 580);
 			rendererControl.TabIndex = 4;
-			rendererControl.VSync = true;
 			rendererControl.Load += new System.EventHandler(this.rendererControl_Load);
 			rendererControl.Paint += new System.Windows.Forms.PaintEventHandler(this.rendererControl_Paint);
 			rendererControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseDown);
@@ -346,14 +347,23 @@ namespace MCSkin3D
 				ModelLoader.InvertBottomFaces();
 
 			this.mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mLINESIZEToolStripMenuItem_NumericBox_ValueChanged);
-			this.mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged);
-			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayTextSize;
-
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Minimum = 1;
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Maximum = 16;
 			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
 			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
+			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
+
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged);
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Minimum = 1;
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Maximum = 16;
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayTextSize;
+
+			this.mGRIDOPACITYToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged);
+			mGRIDOPACITYToolStripMenuItem.NumericBox.Minimum = 0;
+			mGRIDOPACITYToolStripMenuItem.NumericBox.Maximum = 255;
+			mGRIDOPACITYToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayGridColor.A;
+
+			mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
+			mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
+			mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
 
 			_undoListBox = new UndoRedoPanel();
 			_undoListBox.ActionString = "L_UNDOACTIONS";
@@ -376,6 +386,7 @@ namespace MCSkin3D
 			undoToolStripButton.DropDown.AutoClose = redoToolStripButton.DropDown.AutoClose = true;
 
 			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
+			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
 			CurrentLanguage = useLanguage;
 		}
 
@@ -1145,7 +1156,7 @@ namespace MCSkin3D
 			animateToolStripMenuItem.Checked = !animateToolStripMenuItem.Checked;
 			GlobalSettings.Animate = animateToolStripMenuItem.Checked;
 
-			Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void ToggleFollowCursor()
@@ -1153,7 +1164,7 @@ namespace MCSkin3D
 			followCursorToolStripMenuItem.Checked = !followCursorToolStripMenuItem.Checked;
 			GlobalSettings.FollowCursor = followCursorToolStripMenuItem.Checked;
 
-			Invalidate();
+			rendererControl.Invalidate();
 		}
 
 		void ToggleGrass()
@@ -2311,26 +2322,28 @@ namespace MCSkin3D
 				// Grid test
 				TextureGL.Unbind();
 
-				/*GL.Color3(Color.Black);
+				GL.Color4(GlobalSettings.DynamicOverlayGridColor);
 				GL.PushMatrix();
 				GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
 				GL.Begin(BeginMode.Lines);
 
+				float wX = (float)skin.Width / (float)CurrentModel.DefaultWidth;
+				float wY = (float)skin.Height / (float)CurrentModel.DefaultHeight;
 
-				GL.Vertex2(0, 0);
-				GL.Vertex2(0, CurrentModel.DefaultHeight);
-				GL.Vertex2(1, 0);
-				GL.Vertex2(1, CurrentModel.DefaultHeight);
+				for (int i = 0; i <= skin.Width; ++i)
+				{
+					GL.Vertex2(i / wX, 0);
+					GL.Vertex2(i / wX, skin.Height / wY);
+				}
 
-				GL.Vertex2(0, 0);
-				GL.Vertex2(CurrentModel.DefaultWidth, 0);
-				GL.Vertex2(0, 1);
-				GL.Vertex2(CurrentModel.DefaultWidth, 1);
-
+				for (int i = 0; i <= skin.Height; ++i)
+				{
+					GL.Vertex2(0, i / wY);
+					GL.Vertex2(skin.Width / wX, i / wY);
+				}
 
 				GL.End();
-				GL.PopMatrix();*/
-				// Grid test end
+				GL.PopMatrix();
 
 				if (GlobalSettings.TextureOverlay && skin != null)
 				{
@@ -2581,15 +2594,8 @@ namespace MCSkin3D
 			return false;
 		}
 
-		static bool _ddh = false;
 		void animTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
-			if (!_ddh)
-			{
-				//new DragDropHelper();
-				_ddh = true;
-			}
-
 			_animationTime += 0.24f;
 			rendererControl.Invalidate();
 		}
@@ -2663,7 +2669,7 @@ namespace MCSkin3D
 			rendererControl.MakeCurrent();
 			SetPreview();
 
-			GL.ClearColor(GlobalSettings.BackgroundColor);
+			//GL.ClearColor(GlobalSettings.BackgroundColor);
 			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -3767,6 +3773,7 @@ namespace MCSkin3D
 
 		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
+			SwatchLoader.LoadSwatches();
 		}
 
 		void languageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4095,6 +4102,12 @@ namespace MCSkin3D
 			//SetModel(CurrentModel);
 		}
 
+		void mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
+		{
+			GlobalSettings.DynamicOverlayGridColor = Color.FromArgb((int)mGRIDOPACITYToolStripMenuItem.NumericBox.Value, GlobalSettings.DynamicOverlayGridColor);
+			//SetModel(CurrentModel);
+		}
+
 		ModelToolStripMenuItem _oldModel = null;
 		BackgroundImage _dynamicOverlay = null;
 		public void SetModel(Model Model)
@@ -4164,8 +4177,9 @@ namespace MCSkin3D
 				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 				{
 					GlobalSettings.DynamicOverlayLineColor = picker.CurrentColor;
+					mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
 
-					SetModel(CurrentModel);
+					//SetModel(CurrentModel);
 					rendererControl.Invalidate();
 				}
 			}
@@ -4180,8 +4194,26 @@ namespace MCSkin3D
 				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 				{
 					GlobalSettings.DynamicOverlayTextColor = picker.CurrentColor;
+					mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
 
-					SetModel(CurrentModel);
+					//SetModel(CurrentModel);
+					rendererControl.Invalidate();
+				}
+			}
+		}
+
+		private void mGRIDCOLORToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (MultiPainter.ColorPicker picker = new MultiPainter.ColorPicker())
+			{
+				picker.CurrentColor = GlobalSettings.DynamicOverlayGridColor;
+
+				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					GlobalSettings.DynamicOverlayGridColor = picker.CurrentColor;
+					mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
+
+					//SetModel(CurrentModel);
 					rendererControl.Invalidate();
 				}
 			}

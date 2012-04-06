@@ -52,6 +52,8 @@ namespace MCSkin3D
 			_swatchDisplayer.ScrollBar = vScrollBar1;
 
 			this.panel1.Controls.Add(_swatchDisplayer);
+
+			_swatchDisplayer.BringToFront();
 		}
 
 		public event EventHandler<SwatchChangedEventArgs> SwatchChanged
@@ -72,31 +74,13 @@ namespace MCSkin3D
 			SetZoomAbility();
 		}
 
-		public void AddDirectory(string dir)
+		public void AddSwatches(IEnumerable<ISwatch> swatches)
 		{
-			foreach (var swatchFile in Directory.GetFiles(dir, "*"))
-			{
-				var ext = Path.GetExtension(swatchFile);
+			foreach (var s in swatches)
+				comboBox1.Items.Add(s);
 
-				ISwatch swatch = null;
-
-				if (ext.ToLower() == ".swtch")
-					comboBox1.Items.Add(swatch = new MCSwatch(swatchFile));
-				else if (ext.ToLower() == ".gpl" || ext.ToLower() == ".gimp")
-					comboBox1.Items.Add(swatch = new GIMPSwatch(swatchFile));
-				else if (ext.ToLower() == ".act")
-					comboBox1.Items.Add(swatch = new ACTSwatch(swatchFile));
-				else if (ext.ToLower() == ".aco")
-					comboBox1.Items.Add(swatch = new ACOSwatch(swatchFile));
-
-				if (swatch != null)
-				{
-					swatch.Load();
-
-					if (comboBox1.SelectedItem == null && comboBox1.Items.Count != 0)
-						comboBox1.SelectedIndex = 0;
-				}
-			}
+			if (comboBox1.SelectedItem == null && comboBox1.Items.Count != 0)
+				comboBox1.SelectedIndex = 0;
 		}
 
 		public void SaveSwatches()
@@ -232,7 +216,7 @@ namespace MCSkin3D
 				return;
 			}
 
-			_fitPerRow = (int)Math.Floor(((float)(Width - 3) / (float)(SwatchSize + 1)));
+			_fitPerRow = (int)Math.Floor(((float)(Width) / (float)(SwatchSize + 1)));
 
 			if (_fitPerRow == 0)
 			{
@@ -314,6 +298,11 @@ namespace MCSkin3D
 		protected override void OnMouseDoubleClick(MouseEventArgs e)
 		{
 			base.OnMouseDoubleClick(e);
+		}
+
+		protected override void OnEnabledChanged(EventArgs e)
+		{
+			BackColor = Enabled ? SystemColors.Control : SystemColors.Window;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
