@@ -166,6 +166,11 @@ namespace MCSkin3D
 		public static int DynamicOverlayTextSize { get; set; }
 
 		[Savable]
+		[DefaultValue("255 255 255 127")]
+		[TypeSerializer(typeof(ColorSerializer), true)]
+		public static Color DynamicOverlayGridColor { get; set; }
+
+		[Savable]
 		[DefaultValue(true)]
 		public static bool InfiniteMouse { get; set; }
 

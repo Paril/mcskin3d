@@ -4309,7 +4309,7 @@ namespace MCSkin3D
 
 		public static void LoadModels()
 		{
-			new ModelPig().Compile("Pig", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
+			/*new ModelPig().Compile("Pig", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
 			new ModelBiped().Compile("Human", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Human.xml");
 			new ModelVillager().Compile("Villager", 1, 64.0f, 64.0f).Save("Models\\Mobs\\Passive\\Villager.xml");
 			new ModelCow().Compile("Cow", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Cow.xml");
@@ -4351,12 +4351,7 @@ namespace MCSkin3D
 			new ModelGolem().Compile("Golem", 1, 96, 96).Save("Models\\Mobs\\Passive\\Golem.xml");
 
 			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
-			new pm_newPonyAdv().init(0, 0).Compile("New Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\New Pony.xml");
-
-			var psi = new ProcessStartInfo("flate.exe", "models\\*.xml e");
-			psi.CreateNoWindow = true;
-			psi.UseShellExecute = false;
-			Process.Start(psi).WaitForExit();
+			new pm_newPonyAdv().init(0, 0).Compile("New Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\New Pony.xml");*/
 
 			Directory.CreateDirectory("Models");
 
@@ -4370,12 +4365,20 @@ namespace MCSkin3D
 						continue;
 
 					model.File = new FileInfo(m);
-					Models.Add(model.Name, model);
+					Models.Add(model.Path, model);
 				}
 				catch
 				{
 				}
 			}
+		}
+
+		public static Model GetModelForPath(string p)
+		{
+			if (!Models.ContainsKey(p))
+				return null;
+
+			return Models[p];
 		}
 	}
 }

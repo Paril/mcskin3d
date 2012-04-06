@@ -66,9 +66,10 @@
 			this.textureOverlayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.mDYNAMICOVERLAYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mDYNAMICOPTIONSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
-			this.mTEXTCOLORToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mLINECOLORToolStripMenuItem = new MCSkin3D.Controls.ColorToolStripMenuItem();
+			this.mTEXTCOLORToolStripMenuItem = new MCSkin3D.Controls.ColorToolStripMenuItem();
+			this.mGRIDCOLORToolStripMenuItem = new MCSkin3D.Controls.ColorToolStripMenuItem();
+			this.mGRIDOPACITYToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.mLINESIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.mOVERLAYTEXTSIZEToolStripMenuItem = new Paril.Controls.NumericUpDownMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -168,6 +169,7 @@
 			this.valueNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.loadingSwatchLabel = new System.Windows.Forms.Label();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
@@ -543,7 +545,12 @@
             this.textureOverlayToolStripMenuItem,
             this.toolStripSeparator16,
             this.mDYNAMICOVERLAYToolStripMenuItem,
-            this.mDYNAMICOPTIONSToolStripMenuItem,
+            this.mLINECOLORToolStripMenuItem,
+            this.mTEXTCOLORToolStripMenuItem,
+            this.mGRIDCOLORToolStripMenuItem,
+            this.mGRIDOPACITYToolStripMenuItem,
+            this.mLINESIZEToolStripMenuItem,
+            this.mOVERLAYTEXTSIZEToolStripMenuItem,
             this.toolStripMenuItem2});
 			this.backgroundsToolStripMenuItem.Name = "backgroundsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.backgroundsToolStripMenuItem, "Text");
@@ -571,33 +578,42 @@
 			this.mDYNAMICOVERLAYToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
 			this.mDYNAMICOVERLAYToolStripMenuItem.Text = "M_DYNAMICOVERLAY";
 			// 
-			// mDYNAMICOPTIONSToolStripMenuItem
+			// mLINECOLORToolStripMenuItem
 			// 
-			this.mDYNAMICOPTIONSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem7,
-            this.mTEXTCOLORToolStripMenuItem,
-            this.mLINESIZEToolStripMenuItem,
-            this.mOVERLAYTEXTSIZEToolStripMenuItem});
-			this.mDYNAMICOPTIONSToolStripMenuItem.Name = "mDYNAMICOPTIONSToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.mDYNAMICOPTIONSToolStripMenuItem, "Text");
-			this.mDYNAMICOPTIONSToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-			this.mDYNAMICOPTIONSToolStripMenuItem.Text = "M_DYNAMICOPTIONS";
-			// 
-			// toolStripMenuItem7
-			// 
-			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem7, "Text");
-			this.toolStripMenuItem7.Size = new System.Drawing.Size(200, 22);
-			this.toolStripMenuItem7.Text = "M_LINECOLOR";
-			this.toolStripMenuItem7.Click += new System.EventHandler(this.mLINECOLORToolStripMenuItem_Click);
+			this.mLINECOLORToolStripMenuItem.Name = "mLINECOLORToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mLINECOLORToolStripMenuItem, "Text");
+			this.mLINECOLORToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+			this.mLINECOLORToolStripMenuItem.Text = "M_LINECOLOR";
+			this.mLINECOLORToolStripMenuItem.Click += new System.EventHandler(this.mLINECOLORToolStripMenuItem_Click);
 			// 
 			// mTEXTCOLORToolStripMenuItem
 			// 
+			this.mTEXTCOLORToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+			this.mTEXTCOLORToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.mTEXTCOLORToolStripMenuItem.Name = "mTEXTCOLORToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mTEXTCOLORToolStripMenuItem, "Text");
-			this.mTEXTCOLORToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+			this.mTEXTCOLORToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
 			this.mTEXTCOLORToolStripMenuItem.Text = "M_TEXTCOLOR";
+			this.mTEXTCOLORToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
 			this.mTEXTCOLORToolStripMenuItem.Click += new System.EventHandler(this.mTEXTCOLORToolStripMenuItem_Click);
+			// 
+			// mGRIDCOLORToolStripMenuItem
+			// 
+			this.mGRIDCOLORToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+			this.mGRIDCOLORToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.mGRIDCOLORToolStripMenuItem.Name = "mGRIDCOLORToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mGRIDCOLORToolStripMenuItem, "Text");
+			this.mGRIDCOLORToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+			this.mGRIDCOLORToolStripMenuItem.Text = "M_GRIDCOLOR";
+			this.mGRIDCOLORToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+			this.mGRIDCOLORToolStripMenuItem.Click += new System.EventHandler(this.mGRIDCOLORToolStripMenuItem_Click);
+			// 
+			// mGRIDOPACITYToolStripMenuItem
+			// 
+			this.mGRIDOPACITYToolStripMenuItem.Name = "mGRIDOPACITYToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mGRIDOPACITYToolStripMenuItem, "Text");
+			this.mGRIDOPACITYToolStripMenuItem.Size = new System.Drawing.Size(140, 23);
+			this.mGRIDOPACITYToolStripMenuItem.Text = "M_GRIDOPACITY";
 			// 
 			// mLINESIZEToolStripMenuItem
 			// 
@@ -639,6 +655,7 @@
 			// mRENDERSTATSToolStripMenuItem
 			// 
 			this.mRENDERSTATSToolStripMenuItem.Name = "mRENDERSTATSToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.mRENDERSTATSToolStripMenuItem, "Text");
 			this.mRENDERSTATSToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
 			this.mRENDERSTATSToolStripMenuItem.Text = "M_RENDERSTATS";
 			this.mRENDERSTATSToolStripMenuItem.Click += new System.EventHandler(this.mRENDERSTATSToolStripMenuItem_Click);
@@ -1665,12 +1682,28 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.loadingSwatchLabel);
 			this.panel1.Controls.Add(this.swatchContainer);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(3, 3);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(288, 245);
 			this.panel1.TabIndex = 1;
+			// 
+			// loadingSwatchLabel
+			// 
+			this.loadingSwatchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.loadingSwatchLabel.BackColor = System.Drawing.SystemColors.Control;
+			this.loadingSwatchLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.loadingSwatchLabel.Location = new System.Drawing.Point(56, 76);
+			this.loadingSwatchLabel.Name = "loadingSwatchLabel";
+			this.languageProvider1.SetPropertyNames(this.loadingSwatchLabel, "Text");
+			this.loadingSwatchLabel.Size = new System.Drawing.Size(176, 92);
+			this.loadingSwatchLabel.TabIndex = 1;
+			this.loadingSwatchLabel.Text = "M_LOADING";
+			this.loadingSwatchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// swatchContainer
 			// 
@@ -2195,11 +2228,11 @@
 		private System.Windows.Forms.ToolStripButton resetCameraToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
 		private System.Windows.Forms.ToolStripMenuItem mDYNAMICOVERLAYToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem mDYNAMICOPTIONSToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem mTEXTCOLORToolStripMenuItem;
+		private Controls.ColorToolStripMenuItem mTEXTCOLORToolStripMenuItem;
 		private Paril.Controls.NumericUpDownMenuItem mLINESIZEToolStripMenuItem;
+		private Paril.Controls.NumericUpDownMenuItem mGRIDOPACITYToolStripMenuItem;
 		private Paril.Controls.NumericUpDownMenuItem mOVERLAYTEXTSIZEToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+		private Controls.ColorToolStripMenuItem mLINECOLORToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSplitButton undoToolStripButton;
 		private System.Windows.Forms.ToolStripSplitButton redoToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem mSHAREDToolStripMenuItem;
@@ -2210,6 +2243,8 @@
 		private System.Windows.Forms.ToolStripMenuItem mRENDERSTATSToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton toolStripButton7;
 		private System.Windows.Forms.Panel panel4;
+		private Controls.ColorToolStripMenuItem mGRIDCOLORToolStripMenuItem;
+		public System.Windows.Forms.Label loadingSwatchLabel;
 	}
 }
 

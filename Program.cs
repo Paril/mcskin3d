@@ -57,7 +57,7 @@ namespace MCSkin3D
 
 			MainCore();
 		}
-
+		
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		static void MainCore()
 		{

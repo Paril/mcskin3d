@@ -74,7 +74,7 @@ namespace MCSkin3D.ExceptionHandler
 					info += "Renderer: " + GL.GetString(StringName.Renderer) + "\r\n";
 					info += "Extensions: " + GL.GetString(StringName.Extensions) + "\r\n";
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					info += "Couldn't get GL data\r\n";
 				}

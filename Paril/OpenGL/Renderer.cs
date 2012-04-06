@@ -535,6 +535,14 @@ namespace Paril.OpenGL
 
 			return names[closestIndex];
 		}
+
+		public string Path
+		{
+			get
+			{
+				return File.Directory.FullName.Substring(Environment.CurrentDirectory.Length + 1 + "Models/".Length).Replace('\\', '/') + '/' + Name;
+			}
+		}
 	}
 
 	public abstract class Renderer
