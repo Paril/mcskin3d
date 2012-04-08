@@ -67,7 +67,7 @@ namespace MCSkin3D.Swatches
 
 		public override string ToString()
 		{
-			return Name;
+			return Name + " [" + SwatchContainer.GetSwatchFormatName(GetType()) + "]";
 		}
 	}
 }

@@ -55,6 +55,7 @@ using Paril.Controls;
 using MCSkin3D.lemon42;
 using System.Reflection;
 using MCSkin3D.Swatches;
+using System.Net.Sockets;
 
 namespace MCSkin3D
 {
@@ -388,6 +389,9 @@ namespace MCSkin3D
 			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
 			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
 			CurrentLanguage = useLanguage;
+
+			UdpClient cl = new UdpClient();
+			
 		}
 
 		void rendererControl_MouseEnter(object sender, EventArgs e)
@@ -720,6 +724,8 @@ namespace MCSkin3D
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
+			SwatchLoader.CancelLoadSwatches();
+
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
 			{
 				if (MessageBox.Show(this, GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)

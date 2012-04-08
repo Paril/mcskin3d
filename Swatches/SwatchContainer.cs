@@ -132,11 +132,56 @@ namespace MCSkin3D
 			ZoomIn();
 		}
 
-		public bool InEditMode { get { return toolStripButton3.Checked; } }
+		public bool InEditMode { get { return editModeToolStripButton.Checked; } }
 
 		private void panel1_Paint(object sender, PaintEventArgs e)
 		{
 
+		}
+
+		static Type[] _swatchTypes = new Type[] { typeof(ACOSwatch), typeof(ACTSwatch), typeof(GIMPSwatch), typeof(MCSwatch) };
+		static string[] _swatchNames = new string[] { "Adobe Color (ACO)", "Adobe Color Table (ACT)", "GIMP Swatch (GPL)", "MCSkin3D Swatch (.swtch)" };
+		static string[] _swatchFormatNames = new string[] { "ACO", "ACT", "GPL", "SWTCH" };
+
+		public static string GetSwatchName(Type type)
+		{
+			for (int i = 0; i < _swatchTypes.Length; ++i)
+				if (type == _swatchTypes[i])
+					return _swatchNames[i];
+
+			return "???";
+		}
+
+		public static string GetSwatchFormatName(Type type)
+		{
+			for (int i = 0; i < _swatchTypes.Length; ++i)
+				if (type == _swatchTypes[i])
+					return _swatchFormatNames[i];
+
+			return "???";
+		}
+		
+		private void convertSwatchTtripButton_Click(object sender, EventArgs e)
+		{
+			using (SwatchConverterDialog converter = new SwatchConverterDialog())
+			{
+				converter.StartPosition = FormStartPosition.CenterParent;
+
+				converter.SwatchFormats = _swatchNames;
+
+				for (int i = 0; i < _swatchTypes.Length; ++i)
+				{
+					if (SwatchDisplayer.Swatch.GetType() == _swatchTypes[i])
+					{
+						converter.OldFormat = _swatchNames[i];
+						converter.SelectedFormat = i;
+					}
+				}
+
+				if (converter.ShowDialog() == DialogResult.OK)
+				{
+				}
+			}
 		}
 	}
 

@@ -200,6 +200,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap convertswatch {
+            get {
+                object obj = ResourceManager.GetObject("convertswatch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static byte[] copy {
             get {
                 object obj = ResourceManager.GetObject("copy", resourceCulture);
@@ -448,6 +455,13 @@ namespace MCSkin3D.Properties {
         internal static System.Drawing.Bitmap Rename {
             get {
                 object obj = ResourceManager.GetObject("Rename", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap renameswatch {
+            get {
+                object obj = ResourceManager.GetObject("renameswatch", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

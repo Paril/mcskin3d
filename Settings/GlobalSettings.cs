@@ -128,7 +128,7 @@ namespace MCSkin3D
         public static string LanguageFile { get; set; }
 
 		[Savable]
-		[DefaultValue(23)]
+		[DefaultValue(24)]
 		public static int TreeViewHeight { get; set; }
 
 		[Savable]
