@@ -334,6 +334,12 @@
     <Compile Include="Swatches\MCSwatch.cs" />
     <Compile Include="Swatches\NamedColor.cs" />
     <Compile Include="Swatches\SwatchBase.cs" />
+    <Compile Include="Swatches\SwatchConverterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Swatches\SwatchConverterDialog.Designer.cs">
+      <DependentUpon>SwatchConverterDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Swatches\SwatchLoader.cs" />
     <Compile Include="Tools\BrushToolBase.cs" />
     <Compile Include="Tools\CameraTool.cs" />
@@ -507,6 +513,8 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\renameswatch.png" />
+    <None Include="Resources\convertswatch.png" />
     <None Include="Resources\deleteswatch.png" />
     <None Include="Resources\newswatch.png" />
     <None Include="icons\smaller3D.png" />
@@ -535,6 +543,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectListView\Utilities\ColumnSelectionForm.resx">
       <DependentUpon>ColumnSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Swatches\SwatchConverterDialog.resx">
+      <DependentUpon>SwatchConverterDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Updater\Updater.resx">
       <DependentUpon>Updater.cs</DependentUpon>
