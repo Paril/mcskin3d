@@ -39,21 +39,21 @@ namespace MCSkin3D.Forms
 		void LoadValues()
 		{
 			if (File.Exists(_fileName))
-			using (StreamReader sr = new StreamReader(_fileName, Encoding.Unicode))
-			{
-				while (!sr.EndOfStream)
+				using (StreamReader sr = new StreamReader(_fileName, Encoding.Unicode))
 				{
-					var line = sr.ReadLine();
-					var split = line.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+					while (!sr.EndOfStream)
+					{
+						var line = sr.ReadLine();
+						var split = line.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-					GUIDIndex index = new GUIDIndex();
-					index.Name = split[0];
-					index.Date = DateTime.Parse(split[1]);
-					index.Guid = new Guid(split[2]);
+						GUIDIndex index = new GUIDIndex();
+						index.Name = split[0];
+						index.Date = DateTime.Parse(split[1]);
+						index.Guid = new Guid(split[2]);
 
-					comboBox1.Items.Add(index);
+						comboBox1.Items.Add(index);
+					}
 				}
-			}
 		}
 
 		public GUIDPicker(string fileName) :

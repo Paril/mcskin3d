@@ -111,6 +111,12 @@
   <ItemGroup>
     <Compile Include="BackgroundImage.cs" />
     <Compile Include="Controls\AlphaSliderRenderer.cs" />
+    <Compile Include="Controls\ColorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ColorPanel.Designer.cs">
+      <DependentUpon>ColorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ColorToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -531,6 +537,9 @@
     <None Include="Resources\skin_pack_update.png" />
     <None Include="Resources\other_update.png" />
     <None Include="Resources\empty_box_update.png" />
+    <EmbeddedResource Include="Controls\ColorPanel.resx">
+      <DependentUpon>ColorPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExceptionHandler\ClientForm.resx">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </EmbeddedResource>

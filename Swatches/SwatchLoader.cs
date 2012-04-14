@@ -41,9 +41,9 @@ namespace MCSkin3D.Swatches
 
 			Editor.MainForm.Invoke(() =>
 				{
-					Editor.SwatchContainer.AddSwatches(swatches);
-					Editor.SwatchContainer.Enabled = true;
-					Editor.MainForm.loadingSwatchLabel.Visible = false;
+					Editor.MainForm.ColorPanel.SwatchContainer.AddSwatches(swatches);
+					Editor.MainForm.ColorPanel.SwatchContainer.Enabled = true;
+					Editor.MainForm.ColorPanel.SetLoading(false);
 				});
 
 			_thread = null;
@@ -52,7 +52,7 @@ namespace MCSkin3D.Swatches
 		static Thread _thread;
 		public static void LoadSwatches()
 		{
-			Editor.SwatchContainer.Enabled = false;
+			Editor.MainForm.ColorPanel.SwatchContainer.Enabled = false;
 			_thread = new Thread(SwatchLoadThreadFunc);
 			_thread.Start();
 		}
