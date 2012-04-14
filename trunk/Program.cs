@@ -57,7 +57,7 @@ namespace MCSkin3D
 
 			MainCore();
 		}
-		
+
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		static void MainCore()
 		{
@@ -73,9 +73,9 @@ namespace MCSkin3D
 			try
 			{
 #endif
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Editor());
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault(false);
+				Application.Run(new Editor());
 
 #if !DEBUG
 			}

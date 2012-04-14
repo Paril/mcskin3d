@@ -72,10 +72,10 @@ namespace MCSkin3D
 
 					var c = pixels[xx, yy];
 					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-					var color = (((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.UnselectedColor : Editor.MainForm.SelectedColor).RGB;
+					var color = (((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.ColorPanel.UnselectedColor : Editor.MainForm.ColorPanel.SelectedColor).RGB;
 
 					var maxAlpha = color.A;
-					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Editor.MainForm.SelectedColor.RGB.A / 255.0f));
+					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Editor.MainForm.ColorPanel.SelectedColor.RGB.A / 255.0f));
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
 						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)

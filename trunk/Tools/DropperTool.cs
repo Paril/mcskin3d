@@ -46,9 +46,9 @@ namespace MCSkin3D
 			var oldColor = ColorManager.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha);
 
 			if ((Control.ModifierKeys & Keys.Shift) != 0)
-				Editor.MainForm.UnselectedColor = oldColor;
+				Editor.MainForm.ColorPanel.UnselectedColor = oldColor;
 			else
-				Editor.MainForm.SelectedColor = oldColor;
+				Editor.MainForm.ColorPanel.SelectedColor = oldColor;
 			return false;
 		}
 

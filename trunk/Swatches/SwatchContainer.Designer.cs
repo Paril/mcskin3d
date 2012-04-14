@@ -33,18 +33,18 @@
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.nativeToolStrip1 = new Paril.Controls.NativeToolStrip();
+			this.newSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.deleteSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.convertSwatchTtripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1 = new Paril.Controls.NativeToolStrip();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.editModeToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.addSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.removeSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.newSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.deleteSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.convertSwatchTtripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.nativeToolStrip1.SuspendLayout();
@@ -110,6 +110,48 @@
 			this.nativeToolStrip1.TabIndex = 3;
 			this.nativeToolStrip1.Text = "nativeToolStrip1";
 			// 
+			// newSwatchToolStripButton
+			// 
+			this.newSwatchToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.newSwatchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.newSwatchToolStripButton.Image = global::MCSkin3D.Properties.Resources.newswatch;
+			this.newSwatchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.newSwatchToolStripButton.Name = "newSwatchToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.newSwatchToolStripButton, "Text");
+			this.newSwatchToolStripButton.Size = new System.Drawing.Size(23, 20);
+			this.newSwatchToolStripButton.Text = "M_NEWPALETTE";
+			// 
+			// deleteSwatchToolStripButton
+			// 
+			this.deleteSwatchToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.deleteSwatchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.deleteSwatchToolStripButton.Image = global::MCSkin3D.Properties.Resources.deleteswatch;
+			this.deleteSwatchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.deleteSwatchToolStripButton.Name = "deleteSwatchToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.deleteSwatchToolStripButton, "Text");
+			this.deleteSwatchToolStripButton.Size = new System.Drawing.Size(23, 20);
+			this.deleteSwatchToolStripButton.Text = "M_DELETEPALETTE";
+			// 
+			// toolStripButton3
+			// 
+			this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton3.Image = global::MCSkin3D.Properties.Resources.renameswatch;
+			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton3.Name = "toolStripButton3";
+			this.toolStripButton3.Size = new System.Drawing.Size(23, 20);
+			this.toolStripButton3.Text = "toolStripButton3";
+			// 
+			// convertSwatchTtripButton
+			// 
+			this.convertSwatchTtripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.convertSwatchTtripButton.Image = global::MCSkin3D.Properties.Resources.convertswatch;
+			this.convertSwatchTtripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.convertSwatchTtripButton.Name = "convertSwatchTtripButton";
+			this.languageProvider1.SetPropertyNames(this.convertSwatchTtripButton, "Text");
+			this.convertSwatchTtripButton.Size = new System.Drawing.Size(23, 20);
+			this.convertSwatchTtripButton.Text = "M_CONVERTSWATCH";
+			this.convertSwatchTtripButton.Click += new System.EventHandler(this.convertSwatchTtripButton_Click);
+			// 
 			// toolStrip1
 			// 
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -125,11 +167,6 @@
 			this.toolStrip1.Size = new System.Drawing.Size(270, 25);
 			this.toolStrip1.TabIndex = 2;
 			this.toolStrip1.Text = "toolStrip1";
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
 			// 
 			// toolStripButton1
 			// 
@@ -152,6 +189,11 @@
 			this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton2.Text = "T_TREE_ZOOMIN";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
 			// 
 			// editModeToolStripButton
 			// 
@@ -183,48 +225,6 @@
 			this.languageProvider1.SetPropertyNames(this.removeSwatchToolStripButton, "Text");
 			this.removeSwatchToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.removeSwatchToolStripButton.Text = "T_DELETESWATCH";
-			// 
-			// newSwatchToolStripButton
-			// 
-			this.newSwatchToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-			this.newSwatchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newSwatchToolStripButton.Image = global::MCSkin3D.Properties.Resources.newswatch;
-			this.newSwatchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.newSwatchToolStripButton.Name = "newSwatchToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.newSwatchToolStripButton, "Text");
-			this.newSwatchToolStripButton.Size = new System.Drawing.Size(23, 20);
-			this.newSwatchToolStripButton.Text = "M_NEWPALETTE";
-			// 
-			// deleteSwatchToolStripButton
-			// 
-			this.deleteSwatchToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-			this.deleteSwatchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.deleteSwatchToolStripButton.Image = global::MCSkin3D.Properties.Resources.deleteswatch;
-			this.deleteSwatchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.deleteSwatchToolStripButton.Name = "deleteSwatchToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.deleteSwatchToolStripButton, "Text");
-			this.deleteSwatchToolStripButton.Size = new System.Drawing.Size(23, 20);
-			this.deleteSwatchToolStripButton.Text = "M_DELETEPALETTE";
-			// 
-			// convertSwatchTtripButton
-			// 
-			this.convertSwatchTtripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.convertSwatchTtripButton.Image = global::MCSkin3D.Properties.Resources.convertswatch;
-			this.convertSwatchTtripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.convertSwatchTtripButton.Name = "convertSwatchTtripButton";
-			this.languageProvider1.SetPropertyNames(this.convertSwatchTtripButton, "Text");
-			this.convertSwatchTtripButton.Size = new System.Drawing.Size(23, 20);
-			this.convertSwatchTtripButton.Text = "M_CONVERTSWATCH";
-			this.convertSwatchTtripButton.Click += new System.EventHandler(this.convertSwatchTtripButton_Click);
-			// 
-			// toolStripButton3
-			// 
-			this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton3.Image = global::MCSkin3D.Properties.Resources.renameswatch;
-			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton3.Name = "toolStripButton3";
-			this.toolStripButton3.Size = new System.Drawing.Size(23, 20);
-			this.toolStripButton3.Text = "toolStripButton3";
 			// 
 			// SwatchContainer
 			// 

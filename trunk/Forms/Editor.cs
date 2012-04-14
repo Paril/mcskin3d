@@ -56,6 +56,7 @@ using MCSkin3D.lemon42;
 using System.Reflection;
 using MCSkin3D.Swatches;
 using System.Net.Sockets;
+using MCSkin3D.Controls;
 
 namespace MCSkin3D
 {
@@ -66,12 +67,6 @@ namespace MCSkin3D
 		// ===============================================
 		#region Variables
 		Updater _updater;
-
-		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer;
-		AlphaSliderRenderer alphaRenderer;
-		HueSliderRenderer hueRenderer;
-		SaturationSliderRenderer saturationRenderer;
-		ValueSliderRenderer valueRenderer;
 
 		static ShortcutEditor _shortcutEditor = new ShortcutEditor();
 		Texture _grassTop, _alphaTex, _previewPaint;
@@ -90,12 +85,6 @@ namespace MCSkin3D
 		Skin _lastSkin = null;
 		bool _skipListbox = false;
 		internal PleaseWait _pleaseWaitForm;
-		
-		ColorManager
-					_primaryColor = ColorManager.FromRGBA(255, 255, 255, 255),
-					_secondaryColor = ColorManager.FromRGBA(0, 0, 0, 255);
-		
-		bool _skipColors = false;
 		ViewMode _currentViewMode = ViewMode.Perspective;
 		Renderer _renderer;
 		List<BackgroundImage> _backgrounds = new List<BackgroundImage>();
@@ -120,8 +109,6 @@ namespace MCSkin3D
 		public StampOptions StampOptions { get; private set; }
 
 		public static Editor MainForm { get; private set; }
-
-		public static SwatchContainer SwatchContainer { get { return MainForm.swatchContainer; } }
 
 		public class ModelToolStripMenuItem : ToolStripMenuItem
 		{
@@ -244,15 +231,6 @@ namespace MCSkin3D
 			Brushes.LoadBrushes();
 
 			SetSelectedTool(_tools[0]);
-
-			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
-			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
-			blueColorSlider.Renderer = blueRenderer = new ColorSliderRenderer(blueColorSlider);
-			alphaColorSlider.Renderer = alphaRenderer = new AlphaSliderRenderer(alphaColorSlider);
-
-			hueColorSlider.Renderer = hueRenderer = new HueSliderRenderer(hueColorSlider);
-			saturationColorSlider.Renderer = saturationRenderer = new SaturationSliderRenderer(saturationColorSlider);
-			valueColorSlider.Renderer = valueRenderer = new ValueSliderRenderer(valueColorSlider);
 
 			KeyPreview = true;
 			Text = "MCSkin3D v" + Program.Version.ToString();
@@ -391,7 +369,7 @@ namespace MCSkin3D
 			CurrentLanguage = useLanguage;
 
 			UdpClient cl = new UdpClient();
-			
+
 		}
 
 		void rendererControl_MouseEnter(object sender, EventArgs e)
@@ -430,6 +408,11 @@ namespace MCSkin3D
 				else
 					return MouseButtons.Middle;
 			}
+		}
+
+		public ColorPanel ColorPanel
+		{
+			get { return colorPanel; }
 		}
 
 		public void PerformResetCamera()
@@ -618,8 +601,8 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("T_TREE_NEWFOLDER", Keys.Control | Keys.Shift | Keys.N, PerformNewFolder);
 			InitUnlinkedShortcut("M_NEWSKIN_HERE", Keys.Control | Keys.Shift | Keys.M, PerformNewSkin);
 			InitUnlinkedShortcut("S_COLORSWAP", Keys.S, PerformSwitchColor);
-			InitControlShortcut("S_SWATCH_ZOOMIN", swatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
-			InitControlShortcut("S_SWATCH_ZOOMOUT", swatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
+			InitControlShortcut("S_SWATCH_ZOOMIN", ColorPanel.SwatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
+			InitControlShortcut("S_SWATCH_ZOOMOUT", ColorPanel.SwatchContainer.SwatchDisplayer, Keys.OemMinus, PerformSwatchZoomOut);
 			InitControlShortcut("S_TREEVIEW_ZOOMIN", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
 			InitControlShortcut("S_TREEVIEW_ZOOMOUT", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
 			InitUnlinkedShortcut("T_DECRES", Keys.Control | Keys.Shift | Keys.D, PerformDecreaseResolution);
@@ -629,10 +612,7 @@ namespace MCSkin3D
 
 		void PerformSwitchColor()
 		{
-			if (_secondaryIsFront)
-				colorPreview1_Click(null, null);
-			else
-				colorPreview2_Click(null, null);
+			colorPanel.SwitchColors();
 		}
 
 		public void SetSelectedTool(ToolIndex index)
@@ -682,12 +662,12 @@ namespace MCSkin3D
 
 		void PerformSwatchZoomOut()
 		{
-			swatchContainer.ZoomOut();
+			colorPanel.SwatchContainer.ZoomOut();
 		}
 
 		void PerformSwatchZoomIn()
 		{
-			swatchContainer.ZoomIn();
+			colorPanel.SwatchContainer.ZoomIn();
 		}
 
 		bool PerformShortcut(Keys key, Keys modifiers)
@@ -712,7 +692,7 @@ namespace MCSkin3D
 		#region Overrides
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if (textBox1.ContainsFocus == false && labelEditTextBox.ContainsFocus == false)
+			if (colorPanel.HexTextBox.ContainsFocus == false && labelEditTextBox.ContainsFocus == false)
 				if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
 				{
 					e.Handled = true;
@@ -738,7 +718,7 @@ namespace MCSkin3D
 			_updater.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
-			swatchContainer.SaveSwatches();
+			colorPanel.SwatchContainer.SaveSwatches();
 
 			if (_newSkinDirs != null)
 				GlobalSettings.SkinDirectories = _newSkinDirs;
@@ -805,7 +785,6 @@ namespace MCSkin3D
 			treeView1.EndUpdate();
 			treeView1.SelectedNode = _tempToSelect;
 
-			SetColor(ColorManager.FromRGBA(255, 255, 255, 255));
 			SetVisibleParts();
 
 			toolToolStripMenuItem.DropDown.Closing += DontCloseMe;
@@ -859,45 +838,11 @@ namespace MCSkin3D
 				checkbox.Checked = false;
 		}
 
-		public ColorManager SelectedColor
-		{
-			get { return (_secondaryIsFront) ? _secondaryColor : _primaryColor; }
-			set { SetColor(value); }
-		}
-
-		public ColorManager UnselectedColor
-		{
-			get { return (!_secondaryIsFront) ? _secondaryColor : _primaryColor; }
-			set
-			{
-				if (_secondaryIsFront)
-				{
-					if (swatchContainer.InEditMode)
-					{
-						if (swatchContainer.SwatchDisplayer.HasPrimaryColor)
-							swatchContainer.SwatchDisplayer.PrimaryColor = value.RGB;
-					}
-
-					SetColor(colorPreview1, ref _primaryColor, value);
-				}
-				else
-				{
-					if (swatchContainer.InEditMode)
-					{
-						if (swatchContainer.SwatchDisplayer.HasSecondaryColor)
-							swatchContainer.SwatchDisplayer.SecondaryColor = value.RGB;
-					}
-
-					SetColor(colorPreview2, ref _secondaryColor, value);
-				}
-			}
-		}
-
 		void UseToolOnViewport(int x, int y, bool begin = false)
 		{
 			if (_lastSkin == null)
 				return;
-			
+
 			if (_isValidPick)
 			{
 				Skin skin = _lastSkin;
@@ -1738,92 +1683,6 @@ namespace MCSkin3D
 				_redoListBox.ListBox.Items.Insert(0, x.Action);
 		}
 
-		Paril.Controls.Color.ColorPreview SelectedColorPreview
-		{
-			get { return (_secondaryIsFront) ? colorPreview2 : colorPreview1; }
-		}
-
-		void SetColor(Control colorPreview, ref ColorManager currentColor, ColorManager newColor)
-		{
-			currentColor = newColor;
-			colorPreview.ForeColor = currentColor.RGB;
-
-			if (colorPreview != SelectedColorPreview)
-				return;
-
-			_skipColors = true;
-			colorPick1.CurrentHSV = currentColor.HSV;
-
-			redNumericUpDown.Value = currentColor.RGB.R;
-			greenNumericUpDown.Value = currentColor.RGB.G;
-			blueNumericUpDown.Value = currentColor.RGB.B;
-			alphaNumericUpDown.Value = currentColor.RGB.A;
-
-			hueNumericUpDown.Value = currentColor.HSV.H;
-			saturationNumericUpDown.Value = currentColor.HSV.S;
-			valueNumericUpDown.Value = currentColor.HSV.V;
-
-			redRenderer.StartColor = Color.FromArgb(255, 0, currentColor.RGB.G, currentColor.RGB.B);
-			greenRenderer.StartColor = Color.FromArgb(255, currentColor.RGB.R, 0, currentColor.RGB.B);
-			blueRenderer.StartColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 0);
-
-			redRenderer.EndColor = Color.FromArgb(255, 255, currentColor.RGB.G, currentColor.RGB.B);
-			greenRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, 255, currentColor.RGB.B);
-			blueRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 255);
-
-			alphaRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.ToColor());
-
-			hueRenderer.CurrentColor = currentColor;
-			saturationRenderer.CurrentColor = currentColor;
-			valueRenderer.CurrentColor = currentColor;
-
-			redColorSlider.Value = currentColor.RGB.R;
-			greenColorSlider.Value = currentColor.RGB.G;
-			blueColorSlider.Value = currentColor.RGB.B;
-			alphaColorSlider.Value = currentColor.RGB.A;
-
-			hueColorSlider.Value = currentColor.HSV.H;
-			saturationColorSlider.Value = currentColor.HSV.S;
-			valueColorSlider.Value = currentColor.HSV.V;
-
-			if (!_editingHex)
-				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", newColor.RGB.R, newColor.RGB.G, newColor.RGB.B, newColor.RGB.A);
-
-			_skipColors = false;
-		}
-
-		void SetColor(ColorManager c)
-		{
-			if (_secondaryIsFront)
-			{
-				if (swatchContainer.InEditMode)
-				{
-					if (swatchContainer.SwatchDisplayer.HasSecondaryColor)
-						swatchContainer.SwatchDisplayer.SecondaryColor = c.RGB;
-				}
-
-				SetColor(colorPreview2, ref _secondaryColor, c);
-			}
-			else
-			{
-				if (swatchContainer.InEditMode)
-				{
-					if (swatchContainer.SwatchDisplayer.HasPrimaryColor)
-						swatchContainer.SwatchDisplayer.PrimaryColor = c.RGB;
-				}
-
-				SetColor(colorPreview1, ref _primaryColor, c);
-			}
-		}
-
-		private void colorPick1_HSVChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromHSVA(colorPick1.CurrentHSV.H, colorPick1.CurrentHSV.S, colorPick1.CurrentHSV.V, SelectedColor.HSV.A));
-		}
-
 		void SetViewMode(ViewMode newMode)
 		{
 			perspectiveToolStripButton.Checked = orthographicToolStripButton.Checked = hybridToolStripButton.Checked = false;
@@ -1832,18 +1691,18 @@ namespace MCSkin3D
 
 			switch (_currentViewMode)
 			{
-			case ViewMode.Orthographic:
-				orthographicToolStripButton.Checked = true;
-				textureToolStripMenuItem.Checked = true;
-				break;
-			case ViewMode.Perspective:
-				perspectiveToolStripButton.Checked = true;
-				perspectiveToolStripMenuItem.Checked = true;
-				break;
-			case ViewMode.Hybrid:
-				hybridToolStripButton.Checked = true;
-				hybridViewToolStripMenuItem.Checked = true;
-				break;
+				case ViewMode.Orthographic:
+					orthographicToolStripButton.Checked = true;
+					textureToolStripMenuItem.Checked = true;
+					break;
+				case ViewMode.Perspective:
+					perspectiveToolStripButton.Checked = true;
+					perspectiveToolStripMenuItem.Checked = true;
+					break;
+				case ViewMode.Hybrid:
+					hybridToolStripButton.Checked = true;
+					hybridViewToolStripMenuItem.Checked = true;
+					break;
 			}
 
 			rendererControl.Invalidate();
@@ -1856,15 +1715,15 @@ namespace MCSkin3D
 
 			switch (GlobalSettings.Transparency)
 			{
-			case TransparencyMode.Off:
-				offToolStripMenuItem.Checked = true;
-				break;
-			case TransparencyMode.Helmet:
-				helmetOnlyToolStripMenuItem.Checked = true;
-				break;
-			case TransparencyMode.All:
-				allToolStripMenuItem.Checked = true;
-				break;
+				case TransparencyMode.Off:
+					offToolStripMenuItem.Checked = true;
+					break;
+				case TransparencyMode.Helmet:
+					helmetOnlyToolStripMenuItem.Checked = true;
+					break;
+				case TransparencyMode.All:
+					allToolStripMenuItem.Checked = true;
+					break;
 			}
 
 			rendererControl.Invalidate();
@@ -1896,34 +1755,34 @@ namespace MCSkin3D
 			// TODO: ugly
 			switch (flag)
 			{
-			case VisiblePartFlags.HeadFlag:
-				item = headToolStripMenuItem;
-				itemButton = toggleHeadToolStripButton;
-				break;
-			case VisiblePartFlags.HelmetFlag:
-				item = helmetToolStripMenuItem;
-				itemButton = toggleHelmetToolStripButton;
-				break;
-			case VisiblePartFlags.ChestFlag:
-				item = chestToolStripMenuItem;
-				itemButton = toggleChestToolStripButton;
-				break;
-			case VisiblePartFlags.LeftArmFlag:
-				item = leftArmToolStripMenuItem;
-				itemButton = toggleLeftArmToolStripButton;
-				break;
-			case VisiblePartFlags.RightArmFlag:
-				item = rightArmToolStripMenuItem;
-				itemButton = toggleRightArmToolStripButton;
-				break;
-			case VisiblePartFlags.LeftLegFlag:
-				item = leftLegToolStripMenuItem;
-				itemButton = toggleLeftLegToolStripButton;
-				break;
-			case VisiblePartFlags.RightLegFlag:
-				item = rightLegToolStripMenuItem;
-				itemButton = toggleRightLegToolStripButton;
-				break;
+				case VisiblePartFlags.HeadFlag:
+					item = headToolStripMenuItem;
+					itemButton = toggleHeadToolStripButton;
+					break;
+				case VisiblePartFlags.HelmetFlag:
+					item = helmetToolStripMenuItem;
+					itemButton = toggleHelmetToolStripButton;
+					break;
+				case VisiblePartFlags.ChestFlag:
+					item = chestToolStripMenuItem;
+					itemButton = toggleChestToolStripButton;
+					break;
+				case VisiblePartFlags.LeftArmFlag:
+					item = leftArmToolStripMenuItem;
+					itemButton = toggleLeftArmToolStripButton;
+					break;
+				case VisiblePartFlags.RightArmFlag:
+					item = rightArmToolStripMenuItem;
+					itemButton = toggleRightArmToolStripButton;
+					break;
+				case VisiblePartFlags.LeftLegFlag:
+					item = leftLegToolStripMenuItem;
+					itemButton = toggleLeftLegToolStripButton;
+					break;
+				case VisiblePartFlags.RightLegFlag:
+					item = rightLegToolStripMenuItem;
+					itemButton = toggleRightLegToolStripButton;
+					break;
 			}
 
 			item.Checked = hasNow;
@@ -1950,15 +1809,15 @@ namespace MCSkin3D
 		{
 			switch (GlobalSettings.Transparency)
 			{
-			case TransparencyMode.Off:
-				SetTransparencyMode(TransparencyMode.Helmet);
-				break;
-			case TransparencyMode.Helmet:
-				SetTransparencyMode(TransparencyMode.All);
-				break;
-			case TransparencyMode.All:
-				SetTransparencyMode(TransparencyMode.Off);
-				break;
+				case TransparencyMode.Off:
+					SetTransparencyMode(TransparencyMode.Helmet);
+					break;
+				case TransparencyMode.Helmet:
+					SetTransparencyMode(TransparencyMode.All);
+					break;
+				case TransparencyMode.All:
+					SetTransparencyMode(TransparencyMode.Off);
+					break;
 			}
 		}
 
@@ -1966,15 +1825,15 @@ namespace MCSkin3D
 		{
 			switch (_currentViewMode)
 			{
-			case ViewMode.Orthographic:
-				SetViewMode(ViewMode.Perspective);
-				break;
-			case ViewMode.Perspective:
-				SetViewMode(ViewMode.Hybrid);
-				break;
-			case ViewMode.Hybrid:
-				SetViewMode(ViewMode.Orthographic);
-				break;
+				case ViewMode.Orthographic:
+					SetViewMode(ViewMode.Perspective);
+					break;
+				case ViewMode.Perspective:
+					SetViewMode(ViewMode.Hybrid);
+					break;
+				case ViewMode.Hybrid:
+					SetViewMode(ViewMode.Orthographic);
+					break;
 			}
 		}
 
@@ -2457,37 +2316,37 @@ namespace MCSkin3D
 				_compileTimer.Start();
 
 			if (CurrentModel != null)
-			foreach (var mesh in CurrentModel.Meshes)
-			{
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
-					!(GlobalSettings.Ghost && !pickView))
-					continue;
-
-				var newMesh = mesh;
-
-				newMesh.Texture = tex;
-
-				if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-					newMesh.Rotate += helmetRotate;
-
-				if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
+				foreach (var mesh in CurrentModel.Meshes)
 				{
-					foreach (var f in mesh.Faces)
-						for (int i = 0; i < f.Colors.Length; ++i)
-							f.Colors[i] = new Color4(1, 1, 1, 0.25f);
-				}
-				else
-				{
-					foreach (var f in mesh.Faces)
-						for (int i = 0; i < f.Colors.Length; ++i)
-							f.Colors[i] = Color4.White;
-				}
+					if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
+						!(GlobalSettings.Ghost && !pickView))
+						continue;
 
-				if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-					newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+					var newMesh = mesh;
 
-				_renderer.AddMesh(newMesh);
-			}
+					newMesh.Texture = tex;
+
+					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
+						newMesh.Rotate = helmetRotate;
+
+					if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
+					{
+						foreach (var f in mesh.Faces)
+							for (int i = 0; i < f.Colors.Length; ++i)
+								f.Colors[i] = new Color4(1, 1, 1, 0.25f);
+					}
+					else
+					{
+						foreach (var f in mesh.Faces)
+							for (int i = 0; i < f.Colors.Length; ++i)
+								f.Colors[i] = Color4.White;
+					}
+
+					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+						newMesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+
+					_renderer.AddMesh(newMesh);
+				}
 
 			if (GlobalSettings.RenderBenchmark)
 				_compileTimer.Stop();
@@ -2670,9 +2529,10 @@ namespace MCSkin3D
 				_renderTimer.Start();
 			}
 
+			rendererControl.MakeCurrent();
+
 			_mousePoint = rendererControl.PointToClient(MousePosition);
 
-			rendererControl.MakeCurrent();
 			SetPreview();
 
 			//GL.ClearColor(GlobalSettings.BackgroundColor);
@@ -2754,16 +2614,16 @@ namespace MCSkin3D
 			int count = 0;
 
 			if (CurrentModel != null)
-			foreach (var mesh in CurrentModel.Meshes)
-			{
-				allBounds += mesh.Bounds;
-
-				if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+				foreach (var mesh in CurrentModel.Meshes)
 				{
-					vec += mesh.Bounds;
-					count++;
+					allBounds += mesh.Bounds;
+
+					if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+					{
+						vec += mesh.Bounds;
+						count++;
+					}
 				}
-			}
 
 			GrassY = allBounds.Maxs.Y;
 			var center = vec.Center;
@@ -3022,7 +2882,7 @@ namespace MCSkin3D
 			{
 				var skin = treeView1.SelectedNode as Skin;
 
-				if (skin.Width == 8 || skin.Height == 4)
+				if (skin.Width <= 1 || skin.Height <= 1)
 					mDECRESToolStripMenuItem.Enabled = false;
 				//else if (skin.Width == 256 || skin.Height == 128)
 				//	mINCRESToolStripMenuItem.Enabled = false;
@@ -3168,195 +3028,6 @@ namespace MCSkin3D
 			PerformRedo();
 		}
 
-		void redNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA((byte)redNumericUpDown.Value, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
-		}
-
-		void greenNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte)greenNumericUpDown.Value, SelectedColor.RGB.B, SelectedColor.RGB.A));
-		}
-
-		void blueNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte)blueNumericUpDown.Value, SelectedColor.RGB.A));
-		}
-
-		void alphaNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, SelectedColor.RGB.B, (byte)alphaNumericUpDown.Value));
-		}
-
-		const float oneDivTwoFourty = 1.0f / 240.0f;
-
-		void colorSquare_HueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat * oneDivTwoFourty, (float)saturationSlider.CurrentLum * oneDivTwoFourty);
-			//SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
-		}
-
-		void colorSquare_SatChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat * oneDivTwoFourty, (float)saturationSlider.CurrentLum * oneDivTwoFourty);
-			//SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
-		}
-
-		void saturationSlider_LumChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL(colorSquare.CurrentHue, (float)colorSquare.CurrentSat * oneDivTwoFourty, (float)saturationSlider.CurrentLum * oneDivTwoFourty);
-			//SetColor(Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(c));
-		}
-
-		void hueColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL(e.NewValue, (float)saturationColorSlider.Value * oneDivTwoFourty, (float)lightnessColorSlider.Value * oneDivTwoFourty);
-			SetColor(ColorManager.FromHSVA(e.NewValue, SelectedColor.HSV.S, SelectedColor.HSV.V, SelectedColor.HSV.A));
-		}
-
-		void saturationColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL(hueColorSlider.Value, (float)e.NewValue * oneDivTwoFourty, (float)lightnessColorSlider.Value * oneDivTwoFourty);
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte)e.NewValue, SelectedColor.HSV.V, SelectedColor.HSV.A));
-		}
-
-		void lightnessColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL(hueColorSlider.Value, (float)saturationColorSlider.Value * oneDivTwoFourty, (float)e.NewValue * oneDivTwoFourty);
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte)e.NewValue, SelectedColor.HSV.A));
-		}
-
-		void hueNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value * oneDivTwoFourty, (float)luminanceNumericUpDown.Value * oneDivTwoFourty);
-			SetColor(ColorManager.FromHSVA((short)hueNumericUpDown.Value, SelectedColor.HSV.S, SelectedColor.HSV.V, SelectedColor.HSV.A));
-		}
-
-		void saturationNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value * oneDivTwoFourty, (float)luminanceNumericUpDown.Value * oneDivTwoFourty);
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte)saturationNumericUpDown.Value, SelectedColor.HSV.V, SelectedColor.HSV.A));
-		}
-
-		void luminanceNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			//var c = new HSL((double)hueNumericUpDown.Value, (float)saturationNumericUpDown.Value * oneDivTwoFourty, (float)luminanceNumericUpDown.Value * oneDivTwoFourty);
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte)valueNumericUpDown.Value, SelectedColor.HSV.A));
-		}
-
-
-		void redColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA((byte)e.NewValue, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
-		}
-
-		void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte)e.NewValue, SelectedColor.RGB.B, SelectedColor.RGB.A));
-		}
-
-		void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte)e.NewValue, SelectedColor.RGB.A));
-		}
-
-		void swatchContainer_SwatchChanged(object sender, SwatchChangedEventArgs e)
-		{
-			if (e.Button == MouseButtons.Left)
-				SelectedColor = ColorManager.FromRGBA(e.Swatch.R, e.Swatch.G, e.Swatch.B, e.Swatch.A);
-			else
-				UnselectedColor = ColorManager.FromRGBA(e.Swatch.R, e.Swatch.G, e.Swatch.B, e.Swatch.A);
-		}
-
-		void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, SelectedColor.HSV.V, (byte)e.NewValue));
-		}
-
-		bool _editingHex = false;
-		private void textBox1_TextChanged(object sender, EventArgs e)
-		{
-			if (_skipColors)
-				return;
-
-			try
-			{
-				if (textBox1.Text.Contains('#'))
-					textBox1.Text = textBox1.Text.Replace("#", "");
-
-				if (textBox1.Text.Length > 8)
-					textBox1.Text = textBox1.Text.Remove(8);
-
-				string realHex = textBox1.Text;
-
-				while (realHex.Length != 8)
-					realHex += 'F';
-
-				byte r = byte.Parse(realHex.Substring(0, 2), NumberStyles.HexNumber);
-				byte g = byte.Parse(realHex.Substring(2, 2), NumberStyles.HexNumber);
-				byte b = byte.Parse(realHex.Substring(4, 2), NumberStyles.HexNumber);
-				byte a = byte.Parse(realHex.Substring(6, 2), NumberStyles.HexNumber);
-
-				_editingHex = true;
-				SetColor(ColorManager.FromRGBA(r, g, b, a));
-				_editingHex = false;
-			}
-			catch
-			{
-			}
-		}
-
 		void perspectiveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetViewMode(ViewMode.Perspective);
@@ -3452,7 +3123,7 @@ namespace MCSkin3D
 			MessageBox.Show("Not finished!");
 
 			Hide();
-			
+
 			using (var upd = new MCSkin3D.UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml", "__installedupdates"))
 			{
 				if (upd.ShowDialog() == DialogResult.Cancel)
@@ -3553,32 +3224,6 @@ namespace MCSkin3D
 			PerformCloneSkin();
 		}
 
-		void colorTabControl_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (colorTabControl.SelectedIndex == 0 || colorTabControl.SelectedIndex == 1)
-			{
-				var panel = (Panel)colorTabControl.SelectedTab.Controls[0];
-
-				panel.Controls.Add(colorPick1);
-				panel.Controls.Add(colorPreview1);
-				panel.Controls.Add(colorPreview2);
-				panel.Controls.Add(label5);
-				panel.Controls.Add(alphaColorSlider);
-				panel.Controls.Add(alphaNumericUpDown);
-
-				if (_secondaryIsFront)
-				{
-					colorPreview2.BringToFront();
-					colorPreview1.SendToBack();
-				}
-				else
-				{
-					colorPreview2.SendToBack();
-					colorPreview1.BringToFront();
-				}
-			}
-		}
-
 		void automaticallyCheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			GlobalSettings.AutoUpdate = automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
@@ -3670,22 +3315,22 @@ namespace MCSkin3D
 
 			switch (samples)
 			{
-			case 0:
-			default:
-				index = 0;
-				break;
-			case 1:
-				index = 1;
-				break;
-			case 2:
-				index = 2;
-				break;
-			case 4:
-				index = 3;
-				break;
-			case 8:
-				index = 4;
-				break;
+				case 0:
+				default:
+					index = 0;
+					break;
+				case 1:
+					index = 1;
+					break;
+				case 2:
+					index = 2;
+					break;
+				case 4:
+					index = 3;
+					break;
+				case 8:
+					index = 4;
+					break;
 			}
 
 			foreach (var item in _antialiasOpts)
@@ -3749,7 +3394,8 @@ namespace MCSkin3D
 				MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
 				MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
 				MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
-				MainForm.swatchContainer.languageProvider1.LanguageChanged(value);
+				MainForm.ColorPanel.languageProvider1.LanguageChanged(value);
+				MainForm.ColorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
 				MainForm.login.languageProvider1.LanguageChanged(value);
 				MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
 				MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
@@ -3785,24 +3431,6 @@ namespace MCSkin3D
 		void languageToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CurrentLanguage = (Language.Language)((ToolStripMenuItem)sender).Tag;
-		}
-
-		bool _secondaryIsFront = false;
-
-		private void colorPreview1_Click(object sender, EventArgs e)
-		{
-			_secondaryIsFront = false;
-			colorPreview1.BringToFront();
-
-			SetColor(_primaryColor);
-		}
-
-		private void colorPreview2_Click(object sender, EventArgs e)
-		{
-			_secondaryIsFront = true;
-			colorPreview2.BringToFront();
-
-			SetColor(_secondaryColor);
 		}
 
 		private void toolStripMenuItem3_Click(object sender, EventArgs e)
@@ -3877,7 +3505,7 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 				return;
-			if (_lastSkin.Width == 8 || _lastSkin.Height == 4)
+			if (_lastSkin.Width <= 1 || _lastSkin.Height <= 1)
 				return;
 			if (!ShowDontAskAgain())
 				return;
@@ -3896,8 +3524,6 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 				return;
-			//if (_lastSkin.Width == 256 || _lastSkin.Height == 128)
-			//	return;
 			if (!ShowDontAskAgain())
 				return;
 
@@ -4023,12 +3649,12 @@ namespace MCSkin3D
 						var mb = MessageBox.Show(GetLanguageString("D_UNSAVED"), GetLanguageString("D_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						switch (mb)
 						{
-						case System.Windows.Forms.DialogResult.No:
-							_waitingForRestart = true;
-							_newSkinDirs = dl.Directories.ToArray();
-							return;
-						case System.Windows.Forms.DialogResult.Cancel:
-							return;
+							case System.Windows.Forms.DialogResult.No:
+								_waitingForRestart = true;
+								_newSkinDirs = dl.Directories.ToArray();
+								return;
+							case System.Windows.Forms.DialogResult.Cancel:
+								return;
 						}
 					}
 
@@ -4097,21 +3723,16 @@ namespace MCSkin3D
 		void mLINESIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayLineSize = (int)mLINESIZEToolStripMenuItem.NumericBox.Value;
-
-			//SetModel(CurrentModel);
 		}
 
 		void mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayTextSize = (int)mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value;
-
-			//SetModel(CurrentModel);
 		}
 
 		void mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayGridColor = Color.FromArgb((int)mGRIDOPACITYToolStripMenuItem.NumericBox.Value, GlobalSettings.DynamicOverlayGridColor);
-			//SetModel(CurrentModel);
 		}
 
 		ModelToolStripMenuItem _oldModel = null;
@@ -4120,13 +3741,6 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 				return;
-
-			//if (_dynamicOverlay.GLImage != null)
-			//	_dynamicOverlay.GLImage.Dispose();
-
-			//_dynamicOverlay.GLImage = new TextureGL(Model.GenerateOverlay(GlobalSettings.DynamicOverlayLineColor, GlobalSettings.DynamicOverlayTextColor, Model.AspectRatio, 1 << GlobalSettings.DynamicOverlayTextSize, GlobalSettings.DynamicOverlayLineSize));
-			//_dynamicOverlay.GLImage.SetMipmapping(false);
-			//_dynamicOverlay.GLImage.SetRepeat(false);
 
 			if (_oldModel != null &&
 				_oldModel.Model == Model)

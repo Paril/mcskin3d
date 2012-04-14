@@ -51,25 +51,25 @@ namespace MCSkin3D
 			set { base.Name = value; base.Text = base.Name = value; }
 		}
 
-        public static Image getHeadFromFile(String str, Size s)
-        {
-            Image img = new Bitmap(str);
+		public static Image getHeadFromFile(String str, Size s)
+		{
+			Image img = new Bitmap(str);
 
-            float scale = img.Size.Width / 64.0f;
-            int headSize = (int)(8.0f * scale);
+			float scale = img.Size.Width / 64.0f;
+			int headSize = (int)(8.0f * scale);
 
-            Image head = new Bitmap(32, 32);
-            using (Graphics g = Graphics.FromImage(head))
-            {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-                g.DrawImage(img, new Rectangle(0, 0, head.Width, head.Height), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
-            }
+			Image head = new Bitmap(32, 32);
+			using (Graphics g = Graphics.FromImage(head))
+			{
+				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+				g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+				g.DrawImage(img, new Rectangle(0, 0, head.Width, head.Height), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
+			}
 
-            img.Dispose();
-            img = null;
-            return head;
-        }
+			img.Dispose();
+			img = null;
+			return head;
+		}
 
 		public DirectoryInfo Directory
 		{
