@@ -1,734 +1,114 @@
-﻿<Model Name="Minecart" DefaultWidth="64" DefaultHeight="32">
-	<Mesh Name="Base" Mode="Quads" Translate="0 4 0" Pivot="0 4 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="89.99998 0 0" Part="HeadFlag">
-		<Face>
-			<Vertices>
-				<Vertex>10 -8 1</Vertex>
-				<Vertex>10 -8 -1</Vertex>
-				<Vertex>10 8 -1</Vertex>
-				<Vertex>10 8 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.375</Coord>
-				<Coord>0.34375 0.375</Coord>
-				<Coord>0.34375 0.875</Coord>
-				<Coord>0.375 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-10 -8 -1</Vertex>
-				<Vertex>-10 -8 1</Vertex>
-				<Vertex>-10 8 1</Vertex>
-				<Vertex>-10 8 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.375</Coord>
-				<Coord>0 0.375</Coord>
-				<Coord>0 0.875</Coord>
-				<Coord>0.03125 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10 -8 1</Vertex>
-				<Vertex>-10 -8 1</Vertex>
-				<Vertex>-10 -8 -1</Vertex>
-				<Vertex>10 -8 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.34375 0.3125</Coord>
-				<Coord>0.03125 0.3125</Coord>
-				<Coord>0.03125 0.375</Coord>
-				<Coord>0.34375 0.375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10 8 -1</Vertex>
-				<Vertex>-10 8 -1</Vertex>
-				<Vertex>-10 8 1</Vertex>
-				<Vertex>10 8 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.65625 0.375</Coord>
-				<Coord>0.34375 0.375</Coord>
-				<Coord>0.34375 0.3125</Coord>
-				<Coord>0.65625 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10 -8 -1</Vertex>
-				<Vertex>-10 -8 -1</Vertex>
-				<Vertex>-10 8 -1</Vertex>
-				<Vertex>10 8 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.34375 0.375</Coord>
-				<Coord>0.03125 0.375</Coord>
-				<Coord>0.03125 0.875</Coord>
-				<Coord>0.34375 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-10 -8 1</Vertex>
-				<Vertex>10 -8 1</Vertex>
-				<Vertex>10 8 1</Vertex>
-				<Vertex>-10 8 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.6875 0.375</Coord>
-				<Coord>0.375 0.375</Coord>
-				<Coord>0.375 0.875</Coord>
-				<Coord>0.6875 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Side" Mode="Quads" Translate="-9 4 0" Pivot="-9 4 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 270 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0.3125</Coord>
-				<Coord>0.3125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0 0.0625</Coord>
-				<Coord>0 0.3125</Coord>
-				<Coord>0.03125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.03125 0</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.53125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.53125 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.03125 0.3125</Coord>
-				<Coord>0.28125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.0625</Coord>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.3125 0.3125</Coord>
-				<Coord>0.5625 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Side" Mode="Quads" Translate="9 4 0" Pivot="9 4 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 89.99998 0" Part="LeftLegFlag">
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0.3125</Coord>
-				<Coord>0.3125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0 0.0625</Coord>
-				<Coord>0 0.3125</Coord>
-				<Coord>0.03125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.03125 0</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.53125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.53125 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.03125 0.3125</Coord>
-				<Coord>0.28125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.0625</Coord>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.3125 0.3125</Coord>
-				<Coord>0.5625 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Side" Mode="Quads" Translate="0 4 -7" Pivot="0 4 -7" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 180 0" Part="RightArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0.3125</Coord>
-				<Coord>0.3125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0 0.0625</Coord>
-				<Coord>0 0.3125</Coord>
-				<Coord>0.03125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.03125 0</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.53125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.53125 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.03125 0.3125</Coord>
-				<Coord>0.28125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.0625</Coord>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.3125 0.3125</Coord>
-				<Coord>0.5625 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Side" Mode="Quads" Translate="0 4 7" Pivot="0 4 7" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightLegFlag">
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0.3125</Coord>
-				<Coord>0.3125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0 0.0625</Coord>
-				<Coord>0 0.3125</Coord>
-				<Coord>0.03125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>8 -9 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.03125 0</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -1 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.53125 0.0625</Coord>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.28125 0</Coord>
-				<Coord>0.53125 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>8 -9 -1</Vertex>
-				<Vertex>-8 -9 -1</Vertex>
-				<Vertex>-8 -1 -1</Vertex>
-				<Vertex>8 -1 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.28125 0.0625</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.03125 0.3125</Coord>
-				<Coord>0.28125 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-8 -9 1</Vertex>
-				<Vertex>8 -9 1</Vertex>
-				<Vertex>8 -1 1</Vertex>
-				<Vertex>-8 -1 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.0625</Coord>
-				<Coord>0.3125 0.0625</Coord>
-				<Coord>0.3125 0.3125</Coord>
-				<Coord>0.5625 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Leather" Mode="Quads" Translate="0 4 0" Pivot="0 4 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="-89.99998 0 0" Part="ChestFlag">
-		<Face>
-			<Vertices>
-				<Vertex>9 -7 0</Vertex>
-				<Vertex>9 -7 -1</Vertex>
-				<Vertex>9 7 -1</Vertex>
-				<Vertex>9 7 0</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>1 0.34375</Coord>
-				<Coord>0.984375 0.34375</Coord>
-				<Coord>0.984375 0.78125</Coord>
-				<Coord>1 0.78125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-9 -7 -1</Vertex>
-				<Vertex>-9 -7 0</Vertex>
-				<Vertex>-9 7 0</Vertex>
-				<Vertex>-9 7 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.703125 0.34375</Coord>
-				<Coord>0.6875 0.34375</Coord>
-				<Coord>0.6875 0.78125</Coord>
-				<Coord>0.703125 0.78125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>9 -7 0</Vertex>
-				<Vertex>-9 -7 0</Vertex>
-				<Vertex>-9 -7 -1</Vertex>
-				<Vertex>9 -7 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.984375 0.3125</Coord>
-				<Coord>0.703125 0.3125</Coord>
-				<Coord>0.703125 0.34375</Coord>
-				<Coord>0.984375 0.34375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>9 7 -1</Vertex>
-				<Vertex>-9 7 -1</Vertex>
-				<Vertex>-9 7 0</Vertex>
-				<Vertex>9 7 0</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>1.265625 0.34375</Coord>
-				<Coord>0.984375 0.34375</Coord>
-				<Coord>0.984375 0.3125</Coord>
-				<Coord>1.265625 0.3125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>9 -7 -1</Vertex>
-				<Vertex>-9 -7 -1</Vertex>
-				<Vertex>-9 7 -1</Vertex>
-				<Vertex>9 7 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.984375 0.34375</Coord>
-				<Coord>0.703125 0.34375</Coord>
-				<Coord>0.703125 0.78125</Coord>
-				<Coord>0.984375 0.78125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-9 -7 0</Vertex>
-				<Vertex>9 -7 0</Vertex>
-				<Vertex>9 7 0</Vertex>
-				<Vertex>-9 7 0</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>1.28125 0.34375</Coord>
-				<Coord>1 0.34375</Coord>
-				<Coord>1 0.78125</Coord>
-				<Coord>1.28125 0.78125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-</Model>
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Base">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,4,0</Offset>
+						<Position>-10,-8,-1</Position>
+						<Rotation>89.99998,0,0</Rotation>
+						<Size>20,16,2</Size>
+						<TextureOffset>0,10</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-9,4,0</Offset>
+						<Position>-8,-9,-1</Position>
+						<Rotation>0,270,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>9,4,0</Offset>
+						<Position>-8,-9,-1</Position>
+						<Rotation>0,89.99998,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,4,-7</Offset>
+						<Position>-8,-9,-1</Position>
+						<Rotation>0,180,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,4,7</Offset>
+						<Position>-8,-9,-1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leather">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,4,0</Offset>
+						<Position>-9,-7,-1</Position>
+						<Rotation>-89.99998,0,0</Rotation>
+						<Size>18,14,1</Size>
+						<TextureOffset>44,10</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Minecart</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Minecart</Name>
+</Techne>

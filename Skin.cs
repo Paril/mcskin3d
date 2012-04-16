@@ -28,6 +28,7 @@ using Paril.Drawing;
 using System.Drawing.Drawing2D;
 using Paril.Imaging;
 using System.Collections.Generic;
+using OpenTK;
 
 namespace MCSkin3D
 {
@@ -44,6 +45,10 @@ namespace MCSkin3D
 
 		public int Width { get { return Size.Width; } }
 		public int Height { get { return Size.Height; } }
+
+		Dictionary<int, bool> _transparentParts = new Dictionary<int, bool>();
+
+		public Dictionary<int, bool> TransparentParts { get { return _transparentParts; } }
 
 		public new string Name
 		{
@@ -138,18 +143,6 @@ namespace MCSkin3D
 			using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
 				Image = new Bitmap(file);
 
-			var metadata = PNGMetadata.ReadMetadata(File.FullName);
-
-			if (metadata.ContainsKey("Model"))
-			{
-				Model = ModelLoader.GetModelForPath(metadata["Model"]);
-
-				if (Model == null)
-					Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
-			}
-			else
-				Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
-
 			Size = Image.Size;
 
 			float scale = Size.Width / 64.0f;
@@ -171,6 +164,23 @@ namespace MCSkin3D
 				GLImage = new TextureGL(File.FullName);
 				GLImage.SetMipmapping(false);
 				GLImage.SetRepeat(false);
+			}
+
+			if (Model == null)
+			{
+				var metadata = PNGMetadata.ReadMetadata(File.FullName);
+
+				if (metadata.ContainsKey("Model"))
+				{
+					Model = ModelLoader.GetModelForPath(metadata["Model"]);
+
+					if (Model == null)
+						Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+				}
+				else
+					Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+
+				SetTransparentParts();
 			}
 		}
 
@@ -277,6 +287,55 @@ namespace MCSkin3D
 				newPath = newPath.Insert(newPath.Length - 4, " - Moved");
 
 			File.MoveTo(newPath);
+		}
+
+		public void SetTransparentParts()
+		{
+			ColorGrabber grabber = new ColorGrabber(GLImage, Width, Height);
+			grabber.Load();
+
+			int mesh = 0;
+
+			TransparentParts.Clear();
+
+			foreach (var m in Model.Meshes)
+			{
+				TransparentParts.Add(mesh, false);
+
+				foreach (var f in m.Faces)
+				{
+					Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+
+					foreach (var c in f.TexCoords)
+					{
+						var coord = new Vector2(c.X * Width, c.Y * Height);
+						bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+					}
+
+					var rect = bounds.ToRectangle();
+					bool gotOne = false;
+
+					for (int y = rect.Y; !gotOne && y < rect.Y + rect.Height; ++y)
+						for (int x = rect.X; x < rect.X + rect.Width; ++x)
+						{
+							var pixel = grabber[x, y];
+
+							if (pixel.Alpha != 255)
+							{
+								gotOne = true;
+								break;
+							}
+						}
+
+					if (gotOne)
+					{
+						TransparentParts[mesh] = true;
+						break;
+					}
+				}
+
+				mesh++;
+			}
 		}
 	}
 }

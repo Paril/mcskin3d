@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
+using System.Drawing;
 
 namespace Paril.OpenGL
 {
@@ -76,6 +77,7 @@ namespace Paril.OpenGL
 
 		public ColorGrabber(Texture texture, int width, int height)
 		{
+			OnWrite = null;
 			_texture = texture;
 			_width = width;
 			_height = height;
@@ -107,10 +109,13 @@ namespace Paril.OpenGL
 			_texture.Upload(_array, _width, _height);
 		}
 
+		public delegate void OnWriteDelegate(Point p, ColorPixel c);
+		public OnWriteDelegate OnWrite;
+
 		public ColorPixel this[int x, int y]
 		{
 			get { return _array[x + (y * _width)]; }
-			set { _array[x + (y * _width)] = value; }
+			set { _array[x + (y * _width)] = value; if (OnWrite != null) OnWrite(new Point(x, y), value); }
 		}
 
 		public ColorPixel[] Array

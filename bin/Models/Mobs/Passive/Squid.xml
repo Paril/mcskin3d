@@ -1,1100 +1,162 @@
-﻿<Model Name="Squid" DefaultWidth="64" DefaultHeight="32">
-	<Mesh Name="Body" Mode="Quads" Translate="0 8 0" Pivot="0 8 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
-		<Face>
-			<Vertices>
-				<Vertex>6 -8 6</Vertex>
-				<Vertex>6 -8 -6</Vertex>
-				<Vertex>6 8 -6</Vertex>
-				<Vertex>6 8 6</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.375</Coord>
-				<Coord>0.375 0.375</Coord>
-				<Coord>0.375 0.875</Coord>
-				<Coord>0.5625 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-6 -8 -6</Vertex>
-				<Vertex>-6 -8 6</Vertex>
-				<Vertex>-6 8 6</Vertex>
-				<Vertex>-6 8 -6</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.1875 0.375</Coord>
-				<Coord>0 0.375</Coord>
-				<Coord>0 0.875</Coord>
-				<Coord>0.1875 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>6 -8 6</Vertex>
-				<Vertex>-6 -8 6</Vertex>
-				<Vertex>-6 -8 -6</Vertex>
-				<Vertex>6 -8 -6</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0</Coord>
-				<Coord>0.1875 0</Coord>
-				<Coord>0.1875 0.375</Coord>
-				<Coord>0.375 0.375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>6 8 -6</Vertex>
-				<Vertex>-6 8 -6</Vertex>
-				<Vertex>-6 8 6</Vertex>
-				<Vertex>6 8 6</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.375</Coord>
-				<Coord>0.375 0.375</Coord>
-				<Coord>0.375 0</Coord>
-				<Coord>0.5625 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>6 -8 -6</Vertex>
-				<Vertex>-6 -8 -6</Vertex>
-				<Vertex>-6 8 -6</Vertex>
-				<Vertex>6 8 -6</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.375</Coord>
-				<Coord>0.1875 0.375</Coord>
-				<Coord>0.1875 0.875</Coord>
-				<Coord>0.375 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-6 -8 6</Vertex>
-				<Vertex>6 -8 6</Vertex>
-				<Vertex>6 8 6</Vertex>
-				<Vertex>-6 8 6</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.75 0.375</Coord>
-				<Coord>0.5625 0.375</Coord>
-				<Coord>0.5625 0.875</Coord>
-				<Coord>0.75 0.875</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="5 15 0" Pivot="5 15 0" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 90 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="3.535534 15 3.535534" Pivot="3.535534 15 3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 45 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="3.061516E-16 15 5" Pivot="3.061516E-16 15 5" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 0 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="-3.535534 15 3.535534" Pivot="-3.535534 15 3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -45 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="-5 15 6.123032E-16" Pivot="-5 15 6.123032E-16" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -90 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="-3.535534 15 -3.535534" Pivot="-3.535534 15 -3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -135 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="-9.184548E-16 15 -5" Pivot="-9.184548E-16 15 -5" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -180 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Tentacle" Mode="Quads" Translate="3.535534 15 -3.535534" Pivot="3.535534 15 -3.535534" IsHelmet="False" FollowCursor="False" RotateFactor="25" Rotate="0 -225 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0.625</Coord>
-				<Coord>0.84375 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.75 0.625</Coord>
-				<Coord>0.78125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>1 0 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.78125 0</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 18 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.8125 0</Coord>
-				<Coord>0.84375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 0 -1</Vertex>
-				<Vertex>-1 0 -1</Vertex>
-				<Vertex>-1 18 -1</Vertex>
-				<Vertex>1 18 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.78125 0.625</Coord>
-				<Coord>0.8125 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 0 1</Vertex>
-				<Vertex>1 0 1</Vertex>
-				<Vertex>1 18 1</Vertex>
-				<Vertex>-1 18 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.875 0.0625</Coord>
-				<Coord>0.84375 0.0625</Coord>
-				<Coord>0.84375 0.625</Coord>
-				<Coord>0.875 0.625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-</Model>
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,8,0</Offset>
+						<Position>-6,-8,-6</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,16,12</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>5,15,0</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,90,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>3.535534,15,3.535534</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,45,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>3.061516E-16,15,5</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-3.535534,15,3.535534</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,-45,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-5,15,6.123032E-16</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,-90,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-3.535534,15,-3.535534</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,-135,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-9.184548E-16,15,-5</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,-180,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>3.535534,15,-3.535534</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,-225,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Squid</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Squid</Name>
+</Techne>
