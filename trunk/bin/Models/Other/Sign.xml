@@ -1,246 +1,50 @@
-﻿<Model Name="Sign" DefaultWidth="64" DefaultHeight="32">
-	<Mesh Name="Board" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0 0" Part="HelmetFlag">
-		<Face>
-			<Vertices>
-				<Vertex>12 -14 1</Vertex>
-				<Vertex>12 -14 -1</Vertex>
-				<Vertex>12 -2 -1</Vertex>
-				<Vertex>12 -2 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.4375 0.0625</Coord>
-				<Coord>0.40625 0.0625</Coord>
-				<Coord>0.40625 0.4375</Coord>
-				<Coord>0.4375 0.4375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-12 -14 -1</Vertex>
-				<Vertex>-12 -14 1</Vertex>
-				<Vertex>-12 -2 1</Vertex>
-				<Vertex>-12 -2 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0 0.0625</Coord>
-				<Coord>0 0.4375</Coord>
-				<Coord>0.03125 0.4375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>12 -14 1</Vertex>
-				<Vertex>-12 -14 1</Vertex>
-				<Vertex>-12 -14 -1</Vertex>
-				<Vertex>12 -14 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.40625 0</Coord>
-				<Coord>0.03125 0</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.40625 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>12 -2 -1</Vertex>
-				<Vertex>-12 -2 -1</Vertex>
-				<Vertex>-12 -2 1</Vertex>
-				<Vertex>12 -2 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.78125 0.0625</Coord>
-				<Coord>0.40625 0.0625</Coord>
-				<Coord>0.40625 0</Coord>
-				<Coord>0.78125 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>12 -14 -1</Vertex>
-				<Vertex>-12 -14 -1</Vertex>
-				<Vertex>-12 -2 -1</Vertex>
-				<Vertex>12 -2 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.40625 0.0625</Coord>
-				<Coord>0.03125 0.0625</Coord>
-				<Coord>0.03125 0.4375</Coord>
-				<Coord>0.40625 0.4375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-12 -14 1</Vertex>
-				<Vertex>12 -14 1</Vertex>
-				<Vertex>12 -2 1</Vertex>
-				<Vertex>-12 -2 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.8125 0.0625</Coord>
-				<Coord>0.4375 0.0625</Coord>
-				<Coord>0.4375 0.4375</Coord>
-				<Coord>0.8125 0.4375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Stick" Mode="Quads" Translate="0 0 0" Pivot="0 0 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="ChestFlag">
-		<Face>
-			<Vertices>
-				<Vertex>1 -2 1</Vertex>
-				<Vertex>1 -2 -1</Vertex>
-				<Vertex>1 12 -1</Vertex>
-				<Vertex>1 12 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.09375 0.5</Coord>
-				<Coord>0.0625 0.5</Coord>
-				<Coord>0.0625 0.9375</Coord>
-				<Coord>0.09375 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 -2 -1</Vertex>
-				<Vertex>-1 -2 1</Vertex>
-				<Vertex>-1 12 1</Vertex>
-				<Vertex>-1 12 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.03125 0.5</Coord>
-				<Coord>0 0.5</Coord>
-				<Coord>0 0.9375</Coord>
-				<Coord>0.03125 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 -2 1</Vertex>
-				<Vertex>-1 -2 1</Vertex>
-				<Vertex>-1 -2 -1</Vertex>
-				<Vertex>1 -2 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.0625 0.4375</Coord>
-				<Coord>0.03125 0.4375</Coord>
-				<Coord>0.03125 0.5</Coord>
-				<Coord>0.0625 0.5</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 12 -1</Vertex>
-				<Vertex>-1 12 -1</Vertex>
-				<Vertex>-1 12 1</Vertex>
-				<Vertex>1 12 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.09375 0.5</Coord>
-				<Coord>0.0625 0.5</Coord>
-				<Coord>0.0625 0.4375</Coord>
-				<Coord>0.09375 0.4375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>1 -2 -1</Vertex>
-				<Vertex>-1 -2 -1</Vertex>
-				<Vertex>-1 12 -1</Vertex>
-				<Vertex>1 12 -1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.0625 0.5</Coord>
-				<Coord>0.03125 0.5</Coord>
-				<Coord>0.03125 0.9375</Coord>
-				<Coord>0.0625 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-1 -2 1</Vertex>
-				<Vertex>1 -2 1</Vertex>
-				<Vertex>1 12 1</Vertex>
-				<Vertex>-1 12 1</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.125 0.5</Coord>
-				<Coord>0.09375 0.5</Coord>
-				<Coord>0.09375 0.9375</Coord>
-				<Coord>0.125 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-</Model>
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Board">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,0,0</Offset>
+						<Position>-12,-14,-1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>24,12,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Stick">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,0,0</Offset>
+						<Position>-1,-2,-1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,14,2</Size>
+						<TextureOffset>0,14</TextureOffset>
+						<Scale>0</Scale>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Sign</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Sign</Name>
+</Techne>

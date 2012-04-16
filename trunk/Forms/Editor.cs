@@ -200,7 +200,7 @@ namespace MCSkin3D
 				// stage 4: fallback to built-in English file
 				if (useLanguage == null)
 				{
-					MessageBox.Show(this, "For some reason, the default language files were missing or failed to load(did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
+					MessageBox.Show(this, "For some reason, the default language files were missing or failed to load (did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
 					useLanguage = LanguageLoader.LoadDefault();
 				}
 			}
@@ -367,9 +367,6 @@ namespace MCSkin3D
 			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
 			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
 			CurrentLanguage = useLanguage;
-
-			UdpClient cl = new UdpClient();
-
 		}
 
 		void rendererControl_MouseEnter(object sender, EventArgs e)
@@ -838,6 +835,14 @@ namespace MCSkin3D
 				checkbox.Checked = false;
 		}
 
+		Dictionary<Point, bool> _paintedPixels = new Dictionary<Point, bool>();
+
+		void PixelWritten(Point p, ColorPixel c)
+		{
+			if (!_paintedPixels.ContainsKey(p))
+				_paintedPixels.Add(p, true);
+		}
+
 		void UseToolOnViewport(int x, int y, bool begin = false)
 		{
 			if (_lastSkin == null)
@@ -849,6 +854,8 @@ namespace MCSkin3D
 
 				ColorGrabber currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
 				currentSkin.Load();
+
+				currentSkin.OnWrite = PixelWritten;
 
 				if (_selectedTool.Tool.MouseMoveOnSkin(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
 				{
@@ -2316,13 +2323,19 @@ namespace MCSkin3D
 				_compileTimer.Start();
 
 			if (CurrentModel != null)
+			{
+				int meshIndex = -1;
 				foreach (var mesh in CurrentModel.Meshes)
 				{
+					meshIndex++;
+
 					if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
 						!(GlobalSettings.Ghost && !pickView))
 						continue;
 
 					var newMesh = mesh;
+
+					newMesh.HasTransparency = _lastSkin.TransparentParts[meshIndex];
 
 					newMesh.Texture = tex;
 
@@ -2347,6 +2360,7 @@ namespace MCSkin3D
 
 					_renderer.AddMesh(newMesh);
 				}
+			}
 
 			if (GlobalSettings.RenderBenchmark)
 				_compileTimer.Stop();
@@ -2739,6 +2753,23 @@ namespace MCSkin3D
 				_mouseIn3D = false;
 		}
 
+		void SetPartTransparencies()
+		{
+			Dictionary<int, bool> paintedParts = new Dictionary<int, bool>();
+
+			foreach (var p in _paintedPixels)
+			{
+				var parts = CurrentModel.GetIntersectingParts(p.Key, _lastSkin);
+
+				foreach (var part in parts)
+					if (!paintedParts.ContainsKey(part))
+						paintedParts.Add(part, true);
+			}
+
+			foreach (var p in paintedParts)
+				_lastSkin.TransparentParts[p.Key] = true;
+		}
+
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			Skin skin = _lastSkin;
@@ -2829,11 +2860,14 @@ namespace MCSkin3D
 						treeView1.Invalidate();
 						currentSkin.Save();
 					}
+
+					SetPartTransparencies();
 				}
 				else
 					_tools[(int)Tools.Camera].Tool.EndClick(ref currentSkin, _lastSkin, e);
 			}
 
+			_paintedPixels.Clear();
 			_mouseIsDown = false;
 			treeView1.Invalidate();
 		}
@@ -3766,6 +3800,9 @@ namespace MCSkin3D
 			toolStripDropDownButton1.Text = _lastSkin.Model.Name;
 			_oldModel = _lastSkin.Model.DropDownItem;
 			_oldModel.Checked = true;
+
+			_lastSkin.TransparentParts.Clear();
+			_lastSkin.SetTransparentParts();
 
 			for (var parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
 				parent.Image = Properties.Resources.right_arrow_next;

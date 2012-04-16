@@ -28,6 +28,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
 using System.Diagnostics;
+using MCSkin3D.Models;
+using System.Xml;
 
 namespace MCSkin3D
 {
@@ -475,25 +477,30 @@ namespace MCSkin3D
 
 			public PositionTextureVertex[] field_40679_h;
 			public TexturedQuad[] field_40680_i;
-			public float field_40678_a;
-			public float field_40676_b;
-			public float field_40677_c;
-			public float field_40674_d;
-			public float field_40675_e;
-			public float field_40672_f;
+			public float x;
+			public float y;
+			public float z;
+			public float xMax;
+			public float yMax;
+			public float zMax;
 			public String field_40673_g;
 			public string Name;
+			public int texX, texY;
+			public float sizeOfs;
 
 			public ModelBox(ModelRenderer modelrenderer, string name, int i, int j, float f, float f1, float f2, int k,
 					int l, int i1, float f3)
 			{
+				sizeOfs = f3;
+				texX = i;
+				texY = j;
 				Name = name;
-				field_40678_a = f;
-				field_40676_b = f1;
-				field_40677_c = f2;
-				field_40674_d = f + (float)k;
-				field_40675_e = f1 + (float)l;
-				field_40672_f = f2 + (float)i1;
+				x = f;
+				y = f1;
+				z = f2;
+				xMax = f + (float)k;
+				yMax = f1 + (float)l;
+				zMax = f2 + (float)i1;
 				field_40679_h = new PositionTextureVertex[8];
 				field_40680_i = new TexturedQuad[6];
 				float f4 = f + (float)k;
@@ -566,9 +573,8 @@ namespace MCSkin3D
 		public class EntityLiving { }
 		public class Map { }
 
-		public abstract class ModelBase
+		public class ModelBase
 		{
-
 			public float onGround;
 			public bool isRiding;
 			public List<object> boxList;
@@ -614,7 +620,7 @@ namespace MCSkin3D
 							Mesh mesh = new Mesh(face.Name);
 							mesh.Faces = new List<Face>();
 							mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-							mesh.Helmet = mesh.AllowTransparency = box.Helmet;
+							mesh.HasTransparency = mesh.AllowTransparency = box.Helmet;
 							mesh.Part = box.Flags;
 							mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
 							mesh.Pivot = mesh.Translate;
@@ -645,6 +651,20 @@ namespace MCSkin3D
 									}
 
 									Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
+
+									var zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
+									var one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
+									var two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
+
+									var dir = Vector3.Cross(one - zero, two - zero);
+									newFace.Normal = Vector3.Normalize(dir);
+
+									dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
+									var realNormal = Vector3.Normalize(dir);
+
+									if (realNormal == new Vector3(0, 1, 0))
+										newFace.Downface = true;
+									
 									mesh.Faces.Add(newFace);
 								}
 							}
@@ -661,9 +681,25 @@ namespace MCSkin3D
 								}
 
 								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
+
+								var zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
+								var one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
+								var two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
+
+								var dir = Vector3.Cross(one - zero, two - zero);
+								newFace.Normal = Vector3.Normalize(dir);
+
+								dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
+								var realNormal = Vector3.Normalize(dir);
+
+								if (realNormal == new Vector3(0, 1, 0))
+									newFace.Downface = true;
+								
 								mesh.Faces.Add(newFace);
 							}
 
+							mesh.CalculateCenter();
+	
 							model.Meshes.Add(mesh);
 						}
 					}
@@ -674,7 +710,7 @@ namespace MCSkin3D
 						Mesh mesh = new Mesh(box.Name);
 						mesh.Faces = new List<Face>();
 						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-						mesh.Helmet = mesh.AllowTransparency = box.Helmet;
+						mesh.HasTransparency = mesh.AllowTransparency = box.Helmet;
 						mesh.Part = box.Flags;
 						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
 						mesh.Pivot = mesh.Translate;
@@ -705,6 +741,20 @@ namespace MCSkin3D
 								}
 
 								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
+
+								var zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
+								var one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
+								var two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
+
+								var dir = Vector3.Cross(one - zero, two - zero);
+								newFace.Normal = Vector3.Normalize(dir);
+
+								dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
+								var realNormal = Vector3.Normalize(dir);
+
+								if (realNormal == new Vector3(0, 1, 0))
+									newFace.Downface = true;
+								
 								mesh.Faces.Add(newFace);
 							}
 						}
@@ -721,14 +771,110 @@ namespace MCSkin3D
 							}
 
 							Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
+
+							var zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
+							var one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
+							var two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
+
+							var dir = Vector3.Cross(one - zero, two - zero);
+							newFace.Normal = Vector3.Normalize(dir);
+
+							dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
+							var realNormal = Vector3.Normalize(dir);
+
+							if (realNormal == new Vector3(0, 1, 0))
+								newFace.Downface = true;
+
 							mesh.Faces.Add(newFace);
 						}
+
+						mesh.CalculateCenter();
 	
 						model.Meshes.Add(mesh);
 					}
 				}
 
 				return model;
+			}
+
+			public void Save(string name, float scale, int defaultWidth, int defaultHeight, string fileName)
+			{
+				XmlWriterSettings settings = new XmlWriterSettings();
+				settings.ConformanceLevel = ConformanceLevel.Fragment;
+				settings.Indent = true;
+				settings.NewLineOnAttributes = false;
+				settings.IndentChars = "\t";
+
+				using (XmlWriter writer = XmlWriter.Create(fileName, settings))
+				{
+					writer.WriteStartElement("Techne");
+					writer.WriteAttributeString("Version", "2.2");
+					writer.WriteElementString("Author", "");
+					writer.WriteElementString("DateCreated", "");
+					writer.WriteElementString("Description", "");
+
+					writer.WriteStartElement("Models");
+					writer.WriteStartElement("Model");
+					writer.WriteAttributeString("texture", "none.png");
+
+					writer.WriteElementString("BaseClass", "ModelBase");
+
+					writer.WriteStartElement("Geometry");
+
+					writer.WriteStartElement("Folder");
+					writer.WriteAttributeString("type", "f8bf7d5b-37bf-455b-93f9-b6f9e81620e1");
+					writer.WriteAttributeString("Name", "Model");
+
+					foreach (var mesh in boxList)
+					{
+						if (mesh is ModelRenderer)
+						{
+							ModelRenderer renderer = (ModelRenderer)mesh;
+
+							foreach (var x in renderer.cubeList)
+							{
+								writer.WriteStartElement("Shape");
+								writer.WriteAttributeString("type", "d9e621f7-957f-4b77-b1ae-20dcd0da7751");
+								writer.WriteAttributeString("name", x.Name);
+
+								writer.WriteStartElement("Animation");
+								writer.WriteElementString("AnimationAngles", "0,0,0");
+								writer.WriteElementString("AnimationDuration", "0,0,0");
+								writer.WriteElementString("AnimationType", "0,0,0");
+								writer.WriteEndElement();
+
+								writer.WriteElementString("IsDecorative", "False");
+								writer.WriteElementString("IsFixed", "False");
+								writer.WriteElementString("IsMirrored", renderer.mirror.ToString());
+								writer.WriteElementString("Offset", renderer.rotationPointX + "," + renderer.rotationPointY + "," + renderer.rotationPointZ);
+								writer.WriteElementString("Position", x.x + "," + x.y + "," + x.z);
+								writer.WriteElementString("Rotation", MathHelper.RadiansToDegrees(renderer.rotateAngleX) + "," + MathHelper.RadiansToDegrees(renderer.rotateAngleY) + "," + MathHelper.RadiansToDegrees(renderer.rotateAngleZ));
+								writer.WriteElementString("Size", (x.xMax - x.x) + "," + (x.yMax - x.y) + "," + (x.zMax - x.z));
+								writer.WriteElementString("TextureOffset", x.texX + "," + x.texY);
+								
+								// Paril: MCSkin3D additions
+								writer.WriteElementString("Scale", x.sizeOfs.ToString());
+
+								writer.WriteEndElement();
+							}
+						}
+					}
+
+					writer.WriteEndElement();
+
+					writer.WriteEndElement();
+
+					writer.WriteElementString("GlScale", "1,1,1");
+					writer.WriteElementString("Name", name);
+					writer.WriteElementString("TextureSize", defaultWidth + "," + defaultHeight);
+
+					writer.WriteEndElement();
+					writer.WriteEndElement();
+
+					writer.WriteElementString("Name", name);
+
+					writer.WriteEndElement();
+				}
 			}
 		}
 
@@ -4309,57 +4455,59 @@ namespace MCSkin3D
 
 		public static void LoadModels()
 		{
-			/*new ModelPig().Compile("Pig", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Pig.xml");
-			new ModelBiped().Compile("Human", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Human.xml");
-			new ModelVillager().Compile("Villager", 1, 64.0f, 64.0f).Save("Models\\Mobs\\Passive\\Villager.xml");
-			new ModelCow().Compile("Cow", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Cow.xml");
-			new ModelChicken().Compile("Chicken", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Chicken.xml");
-			new ModelSquid().Compile("Squid", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Squid.xml");
-			new ModelWolf().Compile("Wolf", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Wolf.xml");
-			new ModelSheep1().Compile("Sheep Fur", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Sheep Fur.xml");
-			new ModelSheep2().Compile("Sheep", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Sheep.xml");
-			new ModelSnowMan().Compile("SnowMan", 1, 64.0f, 64.0f).Save("Models\\Mobs\\Passive\\SnowMan.xml");
+			new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
+			new ModelBiped().Save("Human", 1, 64, 32, "Models\\Mobs\\Passive\\Human.xml");
+			new ModelVillager().Save("Villager", 1, 64, 64, "Models\\Mobs\\Passive\\Villager.xml");
+			new ModelCow().Save("Cow", 1, 64, 32, "Models\\Mobs\\Passive\\Cow.xml");
+			new ModelChicken().Save("Chicken", 1, 64, 32, "Models\\Mobs\\Passive\\Chicken.xml");
+			new ModelSquid().Save("Squid", 1, 64, 32, "Models\\Mobs\\Passive\\Squid.xml");
+			new ModelWolf().Save("Wolf", 1, 64, 32, "Models\\Mobs\\Passive\\Wolf.xml");
+			new ModelSheep1().Save("Sheep Fur", 1, 64, 32, "Models\\Mobs\\Passive\\Sheep Fur.xml");
+			new ModelSheep2().Save("Sheep", 1, 64, 32, "Models\\Mobs\\Passive\\Sheep.xml");
+			new ModelSnowMan().Save("SnowMan", 1, 64, 64, "Models\\Mobs\\Passive\\SnowMan.xml");
 
-			new ModelChest().Compile("Chest", 1, 64.0f, 64.0f).Save("Models\\Other\\Chest.xml");
-			new ModelLargeChest().Compile("Large Chest", 1, 128.0f, 64.0f).Save("Models\\Other\\LargeChest.xml");
-			new ModelBoat().Compile("Boat", 1, 64.0f, 32.0f).Save("Models\\Other\\Boat.xml");
-			new SignModel().Compile("Sign", 1, 64.0f, 32.0f).Save("Models\\Other\\Sign.xml");
-			new ModelBook().Compile("Book", 1, 64.0f, 32.0f).Save("Models\\Other\\Book.xml");
-			new ModelMinecart().Compile("Minecart", 1, 64.0f, 32.0f).Save("Models\\Other\\Minecart.xml");
-			new ModelEnderCrystal().Compile("Ender Crystal", 1, 128.0f, 64.0f).Save("Models\\Other\\EnderCrystal.xml");
+			new ModelChest().Save("Chest", 1, 64, 64, "Models\\Other\\Chest.xml");
+			new ModelLargeChest().Save("Large Chest", 1, 128, 64, "Models\\Other\\LargeChest.xml");
+			new ModelBoat().Save("Boat", 1, 64, 32, "Models\\Other\\Boat.xml");
+			new SignModel().Save("Sign", 1, 64, 32, "Models\\Other\\Sign.xml");
+			new ModelBook().Save("Book", 1, 64, 32, "Models\\Other\\Book.xml");
+			new ModelMinecart().Save("Minecart", 1, 64, 32, "Models\\Other\\Minecart.xml");
+			new ModelEnderCrystal().Save("Ender Crystal", 1, 128, 64, "Models\\Other\\EnderCrystal.xml");
 
-			new ModelCreeper().Compile("Creeper", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Creeper.xml");
-			new ModelSlime(0).Compile("Tiny Slime", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\TinySlime.xml");
-			new ModelSlime(16).Compile("Small Slime", 2, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\SmallSlime.xml");
-			new ModelSlime(16).Compile("Medium Slime", 3, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\MediumSlime.xml");
-			new ModelSlime(16).Compile("Huge Slime", 4, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\HugeSlime.xml");
-			new ModelMagmaCube().Compile("Tiny Magma Cube", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
-			new ModelMagmaCube().Compile("Small Magma Cube", 2, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
-			new ModelMagmaCube().Compile("Medium Magma Cube", 3, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
-			new ModelMagmaCube().Compile("Huge Magma Cube", 4, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
-			new ModelBlaze().Compile("Blaze", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Blaze.xml");
-			new ModelSilverfish().Compile("Silverfish", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Silverfish.xml");
-			new ModelEnderman().Compile("Enderman", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Enderman.xml");
-			new ModelGhast().Compile("Ghast", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Ghast.xml");
-			new ModelSpider().Compile("Spider", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Spider.xml");
-			new ModelZombie().Compile("Zombie", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Zombie.xml");
-			new ModelSkeleton().Compile("Skeleton", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Hostile\\Skeleton.xml");
-			new ModelCloak().Compile("Cloak", 1, 64.0f, 32.0f).Save("Models\\Other\\Cloak.xml");
-			new ModelArmor().Compile("Armor", 1, 64.0f, 32.0f).Save("Models\\Other\\Armor.xml");
+			new ModelCreeper().Save("Creeper", 1, 64, 32, "Models\\Mobs\\Hostile\\Creeper.xml");
+			new ModelSlime(0).Save("Tiny Slime", 1, 64, 32, "Models\\Mobs\\Hostile\\TinySlime.xml");
+			new ModelSlime(16).Save("Small Slime", 2, 64, 32, "Models\\Mobs\\Hostile\\SmallSlime.xml");
+			new ModelSlime(16).Save("Medium Slime", 3, 64, 32, "Models\\Mobs\\Hostile\\MediumSlime.xml");
+			new ModelSlime(16).Save("Huge Slime", 4, 64, 32, "Models\\Mobs\\Hostile\\HugeSlime.xml");
+			new ModelMagmaCube().Save("Tiny Magma Cube", 1, 64, 32, "Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
+			new ModelMagmaCube().Save("Small Magma Cube", 2, 64, 32, "Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
+			new ModelMagmaCube().Save("Medium Magma Cube", 3, 64, 32, "Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
+			new ModelMagmaCube().Save("Huge Magma Cube", 4, 64, 32, "Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
+			new ModelBlaze().Save("Blaze", 1, 64, 32, "Models\\Mobs\\Hostile\\Blaze.xml");
+			new ModelSilverfish().Save("Silverfish", 1, 64, 32, "Models\\Mobs\\Hostile\\Silverfish.xml");
+			new ModelEnderman().Save("Enderman", 1, 64, 32, "Models\\Mobs\\Hostile\\Enderman.xml");
+			new ModelGhast().Save("Ghast", 1, 64, 32, "Models\\Mobs\\Hostile\\Ghast.xml");
+			new ModelSpider().Save("Spider", 1, 64, 32, "Models\\Mobs\\Hostile\\Spider.xml");
+			new ModelZombie().Save("Zombie", 1, 64, 32, "Models\\Mobs\\Hostile\\Zombie.xml");
+			new ModelSkeleton().Save("Skeleton", 1, 64, 32, "Models\\Mobs\\Hostile\\Skeleton.xml");
+			new ModelCloak().Save("Cloak", 1, 64, 32, "Models\\Other\\Cloak.xml");
+			new ModelArmor().Save("Armor", 1, 64, 32, "Models\\Other\\Armor.xml");
 
-			new ModelOzelot().Compile("Ozelot", 1, 64.0f, 32.0f).Save("Models\\Mobs\\Passive\\Ozelot.xml");
-			new ModelGolem().Compile("Golem", 1, 96, 96).Save("Models\\Mobs\\Passive\\Golem.xml");
+			new ModelOzelot().Save("Ozelot", 1, 64, 32, "Models\\Mobs\\Passive\\Ozelot.xml");
+			new ModelGolem().Save("Golem", 1, 96, 96, "Models\\Mobs\\Passive\\Golem.xml");
 
-			new pm_Pony().init(true, true).Compile("Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\Pony.xml");
-			new pm_newPonyAdv().init(0, 0).Compile("New Pony", 1, 64.0f, 32.0f).Save("Models\\Mine Little Pony\\New Pony.xml");*/
+			new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
+			new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");
 
 			Directory.CreateDirectory("Models");
 
-			foreach (var m in Directory.GetFiles("Models", "*.xml", SearchOption.AllDirectories))
-			{
+			ModelFormatTCN tcnParser = new ModelFormatTCN();
+
+			foreach (var m in Directory.GetFiles("Models", "*.*", SearchOption.AllDirectories))
+			{	
 				try
 				{
-					Model model = Model.Load(m);
+					Model model = tcnParser.Load(m);
 
 					if (model == null)
 						continue;

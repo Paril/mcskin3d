@@ -103,7 +103,7 @@ namespace Paril.OpenGL
 		public Vector3 Translate, Rotate;
 		public Vector3 Pivot;
 
-		public bool Helmet;
+		public bool HasTransparency;
 		public bool FollowCursor;
 		public float RotateFactor;
 		public Vector3 Center;
@@ -119,26 +119,26 @@ namespace Paril.OpenGL
 			Name = name;
 		}
 
-		internal static string VertexToString(Vector3 v)
+		internal static string VertexToString(Vector3 v, string sep = " ")
 		{
-			return v.X.ToString(CultureInfo.InvariantCulture) + " " + v.Y.ToString(CultureInfo.InvariantCulture) + " " + v.Z.ToString(CultureInfo.InvariantCulture);
+			return v.X.ToString(CultureInfo.InvariantCulture) + sep + v.Y.ToString(CultureInfo.InvariantCulture) + sep + v.Z.ToString(CultureInfo.InvariantCulture);
 		}
 
-		internal static string VertexToString(Vector2 v)
+		internal static string VertexToString(Vector2 v, string sep = " ")
 		{
-			return v.X.ToString(CultureInfo.InvariantCulture) + " " + v.Y.ToString(CultureInfo.InvariantCulture);
+			return v.X.ToString(CultureInfo.InvariantCulture) + sep + v.Y.ToString(CultureInfo.InvariantCulture);
 		}
 
 		internal static Vector3 StringToVertex3(string s)
 		{
-			var spl = s.Split();
+			var spl = s.Split(new char[] { ' ', '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             return new Vector3(float.Parse(spl[0], CultureInfo.InvariantCulture), float.Parse(spl[1], CultureInfo.InvariantCulture), float.Parse(spl[2], CultureInfo.InvariantCulture));
 		}
 
 		internal static Vector2 StringToVertex2(string s)
 		{
-			var spl = s.Split();
+			var spl = s.Split(new char[] { ' ', '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             return new Vector2(float.Parse(spl[0], CultureInfo.InvariantCulture), float.Parse(spl[1], CultureInfo.InvariantCulture));
 		}
@@ -150,7 +150,7 @@ namespace Paril.OpenGL
 			writer.WriteAttributeString("Mode", Mode.ToString());
 			writer.WriteAttributeString("Translate", VertexToString(Translate));
 			writer.WriteAttributeString("Pivot", VertexToString(Pivot));
-			writer.WriteAttributeString("IsHelmet", Helmet.ToString());
+			writer.WriteAttributeString("IsHelmet", HasTransparency.ToString());
 			writer.WriteAttributeString("FollowCursor", FollowCursor.ToString());
 			writer.WriteAttributeString("RotateFactor", RotateFactor.ToString());
 			writer.WriteAttributeString("Rotate", VertexToString(Rotate));
@@ -259,8 +259,6 @@ namespace Paril.OpenGL
 		// P: polygon support required? used bounds 'n stuff but, you know...
 		public Rectangle GetTextureFaceBounds(Point p, Skin skin)
 		{
-			Rectangle b = new Rectangle();
-
 			foreach (var m in Meshes)
 			{
 				foreach (var f in m.Faces)
@@ -278,10 +276,40 @@ namespace Paril.OpenGL
 				}
 			}
 
-			return b;
+			return new Rectangle();
 		}
 
-		public void Save(string fileName)
+		public List<int> GetIntersectingParts(Point p, Skin skin)
+		{
+			int mesh = 0;
+			List<int> parts = new List<int>();
+
+			foreach (var m in Meshes)
+			{
+				foreach (var f in m.Faces)
+				{
+					Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+
+					foreach (var c in f.TexCoords)
+					{
+						var coord = new Vector2(c.X * skin.Width, c.Y * skin.Height);
+						bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+					}
+
+					if (bounds.ToRectangle().Contains(p))
+					{
+						parts.Add(mesh);
+						break;
+					}
+				}
+
+				mesh++;
+			}
+
+			return parts;
+		}
+
+		/*public void Save(string fileName)
 		{
 			XmlWriterSettings settings = new XmlWriterSettings();
 			settings.ConformanceLevel = ConformanceLevel.Fragment;
@@ -301,7 +329,7 @@ namespace Paril.OpenGL
 
 				writer.WriteEndElement();
 			}
-		}
+		}*/
 
 		public static Vector3 TranslateVertex(Vector3 Translate, Vector3 Rotate, Vector3 Pivot, Vector3 v)
 		{
@@ -354,7 +382,7 @@ namespace Paril.OpenGL
 				if (n.Attributes["Pivot"] != null)
 					mesh.Pivot = Mesh.StringToVertex3(n.Attributes["Pivot"].InnerText);
 				if (n.Attributes["IsHelmet"] != null)
-					mesh.Helmet = bool.Parse(n.Attributes["IsHelmet"].InnerText);
+					mesh.HasTransparency = bool.Parse(n.Attributes["IsHelmet"].InnerText);
 				if (n.Attributes["FollowCursor"] != null)
 					mesh.FollowCursor = bool.Parse(n.Attributes["FollowCursor"].InnerText);
 				if (n.Attributes["RotateFactor"] != null)
@@ -540,6 +568,8 @@ namespace Paril.OpenGL
 		{
 			get
 			{
+				if (File.Directory.FullName.Length < Environment.CurrentDirectory.Length + 1 + "Models/".Length)
+					return Name;
 				return File.Directory.FullName.Substring(Environment.CurrentDirectory.Length + 1 + "Models/".Length).Replace('\\', '/') + '/' + Name;
 			}
 		}
@@ -647,7 +677,7 @@ namespace Paril.OpenGL
 
 		public void AddMesh(Mesh mesh)
 		{
-			if (mesh.Helmet || mesh.Faces[0].Colors[0].A != 1)
+			if (mesh.HasTransparency || mesh.Faces[0].Colors[0].A != 1)
 				TransparentMeshes.Add(mesh);
 			else
 				OpaqueMeshes.Add(mesh);

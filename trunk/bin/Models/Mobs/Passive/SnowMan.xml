@@ -1,612 +1,98 @@
-﻿<Model Name="SnowMan" DefaultWidth="64" DefaultHeight="64">
-	<Mesh Name="Head" Mode="Quads" Translate="0 4 0" Pivot="0 4 0" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 1.570796 0" Part="HeadFlag">
-		<Face>
-			<Vertices>
-				<Vertex>3.5 -7.5 3.5</Vertex>
-				<Vertex>3.5 -7.5 -3.5</Vertex>
-				<Vertex>3.5 -0.5 -3.5</Vertex>
-				<Vertex>3.5 -0.5 3.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.125</Coord>
-				<Coord>0.25 0.125</Coord>
-				<Coord>0.25 0.25</Coord>
-				<Coord>0.375 0.25</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-3.5 -7.5 -3.5</Vertex>
-				<Vertex>-3.5 -7.5 3.5</Vertex>
-				<Vertex>-3.5 -0.5 3.5</Vertex>
-				<Vertex>-3.5 -0.5 -3.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.125 0.125</Coord>
-				<Coord>0 0.125</Coord>
-				<Coord>0 0.25</Coord>
-				<Coord>0.125 0.25</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>3.5 -7.5 3.5</Vertex>
-				<Vertex>-3.5 -7.5 3.5</Vertex>
-				<Vertex>-3.5 -7.5 -3.5</Vertex>
-				<Vertex>3.5 -7.5 -3.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.25 0</Coord>
-				<Coord>0.125 0</Coord>
-				<Coord>0.125 0.125</Coord>
-				<Coord>0.25 0.125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>3.5 -0.5 -3.5</Vertex>
-				<Vertex>-3.5 -0.5 -3.5</Vertex>
-				<Vertex>-3.5 -0.5 3.5</Vertex>
-				<Vertex>3.5 -0.5 3.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.125</Coord>
-				<Coord>0.25 0.125</Coord>
-				<Coord>0.25 0</Coord>
-				<Coord>0.375 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>3.5 -7.5 -3.5</Vertex>
-				<Vertex>-3.5 -7.5 -3.5</Vertex>
-				<Vertex>-3.5 -0.5 -3.5</Vertex>
-				<Vertex>3.5 -0.5 -3.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.25 0.125</Coord>
-				<Coord>0.125 0.125</Coord>
-				<Coord>0.125 0.25</Coord>
-				<Coord>0.25 0.25</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-3.5 -7.5 3.5</Vertex>
-				<Vertex>3.5 -7.5 3.5</Vertex>
-				<Vertex>3.5 -0.5 3.5</Vertex>
-				<Vertex>-3.5 -0.5 3.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5 0.125</Coord>
-				<Coord>0.375 0.125</Coord>
-				<Coord>0.375 0.25</Coord>
-				<Coord>0.5 0.25</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Top" Mode="Quads" Translate="4.999883 6 -0.03426919" Pivot="4.999883 6 -0.03426919" IsHelmet="False" FollowCursor="True" RotateFactor="0" Rotate="0 0.3926991 57.29578" Part="HelmetFlag">
-		<Face>
-			<Vertices>
-				<Vertex>10.5 0.5 0.5</Vertex>
-				<Vertex>10.5 0.5 -0.5</Vertex>
-				<Vertex>10.5 1.5 -0.5</Vertex>
-				<Vertex>10.5 1.5 0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.75 0.03125</Coord>
-				<Coord>0.71875 0.03125</Coord>
-				<Coord>0.71875 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-0.5 0.5 -0.5</Vertex>
-				<Vertex>-0.5 0.5 0.5</Vertex>
-				<Vertex>-0.5 1.5 0.5</Vertex>
-				<Vertex>-0.5 1.5 -0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.53125 0.03125</Coord>
-				<Coord>0.5 0.03125</Coord>
-				<Coord>0.5 0.0625</Coord>
-				<Coord>0.53125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10.5 0.5 0.5</Vertex>
-				<Vertex>-0.5 0.5 0.5</Vertex>
-				<Vertex>-0.5 0.5 -0.5</Vertex>
-				<Vertex>10.5 0.5 -0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.71875 0</Coord>
-				<Coord>0.53125 0</Coord>
-				<Coord>0.53125 0.03125</Coord>
-				<Coord>0.71875 0.03125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10.5 1.5 -0.5</Vertex>
-				<Vertex>-0.5 1.5 -0.5</Vertex>
-				<Vertex>-0.5 1.5 0.5</Vertex>
-				<Vertex>10.5 1.5 0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.90625 0.03125</Coord>
-				<Coord>0.71875 0.03125</Coord>
-				<Coord>0.71875 0</Coord>
-				<Coord>0.90625 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10.5 0.5 -0.5</Vertex>
-				<Vertex>-0.5 0.5 -0.5</Vertex>
-				<Vertex>-0.5 1.5 -0.5</Vertex>
-				<Vertex>10.5 1.5 -0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.71875 0.03125</Coord>
-				<Coord>0.53125 0.03125</Coord>
-				<Coord>0.53125 0.0625</Coord>
-				<Coord>0.71875 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-0.5 0.5 0.5</Vertex>
-				<Vertex>10.5 0.5 0.5</Vertex>
-				<Vertex>10.5 1.5 0.5</Vertex>
-				<Vertex>-0.5 1.5 0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.9375 0.03125</Coord>
-				<Coord>0.75 0.03125</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.9375 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Bottom" Mode="Quads" Translate="-4.999883 6 0.03426919" Pivot="-4.999883 6 0.03426919" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 180.3927 -57.29578" Part="ChestFlag">
-		<Face>
-			<Vertices>
-				<Vertex>10.5 0.5 0.5</Vertex>
-				<Vertex>10.5 0.5 -0.5</Vertex>
-				<Vertex>10.5 1.5 -0.5</Vertex>
-				<Vertex>10.5 1.5 0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.75 0.03125</Coord>
-				<Coord>0.71875 0.03125</Coord>
-				<Coord>0.71875 0.0625</Coord>
-				<Coord>0.75 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-0.5 0.5 -0.5</Vertex>
-				<Vertex>-0.5 0.5 0.5</Vertex>
-				<Vertex>-0.5 1.5 0.5</Vertex>
-				<Vertex>-0.5 1.5 -0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.53125 0.03125</Coord>
-				<Coord>0.5 0.03125</Coord>
-				<Coord>0.5 0.0625</Coord>
-				<Coord>0.53125 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10.5 0.5 0.5</Vertex>
-				<Vertex>-0.5 0.5 0.5</Vertex>
-				<Vertex>-0.5 0.5 -0.5</Vertex>
-				<Vertex>10.5 0.5 -0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.71875 0</Coord>
-				<Coord>0.53125 0</Coord>
-				<Coord>0.53125 0.03125</Coord>
-				<Coord>0.71875 0.03125</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10.5 1.5 -0.5</Vertex>
-				<Vertex>-0.5 1.5 -0.5</Vertex>
-				<Vertex>-0.5 1.5 0.5</Vertex>
-				<Vertex>10.5 1.5 0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.90625 0.03125</Coord>
-				<Coord>0.71875 0.03125</Coord>
-				<Coord>0.71875 0</Coord>
-				<Coord>0.90625 0</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>10.5 0.5 -0.5</Vertex>
-				<Vertex>-0.5 0.5 -0.5</Vertex>
-				<Vertex>-0.5 1.5 -0.5</Vertex>
-				<Vertex>10.5 1.5 -0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.71875 0.03125</Coord>
-				<Coord>0.53125 0.03125</Coord>
-				<Coord>0.53125 0.0625</Coord>
-				<Coord>0.71875 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-0.5 0.5 0.5</Vertex>
-				<Vertex>10.5 0.5 0.5</Vertex>
-				<Vertex>10.5 1.5 0.5</Vertex>
-				<Vertex>-0.5 1.5 0.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.9375 0.03125</Coord>
-				<Coord>0.75 0.03125</Coord>
-				<Coord>0.75 0.0625</Coord>
-				<Coord>0.9375 0.0625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Left Arm" Mode="Quads" Translate="0 13 0" Pivot="0 13 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0.3926991 0" Part="LeftArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>4.5 -9.5 4.5</Vertex>
-				<Vertex>4.5 -9.5 -4.5</Vertex>
-				<Vertex>4.5 -0.5 -4.5</Vertex>
-				<Vertex>4.5 -0.5 4.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.46875 0.40625</Coord>
-				<Coord>0.3125 0.40625</Coord>
-				<Coord>0.3125 0.5625</Coord>
-				<Coord>0.46875 0.5625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-4.5 -9.5 -4.5</Vertex>
-				<Vertex>-4.5 -9.5 4.5</Vertex>
-				<Vertex>-4.5 -0.5 4.5</Vertex>
-				<Vertex>-4.5 -0.5 -4.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.15625 0.40625</Coord>
-				<Coord>0 0.40625</Coord>
-				<Coord>0 0.5625</Coord>
-				<Coord>0.15625 0.5625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4.5 -9.5 4.5</Vertex>
-				<Vertex>-4.5 -9.5 4.5</Vertex>
-				<Vertex>-4.5 -9.5 -4.5</Vertex>
-				<Vertex>4.5 -9.5 -4.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.3125 0.25</Coord>
-				<Coord>0.15625 0.25</Coord>
-				<Coord>0.15625 0.40625</Coord>
-				<Coord>0.3125 0.40625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4.5 -0.5 -4.5</Vertex>
-				<Vertex>-4.5 -0.5 -4.5</Vertex>
-				<Vertex>-4.5 -0.5 4.5</Vertex>
-				<Vertex>4.5 -0.5 4.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.46875 0.40625</Coord>
-				<Coord>0.3125 0.40625</Coord>
-				<Coord>0.3125 0.25</Coord>
-				<Coord>0.46875 0.25</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>4.5 -9.5 -4.5</Vertex>
-				<Vertex>-4.5 -9.5 -4.5</Vertex>
-				<Vertex>-4.5 -0.5 -4.5</Vertex>
-				<Vertex>4.5 -0.5 -4.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.3125 0.40625</Coord>
-				<Coord>0.15625 0.40625</Coord>
-				<Coord>0.15625 0.5625</Coord>
-				<Coord>0.3125 0.5625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-4.5 -9.5 4.5</Vertex>
-				<Vertex>4.5 -9.5 4.5</Vertex>
-				<Vertex>4.5 -0.5 4.5</Vertex>
-				<Vertex>-4.5 -0.5 4.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.625 0.40625</Coord>
-				<Coord>0.46875 0.40625</Coord>
-				<Coord>0.46875 0.5625</Coord>
-				<Coord>0.625 0.5625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-	<Mesh Name="Right Arm" Mode="Quads" Translate="0 24 0" Pivot="0 24 0" IsHelmet="False" FollowCursor="False" RotateFactor="0" Rotate="0 0 0" Part="RightArmFlag">
-		<Face>
-			<Vertices>
-				<Vertex>5.5 -11.5 5.5</Vertex>
-				<Vertex>5.5 -11.5 -5.5</Vertex>
-				<Vertex>5.5 -0.5 -5.5</Vertex>
-				<Vertex>5.5 -0.5 5.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.75</Coord>
-				<Coord>0.375 0.75</Coord>
-				<Coord>0.375 0.9375</Coord>
-				<Coord>0.5625 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-5.5 -11.5 -5.5</Vertex>
-				<Vertex>-5.5 -11.5 5.5</Vertex>
-				<Vertex>-5.5 -0.5 5.5</Vertex>
-				<Vertex>-5.5 -0.5 -5.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.1875 0.75</Coord>
-				<Coord>0 0.75</Coord>
-				<Coord>0 0.9375</Coord>
-				<Coord>0.1875 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>5.5 -11.5 5.5</Vertex>
-				<Vertex>-5.5 -11.5 5.5</Vertex>
-				<Vertex>-5.5 -11.5 -5.5</Vertex>
-				<Vertex>5.5 -11.5 -5.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.5625</Coord>
-				<Coord>0.1875 0.5625</Coord>
-				<Coord>0.1875 0.75</Coord>
-				<Coord>0.375 0.75</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>5.5 -0.5 -5.5</Vertex>
-				<Vertex>-5.5 -0.5 -5.5</Vertex>
-				<Vertex>-5.5 -0.5 5.5</Vertex>
-				<Vertex>5.5 -0.5 5.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.5625 0.75</Coord>
-				<Coord>0.375 0.75</Coord>
-				<Coord>0.375 0.5625</Coord>
-				<Coord>0.5625 0.5625</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>5.5 -11.5 -5.5</Vertex>
-				<Vertex>-5.5 -11.5 -5.5</Vertex>
-				<Vertex>-5.5 -0.5 -5.5</Vertex>
-				<Vertex>5.5 -0.5 -5.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.375 0.75</Coord>
-				<Coord>0.1875 0.75</Coord>
-				<Coord>0.1875 0.9375</Coord>
-				<Coord>0.375 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-		<Face>
-			<Vertices>
-				<Vertex>-5.5 -11.5 5.5</Vertex>
-				<Vertex>5.5 -11.5 5.5</Vertex>
-				<Vertex>5.5 -0.5 5.5</Vertex>
-				<Vertex>-5.5 -0.5 5.5</Vertex>
-			</Vertices>
-			<TexCoords>
-				<Coord>0.75 0.75</Coord>
-				<Coord>0.5625 0.75</Coord>
-				<Coord>0.5625 0.9375</Coord>
-				<Coord>0.75 0.9375</Coord>
-			</TexCoords>
-			<Indices>
-				<Index>3</Index>
-				<Index>2</Index>
-				<Index>1</Index>
-				<Index>0</Index>
-			</Indices>
-		</Face>
-	</Mesh>
-</Model>
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Head">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,4,0</Offset>
+						<Position>-4,-8,-4</Position>
+						<Rotation>0,1.570796,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>-0.5</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Top">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>4.999883,6,-0.03426919</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,0.3926991,57.29578</Rotation>
+						<Size>12,2,2</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>-0.5</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Bottom">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-4.999883,6,0.03426919</Offset>
+						<Position>-1,0,-1</Position>
+						<Rotation>0,180.3927,-57.29578</Rotation>
+						<Size>12,2,2</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>-0.5</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,13,0</Offset>
+						<Position>-5,-10,-5</Position>
+						<Rotation>0,0.3926991,0</Rotation>
+						<Size>10,10,10</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>-0.5</Scale>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,24,0</Offset>
+						<Position>-6,-12,-6</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,12,12</Size>
+						<TextureOffset>0,36</TextureOffset>
+						<Scale>-0.5</Scale>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>SnowMan</Name>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>SnowMan</Name>
+</Techne>

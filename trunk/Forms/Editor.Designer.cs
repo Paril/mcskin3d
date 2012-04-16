@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			MCSkin3D.lemon42.ColorManager colorManager1 = new MCSkin3D.lemon42.ColorManager();
-			MCSkin3D.lemon42.ColorManager colorManager2 = new MCSkin3D.lemon42.ColorManager();
+			MCSkin3D.lemon42.ColorManager colorManager3 = new MCSkin3D.lemon42.ColorManager();
+			MCSkin3D.lemon42.ColorManager colorManager4 = new MCSkin3D.lemon42.ColorManager();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
 			this.mainMenuStrip = new Paril.Controls.NativeMenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1232,12 +1232,12 @@
 			this.colorPanel.Location = new System.Drawing.Point(0, 0);
 			this.colorPanel.MinimumSize = new System.Drawing.Size(303, 277);
 			this.colorPanel.Name = "colorPanel";
-			colorManager1.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
-			this.colorPanel.SelectedColor = colorManager1;
+			colorManager3.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
+			this.colorPanel.SelectedColor = colorManager3;
 			this.colorPanel.Size = new System.Drawing.Size(303, 277);
 			this.colorPanel.TabIndex = 0;
-			colorManager2.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
-			this.colorPanel.UnselectedColor = colorManager2;
+			colorManager4.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
+			this.colorPanel.UnselectedColor = colorManager4;
 			// 
 			// panel4
 			// 

@@ -145,6 +145,8 @@
       <DependentUpon>ColorPick.cs</DependentUpon>
     </Compile>
     <Compile Include="lemon42\Color\ColorPickUtil.cs" />
+    <Compile Include="Models\IModelFormat.cs" />
+    <Compile Include="Models\ModelFormatTCN.cs" />
     <Compile Include="ObjectListView\CellEditing\CellEditKeyEngine.cs" />
     <Compile Include="ObjectListView\CellEditing\CellEditors.cs">
       <SubType>Component</SubType>
@@ -332,6 +334,67 @@
     <Compile Include="PopupControl\PopupComboBox.designer.cs">
       <DependentUpon>PopupComboBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="SharpZip\BZip2\BZip2.cs" />
+    <Compile Include="SharpZip\BZip2\BZip2Constants.cs" />
+    <Compile Include="SharpZip\BZip2\BZip2Exception.cs" />
+    <Compile Include="SharpZip\BZip2\BZip2InputStream.cs" />
+    <Compile Include="SharpZip\BZip2\BZip2OutputStream.cs" />
+    <Compile Include="SharpZip\Checksums\Adler32.cs" />
+    <Compile Include="SharpZip\Checksums\CRC32.cs" />
+    <Compile Include="SharpZip\Checksums\IChecksum.cs" />
+    <Compile Include="SharpZip\Checksums\StrangeCRC.cs" />
+    <Compile Include="SharpZip\Core\FileSystemScanner.cs" />
+    <Compile Include="SharpZip\Core\INameTransform.cs" />
+    <Compile Include="SharpZip\Core\IScanFilter.cs" />
+    <Compile Include="SharpZip\Core\NameFilter.cs" />
+    <Compile Include="SharpZip\Core\PathFilter.cs" />
+    <Compile Include="SharpZip\Core\StreamUtils.cs" />
+    <Compile Include="SharpZip\Core\WindowsPathUtils.cs" />
+    <Compile Include="SharpZip\Encryption\PkzipClassic.cs" />
+    <Compile Include="SharpZip\Encryption\ZipAESStream.cs" />
+    <Compile Include="SharpZip\Encryption\ZipAESTransform.cs" />
+    <Compile Include="SharpZip\GZip\GZIPConstants.cs" />
+    <Compile Include="SharpZip\GZip\GZipException.cs" />
+    <Compile Include="SharpZip\GZip\GzipInputStream.cs" />
+    <Compile Include="SharpZip\GZip\GzipOutputStream.cs" />
+    <Compile Include="SharpZip\Lzw\LzwConstants.cs" />
+    <Compile Include="SharpZip\Lzw\LzwException.cs" />
+    <Compile Include="SharpZip\Lzw\LzwInputStream.cs" />
+    <Compile Include="SharpZip\SharpZipBaseException.cs" />
+    <Compile Include="SharpZip\Tar\InvalidHeaderException.cs" />
+    <Compile Include="SharpZip\Tar\TarArchive.cs" />
+    <Compile Include="SharpZip\Tar\TarBuffer.cs" />
+    <Compile Include="SharpZip\Tar\TarEntry.cs" />
+    <Compile Include="SharpZip\Tar\TarException.cs" />
+    <Compile Include="SharpZip\Tar\TarHeader.cs" />
+    <Compile Include="SharpZip\Tar\TarInputStream.cs" />
+    <Compile Include="SharpZip\Tar\TarOutputStream.cs" />
+    <Compile Include="SharpZip\Zip\Compression\Deflater.cs" />
+    <Compile Include="SharpZip\Zip\Compression\DeflaterConstants.cs" />
+    <Compile Include="SharpZip\Zip\Compression\DeflaterEngine.cs" />
+    <Compile Include="SharpZip\Zip\Compression\DeflaterHuffman.cs" />
+    <Compile Include="SharpZip\Zip\Compression\DeflaterPending.cs" />
+    <Compile Include="SharpZip\Zip\Compression\Inflater.cs" />
+    <Compile Include="SharpZip\Zip\Compression\InflaterDynHeader.cs" />
+    <Compile Include="SharpZip\Zip\Compression\InflaterHuffmanTree.cs" />
+    <Compile Include="SharpZip\Zip\Compression\PendingBuffer.cs" />
+    <Compile Include="SharpZip\Zip\Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="SharpZip\Zip\Compression\Streams\InflaterInputStream.cs" />
+    <Compile Include="SharpZip\Zip\Compression\Streams\OutputWindow.cs" />
+    <Compile Include="SharpZip\Zip\Compression\Streams\StreamManipulator.cs" />
+    <Compile Include="SharpZip\Zip\FastZip.cs" />
+    <Compile Include="SharpZip\Zip\IEntryFactory.cs" />
+    <Compile Include="SharpZip\Zip\WindowsNameTransform.cs" />
+    <Compile Include="SharpZip\Zip\ZipConstants.cs" />
+    <Compile Include="SharpZip\Zip\ZipEntry.cs" />
+    <Compile Include="SharpZip\Zip\ZipEntryFactory.cs" />
+    <Compile Include="SharpZip\Zip\ZipException.cs" />
+    <Compile Include="SharpZip\Zip\ZipExtraData.cs" />
+    <Compile Include="SharpZip\Zip\ZipFile.cs" />
+    <Compile Include="SharpZip\Zip\ZipHelperStream.cs" />
+    <Compile Include="SharpZip\Zip\ZipInputStream.cs" />
+    <Compile Include="SharpZip\Zip\ZipNameTransform.cs" />
+    <Compile Include="SharpZip\Zip\ZipOutputStream.cs" />
     <Compile Include="SVN.cs" />
     <Compile Include="Swatches\ACOSwatch.cs" />
     <Compile Include="Swatches\ACTSwatch.cs" />
