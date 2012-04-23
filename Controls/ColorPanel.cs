@@ -373,6 +373,14 @@ namespace MCSkin3D.Controls
 			{
 			}
 		}
+
+		private void colorPick1_HSVChanged(object sender, EventArgs e)
+		{
+			if (_skipColors)
+				return;
+
+			SetColor(ColorManager.FromHSVA(colorPick1.CurrentHSV.H, colorPick1.CurrentHSV.S, colorPick1.CurrentHSV.V, SelectedColor.HSV.A));
+		}
 	}
 		#endregion
 }

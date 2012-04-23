@@ -66,9 +66,14 @@ namespace MCSkin3D
 				var p = kvp.Key;
 				var color = kvp.Value;
 				grabber[p.X, p.Y] = new ColorPixel(color.Item1.R | (color.Item1.G << 8) | (color.Item1.B << 16) | (color.Item1.A << 24));
+
+				if (!Editor.MainForm.PaintedPixels.ContainsKey(p))
+					Editor.MainForm.PaintedPixels.Add(p, true);
 			}
 
 			grabber.Save();
+
+			Editor.MainForm.SetPartTransparencies();
 		}
 
 		public void Redo(object obj)
@@ -83,9 +88,14 @@ namespace MCSkin3D
 				var p = kvp.Key;
 				var color = kvp.Value;
 				grabber[p.X, p.Y] = new ColorPixel(color.Item2.Color.R | (color.Item2.Color.G << 8) | (color.Item2.Color.B << 16) | (color.Item2.Color.A << 24));
+			
+				if (!Editor.MainForm.PaintedPixels.ContainsKey(p))
+					Editor.MainForm.PaintedPixels.Add(p, true);
 			}
 
 			grabber.Save();
+
+			Editor.MainForm.SetPartTransparencies();
 		}
 	}
 }

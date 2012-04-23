@@ -167,8 +167,6 @@ namespace MCSkin3D
 			private ModelBase baseModel;
 
 			public VisiblePartFlags Flags;
-			public bool Helmet;
-			public bool Animate;
 
 			public ModelRenderer(ModelBase b, VisiblePartFlags flags, bool helmet, bool animate) :
 				this(b, null, flags, helmet, animate)
@@ -189,8 +187,6 @@ namespace MCSkin3D
 				setTextureSize(modelbase.textureWidth, modelbase.textureHeight);
 
 				Flags = flags;
-				Helmet = helmet;
-				Animate = animate;
 			}
 
 			public ModelRenderer(ModelBase modelbase, int i, int j, VisiblePartFlags flags, bool helmet, bool animate) :
@@ -264,18 +260,20 @@ namespace MCSkin3D
 			public float rotateAngleX;
 			public float rotateAngleY;
 			public float rotateAngleZ;
-			public float field_35977_i;
-			public float field_35975_j;
-			public float field_35976_k;
-			public float field_35973_l;
-			public float field_35974_m;
-			public float field_35972_n;
+			public float x;
+			public float y;
+			public float z;
+			public float xMax;
+			public float yMax;
+			public float zMax;
 			public bool compiled;
 			public int displayList;
 			public bool mirror;
 			public bool showModel;
 			public bool isHidden;
 			public string Name;
+			public float Offset;
+			public int Side;
 
 			public VisiblePartFlags Flags;
 			public bool Helmet;
@@ -318,12 +316,15 @@ namespace MCSkin3D
 
 			public void addBackPlane(float f, float f1, float f2, int i, int j, int k, float f3)
 			{
-				this.field_35977_i = f;
-				this.field_35975_j = f1;
-				this.field_35976_k = f2;
-				this.field_35973_l = (f + i);
-				this.field_35974_m = (f1 + j);
-				this.field_35972_n = (f2 + k);
+				Side = 0;
+				Offset = f3;
+
+				this.x = f;
+				this.y = f1;
+				this.z = f2;
+				this.xMax = (f + i);
+				this.yMax = (f1 + j);
+				this.zMax = (f2 + k);
 				this.corners = new PositionTextureVertex[8];
 				this.faces = new TexturedQuad[1];
 				float f4 = f + i;
@@ -365,12 +366,15 @@ namespace MCSkin3D
 
 			public void addSidePlane(float f, float f1, float f2, int i, int j, int k, float f3)
 			{
-				this.field_35977_i = f;
-				this.field_35975_j = f1;
-				this.field_35976_k = f2;
-				this.field_35973_l = (f + i);
-				this.field_35974_m = (f1 + j);
-				this.field_35972_n = (f2 + k);
+				Side = 1;
+				Offset = f3;
+				
+				this.x = f;
+				this.y = f1;
+				this.z = f2;
+				this.xMax = (f + i);
+				this.yMax = (f1 + j);
+				this.zMax = (f2 + k);
 				this.corners = new PositionTextureVertex[8];
 				this.faces = new TexturedQuad[1];
 				float f4 = f + i;
@@ -412,12 +416,15 @@ namespace MCSkin3D
 
 			public void addTopPlane(float f, float f1, float f2, int i, int j, int k, float f3)
 			{
-				this.field_35977_i = f;
-				this.field_35975_j = f1;
-				this.field_35976_k = f2;
-				this.field_35973_l = (f + i);
-				this.field_35974_m = (f1 + j);
-				this.field_35972_n = (f2 + k);
+				Side = 2;
+				Offset = f3;
+
+				this.x = f;
+				this.y = f1;
+				this.z = f2;
+				this.xMax = (f + i);
+				this.yMax = (f1 + j);
+				this.zMax = (f2 + k);
 				this.corners = new PositionTextureVertex[8];
 				this.faces = new TexturedQuad[1];
 				float f4 = f + i;
@@ -620,54 +627,15 @@ namespace MCSkin3D
 							Mesh mesh = new Mesh(face.Name);
 							mesh.Faces = new List<Face>();
 							mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-							mesh.HasTransparency = mesh.AllowTransparency = box.Helmet;
 							mesh.Part = box.Flags;
 							mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
 							mesh.Pivot = mesh.Translate;
-
-							if (box.Animate)
-								mesh.RotateFactor = (box.mirror) ? -25 : 25;
-
-							if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
-								mesh.FollowCursor = true;
 
 							mesh.Mode = BeginMode.Quads;
 
 							int[] cwIndices = new int[] { 0, 1, 2, 3 };
 							int[] cwwIndices = new int[] { 3, 2, 1, 0 };
 							Color4[] colors = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
-
-							if (box.Helmet)
-							{
-								foreach (var quad in face.field_40680_i)
-								{
-									List<Vector3> vertices = new List<Vector3>();
-									List<Vector2> texcoords = new List<Vector2>();
-
-									foreach (var x in quad.vertexPositions)
-									{
-										vertices.Add(x.vector3D * scale);
-										texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
-									}
-
-									Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
-
-									var zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
-									var one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
-									var two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
-
-									var dir = Vector3.Cross(one - zero, two - zero);
-									newFace.Normal = Vector3.Normalize(dir);
-
-									dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
-									var realNormal = Vector3.Normalize(dir);
-
-									if (realNormal == new Vector3(0, 1, 0))
-										newFace.Downface = true;
-									
-									mesh.Faces.Add(newFace);
-								}
-							}
 
 							foreach (var quad in face.field_40680_i)
 							{
@@ -694,12 +662,12 @@ namespace MCSkin3D
 
 								if (realNormal == new Vector3(0, 1, 0))
 									newFace.Downface = true;
-								
+
 								mesh.Faces.Add(newFace);
 							}
 
 							mesh.CalculateCenter();
-	
+
 							model.Meshes.Add(mesh);
 						}
 					}
@@ -715,49 +683,11 @@ namespace MCSkin3D
 						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX), MathHelper.RadiansToDegrees(box.rotateAngleY), MathHelper.RadiansToDegrees(box.rotateAngleZ));
 						mesh.Pivot = mesh.Translate;
 
-						if (box.Animate)
-							mesh.RotateFactor = (box.mirror) ? -25 : 25;
-
-						if (box.Flags == VisiblePartFlags.HelmetFlag || box.Flags == VisiblePartFlags.HeadFlag)
-							mesh.FollowCursor = true;
-
 						mesh.Mode = BeginMode.Quads;
 
 						int[] cwIndices = new int[] { 0, 1, 2, 3 };
 						int[] cwwIndices = new int[] { 3, 2, 1, 0 };
 						Color4[] colors = new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White };
-
-						if (box.Helmet || box.AlsoReverse)
-						{
-							foreach (var quad in box.faces)
-							{
-								List<Vector3> vertices = new List<Vector3>();
-								List<Vector2> texcoords = new List<Vector2>();
-
-								foreach (var x in quad.vertexPositions)
-								{
-									vertices.Add(x.vector3D * scale);
-									texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
-								}
-
-								Face newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
-
-								var zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
-								var one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
-								var two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
-
-								var dir = Vector3.Cross(one - zero, two - zero);
-								newFace.Normal = Vector3.Normalize(dir);
-
-								dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
-								var realNormal = Vector3.Normalize(dir);
-
-								if (realNormal == new Vector3(0, 1, 0))
-									newFace.Downface = true;
-								
-								mesh.Faces.Add(newFace);
-							}
-						}
 
 						foreach (var quad in box.faces)
 						{
@@ -789,10 +719,15 @@ namespace MCSkin3D
 						}
 
 						mesh.CalculateCenter();
-	
+
 						model.Meshes.Add(mesh);
 					}
 				}
+
+				model.PartsEnabled = new bool[model.Meshes.Count];
+
+				for (int i = 0; i < model.Meshes.Count; ++i)
+					model.PartsEnabled[i] = true;
 
 				return model;
 			}
@@ -857,6 +792,27 @@ namespace MCSkin3D
 
 								writer.WriteEndElement();
 							}
+						}
+						else if (mesh is PlaneRenderer)
+						{
+							PlaneRenderer renderer = (PlaneRenderer)mesh;
+
+							writer.WriteStartElement("Shape");
+							writer.WriteAttributeString("type", "ab894c83-e399-4236-808b-25a78d56f5e1");
+							writer.WriteAttributeString("name", renderer.Name);
+
+							writer.WriteElementString("IsMirrored", renderer.mirror.ToString());
+							writer.WriteElementString("Offset", renderer.rotationPointX + "," + renderer.rotationPointY + "," + renderer.rotationPointZ);
+							writer.WriteElementString("Position", renderer.x + "," + renderer.y + "," + renderer.z);
+							writer.WriteElementString("Rotation", MathHelper.RadiansToDegrees(renderer.rotateAngleX) + "," + MathHelper.RadiansToDegrees(renderer.rotateAngleY) + "," + MathHelper.RadiansToDegrees(renderer.rotateAngleZ));
+							writer.WriteElementString("Size", (renderer.xMax - renderer.x) + "," + (renderer.yMax - renderer.y) + "," + (renderer.zMax - renderer.z));
+							writer.WriteElementString("TextureOffset", renderer.textureOffsetX + "," + renderer.textureOffsetY);
+		
+							writer.WriteElementString("Scale", renderer.Offset.ToString());
+							
+							writer.WriteElementString("Side", renderer.Side.ToString());
+
+							writer.WriteEndElement();
 						}
 					}
 
@@ -1000,13 +956,7 @@ namespace MCSkin3D
 			public ModelArmor() :
 				base(0.5f)
 			{
-				bipedHead.Helmet = true;
 				boxList.Remove(bipedHeadwear);
-				bipedBody.Helmet = true;
-				bipedRightArm.Helmet = true;
-				bipedRightLeg.Helmet = true;
-				bipedLeftArm.Helmet = true;
-				bipedLeftLeg.Helmet = true;
 			}
 		}
 
@@ -1415,7 +1365,6 @@ namespace MCSkin3D
 				isAttacking = false;
 				float f = -14F;
 				float f1 = 0.0F;
-				bipedHead.Helmet = true;
 				boxList.Remove(bipedHeadwear);
 				bipedHeadwear = new ModelRenderer(this, 0, 16, VisiblePartFlags.HelmetFlag, true, false);
 				bipedHeadwear.addBox("Jaw", -4F, -8F, -4F, 8, 8, 8, f1 - 0.5F);
@@ -1996,8 +1945,6 @@ namespace MCSkin3D
 				bipedLeftLeg.addBox("Left Leg", -1F, 0.0F, -1F, 2, 12, 2, f);
 				bipedLeftLeg.setRotationPoint(2.0F, 12F, 0.0F);
 
-				bipedBody.Helmet = true;
-
 				setRotationAngles(0, 0, 0, 0, 0, 0);
 			}
 
@@ -2066,19 +2013,19 @@ namespace MCSkin3D
 				this.headpiece = new ModelRenderer[3];
 
 				this.headpiece[0] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, false, false);
-				this.headpiece[0].addBox("Headpiece", -4.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
+				this.headpiece[0].addBox("Ear", -4.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
 				this.headpiece[0].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.headpiece[1] = new ModelRenderer(this, 12, 16, VisiblePartFlags.HelmetFlag, false, false);
-				this.headpiece[1].addBox("Headpiece", 2.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
+				this.headpiece[1].addBox("Ear", 2.0F, -6.0F, -1.0F, 2, 2, 2, this.strech);
 				this.headpiece[1].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.headpiece[2] = new ModelRenderer(this, 56, 0, VisiblePartFlags.HelmetFlag, true, false);
-				this.headpiece[2].addBox("Headpiece", -0.5F, -10.0F, -4.0F, 1, 4, 1, this.strech);
+				this.headpiece[2].addBox("Horn", -0.5F, -10.0F, -4.0F, 1, 4, 1, this.strech);
 				this.headpiece[2].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				this.helmet = new ModelRenderer(this, 32, 0, VisiblePartFlags.HelmetFlag, true, false);
-				this.helmet.addBox("Helmet", -4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech + 0.5F);
+				this.helmet.addBox("Hair", -4.0F, -4.0F, -6.0F, 8, 8, 8, this.strech + 0.5F);
 				this.helmet.setRotationPoint(headR1, headR2 + yoffset, headR3);
 
 				float BodyR1 = 0.0F;
@@ -2086,61 +2033,61 @@ namespace MCSkin3D
 				float BodyR3 = 0.0F;
 
 				this.Body = new ModelRenderer(this, 16, 16, VisiblePartFlags.ChestFlag, false, false);
-				this.Body.addBox("Body", -4.0F, 4.0F, -2.0F, 8, 8, 4, this.strech);
+				this.Body.addBox("Body|Body", -4.0F, 4.0F, -2.0F, 8, 8, 4, this.strech);
 				this.Body.setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
 				this.Bodypiece = new PlaneRenderer[13];
 
-				this.Bodypiece[0] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.RightLegFlag, false, false);
+				this.Bodypiece[0] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.RightLegFlag, false, false);
 				this.Bodypiece[0].addSidePlane(-4.0F, 4.0F, 2.0F, 0, 8, 8, this.strech);
 				this.Bodypiece[0].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[1] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.RightLegFlag, false, false);
+				this.Bodypiece[1] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.RightLegFlag, false, false);
 				this.Bodypiece[1].addSidePlane(4.0F, 4.0F, 2.0F, 0, 8, 8, this.strech);
 				this.Bodypiece[1].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[2] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[2] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[2].addTopPlane(-4.0F, 4.0F, 2.0F, 8, 0, 8, this.strech);
 				this.Bodypiece[2].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[3] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[3] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[3].addTopPlane(-4.0F, 12.0F, 2.0F, 8, 0, 8, this.strech);
 				this.Bodypiece[3].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[4] = new PlaneRenderer(this, "Cutie Mark", 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[4] = new PlaneRenderer(this, "Cutie Mark|Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[4].addSidePlane(-4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
 				this.Bodypiece[4].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[5] = new PlaneRenderer(this, "Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[5] = new PlaneRenderer(this, "Body|Body", 0, 20, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[5].addSidePlane(4.0F, 4.0F, 10.0F, 0, 8, 4, this.strech);
 				this.Bodypiece[5].setRotationPoint(BodyR1, BodyR2 + yoffset, BodyR3);
 
-				this.Bodypiece[6] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[6] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[6].addTopPlane(-4.0F, 4.0F, 10.0F, 8, 0, 4, this.strech);
 				this.Bodypiece[6].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[7] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[7] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[7].addTopPlane(-4.0F, 12.0F, 10.0F, 8, 0, 4, this.strech);
 				this.Bodypiece[7].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[8] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[8] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[8].addBackPlane(-4.0F, 4.0F, 14.0F, 8, 8, 0, this.strech);
 				this.Bodypiece[8].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[9] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[9] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[9].addTopPlane(-1.0F, 10.0F, 8.0F, 2, 0, 6, this.strech);
 				this.Bodypiece[9].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[10] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Bodypiece[10] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Bodypiece[10].addTopPlane(-1.0F, 12.0F, 8.0F, 2, 0, 6, this.strech);
 				this.Bodypiece[10].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[11] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[11] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[11].mirror = true;
 				this.Bodypiece[11].addSidePlane(-1.0F, 10.0F, 8.0F, 0, 2, 6, this.strech);
 				this.Bodypiece[11].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
-				this.Bodypiece[12] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				this.Bodypiece[12] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				this.Bodypiece[12].addSidePlane(1.0F, 10.0F, 8.0F, 0, 2, 6, this.strech);
 				this.Bodypiece[12].setRotationPoint(headR1, headR2 + yoffset, headR3);
 
@@ -2180,45 +2127,45 @@ namespace MCSkin3D
 				float TailR3 = 0.0F;
 				this.Tail = new PlaneRenderer[10];
 
-				this.Tail[0] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[0] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[0].addTopPlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 4, 0, 4, this.strech);
 				this.Tail[0].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[1] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[1] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[1].addTopPlane(-2.0F + txf, 9.0F + tyf, 16.0F + tzf, 4, 0, 4, this.strech);
 				this.Tail[1].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[2] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[2] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[2].addBackPlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[2].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[3] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[3] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[3].addBackPlane(-2.0F + txf, -7.0F + tyf, 20.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[3].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[4] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[4] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[4].addBackPlane(-2.0F + txf, 1.0F + tyf, 16.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[4].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[5] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[5] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[5].addBackPlane(-2.0F + txf, 1.0F + tyf, 20.0F + tzf, 4, 8, 0, this.strech);
 				this.Tail[5].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[6] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[6] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[6].mirror = true;
 				this.Tail[6].addSidePlane(2.0F + txf, -7.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[6].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[7] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[7] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[7].addSidePlane(-2.0F + txf, -7.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[7].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[8] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[8] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[8].mirror = true;
 				this.Tail[8].addSidePlane(2.0F + txf, 1.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[8].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
-				this.Tail[9] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
+				this.Tail[9] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.ChestFlag, false, false);
 				this.Tail[9].addSidePlane(-2.0F + txf, 1.0F + tyf, 16.0F + tzf, 0, 8, 4, this.strech);
 				this.Tail[9].setRotationPoint(TailR1, TailR2 + yoffset, TailR3);
 
@@ -2234,31 +2181,31 @@ namespace MCSkin3D
 
 				this.LeftWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWing[0].mirror = true;
-				this.LeftWing[0].addBox("Left Wing", 4.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
+				this.LeftWing[0].addBox("Left Wing|Left Wing", 4.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
 				this.LeftWing[0].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.LeftWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWing[1].mirror = true;
-				this.LeftWing[1].addBox("Left Wing", 4.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
+				this.LeftWing[1].addBox("Left Wing|Left Wing", 4.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
 				this.LeftWing[1].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.LeftWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWing[2].mirror = true;
-				this.LeftWing[2].addBox("Left Wing", 4.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
+				this.LeftWing[2].addBox("Left Wing|Left Wing", 4.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
 				this.LeftWing[2].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 				
 				this.RightWing = new ModelRenderer[3];
 
 				this.RightWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
-				this.RightWing[0].addBox("Right Wing", -6.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
+				this.RightWing[0].addBox("Right Wing|Right Wing", -6.0F, 5.0F, 2.0F, 2, 6, 2, this.strech);
 				this.RightWing[0].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.RightWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
-				this.RightWing[1].addBox("Right Wing", -6.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
+				this.RightWing[1].addBox("Right Wing|Right Wing", -6.0F, 5.0F, 4.0F, 2, 8, 2, this.strech);
 				this.RightWing[1].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 
 				this.RightWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.RightLegFlag, true, true);
-				this.RightWing[2].addBox("Right Wing", -6.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
+				this.RightWing[2].addBox("Right Wing|Right Wing", -6.0F, 5.0F, 6.0F, 2, 6, 2, this.strech);
 				this.RightWing[2].setRotationPoint(WingR1, WingR2 + yoffset, WingR3);
 				
 				float LeftWingExtR1 = headR1 + 4.5F;
@@ -2270,40 +2217,40 @@ namespace MCSkin3D
 				this.LeftWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[0].mirror = true;
 
-				this.LeftWingExt[0].addBox("Left Wing Ext", 0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
+				this.LeftWingExt[0].addBox("Left Wing Ext|Left Wing Extended", 0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
 				this.LeftWingExt[0].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[1].mirror = true;
 
-				this.LeftWingExt[1].addBox("Left Wing Ext", 0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
+				this.LeftWingExt[1].addBox("Left Wing Ext|Left Wing Extended", 0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
 				this.LeftWingExt[1].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[2].mirror = true;
-				this.LeftWingExt[2].addBox("Left Wing Ext", 0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
+				this.LeftWingExt[2].addBox("Left Wing Ext|Left Wing Extended", 0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
 				this.LeftWingExt[2].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[3].mirror = true;
-				this.LeftWingExt[3].addBox("Left Wing Ext", 0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
+				this.LeftWingExt[3].addBox("Left Wing Ext|Left Wing Extended", 0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
 				this.LeftWingExt[3].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[4].mirror = true;
-				this.LeftWingExt[4].addBox("Left Wing Ext", 0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
+				this.LeftWingExt[4].addBox("Left Wing Ext|Left Wing Extended", 0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
 				this.LeftWingExt[4].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[5].mirror = true;
 
-				this.LeftWingExt[5].addBox("Left Wing Ext", 0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
+				this.LeftWingExt[5].addBox("Left Wing Ext|Left Wing Extended", 0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
 				this.LeftWingExt[5].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				this.LeftWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.LeftWingExt[6].mirror = true;
 
-				this.LeftWingExt[6].addBox("Left Wing Ext", 0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
+				this.LeftWingExt[6].addBox("Left Wing Ext|Left Wing Extended", 0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
 				this.LeftWingExt[6].setRotationPoint(LeftWingExtR1, LeftWingExtR2 + yoffset, LeftWingExtR3);
 
 				float RightWingExtR1 = headR1 - 5.5F;
@@ -2315,40 +2262,40 @@ namespace MCSkin3D
 				this.RightWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[0].mirror = true;
 
-				this.RightWingExt[0].addBox("Right Wing Ext", 0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
+				this.RightWingExt[0].addBox("Right Wing Ext|Right Wing Extended", 0.0F, 0.0F, 0.0F, 1, 8, 2, this.strech + 0.1F);
 				this.RightWingExt[0].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[1].mirror = true;
 
-				this.RightWingExt[1].addBox("Right Wing Ext", 0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
+				this.RightWingExt[1].addBox("Right Wing Ext|Right Wing Extended", 0.0F, 8.0F, 0.0F, 1, 6, 2, this.strech + 0.1F);
 				this.RightWingExt[1].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[2].mirror = true;
-				this.RightWingExt[2].addBox("Right Wing Ext", 0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
+				this.RightWingExt[2].addBox("Right Wing Ext|Right Wing Extended", 0.0F, -1.2F, -0.2F, 1, 8, 2, this.strech - 0.2F);
 				this.RightWingExt[2].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[3].mirror = true;
-				this.RightWingExt[3].addBox("Right Wing Ext", 0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
+				this.RightWingExt[3].addBox("Right Wing Ext|Right Wing Extended", 0.0F, 1.8F, 1.3F, 1, 8, 2, this.strech - 0.1F);
 				this.RightWingExt[3].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[4].mirror = true;
-				this.RightWingExt[4].addBox("Right Wing Ext", 0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
+				this.RightWingExt[4].addBox("Right Wing Ext|Right Wing Extended", 0.0F, 5.0F, 2.0F, 1, 8, 2, this.strech);
 				this.RightWingExt[4].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[5].mirror = true;
 
-				this.RightWingExt[5].addBox("Right Wing Ext", 0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
+				this.RightWingExt[5].addBox("Right Wing Ext|Right Wing Extended", 0.0F, 0.0F, -0.2F, 1, 6, 2, this.strech + 0.3F);
 				this.RightWingExt[5].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.RightWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.RightLegFlag, true, true);
 				this.RightWingExt[6].mirror = true;
 
-				this.RightWingExt[6].addBox("Right Wing Ext", 0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
+				this.RightWingExt[6].addBox("Right Wing Ext|Right Wing Extended", 0.0F, 0.0F, 0.2F, 1, 3, 2, this.strech + 0.2F);
 				this.RightWingExt[6].setRotationPoint(RightWingExtR1, RightWingExtR2 + yoffset, RightWingExtR3);
 
 				this.WingRotateAngleX = this.LeftWingExt[0].rotateAngleX;
@@ -3093,50 +3040,50 @@ namespace MCSkin3D
 				headpiece[2].addBox("Horn", -0.5F, -11F, -3.5F, 1, 4, 1, strech);
 				headpiece[2].setRotationPoint(f2, f3 + f, f4);
 				MuzzleFemale = new PlaneRenderer[10];
-				MuzzleFemale[0] = new PlaneRenderer(this, "Muzzle", 10, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[0] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 10, 14, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[0].addBackPlane(-2F, 1.0F, -7F, 4, 2, 0, strech);
 				MuzzleFemale[0].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[1] = new PlaneRenderer(this, "Muzzle", 11, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[1] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 11, 13, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[1].addBackPlane(-1F, 0F, -7F, 2, 1, 0, strech);
 				MuzzleFemale[1].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[2] = new PlaneRenderer(this, "Muzzle", 9, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[2] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 9, 14, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[2].addTopPlane(-2F, 1.0F, -7F, 1, 0, 1, strech);
 				MuzzleFemale[2].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[3] = new PlaneRenderer(this, "Muzzle", 14, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[3] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 14, 14, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[3].addTopPlane(1.0F, 1.0F, -7F, 1, 0, 1, strech);
 				MuzzleFemale[3].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[4] = new PlaneRenderer(this, "Muzzle", 11, 12, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[4] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 11, 12, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[4].addTopPlane(-1F, 0F, -7F, 2, 0, 1, strech);
 				MuzzleFemale[4].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[5] = new PlaneRenderer(this, "Muzzle", 18, 7, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[5] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 18, 7, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[5].addTopPlane(-2F, 3F, -7F, 4, 0, 1, strech);
 				MuzzleFemale[5].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[6] = new PlaneRenderer(this, "Muzzle", 9, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[6] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 9, 14, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[6].addSidePlane(-2F, 1.0F, -7F, 0, 2, 1, strech);
 				MuzzleFemale[6].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[7] = new PlaneRenderer(this, "Muzzle", 14, 14, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[7] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 14, 14, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[7].addSidePlane(2.0F, 1.0F, -7F, 0, 2, 1, strech);
 				MuzzleFemale[7].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[8] = new PlaneRenderer(this, "Muzzle", 11, 12, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[8] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 11, 12, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[8].addSidePlane(-1F, 0F, -7F, 0, 1, 1, strech);
 				MuzzleFemale[8].setRotationPoint(f2, f3 + f, f4);
-				MuzzleFemale[9] = new PlaneRenderer(this, "Muzzle", 12, 12, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleFemale[9] = new PlaneRenderer(this, "Female Muzzle|Female Muzzle", 12, 12, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleFemale[9].addSidePlane(1.0F, 0F, -7F, 0, 1, 1, strech);
 				MuzzleFemale[9].setRotationPoint(f2, f3 + f, f4);
 				MuzzleMale = new PlaneRenderer[5];
-				MuzzleMale[0] = new PlaneRenderer(this, "Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[0] = new PlaneRenderer(this, "Male Muzzle|Male Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleMale[0].addBackPlane(-2.0F, 0F, -7.0F, 4, 3, 0, strech);
 				MuzzleMale[0].setRotationPoint(f2, f3 + f, f4);
-				MuzzleMale[1] = new PlaneRenderer(this, "Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[1] = new PlaneRenderer(this, "Male Muzzle|Male Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleMale[1].addTopPlane(-2.0F, 0F, -7.0F, 4, 0, 1, strech);
 				MuzzleMale[1].setRotationPoint(f2, f3 + f, f4);
-				MuzzleMale[2] = new PlaneRenderer(this, "Muzzle", 18, 7, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[2] = new PlaneRenderer(this, "Male Muzzle|Male Muzzle", 18, 7, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleMale[2].addTopPlane(-2.0F, 3.0F, -7.0F, 4, 0, 1, strech);
 				MuzzleMale[2].setRotationPoint(f2, f3 + f, f4);
-				MuzzleMale[3] = new PlaneRenderer(this, "Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[3] = new PlaneRenderer(this, "Male Muzzle|Male Muzzle", 10, 13, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleMale[3].addSidePlane(-2.0F, 0F, -7.0F, 0, 3, 1, strech);
 				MuzzleMale[3].setRotationPoint(f2, f3 + f, f4);
-				MuzzleMale[4] = new PlaneRenderer(this, "Muzzle", 13, 13, VisiblePartFlags.HeadFlag, false, false);
+				MuzzleMale[4] = new PlaneRenderer(this, "Male Muzzle|Male Muzzle", 13, 13, VisiblePartFlags.HeadFlag, false, false);
 				MuzzleMale[4].addSidePlane(2.0F, 0F, -7.0F, 0, 3, 1, strech);
 				MuzzleMale[4].setRotationPoint(f2, f3 + f, f4);
 				helmet = new ModelRenderer(this, 32, 0, VisiblePartFlags.HeadFlag, true, false);
@@ -3146,64 +3093,64 @@ namespace MCSkin3D
 				float f6 = 0.0F;
 				float f7 = 0.0F;
 				Body = new ModelRenderer(this, 16, 16, VisiblePartFlags.HeadFlag, false, false);
-				Body.addBox("Body", -4F, 4F, -2F, 8, 8, 4, strech);
+				Body.addBox("Body|Body", -4F, 4F, -2F, 8, 8, 4, strech);
 				Body.setRotationPoint(f5, f6 + f, f7);
 				Bodypiece = new PlaneRenderer[14];
-				Bodypiece[0] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[0] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[0].addSidePlane(-4F, 4F, 2.0F, 0, 8, 8, strech);
 				Bodypiece[0].setRotationPoint(f5, f6 + f, f7);
-				Bodypiece[1] = new PlaneRenderer(this, "Body", 24, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[1] = new PlaneRenderer(this, "Body|Body", 24, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[1].addSidePlane(4F, 4F, 2.0F, 0, 8, 8, strech);
 				Bodypiece[1].setRotationPoint(f5, f6 + f, f7);
-				Bodypiece[2] = new PlaneRenderer(this, "Body", 32, 20, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[2] = new PlaneRenderer(this, "Body|Body", 32, 20, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[2].addTopPlane(-4F, 4F, 2.0F, 8, 0, 12, strech);
 				Bodypiece[2].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[3] = new PlaneRenderer(this, "Body", 56, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[3] = new PlaneRenderer(this, "Body|Body", 56, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[3].addTopPlane(-4F, 12F, 2.0F, 8, 0, 8, strech);
 				Bodypiece[3].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[4] = new PlaneRenderer(this, "Cutiemark", 4, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[4] = new PlaneRenderer(this, "Cutiemark|Body", 4, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[4].addSidePlane(-4F, 4F, 10F, 0, 8, 4, strech);
 				Bodypiece[4].setRotationPoint(f5, f6 + f, f7);
-				Bodypiece[5] = new PlaneRenderer(this, "Body", 4, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[5] = new PlaneRenderer(this, "Body|Body", 4, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[5].addSidePlane(4F, 4F, 10F, 0, 8, 4, strech);
 				Bodypiece[5].setRotationPoint(f5, f6 + f, f7);
-				Bodypiece[6] = new PlaneRenderer(this, "Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[6] = new PlaneRenderer(this, "Body|Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[6].addBackPlane(-4F, 4F, 14F, 8, 4, 0, strech);
 				Bodypiece[6].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[7] = new PlaneRenderer(this, "Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[7] = new PlaneRenderer(this, "Body|Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[7].addTopPlane(-4F, 12F, 10F, 8, 0, 4, strech);
 				Bodypiece[7].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[8] = new PlaneRenderer(this, "Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[8] = new PlaneRenderer(this, "Body|Body", 36, 16, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[8].addBackPlane(-4F, 8F, 14F, 8, 4, 0, strech);
 				Bodypiece[8].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[9] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[9] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[9].addTopPlane(-1F, 10F, 8F, 2, 0, 6, strech);
 				Bodypiece[9].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[10] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[10] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[10].addTopPlane(-1F, 12F, 8F, 2, 0, 6, strech);
 				Bodypiece[10].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[11] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[11] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[11].mirror = true;
 				Bodypiece[11].addSidePlane(-1F, 10F, 8F, 0, 2, 6, strech);
 				Bodypiece[11].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[12] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[12] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[12].addSidePlane(1.0F, 10F, 8F, 0, 2, 6, strech);
 				Bodypiece[12].setRotationPoint(f2, f3 + f, f4);
-				Bodypiece[13] = new PlaneRenderer(this, "Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Bodypiece[13] = new PlaneRenderer(this, "Body|Body", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Bodypiece[13].addBackPlane(-1F, 10F, 14F, 2, 2, 0, strech);
 				Bodypiece[13].setRotationPoint(f2, f3 + f, f4);
 
 				BodypieceNeck = new PlaneRenderer[4];
-				BodypieceNeck[0] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[0] = new PlaneRenderer(this, "Neck|Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
 				BodypieceNeck[0].addBackPlane(-2F, 1.2F, -2.8F, 4, 4, 0, strech);
 				BodypieceNeck[0].setRotationPoint(f2, f3 + f, f4);
-				BodypieceNeck[1] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[1] = new PlaneRenderer(this, "Neck|Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
 				BodypieceNeck[1].addBackPlane(-2F, 1.2F, 1.2F, 4, 4, 0, strech);
 				BodypieceNeck[1].setRotationPoint(f2, f3 + f, f4);
-				BodypieceNeck[2] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[2] = new PlaneRenderer(this, "Neck|Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
 				BodypieceNeck[2].addSidePlane(-2F, 1.2F, -2.8F, 0, 4, 4, strech);
 				BodypieceNeck[2].setRotationPoint(f2, f3 + f, f4);
-				BodypieceNeck[3] = new PlaneRenderer(this, "Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
+				BodypieceNeck[3] = new PlaneRenderer(this, "Neck|Neck", 0, 16, VisiblePartFlags.HeadFlag, false, false);
 				BodypieceNeck[3].addSidePlane(2F, 1.2F, -2.8F, 0, 4, 4, strech);
 				BodypieceNeck[3].setRotationPoint(f2, f3 + f, f4);
 
@@ -3242,67 +3189,67 @@ namespace MCSkin3D
 				float f13 = 0.0F;
 
 				Tail = new PlaneRenderer[21];
-				Tail[0] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[0] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[0].addTopPlane(-2F + f8, -7F + f9, 16F + f10, 4, 0, 4, strech);
 				Tail[0].setRotationPoint(f11, f12 + f, f13);
-				Tail[1] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[1] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[1].addSidePlane(-2F + f8, -7F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[1].setRotationPoint(f11, f12 + f, f13);
-				Tail[2] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[2] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[2].addBackPlane(-2F + f8, -7F + f9, 16F + f10, 4, 4, 0, strech);
 				Tail[2].setRotationPoint(f11, f12 + f, f13);
-				Tail[3] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[3] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[3].addSidePlane(2F + f8, -7F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[3].setRotationPoint(f11, f12 + f, f13);
-				Tail[4] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[4] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[4].addBackPlane(-2F + f8, -7F + f9, 20F + f10, 4, 4, 0, strech);
 				Tail[4].setRotationPoint(f11, f12 + f, f13);
-				Tail[5] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[5] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[5].addTopPlane(-2F + f8, -3F + f9, 16F + f10, 4, 0, 4, strech);
 				Tail[5].setRotationPoint(f11, f12 + f, f13);
-				Tail[6] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[6] = new PlaneRenderer(this, "Tail|Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[6].addSidePlane(-2F + f8, -3F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[6].setRotationPoint(f11, f12 + f, f13);
-				Tail[7] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[7] = new PlaneRenderer(this, "Tail|Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[7].addBackPlane(-2F + f8, -3F + f9, 16F + f10, 4, 4, 0, strech);
 				Tail[7].setRotationPoint(f11, f12 + f, f13);
-				Tail[8] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[8] = new PlaneRenderer(this, "Tail|Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[8].addSidePlane(2F + f8, -3F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[8].setRotationPoint(f11, f12 + f, f13);
-				Tail[9] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[9] = new PlaneRenderer(this, "Tail|Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[9].addBackPlane(-2F + f8, -3F + f9, 20F + f10, 4, 4, 0, strech);
 				Tail[9].setRotationPoint(f11, f12 + f, f13);
-				Tail[10] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[10] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[10].addTopPlane(-2F + f8, 1F + f9, 16F + f10, 4, 0, 4, strech);
 				Tail[10].setRotationPoint(f11, f12 + f, f13);
-				Tail[11] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[11] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[11].addSidePlane(-2F + f8, 1F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[11].setRotationPoint(f11, f12 + f, f13);
-				Tail[12] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[12] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[12].addBackPlane(-2F + f8, 1F + f9, 16F + f10, 4, 4, 0, strech);
 				Tail[12].setRotationPoint(f11, f12 + f, f13);
-				Tail[13] = new PlaneRenderer(this, "Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[13] = new PlaneRenderer(this, "Tail|Tail", 36, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[13].addSidePlane(2F + f8, 1F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[13].setRotationPoint(f11, f12 + f, f13);
-				Tail[14] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[14] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[14].addBackPlane(-2F + f8, 1F + f9, 20F + f10, 4, 4, 0, strech);
 				Tail[14].setRotationPoint(f11, f12 + f, f13);
-				Tail[15] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[15] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[15].addTopPlane(-2F + f8, 5F + f9, 16F + f10, 4, 0, 4, strech);
 				Tail[15].setRotationPoint(f11, f12 + f, f13);
-				Tail[16] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[16] = new PlaneRenderer(this, "Tail|Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[16].addSidePlane(-2F + f8, 5F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[16].setRotationPoint(f11, f12 + f, f13);
-				Tail[17] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[17] = new PlaneRenderer(this, "Tail|Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[17].addBackPlane(-2F + f8, 5F + f9, 16F + f10, 4, 4, 0, strech);
 				Tail[17].setRotationPoint(f11, f12 + f, f13);
-				Tail[18] = new PlaneRenderer(this, "Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[18] = new PlaneRenderer(this, "Tail|Tail", 36, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[18].addSidePlane(2F + f8, 5F + f9, 16F + f10, 0, 4, 4, strech);
 				Tail[18].setRotationPoint(f11, f12 + f, f13);
-				Tail[19] = new PlaneRenderer(this, "Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
+				Tail[19] = new PlaneRenderer(this, "Tail|Tail", 32, 4, VisiblePartFlags.HeadFlag, false, false);
 				Tail[19].addBackPlane(-2F + f8, 5F + f9, 20F + f10, 4, 4, 0, strech);
 				Tail[19].setRotationPoint(f11, f12 + f, f13);
-				Tail[20] = new PlaneRenderer(this, "Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
+				Tail[20] = new PlaneRenderer(this, "Tail|Tail", 32, 0, VisiblePartFlags.HeadFlag, false, false);
 				Tail[20].addTopPlane(-2F + f8, 9F + f9, 16F + f10, 4, 0, 4, strech);
 				Tail[20].setRotationPoint(f11, f12 + f, f13);
 
@@ -3314,25 +3261,25 @@ namespace MCSkin3D
 				LeftWing = new ModelRenderer[3];
 				LeftWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
 				LeftWing[0].mirror = true;
-				LeftWing[0].addBox("Wing", 4F, 5F, 2.0F, 2, 6, 2, strech);
+				LeftWing[0].addBox("Wing|Left Wing", 4F, 5F, 2.0F, 2, 6, 2, strech);
 				LeftWing[0].setRotationPoint(f14, f15 + f, f16);
 				LeftWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
 				LeftWing[1].mirror = true;
-				LeftWing[1].addBox("Wing", 4F, 5F, 4F, 2, 8, 2, strech);
+				LeftWing[1].addBox("Wing|Left Wing", 4F, 5F, 4F, 2, 8, 2, strech);
 				LeftWing[1].setRotationPoint(f14, f15 + f, f16);
 				LeftWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
 				LeftWing[2].mirror = true;
-				LeftWing[2].addBox("Wing", 4F, 5F, 6F, 2, 6, 2, strech);
+				LeftWing[2].addBox("Wing|Left Wing", 4F, 5F, 6F, 2, 6, 2, strech);
 				LeftWing[2].setRotationPoint(f14, f15 + f, f16);
 				RightWing = new ModelRenderer[3];
 				RightWing[0] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
-				RightWing[0].addBox("Wing", -6F, 5F, 2.0F, 2, 6, 2, strech);
+				RightWing[0].addBox("Wing|Right Wing", -6F, 5F, 2.0F, 2, 6, 2, strech);
 				RightWing[0].setRotationPoint(f14, f15 + f, f16);
 				RightWing[1] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
-				RightWing[1].addBox("Wing", -6F, 5F, 4F, 2, 8, 2, strech);
+				RightWing[1].addBox("Wing|Right Wing", -6F, 5F, 4F, 2, 8, 2, strech);
 				RightWing[1].setRotationPoint(f14, f15 + f, f16);
 				RightWing[2] = new ModelRenderer(this, 56, 16, VisiblePartFlags.HeadFlag, true, false);
-				RightWing[2].addBox("Wing", -6F, 5F, 6F, 2, 6, 2, strech);
+				RightWing[2].addBox("Wing|Right Wing", -6F, 5F, 6F, 2, 6, 2, strech);
 				RightWing[2].setRotationPoint(f14, f15 + f, f16);
 				float f17 = f2 + 4.5F;
 				float f18 = f3 + 5F;
@@ -3340,31 +3287,31 @@ namespace MCSkin3D
 				LeftWingExt = new ModelRenderer[7];
 				LeftWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[0].mirror = true;
-				LeftWingExt[0].addBox("Wing", 0.0F, 0.0F, 0.0F, 1, 8, 2, strech + 0.1F);
+				LeftWingExt[0].addBox("Wing|Left Wing Extended", 0.0F, 0.0F, 0.0F, 1, 8, 2, strech + 0.1F);
 				LeftWingExt[0].setRotationPoint(f17, f18 + f, f19);
 				LeftWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[1].mirror = true;
-				LeftWingExt[1].addBox("Wing", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
+				LeftWingExt[1].addBox("Wing|Left Wing Extended", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
 				LeftWingExt[1].setRotationPoint(f17, f18 + f, f19);
 				LeftWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[2].mirror = true;
-				LeftWingExt[2].addBox("Wing", 0.0F, -1.2F, -0.2F, 1, 8, 2, strech - 0.2F);
+				LeftWingExt[2].addBox("Wing|Left Wing Extended", 0.0F, -1.2F, -0.2F, 1, 8, 2, strech - 0.2F);
 				LeftWingExt[2].setRotationPoint(f17, f18 + f, f19);
 				LeftWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[3].mirror = true;
-				LeftWingExt[3].addBox("Wing", 0.0F, 1.8F, 1.3F, 1, 8, 2, strech - 0.1F);
+				LeftWingExt[3].addBox("Wing|Left Wing Extended", 0.0F, 1.8F, 1.3F, 1, 8, 2, strech - 0.1F);
 				LeftWingExt[3].setRotationPoint(f17, f18 + f, f19);
 				LeftWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[4].mirror = true;
-				LeftWingExt[4].addBox("Wing", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
+				LeftWingExt[4].addBox("Wing|Left Wing Extended", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
 				LeftWingExt[4].setRotationPoint(f17, f18 + f, f19);
 				LeftWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[5].mirror = true;
-				LeftWingExt[5].addBox("Wing", 0.0F, 0.0F, -0.2F, 1, 6, 2, strech + 0.3F);
+				LeftWingExt[5].addBox("Wing|Left Wing Extended", 0.0F, 0.0F, -0.2F, 1, 6, 2, strech + 0.3F);
 				LeftWingExt[5].setRotationPoint(f17, f18 + f, f19);
 				LeftWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				LeftWingExt[6].mirror = true;
-				LeftWingExt[6].addBox("Wing", 0.0F, 0.0F, 0.2F, 1, 3, 2, strech + 0.2F);
+				LeftWingExt[6].addBox("Wing|Left Wing Extended", 0.0F, 0.0F, 0.2F, 1, 3, 2, strech + 0.2F);
 				LeftWingExt[6].setRotationPoint(f17, f18 + f, f19);
 				float f20 = f2 - 4.5F;
 				float f21 = f3 + 5F;
@@ -3372,31 +3319,31 @@ namespace MCSkin3D
 				RightWingExt = new ModelRenderer[7];
 				RightWingExt[0] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[0].mirror = true;
-				RightWingExt[0].addBox("Wing", 0.0F, 0.0F, 0.0F, 1, 8, 2, strech + 0.1F);
+				RightWingExt[0].addBox("Wing|Right Wing Extended", 0.0F, 0.0F, 0.0F, 1, 8, 2, strech + 0.1F);
 				RightWingExt[0].setRotationPoint(f20, f21 + f, f22);
 				RightWingExt[1] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[1].mirror = true;
-				RightWingExt[1].addBox("Wing", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
+				RightWingExt[1].addBox("Wing|Right Wing Extended", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
 				RightWingExt[1].setRotationPoint(f20, f21 + f, f22);
 				RightWingExt[2] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[2].mirror = true;
-				RightWingExt[2].addBox("Wing", 0.0F, -1.2F, -0.2F, 1, 8, 2, strech - 0.2F);
+				RightWingExt[2].addBox("Wing|Right Wing Extended", 0.0F, -1.2F, -0.2F, 1, 8, 2, strech - 0.2F);
 				RightWingExt[2].setRotationPoint(f20, f21 + f, f22);
 				RightWingExt[3] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[3].mirror = true;
-				RightWingExt[3].addBox("Wing", 0.0F, 1.8F, 1.3F, 1, 8, 2, strech - 0.1F);
+				RightWingExt[3].addBox("Wing|Right Wing Extended", 0.0F, 1.8F, 1.3F, 1, 8, 2, strech - 0.1F);
 				RightWingExt[3].setRotationPoint(f20, f21 + f, f22);
 				RightWingExt[4] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[4].mirror = true;
-				RightWingExt[4].addBox("Wing", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
+				RightWingExt[4].addBox("Wing|Right Wing Extended", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
 				RightWingExt[4].setRotationPoint(f20, f21 + f, f22);
 				RightWingExt[5] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[5].mirror = true;
-				RightWingExt[5].addBox("Wing", 0.0F, 0.0F, -0.2F, 1, 6, 2, strech + 0.3F);
+				RightWingExt[5].addBox("Wing|Right Wing Extended", 0.0F, 0.0F, -0.2F, 1, 6, 2, strech + 0.3F);
 				RightWingExt[5].setRotationPoint(f20, f21 + f, f22);
 				RightWingExt[6] = new ModelRenderer(this, 56, 19, VisiblePartFlags.HeadFlag, true, false);
 				RightWingExt[6].mirror = true;
-				RightWingExt[6].addBox("Wing", 0.0F, 0.0F, 0.2F, 1, 3, 2, strech + 0.2F);
+				RightWingExt[6].addBox("Wing|Right Wing Extended", 0.0F, 0.0F, 0.2F, 1, 3, 2, strech + 0.2F);
 				RightWingExt[6].setRotationPoint(f20, f21 + f, f22);
 				WingRotateAngleX = LeftWingExt[0].rotateAngleX;
 				WingRotateAngleY = LeftWingExt[0].rotateAngleY;
@@ -4494,7 +4441,7 @@ namespace MCSkin3D
 			new ModelArmor().Save("Armor", 1, 64, 32, "Models\\Other\\Armor.xml");
 
 			new ModelOzelot().Save("Ozelot", 1, 64, 32, "Models\\Mobs\\Passive\\Ozelot.xml");
-			new ModelGolem().Save("Golem", 1, 96, 96, "Models\\Mobs\\Passive\\Golem.xml");
+			new ModelGolem().Save("Golem", 1, 128, 128, "Models\\Mobs\\Passive\\Golem.xml");
 
 			new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
 			new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");

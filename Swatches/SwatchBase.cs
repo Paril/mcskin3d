@@ -9,8 +9,8 @@ namespace MCSkin3D.Swatches
 {
 	public abstract class SwatchBase : ISwatch
 	{
-		public abstract string Name { get; protected set; }
-		public abstract string FilePath { get; protected set; }
+		public abstract string Name { get; set; }
+		public abstract string FilePath { get; set; }
 
 		public abstract void Save();
 		public abstract void Load();
@@ -68,6 +68,11 @@ namespace MCSkin3D.Swatches
 		public override string ToString()
 		{
 			return Name + " [" + SwatchContainer.GetSwatchFormatName(GetType()) + "]";
+		}
+
+		public string Format
+		{
+			get { return SwatchContainer.GetSwatchFormatName(GetType()); }
 		}
 	}
 }

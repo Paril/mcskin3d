@@ -289,6 +289,43 @@ namespace MCSkin3D
 			File.MoveTo(newPath);
 		}
 
+		public void CheckTransparentPart(ColorGrabber grabber, int index)
+		{
+			foreach (var f in Model.Meshes[index].Faces)
+			{
+				Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+
+				foreach (var c in f.TexCoords)
+				{
+					var coord = new Vector2(c.X * Width, c.Y * Height);
+					bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+				}
+
+				var rect = bounds.ToRectangle();
+				bool gotOne = false;
+
+				for (int y = rect.Y; !gotOne && y < rect.Y + rect.Height; ++y)
+					for (int x = rect.X; x < rect.X + rect.Width; ++x)
+					{
+						var pixel = grabber[x, y];
+
+						if (pixel.Alpha != 255)
+						{
+							gotOne = true;
+							break;
+						}
+					}
+
+				if (gotOne)
+				{
+					TransparentParts[index] = gotOne;
+					return;
+				}
+			}
+
+			TransparentParts[index] = false;
+		}
+
 		public void SetTransparentParts()
 		{
 			ColorGrabber grabber = new ColorGrabber(GLImage, Width, Height);
@@ -302,38 +339,7 @@ namespace MCSkin3D
 			{
 				TransparentParts.Add(mesh, false);
 
-				foreach (var f in m.Faces)
-				{
-					Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
-
-					foreach (var c in f.TexCoords)
-					{
-						var coord = new Vector2(c.X * Width, c.Y * Height);
-						bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
-					}
-
-					var rect = bounds.ToRectangle();
-					bool gotOne = false;
-
-					for (int y = rect.Y; !gotOne && y < rect.Y + rect.Height; ++y)
-						for (int x = rect.X; x < rect.X + rect.Width; ++x)
-						{
-							var pixel = grabber[x, y];
-
-							if (pixel.Alpha != 255)
-							{
-								gotOne = true;
-								break;
-							}
-						}
-
-					if (gotOne)
-					{
-						TransparentParts[mesh] = true;
-						break;
-					}
-				}
-
+				CheckTransparentPart(grabber, mesh);
 				mesh++;
 			}
 		}

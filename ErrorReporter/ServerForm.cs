@@ -159,16 +159,13 @@ namespace ServerTest
 		}
 
 		string _maintenenceString = "";
-		bool _maintenence = false;
 		InputDialog _dlg;
 
 		private void maintenenceModeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			maintenenceModeToolStripMenuItem.Checked = !maintenenceModeToolStripMenuItem.Checked;
 
-			if (!maintenenceModeToolStripMenuItem.Checked)
-				_maintenence = false;
-			else
+			if (maintenenceModeToolStripMenuItem.Checked)
 			{
 				_dlg = new InputDialog();
 				_dlg.Show();
@@ -179,7 +176,6 @@ namespace ServerTest
 		void dlg_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			_maintenenceString = _dlg.String;
-			_maintenence = true;
 			_dlg = null;
 
 			_server.MaintenenceString = _maintenenceString;

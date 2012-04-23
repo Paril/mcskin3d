@@ -288,17 +288,17 @@ namespace MCSkin3D
 			// set up the GL control
 			var mode = new GraphicsMode();
 			rendererControl = new GLControl(new GraphicsMode(mode.ColorFormat, mode.Depth, mode.Stencil, GlobalSettings.Multisamples));
-			rendererControl.BackColor = System.Drawing.Color.Black;
-			rendererControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			rendererControl.Location = new System.Drawing.Point(0, 25);
+			rendererControl.BackColor = Color.Black;
+			rendererControl.Dock = DockStyle.Fill;
+			rendererControl.Location = new Point(0, 25);
 			rendererControl.Name = "rendererControl";
-			rendererControl.Size = new System.Drawing.Size(641, 580);
+			rendererControl.Size = new Size(641, 580);
 			rendererControl.TabIndex = 4;
-			rendererControl.Load += new System.EventHandler(this.rendererControl_Load);
-			rendererControl.Paint += new System.Windows.Forms.PaintEventHandler(this.rendererControl_Paint);
-			rendererControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseDown);
-			rendererControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseMove);
-			rendererControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rendererControl_MouseUp);
+			rendererControl.Load += new EventHandler(this.rendererControl_Load);
+			rendererControl.Paint += new PaintEventHandler(this.rendererControl_Paint);
+			rendererControl.MouseDown += new MouseEventHandler(this.rendererControl_MouseDown);
+			rendererControl.MouseMove += new MouseEventHandler(this.rendererControl_MouseMove);
+			rendererControl.MouseUp += new MouseEventHandler(this.rendererControl_MouseUp);
 			rendererControl.MouseLeave += new EventHandler(rendererControl_MouseLeave);
 			rendererControl.Resize += new System.EventHandler(this.rendererControl_Resize);
 			rendererControl.MouseWheel += new MouseEventHandler(rendererControl_MouseWheel);
@@ -367,6 +367,8 @@ namespace MCSkin3D
 			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
 			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
 			CurrentLanguage = useLanguage;
+
+			CreatePartList();
 		}
 
 		void rendererControl_MouseEnter(object sender, EventArgs e)
@@ -422,6 +424,7 @@ namespace MCSkin3D
 			_3dRotationY = 0;
 			_3dOffset = Vector3.Zero;
 
+			CalculateMatrices();
 			rendererControl.Invalidate();
 		}
 
@@ -443,7 +446,7 @@ namespace MCSkin3D
 		{
 			this.Invoke(delegate()
 			{
-				if (MessageBox.Show(this, GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+				if (MessageBox.Show(this, GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) == DialogResult.Yes)
 					ShowUpdater();
 			});
 		}
@@ -667,7 +670,7 @@ namespace MCSkin3D
 			colorPanel.SwatchContainer.ZoomIn();
 		}
 
-		bool PerformShortcut(Keys key, Keys modifiers)
+		public static bool PerformShortcut(Keys key, Keys modifiers)
 		{
 			foreach (var shortcut in _shortcutEditor.Shortcuts)
 			{
@@ -687,16 +690,28 @@ namespace MCSkin3D
 		// Overrides
 		// =====================================================================
 		#region Overrides
+		bool CheckKeyShortcut(KeyEventArgs e)
+		{
+			if (!colorPanel.HexTextBox.ContainsFocus &&
+				!labelEditTextBox.ContainsFocus &&
+				!colorPanel.SwatchContainer.SwatchRenameTextBoxHasFocus)
+				if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
+					return true;
+
+			return false;
+		}
+
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if (colorPanel.HexTextBox.ContainsFocus == false && labelEditTextBox.ContainsFocus == false)
-				if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
-				{
-					e.Handled = true;
-					return;
-				}
+			if ((e.Handled = CheckKeyShortcut(e)))
+				return;
 
 			base.OnKeyDown(e);
+		}
+
+		void popoutForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			e.Handled = CheckKeyShortcut(e);
 		}
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
@@ -705,7 +720,7 @@ namespace MCSkin3D
 
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
 			{
-				if (MessageBox.Show(this, GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+				if (MessageBox.Show(this, GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 				{
 					e.Cancel = true;
 					return;
@@ -836,6 +851,11 @@ namespace MCSkin3D
 		}
 
 		Dictionary<Point, bool> _paintedPixels = new Dictionary<Point, bool>();
+
+		public Dictionary<Point, bool> PaintedPixels
+		{
+			get { return _paintedPixels; }
+		}
 
 		void PixelWritten(Point p, ColorPixel c)
 		{
@@ -1058,7 +1078,7 @@ namespace MCSkin3D
 			{
 				login.Remember = GlobalSettings.RememberMe;
 				login.AutoLogin = GlobalSettings.AutoLogin;
-				dialogRes = login.ShowDialog() == System.Windows.Forms.DialogResult.OK;
+				dialogRes = login.ShowDialog() == DialogResult.OK;
 				didShowDialog = true;
 			}
 
@@ -1111,14 +1131,18 @@ namespace MCSkin3D
 
 		void ToggleAnimation()
 		{
+			return;
+
 			animateToolStripMenuItem.Checked = !animateToolStripMenuItem.Checked;
 			GlobalSettings.Animate = animateToolStripMenuItem.Checked;
 
 			rendererControl.Invalidate();
 		}
 
-		void ToggleFollowCursor()
+		void ToggleFollowCursor()	
 		{
+			return;
+
 			followCursorToolStripMenuItem.Checked = !followCursorToolStripMenuItem.Checked;
 			GlobalSettings.FollowCursor = followCursorToolStripMenuItem.Checked;
 
@@ -1387,7 +1411,7 @@ namespace MCSkin3D
 			}
 			else
 			{
-				if (MessageBox.Show(this, GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == System.Windows.Forms.DialogResult.Yes)
+				if (MessageBox.Show(this, GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 				{
 					DirectoryInfo folder = new DirectoryInfo(GetFolderForNode(treeView1.SelectedNode));
 
@@ -1440,7 +1464,7 @@ namespace MCSkin3D
 					labelEditTextBox.Text = _currentlyEditing.Text;
 
 				labelEditTextBox.Show();
-				labelEditTextBox.Location = new Point(treeView1.SelectedNode.Bounds.Location.X + 24 + (treeView1.SelectedNode.Level * 1), treeView1.Location.Y + treeView1.SelectedNode.Bounds.Location.Y + 4);
+				labelEditTextBox.Location = PointToClient(treeView1.PointToScreen(new Point(treeView1.SelectedNode.Bounds.Location.X + 22 + (treeView1.SelectedNode.Level * 1), treeView1.SelectedNode.Bounds.Location.Y + 2)));
 				labelEditTextBox.Size = new System.Drawing.Size(treeView1.Width - labelEditTextBox.Location.X - 20, labelEditTextBox.Height);
 				labelEditTextBox.BringToFront();
 				labelEditTextBox.Focus();
@@ -1518,7 +1542,7 @@ namespace MCSkin3D
 				sfd.Filter = "Skin Image|*.png";
 				sfd.RestoreDirectory = true;
 
-				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (sfd.ShowDialog() == DialogResult.OK)
 					b.Save(sfd.FileName);
 			}
 
@@ -1712,6 +1736,7 @@ namespace MCSkin3D
 					break;
 			}
 
+			CalculateMatrices();
 			rendererControl.Invalidate();
 		}
 
@@ -1898,7 +1923,7 @@ namespace MCSkin3D
 				sfd.Filter = "PNG Image|*.png";
 				sfd.RestoreDirectory = true;
 
-				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					using (var bmp = CopyScreenToBitmap())
 						bmp.Save(sfd.FileName);
@@ -1915,7 +1940,6 @@ namespace MCSkin3D
 
 			GL.Enable(EnableCap.Texture2D);
 			GL.ShadeModel(ShadingModel.Smooth);                        // Enable Smooth Shading
-			GL.ClearDepth(1.0f);                         // Depth Buffer Setup
 			GL.Enable(EnableCap.DepthTest);                        // Enables Depth Testing
 			GL.DepthFunc(DepthFunction.Lequal);                         // The Type Of Depth Testing To Do
 			GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);          // Really Nice Perspective Calculations
@@ -1923,7 +1947,6 @@ namespace MCSkin3D
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvMode.Modulate);
 			GL.Enable(EnableCap.CullFace);
-			GL.CullFace(CullFaceMode.Front);
 
 			_toolboxUpNormal = new TextureGL(Properties.Resources.buttong);
 			_toolboxUpHover = new TextureGL(Properties.Resources.buttong_2);
@@ -2031,7 +2054,6 @@ namespace MCSkin3D
 			_selectedBackground = (int)item.Tag;
 			item.Checked = true;
 		}
-
 
 		Texture GetPaintTexture(int width, int height)
 		{
@@ -2328,8 +2350,9 @@ namespace MCSkin3D
 				foreach (var mesh in CurrentModel.Meshes)
 				{
 					meshIndex++;
+					bool meshVisible = CurrentModel.PartsEnabled[meshIndex];
 
-					if ((GlobalSettings.ViewFlags & mesh.Part) == 0 &&
+					if (meshVisible == false &&
 						!(GlobalSettings.Ghost && !pickView))
 						continue;
 
@@ -2342,7 +2365,7 @@ namespace MCSkin3D
 					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
 						newMesh.Rotate = helmetRotate;
 
-					if ((GlobalSettings.ViewFlags & mesh.Part) == 0 && GlobalSettings.Ghost && !pickView)
+					if (meshVisible == false && GlobalSettings.Ghost && !pickView)
 					{
 						foreach (var f in mesh.Faces)
 							for (int i = 0; i < f.Colors.Length; ++i)
@@ -2484,12 +2507,17 @@ namespace MCSkin3D
 			CheckMouse(e.Y);
 
 			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
+			{
 				_3dZoom += e.Delta / 50;
+
+				CalculateMatrices();
+				rendererControl.Invalidate();
+			}
 			else
 				_2dZoom += e.Delta / 50;
-			if (_2dZoom < 0.25f) _2dZoom = 0.25f;
 
-			rendererControl.Invalidate();
+			if (_2dZoom < 0.25f)
+				_2dZoom = 0.25f;
 		}
 
 		void DrawGLToolbar()
@@ -2530,6 +2558,17 @@ namespace MCSkin3D
 		public static Stopwatch _sortTimer = new Stopwatch();
 		public static Stopwatch _batchTimer = new Stopwatch();
 		public static Stopwatch _compileTimer = new Stopwatch();
+
+		public Rectangle GetViewport3D()
+		{
+			if (_currentViewMode == ViewMode.Perspective)
+				return new Rectangle(0, 0, rendererControl.Width, rendererControl.Height);
+			else
+			{
+				int halfHeight = (int)Math.Ceiling(rendererControl.Height / 2.0f);
+				return new Rectangle(0, 0, rendererControl.Width, halfHeight);
+			}
+		}
 
 		void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
@@ -2609,52 +2648,74 @@ namespace MCSkin3D
 		Rectangle _currentViewport;
 
 		Matrix4 viewMatrix, cameraMatrix;
-		void Setup3D(Rectangle viewport)
+		Matrix4d projectionMatrix;
+
+		static bool _firstCalc = false;
+		void CalculateMatrices()
 		{
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-
-			GL.Viewport(viewport);
-			var mat = OpenTK.Matrix4d.Perspective(45, (double)viewport.Width / (double)viewport.Height, 0.01, 100000);
-			GL.MultMatrix(ref mat);
-
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
-
-			_currentViewport = viewport;
+			var viewport = GetViewport3D();
+			projectionMatrix = OpenTK.Matrix4d.Perspective(45, (double)viewport.Width / (double)viewport.Height, 0.01, 100000);
 
 			Bounds3 vec = Bounds3.EmptyBounds;
 			var allBounds = Bounds3.EmptyBounds;
 			int count = 0;
 
 			if (CurrentModel != null)
+			{
+				int meshIndex = 0;
 				foreach (var mesh in CurrentModel.Meshes)
 				{
 					allBounds += mesh.Bounds;
 
-					if ((GlobalSettings.ViewFlags & mesh.Part) != 0)
+					if (CurrentModel.PartsEnabled[meshIndex])
 					{
 						vec += mesh.Bounds;
 						count++;
 					}
+
+					meshIndex++;
 				}
+			}
+
+			if (count == 0)
+				vec.Mins = vec.Maxs = allBounds.Mins = allBounds.Maxs = Vector3.Zero;
 
 			GrassY = allBounds.Maxs.Y;
 			var center = vec.Center;
 
-			// FIXME: calculate these only on change
 			viewMatrix =
-				Matrix4.CreateTranslation(-center.X + _3dOffset.X, -center.Y + _3dOffset.Y, -center.Z + _3dOffset.Z) *
-				Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
-				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
-				Matrix4.CreateTranslation(0, 0, _3dZoom);
-
-			GL.LoadMatrix(ref viewMatrix);
+							Matrix4.CreateTranslation(-center.X + _3dOffset.X, -center.Y + _3dOffset.Y, -center.Z + _3dOffset.Z) *
+							Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
+							Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
+							Matrix4.CreateTranslation(0, 0, _3dZoom);
 
 			cameraMatrix = viewMatrix;
 			cameraMatrix.Invert();
 
 			CameraPosition = Vector3.TransformPosition(Vector3.Zero, cameraMatrix);
+		}
+
+		void Setup3D(Rectangle viewport)
+		{
+			_currentViewport = viewport;
+
+			if (!_firstCalc)
+			{
+				CalculateMatrices();
+				_firstCalc = true;
+			}
+	
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+
+			GL.Viewport(viewport);
+			var mat = projectionMatrix;
+			GL.MultMatrix(ref mat);
+
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+
+			GL.LoadMatrix(ref viewMatrix);
 		}
 
 		void Setup2D(Rectangle viewport)
@@ -2674,6 +2735,7 @@ namespace MCSkin3D
 		{
 			rendererControl.MakeCurrent();
 
+			CalculateMatrices();
 			rendererControl.Invalidate();
 		}
 
@@ -2721,6 +2783,9 @@ namespace MCSkin3D
 			{
 				_3dRotationY += (float)(delta.X * ToolScale) * factor;
 				_3dRotationX += (float)(delta.Y * ToolScale) * factor;
+
+				CalculateMatrices();
+				rendererControl.Invalidate();
 			}
 			else
 			{
@@ -2734,6 +2799,9 @@ namespace MCSkin3D
 			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
 			{
 				_3dZoom += (float)(-delta.Y * ToolScale) * factor;
+
+				CalculateMatrices();
+				rendererControl.Invalidate();
 			}
 			else
 			{
@@ -2753,8 +2821,11 @@ namespace MCSkin3D
 				_mouseIn3D = false;
 		}
 
-		void SetPartTransparencies()
+		public void SetPartTransparencies()
 		{
+			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height);
+			grabber.Load();
+
 			Dictionary<int, bool> paintedParts = new Dictionary<int, bool>();
 
 			foreach (var p in _paintedPixels)
@@ -2767,7 +2838,9 @@ namespace MCSkin3D
 			}
 
 			foreach (var p in paintedParts)
-				_lastSkin.TransparentParts[p.Key] = true;
+				_lastSkin.CheckTransparentPart(grabber, p.Key);
+
+			_paintedPixels.Clear();
 		}
 
 		void rendererControl_MouseDown(object sender, MouseEventArgs e)
@@ -2867,7 +2940,6 @@ namespace MCSkin3D
 					_tools[(int)Tools.Camera].Tool.EndClick(ref currentSkin, _lastSkin, e);
 			}
 
-			_paintedPixels.Clear();
 			_mouseIsDown = false;
 			treeView1.Invalidate();
 		}
@@ -2939,6 +3011,19 @@ namespace MCSkin3D
 			uploadToolStripButton.Enabled = !itemSelected;
 		}
 
+		Bitmap GenerateCheckBoxBitmap(CheckBoxState state)
+		{
+			Bitmap uncheckedImage = new Bitmap(16, 16, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			using (Graphics g = Graphics.FromImage(uncheckedImage))
+			{
+				var glyphSize = CheckBoxRenderer.GetGlyphSize(g, state);
+				CheckBoxRenderer.DrawCheckBox(g, new Point((16 / 2) - (glyphSize.Width / 2), (16 / 2) - (glyphSize.Height / 2)), state);
+			}
+
+			return uncheckedImage;
+		}
+
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			if (_skipListbox || treeView1.SelectedNode == _lastSkin ||
@@ -2991,6 +3076,7 @@ namespace MCSkin3D
 			rendererControl.Invalidate();
 
 			VerifySelectionButtons();
+			FillPartList();
 		}
 
 		void uploadButton_Click(object sender, EventArgs e)
@@ -3201,7 +3287,7 @@ namespace MCSkin3D
 			{
 				picker.CurrentColor = GlobalSettings.BackgroundColor;
 
-				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (picker.ShowDialog() == DialogResult.OK)
 				{
 					GlobalSettings.BackgroundColor = picker.CurrentColor;
 
@@ -3676,18 +3762,18 @@ namespace MCSkin3D
 				foreach (var dir in GlobalSettings.SkinDirectories.OrderBy(x => x))
 					dl.Directories.Add(dir);
 
-				if (dl.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (dl.ShowDialog() == DialogResult.OK)
 				{
 					if (RecursiveNodeIsDirty(treeView1.Nodes))
 					{
 						var mb = MessageBox.Show(GetLanguageString("D_UNSAVED"), GetLanguageString("D_UNSAVED_CAPTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						switch (mb)
 						{
-							case System.Windows.Forms.DialogResult.No:
+							case DialogResult.No:
 								_waitingForRestart = true;
 								_newSkinDirs = dl.Directories.ToArray();
 								return;
-							case System.Windows.Forms.DialogResult.Cancel:
+							case DialogResult.Cancel:
 								return;
 						}
 					}
@@ -3803,9 +3889,13 @@ namespace MCSkin3D
 
 			_lastSkin.TransparentParts.Clear();
 			_lastSkin.SetTransparentParts();
+			FillPartList();
 
 			for (var parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
 				parent.Image = Properties.Resources.right_arrow_next;
+
+			CalculateMatrices();
+			rendererControl.Invalidate();
 		}
 
 		public static Vector3 CameraPosition
@@ -3831,12 +3921,11 @@ namespace MCSkin3D
 			{
 				picker.CurrentColor = GlobalSettings.DynamicOverlayLineColor;
 
-				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (picker.ShowDialog() == DialogResult.OK)
 				{
 					GlobalSettings.DynamicOverlayLineColor = picker.CurrentColor;
 					mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
 
-					//SetModel(CurrentModel);
 					rendererControl.Invalidate();
 				}
 			}
@@ -3848,12 +3937,11 @@ namespace MCSkin3D
 			{
 				picker.CurrentColor = GlobalSettings.DynamicOverlayTextColor;
 
-				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (picker.ShowDialog() == DialogResult.OK)
 				{
 					GlobalSettings.DynamicOverlayTextColor = picker.CurrentColor;
 					mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
 
-					//SetModel(CurrentModel);
 					rendererControl.Invalidate();
 				}
 			}
@@ -3865,12 +3953,11 @@ namespace MCSkin3D
 			{
 				picker.CurrentColor = GlobalSettings.DynamicOverlayGridColor;
 
-				if (picker.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				if (picker.ShowDialog() == DialogResult.OK)
 				{
 					GlobalSettings.DynamicOverlayGridColor = picker.CurrentColor;
 					mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
 
-					//SetModel(CurrentModel);
 					rendererControl.Invalidate();
 				}
 			}
@@ -3925,6 +4012,8 @@ namespace MCSkin3D
 				popoutForm.ControlBox = false;
 				popoutForm.Show();
 				popoutForm.Location = new Point(Location.X + Width, Location.Y);
+				popoutForm.KeyDown += new KeyEventHandler(popoutForm_KeyDown);
+				popoutForm.KeyPreview = true;
 
 				splitContainer1.Panel2.Controls.Remove(panel4);
 				popoutForm.Controls.Add(panel4);
@@ -3956,6 +4045,158 @@ namespace MCSkin3D
 		public static bool HasOneRoot
 		{
 			get { return GlobalSettings.SkinDirectories.Length == 1; }
+		}
+
+		class PartTreeNode : TreeNode
+		{
+			public Model Model
+			{
+				get;
+				private set;
+			}
+
+			public Mesh Mesh
+			{
+				get;
+				private set;
+			}
+			
+			public int PartIndex
+			{
+				get;
+				private set;
+			}
+
+			public bool PartEnabled
+			{
+				get { return Model.PartsEnabled[PartIndex]; }
+				set
+				{
+					Model.PartsEnabled[PartIndex] = value;
+					SelectedImageIndex = ImageIndex = (value) ? 3 : 0;
+
+					if (Parent != null)
+						((PartTreeNode)Parent).CheckGroupImage();
+				}
+			}
+
+			public void CheckGroupImage()
+			{
+				bool hasEnabled = false, hasDisabled = false;
+
+				foreach (PartTreeNode node in Nodes)
+				{
+					if (node.PartEnabled)
+						hasEnabled = true;
+					else
+						hasDisabled = true;
+				}
+
+				if (hasEnabled && hasDisabled)
+					SelectedImageIndex = ImageIndex = 6;
+				else if (hasEnabled && !hasDisabled)
+					SelectedImageIndex = ImageIndex = 3;
+				else if (!hasEnabled && hasDisabled)
+					SelectedImageIndex = ImageIndex = 0;
+			}
+
+			public PartTreeNode(Model model, Mesh mesh, int index) :
+				base()
+			{
+				Name = Text = mesh.Name;
+				Model = model;
+				Mesh = mesh;
+				PartIndex = index;
+
+				if (PartIndex != -1)
+					PartEnabled = model.PartsEnabled[index];
+			}
+
+			public PartTreeNode(Model model, Mesh mesh, int index, string name) :
+				this(model, mesh, index)
+			{
+				Name = Text = name;
+			}
+		}
+
+		void CreatePartList()
+		{
+			ImageList list = new ImageList();
+			list.ColorDepth = ColorDepth.Depth32Bit;
+			list.ImageSize = new Size(16, 16);
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.UncheckedNormal));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.UncheckedHot));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.UncheckedPressed));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.CheckedNormal));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.CheckedHot));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.CheckedPressed));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.MixedNormal));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.MixedHot));
+			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.MixedPressed));
+
+			treeView2.ImageList = list;
+		}
+
+		void FillPartList()
+		{
+			List<PartTreeNode> owners = new List<PartTreeNode>();
+
+			treeView2.Nodes.Clear();
+
+			int meshIndex = 0;
+			foreach (var part in CurrentModel.Meshes)
+			{
+				var name = part.Name;
+
+				if (name.Contains('|'))
+				{
+					var args = name.Split('|');
+					var ownerNodes = treeView2.Nodes.Find(args[1], false);
+					var owner = (ownerNodes.Length != 0) ? ownerNodes[0] : null;
+
+					if (owner == null)
+					{
+						owner = treeView2.Nodes[treeView2.Nodes.Add(new PartTreeNode(CurrentModel, part, -1, args[1]))];
+						owners.Add((PartTreeNode)owner);
+					}
+
+					owner.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex, args[0]));
+				}
+				else
+					treeView2.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex));
+
+				meshIndex++;
+			}
+
+			foreach (var n in owners)
+				n.CheckGroupImage();
+		}
+
+		private void treeView2_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+		{
+			var nodeBounds = e.Node.Bounds;
+			var pos = e.Location;
+			var node = (PartTreeNode)e.Node;
+
+			if (pos.X > nodeBounds.X - 18 && pos.X < nodeBounds.X - 4)
+			{
+				if (node.Nodes.Count != 0)
+				{
+					bool setAll = node.ImageIndex == 6;
+					foreach (PartTreeNode subNode in node.Nodes)
+					{
+						if (setAll)
+							subNode.PartEnabled = true;
+						else
+							subNode.PartEnabled = !subNode.PartEnabled;
+					}
+				}
+				else
+					node.PartEnabled = !node.PartEnabled;
+
+				CalculateMatrices();
+				rendererControl.Invalidate();
+			}
 		}
 	}
 }

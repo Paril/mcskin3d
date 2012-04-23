@@ -54,8 +54,8 @@ namespace MCSkin3D.Swatches
 					}
 					else
 					{
-						if (split[0] == "Name:")
-							Name = line.Substring(line.IndexOf(' ') + 1);
+						//if (split[0] == "Name:")
+						//	Name = line.Substring(line.IndexOf(' ') + 1);
 					}
 				}
 			}

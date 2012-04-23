@@ -139,7 +139,7 @@
 			</Geometry>
 			<GlScale>1,1,1</GlScale>
 			<Name>Golem</Name>
-			<TextureSize>96,96</TextureSize>
+			<TextureSize>128,128</TextureSize>
 		</Model>
 	</Models>
 	<Name>Golem</Name>
