@@ -51,6 +51,9 @@ namespace MCSkin3D
 			_swatchDisplayer.Text = "swatchDisplayer1";
 			_swatchDisplayer.ScrollBar = vScrollBar1;
 
+			textBox1.Location = comboBox1.Location;
+			textBox1.Size = comboBox1.Size;
+
 			this.panel1.Controls.Add(_swatchDisplayer);
 
 			_swatchDisplayer.BringToFront();
@@ -163,25 +166,188 @@ namespace MCSkin3D
 		
 		private void convertSwatchTtripButton_Click(object sender, EventArgs e)
 		{
+			if (SwatchDisplayer.Swatch == null)
+				return;
+
 			using (SwatchConverterDialog converter = new SwatchConverterDialog())
 			{
 				converter.StartPosition = FormStartPosition.CenterParent;
-
 				converter.SwatchFormats = _swatchNames;
+
+				int _oldFormat = -1;
 
 				for (int i = 0; i < _swatchTypes.Length; ++i)
 				{
 					if (SwatchDisplayer.Swatch.GetType() == _swatchTypes[i])
 					{
 						converter.OldFormat = _swatchNames[i];
-						converter.SelectedFormat = i;
+						converter.SelectedFormat = _oldFormat = i;
+						break;
 					}
 				}
 
 				if (converter.ShowDialog() == DialogResult.OK)
 				{
+					var newType = _swatchTypes[converter.SelectedFormat];
+
+					if (converter.SelectedFormat == _oldFormat)
+						return;
+
+					var newPath = Path.GetDirectoryName(SwatchDisplayer.Swatch.FilePath) + '\\' + Path.GetFileNameWithoutExtension(SwatchDisplayer.Swatch.FilePath) + '.' + _swatchFormatNames[converter.SelectedFormat].ToLower();
+
+					if (File.Exists(newPath))
+					{
+						System.Media.SystemSounds.Exclamation.Play();
+						return;
+					}
+
+					ISwatch swatch = (ISwatch)newType.GetConstructors()[0].Invoke(new object[] { newPath });
+
+					foreach (var c in SwatchDisplayer.Swatch)
+						swatch.Add(c);
+
+					swatch.Save();
+
+					var index = comboBox1.Items.IndexOf(SwatchDisplayer.Swatch);
+
+					SwatchDisplayer.Swatch.Name = null; // just to check if we broke it later or not
+					SwatchDisplayer.Swatch.FilePath = null;
+
+					comboBox1.Items[index] = swatch;
 				}
 			}
+		}
+
+		bool _creatingSwatch = false;
+
+		public bool SwatchRenameTextBoxHasFocus
+		{
+			get { return textBox1.ContainsFocus; }
+		}
+
+		void BeginRename()
+		{
+			textBox1.Visible = true;
+			textBox1.Focus();
+		}
+
+		private void newSwatchToolStripButton_Click(object sender, EventArgs e)
+		{
+			textBox1.Text = "";
+			BeginRename();
+			_creatingSwatch = true;
+		}
+
+		private void renameSwatchToolStripButton3_Click(object sender, EventArgs e)
+		{
+			if (SwatchDisplayer.Swatch == null)
+				return;
+
+			textBox1.Text = SwatchDisplayer.Swatch.Name;
+			BeginRename();
+			_creatingSwatch = false;
+		}
+
+		private void textBox1_Leave(object sender, EventArgs e)
+		{
+			textBox1.Clear();
+			textBox1.Visible = false;
+		}
+
+		private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == '\r')
+			{
+				if (!_creatingSwatch)
+					SwatchDisplayer.Swatch.Name = textBox1.Text;
+				else
+				{
+					MCSwatch newSwatch = new MCSwatch("Swatches\\" + textBox1.Text + ".swtch");
+					newSwatch.Save();
+
+					comboBox1.Items.Add(newSwatch);
+					comboBox1.SelectedItem = newSwatch;
+				}
+
+				e.Handled = true;
+				textBox1.Visible = false;
+
+				comboBox1.Refresh();
+			}
+		}
+
+		private void comboBox1_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			e.DrawBackground();
+
+			if (e.Index != -1)
+			{
+				var swatch = (ISwatch)comboBox1.Items[e.Index];
+				var rightSide = TextRenderer.MeasureText(swatch.Format, comboBox1.Font).Width;
+
+				Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width - rightSide, e.Bounds.Height);
+
+				TextRenderer.DrawText(e.Graphics, swatch.Name, comboBox1.Font, bounds, (e.State & DrawItemState.Selected) == 0 ? comboBox1.ForeColor : SystemColors.HighlightText, TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+				TextRenderer.DrawText(e.Graphics, swatch.Format, comboBox1.Font, new Rectangle(bounds.X + (e.Bounds.Width - rightSide), bounds.Y, rightSide, bounds.Height), (e.State & DrawItemState.Selected) == 0 ? comboBox1.ForeColor : SystemColors.HighlightText, TextFormatFlags.VerticalCenter | TextFormatFlags.WordEllipsis);
+			}
+
+			e.DrawFocusRectangle();
+		}
+
+		private void deleteSwatchToolStripButton_Click(object sender, EventArgs e)
+		{
+			var swatch = SwatchDisplayer.Swatch;
+
+			if (swatch == null)
+				return;
+
+			if (MessageBox.Show(Editor.GetLanguageString("M_SWATCHQUESTION"), Editor.GetLanguageString("M_SWATCHQUESTION_CAPTION"), MessageBoxButtons.YesNo) == DialogResult.No)
+				return;
+
+			File.Delete(swatch.FilePath);
+			comboBox1.Items.Remove(swatch);
+		}
+
+		private void addSwatchToolStripButton_Click(object sender, EventArgs e)
+		{
+			var swatch = SwatchDisplayer.Swatch;
+
+			if (swatch == null)
+				return;
+
+			swatch.Add(new NamedColor("New Color", Editor.MainForm.ColorPanel.SelectedColor.RGB));
+			SwatchDisplayer.RecalculateSize();
+		}
+
+		private void removeSwatchToolStripButton_Click(object sender, EventArgs e)
+		{
+			var swatch = SwatchDisplayer.Swatch;
+
+			if (swatch == null)
+				return;
+
+			if (SwatchDisplayer.HasPrimaryColor)
+			{
+				swatch.RemoveAt(SwatchDisplayer.PrimaryColorIndex);
+
+				if (swatch.Count == 0)
+					SwatchDisplayer.PrimaryColorIndex = SwatchDisplayer.SecondaryColorIndex = -1;
+				else
+				{
+					if (SwatchDisplayer.PrimaryColorIndex >= swatch.Count)
+						SwatchDisplayer.PrimaryColorIndex = swatch.Count - 1;
+
+					if (SwatchDisplayer.SecondaryColorIndex >= swatch.Count)
+						SwatchDisplayer.SecondaryColorIndex = swatch.Count - 1;
+				}
+
+				SwatchDisplayer.RecalculateSize();
+			}
+		}
+
+		private void convertSwatchTtripButton_ButtonClick(object sender, EventArgs e)
+		{
+			convertSwatchTtripButton.ShowDropDown();
 		}
 	}
 
@@ -245,7 +411,7 @@ namespace MCSkin3D
 			Invalidate();
 		}
 
-		void RecalculateSize()
+		public void RecalculateSize()
 		{
 			if (Parent == null)
 				return;
@@ -312,6 +478,18 @@ namespace MCSkin3D
 			set { Swatch[_lastRightSwatch].Color = value; }
 		}
 
+		public int PrimaryColorIndex
+		{
+			get { if (Swatch == null) return -1; return _lastLeftSwatch; }
+			set { _lastLeftSwatch = value; }
+		}
+
+		public int SecondaryColorIndex
+		{
+			get { if (Swatch == null) return -1; return _lastRightSwatch; }
+			set { _lastRightSwatch = value; }
+		}
+
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
 			base.OnMouseClick(e);
@@ -347,7 +525,7 @@ namespace MCSkin3D
 
 		protected override void OnEnabledChanged(EventArgs e)
 		{
-			BackColor = Enabled ? SystemColors.Control : SystemColors.Window;
+			BackColor = Enabled ? SystemColors.Window : SystemColors.Control;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -384,7 +562,7 @@ namespace MCSkin3D
 		public ISwatch Swatch
 		{
 			get { return _colors; }
-			set { _colors = value; _lastLeftSwatch = _lastRightSwatch = -1;  RecalculateSize(); }
+			set { _colors = value; _lastLeftSwatch = _lastRightSwatch = -1; RecalculateSize(); }
 		}
 	}
 }

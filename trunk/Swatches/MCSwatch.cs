@@ -67,13 +67,31 @@ namespace MCSkin3D.Swatches
 		public override string Name
 		{
 			get { return _name; }
-			protected set { _name = value; }
+			set
+			{
+				if (!string.IsNullOrEmpty(_name))
+				{
+					if (value == null)
+						File.Delete(FilePath);
+					else
+					{
+						var oldFile = FilePath;
+						var newFile = Path.GetDirectoryName(FilePath) + '\\' + value + Path.GetExtension(FilePath);
+
+						File.Move(oldFile, newFile);
+
+						FilePath = newFile;
+					}
+				}
+					
+				_name = value;
+			}
 		}
 
 		public override string FilePath
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		public override void Load()

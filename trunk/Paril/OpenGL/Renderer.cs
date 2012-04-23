@@ -255,6 +255,7 @@ namespace Paril.OpenGL
 		public string Name;
 		public float DefaultWidth, DefaultHeight;
 		public FileInfo File;
+		public bool[] PartsEnabled;
 
 		// P: polygon support required? used bounds 'n stuff but, you know...
 		public Rectangle GetTextureFaceBounds(Point p, Skin skin)
@@ -632,8 +633,10 @@ namespace Paril.OpenGL
 
 			PreRender();
 
+			GL.Disable(EnableCap.CullFace);
 			foreach (var mesh in OpaqueMeshes)
-			RenderMesh(mesh);
+				RenderMesh(mesh);
+			GL.Enable(EnableCap.CullFace);
 
 			GL.Enable(EnableCap.Blend);
 
@@ -644,6 +647,9 @@ namespace Paril.OpenGL
 						f.Colors[i] = GetHeatMap(TransparentMeshes.Count, TransparentMeshes.IndexOf(mesh));
 				*/
 
+				GL.CullFace(CullFaceMode.Back);
+				RenderMesh(mesh);
+				GL.CullFace(CullFaceMode.Front);
 				RenderMesh(mesh);
 			}
 
@@ -664,10 +670,18 @@ namespace Paril.OpenGL
 
 			PreRender();
 
+			GL.Disable(EnableCap.CullFace);
 			foreach (var mesh in OpaqueMeshes)
 				RenderMesh(mesh);
+			GL.Enable(EnableCap.CullFace);
+
 			foreach (var mesh in TransparentMeshes)
+			{
+				GL.CullFace(CullFaceMode.Back);
 				RenderMesh(mesh);
+				GL.CullFace(CullFaceMode.Front);
+				RenderMesh(mesh);
+			}
 
 			PostRender();
 

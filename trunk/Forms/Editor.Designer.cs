@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			MCSkin3D.lemon42.ColorManager colorManager3 = new MCSkin3D.lemon42.ColorManager();
-			MCSkin3D.lemon42.ColorManager colorManager4 = new MCSkin3D.lemon42.ColorManager();
+			MCSkin3D.lemon42.ColorManager colorManager1 = new MCSkin3D.lemon42.ColorManager();
+			MCSkin3D.lemon42.ColorManager colorManager2 = new MCSkin3D.lemon42.ColorManager();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
 			this.mainMenuStrip = new Paril.Controls.NativeMenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -118,8 +118,11 @@
 			this.bROWSEIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new Paril.Controls.VisibleSplitContainer();
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
-			this.labelEditTextBox = new System.Windows.Forms.TextBox();
+			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.treeView1 = new MCSkin3D.SkinTreeView();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.treeView2 = new System.Windows.Forms.TreeView();
 			this.toolStrip2 = new Paril.Controls.NativeToolStrip();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -168,6 +171,7 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
@@ -177,6 +181,9 @@
 			this.splitContainer3.Panel1.SuspendLayout();
 			this.splitContainer3.Panel2.SuspendLayout();
 			this.splitContainer3.SuspendLayout();
+			this.tabControl1.SuspendLayout();
+			this.tabPage1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
 			this.toolStrip2.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
@@ -394,6 +401,7 @@
 			this.animateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
 			this.animateToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
 			this.animateToolStripMenuItem.Text = "M_ANIMATE";
+			this.animateToolStripMenuItem.Visible = false;
 			this.animateToolStripMenuItem.Click += new System.EventHandler(this.animateToolStripMenuItem_Click);
 			// 
 			// followCursorToolStripMenuItem
@@ -403,6 +411,7 @@
 			this.followCursorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
 			this.followCursorToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
 			this.followCursorToolStripMenuItem.Text = "M_FOLLOWCUR";
+			this.followCursorToolStripMenuItem.Visible = false;
 			this.followCursorToolStripMenuItem.Click += new System.EventHandler(this.followCursorToolStripMenuItem_Click);
 			// 
 			// grassToolStripMenuItem
@@ -974,6 +983,7 @@
 			// splitContainer1.Panel1
 			// 
 			this.splitContainer1.Panel1.Controls.Add(this.splitContainer3);
+			this.splitContainer1.Panel1MinSize = 302;
 			// 
 			// splitContainer1.Panel2
 			// 
@@ -993,8 +1003,7 @@
 			// 
 			// splitContainer3.Panel1
 			// 
-			this.splitContainer3.Panel1.Controls.Add(this.labelEditTextBox);
-			this.splitContainer3.Panel1.Controls.Add(this.treeView1);
+			this.splitContainer3.Panel1.Controls.Add(this.tabControl1);
 			this.splitContainer3.Panel1.Controls.Add(this.toolStrip2);
 			this.splitContainer3.Panel1.Controls.Add(this.hScrollBar1);
 			// 
@@ -1005,37 +1014,72 @@
 			this.splitContainer3.SplitterDistance = 363;
 			this.splitContainer3.TabIndex = 1;
 			// 
-			// labelEditTextBox
+			// tabControl1
 			// 
-			this.labelEditTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-			this.labelEditTextBox.Location = new System.Drawing.Point(187, 365);
-			this.labelEditTextBox.Name = "labelEditTextBox";
-			this.labelEditTextBox.Size = new System.Drawing.Size(100, 20);
-			this.labelEditTextBox.TabIndex = 5;
-			this.labelEditTextBox.Visible = false;
-			this.labelEditTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.labelEditTextBox_KeyDown);
-			this.labelEditTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.labelEditTextBox_KeyPress);
-			this.labelEditTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.labelEditTextBox_KeyUp);
-			this.labelEditTextBox.Leave += new System.EventHandler(this.labelEditTextBox_Leave);
+			this.tabControl1.Controls.Add(this.tabPage1);
+			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControl1.Location = new System.Drawing.Point(0, 25);
+			this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
+			this.tabControl1.Multiline = true;
+			this.tabControl1.Name = "tabControl1";
+			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.Size = new System.Drawing.Size(302, 321);
+			this.tabControl1.TabIndex = 0;
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Controls.Add(this.treeView1);
+			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Size = new System.Drawing.Size(294, 295);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "Skins";
+			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// treeView1
 			// 
 			this.treeView1.AllowDrop = true;
+			this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.treeView1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
 			this.treeView1.FullRowSelect = true;
 			this.treeView1.HotTracking = true;
 			this.treeView1.ItemHeight = 23;
-			this.treeView1.Location = new System.Drawing.Point(0, 25);
+			this.treeView1.Location = new System.Drawing.Point(0, 0);
+			this.treeView1.Margin = new System.Windows.Forms.Padding(0);
 			this.treeView1.Name = "treeView1";
 			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
-			this.treeView1.Size = new System.Drawing.Size(302, 321);
+			this.treeView1.Size = new System.Drawing.Size(294, 295);
 			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
 			this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
 			this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
 			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Controls.Add(this.treeView2);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Size = new System.Drawing.Size(294, 295);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "Parts";
+			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// treeView2
+			// 
+			this.treeView2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.treeView2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView2.HideSelection = false;
+			this.treeView2.Location = new System.Drawing.Point(0, 0);
+			this.treeView2.Name = "treeView2";
+			this.treeView2.Size = new System.Drawing.Size(294, 295);
+			this.treeView2.TabIndex = 0;
+			this.treeView2.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView2_NodeMouseClick);
 			// 
 			// toolStrip2
 			// 
@@ -1232,12 +1276,12 @@
 			this.colorPanel.Location = new System.Drawing.Point(0, 0);
 			this.colorPanel.MinimumSize = new System.Drawing.Size(303, 277);
 			this.colorPanel.Name = "colorPanel";
-			colorManager3.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
-			this.colorPanel.SelectedColor = colorManager3;
+			colorManager1.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
+			this.colorPanel.SelectedColor = colorManager1;
 			this.colorPanel.Size = new System.Drawing.Size(303, 277);
 			this.colorPanel.TabIndex = 0;
-			colorManager4.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
-			this.colorPanel.UnselectedColor = colorManager4;
+			colorManager2.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
+			this.colorPanel.UnselectedColor = colorManager2;
 			// 
 			// panel4
 			// 
@@ -1546,11 +1590,25 @@
 			this.toolStripButton7.Text = "W_POPOUT";
 			this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
 			// 
+			// labelEditTextBox
+			// 
+			this.labelEditTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+			this.labelEditTextBox.Location = new System.Drawing.Point(492, 1);
+			this.labelEditTextBox.Name = "labelEditTextBox";
+			this.labelEditTextBox.Size = new System.Drawing.Size(100, 20);
+			this.labelEditTextBox.TabIndex = 5;
+			this.labelEditTextBox.Visible = false;
+			this.labelEditTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.labelEditTextBox_KeyDown);
+			this.labelEditTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.labelEditTextBox_KeyPress);
+			this.labelEditTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.labelEditTextBox_KeyUp);
+			this.labelEditTextBox.Leave += new System.EventHandler(this.labelEditTextBox_Leave);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1052, 668);
+			this.Controls.Add(this.labelEditTextBox);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
 			this.MainMenuStrip = this.mainMenuStrip;
@@ -1567,6 +1625,9 @@
 			this.splitContainer3.Panel1.PerformLayout();
 			this.splitContainer3.Panel2.ResumeLayout(false);
 			this.splitContainer3.ResumeLayout(false);
+			this.tabControl1.ResumeLayout(false);
+			this.tabPage1.ResumeLayout(false);
+			this.tabPage2.ResumeLayout(false);
 			this.toolStrip2.ResumeLayout(false);
 			this.toolStrip2.PerformLayout();
 			this.panel4.ResumeLayout(false);
@@ -1720,6 +1781,10 @@
 		private System.Windows.Forms.Panel panel4;
 		private Controls.ColorToolStripMenuItem mGRIDCOLORToolStripMenuItem;
 		private MCSkin3D.Controls.ColorPanel colorPanel;
+		private System.Windows.Forms.TabControl tabControl1;
+		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.TreeView treeView2;
 	}
 }
 

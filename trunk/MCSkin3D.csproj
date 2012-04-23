@@ -334,11 +334,6 @@
     <Compile Include="PopupControl\PopupComboBox.designer.cs">
       <DependentUpon>PopupComboBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="SharpZip\BZip2\BZip2.cs" />
-    <Compile Include="SharpZip\BZip2\BZip2Constants.cs" />
-    <Compile Include="SharpZip\BZip2\BZip2Exception.cs" />
-    <Compile Include="SharpZip\BZip2\BZip2InputStream.cs" />
-    <Compile Include="SharpZip\BZip2\BZip2OutputStream.cs" />
     <Compile Include="SharpZip\Checksums\Adler32.cs" />
     <Compile Include="SharpZip\Checksums\CRC32.cs" />
     <Compile Include="SharpZip\Checksums\IChecksum.cs" />
@@ -353,22 +348,7 @@
     <Compile Include="SharpZip\Encryption\PkzipClassic.cs" />
     <Compile Include="SharpZip\Encryption\ZipAESStream.cs" />
     <Compile Include="SharpZip\Encryption\ZipAESTransform.cs" />
-    <Compile Include="SharpZip\GZip\GZIPConstants.cs" />
-    <Compile Include="SharpZip\GZip\GZipException.cs" />
-    <Compile Include="SharpZip\GZip\GzipInputStream.cs" />
-    <Compile Include="SharpZip\GZip\GzipOutputStream.cs" />
-    <Compile Include="SharpZip\Lzw\LzwConstants.cs" />
-    <Compile Include="SharpZip\Lzw\LzwException.cs" />
-    <Compile Include="SharpZip\Lzw\LzwInputStream.cs" />
     <Compile Include="SharpZip\SharpZipBaseException.cs" />
-    <Compile Include="SharpZip\Tar\InvalidHeaderException.cs" />
-    <Compile Include="SharpZip\Tar\TarArchive.cs" />
-    <Compile Include="SharpZip\Tar\TarBuffer.cs" />
-    <Compile Include="SharpZip\Tar\TarEntry.cs" />
-    <Compile Include="SharpZip\Tar\TarException.cs" />
-    <Compile Include="SharpZip\Tar\TarHeader.cs" />
-    <Compile Include="SharpZip\Tar\TarInputStream.cs" />
-    <Compile Include="SharpZip\Tar\TarOutputStream.cs" />
     <Compile Include="SharpZip\Zip\Compression\Deflater.cs" />
     <Compile Include="SharpZip\Zip\Compression\DeflaterConstants.cs" />
     <Compile Include="SharpZip\Zip\Compression\DeflaterEngine.cs" />
