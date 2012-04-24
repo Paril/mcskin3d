@@ -22,6 +22,7 @@
 						<Size>8,8,8</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

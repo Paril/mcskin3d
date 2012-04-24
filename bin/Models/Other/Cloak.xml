@@ -22,6 +22,7 @@
 						<Size>10,16,1</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

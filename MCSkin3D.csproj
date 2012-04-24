@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="lemon42\Color\ColorPickUtil.cs" />
     <Compile Include="Models\IModelFormat.cs" />
+    <Compile Include="Models\MCModels.cs" />
     <Compile Include="Models\ModelFormatTCN.cs" />
     <Compile Include="ObjectListView\CellEditing\CellEditKeyEngine.cs" />
     <Compile Include="ObjectListView\CellEditing\CellEditors.cs">

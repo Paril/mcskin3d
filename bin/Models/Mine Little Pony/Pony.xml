@@ -22,6 +22,7 @@
 						<Size>8,8,8</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Ear">
 						<Animation>
@@ -38,6 +39,7 @@
 						<Size>2,2,2</Size>
 						<TextureOffset>12,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Ear">
 						<Animation>
@@ -54,6 +56,7 @@
 						<Size>2,2,2</Size>
 						<TextureOffset>12,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Horn">
 						<Animation>
@@ -70,6 +73,7 @@
 						<Size>1,4,1</Size>
 						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Hair">
 						<Animation>
@@ -86,8 +90,9 @@
 						<Size>8,8,8</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0.5</Scale>
+						<Part>Helmet</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body|Body">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body.Body">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -102,8 +107,9 @@
 						<Size>8,8,4</Size>
 						<TextureOffset>16,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,4,2</Position>
@@ -111,9 +117,10 @@
 						<Size>0,8,8</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>4,4,2</Position>
@@ -121,9 +128,10 @@
 						<Size>0,8,8</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,4,2</Position>
@@ -131,9 +139,10 @@
 						<Size>8,0,8</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,12,2</Position>
@@ -141,9 +150,10 @@
 						<Size>8,0,8</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Cutie Mark|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Cutie Mark">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,4,10</Position>
@@ -151,9 +161,10 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>0,20</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>4,4,10</Position>
@@ -161,9 +172,10 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>0,20</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,4,10</Position>
@@ -171,9 +183,10 @@
 						<Size>8,0,4</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,12,10</Position>
@@ -181,9 +194,10 @@
 						<Size>8,0,4</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-4,4,14</Position>
@@ -191,9 +205,10 @@
 						<Size>8,8,0</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-1,10,8</Position>
@@ -201,9 +216,10 @@
 						<Size>2,0,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-1,12,8</Position>
@@ -211,9 +227,10 @@
 						<Size>2,0,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>True</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-1,10,8</Position>
@@ -221,9 +238,10 @@
 						<Size>0,2,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body|Body">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>1,10,8</Position>
@@ -231,6 +249,7 @@
 						<Size>0,2,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
@@ -248,6 +267,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>40,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
 						<Animation>
@@ -264,6 +284,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>40,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Leg">
 						<Animation>
@@ -280,6 +301,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>40,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Leg">
 						<Animation>
@@ -296,8 +318,9 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>40,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,1,2</Position>
@@ -305,9 +328,10 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,17,2</Position>
@@ -315,9 +339,10 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,1,2</Position>
@@ -325,9 +350,10 @@
 						<Size>4,8,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,1,6</Position>
@@ -335,9 +361,10 @@
 						<Size>4,8,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,9,2</Position>
@@ -345,9 +372,10 @@
 						<Size>4,8,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,9,6</Position>
@@ -355,9 +383,10 @@
 						<Size>4,8,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>True</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>2,1,2</Position>
@@ -365,9 +394,10 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,1,2</Position>
@@ -375,9 +405,10 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>True</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>2,9,2</Position>
@@ -385,9 +416,10 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail|Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,1,14</Offset>
 						<Position>-2,9,2</Position>
@@ -395,9 +427,10 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing|Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -412,8 +445,9 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing|Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -428,8 +462,9 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing|Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -444,8 +479,9 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing|Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -460,8 +496,9 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing|Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -476,8 +513,9 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing|Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -492,8 +530,9 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -508,8 +547,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -524,8 +564,9 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -540,8 +581,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.2</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -556,8 +598,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.1</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -572,8 +615,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -588,8 +632,9 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.3</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Wing Ext|Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -604,8 +649,9 @@
 						<Size>1,3,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.2</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -620,8 +666,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -636,8 +683,9 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -652,8 +700,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.2</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -668,8 +717,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.1</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -684,8 +734,9 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -700,8 +751,9 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.3</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Wing Ext|Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -716,6 +768,7 @@
 						<Size>1,3,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.2</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

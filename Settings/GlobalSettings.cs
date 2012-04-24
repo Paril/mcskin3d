@@ -70,11 +70,6 @@ namespace MCSkin3D
 		public static TransparencyMode Transparency { get; set; }
 
 		[Savable]
-		[DefaultValue(VisiblePartFlags.Default)]
-		[TypeSerializer(typeof(EnumSerializer<VisiblePartFlags>), true)]
-		public static VisiblePartFlags ViewFlags { get; set; }
-
-		[Savable]
 		[DefaultValue(true)]
 		public static bool AlphaCheckerboard { get; set; }
 

@@ -282,7 +282,7 @@ namespace MCSkin3D
 			var node = GetSelectedNodeAt(e.Location);
 			SelectedNode = node;
 			lastClick = SelectedNode;
-			lastOpened = lastClick == null ? false : lastClick.IsExpanded;
+			lastOpened = lastClick != null && lastClick.IsExpanded;
 
 			if (verticalScrollBarVisible())
 			{
@@ -733,7 +733,12 @@ namespace MCSkin3D
 						if (!(_overNode is Skin))
 							_overNode.Nodes.Add(skin);
 						else
-							_overNode.Parent.Nodes.Add(skin);
+						{
+							if (_overNode.Parent == null)
+								_overNode.TreeView.Nodes.Add(skin);
+							else
+								_overNode.Parent.Nodes.Add(skin);
+						}
 					}
 					else
 						Nodes.Add(skin);

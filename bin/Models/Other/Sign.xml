@@ -22,6 +22,7 @@
 						<Size>24,12,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Stick">
 						<Animation>
@@ -38,6 +39,7 @@
 						<Size>2,14,2</Size>
 						<TextureOffset>0,14</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

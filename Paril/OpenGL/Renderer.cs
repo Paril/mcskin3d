@@ -109,8 +109,7 @@ namespace Paril.OpenGL
 		public Vector3 Center;
 		public Bounds3 Bounds;
 
-		public MCSkin3D.VisiblePartFlags Part;
-		public bool AllowTransparency;
+		public MCSkin3D.ModelPart Part;
 
 		public Mesh(string name) :
 			this()
@@ -391,7 +390,7 @@ namespace Paril.OpenGL
 				if (n.Attributes["Rotate"] != null)
 					mesh.Rotate = Mesh.StringToVertex3(n.Attributes["Rotate"].InnerText);
 				if (n.Attributes["Part"] != null)
-					mesh.Part = (MCSkin3D.VisiblePartFlags)Enum.Parse(typeof(MCSkin3D.VisiblePartFlags), n.Attributes["Part"].InnerText);
+					mesh.Part = (MCSkin3D.ModelPart)Enum.Parse(typeof(MCSkin3D.ModelPart), n.Attributes["Part"].InnerText);
 
 				mesh.Faces = new List<Face>();
 

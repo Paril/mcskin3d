@@ -29,32 +29,10 @@ namespace Paril.Components.Shortcuts
 	/// </summary>
 	public class ControlShortcut : IShortcutImplementor
 	{
-		Control _owner;
-		public Control Control
-		{
-			get { return _owner; }
-		}
-
-		string _name;
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
-
-		string _saveName;
-		public string SaveName
-		{
-			get { return _saveName; }
-		}
-
-		Keys _keys;
-		public Keys Keys
-		{
-			get { return _keys; }
-			set { _keys = value; }
-		}
-
+		public Control Control { get; private set; }
+		public string Name { get; set; }
+		public string SaveName { get; private set; }
+		public Keys Keys { get; set; }
 		public Action Pressed { get; set; }
 
 		public bool CanEvaluate()
@@ -64,8 +42,8 @@ namespace Paril.Components.Shortcuts
 
 		public ControlShortcut(string name, Keys keys, Control owner)
 		{
-			_owner = owner;
-			_name = _saveName = name;
+			Control = owner;
+			Name = SaveName = name;
 			Keys = keys;
 		}
 
@@ -73,6 +51,5 @@ namespace Paril.Components.Shortcuts
 		{
 			return Name + " [" + ShortcutEditor.KeysToString(Keys) + "]";
 		}
-
 	}
 }
