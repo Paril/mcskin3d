@@ -16,20 +16,17 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
-using Paril.OpenGL;
 using MCSkin3D.lemon42;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
 	public class DropperTool : ITool
 	{
+		#region ITool Members
+
 		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 		}
@@ -38,12 +35,14 @@ namespace MCSkin3D
 		{
 		}
 
-		public void SelectedBrushChanged() { }
+		public void SelectedBrushChanged()
+		{
+		}
 
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			var c = pixels[x, y];
-			var oldColor = ColorManager.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha);
+			ColorPixel c = pixels[x, y];
+			ColorManager oldColor = ColorManager.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha);
 
 			if ((Control.ModifierKeys & Keys.Shift) != 0)
 				Editor.MainForm.ColorPanel.UnselectedColor = oldColor;
@@ -66,5 +65,7 @@ namespace MCSkin3D
 		{
 			return Editor.GetLanguageString("T_DROPPER");
 		}
+
+		#endregion
 	}
 }

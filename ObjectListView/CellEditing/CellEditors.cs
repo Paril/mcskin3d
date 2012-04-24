@@ -36,207 +36,232 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace BrightIdeasSoftware
 {
-    
+	/// <summary>
+	/// These items allow combo boxes to remember a value and its description.
+	/// </summary>
+	internal class ComboBoxItem
+	{
+		private readonly String description;
 
-    /// <summary>
-    /// These items allow combo boxes to remember a value and its description.
-    /// </summary>
-    internal class ComboBoxItem
-    {
-        public ComboBoxItem(Object key, String description) {
-            this.key = key;
-            this.description = description;
-        }
-        private String description;
+		private readonly Object key;
 
-        public Object Key {
-            get { return key; }
-        }
-        private Object key;
+		public ComboBoxItem(Object key, String description)
+		{
+			this.key = key;
+			this.description = description;
+		}
 
-        public override string ToString() {
-            return this.description;
-        }
-    } 
+		public Object Key
+		{
+			get { return key; }
+		}
 
-    //-----------------------------------------------------------------------
-    // Cell editors
-    // These classes are simple cell editors that make it easier to get and set
-    // the value that the control is showing.
-    // In many cases, you can intercept the CellEditStarting event to 
-    // change the characteristics of the editor. For example, changing
-    // the acceptable range for a numeric editor or changing the strings
-    // that respresent true and false values for a boolean editor.
+		public override string ToString()
+		{
+			return description;
+		}
+	}
 
-    /// <summary>
-    /// This editor shows and auto completes values from the given listview column.
-    /// </summary>
-    [ToolboxItem(false)]
-    public class AutoCompleteCellEditor : ComboBox
-    {
-        /// <summary>
-        /// Create an AutoCompleteCellEditor
-        /// </summary>
-        /// <param name="lv"></param>
-        /// <param name="column"></param>
-        public AutoCompleteCellEditor(ObjectListView lv, OLVColumn column) {
-            this.DropDownStyle = ComboBoxStyle.DropDown;
+	//-----------------------------------------------------------------------
+	// Cell editors
+	// These classes are simple cell editors that make it easier to get and set
+	// the value that the control is showing.
+	// In many cases, you can intercept the CellEditStarting event to 
+	// change the characteristics of the editor. For example, changing
+	// the acceptable range for a numeric editor or changing the strings
+	// that respresent true and false values for a boolean editor.
 
-            Dictionary<String, bool> alreadySeen = new Dictionary<string, bool>();
-            for (int i = 0; i < Math.Min(lv.GetItemCount(), 1000); i++) {
-                String str = column.GetStringValue(lv.GetModelObject(i));
-                if (!alreadySeen.ContainsKey(str)) {
-                    this.Items.Add(str);
-                    alreadySeen[str] = true;
-                }
-            }
+	/// <summary>
+	/// This editor shows and auto completes values from the given listview column.
+	/// </summary>
+	[ToolboxItem(false)]
+	public class AutoCompleteCellEditor : ComboBox
+	{
+		/// <summary>
+		/// Create an AutoCompleteCellEditor
+		/// </summary>
+		/// <param name="lv"></param>
+		/// <param name="column"></param>
+		public AutoCompleteCellEditor(ObjectListView lv, OLVColumn column)
+		{
+			DropDownStyle = ComboBoxStyle.DropDown;
 
-            this.Sorted = true;
-            this.AutoCompleteSource = AutoCompleteSource.ListItems;
-            this.AutoCompleteMode = AutoCompleteMode.Append;
-        }
-    }
+			var alreadySeen = new Dictionary<string, bool>();
+			for (int i = 0; i < Math.Min(lv.GetItemCount(), 1000); i++)
+			{
+				String str = column.GetStringValue(lv.GetModelObject(i));
+				if (!alreadySeen.ContainsKey(str))
+				{
+					Items.Add(str);
+					alreadySeen[str] = true;
+				}
+			}
 
-    /// <summary>
-    /// This combo box is specialised to allow editing of an enum.
-    /// </summary>
-    internal class EnumCellEditor : ComboBox
-    {
-        public EnumCellEditor(Type type) {
-            this.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.ValueMember = "Key";
+			Sorted = true;
+			AutoCompleteSource = AutoCompleteSource.ListItems;
+			AutoCompleteMode = AutoCompleteMode.Append;
+		}
+	}
 
-            ArrayList values = new ArrayList();
-            foreach (object value in Enum.GetValues(type))
-                values.Add(new ComboBoxItem(value, Enum.GetName(type, value)));
+	/// <summary>
+	/// This combo box is specialised to allow editing of an enum.
+	/// </summary>
+	internal class EnumCellEditor : ComboBox
+	{
+		public EnumCellEditor(Type type)
+		{
+			DropDownStyle = ComboBoxStyle.DropDownList;
+			ValueMember = "Key";
 
-            this.DataSource = values;
-        }
-    }
+			var values = new ArrayList();
+			foreach (object value in Enum.GetValues(type))
+				values.Add(new ComboBoxItem(value, Enum.GetName(type, value)));
 
-    /// <summary>
-    /// This editor simply shows and edits integer values.
-    /// </summary>
-    internal class IntUpDown : NumericUpDown
-    {
-        public IntUpDown() {
-            this.DecimalPlaces = 0;
-            this.Minimum = -9999999;
-            this.Maximum = 9999999;
-        }
+			DataSource = values;
+		}
+	}
 
-        new public int Value {
-            get { return Decimal.ToInt32(base.Value); }
-            set { base.Value = new Decimal(value); }
-        }
-    }
+	/// <summary>
+	/// This editor simply shows and edits integer values.
+	/// </summary>
+	internal class IntUpDown : NumericUpDown
+	{
+		public IntUpDown()
+		{
+			DecimalPlaces = 0;
+			Minimum = -9999999;
+			Maximum = 9999999;
+		}
 
-    /// <summary>
-    /// This editor simply shows and edits unsigned integer values.
-    /// </summary>
-    internal class UintUpDown : NumericUpDown
-    {
-        public UintUpDown() {
-            this.DecimalPlaces = 0;
-            this.Minimum = 0;
-            this.Maximum = 9999999;
-        }
+		public new int Value
+		{
+			get { return Decimal.ToInt32(base.Value); }
+			set { base.Value = new Decimal(value); }
+		}
+	}
 
-        new public uint Value {
-            get { return Decimal.ToUInt32(base.Value); }
-            set { base.Value = new Decimal(value); }
-        }
-    }
+	/// <summary>
+	/// This editor simply shows and edits unsigned integer values.
+	/// </summary>
+	internal class UintUpDown : NumericUpDown
+	{
+		public UintUpDown()
+		{
+			DecimalPlaces = 0;
+			Minimum = 0;
+			Maximum = 9999999;
+		}
 
-    /// <summary>
-    /// This editor simply shows and edits boolean values.
-    /// </summary>
-    internal class BooleanCellEditor : ComboBox
-    {
-        public BooleanCellEditor() {
-            this.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.ValueMember = "Key";
+		public new uint Value
+		{
+			get { return Decimal.ToUInt32(base.Value); }
+			set { base.Value = new Decimal(value); }
+		}
+	}
 
-            ArrayList values = new ArrayList();
-            values.Add(new ComboBoxItem(false, "False"));
-            values.Add(new ComboBoxItem(true, "True"));
+	/// <summary>
+	/// This editor simply shows and edits boolean values.
+	/// </summary>
+	internal class BooleanCellEditor : ComboBox
+	{
+		public BooleanCellEditor()
+		{
+			DropDownStyle = ComboBoxStyle.DropDownList;
+			ValueMember = "Key";
 
-            this.DataSource = values;
-        }
-    }
+			var values = new ArrayList();
+			values.Add(new ComboBoxItem(false, "False"));
+			values.Add(new ComboBoxItem(true, "True"));
 
-    /// <summary>
-    /// This editor simply shows and edits boolean values using a checkbox
-    /// </summary>
-    internal class BooleanCellEditor2 : CheckBox
-    {
-        public BooleanCellEditor2() {
-        }
+			DataSource = values;
+		}
+	}
 
-        public bool? Value {
-            get {
-                switch (this.CheckState) {
-                    case CheckState.Checked: return true;
-                    case CheckState.Indeterminate: return null;
-                    case CheckState.Unchecked: 
-                    default: return false;
-                }
-            }
-            set {
-                if (value.HasValue) 
-                    this.CheckState = value.Value ? CheckState.Checked : CheckState.Unchecked;
-                else
-                    this.CheckState = CheckState.Indeterminate;
-            }
-        }
+	/// <summary>
+	/// This editor simply shows and edits boolean values using a checkbox
+	/// </summary>
+	internal class BooleanCellEditor2 : CheckBox
+	{
+		public bool? Value
+		{
+			get
+			{
+				switch (CheckState)
+				{
+					case CheckState.Checked:
+						return true;
+					case CheckState.Indeterminate:
+						return null;
+					case CheckState.Unchecked:
+					default:
+						return false;
+				}
+			}
+			set
+			{
+				if (value.HasValue)
+					CheckState = value.Value ? CheckState.Checked : CheckState.Unchecked;
+				else
+					CheckState = CheckState.Indeterminate;
+			}
+		}
 
-        public new HorizontalAlignment TextAlign {
-            get {
-                switch (this.CheckAlign) {
-                    case ContentAlignment.MiddleRight: return HorizontalAlignment.Right;
-                    case ContentAlignment.MiddleCenter: return HorizontalAlignment.Center;
-                    case ContentAlignment.MiddleLeft: 
-                    default: return HorizontalAlignment.Left;
-                }
-            }
-            set {
-                switch (value) {
-                    case HorizontalAlignment.Left:
-                        this.CheckAlign = ContentAlignment.MiddleLeft;
-                        break;
-                    case HorizontalAlignment.Center:
-                        this.CheckAlign = ContentAlignment.MiddleCenter;
-                        break;
-                    case HorizontalAlignment.Right:
-                        this.CheckAlign = ContentAlignment.MiddleRight;
-                        break;
-                }
-            }
-        }
-    }
+		public new HorizontalAlignment TextAlign
+		{
+			get
+			{
+				switch (CheckAlign)
+				{
+					case ContentAlignment.MiddleRight:
+						return HorizontalAlignment.Right;
+					case ContentAlignment.MiddleCenter:
+						return HorizontalAlignment.Center;
+					case ContentAlignment.MiddleLeft:
+					default:
+						return HorizontalAlignment.Left;
+				}
+			}
+			set
+			{
+				switch (value)
+				{
+					case HorizontalAlignment.Left:
+						CheckAlign = ContentAlignment.MiddleLeft;
+						break;
+					case HorizontalAlignment.Center:
+						CheckAlign = ContentAlignment.MiddleCenter;
+						break;
+					case HorizontalAlignment.Right:
+						CheckAlign = ContentAlignment.MiddleRight;
+						break;
+				}
+			}
+		}
+	}
 
-    /// <summary>
-    /// This editor simply shows and edits floating point values.
-    /// </summary>
-    /// <remarks>You can intercept the CellEditStarting event if you want
-    /// to change the characteristics of the editor. For example, by increasing
-    /// the number of decimal places.</remarks>
-    internal class FloatCellEditor : NumericUpDown
-    {
-        public FloatCellEditor() {
-            this.DecimalPlaces = 2;
-            this.Minimum = -9999999;
-            this.Maximum = 9999999;
-        }
+	/// <summary>
+	/// This editor simply shows and edits floating point values.
+	/// </summary>
+	/// <remarks>You can intercept the CellEditStarting event if you want
+	/// to change the characteristics of the editor. For example, by increasing
+	/// the number of decimal places.</remarks>
+	internal class FloatCellEditor : NumericUpDown
+	{
+		public FloatCellEditor()
+		{
+			DecimalPlaces = 2;
+			Minimum = -9999999;
+			Maximum = 9999999;
+		}
 
-        new public double Value {
-            get { return Convert.ToDouble(base.Value); }
-            set { base.Value = Convert.ToDecimal(value); }
-        }
-    }
+		public new double Value
+		{
+			get { return Convert.ToDouble(base.Value); }
+			set { base.Value = Convert.ToDecimal(value); }
+		}
+	}
 }

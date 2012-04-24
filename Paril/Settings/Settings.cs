@@ -18,11 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.ComponentModel;
 
 namespace Paril.Settings
 {
@@ -42,11 +40,11 @@ namespace Paril.Settings
 		object Deserialize(string str);
 	}
 
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, Inherited=true, AllowMultiple=false)]
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
 	public class TypeSerializerAttribute : Attribute
 	{
-		public readonly string TypeName;
 		public readonly bool DeserializeDefault;
+		public readonly string TypeName;
 
 		public TypeSerializerAttribute(Type type, bool deserializeDefault)
 		{
@@ -63,16 +61,16 @@ namespace Paril.Settings
 			{
 				if (field is PropertyInfo)
 				{
-					PropertyInfo info = (PropertyInfo)field;
+					var info = (PropertyInfo) field;
 
-					if (info.GetCustomAttributes(typeof(TypeSerializerAttribute), false).Length != 0)
+					if (info.GetCustomAttributes(typeof (TypeSerializerAttribute), false).Length != 0)
 					{
-						TypeSerializerAttribute converter = (TypeSerializerAttribute)info.GetCustomAttributes(typeof(TypeSerializerAttribute), false)[0];
-						var type = Type.GetType(converter.TypeName);
+						var converter = (TypeSerializerAttribute) info.GetCustomAttributes(typeof (TypeSerializerAttribute), false)[0];
+						Type type = Type.GetType(converter.TypeName);
 
 						if (type != null)
 						{
-							ITypeSerializer conv = (ITypeSerializer)(type.GetConstructors()[0].Invoke(null));
+							var conv = (ITypeSerializer) (type.GetConstructors()[0].Invoke(null));
 							return conv.Serialize(obj);
 						}
 					}
@@ -88,7 +86,11 @@ namespace Paril.Settings
 				if (field == null)
 					throw new Exception("Wat, field is null");
 				else
-					throw new Exception("Failed to serialize member " + ((MemberInfo)field).Name + " [" + ((MemberInfo)field).MemberType.ToString() + "]", ex);
+				{
+					throw new Exception(
+						"Failed to serialize member " + ((MemberInfo) field).Name + " [" + ((MemberInfo) field).MemberType.ToString() +
+						"]", ex);
+				}
 			}
 		}
 
@@ -96,16 +98,16 @@ namespace Paril.Settings
 		{
 			if (field is PropertyInfo)
 			{
-				PropertyInfo info = (PropertyInfo)field;
+				var info = (PropertyInfo) field;
 
-				if (info.GetCustomAttributes(typeof(TypeSerializerAttribute), false).Length != 0)
+				if (info.GetCustomAttributes(typeof (TypeSerializerAttribute), false).Length != 0)
 				{
-					TypeSerializerAttribute converter = (TypeSerializerAttribute)info.GetCustomAttributes(typeof(TypeSerializerAttribute), false)[0];
-					var type = Type.GetType(converter.TypeName);
+					var converter = (TypeSerializerAttribute) info.GetCustomAttributes(typeof (TypeSerializerAttribute), false)[0];
+					Type type = Type.GetType(converter.TypeName);
 
 					if (type != null)
 					{
-						ITypeSerializer conv = (ITypeSerializer)(type.GetConstructors()[0].Invoke(null));
+						var conv = (ITypeSerializer) (type.GetConstructors()[0].Invoke(null));
 						return conv.Deserialize(str);
 					}
 				}
@@ -117,49 +119,55 @@ namespace Paril.Settings
 
 	public class StringArraySerializer : ITypeSerializer
 	{
+		#region ITypeSerializer Members
+
 		public string Serialize(object obj)
 		{
-			string[] arr = (string[])obj;
+			var arr = (string[]) obj;
 			string combined = "";
 
-			foreach (var c in arr)
+			foreach (string c in arr)
+			{
 				if (combined == "")
 					combined += c;
 				else
 					combined += ";" + c;
+			}
 
 			return combined;
 		}
 
 		public object Deserialize(string str)
 		{
-			return str.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+			return str.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 		}
+
+		#endregion
 	}
 
 	public class Settings
 	{
+		private readonly StringSerializer _serializer = new StringSerializer();
 		public List<object> Structures = new List<object>();
-		StringSerializer _serializer = new StringSerializer();
 
 		public void Save(string fileName)
 		{
-			StreamWriter writer = new StreamWriter(fileName);
+			var writer = new StreamWriter(fileName);
 
-			foreach (var v in Structures)
+			foreach (object v in Structures)
 			{
 				if (!(v is Type))
 					continue;
 
-				Type type = (Type)v;
+				var type = (Type) v;
 
 				writer.WriteLine("[" + type.Name + "]");
 
-				foreach (var prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
+				foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
 				{
-					if (prop.GetCustomAttributes(typeof(SavableAttribute), false).Length != 0)
+					if (prop.GetCustomAttributes(typeof (SavableAttribute), false).Length != 0)
 					{
-						var str = _serializer.Serialize(prop, prop.GetValue(null, null));
+						string str = _serializer.Serialize(prop, prop.GetValue(null, null));
 						writer.WriteLine(prop.Name + "=" + str);
 					}
 				}
@@ -172,24 +180,24 @@ namespace Paril.Settings
 
 		public void LoadDefaults()
 		{
-			foreach (var str in Structures)
+			foreach (object str in Structures)
 			{
 				if (str is Type)
 				{
-					Type type = (Type)str;
+					var type = (Type) str;
 
-					foreach (var prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
+					foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
 					{
-						var attribs = prop.GetCustomAttributes(typeof(DefaultValueAttribute), false);
+						object[] attribs = prop.GetCustomAttributes(typeof (DefaultValueAttribute), false);
 						if (attribs.Length != 0)
 						{
-							DefaultValueAttribute dva = (DefaultValueAttribute)attribs[0];
+							var dva = (DefaultValueAttribute) attribs[0];
 
-							var converters = prop.GetCustomAttributes(typeof(TypeSerializerAttribute), false);
+							object[] converters = prop.GetCustomAttributes(typeof (TypeSerializerAttribute), false);
 
 							if (converters.Length != 0)
 							{
-								TypeSerializerAttribute serialize = (TypeSerializerAttribute)converters[0];
+								var serialize = (TypeSerializerAttribute) converters[0];
 
 								if (serialize.DeserializeDefault)
 									prop.SetValue(null, _serializer.Deserialize(prop, dva.Value.ToString(), prop.PropertyType), null);
@@ -214,47 +222,47 @@ namespace Paril.Settings
 				return;
 			}
 
-			StreamReader reader = new StreamReader(fileName);
+			var reader = new StreamReader(fileName);
 
 			object currentObject = null;
 			while (!reader.EndOfStream)
 			{
-				var line = reader.ReadLine().Trim();
+				string line = reader.ReadLine().Trim();
 
 				if (string.IsNullOrEmpty(line))
 					continue;
 
 				if (line.StartsWith("[") && line.EndsWith("]"))
 				{
-					var header = line.Split(new char[] { '[', ']' }, StringSplitOptions.RemoveEmptyEntries)[0];
+					string header = line.Split(new[] {'[', ']'}, StringSplitOptions.RemoveEmptyEntries)[0];
 
-					foreach (var v in Structures)
+					foreach (object v in Structures)
 					{
 						if (!(v is Type))
 							continue;
 
-						if (header == ((Type)v).Name)
+						if (header == ((Type) v).Name)
 						{
-							currentObject = (Type)v;
+							currentObject = v;
 							break;
 						}
 					}
 				}
 				else if (currentObject != null)
 				{
-					string[] pair = new string[2];
+					var pair = new string[2];
 					int split = line.IndexOf('=');
 					pair[0] = line.Substring(0, split);
 					pair[1] = line.Substring(split + 1);
 
 					if (currentObject is Type)
 					{
-						Type type = (Type)currentObject;
+						var type = (Type) currentObject;
 
-						foreach (var prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
+						foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
 						{
-							if (prop.GetCustomAttributes(typeof(SavableAttribute), false).Length != 0 &&
-								prop.Name == pair[0])
+							if (prop.GetCustomAttributes(typeof (SavableAttribute), false).Length != 0 &&
+							    prop.Name == pair[0])
 							{
 								object val = _serializer.Deserialize(prop, pair[1], prop.PropertyType);
 								prop.SetValue(null, val, null);

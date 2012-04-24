@@ -17,46 +17,21 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+using System.IO;
+using System.Media;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Paril.Windows.Dialogs
 {
 	public partial class ExceptionDialog : Form
 	{
+		private readonly Exception _exception;
+
 		public ExceptionDialog()
 		{
 			InitializeComponent();
 		}
-
-		public static string FormatMethodBase(MethodBase method)
-		{
-			if (method == null)
-				return "Unknown";
-
-			string str = "[" + method.Module.Name + "]" + " " + method.ToString();
-
-			str += "(";
-			bool started = false;
-			foreach (var x in method.GetParameters())
-			{
-				if (started)
-					str += ", ";
-				else
-					started = true;
-
-				str += x.ParameterType.ToString() + " " + x.Name;
-			}
-			str += ")";
-
-			return str;
-		}
-
-		Exception _exception;
 
 		public ExceptionDialog(Exception e) :
 			this()
@@ -86,18 +61,41 @@ namespace Paril.Windows.Dialogs
 
 				curNode = node;
 
-				TreeNode exceptionNode = new TreeNode(ex.Message);
-				TreeNode messageNode = new TreeNode(FormatMethodBase(ex.TargetSite));
+				var exceptionNode = new TreeNode(ex.Message);
+				var messageNode = new TreeNode(FormatMethodBase(ex.TargetSite));
 
 				curNode.Nodes.Add(exceptionNode);
 				curNode.Nodes.Add(messageNode);
 			}
 		}
 
+		public static string FormatMethodBase(MethodBase method)
+		{
+			if (method == null)
+				return "Unknown";
+
+			string str = "[" + method.Module.Name + "]" + " " + method;
+
+			str += "(";
+			bool started = false;
+			foreach (ParameterInfo x in method.GetParameters())
+			{
+				if (started)
+					str += ", ";
+				else
+					started = true;
+
+				str += x.ParameterType + " " + x.Name;
+			}
+			str += ")";
+
+			return str;
+		}
+
 		public static void Show(Exception e)
 		{
-			ExceptionDialog d = new ExceptionDialog(e);
-			System.Media.SystemSounds.Asterisk.Play();
+			var d = new ExceptionDialog(e);
+			SystemSounds.Asterisk.Play();
 			d.ShowDialog();
 		}
 
@@ -108,20 +106,19 @@ namespace Paril.Windows.Dialogs
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			using (SaveFileDialog sfd = new SaveFileDialog())
+			using (var sfd = new SaveFileDialog())
 			{
 				sfd.RestoreDirectory = true;
 				sfd.Filter = "Text files (*.txt)|*.txt";
 				sfd.RestoreDirectory = true;
 
-				if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-					System.IO.File.WriteAllText(sfd.FileName, _exception.ToString());
+				if (sfd.ShowDialog() == DialogResult.OK)
+					File.WriteAllText(sfd.FileName, _exception.ToString());
 			}
 		}
 
 		private void ExceptionDialog_Load(object sender, EventArgs e)
 		{
-
 		}
 	}
 }

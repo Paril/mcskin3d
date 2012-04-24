@@ -18,16 +18,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Windows.Forms;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace MCSkin3D.Language
 {
 	public class Language
 	{
+		public Language()
+		{
+			StringTable = new Dictionary<string, string>();
+		}
+
 		public string Name { get; private set; }
 		public string Version { get; private set; }
 		public Version SupportedVersion { get; private set; }
@@ -35,14 +39,9 @@ namespace MCSkin3D.Language
 		public ToolStripMenuItem Item { get; set; }
 		public CultureInfo Culture { get; set; }
 
-		public Language()
-		{
-			StringTable = new Dictionary<string, string>();
-		}
-
 		public static Language Parse(StreamReader sr)
 		{
-			Language lang = new Language();
+			var lang = new Language();
 			bool headerFound = false;
 
 			while (!sr.EndOfStream)
@@ -64,8 +63,9 @@ namespace MCSkin3D.Language
 				if (!line.Contains('='))
 					throw new Exception("Parse error");
 
-				var left = line.Substring(0, line.IndexOf('=')).Trim();
-				var right = line.Substring(line.IndexOf('=') + 1).Trim(' ', '\t', '\"', '\'').Replace("\\r", "\r").Replace("\\n", "\n");
+				string left = line.Substring(0, line.IndexOf('=')).Trim();
+				string right = line.Substring(line.IndexOf('=') + 1).Trim(' ', '\t', '\"', '\'').Replace("\\r", "\r").Replace(
+					"\\n", "\n");
 				lang.StringTable.Add(left, right);
 
 				if (left[0] == '#')

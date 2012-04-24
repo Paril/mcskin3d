@@ -17,35 +17,38 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Devcorp.Controls.Design;
-using System.Diagnostics;
-using System.Security.Permissions;
 
 namespace Paril.Controls.Color
 {
 	public partial class ColorPicker : Form
 	{
+		private bool _skipSet;
+
 		public ColorPicker()
 		{
 			InitializeComponent();
 		}
 
+		public HSL MyHSL
+		{
+			get { return new HSL(colorSquare1.CurrentHue, colorSquare1.CurrentSat / 240.0f, saturationSlider1.CurrentLum / 240.0f); }
+		}
+
+		public System.Drawing.Color CurrentColor
+		{
+			get { return System.Drawing.Color.FromArgb((int) numericUpDown4.Value, ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor()); }
+		}
+
 		private void ColorPicker_Load(object sender, EventArgs e)
 		{
-			panel1.BackColor = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
+			panel1.BackColor = ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
 			SetColors();
 		}
 
-		bool _skipSet = false;
-
-		void SetColors()
+		private void SetColors()
 		{
 			_skipSet = true;
 			numericUpDown5.Value = CurrentColor.R;
@@ -59,7 +62,7 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			colorSquare1.CurrentHue = (int)numericUpDown1.Value;
+			colorSquare1.CurrentHue = (int) numericUpDown1.Value;
 			SetColors();
 		}
 
@@ -68,21 +71,8 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			colorSquare1.CurrentSat = (int)numericUpDown2.Value;
+			colorSquare1.CurrentSat = (int) numericUpDown2.Value;
 			SetColors();
-		}
-
-		public Devcorp.Controls.Design.HSL MyHSL
-		{
-			get { return new HSL(colorSquare1.CurrentHue, (float)colorSquare1.CurrentSat / 240.0f, (float)saturationSlider1.CurrentLum / 240.0f); }
-		}
-
-		public System.Drawing.Color CurrentColor
-		{
-			get
-			{
-				return System.Drawing.Color.FromArgb((int)numericUpDown4.Value, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor());
-			}
 		}
 
 		private void colorSquare1_HueChanged(object sender, EventArgs e)
@@ -93,8 +83,8 @@ namespace Paril.Controls.Color
 			_skipSet = true;
 			numericUpDown1.Value = colorSquare1.CurrentHue;
 
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
-			panel1.BackColor = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
+			panel1.BackColor = ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
 			SetColors();
 			_skipSet = false;
 		}
@@ -107,8 +97,8 @@ namespace Paril.Controls.Color
 			_skipSet = true;
 			numericUpDown2.Value = colorSquare1.CurrentSat;
 
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
-			panel1.BackColor = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
+			panel1.BackColor = ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
 			SetColors();
 			_skipSet = false;
 		}
@@ -121,7 +111,7 @@ namespace Paril.Controls.Color
 			_skipSet = true;
 			numericUpDown3.Value = saturationSlider1.CurrentLum;
 
-			panel1.BackColor = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
+			panel1.BackColor = ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
 			SetColors();
 			_skipSet = false;
 		}
@@ -131,9 +121,9 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			saturationSlider1.CurrentLum = (int)numericUpDown3.Value;
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
-			panel1.BackColor = Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
+			saturationSlider1.CurrentLum = (int) numericUpDown3.Value;
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
+			panel1.BackColor = ColorSpaceHelper.HSLtoRGB(MyHSL).ToColor();
 		}
 
 		private void numericUpDown5_ValueChanged(object sender, EventArgs e)
@@ -141,19 +131,20 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			var asRGB = System.Drawing.Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
-			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(asRGB);
+			System.Drawing.Color asRGB = System.Drawing.Color.FromArgb((int) numericUpDown5.Value, (int) numericUpDown6.Value,
+			                                                           (int) numericUpDown7.Value);
+			HSL hsl = ColorSpaceHelper.RGBtoHSL(asRGB);
 
 			_skipSet = true;
 
-			numericUpDown1.Value = (int)hsl.Hue;
-			numericUpDown2.Value = (int)(hsl.Saturation * 240.0f);
-			numericUpDown3.Value = (int)(hsl.Luminance * 240.0f);
+			numericUpDown1.Value = (int) hsl.Hue;
+			numericUpDown2.Value = (int) (hsl.Saturation * 240.0f);
+			numericUpDown3.Value = (int) (hsl.Luminance * 240.0f);
 
-			colorSquare1.CurrentHue = (int)numericUpDown1.Value;
-			colorSquare1.CurrentSat = (int)numericUpDown2.Value;
-			saturationSlider1.CurrentLum = (int)numericUpDown3.Value;
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
+			colorSquare1.CurrentHue = (int) numericUpDown1.Value;
+			colorSquare1.CurrentSat = (int) numericUpDown2.Value;
+			saturationSlider1.CurrentLum = (int) numericUpDown3.Value;
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
 			panel1.BackColor = asRGB;
 
 			_skipSet = false;
@@ -164,19 +155,20 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			var asRGB = System.Drawing.Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
-			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(asRGB);
+			System.Drawing.Color asRGB = System.Drawing.Color.FromArgb((int) numericUpDown5.Value, (int) numericUpDown6.Value,
+			                                                           (int) numericUpDown7.Value);
+			HSL hsl = ColorSpaceHelper.RGBtoHSL(asRGB);
 
 			_skipSet = true;
 
-			numericUpDown1.Value = (int)hsl.Hue;
-			numericUpDown2.Value = (int)(hsl.Saturation * 240.0f);
-			numericUpDown3.Value = (int)(hsl.Luminance * 240.0f);
+			numericUpDown1.Value = (int) hsl.Hue;
+			numericUpDown2.Value = (int) (hsl.Saturation * 240.0f);
+			numericUpDown3.Value = (int) (hsl.Luminance * 240.0f);
 
-			colorSquare1.CurrentHue = (int)numericUpDown1.Value;
-			colorSquare1.CurrentSat = (int)numericUpDown2.Value;
-			saturationSlider1.CurrentLum = (int)numericUpDown3.Value;
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
+			colorSquare1.CurrentHue = (int) numericUpDown1.Value;
+			colorSquare1.CurrentSat = (int) numericUpDown2.Value;
+			saturationSlider1.CurrentLum = (int) numericUpDown3.Value;
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
 			panel1.BackColor = asRGB;
 
 			_skipSet = false;
@@ -187,19 +179,20 @@ namespace Paril.Controls.Color
 			if (_skipSet)
 				return;
 
-			var asRGB = System.Drawing.Color.FromArgb((int)numericUpDown5.Value, (int)numericUpDown6.Value, (int)numericUpDown7.Value);
-			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(asRGB);
+			System.Drawing.Color asRGB = System.Drawing.Color.FromArgb((int) numericUpDown5.Value, (int) numericUpDown6.Value,
+			                                                           (int) numericUpDown7.Value);
+			HSL hsl = ColorSpaceHelper.RGBtoHSL(asRGB);
 
 			_skipSet = true;
 
-			numericUpDown1.Value = (int)hsl.Hue;
-			numericUpDown2.Value = (int)(hsl.Saturation * 240.0f);
-			numericUpDown3.Value = (int)(hsl.Luminance * 240.0f);
+			numericUpDown1.Value = (int) hsl.Hue;
+			numericUpDown2.Value = (int) (hsl.Saturation * 240.0f);
+			numericUpDown3.Value = (int) (hsl.Luminance * 240.0f);
 
-			colorSquare1.CurrentHue = (int)numericUpDown1.Value;
-			colorSquare1.CurrentSat = (int)numericUpDown2.Value;
-			saturationSlider1.CurrentLum = (int)numericUpDown3.Value;
-			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double)colorSquare1.CurrentSat / 240.0f, 0);
+			colorSquare1.CurrentHue = (int) numericUpDown1.Value;
+			colorSquare1.CurrentSat = (int) numericUpDown2.Value;
+			saturationSlider1.CurrentLum = (int) numericUpDown3.Value;
+			saturationSlider1.Color = new HSL(colorSquare1.CurrentHue, (double) colorSquare1.CurrentSat / 240.0f, 0);
 			panel1.BackColor = asRGB;
 
 			_skipSet = false;

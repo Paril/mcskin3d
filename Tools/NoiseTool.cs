@@ -17,11 +17,7 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
 using Devcorp.Controls.Design;
 using Paril.OpenGL;
@@ -30,8 +26,9 @@ namespace MCSkin3D
 {
 	public class NoiseTool : BrushToolBase
 	{
-		Random _noise, _noise2;
-		int _seed;
+		private Random _noise, _noise2;
+		private int _seed;
+
 		public NoiseTool()
 		{
 			_noise = new Random();
@@ -42,7 +39,7 @@ namespace MCSkin3D
 		public override Color BlendColor(Color l, Color r)
 		{
 			Color c = r;
-			var hsv = ColorSpaceHelper.RGBtoHSB(c);
+			HSB hsv = ColorSpaceHelper.RGBtoHSB(c);
 			hsv.Brightness += (((IsPreview ? _noise : _noise2).NextDouble() - 0.5f) * 2) * GlobalSettings.NoiseSaturation;
 
 			if (hsv.Brightness < 0)

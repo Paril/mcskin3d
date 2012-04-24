@@ -17,18 +17,19 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.Reflection;
-using Version = Paril.Components.Update.Version;
-using System.Runtime.CompilerServices;
-using MCSkin3D.ExceptionHandler;
+using System.IO;
 using System.Media;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows.Forms;
+using MCSkin3D.ExceptionHandler;
+using SVN;
+using Version = Paril.Components.Update.Version;
 
 namespace MCSkin3D
 {
-	static class Program
+	internal static class Program
 	{
 		public static Version Version;
 
@@ -36,38 +37,40 @@ namespace MCSkin3D
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main()
+		private static void Main()
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-			{
-				String resourceName = "MCSkin3D.Resources." +
-				   new AssemblyName(args.Name).Name + ".dll";
+			                                           {
+			                                           	String resourceName = "MCSkin3D.Resources." +
+			                                           	                      new AssemblyName(args.Name).Name + ".dll";
 
-				using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-				{
+			                                           	using (
+			                                           		Stream stream =
+			                                           			Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)
+			                                           		)
+			                                           	{
+			                                           		if (stream == null)
+			                                           			return null;
 
-					if (stream == null)
-						return null;
-
-					Byte[] assemblyData = new Byte[stream.Length];
-					stream.Read(assemblyData, 0, assemblyData.Length);
-					return Assembly.Load(assemblyData);
-				}
-			};
+			                                           		var assemblyData = new Byte[stream.Length];
+			                                           		stream.Read(assemblyData, 0, assemblyData.Length);
+			                                           		return Assembly.Load(assemblyData);
+			                                           	}
+			                                           };
 
 			MainCore();
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		static void MainCore()
+		private static void MainCore()
 		{
 #if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+			Application.ThreadException += Application_ThreadException;
 #endif
 
 			Version = new Version(Application.ProductVersion);
-			Version.Revision = SVN.Repository.Revision;
+			Version.Revision = Repository.Revision;
 
 #if !DEBUG
 			try
@@ -81,7 +84,7 @@ namespace MCSkin3D
 			}
 			catch (Exception ex)
 			{
-				ExceptionForm form = new ExceptionForm();
+				var form = new ExceptionForm();
 				form.Exception = ex;
 				form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
 				SystemSounds.Asterisk.Play();
@@ -90,9 +93,9 @@ namespace MCSkin3D
 #endif
 		}
 
-		static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
 		{
-			ExceptionForm form = new ExceptionForm();
+			var form = new ExceptionForm();
 			form.Exception = e.Exception;
 			form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
 			SystemSounds.Asterisk.Play();

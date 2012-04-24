@@ -18,29 +18,55 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenTK;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using Paril.Drawing.Filters;
 using System.Drawing.Imaging;
-using Paril.Drawing;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Collections;
+using System.Windows.Forms;
+using Paril.Controls;
+using Paril.Drawing;
 
 namespace MCSkin3D
 {
 	public class Brush : IComparable<Brush>
 	{
-		public string Name { get; set; }
+		private static readonly AlphanumComparatorFast logical = new AlphanumComparatorFast();
 		public float[,] Luminance;
 
-		public int Width { get { return Luminance.GetLength(0); } }
-		public int Height { get { return Luminance.GetLength(1); } }
+		public Brush(string name, int w, int h)
+		{
+			Name = name;
+			Luminance = new float[w,h];
+		}
+
+		public Brush(string file)
+		{
+			Name = Path.GetFileNameWithoutExtension(file);
+
+			Image = new Bitmap(file);
+			Luminance = new float[Image.Width,Image.Height];
+
+			using (var fp = new FastPixel(Image, true))
+			{
+				for (int y = 0; y < Height; ++y)
+				{
+					for (int x = 0; x < Width; ++x)
+						Luminance[x, y] = fp.GetPixel(x, y).A / 255.0f;
+				}
+			}
+		}
+
+		public string Name { get; set; }
+
+		public int Width
+		{
+			get { return Luminance.GetLength(0); }
+		}
+
+		public int Height
+		{
+			get { return Luminance.GetLength(1); }
+		}
+
 		public Bitmap Image { get; private set; }
 
 		public float this[int x, int y]
@@ -49,26 +75,14 @@ namespace MCSkin3D
 			set { Luminance[x, y] = value; }
 		}
 
-		public Brush(string name, int w, int h)
+		#region IComparable<Brush> Members
+
+		public int CompareTo(Brush b)
 		{
-			Name = name;
-			Luminance = new float[w, h];
+			return logical.Compare(Name, b.Name);
 		}
 
-		public Brush(string file)
-		{
-			Name = Path.GetFileNameWithoutExtension(file);
-
-			Image = new Bitmap(file);
-			Luminance = new float[Image.Width, Image.Height];
-
-			using (FastPixel fp = new FastPixel(Image, true))
-			{
-				for (int y = 0; y < Height; ++y)
-					for (int x = 0; x < Width; ++x)
-						Luminance[x, y] = (float)fp.GetPixel(x, y).A / 255.0f;
-			}
-		}
+		#endregion
 
 		public void BuildImage(bool save = true)
 		{
@@ -77,21 +91,17 @@ namespace MCSkin3D
 
 			Image = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
 
-			using (FastPixel fp = new FastPixel(Image, true))
+			using (var fp = new FastPixel(Image, true))
 			{
 				for (int y = 0; y < Height; ++y)
+				{
 					for (int x = 0; x < Width; ++x)
-						fp.SetPixel(x, y, System.Drawing.Color.FromArgb((byte)(Luminance[x, y] * 255), 0, 0, 0));
+						fp.SetPixel(x, y, Color.FromArgb((byte) (Luminance[x, y] * 255), 0, 0, 0));
+				}
 			}
 
 			if (save)
 				Image.Save("Brushes\\" + Editor.GetLanguageString(Name) + " [" + Width + "].png");
-		}
-
-		static Paril.Controls.AlphanumComparatorFast logical = new Paril.Controls.AlphanumComparatorFast();
-		public int CompareTo(Brush b)
-		{
-			return logical.Compare(Name, b.Name);
 		}
 	}
 
@@ -101,111 +111,19 @@ namespace MCSkin3D
 		public static List<Brush> BrushList = new List<Brush>();
 		public static BrushComboBox BrushBox = new BrushComboBox();
 
-		public static Brush SelectedBrush
-		{
-			get;
-			private set;
-		}
+		public static Brush SelectedBrush { get; private set; }
 
-		static void BrushBox_SelectedIndexChanged(object sender, EventArgs e)
+		private static void BrushBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SelectedBrush = (Brush)BrushBox.SelectedItem;
+			SelectedBrush = (Brush) BrushBox.SelectedItem;
 
 			if (Editor.MainForm.SelectedTool != null)
 				Editor.MainForm.SelectedTool.Tool.SelectedBrushChanged();
 		}
 
-		static Brush GenerateSquare(int size)
-		{
-			Brush brush = new Brush("C_SQUARE", size, size);
-			Editor.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
-
-			for (int y = 0; y < brush.Height; ++y)
-				for (int x = 0; x < brush.Width; ++x)
-					brush.Luminance[x, y] = 1;
-
-			return brush;
-		}
-
-		static Brush GenerateCircle(int size)
-		{
-			Brush brush = new Brush("C_CIRCLE", size, size);
-			Editor.MainForm.languageProvider1.SetPropertyNames(brush, "Name");
-			int radius = (int)Math.Floor(size / 2.0);
-
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-				{
-					if (Math.Pow((i - radius), 2) + Math.Pow((j - radius), 2) <= Math.Pow(radius, 2))
-						brush.Luminance[i, j] = 1;
-				}
-			}
-
-			return brush;
-		}
-
-		static Brush GenerateFeatheredSquare(int size)
-		{
-			Brush brush = new Brush("Smooth Square [" + size + "]", size + 4, size + 4);
-
-			for (int y = 2; y < brush.Height - 2; ++y)
-				for (int x = 2; x < brush.Width - 2; ++x)
-				{
-					brush.Luminance[x, y] = 1;
-				}
-
-			GaussianBlurFilter filter = new GaussianBlurFilter(4);
-			var op = new FloatMatrixOperand();
-			op.Value = brush.Luminance;
-			filter.Apply(op);
-
-			float scale = brush.Luminance[(brush.Width - 1) / 2, (brush.Height - 1) / 2];
-			
-			for (int y = 0; y < brush.Height; ++y)
-				for (int x = 0; x < brush.Width; ++x)
-				{
-					if (brush.Luminance[x, y] != 0)
-						brush.Luminance[x, y] /= scale;
-				}
-
-			return brush;
-		}
-
-		static Brush GenerateSmoothCircle(int size)
-		{
-			Brush brush = new Brush("Smooth Circle [" + size + "]", size + 4, size + 4);
-			int radius = (int)Math.Floor((size) / 2.0);
-
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-				{
-					if (Math.Pow((i - radius), 2) + Math.Pow((j - radius), 2) <= Math.Pow(radius, 2))
-						brush.Luminance[i + 2, j + 2] = 1;
-				}
-			}
-
-			GaussianBlurFilter filter = new GaussianBlurFilter(4);
-			var op = new FloatMatrixOperand();
-			op.Value = brush.Luminance;
-			filter.Apply(op);
-
-			float scale = brush.Luminance[(brush.Width - 1) / 2, (brush.Height - 1) / 2];
-
-			for (int y = 0; y < brush.Height; ++y)
-				for (int x = 0; x < brush.Width; ++x)
-				{
-					if (brush.Luminance[x, y] != 0)
-						brush.Luminance[x, y] /= scale;
-				}
-
-			return brush;
-		}
-
 		public static void LoadBrushes()
 		{
-			foreach (var file in Directory.GetFiles("Brushes", "*.png", SearchOption.AllDirectories))
+			foreach (string file in Directory.GetFiles("Brushes", "*.png", SearchOption.AllDirectories))
 			{
 				try
 				{
@@ -218,16 +136,16 @@ namespace MCSkin3D
 
 			BrushList.Sort();
 
-			Brush onebyone = new Brush("Pixel", 1, 1);
-			onebyone.Luminance = new float[,] { { 1 } };
+			var onebyone = new Brush("Pixel", 1, 1);
+			onebyone.Luminance = new float[,] {{1}};
 			onebyone.BuildImage(false);
 
 			BrushList.Insert(0, onebyone);
 
-			foreach (var b in BrushList)
+			foreach (Brush b in BrushList)
 				BrushBox.Items.Add(b);
 
-			BrushBox.SelectedIndexChanged += new EventHandler(BrushBox_SelectedIndexChanged);
+			BrushBox.SelectedIndexChanged += BrushBox_SelectedIndexChanged;
 			BrushBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			BrushBox.SelectedIndex = 0;
 			BrushBox.Width = 44;
@@ -238,7 +156,7 @@ namespace MCSkin3D
 	{
 		public BrushComboBox()
 		{
-			DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			DrawMode = DrawMode.OwnerDrawFixed;
 			ItemHeight = 20;
 			DropDownWidth = 35;
 		}
@@ -251,16 +169,22 @@ namespace MCSkin3D
 
 			if (e.Index != -1)
 			{
-				var brush = (Brush)Items[e.Index];
+				var brush = (Brush) Items[e.Index];
 
 				if (brush.Width <= e.Bounds.Height)
-					e.Graphics.DrawImage(brush.Image, e.Bounds.X + (e.Bounds.Height / 2) - (brush.Width / 2), e.Bounds.Y + (e.Bounds.Height / 2) - (brush.Height / 2), brush.Width, brush.Height);
+				{
+					e.Graphics.DrawImage(brush.Image, e.Bounds.X + (e.Bounds.Height / 2) - (brush.Width / 2),
+					                     e.Bounds.Y + (e.Bounds.Height / 2) - (brush.Height / 2), brush.Width, brush.Height);
+				}
 				else
 					e.Graphics.DrawImage(brush.Image, e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
 
 				//e.Graphics.DrawRectangle(Pens.Black, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height));
 
-				TextRenderer.DrawText(e.Graphics, brush.Name, Font, new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText, TextFormatFlags.VerticalCenter);
+				TextRenderer.DrawText(e.Graphics, brush.Name, Font,
+				                      new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height),
+				                      (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText,
+				                      TextFormatFlags.VerticalCenter);
 			}
 
 			e.DrawFocusRectangle();

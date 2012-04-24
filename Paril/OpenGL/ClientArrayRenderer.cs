@@ -16,11 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
-using OpenTK;
-using OpenTK.Graphics;
 
 namespace Paril.OpenGL
 {
@@ -30,7 +26,7 @@ namespace Paril.OpenGL
 	/// </summary>
 	public class ClientArrayRenderer : Renderer
 	{
-		bool _compiled = false;
+		private readonly bool _compiled;
 
 		public ClientArrayRenderer()
 		{
@@ -52,7 +48,7 @@ namespace Paril.OpenGL
 
 			GL.Translate(mesh.Translate);
 
-			foreach (var face in mesh.Faces)
+			foreach (Face face in mesh.Faces)
 			{
 				GL.VertexPointer(3, VertexPointerType.Float, 0, face.Vertices);
 				GL.TexCoordPointer(2, TexCoordPointerType.Float, 0, face.TexCoords);

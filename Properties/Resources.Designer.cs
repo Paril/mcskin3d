@@ -550,13 +550,6 @@ namespace MCSkin3D.Properties {
             }
         }
         
-        internal static byte[] slkscr {
-            get {
-                object obj = ResourceManager.GetObject("slkscr", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap smaller3D {
             get {
                 object obj = ResourceManager.GetObject("smaller3D", resourceCulture);

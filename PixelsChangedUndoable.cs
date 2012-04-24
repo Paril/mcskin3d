@@ -17,11 +17,10 @@
 //
 
 using System;
-using Paril.Components;
-using System.Drawing;
 using System.Collections.Generic;
-using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 using Paril.Compatibility;
+using Paril.Components;
 using Paril.OpenGL;
 
 namespace MCSkin3D
@@ -42,7 +41,6 @@ namespace MCSkin3D
 	public class PixelsChangedUndoable : IUndoable
 	{
 		public Dictionary<Point, Tuple<Color, ColorAlpha>> Points = new Dictionary<Point, Tuple<Color, ColorAlpha>>();
-		public string Action { get; private set; }
 
 		public PixelsChangedUndoable(string action)
 		{
@@ -54,18 +52,23 @@ namespace MCSkin3D
 		{
 		}
 
+		#region IUndoable Members
+
+		public string Action { get; private set; }
+
 		public void Undo(object obj)
 		{
-			Skin skin = (Skin)obj;
+			var skin = (Skin) obj;
 
-			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+			var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
 			grabber.Load();
 
 			foreach (var kvp in Points)
 			{
-				var p = kvp.Key;
-				var color = kvp.Value;
-				grabber[p.X, p.Y] = new ColorPixel(color.Item1.R | (color.Item1.G << 8) | (color.Item1.B << 16) | (color.Item1.A << 24));
+				Point p = kvp.Key;
+				Tuple<Color, ColorAlpha> color = kvp.Value;
+				grabber[p.X, p.Y] =
+					new ColorPixel(color.Item1.R | (color.Item1.G << 8) | (color.Item1.B << 16) | (color.Item1.A << 24));
 
 				if (!Editor.MainForm.PaintedPixels.ContainsKey(p))
 					Editor.MainForm.PaintedPixels.Add(p, true);
@@ -78,17 +81,19 @@ namespace MCSkin3D
 
 		public void Redo(object obj)
 		{
-			Skin skin = (Skin)obj;
+			var skin = (Skin) obj;
 
-			ColorGrabber grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+			var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
 			grabber.Load();
 
 			foreach (var kvp in Points)
 			{
-				var p = kvp.Key;
-				var color = kvp.Value;
-				grabber[p.X, p.Y] = new ColorPixel(color.Item2.Color.R | (color.Item2.Color.G << 8) | (color.Item2.Color.B << 16) | (color.Item2.Color.A << 24));
-			
+				Point p = kvp.Key;
+				Tuple<Color, ColorAlpha> color = kvp.Value;
+				grabber[p.X, p.Y] =
+					new ColorPixel(color.Item2.Color.R | (color.Item2.Color.G << 8) | (color.Item2.Color.B << 16) |
+					               (color.Item2.Color.A << 24));
+
 				if (!Editor.MainForm.PaintedPixels.ContainsKey(p))
 					Editor.MainForm.PaintedPixels.Add(p, true);
 			}
@@ -97,5 +102,7 @@ namespace MCSkin3D
 
 			Editor.MainForm.SetPartTransparencies();
 		}
+
+		#endregion
 	}
 }

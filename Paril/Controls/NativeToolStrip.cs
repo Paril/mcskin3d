@@ -16,19 +16,15 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Szotar.WindowsForms;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using Szotar.WindowsForms;
 
 namespace Paril.Controls
 {
-	static class NativeStripInternals
+	internal static class NativeStripInternals
 	{
-		internal static ToolStripAeroRenderer Renderer = null;
+		internal static ToolStripAeroRenderer Renderer;
 
 		static NativeStripInternals()
 		{
@@ -37,15 +33,15 @@ namespace Paril.Controls
 		}
 	}
 
-	class NativeToolStrip : ToolStrip
+	internal class NativeToolStrip : ToolStrip
 	{
 		public NativeToolStrip()
 		{
 			Renderer = NativeStripInternals.Renderer;
 		}
-
 	}
-	class NativeToolStripContainer : ToolStripContainer
+
+	internal class NativeToolStripContainer : ToolStripContainer
 	{
 		public NativeToolStripContainer()
 		{
@@ -56,7 +52,7 @@ namespace Paril.Controls
 		}
 	}
 
-	class NativeMenuStrip : MenuStrip
+	internal class NativeMenuStrip : MenuStrip
 	{
 		public NativeMenuStrip()
 		{

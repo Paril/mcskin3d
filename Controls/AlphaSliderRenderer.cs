@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MB.Controls;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using MB.Controls;
 
 namespace MCSkin3D
 {
@@ -17,20 +11,16 @@ namespace MCSkin3D
 		{
 		}
 
-		public Color EndColor
-		{
-			get;
-			set;
-		}
+		public Color EndColor { get; set; }
 
 		public override void Render(Graphics g)
 		{
 			var colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
-			System.Drawing.Brush brush = new HatchBrush(HatchStyle.LargeCheckerBoard, System.Drawing.Color.Gray, System.Drawing.Color.LightGray);
+			System.Drawing.Brush brush = new HatchBrush(HatchStyle.LargeCheckerBoard, Color.Gray, Color.LightGray);
 
 			g.FillRectangle(brush, colorRect);
 
-			brush = new LinearGradientBrush(colorRect, Color.FromArgb(0, EndColor), EndColor, System.Drawing.Drawing2D.LinearGradientMode.Horizontal);
+			brush = new LinearGradientBrush(colorRect, Color.FromArgb(0, EndColor), EndColor, LinearGradientMode.Horizontal);
 			g.FillRectangle(brush, colorRect);
 			g.DrawRectangle(Pens.Black, colorRect);
 

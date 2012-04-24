@@ -17,11 +17,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace MCSkin3D
@@ -48,7 +43,11 @@ namespace MCSkin3D
 		public bool Remember
 		{
 			get { return checkBox1.Checked; }
-			set { checkBox1.Checked = value; CheckAutoLogin(); }
+			set
+			{
+				checkBox1.Checked = value;
+				CheckAutoLogin();
+			}
 		}
 
 		public bool AutoLogin
@@ -57,7 +56,7 @@ namespace MCSkin3D
 			set { checkBox2.Checked = value; }
 		}
 
-		void CheckAutoLogin()
+		private void CheckAutoLogin()
 		{
 			if (!Remember)
 			{
@@ -75,13 +74,13 @@ namespace MCSkin3D
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 			Close();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.OK;
+			DialogResult = DialogResult.OK;
 			Close();
 		}
 

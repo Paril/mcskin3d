@@ -60,6 +60,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	public class NameFilter : IScanFilter
 	{
 		#region Constructors
+
 		/// <summary>
 		/// Construct an instance based on the filter expression passed
 		/// </summary>
@@ -71,6 +72,21 @@ namespace ICSharpCode.SharpZipLib.Core
 			exclusions_ = new ArrayList();
 			Compile();
 		}
+
+		#endregion
+
+		#region IScanFilter Members
+
+		/// <summary>
+		/// Test a value to see if it matches the filter.
+		/// </summary>
+		/// <param name="name">The value to test.</param>
+		/// <returns>True if the value matches, false otherwise.</returns>
+		public bool IsMatch(string name)
+		{
+			return (IsIncluded(name) && !IsExcluded(name));
+		}
+
 		#endregion
 
 		/// <summary>
@@ -81,10 +97,12 @@ namespace ICSharpCode.SharpZipLib.Core
 		public static bool IsValidExpression(string expression)
 		{
 			bool result = true;
-			try {
-				Regex exp = new Regex(expression, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+			try
+			{
+				var exp = new Regex(expression, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 			}
-			catch (ArgumentException) {
+			catch (ArgumentException)
+			{
 				result = false;
 			}
 			return result;
@@ -97,33 +115,29 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <returns>True if the expression is valid, false otherwise.</returns>
 		public static bool IsValidFilterExpression(string toTest)
 		{
-			if ( toTest == null ) {
-				throw new ArgumentNullException("toTest");
-			}
+			if (toTest == null) throw new ArgumentNullException("toTest");
 
 			bool result = true;
 
-			try {
+			try
+			{
 				string[] items = SplitQuoted(toTest);
-				for (int i = 0; i < items.Length; ++i) {
-					if ((items[i] != null) && (items[i].Length > 0)) {
+				for (int i = 0; i < items.Length; ++i)
+				{
+					if ((items[i] != null) && (items[i].Length > 0))
+					{
 						string toCompile;
 
-						if (items[i][0] == '+') {
-							toCompile = items[i].Substring(1, items[i].Length - 1);
-						}
-						else if (items[i][0] == '-') {
-							toCompile = items[i].Substring(1, items[i].Length - 1);
-						}
-						else {
-							toCompile = items[i];
-						}
+						if (items[i][0] == '+') toCompile = items[i].Substring(1, items[i].Length - 1);
+						else if (items[i][0] == '-') toCompile = items[i].Substring(1, items[i].Length - 1);
+						else toCompile = items[i];
 
-						Regex testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+						var testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 					}
 				}
 			}
-			catch (ArgumentException) {
+			catch (ArgumentException)
+			{
 				result = false;
 			}
 
@@ -138,22 +152,24 @@ namespace ICSharpCode.SharpZipLib.Core
 		public static string[] SplitQuoted(string original)
 		{
 			char escape = '\\';
-			char[] separators = { ';' };
+			char[] separators = {';'};
 
-			ArrayList result = new ArrayList();
+			var result = new ArrayList();
 
-			if ((original != null) && (original.Length > 0)) {
+			if ((original != null) && (original.Length > 0))
+			{
 				int endIndex = -1;
-				StringBuilder b = new StringBuilder();
+				var b = new StringBuilder();
 
-				while (endIndex < original.Length) {
+				while (endIndex < original.Length)
+				{
 					endIndex += 1;
-					if (endIndex >= original.Length) {
-						result.Add(b.ToString());
-					}
-					else if (original[endIndex] == escape) {
+					if (endIndex >= original.Length) result.Add(b.ToString());
+					else if (original[endIndex] == escape)
+					{
 						endIndex += 1;
-						if (endIndex >= original.Length) {
+						if (endIndex >= original.Length)
+						{
 #if NETCF_1_0
 							throw new ArgumentException("Missing terminating escape character");
 #else
@@ -166,19 +182,19 @@ namespace ICSharpCode.SharpZipLib.Core
 
 						b.Append(original[endIndex]);
 					}
-					else {
-						if (Array.IndexOf(separators, original[endIndex]) >= 0) {
+					else
+					{
+						if (Array.IndexOf(separators, original[endIndex]) >= 0)
+						{
 							result.Add(b.ToString());
 							b.Length = 0;
 						}
-						else {
-							b.Append(original[endIndex]);
-						}
+						else b.Append(original[endIndex]);
 					}
 				}
 			}
 
-			return (string[])result.ToArray(typeof(string));
+			return (string[]) result.ToArray(typeof (string));
 		}
 
 		/// <summary>
@@ -198,12 +214,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		public bool IsIncluded(string name)
 		{
 			bool result = false;
-			if ( inclusions_.Count == 0 ) {
-				result = true;
-			}
-			else {
-				foreach ( Regex r in inclusions_ ) {
-					if ( r.IsMatch(name) ) {
+			if (inclusions_.Count == 0) result = true;
+			else
+			{
+				foreach (Regex r in inclusions_)
+				{
+					if (r.IsMatch(name))
+					{
 						result = true;
 						break;
 					}
@@ -220,8 +237,10 @@ namespace ICSharpCode.SharpZipLib.Core
 		public bool IsExcluded(string name)
 		{
 			bool result = false;
-			foreach ( Regex r in exclusions_ ) {
-				if ( r.IsMatch(name) ) {
+			foreach (Regex r in exclusions_)
+			{
+				if (r.IsMatch(name))
+				{
 					result = true;
 					break;
 				}
@@ -229,62 +248,44 @@ namespace ICSharpCode.SharpZipLib.Core
 			return result;
 		}
 
-		#region IScanFilter Members
-		/// <summary>
-		/// Test a value to see if it matches the filter.
-		/// </summary>
-		/// <param name="name">The value to test.</param>
-		/// <returns>True if the value matches, false otherwise.</returns>
-		public bool IsMatch(string name)
-		{
-			return (IsIncluded(name) && !IsExcluded(name));
-		}
-		#endregion
-
 		/// <summary>
 		/// Compile this filter.
 		/// </summary>
-		void Compile()
+		private void Compile()
 		{
 			// TODO: Check to see if combining RE's makes it faster/smaller.
 			// simple scheme would be to have one RE for inclusion and one for exclusion.
-			if ( filter_ == null ) {
-				return;
-			}
+			if (filter_ == null) return;
 
 			string[] items = SplitQuoted(filter_);
-			for ( int i = 0; i < items.Length; ++i ) {
-				if ( (items[i] != null) && (items[i].Length > 0) ) {
+			for (int i = 0; i < items.Length; ++i)
+			{
+				if ((items[i] != null) && (items[i].Length > 0))
+				{
 					bool include = (items[i][0] != '-');
 					string toCompile;
 
-					if ( items[i][0] == '+' ) {
-						toCompile = items[i].Substring(1, items[i].Length - 1);
-					}
-					else if ( items[i][0] == '-' ) {
-						toCompile = items[i].Substring(1, items[i].Length - 1);
-					}
-					else {
-						toCompile = items[i];
-					}
+					if (items[i][0] == '+') toCompile = items[i].Substring(1, items[i].Length - 1);
+					else if (items[i][0] == '-') toCompile = items[i].Substring(1, items[i].Length - 1);
+					else toCompile = items[i];
 
 					// NOTE: Regular expressions can fail to compile here for a number of reasons that cause an exception
 					// these are left unhandled here as the caller is responsible for ensuring all is valid.
 					// several functions IsValidFilterExpression and IsValidExpression are provided for such checking
-					if ( include ) {
+					if (include)
 						inclusions_.Add(new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline));
-					}
-					else {
+					else
 						exclusions_.Add(new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline));
-					}
 				}
 			}
 		}
 
 		#region Instance Fields
-		string filter_;
-		ArrayList inclusions_;
-		ArrayList exclusions_;
+
+		private readonly ArrayList exclusions_;
+		private readonly string filter_;
+		private readonly ArrayList inclusions_;
+
 		#endregion
 	}
 }

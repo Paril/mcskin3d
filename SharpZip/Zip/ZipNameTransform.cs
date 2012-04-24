@@ -37,7 +37,6 @@
 using System;
 using System.IO;
 using System.Text;
-
 using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -50,6 +49,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class ZipNameTransform : INameTransform
 	{
 		#region Constructors
+
 		/// <summary>
 		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
 		/// </summary>
@@ -65,8 +65,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			TrimPrefix = trimPrefix;
 		}
+
 		#endregion
-		
+
 		/// <summary>
 		/// Static constructor.
 		/// </summary>
@@ -85,7 +86,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			InvalidEntryCharsRelaxed[howMany - 1] = '*';
 			InvalidEntryCharsRelaxed[howMany - 2] = '?';
 
-			howMany = invalidPathChars.Length + 4; 
+			howMany = invalidPathChars.Length + 4;
 			InvalidEntryChars = new char[howMany];
 			Array.Copy(invalidPathChars, 0, InvalidEntryChars, 0, invalidPathChars.Length);
 			InvalidEntryChars[howMany - 1] = ':';
@@ -95,6 +96,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Get/set the path prefix to be trimmed from paths if present.
+		/// </summary>
+		/// <remarks>The prefix is trimmed before any conversion from
+		/// a windows path is done.</remarks>
+		public string TrimPrefix
+		{
+			get { return trimPrefix_; }
+			set
+			{
+				trimPrefix_ = value;
+				if (trimPrefix_ != null) trimPrefix_ = trimPrefix_.ToLower();
+			}
+		}
+
+		#region INameTransform Members
+
+		/// <summary>
 		/// Transform a windows directory name according to the Zip file naming conventions.
 		/// </summary>
 		/// <param name="name">The directory name to transform.</param>
@@ -102,17 +120,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformDirectory(string name)
 		{
 			name = TransformFile(name);
-			if (name.Length > 0) {
-				if ( !name.EndsWith("/") ) {
-					name += "/";
-				}
+			if (name.Length > 0)
+			{
+				if (!name.EndsWith("/")) name += "/";
 			}
-			else {
-				throw new ZipException("Cannot have an empty directory name");
-			}
+			else throw new ZipException("Cannot have an empty directory name");
 			return name;
 		}
-		
+
 		/// <summary>
 		/// Transform a windows file name according to the Zip file naming conventions.
 		/// </summary>
@@ -120,26 +135,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The transformed name.</returns>
 		public string TransformFile(string name)
 		{
-			if (name != null) {
+			if (name != null)
+			{
 				string lowerName = name.ToLower();
-				if ( (trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_) == 0) ) {
-					name = name.Substring(trimPrefix_.Length);
-				}
+				if ((trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_) == 0)) name = name.Substring(trimPrefix_.Length);
 
 				name = name.Replace(@"\", "/");
 				name = WindowsPathUtils.DropPathRoot(name);
 
 				// Drop any leading slashes.
 				while ((name.Length > 0) && (name[0] == '/'))
-				{
 					name = name.Remove(0, 1);
-				}
 
 				// Drop any trailing slashes.
 				while ((name.Length > 0) && (name[name.Length - 1] == '/'))
-				{
 					name = name.Remove(name.Length - 1, 1);
-				}
 
 				// Convert consecutive // characters to /
 				int index = name.IndexOf("//");
@@ -151,27 +161,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				name = MakeValidName(name, '_');
 			}
-			else {
-				name = string.Empty;
-			}
+			else name = string.Empty;
 			return name;
 		}
-		
-		/// <summary>
-		/// Get/set the path prefix to be trimmed from paths if present.
-		/// </summary>
-		/// <remarks>The prefix is trimmed before any conversion from
-		/// a windows path is done.</remarks>
-		public string TrimPrefix
-		{
-			get { return trimPrefix_; }
-			set {
-				trimPrefix_ = value;
-				if (trimPrefix_ != null) {
-					trimPrefix_ = trimPrefix_.ToLower();
-				}
-			}
-		}
+
+		#endregion
 
 		/// <summary>
 		/// Force a name to be valid by replacing invalid characters with a fixed value
@@ -179,28 +173,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">The name to force valid</param>
 		/// <param name="replacement">The replacement character to use.</param>
 		/// <returns>Returns a valid name</returns>
-		static string MakeValidName(string name, char replacement)
+		private static string MakeValidName(string name, char replacement)
 		{
 			int index = name.IndexOfAny(InvalidEntryChars);
-			if (index >= 0) {
-				StringBuilder builder = new StringBuilder(name);
+			if (index >= 0)
+			{
+				var builder = new StringBuilder(name);
 
-				while (index >= 0 ) {
+				while (index >= 0)
+				{
 					builder[index] = replacement;
 
-					if (index >= name.Length) {
-						index = -1;
-					}
-					else {
-						index = name.IndexOfAny(InvalidEntryChars, index + 1);
-					}
+					if (index >= name.Length) index = -1;
+					else index = name.IndexOfAny(InvalidEntryChars, index + 1);
 				}
 				name = builder.ToString();
 			}
 
-			if (name.Length > 0xffff) {
-				throw new PathTooLongException();
-			}
+			if (name.Length > 0xffff) throw new PathTooLongException();
 
 			return name;
 		}
@@ -221,12 +211,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = (name != null);
 
-			if ( result ) {
-				if ( relaxed ) {
-					result = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;
-				}
-				else {
-					result = 
+			if (result)
+			{
+				if (relaxed) result = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;
+				else
+				{
+					result =
 						(name.IndexOfAny(InvalidEntryChars) < 0) &&
 						(name.IndexOf('/') != 0);
 				}
@@ -249,7 +239,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public static bool IsValidName(string name)
 		{
-			bool result = 
+			bool result =
 				(name != null) &&
 				(name.IndexOfAny(InvalidEntryChars) < 0) &&
 				(name.IndexOf('/') != 0)
@@ -258,12 +248,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#region Instance Fields
-		string trimPrefix_;
+
+		private string trimPrefix_;
+
 		#endregion
-		
+
 		#region Class Fields
-		static readonly char[] InvalidEntryChars;
-		static readonly char[] InvalidEntryCharsRelaxed;
+
+		private static readonly char[] InvalidEntryChars;
+		private static readonly char[] InvalidEntryCharsRelaxed;
+
 		#endregion
 	}
 }

@@ -17,18 +17,13 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MCSkin3D
 {
 	public partial class FloodFillOptions : ToolOptionBase
 	{
+		private bool _skipSet;
+
 		public FloodFillOptions()
 		{
 			InitializeComponent();
@@ -39,23 +34,22 @@ namespace MCSkin3D
 			SetThreshold(GlobalSettings.FloodFillThreshold);
 		}
 
-		bool _skipSet = false;
-		void SetThreshold(float f)
+		private void SetThreshold(float f)
 		{
 			_skipSet = true;
-			numericUpDown1.Value = (decimal)(f * 100.0f);
-			trackBar1.Value = (int)(f * 100.0f);
+			numericUpDown1.Value = (decimal) (f * 100.0f);
+			trackBar1.Value = (int) (f * 100.0f);
 			_skipSet = false;
 
 			GlobalSettings.FloodFillThreshold = f;
 		}
-		
+
 		private void numericUpDown1_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipSet)
 				return;
 
-			SetThreshold((float)numericUpDown1.Value / 100.0f);
+			SetThreshold((float) numericUpDown1.Value / 100.0f);
 		}
 
 		private void trackBar1_Scroll(object sender, EventArgs e)
@@ -63,7 +57,7 @@ namespace MCSkin3D
 			if (_skipSet)
 				return;
 
-			SetThreshold((float)trackBar1.Value / 100.0f);
+			SetThreshold(trackBar1.Value / 100.0f);
 		}
 	}
 }

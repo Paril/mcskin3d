@@ -16,10 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 
 namespace Paril.Net
@@ -28,7 +24,7 @@ namespace Paril.Net
 	{
 		public static byte[] DownloadFile(string url)
 		{
-			WebClient wc = new WebClient();
+			var wc = new WebClient();
 			return wc.DownloadData(url);
 		}
 	}

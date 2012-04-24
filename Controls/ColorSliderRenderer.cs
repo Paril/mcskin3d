@@ -16,12 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using MB.Controls;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Drawing.Drawing2D;
+using MB.Controls;
 
 namespace MCSkin3D
 {
@@ -32,23 +29,15 @@ namespace MCSkin3D
 		{
 		}
 
-		public Color StartColor
-		{
-			get;
-			set;
-		}
+		public Color StartColor { get; set; }
 
-		public Color EndColor
-		{
-			get;
-			set;
-		}
+		public Color EndColor { get; set; }
 
 		public override void Render(Graphics g)
 		{
 			//TrackBarRenderer.DrawHorizontalTrack(g, new Rectangle(0, (Slider.Height / 2) - 2, Slider.Width, 4));
 			var colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
-			var brush = new System.Drawing.Drawing2D.LinearGradientBrush(colorRect, StartColor, EndColor, System.Drawing.Drawing2D.LinearGradientMode.Horizontal);
+			var brush = new LinearGradientBrush(colorRect, StartColor, EndColor, LinearGradientMode.Horizontal);
 			g.FillRectangle(brush, colorRect);
 			g.DrawRectangle(Pens.Black, colorRect);
 

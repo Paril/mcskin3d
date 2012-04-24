@@ -16,12 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using MCSkin3D.lemon42;
 using Paril.Compatibility;
 using Paril.OpenGL;
 
@@ -32,19 +29,81 @@ namespace MCSkin3D
 	/// </summary>
 	public abstract class BrushToolBase : ITool
 	{
-		PixelsChangedUndoable _undo;
+		private Point _oldPixel = new Point(-1, -1);
+		private PixelsChangedUndoable _undo;
+		public bool IsPreview { get; private set; }
 
-		Point _oldPixel = new Point(-1, -1);
+		#region ITool Members
+
 		public virtual void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
-			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"), Editor.MainForm.SelectedTool.MenuItem.Text);
+			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"),
+			                                  Editor.MainForm.SelectedTool.MenuItem.Text);
 		}
 
 		public virtual void MouseMove(Skin skin, MouseEventArgs e)
 		{
 		}
 
-		public void SelectedBrushChanged() { }
+		public void SelectedBrushChanged()
+		{
+		}
+
+		public virtual bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		{
+			if (x == -1)
+				return false;
+
+			Brush brush = Brushes.SelectedBrush;
+			int startX = x - (brush.Width / 2);
+			int startY = y - (brush.Height / 2);
+			IsPreview = true;
+
+			for (int ry = 0; ry < brush.Height; ++ry)
+			{
+				for (int rx = 0; rx < brush.Width; ++rx)
+				{
+					int xx = startX + rx;
+					int yy = startY + ry;
+
+					if (xx < 0 || xx >= skin.Width ||
+					    yy < 0 || yy >= skin.Height)
+						continue;
+
+					if (brush[rx, ry] == 0.0f)
+						continue;
+
+					ColorPixel c = pixels[xx, yy];
+					Color oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+					Color color = GetLeftColor();
+					color = Color.FromArgb((byte) (brush[rx, ry] * 255 * (color.A / 255.0f)), color);
+
+					Color newColor = BlendColor(color, oldColor);
+					pixels[xx, yy] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
+				}
+			}
+
+			return true;
+		}
+
+		public virtual bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		{
+			if (_undo.Points.Count != 0)
+			{
+				skin.Undo.AddBuffer(_undo);
+				Editor.MainForm.CheckUndo();
+				_oldPixel = new Point(-1, -1);
+			}
+
+			_undo = null;
+
+			return false;
+		}
+
+		public abstract bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y);
+		public abstract string GetStatusLabelText();
+
+		#endregion
 
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
 		{
@@ -52,7 +111,7 @@ namespace MCSkin3D
 				return false;
 			IsPreview = false;
 
-			var brush = Brushes.SelectedBrush;
+			Brush brush = Brushes.SelectedBrush;
 			int startX = x - (brush.Width / 2);
 			int startY = y - (brush.Height / 2);
 
@@ -64,37 +123,40 @@ namespace MCSkin3D
 					int yy = startY + ry;
 
 					if (xx < 0 || xx >= skin.Width ||
-						yy < 0 || yy >= skin.Height)
+					    yy < 0 || yy >= skin.Height)
 						continue;
 
 					if (brush[rx, ry] == 0.0f)
 						continue;
 
-					var c = pixels[xx, yy];
-					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-					var color = (((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.ColorPanel.UnselectedColor : Editor.MainForm.ColorPanel.SelectedColor).RGB;
+					ColorPixel c = pixels[xx, yy];
+					Color oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+					ColorManager.RGBColor color =
+						(((Control.ModifierKeys & Keys.Shift) != 0)
+						 	? Editor.MainForm.ColorPanel.UnselectedColor
+						 	: Editor.MainForm.ColorPanel.SelectedColor).RGB;
 
-					var maxAlpha = color.A;
-					var alphaToAdd = (float)(byte)(brush[rx, ry] * 255 * (Editor.MainForm.ColorPanel.SelectedColor.RGB.A / 255.0f));
+					byte maxAlpha = color.A;
+					var alphaToAdd = (float) (byte) (brush[rx, ry] * 255 * (Editor.MainForm.ColorPanel.SelectedColor.RGB.A / 255.0f));
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
-						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
+					    _undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
 						continue;
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
-						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha + alphaToAdd >= maxAlpha)
+					    _undo.Points[new Point(xx, yy)].Item2.TotalAlpha + alphaToAdd >= maxAlpha)
 						alphaToAdd = maxAlpha - _undo.Points[new Point(xx, yy)].Item2.TotalAlpha;
 
-					color = Color.FromArgb((byte)(alphaToAdd), color);
+					color = Color.FromArgb((byte) (alphaToAdd), color);
 
-					var newColor = BlendColor(color, oldColor);
+					Color newColor = BlendColor(color, oldColor);
 
 					if (oldColor == newColor)
 						continue;
 
 					if (_undo.Points.ContainsKey(new Point(xx, yy)))
 					{
-						var tupl = _undo.Points[new Point(xx, yy)];
+						Tuple<Color, ColorAlpha> tupl = _undo.Points[new Point(xx, yy)];
 
 						tupl.Item2 = new ColorAlpha(newColor, tupl.Item2.TotalAlpha + alphaToAdd);
 						_undo.Points[new Point(xx, yy)] = tupl;
@@ -111,67 +173,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public bool IsPreview
-		{
-			get;
-			private set;
-		}
-
-		public virtual bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
-		{
-			if (x == -1)
-				return false;
-
-			var brush = Brushes.SelectedBrush;
-			int startX = x - (brush.Width / 2);
-			int startY = y - (brush.Height / 2);
-			IsPreview = true;
-
-			for (int ry = 0; ry < brush.Height; ++ry)
-			{
-				for (int rx = 0; rx < brush.Width; ++rx)
-				{
-					int xx = startX + rx;
-					int yy = startY + ry;
-
-					if (xx < 0 || xx >= skin.Width ||
-						yy < 0 || yy >= skin.Height)
-						continue;
-
-					if (brush[rx, ry] == 0.0f)
-						continue;
-
-					var c = pixels[xx, yy];
-					var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-					var color = GetLeftColor();
-					color = Color.FromArgb((byte)(brush[rx, ry] * 255 * (color.A / 255.0f)), color);
-
-					var newColor = BlendColor(color, oldColor);
-					pixels[xx, yy] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
-				}
-			}
-
-			return true;
-		}
-
-		public virtual bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
-		{
-			if (_undo.Points.Count != 0)
-			{
-				skin.Undo.AddBuffer(_undo);
-				Editor.MainForm.CheckUndo();
-				_oldPixel = new Point(-1, -1);
-			}
-			
-			_undo = null;
-
-			return false;
-		}
-
-		public abstract bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y);
 		public abstract Color BlendColor(Color l, Color r);
 		public abstract Color GetLeftColor();
-
-		public abstract string GetStatusLabelText();
 	}
 }

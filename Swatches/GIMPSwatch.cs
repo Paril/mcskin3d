@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Drawing;
+using System.IO;
 
 namespace MCSkin3D.Swatches
 {
@@ -16,7 +13,7 @@ namespace MCSkin3D.Swatches
 
 		public override void Load()
 		{
-			using (StreamReader sr = new StreamReader(FilePath))
+			using (var sr = new StreamReader(FilePath))
 			{
 				string line = sr.ReadLine();
 				if (line != "GIMP Palette")
@@ -31,7 +28,7 @@ namespace MCSkin3D.Swatches
 					if (string.IsNullOrEmpty(line))
 						continue;
 
-					var split = line.Split(new char[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+					string[] split = line.Split(new[] {' ', '\t', '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
 
 					int temp;
 
@@ -44,8 +41,10 @@ namespace MCSkin3D.Swatches
 							int startText = 0;
 
 							for (; startText < line.Length; ++startText)
+							{
 								if (char.IsLetter(line[startText]))
 									break;
+							}
 
 							Add(new NamedColor(line.Substring(startText), c));
 						}
@@ -64,13 +63,13 @@ namespace MCSkin3D.Swatches
 		public override void Save()
 		{
 			// TODO
-			using (StreamWriter writer = new StreamWriter(FilePath))
+			using (var writer = new StreamWriter(FilePath))
 			{
 				writer.WriteLine("GIMP Palette");
 				writer.WriteLine("Name: " + Name);
 				writer.WriteLine("#");
 
-				foreach (var c in this)
+				foreach (NamedColor c in this)
 				{
 					writer.Write(c.Color.R.ToString() + " " + c.Color.G.ToString() + " " + c.Color.B.ToString());
 

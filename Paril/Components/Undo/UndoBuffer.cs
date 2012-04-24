@@ -16,18 +16,20 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Paril.Components
 {
 	public class UndoBuffer
 	{
-		List<IUndoable> Undos = new List<IUndoable>();
-		public int _depth = -1;
+		private readonly List<IUndoable> Undos = new List<IUndoable>();
 		public object Object;
+		public int _depth = -1;
+
+		public UndoBuffer(object obj)
+		{
+			Object = obj;
+		}
 
 		public IEnumerable<IUndoable> UndoList
 		{
@@ -35,7 +37,7 @@ namespace Paril.Components
 			{
 				if (_depth == -1)
 				{
-					foreach (var x in Undos)
+					foreach (IUndoable x in Undos)
 						yield return x;
 				}
 				else
@@ -73,9 +75,14 @@ namespace Paril.Components
 			}
 		}
 
-		public UndoBuffer(object obj)
+		public bool CanUndo
 		{
-			Object = obj;
+			get { return CurrentIndex != 0; }
+		}
+
+		public bool CanRedo
+		{
+			get { return Undos.Count > CurrentIndex; }
 		}
 
 		public void AddBuffer(IUndoable undoable)
@@ -88,16 +95,6 @@ namespace Paril.Components
 				Undos.Add(undoable);
 				CurrentIndex = Undos.Count;
 			}
-		}
-
-		public bool CanUndo
-		{
-			get { return CurrentIndex != 0; }
-		}
-
-		public bool CanRedo
-		{
-			get { return Undos.Count > CurrentIndex; }
 		}
 
 		public void Undo()

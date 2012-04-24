@@ -24,31 +24,11 @@ namespace MCSkin3D
 {
 	public class MenuStripShortcut : IShortcutImplementor
 	{
-		ToolStripMenuItem _menuItem;
+		private readonly ToolStripMenuItem _menuItem;
 
-		string _name;
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
+		private readonly string _saveName;
 
-		string _saveName;
-		public string SaveName
-		{
-			get { return _saveName; }
-		}
-
-		Keys _keys;
-		public Keys Keys
-		{
-			get { return _keys; }
-			set { _keys = value; _menuItem.ShortcutKeyDisplayString = ShortcutEditor.KeysToString(_keys); }
-		}
-
-		public Action Pressed { get; set; }
-
-		public bool CanEvaluate() { return true; }
+		private Keys _keys;
 
 		public MenuStripShortcut(ToolStripMenuItem item) :
 			this(item, item.ShortcutKeys)
@@ -59,9 +39,37 @@ namespace MCSkin3D
 		public MenuStripShortcut(ToolStripMenuItem item, Keys keys)
 		{
 			_menuItem = item;
-			_name = _saveName = _menuItem.Text.Replace("&", "");
+			Name = _saveName = _menuItem.Text.Replace("&", "");
 			Keys = keys;
 		}
+
+		#region IShortcutImplementor Members
+
+		public string Name { get; set; }
+
+		public string SaveName
+		{
+			get { return _saveName; }
+		}
+
+		public Keys Keys
+		{
+			get { return _keys; }
+			set
+			{
+				_keys = value;
+				_menuItem.ShortcutKeyDisplayString = ShortcutEditor.KeysToString(_keys);
+			}
+		}
+
+		public Action Pressed { get; set; }
+
+		public bool CanEvaluate()
+		{
+			return true;
+		}
+
+		#endregion
 
 		public override string ToString()
 		{

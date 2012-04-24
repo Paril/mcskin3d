@@ -16,17 +16,12 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
-
 namespace Paril.Drawing.Filters
 {
 	public interface IMatrixOperand<T>
 	{
+		int Width { get; }
+		int Height { get; }
 		T EmptyValue();
 		T Multiply(T left, T right);
 		T Multiply(T left, float right);
@@ -36,13 +31,13 @@ namespace Paril.Drawing.Filters
 
 		T ValueAt(int x, int y);
 		void SetValueAt(int x, int y, T value);
-		int Width { get; }
-		int Height { get; }
 	}
 
 	public class FloatMatrixOperand : IMatrixOperand<float>
 	{
 		public float[,] Value;
+
+		#region IMatrixOperand<float> Members
 
 		public int Width
 		{
@@ -69,11 +64,6 @@ namespace Paril.Drawing.Filters
 			Value[x, y] = value;
 		}
 
-		public float Clone(float value)
-		{
-			return value;
-		}
-
 		public float Multiply(float left, float right)
 		{
 			return left * right;
@@ -88,6 +78,13 @@ namespace Paril.Drawing.Filters
 		{
 			return left + right;
 		}
+
+		#endregion
+
+		public float Clone(float value)
+		{
+			return value;
+		}
 	}
 
 	public abstract class MatrixFilter<T>
@@ -100,18 +97,22 @@ namespace Paril.Drawing.Filters
 			if (Matrix.Factor == 0)
 				return;
 
-			var clone = new T[b.Width, b.Height];
+			var clone = new T[b.Width,b.Height];
 
 			for (int y = 0; y < b.Height; ++y)
+			{
 				for (int x = 0; x < b.Width; ++x)
 					clone[x, y] = b.ValueAt(x, y);
+			}
 
 			for (int y = Matrix.Matrix.GetLength(1) - 2; y < b.Height - (Matrix.Matrix.GetLength(1) - 1) / 2; ++y)
+			{
 				for (int x = Matrix.Matrix.GetLength(0) - 2; x < b.Width - (Matrix.Matrix.GetLength(0) - 1) / 2; ++x)
 				{
 					T valueHere = b.EmptyValue();
 
 					for (int my = 0; my < Matrix.Matrix.GetLength(1); ++my)
+					{
 						for (int mx = 0; mx < Matrix.Matrix.GetLength(0); ++mx)
 						{
 							int suby = (Matrix.Matrix.GetLength(1) - 1) / 2;
@@ -119,11 +120,13 @@ namespace Paril.Drawing.Filters
 
 							valueHere = b.Add(valueHere, b.Multiply(clone[x - (subx - mx), y - (suby - my)], Matrix[mx, my]));
 						}
+					}
 
 					valueHere = b.Add(b.Divide(valueHere, Matrix.Factor), Matrix.Offset);
 
 					b.SetValueAt(x, y, valueHere);
 				}
+			}
 		}
 	}
 }

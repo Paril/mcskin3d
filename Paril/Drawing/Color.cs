@@ -17,13 +17,20 @@
 //
 
 using System;
+using System.Drawing;
+using OpenTK.Graphics;
 
 namespace Paril.Drawing
 {
 	public struct NColor
 	{
-		float _r, _g, _b, _a;
-		float _h, _s, _l;
+		private float _a;
+		private float _b;
+		private float _g;
+		private float _h;
+		private float _l;
+		private float _r;
+		private float _s;
 
 		public NColor(byte r, byte g, byte b, byte a) :
 			this()
@@ -70,37 +77,34 @@ namespace Paril.Drawing
 			SetRGB();
 		}
 
-		public static implicit operator System.Drawing.Color(NColor c)
-		{
-			return System.Drawing.Color.FromArgb((byte)(c.A * 255.0f), (byte)(c.R * 255.0f), (byte)(c.G * 255.0f), (byte)(c.B * 255.0f));
-		}
-
-		public static implicit operator NColor(System.Drawing.Color c)
-		{
-			return new NColor(c.R, c.G, c.B, c.A);
-		}
-
-		public static implicit operator OpenTK.Graphics.Color4(NColor c)
-		{
-			return new OpenTK.Graphics.Color4(c.R, c.G, c.B, c.A);
-		}
-
 		public float R
 		{
 			get { return _r; }
-			set { _r = value; SetHSL(); }
+			set
+			{
+				_r = value;
+				SetHSL();
+			}
 		}
 
 		public float G
 		{
 			get { return _g; }
-			set { _g = value; SetHSL(); }
+			set
+			{
+				_g = value;
+				SetHSL();
+			}
 		}
 
 		public float B
 		{
 			get { return _b; }
-			set { _b = value; SetHSL(); }
+			set
+			{
+				_b = value;
+				SetHSL();
+			}
 		}
 
 		public float A
@@ -109,30 +113,72 @@ namespace Paril.Drawing
 			set { _a = value; }
 		}
 
-		public byte RByte { get { return (byte)(_r * 255.0f); } }
-		public byte GByte { get { return (byte)(_g * 255.0f); } }
-		public byte BByte { get { return (byte)(_b * 255.0f); } }
-		public byte AByte { get { return (byte)(_a * 255.0f); } }
+		public byte RByte
+		{
+			get { return (byte) (_r * 255.0f); }
+		}
+
+		public byte GByte
+		{
+			get { return (byte) (_g * 255.0f); }
+		}
+
+		public byte BByte
+		{
+			get { return (byte) (_b * 255.0f); }
+		}
+
+		public byte AByte
+		{
+			get { return (byte) (_a * 255.0f); }
+		}
 
 		public float Hue
 		{
 			get { return _h; }
-			set { _h = value; SetRGB(); }
+			set
+			{
+				_h = value;
+				SetRGB();
+			}
 		}
 
 		public float Saturation
 		{
 			get { return _s; }
-			set { _s = value; SetRGB(); }
+			set
+			{
+				_s = value;
+				SetRGB();
+			}
 		}
 
 		public float Luminance
 		{
 			get { return _l; }
-			set { _l = value; SetRGB(); }
+			set
+			{
+				_l = value;
+				SetRGB();
+			}
 		}
 
-		float ComponentFromHue(float m1, float m2, float h)
+		public static implicit operator Color(NColor c)
+		{
+			return Color.FromArgb((byte) (c.A * 255.0f), (byte) (c.R * 255.0f), (byte) (c.G * 255.0f), (byte) (c.B * 255.0f));
+		}
+
+		public static implicit operator NColor(Color c)
+		{
+			return new NColor(c.R, c.G, c.B, c.A);
+		}
+
+		public static implicit operator Color4(NColor c)
+		{
+			return new Color4(c.R, c.G, c.B, c.A);
+		}
+
+		private float ComponentFromHue(float m1, float m2, float h)
 		{
 			h = (h + 1) % 1;
 			if ((h * 6) < 1)
@@ -145,7 +191,7 @@ namespace Paril.Drawing
 				return m1;
 		}
 
-		void SetRGB()
+		private void SetRGB()
 		{
 			if (_s == 0)
 				_r = _g = _b = _l;
@@ -162,11 +208,11 @@ namespace Paril.Drawing
 			}
 		}
 
-		void SetHSL()
+		private void SetHSL()
 		{
-			var max = Math.Max(Math.Max(_r, _g), _b);
-			var min = Math.Min(Math.Min(_r, _g), _b);
-			var chroma = max - min;
+			float max = Math.Max(Math.Max(_r, _g), _b);
+			float min = Math.Min(Math.Min(_r, _g), _b);
+			float chroma = max - min;
 
 			_l = (max + min) / 2.0f;
 			_s = 0;
@@ -179,7 +225,7 @@ namespace Paril.Drawing
 					_h = ((_b - _r) / chroma) + 2;
 				else
 					_h = ((_r - _g) / chroma) + 4;
-				
+
 				_h = 60 * ((_h + 6) % 6);
 				_s = _l <= 0.5 ? (chroma / (_l * 2)) : (chroma / (2 - 2 * _l));
 			}

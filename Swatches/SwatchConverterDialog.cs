@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace MCSkin3D.Swatches
@@ -20,10 +15,10 @@ namespace MCSkin3D.Swatches
 		{
 			get
 			{
-				List<string> swatches = new List<string>();
+				var swatches = new List<string>();
 
-				foreach (var c in comboBox1.Items)
-					swatches.Add((string)c);
+				foreach (object c in comboBox1.Items)
+					swatches.Add((string) c);
 
 				return swatches;
 			}
@@ -32,7 +27,7 @@ namespace MCSkin3D.Swatches
 			{
 				comboBox1.Items.Clear();
 
-				foreach (var c in value)
+				foreach (string c in value)
 					comboBox1.Items.Add(c);
 			}
 		}
@@ -56,13 +51,13 @@ namespace MCSkin3D.Swatches
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.OK;
+			DialogResult = DialogResult.OK;
 			Close();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 			Close();
 		}
 	}

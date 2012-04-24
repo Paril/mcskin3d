@@ -27,160 +27,167 @@
 
 using System;
 
-namespace BrightIdeasSoftware {
+namespace BrightIdeasSoftware
+{
+	/// <summary>
+	/// This enum is used to indicate various portions of a datetime
+	/// </summary>
+	[Flags]
+	public enum DateTimePortion
+	{
+		/// <summary>
+		/// Year
+		/// </summary>
+		Year = 0x01,
 
-    /// <summary>
-    /// This enum is used to indicate various portions of a datetime
-    /// </summary>
-    [Flags]
-    public enum DateTimePortion {
-        /// <summary>
-        /// Year
-        /// </summary>
-        Year = 0x01,
-        
-        /// <summary>
-        /// Month
-        /// </summary>
-        Month = 0x02,
-        
-        /// <summary>
-        /// Day of the month
-        /// </summary>
-        Day = 0x04,
-        
-        /// <summary>
-        /// Hour
-        /// </summary>
-        Hour = 0x08,
-        
-        /// <summary>
-        /// Minute
-        /// </summary>
-        Minute = 0x10,
+		/// <summary>
+		/// Month
+		/// </summary>
+		Month = 0x02,
 
-        /// <summary>
-        /// Second
-        /// </summary>
-        Second = 0x20
-    }
+		/// <summary>
+		/// Day of the month
+		/// </summary>
+		Day = 0x04,
 
-    /// <summary>
-    /// This class implements a strategy where the model objects are clustered
-    /// according to some portion of the datetime value in the configured column.
-    /// </summary>
-    /// <remarks>To create a strategy that grouped people who were born in
-    /// the same month, you would create a strategy that extracted just
-    /// the month, and formatted it to show just the month's name. Like this:
-    /// </remarks>
-    /// <example>
-    /// someColumn.ClusteringStrategy = new DateTimeClusteringStrategy(DateTimePortion.Month, "MMMM");
-    /// </example>
-    public class DateTimeClusteringStrategy : ClusteringStrategy {
-        #region Life and death
+		/// <summary>
+		/// Hour
+		/// </summary>
+		Hour = 0x08,
 
-        /// <summary>
-        /// Create a strategy that clusters by month/year
-        /// </summary>
-        public DateTimeClusteringStrategy()
-            : this(DateTimePortion.Year | DateTimePortion.Month, "MMMM yyyy") {
-        }
+		/// <summary>
+		/// Minute
+		/// </summary>
+		Minute = 0x10,
 
-        /// <summary>
-        /// Create a strategy that clusters around the given parts
-        /// </summary>
-        /// <param name="portions"></param>
-        /// <param name="format"></param>
-        public DateTimeClusteringStrategy(DateTimePortion portions, string format) {
-            this.Portions = portions;
-            this.Format = format;
-        }
+		/// <summary>
+		/// Second
+		/// </summary>
+		Second = 0x20
+	}
 
-        #endregion
+	/// <summary>
+	/// This class implements a strategy where the model objects are clustered
+	/// according to some portion of the datetime value in the configured column.
+	/// </summary>
+	/// <remarks>To create a strategy that grouped people who were born in
+	/// the same month, you would create a strategy that extracted just
+	/// the month, and formatted it to show just the month's name. Like this:
+	/// </remarks>
+	/// <example>
+	/// someColumn.ClusteringStrategy = new DateTimeClusteringStrategy(DateTimePortion.Month, "MMMM");
+	/// </example>
+	public class DateTimeClusteringStrategy : ClusteringStrategy
+	{
+		#region Life and death
 
-        #region Properties
+		/// <summary>
+		/// Create a strategy that clusters by month/year
+		/// </summary>
+		public DateTimeClusteringStrategy()
+			: this(DateTimePortion.Year | DateTimePortion.Month, "MMMM yyyy")
+		{
+		}
 
-        /// <summary>
-        /// Gets or sets the format string will will be used to create a user-presentable
-        /// version of the cluster key.
-        /// </summary>
-        /// <remarks>The format should use the date/time format strings, as documented
-        /// in the Windows SDK. Both standard formats and custom format will work.</remarks>
-        /// <example>"D" - long date pattern</example>
-        /// <example>"MMMM, yyyy" - "January, 1999"</example>
-        public string Format {
-            get { return format;  }
-            set { format = value;  }
-        }
-        private string format;
+		/// <summary>
+		/// Create a strategy that clusters around the given parts
+		/// </summary>
+		/// <param name="portions"></param>
+		/// <param name="format"></param>
+		public DateTimeClusteringStrategy(DateTimePortion portions, string format)
+		{
+			Portions = portions;
+			Format = format;
+		}
 
-        /// <summary>
-        /// Gets or sets the parts of the DateTime that will be extracted when
-        /// determining the clustering key for an object.
-        /// </summary>
-        public DateTimePortion Portions {
-            get { return portions;  }
-            set { portions = value;  }
-        }
-        private DateTimePortion portions = DateTimePortion.Year | DateTimePortion.Month;
+		#endregion
 
-        #endregion
+		#region Properties
 
-        #region IClusterStrategy implementation
+		private DateTimePortion portions = DateTimePortion.Year | DateTimePortion.Month;
 
-        /// <summary>
-        /// Get the cluster key by which the given model will be partitioned by this strategy
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public override object GetClusterKey(object model) {
-            // Get the data attribute we want from the given model
-            // Make sure the returned value is a DateTime
-            DateTime? dateTime = this.Column.GetValue(model) as DateTime?;
-            if (!dateTime.HasValue)
-                return null;
+		/// <summary>
+		/// Gets or sets the format string will will be used to create a user-presentable
+		/// version of the cluster key.
+		/// </summary>
+		/// <remarks>The format should use the date/time format strings, as documented
+		/// in the Windows SDK. Both standard formats and custom format will work.</remarks>
+		/// <example>"D" - long date pattern</example>
+		/// <example>"MMMM, yyyy" - "January, 1999"</example>
+		public string Format { get; set; }
 
-            // Extract the parts of the datetime that we are intereted in.
-            // Even if we aren't interested in a particular portion, we still have to give it a reasonable default
-            // otherwise we won't be able to build a DateTime object for it
-            int year = ((this.Portions & DateTimePortion.Year) == DateTimePortion.Year) ? dateTime.Value.Year : 1;
-            int month = ((this.Portions & DateTimePortion.Month) == DateTimePortion.Month) ? dateTime.Value.Month : 1;
-            int day = ((this.Portions & DateTimePortion.Day) == DateTimePortion.Day) ? dateTime.Value.Day : 1;
-            int hour = ((this.Portions & DateTimePortion.Hour) == DateTimePortion.Hour) ? dateTime.Value.Hour : 0;
-            int minute = ((this.Portions & DateTimePortion.Minute) == DateTimePortion.Minute) ? dateTime.Value.Minute : 0;
-            int second = ((this.Portions & DateTimePortion.Second) == DateTimePortion.Second) ? dateTime.Value.Second : 0;
+		/// <summary>
+		/// Gets or sets the parts of the DateTime that will be extracted when
+		/// determining the clustering key for an object.
+		/// </summary>
+		public DateTimePortion Portions
+		{
+			get { return portions; }
+			set { portions = value; }
+		}
 
-            return new DateTime(year, month, day, hour, minute, second);
-        }
+		#endregion
 
-        /// <summary>
-        /// Gets the display label that the given cluster should use
-        /// </summary>
-        /// <param name="cluster"></param>
-        /// <returns></returns>
-        public override string GetClusterDisplayLabel(ICluster cluster) {
-            DateTime? dateTime = cluster.ClusterKey as DateTime?; 
+		#region IClusterStrategy implementation
 
-            return this.ApplyDisplayFormat(cluster, dateTime.HasValue ? this.DateToString(dateTime.Value) : NULL_LABEL);
-        }
+		/// <summary>
+		/// Get the cluster key by which the given model will be partitioned by this strategy
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		public override object GetClusterKey(object model)
+		{
+			// Get the data attribute we want from the given model
+			// Make sure the returned value is a DateTime
+			var dateTime = Column.GetValue(model) as DateTime?;
+			if (!dateTime.HasValue)
+				return null;
 
-        /// <summary>
-        /// Convert the given date into a user presentable string
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
-        protected virtual string DateToString(DateTime dateTime) {
-            if (String.IsNullOrEmpty(this.Format))
-                return dateTime.ToString();
+			// Extract the parts of the datetime that we are intereted in.
+			// Even if we aren't interested in a particular portion, we still have to give it a reasonable default
+			// otherwise we won't be able to build a DateTime object for it
+			int year = ((Portions & DateTimePortion.Year) == DateTimePortion.Year) ? dateTime.Value.Year : 1;
+			int month = ((Portions & DateTimePortion.Month) == DateTimePortion.Month) ? dateTime.Value.Month : 1;
+			int day = ((Portions & DateTimePortion.Day) == DateTimePortion.Day) ? dateTime.Value.Day : 1;
+			int hour = ((Portions & DateTimePortion.Hour) == DateTimePortion.Hour) ? dateTime.Value.Hour : 0;
+			int minute = ((Portions & DateTimePortion.Minute) == DateTimePortion.Minute) ? dateTime.Value.Minute : 0;
+			int second = ((Portions & DateTimePortion.Second) == DateTimePortion.Second) ? dateTime.Value.Second : 0;
 
-            try {
-                return dateTime.ToString(this.Format);
-            }
-            catch (FormatException) {
-                return String.Format("Bad format string '{0}' for value '{1}'", this.Format, dateTime);
-            }
-        }
-    
-        #endregion
-    }
+			return new DateTime(year, month, day, hour, minute, second);
+		}
+
+		/// <summary>
+		/// Gets the display label that the given cluster should use
+		/// </summary>
+		/// <param name="cluster"></param>
+		/// <returns></returns>
+		public override string GetClusterDisplayLabel(ICluster cluster)
+		{
+			var dateTime = cluster.ClusterKey as DateTime?;
+
+			return ApplyDisplayFormat(cluster, dateTime.HasValue ? DateToString(dateTime.Value) : NULL_LABEL);
+		}
+
+		/// <summary>
+		/// Convert the given date into a user presentable string
+		/// </summary>
+		/// <param name="dateTime"></param>
+		/// <returns></returns>
+		protected virtual string DateToString(DateTime dateTime)
+		{
+			if (String.IsNullOrEmpty(Format))
+				return dateTime.ToString();
+
+			try
+			{
+				return dateTime.ToString(Format);
+			}
+			catch (FormatException)
+			{
+				return String.Format("Bad format string '{0}' for value '{1}'", Format, dateTime);
+			}
+		}
+
+		#endregion
+	}
 }

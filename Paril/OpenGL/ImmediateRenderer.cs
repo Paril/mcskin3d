@@ -16,11 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
-using OpenTK;
-using OpenTK.Graphics;
 
 namespace Paril.OpenGL
 {
@@ -45,9 +41,9 @@ namespace Paril.OpenGL
 			GL.Translate(mesh.Translate);
 
 			GL.Begin(mesh.Mode);
-			foreach (var face in mesh.Faces)
+			foreach (Face face in mesh.Faces)
 			{
-				foreach (var index in face.Indices)
+				foreach (int index in face.Indices)
 				{
 					GL.Color4(face.Colors[index]);
 					GL.TexCoord2(face.TexCoords[index]);

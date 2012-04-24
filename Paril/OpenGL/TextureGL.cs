@@ -1,18 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using OpenTK.Graphics.OpenGL;
 using Paril.Drawing;
 
 namespace Paril.OpenGL
 {
 	public class TextureGL : Texture
 	{
-		public int TextureID { get; private set; }
+		private static int _curTex;
+		private int _height;
+		private int _width;
 
-		int _width, _height;
+		public TextureGL()
+		{
+			Generate();
+		}
+
+		public TextureGL(Bitmap b)
+		{
+			Load(b);
+		}
+
+		public TextureGL(string s)
+		{
+			Load(s);
+		}
+
+		public int TextureID { get; private set; }
 
 		public override int Width
 		{
@@ -31,24 +45,9 @@ namespace Paril.OpenGL
 			{
 				if (TextureID == 0)
 					throw new InvalidOperationException();
-				
+
 				return _height;
 			}
-		}
-
-		public TextureGL()
-		{
-			Generate();
-		}
-
-		public TextureGL(Bitmap b)
-		{
-			Load(b);
-		}
-
-		public TextureGL(string s)
-		{
-			Load(s);
 		}
 
 		public void Generate()
@@ -64,17 +63,19 @@ namespace Paril.OpenGL
 			SetMipmapping(false);
 			SetRepeat(false);
 
-			int[] goodData = new int[image.Width * image.Height];
+			var goodData = new int[image.Width * image.Height];
 			int i = 0;
 
-			using (FastPixel fp = new FastPixel(image, true))
+			using (var fp = new FastPixel(image, true))
 			{
 				for (int y = 0; y < image.Height; ++y)
+				{
 					for (int x = 0; x < image.Width; ++x)
 					{
-						var argb = fp.GetPixel(x, y);
+						Color argb = fp.GetPixel(x, y);
 						goodData[i++] = (argb.R << 0) | (argb.G << 8) | (argb.B << 16) | (argb.A << 24);
 					}
+				}
 			}
 
 			Upload(goodData, image.Width, image.Height);
@@ -85,16 +86,16 @@ namespace Paril.OpenGL
 			Bind();
 
 			GL.TexImage2D(TextureTarget.Texture2D,
-							0,
-							PixelInternalFormat.Rgba,
-							width,
-							height,
-							0,
-							PixelFormat.Rgba,
-							PixelType.UnsignedByte,
-							array);
+			              0,
+			              PixelInternalFormat.Rgba,
+			              width,
+			              height,
+			              0,
+			              PixelFormat.Rgba,
+			              PixelType.UnsignedByte,
+			              array);
 
-			var err = GL.GetError();
+			ErrorCode err = GL.GetError();
 
 			if (err != ErrorCode.NoError)
 			{
@@ -120,13 +121,13 @@ namespace Paril.OpenGL
 
 			if (enable)
 			{
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
 			}
 			else
 			{
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
 			}
 		}
 
@@ -136,13 +137,13 @@ namespace Paril.OpenGL
 
 			if (enable)
 			{
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Repeat);
 			}
 			else
 			{
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Clamp);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Clamp);
 			}
 		}
 
@@ -159,8 +160,7 @@ namespace Paril.OpenGL
 			DeleteTextureInternal(TextureID);
 		}
 
-		static int _curTex = 0;
-		static void BindTextureInternal(int texID)
+		private static void BindTextureInternal(int texID)
 		{
 			if (_curTex == texID)
 				return;
@@ -169,7 +169,7 @@ namespace Paril.OpenGL
 			_curTex = texID;
 		}
 
-		static void DeleteTextureInternal(int GLImage)
+		private static void DeleteTextureInternal(int GLImage)
 		{
 			GL.DeleteTexture(GLImage);
 

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 
 namespace Devcorp.Controls.Design
 {
@@ -11,13 +10,15 @@ namespace Devcorp.Controls.Design
 		/// <summary>
 		/// Gets an empty CIEXYZ structure.
 		/// </summary>
-		public static readonly CIEXYZ Empty = new CIEXYZ();
+		public static readonly CIEXYZ Empty;
+
 		/// <summary>
 		/// Gets the CIE D65 (white) structure.
 		/// </summary>
 		public static readonly CIEXYZ D65 = new CIEXYZ(0.9505, 1.0, 1.0890);
 
 		#region Fields
+
 		private double x;
 		private double y;
 		private double z;
@@ -25,40 +26,36 @@ namespace Devcorp.Controls.Design
 		#endregion
 
 		#region Operators
+
 		public static bool operator ==(CIEXYZ item1, CIEXYZ item2)
 		{
 			return (
-				item1.X == item2.X 
-				&& item1.Y == item2.Y 
-				&& item1.Z == item2.Z
-				);
+			       	item1.X == item2.X
+			       	&& item1.Y == item2.Y
+			       	&& item1.Z == item2.Z
+			       );
 		}
 
 		public static bool operator !=(CIEXYZ item1, CIEXYZ item2)
 		{
 			return (
-				item1.X != item2.X 
-				|| item1.Y != item2.Y 
-				|| item1.Z != item2.Z
-				);
+			       	item1.X != item2.X
+			       	|| item1.Y != item2.Y
+			       	|| item1.Z != item2.Z
+			       );
 		}
 
 		#endregion
 
 		#region Accessors
+
 		/// <summary>
 		/// Gets or sets X component.
 		/// </summary>
 		public double X
 		{
-			get
-			{
-				return this.x;
-			}
-			set
-			{
-				this.x = (value>0.9505)? 0.9505 : ((value<0)? 0 : value);
-			}
+			get { return x; }
+			set { x = (value > 0.9505) ? 0.9505 : ((value < 0) ? 0 : value); }
 		}
 
 		/// <summary>
@@ -66,14 +63,8 @@ namespace Devcorp.Controls.Design
 		/// </summary>
 		public double Y
 		{
-			get
-			{
-				return this.y;
-			}
-			set
-			{
-				this.y = (value>1.0)? 1.0 : ((value<0)?0 : value);
-			}
+			get { return y; }
+			set { y = (value > 1.0) ? 1.0 : ((value < 0) ? 0 : value); }
 		}
 
 		/// <summary>
@@ -81,38 +72,33 @@ namespace Devcorp.Controls.Design
 		/// </summary>
 		public double Z
 		{
-			get
-			{
-				return this.z;
-			}
-			set
-			{
-				this.z = (value>1.089)? 1.089 : ((value<0)? 0 : value);
-			}
+			get { return z; }
+			set { z = (value > 1.089) ? 1.089 : ((value < 0) ? 0 : value); }
 		}
 
 		#endregion
 
-		public CIEXYZ(double x, double y, double z) 
+		public CIEXYZ(double x, double y, double z)
 		{
-			this.x = (x>0.9505)? 0.9505 : ((x<0)? 0 : x);
-			this.y = (y>1.0)? 1.0 : ((y<0)? 0 : y);
-			this.z = (z>1.089)? 1.089 : ((z<0)? 0 : z);
+			this.x = (x > 0.9505) ? 0.9505 : ((x < 0) ? 0 : x);
+			this.y = (y > 1.0) ? 1.0 : ((y < 0) ? 0 : y);
+			this.z = (z > 1.089) ? 1.089 : ((z < 0) ? 0 : z);
 		}
 
 		#region Methods
-		public override bool Equals(Object obj) 
-		{
-			if(obj==null || GetType()!=obj.GetType()) return false;
 
-			return (this == (CIEXYZ)obj);
+		public override bool Equals(Object obj)
+		{
+			if (obj == null || GetType() != obj.GetType()) return false;
+
+			return (this == (CIEXYZ) obj);
 		}
 
-		public override int GetHashCode() 
+		public override int GetHashCode()
 		{
 			return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
 		}
 
 		#endregion
-	} 
+	}
 }

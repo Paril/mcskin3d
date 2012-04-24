@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 {
 	// TODO: Sort out wether tagged data is useful and what a good implementation might look like.
 	// Its just a sketch of an idea at the moment.
-	
+
 	/// <summary>
 	/// ExtraData tagged value interface.
 	/// </summary>
@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns the data for this instance.</returns>
 		byte[] GetData();
 	}
-	
+
 	/// <summary>
 	/// A raw binary tagged value
 	/// </summary>
@@ -78,19 +78,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="tag">The tag ID.</param>
 		public RawTaggedData(short tag)
 		{
-			_tag = tag;
+			TagID = tag;
 		}
+
+		/// <summary>
+		/// Get /set the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] Data
+		{
+			get { return _data; }
+			set { _data = value; }
+		}
+
+		#region Instance Fields
+
+		private byte[] _data;
+
+		#endregion
 
 		#region ITaggedData Members
 
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID 
-		{ 
-			get { return _tag; }
-			set { _tag = value; }
-		}
+		public short TagID { get; set; }
 
 		/// <summary>
 		/// Set the data from the raw values provided.
@@ -100,12 +112,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="count">The number of bytes available.</param>
 		public void SetData(byte[] data, int offset, int count)
 		{
-			if( data==null )
-			{
+			if (data == null)
 				throw new ArgumentNullException("data");
-			}
 
-			_data=new byte[count];
+			_data = new byte[count];
 			Array.Copy(data, offset, _data, 0, count);
 		}
 
@@ -119,25 +129,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
-
-		/// <summary>
-		/// Get /set the binary data representing this instance.
-		/// </summary>
-		/// <returns>The raw binary data representing this instance.</returns>
-		public byte[] Data
-		{
-			get { return _data; }
-			set { _data=value; }
-		}
-
-		#region Instance Fields
-		/// <summary>
-		/// The tag ID for this instance.
-		/// </summary>
-		short _tag;
-
-		byte[] _data;
-		#endregion
 	}
 
 	/// <summary>
@@ -145,6 +136,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class ExtendedUnixData : ITaggedData
 	{
+		#region Flags enum
+
 		/// <summary>
 		/// Flags indicate which values are included in this instance.
 		/// </summary>
@@ -155,28 +148,99 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// The modification time is included
 			/// </summary>
 			ModificationTime = 0x01,
-			
+
 			/// <summary>
 			/// The access time is included
 			/// </summary>
 			AccessTime = 0x02,
-			
+
 			/// <summary>
 			/// The create time is included.
 			/// </summary>
 			CreateTime = 0x04,
 		}
-		
+
+		#endregion
+
+		/// <summary>
+		/// Get /set the Modification Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <seealso cref="IsValidValue"></seealso>
+		public DateTime ModificationTime
+		{
+			get { return _modificationTime; }
+			set
+			{
+				if (!IsValidValue(value)) throw new ArgumentOutOfRangeException("value");
+
+				_flags |= Flags.ModificationTime;
+				_modificationTime = value;
+			}
+		}
+
+		/// <summary>
+		/// Get / set the Access Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <seealso cref="IsValidValue"></seealso>
+		public DateTime AccessTime
+		{
+			get { return _lastAccessTime; }
+			set
+			{
+				if (!IsValidValue(value)) throw new ArgumentOutOfRangeException("value");
+
+				_flags |= Flags.AccessTime;
+				_lastAccessTime = value;
+			}
+		}
+
+		/// <summary>
+		/// Get / Set the Create Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <seealso cref="IsValidValue"></seealso>
+		public DateTime CreateTime
+		{
+			get { return _createTime; }
+			set
+			{
+				if (!IsValidValue(value)) throw new ArgumentOutOfRangeException("value");
+
+				_flags |= Flags.CreateTime;
+				_createTime = value;
+			}
+		}
+
+		/// <summary>
+		/// Get/set the <see cref="Flags">values</see> to include.
+		/// </summary>
+		private Flags Include
+		{
+			get { return _flags; }
+			set { _flags = value; }
+		}
+
+		#region Instance Fields
+
+		private DateTime _createTime = new DateTime(1970, 1, 1);
+		private Flags _flags;
+		private DateTime _lastAccessTime = new DateTime(1970, 1, 1);
+		private DateTime _modificationTime = new DateTime(1970, 1, 1);
+
+		#endregion
+
 		#region ITaggedData Members
 
 		/// <summary>
 		/// Get the ID
 		/// </summary>
 		public short TagID
-		{ 
+		{
 			get { return 0x5455; }
 		}
-		
+
 		/// <summary>
 		/// Set the data from the raw values provided.
 		/// </summary>
@@ -185,20 +249,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="count">The number of bytes available.</param>
 		public void SetData(byte[] data, int index, int count)
 		{
-			using (MemoryStream ms = new MemoryStream(data, index, count, false))
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			using (var ms = new MemoryStream(data, index, count, false))
+			using (var helperStream = new ZipHelperStream(ms))
 			{
 				// bit 0           if set, modification time is present
 				// bit 1           if set, access time is present
 				// bit 2           if set, creation time is present
-				
-				_flags = (Flags)helperStream.ReadByte();
+
+				_flags = (Flags) helperStream.ReadByte();
 				if (((_flags & Flags.ModificationTime) != 0) && (count >= 5))
 				{
 					int iTime = helperStream.ReadLEInt();
 
 					_modificationTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+					                     new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
 				}
 
 				if ((_flags & Flags.AccessTime) != 0)
@@ -206,15 +270,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 					int iTime = helperStream.ReadLEInt();
 
 					_lastAccessTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+					                   new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
 				}
-				
+
 				if ((_flags & Flags.CreateTime) != 0)
 				{
 					int iTime = helperStream.ReadLEInt();
 
 					_createTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+					               new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
 				}
 			}
 		}
@@ -225,24 +289,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The raw binary data representing this instance.</returns>
 		public byte[] GetData()
 		{
-			using (MemoryStream ms = new MemoryStream())
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			using (var ms = new MemoryStream())
+			using (var helperStream = new ZipHelperStream(ms))
 			{
 				helperStream.IsStreamOwner = false;
-				helperStream.WriteByte((byte)_flags);     // Flags
-				if ( (_flags & Flags.ModificationTime) != 0) {
+				helperStream.WriteByte((byte) _flags); // Flags
+				if ((_flags & Flags.ModificationTime) != 0)
+				{
 					TimeSpan span = _modificationTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-					int seconds = (int)span.TotalSeconds;
+					var seconds = (int) span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
-				if ( (_flags & Flags.AccessTime) != 0) {
+				if ((_flags & Flags.AccessTime) != 0)
+				{
 					TimeSpan span = _lastAccessTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-					int seconds = (int)span.TotalSeconds;
+					var seconds = (int) span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
-				if ( (_flags & Flags.CreateTime) != 0) {
+				if ((_flags & Flags.CreateTime) != 0)
+				{
 					TimeSpan span = _createTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-					int seconds = (int)span.TotalSeconds;
+					var seconds = (int) span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				return ms.ToArray();
@@ -264,80 +331,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public static bool IsValidValue(DateTime value)
 		{
-			return (( value >= new DateTime(1901, 12, 13, 20, 45, 52)) || 
-					( value <= new DateTime(2038, 1, 19, 03, 14, 07) ));
+			return ((value >= new DateTime(1901, 12, 13, 20, 45, 52)) ||
+			        (value <= new DateTime(2038, 1, 19, 03, 14, 07)));
 		}
-
-		/// <summary>
-		/// Get /set the Modification Time
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		/// <seealso cref="IsValidValue"></seealso>
-		public DateTime ModificationTime
-		{
-			get { return _modificationTime; }
-			set
-			{
-				if ( !IsValidValue(value) ) {
-					throw new ArgumentOutOfRangeException("value");
-				}
-				
-				_flags |= Flags.ModificationTime;
-				_modificationTime=value;
-			}
-		}
-
-		/// <summary>
-		/// Get / set the Access Time
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		/// <seealso cref="IsValidValue"></seealso>
-		public DateTime AccessTime
-		{
-			get { return _lastAccessTime; }
-			set { 
-				if ( !IsValidValue(value) ) {
-					throw new ArgumentOutOfRangeException("value");
-				}
-			
-				_flags |= Flags.AccessTime;
-				_lastAccessTime=value; 
-			}
-		}
-
-		/// <summary>
-		/// Get / Set the Create Time
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		/// <seealso cref="IsValidValue"></seealso>
-		public DateTime CreateTime
-		{
-			get { return _createTime; }
-			set {
-				if ( !IsValidValue(value) ) {
-					throw new ArgumentOutOfRangeException("value");
-				}
-			
-				_flags |= Flags.CreateTime;
-				_createTime=value;
-			}
-		}
-
-		/// <summary>
-		/// Get/set the <see cref="Flags">values</see> to include.
-		/// </summary>
-		Flags Include
-		{
-			get { return _flags; }
-			set { _flags = value; }
-		}
-
-		#region Instance Fields
-		Flags _flags;
-		DateTime _modificationTime = new DateTime(1970,1,1);
-		DateTime _lastAccessTime = new DateTime(1970, 1, 1);
-		DateTime _createTime = new DateTime(1970, 1, 1);
-		#endregion
 	}
 
 	/// <summary>
@@ -346,10 +342,60 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class NTTaggedData : ITaggedData
 	{
 		/// <summary>
+		/// Get/set the <see cref="DateTime">last modification time</see>.
+		/// </summary>
+		public DateTime LastModificationTime
+		{
+			get { return _lastModificationTime; }
+			set
+			{
+				if (! IsValidValue(value))
+					throw new ArgumentOutOfRangeException("value");
+				_lastModificationTime = value;
+			}
+		}
+
+		/// <summary>
+		/// Get /set the <see cref="DateTime">create time</see>
+		/// </summary>
+		public DateTime CreateTime
+		{
+			get { return _createTime; }
+			set
+			{
+				if (!IsValidValue(value)) throw new ArgumentOutOfRangeException("value");
+				_createTime = value;
+			}
+		}
+
+		/// <summary>
+		/// Get /set the <see cref="DateTime">last access time</see>.
+		/// </summary>
+		public DateTime LastAccessTime
+		{
+			get { return _lastAccessTime; }
+			set
+			{
+				if (!IsValidValue(value)) throw new ArgumentOutOfRangeException("value");
+				_lastAccessTime = value;
+			}
+		}
+
+		#region Instance Fields
+
+		private DateTime _createTime = DateTime.FromFileTime(0);
+		private DateTime _lastAccessTime = DateTime.FromFileTime(0);
+		private DateTime _lastModificationTime = DateTime.FromFileTime(0);
+
+		#endregion
+
+		#region ITaggedData Members
+
+		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
 		public short TagID
-		{ 
+		{
 			get { return 10; }
 		}
 
@@ -361,8 +407,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="count">The number of bytes available.</param>
 		public void SetData(byte[] data, int index, int count)
 		{
-			using (MemoryStream ms = new MemoryStream(data, index, count, false)) 
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			using (var ms = new MemoryStream(data, index, count, false))
+			using (var helperStream = new ZipHelperStream(ms))
 			{
 				helperStream.ReadLEInt(); // Reserved
 				while (helperStream.Position < helperStream.Length)
@@ -399,19 +445,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The raw binary data representing this instance.</returns>
 		public byte[] GetData()
 		{
-			using (MemoryStream ms = new MemoryStream())
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			using (var ms = new MemoryStream())
+			using (var helperStream = new ZipHelperStream(ms))
 			{
 				helperStream.IsStreamOwner = false;
-				helperStream.WriteLEInt(0);       // Reserved
-				helperStream.WriteLEShort(1);     // Tag
-				helperStream.WriteLEShort(24);    // Length = 3 x 8.
+				helperStream.WriteLEInt(0); // Reserved
+				helperStream.WriteLEShort(1); // Tag
+				helperStream.WriteLEShort(24); // Length = 3 x 8.
 				helperStream.WriteLELong(_lastModificationTime.ToFileTime());
 				helperStream.WriteLELong(_lastAccessTime.ToFileTime());
 				helperStream.WriteLELong(_createTime.ToFileTime());
 				return ms.ToArray();
 			}
 		}
+
+		#endregion
 
 		/// <summary>
 		/// Test a <see cref="DateTime"> valuie to see if is valid and can be represented here.</see>
@@ -437,61 +485,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return result;
 		}
-		
-		/// <summary>
-		/// Get/set the <see cref="DateTime">last modification time</see>.
-		/// </summary>
-		public DateTime LastModificationTime
-		{
-			get { return _lastModificationTime; }
-			set {
-				if (! IsValidValue(value))
-				{
-					throw new ArgumentOutOfRangeException("value");
-				}
-				_lastModificationTime = value;
-			}
-		}
-
-		/// <summary>
-		/// Get /set the <see cref="DateTime">create time</see>
-		/// </summary>
-		public DateTime CreateTime
-		{
-			get { return _createTime; }
-			set {
-				if ( !IsValidValue(value)) {
-					throw new ArgumentOutOfRangeException("value");
-				}
-				_createTime = value;
-			}
-		}
-
-		/// <summary>
-		/// Get /set the <see cref="DateTime">last access time</see>.
-		/// </summary>
-		public DateTime LastAccessTime
-		{
-			get { return _lastAccessTime; }
-			set {
-				if (!IsValidValue(value)) {
-					throw new ArgumentOutOfRangeException("value");
-				}
-				_lastAccessTime = value; 
-			}
-		}
-
-		#region Instance Fields
-		DateTime _lastAccessTime = DateTime.FromFileTime(0);
-		DateTime _lastModificationTime = DateTime.FromFileTime(0);
-		DateTime _createTime = DateTime.FromFileTime(0);
-		#endregion
 	}
 
 	/// <summary>
 	/// A factory that creates <see cref="ITaggedData">tagged data</see> instances.
 	/// </summary>
-	interface ITaggedDataFactory
+	internal interface ITaggedDataFactory
 	{
 		/// <summary>
 		/// Get data for a specific tag value.
@@ -515,9 +514,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// means that for extra data created by passing in data can have the values modified by the caller
 	/// in some circumstances.
 	/// </remarks>
-	sealed public class ZipExtraData : IDisposable
+	public sealed class ZipExtraData : IDisposable
 	{
 		#region Constructors
+
 		/// <summary>
 		/// Initialise a default instance.
 		/// </summary>
@@ -532,39 +532,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="data">The extra data.</param>
 		public ZipExtraData(byte[] data)
 		{
-			if ( data == null )
-			{
+			if (data == null)
 				_data = new byte[0];
-			}
 			else
-			{
 				_data = data;
-			}
 		}
+
 		#endregion
-
-		/// <summary>
-		/// Get the raw extra data value
-		/// </summary>
-		/// <returns>Returns the raw byte[] extra data this instance represents.</returns>
-		public byte[] GetEntryData()
-		{
-			if ( Length > ushort.MaxValue ) {
-				throw new ZipException("Data exceeds maximum length");
-			}
-
-			return (byte[])_data.Clone();
-		}
-
-		/// <summary>
-		/// Clear the stored data.
-		/// </summary>
-		public void Clear()
-		{
-			if ( (_data == null) || (_data.Length != 0) ) {
-				_data = new byte[0];
-			}
-		}
 
 		/// <summary>
 		/// Gets the current extra data length.
@@ -574,54 +548,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return _data.Length; }
 		}
 
-		/// <summary>
-		/// Get a read-only <see cref="Stream"/> for the associated tag.
-		/// </summary>
-		/// <param name="tag">The tag to locate data for.</param>
-		/// <returns>Returns a <see cref="Stream"/> containing tag data or null if no tag was found.</returns>
-		public Stream GetStreamForTag(int tag)
-		{
-			Stream result = null;
-			if ( Find(tag) ) {
-				result = new MemoryStream(_data, _index, _readValueLength, false);
-			}
-			return result;
-		}
-
-		/// <summary>
-		/// Get the <see cref="ITaggedData">tagged data</see> for a tag.
-		/// </summary>
-		/// <param name="tag">The tag to search for.</param>
-		/// <returns>Returns a <see cref="ITaggedData">tagged value</see> or null if none found.</returns>
-		private ITaggedData GetData(short tag)
-		{
-			ITaggedData result = null;
-			if (Find(tag))
-			{
-				result = Create(tag, _data, _readValueStart, _readValueLength);
-			}
-			return result;
-		}
-
-		static ITaggedData Create(short tag, byte[] data, int offset, int count)
-		{
-			ITaggedData result = null;
-			switch ( tag )
-			{
-				case 0x000A:
-					result = new NTTaggedData();
-					break;
-				case 0x5455:
-					result = new ExtendedUnixData();
-					break;
-				default:
-					result = new RawTaggedData(tag);
-					break;
-			}
-			result.SetData(data, offset, count);
-			return result;
-		}
-		
 		/// <summary>
 		/// Get the length of the last value found by <see cref="Find"/>
 		/// </summary>
@@ -647,15 +573,99 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public int UnreadCount
 		{
-			get 
+			get
 			{
 				if ((_readValueStart > _data.Length) ||
-					(_readValueStart < 4) ) {
-					throw new ZipException("Find must be called before calling a Read method");
-				}
+				    (_readValueStart < 4)) throw new ZipException("Find must be called before calling a Read method");
 
-				return _readValueStart + _readValueLength - _index; 
+				return _readValueStart + _readValueLength - _index;
 			}
+		}
+
+		#region IDisposable Members
+
+		/// <summary>
+		/// Dispose of this instance.
+		/// </summary>
+		public void Dispose()
+		{
+			if (_newEntry != null) _newEntry.Close();
+		}
+
+		#endregion
+
+		#region Instance Fields
+
+		private byte[] _data;
+		private int _index;
+
+		private MemoryStream _newEntry;
+		private int _readValueLength;
+		private int _readValueStart;
+
+		#endregion
+
+		/// <summary>
+		/// Get the raw extra data value
+		/// </summary>
+		/// <returns>Returns the raw byte[] extra data this instance represents.</returns>
+		public byte[] GetEntryData()
+		{
+			if (Length > ushort.MaxValue) throw new ZipException("Data exceeds maximum length");
+
+			return (byte[]) _data.Clone();
+		}
+
+		/// <summary>
+		/// Clear the stored data.
+		/// </summary>
+		public void Clear()
+		{
+			if ((_data == null) || (_data.Length != 0)) _data = new byte[0];
+		}
+
+		/// <summary>
+		/// Get a read-only <see cref="Stream"/> for the associated tag.
+		/// </summary>
+		/// <param name="tag">The tag to locate data for.</param>
+		/// <returns>Returns a <see cref="Stream"/> containing tag data or null if no tag was found.</returns>
+		public Stream GetStreamForTag(int tag)
+		{
+			Stream result = null;
+			if (Find(tag)) result = new MemoryStream(_data, _index, _readValueLength, false);
+			return result;
+		}
+
+		/// <summary>
+		/// Get the <see cref="ITaggedData">tagged data</see> for a tag.
+		/// </summary>
+		/// <param name="tag">The tag to search for.</param>
+		/// <returns>Returns a <see cref="ITaggedData">tagged value</see> or null if none found.</returns>
+		private ITaggedData GetData(short tag)
+		{
+			ITaggedData result = null;
+			if (Find(tag))
+				result = Create(tag, _data, _readValueStart, _readValueLength);
+			return result;
+		}
+
+		private static ITaggedData Create(short tag, byte[] data, int offset, int count)
+		{
+			ITaggedData result = null;
+			switch (tag)
+			{
+				case 0x000A:
+					result = new NTTaggedData();
+					break;
+				case 0x5455:
+					result = new ExtendedUnixData();
+					break;
+				default:
+					result = new RawTaggedData(tag);
+					break;
+			}
+			result.SetData(data, offset, count);
+			return result;
 		}
 
 		/// <summary>
@@ -674,17 +684,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Trailing bytes that cant make up an entry (as there arent enough
 			// bytes for a tag and length) are ignored!
-			while ( (localTag != headerID) && (_index < _data.Length - 3) ) {
+			while ((localTag != headerID) && (_index < _data.Length - 3))
+			{
 				localTag = ReadShortInternal();
 				localLength = ReadShortInternal();
-				if ( localTag != headerID ) {
-					_index += localLength;
-				}
+				if (localTag != headerID) _index += localLength;
 			}
 
 			bool result = (localTag == headerID) && ((_index + localLength) <= _data.Length);
 
-			if ( result ) {
+			if (result)
+			{
 				_readValueStart = _index;
 				_readValueLength = localLength;
 			}
@@ -699,9 +709,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void AddEntry(ITaggedData taggedData)
 		{
 			if (taggedData == null)
-			{
 				throw new ArgumentNullException("taggedData");
-			}
 			AddEntry(taggedData.TagID, taggedData.GetData());
 		}
 
@@ -713,13 +721,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>If the ID already exists its contents are replaced.</remarks>
 		public void AddEntry(int headerID, byte[] fieldData)
 		{
-			if ( (headerID > ushort.MaxValue) || (headerID < 0)) {
-				throw new ArgumentOutOfRangeException("headerID");
-			}
+			if ((headerID > ushort.MaxValue) || (headerID < 0)) throw new ArgumentOutOfRangeException("headerID");
 
 			int addLength = (fieldData == null) ? 0 : fieldData.Length;
 
-			if ( addLength > ushort.MaxValue ) {
+			if (addLength > ushort.MaxValue)
+			{
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("fieldData");
 #else
@@ -730,26 +737,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Test for new length before adjusting data.
 			int newLength = _data.Length + addLength + 4;
 
-			if ( Find(headerID) )
-			{
+			if (Find(headerID))
 				newLength -= (ValueLength + 4);
-			}
 
-			if ( newLength > ushort.MaxValue ) {
-				throw new ZipException("Data exceeds maximum length");
-			}
-			
+			if (newLength > ushort.MaxValue) throw new ZipException("Data exceeds maximum length");
+
 			Delete(headerID);
 
-			byte[] newData = new byte[newLength];
+			var newData = new byte[newLength];
 			_data.CopyTo(newData, 0);
 			int index = _data.Length;
 			_data = newData;
 			SetShort(ref index, headerID);
 			SetShort(ref index, addLength);
-			if ( fieldData != null ) {
-				fieldData.CopyTo(newData, index);
-			}
+			if (fieldData != null) fieldData.CopyTo(newData, index);
 		}
 
 		/// <summary>
@@ -791,9 +792,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddData(byte[] data)
 		{
-			if ( data == null ) {
-				throw new ArgumentNullException("data");
-			}
+			if (data == null) throw new ArgumentNullException("data");
 
 			_newEntry.Write(data, 0, data.Length);
 		}
@@ -805,9 +804,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddLeShort(int toAdd)
 		{
-			unchecked {
-				_newEntry.WriteByte(( byte )toAdd);
-				_newEntry.WriteByte(( byte )(toAdd >> 8));
+			unchecked
+			{
+				_newEntry.WriteByte((byte) toAdd);
+				_newEntry.WriteByte((byte) (toAdd >> 8));
 			}
 		}
 
@@ -818,9 +818,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddLeInt(int toAdd)
 		{
-			unchecked {
-				AddLeShort(( short )toAdd);
-				AddLeShort(( short )(toAdd >> 16));
+			unchecked
+			{
+				AddLeShort((short) toAdd);
+				AddLeShort((short) (toAdd >> 16));
 			}
 		}
 
@@ -831,9 +832,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddLeLong(long toAdd)
 		{
-			unchecked {
-				AddLeInt(( int )(toAdd & 0xffffffff));
-				AddLeInt(( int )(toAdd >> 32));
+			unchecked
+			{
+				AddLeInt((int) (toAdd & 0xffffffff));
+				AddLeInt((int) (toAdd >> 32));
 			}
 		}
 
@@ -846,11 +848,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = false;
 
-			if ( Find(headerID) ) {
+			if (Find(headerID))
+			{
 				result = true;
 				int trueStart = _readValueStart - 4;
 
-				byte[] newData = new byte[_data.Length - (ValueLength + 4)];
+				var newData = new byte[_data.Length - (ValueLength + 4)];
 				Array.Copy(_data, 0, newData, 0, trueStart);
 
 				int trueEnd = trueStart + ValueLength + 4;
@@ -861,6 +864,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#region Reading Support
+
 		/// <summary>
 		/// Read a long in little endian form from the last <see cref="Find">found</see> data value
 		/// </summary>
@@ -868,7 +872,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public long ReadLong()
 		{
 			ReadCheck(8);
-			return (ReadInt() & 0xffffffff) | ((( long )ReadInt()) << 32);
+			return (ReadInt() & 0xffffffff) | (((long) ReadInt()) << 32);
 		}
 
 		/// <summary>
@@ -879,8 +883,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			ReadCheck(4);
 
-			int result = _data[_index] + (_data[_index + 1] << 8) + 
-				(_data[_index + 2] << 16) + (_data[_index + 3] << 24);
+			int result = _data[_index] + (_data[_index + 1] << 8) +
+			             (_data[_index + 2] << 16) + (_data[_index + 3] << 24);
 			_index += 4;
 			return result;
 		}
@@ -904,7 +908,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public int ReadByte()
 		{
 			int result = -1;
-			if ( (_index < _data.Length) && (_readValueStart + _readValueLength > _index) ) {
+			if ((_index < _data.Length) && (_readValueStart + _readValueLength > _index))
+			{
 				result = _data[_index];
 				_index += 1;
 			}
@@ -921,67 +926,36 @@ namespace ICSharpCode.SharpZipLib.Zip
 			_index += amount;
 		}
 
-		void ReadCheck(int length)
+		private void ReadCheck(int length)
 		{
 			if ((_readValueStart > _data.Length) ||
-				(_readValueStart < 4) ) {
-				throw new ZipException("Find must be called before calling a Read method");
-			}
+			    (_readValueStart < 4)) throw new ZipException("Find must be called before calling a Read method");
 
-			if (_index > _readValueStart + _readValueLength - length ) {
-				throw new ZipException("End of extra data");
-			}
+			if (_index > _readValueStart + _readValueLength - length) throw new ZipException("End of extra data");
 
-            if ( _index + length < 4 ) {
-                throw new ZipException("Cannot read before start of tag");
-            }
+			if (_index + length < 4) throw new ZipException("Cannot read before start of tag");
 		}
 
 		/// <summary>
 		/// Internal form of <see cref="ReadShort"/> that reads data at any location.
 		/// </summary>
 		/// <returns>Returns the short value read.</returns>
-		int ReadShortInternal()
+		private int ReadShortInternal()
 		{
-			if ( _index > _data.Length - 2) {
-				throw new ZipException("End of extra data");
-			}
+			if (_index > _data.Length - 2) throw new ZipException("End of extra data");
 
 			int result = _data[_index] + (_data[_index + 1] << 8);
 			_index += 2;
 			return result;
 		}
 
-		void SetShort(ref int index, int source)
+		private void SetShort(ref int index, int source)
 		{
-			_data[index] = (byte)source;
-			_data[index + 1] = (byte)(source >> 8);
+			_data[index] = (byte) source;
+			_data[index + 1] = (byte) (source >> 8);
 			index += 2;
 		}
 
-		#endregion
-
-		#region IDisposable Members
-
-		/// <summary>
-		/// Dispose of this instance.
-		/// </summary>
-		public void Dispose()
-		{
-			if ( _newEntry != null ) {
-				_newEntry.Close();
-			}
-		}
-
-		#endregion
-
-		#region Instance Fields
-		int _index;
-		int _readValueStart;
-		int _readValueLength;
-
-		MemoryStream _newEntry;
-		byte[] _data;
 		#endregion
 	}
 }

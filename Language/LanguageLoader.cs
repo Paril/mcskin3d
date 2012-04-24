@@ -16,11 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Text;
+using MCSkin3D.Properties;
 
 namespace MCSkin3D.Language
 {
@@ -30,7 +29,7 @@ namespace MCSkin3D.Language
 
 		public static void LoadLanguages(string path)
 		{
-			foreach (var file in Directory.GetFiles(path, "*.lang"))
+			foreach (string file in Directory.GetFiles(path, "*.lang"))
 			{
 				try
 				{
@@ -45,10 +44,12 @@ namespace MCSkin3D.Language
 
 		public static Language FindLanguage(string p)
 		{
-			foreach (var l in Languages)
+			foreach (Language l in Languages)
+			{
 				if (l.Name == p ||
-					l.Culture.Name == p)
+				    l.Culture.Name == p)
 					return l;
+			}
 
 			return null;
 		}
@@ -56,11 +57,11 @@ namespace MCSkin3D.Language
 		public static Language LoadDefault()
 		{
 			using (var writer = new FileStream("Languages\\English.lang", FileMode.Create))
-				writer.Write(Properties.Resources.English, 0, Properties.Resources.English.Length);
+				writer.Write(Resources.English, 0, Resources.English.Length);
 
-			using (var reader = new StreamReader(new MemoryStream(Properties.Resources.English), Encoding.Unicode))
+			using (var reader = new StreamReader(new MemoryStream(Resources.English), Encoding.Unicode))
 			{
-				var lang = Language.Parse(reader);
+				Language lang = Language.Parse(reader);
 				Languages.Add(lang);
 				return lang;
 			}

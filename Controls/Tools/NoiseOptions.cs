@@ -17,18 +17,14 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MCSkin3D
 {
 	public partial class NoiseOptions : ToolOptionBase
 	{
+		private bool _skipSet;
+
 		public NoiseOptions()
 		{
 			InitializeComponent();
@@ -50,12 +46,11 @@ namespace MCSkin3D
 			SetExposure(GlobalSettings.NoiseSaturation);
 		}
 
-		bool _skipSet = false;
-		void SetExposure(float f)
+		private void SetExposure(float f)
 		{
 			_skipSet = true;
-			numericUpDown1.Value = (decimal)(f * 100.0f);
-			trackBar1.Value = (int)(f * 100.0f);
+			numericUpDown1.Value = (decimal) (f * 100.0f);
+			trackBar1.Value = (int) (f * 100.0f);
 			_skipSet = false;
 
 			GlobalSettings.NoiseSaturation = f;
@@ -66,7 +61,7 @@ namespace MCSkin3D
 			if (_skipSet)
 				return;
 
-			SetExposure((float)numericUpDown1.Value / 100.0f);
+			SetExposure((float) numericUpDown1.Value / 100.0f);
 		}
 
 		private void trackBar1_Scroll(object sender, EventArgs e)
@@ -74,8 +69,7 @@ namespace MCSkin3D
 			if (_skipSet)
 				return;
 
-			SetExposure((float)trackBar1.Value / 100.0f);
+			SetExposure(trackBar1.Value / 100.0f);
 		}
-
 	}
 }

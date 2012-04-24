@@ -16,30 +16,24 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
-using System.Drawing;
 
 namespace MCSkin3D
 {
 	public class ToolOptionBase : UserControl
 	{
-		public virtual void BoxShown() { }
-		public virtual void BoxHidden() { }
-
 		public ToolOptionBase()
 		{
 			SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
 			DoubleBuffered = true;
 		}
 
-		protected override void OnPaintBackground(PaintEventArgs e)
+		public virtual void BoxShown()
 		{
-			base.OnPaintBackground(e);
+		}
+
+		public virtual void BoxHidden()
+		{
 		}
 	}
 }

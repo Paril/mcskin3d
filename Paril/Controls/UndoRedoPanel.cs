@@ -1,27 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Paril.Controls
 {
 	public partial class UndoRedoPanel : UserControl
 	{
+		private string _actionString;
+
 		public UndoRedoPanel()
 		{
 			InitializeComponent();
-			listBox1.SelectedIndexChanged += new EventHandler(listBox1_SelectedIndexChanged);
+			listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
 		}
 
-		string _actionString;
 		public string ActionString
 		{
 			get { return _actionString; }
-			set { _actionString = value; ResetString(); }
+			set
+			{
+				_actionString = value;
+				ResetString();
+			}
 		}
 
 		public SelectionListBox ListBox
@@ -29,12 +28,12 @@ namespace Paril.Controls
 			get { return listBox1; }
 		}
 
-		void ResetString()
+		private void ResetString()
 		{
 			label1.Text = string.Format(ActionString, listBox1.SelectedIndices.Count);
 		}
 
-		void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			ResetString();
 		}
@@ -53,11 +52,7 @@ namespace Paril.Controls
 			SetStyle(ControlStyles.UserMouse, true);
 		}
 
-		public int HighestItemSelected
-		{
-			get;
-			private set;
-		}
+		public int HighestItemSelected { get; private set; }
 
 		internal void SelectItems(int highItem)
 		{
@@ -77,19 +72,12 @@ namespace Paril.Controls
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			var highItem = IndexFromPoint(e.Location);
+			int highItem = IndexFromPoint(e.Location);
 
 			if (highItem != -1)
 				SelectItems(highItem);
 
 			base.OnMouseMove(e);
-		}
-
-		protected override void OnMouseLeave(EventArgs e)
-		{
-			//SelectItems(-1);
-
-			base.OnMouseLeave(e);
 		}
 	}
 }

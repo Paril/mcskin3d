@@ -16,12 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
 using Paril.OpenGL;
 
@@ -36,12 +31,15 @@ namespace MCSkin3D
 
 		public override Color BlendColor(Color l, Color r)
 		{
-			return (Color)ColorBlending.AlphaBlend(l, r);
+			return (Color) ColorBlending.AlphaBlend(l, r);
 		}
 
 		public override Color GetLeftColor()
 		{
-			return (((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.ColorPanel.UnselectedColor : Editor.MainForm.ColorPanel.SelectedColor).RGB;
+			return
+				(((Control.ModifierKeys & Keys.Shift) != 0)
+				 	? Editor.MainForm.ColorPanel.UnselectedColor
+				 	: Editor.MainForm.ColorPanel.SelectedColor).RGB;
 		}
 
 		public override string GetStatusLabelText()

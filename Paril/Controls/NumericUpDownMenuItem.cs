@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Paril.Controls
 {
 	public class NumericUpDownMenuItem : ToolStripControlHost
 	{
-		Label _textLabel;
+		private readonly Label _textLabel;
+
 		public NumericUpDownMenuItem() :
 			base(new Panel())
 		{
@@ -19,7 +17,7 @@ namespace Paril.Controls
 			Control.Controls.Add(_textLabel);
 			_textLabel.Location = new Point(0, 0);
 			_textLabel.AutoSize = false;
-			_textLabel.Size = new System.Drawing.Size(TextRenderer.MeasureText(_textLabel.Text, _textLabel.Font).Width, 23);
+			_textLabel.Size = new Size(TextRenderer.MeasureText(_textLabel.Text, _textLabel.Font).Width, 23);
 			_textLabel.TextAlign = ContentAlignment.MiddleLeft;
 
 			NumericBox = new NumericUpDown();
@@ -32,18 +30,14 @@ namespace Paril.Controls
 			SetBounds(new Rectangle(Point.Empty, Size));
 		}
 
+		public NumericUpDown NumericBox { get; private set; }
+
 		protected override void OnTextChanged(EventArgs e)
 		{
 			_textLabel.Text = Text;
-			_textLabel.Size = new System.Drawing.Size(TextRenderer.MeasureText(_textLabel.Text, _textLabel.Font).Width, 23);
+			_textLabel.Size = new Size(TextRenderer.MeasureText(_textLabel.Text, _textLabel.Font).Width, 23);
 			NumericBox.Location = new Point(_textLabel.Location.X + _textLabel.Width + 4, 0);
 			base.OnTextChanged(e);
-		}
-
-		public NumericUpDown NumericBox
-		{
-			get;
-			private set;
 		}
 
 		protected override void OnBoundsChanged()

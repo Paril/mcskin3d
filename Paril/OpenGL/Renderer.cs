@@ -18,30 +18,28 @@
 
 using System;
 using System.Collections.Generic;
-using OpenTK.Graphics.OpenGL;
+using System.Drawing;
+using System.Drawing.Text;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Xml;
+using MCSkin3D;
 using OpenTK;
 using OpenTK.Graphics;
-using System.IO;
-using System.Xml;
-using System.Globalization;
-using System.Drawing;
-using MCSkin3D;
+using OpenTK.Graphics.OpenGL;
 using Paril.Drawing;
-using System.IO.Compression;
-using System.Windows.Forms;
-using System.Drawing.Text;
-using System.Reflection;
 
 namespace Paril.OpenGL
 {
 	public struct Face
 	{
-		public Vector3[] Vertices;
-		public Vector2[] TexCoords;
 		public Color4[] Colors;
-		public int[] Indices;
 		public bool Downface;
+		public int[] Indices;
 		public Vector3 Normal;
+		public Vector2[] TexCoords;
+		public Vector3[] Vertices;
 
 		public Face(Vector3[] vertices, Vector2[] texCoords, Color4[] colors, int[] indices) :
 			this()
@@ -56,7 +54,7 @@ namespace Paril.OpenGL
 		{
 			float minX = 1, minY = 1, maxX = 0, maxY = 0;
 
-			foreach (var x in TexCoords)
+			foreach (Vector2 x in TexCoords)
 			{
 				if (x.X < minX)
 					minX = x.X;
@@ -69,14 +67,15 @@ namespace Paril.OpenGL
 					maxY = x.Y;
 			}
 
-			return new Rectangle((int)(minX * width), (int)(minY * height), (int)((maxX - minX) * width), (int)((maxY - minY) * height));
+			return new Rectangle((int) (minX * width), (int) (minY * height), (int) ((maxX - minX) * width),
+			                     (int) ((maxY - minY) * height));
 		}
 
 		public RectangleF TexCoordsToFloat(int width, int height)
 		{
 			float minX = 1, minY = 1, maxX = 0, maxY = 0;
 
-			foreach (var x in TexCoords)
+			foreach (Vector2 x in TexCoords)
 			{
 				if (x.X < minX)
 					minX = x.X;
@@ -95,32 +94,34 @@ namespace Paril.OpenGL
 
 	public struct Mesh
 	{
-		public string Name;
-		public BeginMode Mode;
+		public Bounds3 Bounds;
+		public Vector3 Center;
 		public List<Face> Faces;
+		public bool FollowCursor;
+		public bool HasTransparency;
+		public BeginMode Mode;
+		public string Name;
+
+		public ModelPart Part;
+		public Vector3 Pivot;
+		public Vector3 Rotate;
+		public float RotateFactor;
 		public Texture Texture;
 
-		public Vector3 Translate, Rotate;
-		public Vector3 Pivot;
-
-		public bool HasTransparency;
-		public bool FollowCursor;
-		public float RotateFactor;
-		public Vector3 Center;
-		public Bounds3 Bounds;
-
-		public MCSkin3D.ModelPart Part;
+		public Vector3 Translate;
 
 		public Mesh(string name) :
 			this()
 		{
-			Bounds = new Bounds3(new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), new Vector3(float.MinValue, float.MinValue, float.MinValue));
+			Bounds = new Bounds3(new Vector3(float.MaxValue, float.MaxValue, float.MaxValue),
+			                     new Vector3(float.MinValue, float.MinValue, float.MinValue));
 			Name = name;
 		}
 
 		internal static string VertexToString(Vector3 v, string sep = " ")
 		{
-			return v.X.ToString(CultureInfo.InvariantCulture) + sep + v.Y.ToString(CultureInfo.InvariantCulture) + sep + v.Z.ToString(CultureInfo.InvariantCulture);
+			return v.X.ToString(CultureInfo.InvariantCulture) + sep + v.Y.ToString(CultureInfo.InvariantCulture) + sep +
+			       v.Z.ToString(CultureInfo.InvariantCulture);
 		}
 
 		internal static string VertexToString(Vector2 v, string sep = " ")
@@ -130,16 +131,19 @@ namespace Paril.OpenGL
 
 		internal static Vector3 StringToVertex3(string s)
 		{
-			var spl = s.Split(new char[] { ' ', '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries);
+			string[] spl = s.Split(new[] {' ', '\r', '\n', ','}, StringSplitOptions.RemoveEmptyEntries);
 
-            return new Vector3(float.Parse(spl[0], CultureInfo.InvariantCulture), float.Parse(spl[1], CultureInfo.InvariantCulture), float.Parse(spl[2], CultureInfo.InvariantCulture));
+			return new Vector3(float.Parse(spl[0], CultureInfo.InvariantCulture),
+			                   float.Parse(spl[1], CultureInfo.InvariantCulture),
+			                   float.Parse(spl[2], CultureInfo.InvariantCulture));
 		}
 
 		internal static Vector2 StringToVertex2(string s)
 		{
-			var spl = s.Split(new char[] { ' ', '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries);
+			string[] spl = s.Split(new[] {' ', '\r', '\n', ','}, StringSplitOptions.RemoveEmptyEntries);
 
-            return new Vector2(float.Parse(spl[0], CultureInfo.InvariantCulture), float.Parse(spl[1], CultureInfo.InvariantCulture));
+			return new Vector2(float.Parse(spl[0], CultureInfo.InvariantCulture),
+			                   float.Parse(spl[1], CultureInfo.InvariantCulture));
 		}
 
 		public void Write(XmlWriter writer)
@@ -155,22 +159,22 @@ namespace Paril.OpenGL
 			writer.WriteAttributeString("Rotate", VertexToString(Rotate));
 			writer.WriteAttributeString("Part", Part.ToString());
 
-			foreach (var f in Faces)
+			foreach (Face f in Faces)
 			{
 				writer.WriteStartElement("Face");
 
 				writer.WriteStartElement("Vertices");
-				foreach (var v in f.Vertices)
+				foreach (Vector3 v in f.Vertices)
 					writer.WriteElementString("Vertex", VertexToString(v));
 				writer.WriteEndElement();
 
 				writer.WriteStartElement("TexCoords");
-				foreach (var v in f.TexCoords)
+				foreach (Vector2 v in f.TexCoords)
 					writer.WriteElementString("Coord", VertexToString(v));
 				writer.WriteEndElement();
 
 				writer.WriteStartElement("Indices");
-				foreach (var v in f.Indices)
+				foreach (int v in f.Indices)
 					writer.WriteElementString("Index", v.ToString());
 				writer.WriteEndElement();
 
@@ -185,13 +189,13 @@ namespace Paril.OpenGL
 			int count = 0;
 			Bounds = new Bounds3(new Vector3(9999, 9999, 9999), new Vector3(-9999, -9999, -9999));
 
-			foreach (var x in Faces)
+			foreach (Face x in Faces)
 			{
-				foreach (var v in x.Vertices)
+				foreach (Vector3 v in x.Vertices)
 				{
 					count++;
 
-					var transformed = Model.TranslateVertex(Translate, Rotate, Pivot, v);
+					Vector3 transformed = Model.TranslateVertex(Translate, Rotate, Pivot, v);
 					Center += transformed;
 					Bounds += transformed;
 				}
@@ -203,15 +207,26 @@ namespace Paril.OpenGL
 
 	public struct Bounds
 	{
-		Point _mins, _maxs;
-		public Point Mins { get { return _mins; } set { _mins = value; } }
-		public Point Maxs { get { return _maxs; } set { _maxs = value; } }
+		private Point _maxs;
+		private Point _mins;
 
 		public Bounds(Point mins, Point maxs) :
 			this()
 		{
 			_mins = mins;
 			_maxs = maxs;
+		}
+
+		public Point Mins
+		{
+			get { return _mins; }
+			set { _mins = value; }
+		}
+
+		public Point Maxs
+		{
+			get { return _maxs; }
+			set { _maxs = value; }
 		}
 
 		public void AddPoint(Point p)
@@ -227,7 +242,7 @@ namespace Paril.OpenGL
 				_maxs.Y = p.Y;
 		}
 
-		public static Bounds operator+ (Bounds left, Rectangle right)
+		public static Bounds operator +(Bounds left, Rectangle right)
 		{
 			left.AddPoint(new Point(right.Left, right.Top));
 			left.AddPoint(new Point(right.Right, right.Bottom));
@@ -237,7 +252,7 @@ namespace Paril.OpenGL
 
 		public Rectangle ToRectangle()
 		{
-			Rectangle r = new Rectangle();
+			var r = new Rectangle();
 
 			r.X = _mins.X;
 			r.Y = _mins.Y;
@@ -250,25 +265,39 @@ namespace Paril.OpenGL
 
 	public class Model
 	{
+		public float DefaultHeight;
+		public float DefaultWidth;
+		public FileInfo File;
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
-		public float DefaultWidth, DefaultHeight;
-		public FileInfo File;
 		public bool[] PartsEnabled;
+		public Editor.ModelToolStripMenuItem DropDownItem { get; set; }
+
+		public string Path
+		{
+			get
+			{
+				if (File.Directory.FullName.Length < Environment.CurrentDirectory.Length + 1 + "Models/".Length)
+					return Name;
+				return
+					File.Directory.FullName.Substring(Environment.CurrentDirectory.Length + 1 + "Models/".Length).Replace('\\', '/') +
+					'/' + Name;
+			}
+		}
 
 		// P: polygon support required? used bounds 'n stuff but, you know...
 		public Rectangle GetTextureFaceBounds(Point p, Skin skin)
 		{
-			foreach (var m in Meshes)
+			foreach (Mesh m in Meshes)
 			{
-				foreach (var f in m.Faces)
+				foreach (Face f in m.Faces)
 				{
-					Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+					var bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
 
-					foreach (var c in f.TexCoords)
+					foreach (Vector2 c in f.TexCoords)
 					{
 						var coord = new Vector2(c.X * skin.Width, c.Y * skin.Height);
-						bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+						bounds.AddPoint(new Point((int) coord.X, (int) coord.Y));
 					}
 
 					if (bounds.ToRectangle().Contains(p))
@@ -282,18 +311,18 @@ namespace Paril.OpenGL
 		public List<int> GetIntersectingParts(Point p, Skin skin)
 		{
 			int mesh = 0;
-			List<int> parts = new List<int>();
+			var parts = new List<int>();
 
-			foreach (var m in Meshes)
+			foreach (Mesh m in Meshes)
 			{
-				foreach (var f in m.Faces)
+				foreach (Face f in m.Faces)
 				{
-					Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+					var bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
 
-					foreach (var c in f.TexCoords)
+					foreach (Vector2 c in f.TexCoords)
 					{
 						var coord = new Vector2(c.X * skin.Width, c.Y * skin.Height);
-						bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+						bounds.AddPoint(new Point((int) coord.X, (int) coord.Y));
 					}
 
 					if (bounds.ToRectangle().Contains(p))
@@ -331,13 +360,13 @@ namespace Paril.OpenGL
 			}
 		}*/
 
-		public static Vector3 TranslateVertex(Vector3 Translate, Vector3 Rotate, Vector3 Pivot, Vector3 v)
+		public static Vector3 TranslateVertex(Vector3 translate, Vector3 rotate, Vector3 pivot, Vector3 v)
 		{
-			var m =
-				Matrix4.CreateRotationX(MathHelper.DegreesToRadians(Rotate.X)) *
-				Matrix4.CreateRotationY(MathHelper.DegreesToRadians(Rotate.Y)) *
-				Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotate.Z)) *
-				Matrix4.CreateTranslation(Translate);
+			Matrix4 m =
+				Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rotate.X)) *
+				Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotate.Y)) *
+				Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotate.Z)) *
+				Matrix4.CreateTranslation(translate);
 
 			return Vector3.Transform(v, m);
 		}
@@ -345,17 +374,17 @@ namespace Paril.OpenGL
 		public static Model Load(string fileName)
 		{
 			if (new FileInfo(fileName).Extension == ".xml" &&
-				new FileInfo(fileName.Substring(0, fileName.Length - 4) + ".gz.xml").Exists)
+			    new FileInfo(fileName.Substring(0, fileName.Length - 4) + ".gz.xml").Exists)
 				return null;
 
-			Model model = new Model();
+			var model = new Model();
 
-			XmlReaderSettings settings = new XmlReaderSettings();
+			var settings = new XmlReaderSettings();
 			settings.ConformanceLevel = ConformanceLevel.Fragment;
 			settings.CloseInput = true;
 
-			XmlDocument document = new XmlDocument();
-			Stream inStream = null;
+			var document = new XmlDocument();
+			Stream inStream;
 
 			if (fileName.EndsWith(".gz.xml"))
 				inStream = new GZipStream(System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read), CompressionMode.Decompress);
@@ -367,16 +396,22 @@ namespace Paril.OpenGL
 			model.Name = document.DocumentElement.Attributes["Name"].InnerText;
 
 			if (document.DocumentElement.Attributes["DefaultWidth"] != null)
-				model.DefaultWidth = float.Parse(document.DocumentElement.Attributes["DefaultWidth"].InnerText, CultureInfo.InvariantCulture);
+			{
+				model.DefaultWidth = float.Parse(document.DocumentElement.Attributes["DefaultWidth"].InnerText,
+				                                 CultureInfo.InvariantCulture);
+			}
 			if (document.DocumentElement.Attributes["DefaultHeight"] != null)
-				model.DefaultHeight = float.Parse(document.DocumentElement.Attributes["DefaultHeight"].InnerText, CultureInfo.InvariantCulture);
+			{
+				model.DefaultHeight = float.Parse(document.DocumentElement.Attributes["DefaultHeight"].InnerText,
+				                                  CultureInfo.InvariantCulture);
+			}
 
 			foreach (XmlElement n in document.DocumentElement.ChildNodes)
 			{
-				Mesh mesh = new Mesh(n.Attributes["Name"].InnerText);
+				var mesh = new Mesh(n.Attributes["Name"].InnerText);
 
 				if (n.Attributes["Mode"] != null)
-					mesh.Mode = (BeginMode)Enum.Parse(typeof(BeginMode), n.Attributes["Mode"].InnerText);
+					mesh.Mode = (BeginMode) Enum.Parse(typeof (BeginMode), n.Attributes["Mode"].InnerText);
 				if (n.Attributes["Translate"] != null)
 					mesh.Translate = Mesh.StringToVertex3(n.Attributes["Translate"].InnerText);
 				if (n.Attributes["Pivot"] != null)
@@ -390,7 +425,7 @@ namespace Paril.OpenGL
 				if (n.Attributes["Rotate"] != null)
 					mesh.Rotate = Mesh.StringToVertex3(n.Attributes["Rotate"].InnerText);
 				if (n.Attributes["Part"] != null)
-					mesh.Part = (MCSkin3D.ModelPart)Enum.Parse(typeof(MCSkin3D.ModelPart), n.Attributes["Part"].InnerText);
+					mesh.Part = (ModelPart) Enum.Parse(typeof (ModelPart), n.Attributes["Part"].InnerText);
 
 				mesh.Faces = new List<Face>();
 
@@ -399,7 +434,7 @@ namespace Paril.OpenGL
 					if (faceNode.Name != "Face")
 						continue;
 
-					Face face = new Face();
+					var face = new Face();
 
 					face.Vertices = new Vector3[faceNode["Vertices"].ChildNodes.Count];
 					face.TexCoords = new Vector2[face.Vertices.Length];
@@ -418,15 +453,15 @@ namespace Paril.OpenGL
 					foreach (XmlElement vertexNode in faceNode["Indices"])
 						face.Indices[i++] = int.Parse(vertexNode.InnerText);
 
-					var zero = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[0]);
-					var one = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[1]);
-					var two = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[2]);
+					Vector3 zero = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[0]);
+					Vector3 one = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[1]);
+					Vector3 two = TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, face.Vertices[2]);
 
-					var dir = Vector3.Cross(one - zero, two - zero);
+					Vector3 dir = Vector3.Cross(one - zero, two - zero);
 					face.Normal = Vector3.Normalize(dir);
 
 					dir = Vector3.Cross(face.Vertices[1] - face.Vertices[0], face.Vertices[2] - face.Vertices[0]);
-					var realNormal = Vector3.Normalize(dir);
+					Vector3 realNormal = Vector3.Normalize(dir);
 
 					if (realNormal == new Vector3(0, 1, 0))
 						face.Downface = true;
@@ -444,115 +479,39 @@ namespace Paril.OpenGL
 			return model;
 		}
 
-		public Editor.ModelToolStripMenuItem DropDownItem { get; set; }
-
-		static Font _silkScreen = null;
-		static PrivateFontCollection _collection;
-
-		public Bitmap GenerateOverlay(Color lineColor, Color textColor, float aspect, int scale, int lineWidth)
-		{
-			if (aspect == 0)
-				aspect = 1;
-
-			Size baseSize = new Size((int)scale, (int)(scale / aspect));
-			if (_silkScreen == null)
-			{
-				_collection = new PrivateFontCollection();
-				byte[] fontdata = MCSkin3D.Properties.Resources.slkscr;
-				unsafe
-				{
-					fixed (byte * pFontData = fontdata)
-					{
-						_collection.AddMemoryFont((System.IntPtr)pFontData, fontdata.Length);
-					}
-				}
-
-				_silkScreen = new Font(_collection.Families[0], 6);
-			}
-
-			Bitmap b = new Bitmap(baseSize.Width, baseSize.Height);
-			var pen = new Pen(lineColor, lineWidth);
-
-			using (Graphics g = Graphics.FromImage(b))
-			{
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-
-				foreach (var x in Meshes)
-				{
-					foreach (var y in x.Faces)
-					{
-						Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
-
-						foreach (var p in y.TexCoords)
-							bounds.AddPoint(new Point((int)(p.X * (b.Width - 1)), (int)(p.Y * (b.Height - 1))));
-
-						var rect = bounds.ToRectangle();
-						rect.X += lineWidth - 1;
-						rect.Y += lineWidth - 1;
-						rect.Width -= lineWidth - 1;
-						rect.Height -= lineWidth - 1;
-						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-						g.FillRectangle(new SolidBrush(Color.FromArgb(0, 255, 255, 255)), rect);
-						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-
-						var polygon = new Point[]
-						{
-							new Point(rect.X, rect.Y),
-							new Point(rect.X + rect.Width, rect.Y),
-							new Point(rect.X + rect.Width, rect.Y + rect.Height),
-							new Point(rect.X, rect.Y + rect.Height),
-						};
-
-						g.DrawPolygon(pen, polygon);
-
-						string side = SideFromNormal(y.Normal);
-						string str = x.Name + " " + side;
-
-						rect.X++;
-						rect.Y++;
-
-						var measured = g.MeasureString(str, _silkScreen, rect.Size, StringFormat.GenericDefault);
-						g.DrawString(str, _silkScreen, new SolidBrush(textColor), rect, StringFormat.GenericDefault);
-					}
-				}
-			}
-
-			return b;
-		}
-
 		public static string SideFromNormal(Vector3 vector3)
 		{
-			Vector3[] vecs = new Vector3[]
-			{
-				new Vector3(0, 1, 0),
-				new Vector3(0, -1, 0),
-				new Vector3(1, 0, 0),
-				new Vector3(-1, 0, 0),
-				new Vector3(0, 0, 1),
-				new Vector3(0, 0, -1),
-			};
+			var vecs = new[]
+			           {
+			           	new Vector3(0, 1, 0),
+			           	new Vector3(0, -1, 0),
+			           	new Vector3(1, 0, 0),
+			           	new Vector3(-1, 0, 0),
+			           	new Vector3(0, 0, 1),
+			           	new Vector3(0, 0, -1)
+			           };
 
-			string[] names = new string[]
-			{
-				"Bottom",
-				"Top",
-				"Right",
-				"Left",
-				"Back",
-				"Front"
-			};
+			var names = new[]
+			            {
+			            	"Bottom",
+			            	"Top",
+			            	"Right",
+			            	"Left",
+			            	"Back",
+			            	"Front"
+			            };
 
 			int closestIndex = -1;
 			float closestDist = float.MaxValue;
 
 			if (float.IsNaN(vector3.X) &&
-				float.IsNaN(vector3.Y) &&
-				float.IsNaN(vector3.Z))
+			    float.IsNaN(vector3.Y) &&
+			    float.IsNaN(vector3.Z))
 				return "";
 
 			for (int i = 0; i < 6; ++i)
 			{
-				var dist = (vector3 - vecs[i]).LengthSquared;
+				float dist = (vector3 - vecs[i]).LengthSquared;
 
 				if (dist < closestDist)
 				{
@@ -563,65 +522,45 @@ namespace Paril.OpenGL
 
 			return names[closestIndex];
 		}
-
-		public string Path
-		{
-			get
-			{
-				if (File.Directory.FullName.Length < Environment.CurrentDirectory.Length + 1 + "Models/".Length)
-					return Name;
-				return File.Directory.FullName.Substring(Environment.CurrentDirectory.Length + 1 + "Models/".Length).Replace('\\', '/') + '/' + Name;
-			}
-		}
 	}
 
 	public abstract class Renderer
 	{
-		List<Mesh> OpaqueMeshes = new List<Mesh>();
-		List<Mesh> TransparentMeshes = new List<Mesh>();
+		private readonly List<Mesh> _opaqueMeshes = new List<Mesh>();
+		private readonly List<Mesh> _transparentMeshes = new List<Mesh>();
 
 		public void Sort()
 		{
-			/*OpaqueMeshes.Sort(
-				(left, right) =>
-				{
-					var leftDist = (left.Center - Editor.CameraPosition).LengthFast;
-					var rightDist = (right.Center - Editor.CameraPosition).LengthFast;
-
-					return leftDist.CompareTo(rightDist);
-				}
-			);*/
-
 			if (GlobalSettings.RenderBenchmark)
 				Editor._sortTimer.Start();
 
-			TransparentMeshes.Sort(
+			_transparentMeshes.Sort(
 				(left, right) =>
 				{
-					var leftDist = (Editor.CameraPosition - left.Center).Length;
-					var rightDist = (Editor.CameraPosition - right.Center).Length;
+					float leftDist = (Editor.CameraPosition - left.Center).Length;
+					float rightDist = (Editor.CameraPosition - right.Center).Length;
 
 					return rightDist.CompareTo(leftDist);
 				}
-			);
+				);
 
 			if (GlobalSettings.RenderBenchmark)
 				Editor._sortTimer.Stop();
 		}
 
-		float lerp(float min, float max, float value)
+		/*private float lerp(float min, float max, float value)
 		{
 			return min + value * (max - min);
 		}
 
-		Color4 GetHeatMap(int count, int index)
+		private Color4 GetHeatMap(int count, int index)
 		{
 			Color4 blue = Color4.Blue;
 			Color4 red = Color4.Red;
-			float l = lerp(0, 1.0f, (float)index / (float)count);
+			float l = lerp(0, 1.0f, index / (float)count);
 
 			return new Color4(l, 0, (1 - l), 255);
-		}
+		}*/
 
 		public void Render()
 		{
@@ -633,13 +572,13 @@ namespace Paril.OpenGL
 			PreRender();
 
 			GL.Disable(EnableCap.CullFace);
-			foreach (var mesh in OpaqueMeshes)
+			foreach (Mesh mesh in _opaqueMeshes)
 				RenderMesh(mesh);
 			GL.Enable(EnableCap.CullFace);
 
 			GL.Enable(EnableCap.Blend);
 
-			foreach (var mesh in TransparentMeshes)
+			foreach (Mesh mesh in _transparentMeshes)
 			{
 				/*foreach (var f in mesh.Faces)
 					for (int i = 0; i < f.Colors.Length; ++i)
@@ -653,14 +592,14 @@ namespace Paril.OpenGL
 			}
 
 			GL.Disable(EnableCap.Blend);
-	
+
 			PostRender();
 
 			if (GlobalSettings.RenderBenchmark)
 				Editor._batchTimer.Stop();
 
-			OpaqueMeshes.Clear();
-			TransparentMeshes.Clear();
+			_opaqueMeshes.Clear();
+			_transparentMeshes.Clear();
 		}
 
 		public void RenderWithoutTransparency()
@@ -670,11 +609,11 @@ namespace Paril.OpenGL
 			PreRender();
 
 			GL.Disable(EnableCap.CullFace);
-			foreach (var mesh in OpaqueMeshes)
+			foreach (Mesh mesh in _opaqueMeshes)
 				RenderMesh(mesh);
 			GL.Enable(EnableCap.CullFace);
 
-			foreach (var mesh in TransparentMeshes)
+			foreach (Mesh mesh in _transparentMeshes)
 			{
 				GL.CullFace(CullFaceMode.Back);
 				RenderMesh(mesh);
@@ -684,20 +623,26 @@ namespace Paril.OpenGL
 
 			PostRender();
 
-			OpaqueMeshes.Clear();
-			TransparentMeshes.Clear();
+			_opaqueMeshes.Clear();
+			_transparentMeshes.Clear();
 		}
 
 		public void AddMesh(Mesh mesh)
 		{
 			if (mesh.HasTransparency || mesh.Faces[0].Colors[0].A != 1)
-				TransparentMeshes.Add(mesh);
+				_transparentMeshes.Add(mesh);
 			else
-				OpaqueMeshes.Add(mesh);
+				_opaqueMeshes.Add(mesh);
 		}
 
-		protected virtual void PreRender() { }
-		protected virtual void PostRender() { }
+		protected virtual void PreRender()
+		{
+		}
+
+		protected virtual void PostRender()
+		{
+		}
+
 		public abstract void RenderMesh(Mesh mesh);
 	}
 }

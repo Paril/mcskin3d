@@ -17,12 +17,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace MCSkin3D.Forms
@@ -50,7 +44,7 @@ namespace MCSkin3D.Forms
 			if (dontShow)
 				return true;
 
-			using (DontAskAgain form = new DontAskAgain())
+			using (var form = new DontAskAgain())
 			{
 				form.StartPosition = FormStartPosition.CenterParent;
 				form.label1.Text = labelValue;
@@ -66,13 +60,12 @@ namespace MCSkin3D.Forms
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.Yes;
+			DialogResult = DialogResult.Yes;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-
-			DialogResult = System.Windows.Forms.DialogResult.No;
+			DialogResult = DialogResult.No;
 		}
 	}
 }

@@ -17,48 +17,51 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Threading;
 
 namespace Paril.Components.Update
 {
 	public class Updater
 	{
-		public string URL { get; set; }
-		public IVersion UpdateHandler { get; set; }
-		public bool Checking { get { return _checking; } }
-		public bool PrintOnEqual { get; set; }
-		public string CurrentVersion { get; set; }
-		public Thread Thread { get; set; }
-		
-		bool _checking = false;
-		
+		private static readonly object waitObject = new object();
+		private bool _checking;
+
 		public Updater(string url, string currentVersion)
 		{
 			URL = url;
 			CurrentVersion = currentVersion;
 		}
 
-		static void CallbackAsync(IAsyncResult ar)
+		public string URL { get; set; }
+		public IVersion UpdateHandler { get; set; }
+
+		public bool Checking
+		{
+			get { return _checking; }
+		}
+
+		public bool PrintOnEqual { get; set; }
+		public string CurrentVersion { get; set; }
+		public Thread Thread { get; set; }
+
+		private static void CallbackAsync(IAsyncResult ar)
 		{
 			var objs = ar.AsyncState as object[];
 			bool succeeded = false;
-			var updater = (Updater)objs[1];
+			var updater = (Updater) objs[1];
 			try
 			{
-				HttpWebRequest request = objs[0] as HttpWebRequest;
-				var response = (HttpWebResponse)request.GetResponse();
+				var request = objs[0] as HttpWebRequest;
+				var response = (HttpWebResponse) request.GetResponse();
 
 				if (response.StatusCode == HttpStatusCode.OK)
-					using (var stream = response.GetResponseStream())
-					{
-						using (StreamReader reader = new StreamReader(stream))
-							succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
-					}
+				{
+					using (Stream stream = response.GetResponseStream())
+					using (var reader = new StreamReader(stream))
+						succeeded = updater.UpdateHandler.IsNewerVersion(updater.CurrentVersion, reader.ReadToEnd());
+				}
 			}
 			catch (Exception)
 			{
@@ -72,20 +75,18 @@ namespace Paril.Components.Update
 				Monitor.Pulse(waitObject);
 		}
 
-		static readonly object waitObject = new object();
-		
-		static void UpdaterThread(object parameter)
+		private static void UpdaterThread(object parameter)
 		{
 			Updater updater = null;
 			HttpWebRequest request = null;
 			try
 			{
-				updater = (Updater)parameter;
-				request = (HttpWebRequest)HttpWebRequest.Create(updater.URL);
+				updater = (Updater) parameter;
+				request = (HttpWebRequest) WebRequest.Create(updater.URL);
 
 				request.Timeout = 10000;
 
-				IAsyncResult response = (IAsyncResult)request.BeginGetResponse(CallbackAsync, new object[] { request, updater });
+				IAsyncResult response = request.BeginGetResponse(CallbackAsync, new object[] {request, updater});
 
 				lock (waitObject)
 					Monitor.Wait(waitObject);
@@ -104,7 +105,7 @@ namespace Paril.Components.Update
 			}
 		}
 
-		void Done(bool succeeded)
+		private void Done(bool succeeded)
 		{
 			Thread = null;
 			_checking = false;
@@ -113,7 +114,7 @@ namespace Paril.Components.Update
 				NewVersionAvailable(this, EventArgs.Empty);
 			else if (PrintOnEqual)
 				SameVersion(this, EventArgs.Empty);
-		}	
+		}
 
 		public void Abort()
 		{
@@ -148,9 +149,13 @@ namespace Paril.Components.Update
 
 	public class AssemblyVersion : IVersion
 	{
+		#region IVersion Members
+
 		public bool IsNewerVersion(string myVersion, string siteVersion)
 		{
 			return new Version(siteVersion) > new Version(myVersion);
 		}
+
+		#endregion
 	}
 }

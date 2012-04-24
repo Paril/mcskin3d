@@ -16,7 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
+using System.Globalization;
 
 namespace Paril.Settings.Serializers
 {
@@ -26,8 +26,8 @@ namespace Paril.Settings.Serializers
 		{
 			string h = "";
 
-			foreach (var c in s)
-				h += string.Format("{0:X2}", (int)c);
+			foreach (char c in s)
+				h += string.Format("{0:X2}", (int) c);
 
 			return h;
 		}
@@ -37,7 +37,7 @@ namespace Paril.Settings.Serializers
 			string s = "";
 
 			for (int i = 0; i < hex.Length; i += 2)
-				s += (char)int.Parse("" + hex[i] + hex[i + 1], System.Globalization.NumberStyles.HexNumber);
+				s += (char) int.Parse("" + hex[i] + hex[i + 1], NumberStyles.HexNumber);
 
 			return s;
 		}

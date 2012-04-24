@@ -17,83 +17,30 @@
 //
 
 using System;
-using System.Drawing;
-using Paril.Components;
-using System.IO;
-using OpenTK.Graphics.OpenGL;
-using System.Windows.Forms;
-using Paril.Extensions;
-using Paril.OpenGL;
-using Paril.Drawing;
-using System.Drawing.Drawing2D;
-using Paril.Imaging;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Windows.Forms;
 using OpenTK;
+using Paril.Components;
+using Paril.Drawing;
+using Paril.Extensions;
+using Paril.Imaging;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
 	[Serializable]
 	public class Skin : TreeNode, IDisposable
 	{
-		public Bitmap Image;
-		public Bitmap Head;
-		public Texture GLImage;
-		public UndoBuffer Undo;
+		private readonly Dictionary<int, bool> _transparentParts = new Dictionary<int, bool>();
 		public bool Dirty;
+		public Texture GLImage;
+		public Bitmap Head;
+		public Bitmap Image;
 		public Size Size;
-		public Model Model { get; set; }
-
-		public int Width { get { return Size.Width; } }
-		public int Height { get { return Size.Height; } }
-
-		Dictionary<int, bool> _transparentParts = new Dictionary<int, bool>();
-
-		public Dictionary<int, bool> TransparentParts { get { return _transparentParts; } }
-
-		public new string Name
-		{
-			get { return base.Name; }
-			set { base.Name = value; base.Text = base.Name = value; }
-		}
-
-		public static Image getHeadFromFile(String str, Size s)
-		{
-			Image img = new Bitmap(str);
-
-			float scale = img.Size.Width / 64.0f;
-			int headSize = (int)(8.0f * scale);
-
-			Image head = new Bitmap(32, 32);
-			using (Graphics g = Graphics.FromImage(head))
-			{
-				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-				g.DrawImage(img, new Rectangle(0, 0, head.Width, head.Height), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
-			}
-
-			img.Dispose();
-			img = null;
-			return head;
-		}
-
-		public DirectoryInfo Directory
-		{
-			get
-			{
-				if (Level == 0)
-					return new DirectoryInfo(Editor.RootFolderString);
-
-				return new DirectoryInfo(((this.Parent != null) ? Editor.GetFolderForNode(this.Parent) : ""));
-			}
-		}
-
-		public FileInfo File
-		{
-			get
-			{
-				return new FileInfo(Directory.FullName + '\\' + Name + ".png");
-			}
-		}
+		public UndoBuffer Undo;
 
 		public Skin(string fileName)
 		{
@@ -105,6 +52,51 @@ namespace MCSkin3D
 			this(file.FullName)
 		{
 		}
+
+		public Model Model { get; set; }
+
+		public int Width
+		{
+			get { return Size.Width; }
+		}
+
+		public int Height
+		{
+			get { return Size.Height; }
+		}
+
+		public Dictionary<int, bool> TransparentParts
+		{
+			get { return _transparentParts; }
+		}
+
+		public new string Name
+		{
+			get { return base.Name; }
+			set
+			{
+				base.Name = value;
+				base.Text = base.Name = value;
+			}
+		}
+
+		public DirectoryInfo Directory
+		{
+			get
+			{
+				if (Level == 0)
+					return new DirectoryInfo(Editor.RootFolderString);
+
+				return new DirectoryInfo(((Parent != null) ? Editor.GetFolderForNode(Parent) : ""));
+			}
+		}
+
+		public FileInfo File
+		{
+			get { return new FileInfo(Directory.FullName + '\\' + Name + ".png"); }
+		}
+
+		#region IDisposable Members
 
 		public void Dispose()
 		{
@@ -127,6 +119,29 @@ namespace MCSkin3D
 			}
 		}
 
+		#endregion
+
+		public static Image getHeadFromFile(String str, Size s)
+		{
+			Image img = new Bitmap(str);
+
+			float scale = img.Size.Width / 64.0f;
+			var headSize = (int) (8.0f * scale);
+
+			Image head = new Bitmap(32, 32);
+			using (Graphics g = Graphics.FromImage(head))
+			{
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+				g.DrawImage(img, new Rectangle(0, 0, head.Width, head.Height), new Rectangle(headSize, headSize, headSize, headSize),
+				            GraphicsUnit.Pixel);
+			}
+
+			img.Dispose();
+			img = null;
+			return head;
+		}
+
 		public void SetImages(bool updateGL = true)
 		{
 			try
@@ -142,20 +157,22 @@ namespace MCSkin3D
 					}
 				}
 
-				using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
 					Image = new Bitmap(file);
 
 				Size = Image.Size;
 
 				float scale = Size.Width / 64.0f;
-				int headSize = (int)(8.0f * scale);
-				int helmetLoc = (int)(40.0f * scale);
+				var headSize = (int) (8.0f * scale);
+				var helmetLoc = (int) (40.0f * scale);
 
 				Head = new Bitmap(headSize, headSize);
 				using (Graphics g = Graphics.FromImage(Head))
 				{
-					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
-					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize), GraphicsUnit.Pixel);
+					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize),
+					            GraphicsUnit.Pixel);
+					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize),
+					            GraphicsUnit.Pixel);
 				}
 
 				Image.Dispose();
@@ -170,7 +187,7 @@ namespace MCSkin3D
 
 				if (Model == null)
 				{
-					var metadata = PNGMetadata.ReadMetadata(File.FullName);
+					Dictionary<string, string> metadata = PNGMetadata.ReadMetadata(File.FullName);
 
 					if (metadata.ContainsKey("Model"))
 					{
@@ -200,7 +217,7 @@ namespace MCSkin3D
 
 		public void CommitChanges(Texture currentSkin, bool save)
 		{
-			ColorGrabber grabber = new ColorGrabber(currentSkin, Width, Height);
+			var grabber = new ColorGrabber(currentSkin, Width, Height);
 			grabber.Load();
 
 			if (currentSkin != GLImage)
@@ -211,16 +228,18 @@ namespace MCSkin3D
 
 			if (save)
 			{
-				Bitmap newBitmap = new Bitmap(Width, Height);
+				var newBitmap = new Bitmap(Width, Height);
 
-				using (FastPixel fp = new FastPixel(newBitmap, true))
+				using (var fp = new FastPixel(newBitmap, true))
 				{
 					for (int y = 0; y < Height; ++y)
+					{
 						for (int x = 0; x < Width; ++x)
 						{
-							var c = grabber[x, y];
-							fp.SetPixel(x, y, System.Drawing.Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue));
+							ColorPixel c = grabber[x, y];
+							fp.SetPixel(x, y, Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue));
 						}
+					}
 				}
 
 				newBitmap.Save(File.FullName);
@@ -266,7 +285,7 @@ namespace MCSkin3D
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
 					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-					using (var temp = Bitmap.FromFile(File.FullName))
+					using (Image temp = System.Drawing.Image.FromFile(File.FullName))
 						g.DrawImage(temp, 0, 0, newBitmap.Width, newBitmap.Height);
 				}
 
@@ -298,23 +317,24 @@ namespace MCSkin3D
 
 		public void CheckTransparentPart(ColorGrabber grabber, int index)
 		{
-			foreach (var f in Model.Meshes[index].Faces)
+			foreach (Face f in Model.Meshes[index].Faces)
 			{
-				Bounds bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
+				var bounds = new Bounds(new Point(9999, 9999), new Point(-9999, -9999));
 
-				foreach (var c in f.TexCoords)
+				foreach (Vector2 c in f.TexCoords)
 				{
 					var coord = new Vector2(c.X * Width, c.Y * Height);
-					bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
+					bounds.AddPoint(new Point((int) coord.X, (int) coord.Y));
 				}
 
-				var rect = bounds.ToRectangle();
+				Rectangle rect = bounds.ToRectangle();
 				bool gotOne = false;
 
 				for (int y = rect.Y; !gotOne && y < rect.Y + rect.Height; ++y)
+				{
 					for (int x = rect.X; x < rect.X + rect.Width; ++x)
 					{
-						var pixel = grabber[x, y];
+						ColorPixel pixel = grabber[x, y];
 
 						if (pixel.Alpha != 255)
 						{
@@ -322,6 +342,7 @@ namespace MCSkin3D
 							break;
 						}
 					}
+				}
 
 				if (gotOne)
 				{
@@ -335,14 +356,14 @@ namespace MCSkin3D
 
 		public void SetTransparentParts()
 		{
-			ColorGrabber grabber = new ColorGrabber(GLImage, Width, Height);
+			var grabber = new ColorGrabber(GLImage, Width, Height);
 			grabber.Load();
 
 			int mesh = 0;
 
 			TransparentParts.Clear();
 
-			foreach (var m in Model.Meshes)
+			foreach (Mesh m in Model.Meshes)
 			{
 				TransparentParts.Add(mesh, false);
 

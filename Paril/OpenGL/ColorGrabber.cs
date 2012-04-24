@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenTK.Graphics.OpenGL;
+﻿using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Drawing;
 
 namespace Paril.OpenGL
 {
 	[StructLayout(LayoutKind.Explicit)]
 	public struct ColorPixel
 	{
-		[FieldOffset(0)]
-		int _rgba;
+		[FieldOffset(0)] private int _rgba;
 
-		[FieldOffset(0)]
-		byte _r;
-		[FieldOffset(1)]
-		byte _g;
-		[FieldOffset(2)]
-		byte _b;
-		[FieldOffset(3)]
-		byte _a;
+		[FieldOffset(0)] private byte _r;
+		[FieldOffset(1)] private byte _g;
+		[FieldOffset(2)] private byte _b;
+		[FieldOffset(3)] private byte _a;
 
 		public ColorPixel(int rgba)
 		{
@@ -38,12 +28,35 @@ namespace Paril.OpenGL
 			_a = a;
 		}
 
-		public byte Red { get { return _r; } set { _r = value; } }
-		public byte Green { get { return _g; } set { _g = value; } }
-		public byte Blue { get { return _b; } set { _b = value; } }
-		public byte Alpha { get { return _a; } set { _a = value; } }
+		public byte Red
+		{
+			get { return _r; }
+			set { _r = value; }
+		}
 
-		public int RGBA { get { return _rgba; } set { _rgba = value; } }
+		public byte Green
+		{
+			get { return _g; }
+			set { _g = value; }
+		}
+
+		public byte Blue
+		{
+			get { return _b; }
+			set { _b = value; }
+		}
+
+		public byte Alpha
+		{
+			get { return _a; }
+			set { _a = value; }
+		}
+
+		public int RGBA
+		{
+			get { return _rgba; }
+			set { _rgba = value; }
+		}
 	}
 
 	public interface IColorGrabber<T>
@@ -51,29 +64,27 @@ namespace Paril.OpenGL
 		T Texture { get; set; }
 		int Width { get; }
 		int Height { get; }
+		ColorPixel this[int x, int y] { get; set; }
+		ColorPixel[] Array { get; set; }
 
 		void Resize(int width, int height);
 		void Load();
 		void Save();
-
-		ColorPixel this[int x, int y] { get; set; }
-		ColorPixel[] Array { get; set; }
 	}
 
 	public struct ColorGrabber : IColorGrabber<Texture>
 	{
-		Texture _texture;
-		ColorPixel[] _array;
-		int _width, _height;
+		#region Delegates
 
-		public Texture Texture { get { return _texture; } set { _texture = value; } }
-		public int Width { get { return _width; } }
-		public int Height { get { return _height; } }
+		public delegate void OnWriteDelegate(Point p, ColorPixel c);
 
-		public bool Valid
-		{
-			get { return _array != null; }
-		}
+		#endregion
+
+		public OnWriteDelegate OnWrite;
+		private ColorPixel[] _array;
+		private int _height;
+		private Texture _texture;
+		private int _width;
 
 		public ColorGrabber(Texture texture, int width, int height)
 		{
@@ -84,6 +95,29 @@ namespace Paril.OpenGL
 			_array = null;
 
 			Resize(width, height);
+		}
+
+		public bool Valid
+		{
+			get { return _array != null; }
+		}
+
+		#region IColorGrabber<Texture> Members
+
+		public Texture Texture
+		{
+			get { return _texture; }
+			set { _texture = value; }
+		}
+
+		public int Width
+		{
+			get { return _width; }
+		}
+
+		public int Height
+		{
+			get { return _height; }
 		}
 
 		public void Resize(int width, int height)
@@ -109,13 +143,14 @@ namespace Paril.OpenGL
 			_texture.Upload(_array, _width, _height);
 		}
 
-		public delegate void OnWriteDelegate(Point p, ColorPixel c);
-		public OnWriteDelegate OnWrite;
-
 		public ColorPixel this[int x, int y]
 		{
 			get { return _array[x + (y * _width)]; }
-			set { _array[x + (y * _width)] = value; if (OnWrite != null) OnWrite(new Point(x, y), value); }
+			set
+			{
+				_array[x + (y * _width)] = value;
+				if (OnWrite != null) OnWrite(new Point(x, y), value);
+			}
 		}
 
 		public ColorPixel[] Array
@@ -123,5 +158,7 @@ namespace Paril.OpenGL
 			get { return _array; }
 			set { value.CopyTo(_array, 0); }
 		}
+
+		#endregion
 	}
 }

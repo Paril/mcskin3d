@@ -17,17 +17,58 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Paril.Settings.Serializers
 {
 	public class PasswordSerializer<T> : ITypeSerializer
 		where T : SymmetricAlgorithm, new()
 	{
+		private static string passPhrase = Environment.UserName + Environment.CurrentDirectory; // can be any string
+
+		private static string saltValue = Environment.MachineName + Environment.SystemDirectory + Environment.UserDomainName;
+		// can be any string
+
+		private static string hashAlgorithm = "SHA1"; // can be "MD5"
+		private static int passwordIterations = 2; // can be any number
+		private static string initVector = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
+		private static int keySize = 256; // can be 192 or 128
+
+		#region ITypeSerializer Members
+
+		public object Deserialize(string str)
+		{
+			try
+			{
+				return Decrypt(str,
+				               passPhrase,
+				               saltValue,
+				               hashAlgorithm,
+				               passwordIterations,
+				               initVector,
+				               keySize);
+			}
+			catch
+			{
+				return "";
+			}
+		}
+
+		public string Serialize(object obj)
+		{
+			return Encrypt((string) obj,
+			               passPhrase,
+			               saltValue,
+			               hashAlgorithm,
+			               passwordIterations,
+			               initVector,
+			               keySize);
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Encrypts specified plaintext using Rijndael symmetric key algorithm
 		/// and returns a base64-encoded result.
@@ -66,40 +107,40 @@ namespace Paril.Settings.Serializers
 		/// Encrypted value formatted as a base64-encoded string.
 		/// </returns>
 		public static string Encrypt(string plainText,
-									 string passPhrase,
-									 string saltValue,
-									 string hashAlgorithm,
-									 int passwordIterations,
-									 string initVector,
-									 int keySize)
+		                             string passPhrase,
+		                             string saltValue,
+		                             string hashAlgorithm,
+		                             int passwordIterations,
+		                             string initVector,
+		                             int keySize)
 		{
 			// Convert strings into byte arrays.
 			// Let us assume that strings only contain ASCII codes.
 			// If strings include Unicode characters, use Unicode, UTF7, or UTF8 
 			// encoding.
 			byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-			byte[] saltValueBytes  = Encoding.ASCII.GetBytes(saltValue);
+			byte[] saltValueBytes = Encoding.ASCII.GetBytes(saltValue);
 
 			// Convert our plaintext into a byte array.
 			// Let us assume that plaintext contains UTF8-encoded characters.
-			byte[] plainTextBytes  = Encoding.UTF8.GetBytes(plainText);
+			byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
 			// First, we must create a password, from which the key will be derived.
 			// This password will be generated from the specified passphrase and 
 			// salt value. The password will be created using the specified hash 
 			// algorithm. Password creation can be done in several iterations.
-			PasswordDeriveBytes password = new PasswordDeriveBytes(
-															passPhrase,
-															saltValueBytes,
-															hashAlgorithm,
-															passwordIterations);
+			var password = new PasswordDeriveBytes(
+				passPhrase,
+				saltValueBytes,
+				hashAlgorithm,
+				passwordIterations);
 
 			// Use the password to generate pseudo-random bytes for the encryption
 			// key. Specify the size of the key in bytes (instead of bits).
 			byte[] keyBytes = password.GetBytes(keySize / 8);
 
 			// Create uninitialized Rijndael encryption object.
-			T symmetricKey = new T();
+			var symmetricKey = new T();
 
 			// It is reasonable to set encryption mode to Cipher Block Chaining
 			// (CBC). Use default options for other symmetric key parameters.
@@ -109,16 +150,16 @@ namespace Paril.Settings.Serializers
 			// vector. Key size will be defined based on the number of the key 
 			// bytes.
 			ICryptoTransform encryptor = symmetricKey.CreateEncryptor(
-															 keyBytes,
-															 initVectorBytes);
+				keyBytes,
+				initVectorBytes);
 
 			// Define memory stream which will be used to hold encrypted data.
-			MemoryStream memoryStream = new MemoryStream();
+			var memoryStream = new MemoryStream();
 
 			// Define cryptographic stream (always use Write mode for encryption).
-			CryptoStream cryptoStream = new CryptoStream(memoryStream,
-														 encryptor,
-														 CryptoStreamMode.Write);
+			var cryptoStream = new CryptoStream(memoryStream,
+			                                    encryptor,
+			                                    CryptoStreamMode.Write);
 			// Start encrypting.
 			cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
 
@@ -183,19 +224,19 @@ namespace Paril.Settings.Serializers
 		/// ciphertext.
 		/// </remarks>
 		public static string Decrypt(string cipherText,
-									 string passPhrase,
-									 string saltValue,
-									 string hashAlgorithm,
-									 int passwordIterations,
-									 string initVector,
-									 int keySize)
+		                             string passPhrase,
+		                             string saltValue,
+		                             string hashAlgorithm,
+		                             int passwordIterations,
+		                             string initVector,
+		                             int keySize)
 		{
 			// Convert strings defining encryption key characteristics into byte
 			// arrays. Let us assume that strings only contain ASCII codes.
 			// If strings include Unicode characters, use Unicode, UTF7, or UTF8
 			// encoding.
 			byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-			byte[] saltValueBytes  = Encoding.ASCII.GetBytes(saltValue);
+			byte[] saltValueBytes = Encoding.ASCII.GetBytes(saltValue);
 
 			// Convert our ciphertext into a byte array.
 			byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
@@ -205,18 +246,18 @@ namespace Paril.Settings.Serializers
 			// passphrase and salt value. The password will be created using
 			// the specified hash algorithm. Password creation can be done in
 			// several iterations.
-			PasswordDeriveBytes password = new PasswordDeriveBytes(
-															passPhrase,
-															saltValueBytes,
-															hashAlgorithm,
-															passwordIterations);
+			var password = new PasswordDeriveBytes(
+				passPhrase,
+				saltValueBytes,
+				hashAlgorithm,
+				passwordIterations);
 
 			// Use the password to generate pseudo-random bytes for the encryption
 			// key. Specify the size of the key in bytes (instead of bits).
 			byte[] keyBytes = password.GetBytes(keySize / 8);
 
 			// Create uninitialized Rijndael encryption object.
-			T symmetricKey = new T();
+			var symmetricKey = new T();
 
 			// It is reasonable to set encryption mode to Cipher Block Chaining
 			// (CBC). Use default options for other symmetric key parameters.
@@ -226,26 +267,26 @@ namespace Paril.Settings.Serializers
 			// vector. Key size will be defined based on the number of the key 
 			// bytes.
 			ICryptoTransform decryptor = symmetricKey.CreateDecryptor(
-															 keyBytes,
-															 initVectorBytes);
+				keyBytes,
+				initVectorBytes);
 
 			// Define memory stream which will be used to hold encrypted data.
-			MemoryStream  memoryStream = new MemoryStream(cipherTextBytes);
+			var memoryStream = new MemoryStream(cipherTextBytes);
 
 			// Define cryptographic stream (always use Read mode for encryption).
-			CryptoStream  cryptoStream = new CryptoStream(memoryStream,
-														  decryptor,
-														  CryptoStreamMode.Read);
+			var cryptoStream = new CryptoStream(memoryStream,
+			                                    decryptor,
+			                                    CryptoStreamMode.Read);
 
 			// Since at this point we don't know what the size of decrypted data
 			// will be, allocate the buffer long enough to hold ciphertext;
 			// plaintext is never longer than ciphertext.
-			byte[] plainTextBytes = new byte[cipherTextBytes.Length];
+			var plainTextBytes = new byte[cipherTextBytes.Length];
 
 			// Start decrypting.
 			int decryptedByteCount = cryptoStream.Read(plainTextBytes,
-													   0,
-													   plainTextBytes.Length);
+			                                           0,
+			                                           plainTextBytes.Length);
 
 			// Close both streams.
 			memoryStream.Close();
@@ -254,47 +295,11 @@ namespace Paril.Settings.Serializers
 			// Convert decrypted data into a string. 
 			// Let us assume that the original plaintext string was UTF8-encoded.
 			string plainText = Encoding.UTF8.GetString(plainTextBytes,
-													   0,
-													   decryptedByteCount);
+			                                           0,
+			                                           decryptedByteCount);
 
 			// Return decrypted string.   
 			return plainText;
-		}
-
-		static string   passPhrase         = Environment.UserName + Environment.CurrentDirectory;        // can be any string
-		static string   saltValue          = Environment.MachineName + Environment.SystemDirectory + Environment.UserDomainName;        // can be any string
-		static string   hashAlgorithm      = "SHA1";             // can be "MD5"
-		static int      passwordIterations = 2;                  // can be any number
-		static string   initVector         = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
-		static int      keySize            = 256;                // can be 192 or 128
-
-		public object Deserialize(string str)
-		{
-			try
-			{
-				return Decrypt(str,
-													passPhrase,
-													saltValue,
-													hashAlgorithm,
-													passwordIterations,
-													initVector,
-													keySize);
-			}
-			catch
-			{
-				return "";
-			}
-		}
-
-		public string Serialize(object obj)
-		{
-			return Encrypt((string)obj,
-												passPhrase,
-												saltValue,
-												hashAlgorithm,
-												passwordIterations,
-												initVector,
-												keySize);
 		}
 	}
 }
