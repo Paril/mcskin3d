@@ -312,6 +312,11 @@
     <Compile Include="Paril\Drawing\Bounds.cs" />
     <Compile Include="Paril\Imaging\PNGMetadata.cs" />
     <Compile Include="Paril\Net\WebHelpers.cs" />
+    <Compile Include="Paril\OpenGL\Face.cs" />
+    <Compile Include="Paril\OpenGL\IMeshUserData.cs" />
+    <Compile Include="Paril\OpenGL\Mesh.cs" />
+    <Compile Include="Paril\OpenGL\Bounds.cs" />
+    <Compile Include="Paril\OpenGL\Model.cs" />
     <Compile Include="Paril\OpenGL\Texture.cs" />
     <Compile Include="Paril\OpenGL\TextureGL.cs" />
     <Compile Include="PopupControl\ComboBox.cs">

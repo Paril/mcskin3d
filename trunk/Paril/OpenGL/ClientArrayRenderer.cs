@@ -32,6 +32,10 @@ namespace Paril.OpenGL
 		{
 			if (GL.GetString(StringName.Extensions).Contains("GL_EXT_compiled_vertex_array"))
 				_compiled = true;
+
+			GL.EnableClientState(ArrayCap.VertexArray);
+			GL.EnableClientState(ArrayCap.ColorArray);
+			GL.EnableClientState(ArrayCap.TextureCoordArray);
 		}
 
 		public override void RenderMesh(Mesh mesh)
@@ -66,16 +70,10 @@ namespace Paril.OpenGL
 
 		protected override void PreRender()
 		{
-			GL.EnableClientState(ArrayCap.VertexArray);
-			GL.EnableClientState(ArrayCap.ColorArray);
-			GL.EnableClientState(ArrayCap.TextureCoordArray);
 		}
 
 		protected override void PostRender()
 		{
-			GL.DisableClientState(ArrayCap.VertexArray);
-			GL.DisableClientState(ArrayCap.ColorArray);
-			GL.DisableClientState(ArrayCap.TextureCoordArray);
 		}
 	}
 }

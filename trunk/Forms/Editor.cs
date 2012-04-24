@@ -70,14 +70,14 @@ namespace MCSkin3D
 		private readonly List<ToolIndex> _tools = new List<ToolIndex>();
 		private readonly UndoRedoPanel _undoListBox;
 		private readonly Updater _updater;
-		private readonly GLControl rendererControl;
+		private readonly GLControl _rendererControl;
 
-		private float _2dCamOffsetX;
-		private float _2dCamOffsetY;
-		private float _2dZoom = 8;
-		private Vector3 _3dOffset = Vector3.Zero;
-		private float _3dRotationX = 180, _3dRotationY;
-		private float _3dZoom = -80;
+		private float _2DCamOffsetX;
+		private float _2DCamOffsetY;
+		private float _2DZoom = 8;
+		private Vector3 _3DOffset = Vector3.Zero;
+		private float _3DRotationX = 180, _3DRotationY;
+		private float _3DZoom = -80;
 		private Texture _alphaTex;
 		private float _animationTime;
 		private UndoBuffer _currentUndoBuffer;
@@ -89,7 +89,6 @@ namespace MCSkin3D
 		private Point _mousePoint;
 		internal PleaseWait _pleaseWaitForm;
 		private Texture _previewPaint;
-		private Renderer _renderer;
 		private int _selectedBackground;
 		private ToolIndex _selectedTool;
 		private Texture _toolboxDownHover;
@@ -124,15 +123,17 @@ namespace MCSkin3D
 		private Point _pickPosition = new Point(-1, -1);
 		private TreeNode _rightClickedNode;
 		private bool _waitingForRestart;
-		private Matrix4 cameraMatrix;
-		private Form popoutForm;
-		private Matrix4d projectionMatrix;
-		private Matrix4 viewMatrix;
+		private Matrix4 _cameraMatrix;
+		private Form _popoutForm;
+		private Matrix4d _projectionMatrix;
+		private Matrix4 _viewMatrix;
 
 		public ToolIndex SelectedTool
 		{
 			get { return _selectedTool; }
 		}
+
+		public Renderer MeshRenderer { get; private set; }
 
 		public DodgeBurnOptions DodgeBurnOptions { get; private set; }
 		public DarkenLightenOptions DarkenLightenOptions { get; private set; }
@@ -150,7 +151,7 @@ namespace MCSkin3D
 
 		public GLControl Renderer
 		{
-			get { return rendererControl; }
+			get { return _rendererControl; }
 		}
 
 		public MouseButtons CameraRotate
@@ -191,7 +192,7 @@ namespace MCSkin3D
 			{
 				const float baseSize = 200.0f;
 
-				return baseSize / rendererControl.Size.Width;
+				return baseSize / _rendererControl.Size.Width;
 			}
 		}
 
@@ -247,16 +248,16 @@ namespace MCSkin3D
 
 		public void PerformResetCamera()
 		{
-			_2dCamOffsetX = 0;
-			_2dCamOffsetY = 0;
-			_2dZoom = 8;
-			_3dZoom = -80;
-			_3dRotationX = 180;
-			_3dRotationY = 0;
-			_3dOffset = Vector3.Zero;
+			_2DCamOffsetX = 0;
+			_2DCamOffsetY = 0;
+			_2DZoom = 8;
+			_3DZoom = -80;
+			_3DRotationX = 180;
+			_3DRotationY = 0;
+			_3DOffset = Vector3.Zero;
 
 			CalculateMatrices();
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		// =====================================================================
@@ -277,7 +278,7 @@ namespace MCSkin3D
 
 		private void rendererControl_Load(object sender, EventArgs e)
 		{
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			GL.Enable(EnableCap.Texture2D);
@@ -385,9 +386,9 @@ namespace MCSkin3D
 			}
 
 			if (GL.GetString(StringName.Extensions).Contains("GL_EXT_vertex_array"))
-				_renderer = new ClientArrayRenderer();
+				MeshRenderer = new ClientArrayRenderer();
 			else
-				_renderer = new ImmediateRenderer();
+				MeshRenderer = new ImmediateRenderer();
 		}
 
 		private void item_Clicked(object sender, EventArgs e)
@@ -543,16 +544,16 @@ namespace MCSkin3D
 
 			GL.PushMatrix();
 
-			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
-			GL.Translate((_currentViewport.Width / 2) + -_2dCamOffsetX, (_currentViewport.Height / 2) + -_2dCamOffsetY, 0);
-			GL.Scale(_2dZoom, _2dZoom, 1);
+			GL.Translate((_2DCamOffsetX), (_2DCamOffsetY), 0);
+			GL.Translate((_currentViewport.Width / 2) + -_2DCamOffsetX, (_currentViewport.Height / 2) + -_2DCamOffsetY, 0);
+			GL.Scale(_2DZoom, _2DZoom, 1);
 
 			if (pickView)
 				GL.Disable(EnableCap.Blend);
 			else
 				GL.Enable(EnableCap.Blend);
 
-			GL.Translate((_2dCamOffsetX), (_2dCamOffsetY), 0);
+			GL.Translate((_2DCamOffsetX), (_2DCamOffsetY), 0);
 			if (skin != null)
 			{
 				float w = skin.Width;
@@ -604,8 +605,8 @@ namespace MCSkin3D
 						GL.PushMatrix();
 						GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
 
-						float stub = (GlobalSettings.DynamicOverlayLineSize / _2dZoom);
-						float one = (1.0f / _2dZoom);
+						float stub = (GlobalSettings.DynamicOverlayLineSize / _2DZoom);
+						float one = (1.0f / _2DZoom);
 
 						var done = new List<RectangleF>();
 						foreach (Mesh mesh in CurrentModel.Meshes)
@@ -648,8 +649,8 @@ namespace MCSkin3D
 
 								GL.Color4(GlobalSettings.DynamicOverlayTextColor);
 								DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal),
-								                          (6 * GlobalSettings.DynamicOverlayTextSize) / _2dZoom,
-								                          (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2dZoom);
+								                          (6 * GlobalSettings.DynamicOverlayTextSize) / _2DZoom,
+								                          (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2DZoom);
 								GL.Color4(Color.White);
 							}
 						}
@@ -684,7 +685,7 @@ namespace MCSkin3D
 			TextureGL.Unbind();
 			bool grass = !pickView && grassToolStripMenuItem.Checked;
 
-			Point clPt = rendererControl.PointToClient(Cursor.Position);
+			Point clPt = _rendererControl.PointToClient(Cursor.Position);
 			int x = clPt.X - (_currentViewport.Width / 2);
 			int y = clPt.Y - (_currentViewport.Height / 2);
 
@@ -700,7 +701,7 @@ namespace MCSkin3D
 			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
 
 			// add meshes
-			if (GlobalSettings.RenderBenchmark)
+			if (GlobalSettings.RenderBenchmark && Editor.IsRendering)
 				_compileTimer.Start();
 
 			if (CurrentModel != null)
@@ -715,14 +716,11 @@ namespace MCSkin3D
 					    !(GlobalSettings.Ghost && !pickView))
 						continue;
 
-					Mesh newMesh = mesh;
-
-					newMesh.HasTransparency = _lastSkin.TransparentParts[meshIndex];
-
-					newMesh.Texture = tex;
+					mesh.HasTransparency = _lastSkin.TransparentParts[meshIndex];
+					mesh.Texture = tex;
 
 					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
-						newMesh.Rotate = helmetRotate;
+						mesh.Rotate = helmetRotate;
 
 					if (meshVisible == false && GlobalSettings.Ghost && !pickView)
 					{
@@ -742,19 +740,19 @@ namespace MCSkin3D
 					}
 
 					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-						newMesh.Rotate += new Vector3((float) sinAnim * mesh.RotateFactor, 0, 0);
+						mesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
 
-					_renderer.AddMesh(newMesh);
+					MeshRenderer.AddMesh(mesh);
 				}
 			}
 
-			if (GlobalSettings.RenderBenchmark)
+			if (GlobalSettings.RenderBenchmark && Editor.IsRendering)
 				_compileTimer.Stop();
 
 			if (!pickView)
-				_renderer.Render();
+				MeshRenderer.Render();
 			else
-				_renderer.RenderWithoutTransparency();
+				MeshRenderer.RenderWithoutTransparency();
 		}
 
 		private void SetPreview()
@@ -799,13 +797,13 @@ namespace MCSkin3D
 		public bool GetPick(int x, int y, ref Point hitPixel)
 		{
 			if (x < 0 || y < 0
-			    || x > rendererControl.Width || y > rendererControl.Height)
+			    || x > _rendererControl.Width || y > _rendererControl.Height)
 			{
 				hitPixel = new Point(-1, -1);
 				return false;
 			}
 
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 
 			GL.ClearColor(Color.White);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -818,22 +816,22 @@ namespace MCSkin3D
 
 			if (_currentViewMode == ViewMode.Perspective)
 			{
-				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				Setup3D(new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height));
 				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
 			}
 			else if (_currentViewMode == ViewMode.Orthographic)
 			{
-				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				Setup2D(new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height));
 				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
 			}
 			else
 			{
-				var halfHeight = (int) Math.Ceiling(rendererControl.Height / 2.0f);
+				var halfHeight = (int) Math.Ceiling(_rendererControl.Height / 2.0f);
 
-				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
+				Setup3D(new Rectangle(0, 0, _rendererControl.Width, halfHeight));
 				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
 
-				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
+				Setup2D(new Rectangle(0, halfHeight, _rendererControl.Width, halfHeight));
 				DrawPlayer2D(GetPaintTexture(skin.Width, skin.Height), skin, true);
 			}
 
@@ -841,7 +839,7 @@ namespace MCSkin3D
 
 			var pixel = new byte[4];
 
-			GL.ReadPixels(x, rendererControl.Height - y, 1, 1,
+			GL.ReadPixels(x, _rendererControl.Height - y, 1, 1,
 			              PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
 
 			uint pixVal = BitConverter.ToUInt32(pixel, 0);
@@ -859,7 +857,7 @@ namespace MCSkin3D
 		private void animTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			_animationTime += 0.24f;
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void rendererControl_MouseWheel(object sender, MouseEventArgs e)
@@ -868,26 +866,26 @@ namespace MCSkin3D
 
 			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
 			{
-				_3dZoom += e.Delta / 50;
+				_3DZoom += e.Delta / 50;
 
 				CalculateMatrices();
-				rendererControl.Invalidate();
+				_rendererControl.Invalidate();
 			}
 			else
-				_2dZoom += e.Delta / 50;
+				_2DZoom += e.Delta / 50;
 
-			if (_2dZoom < 0.25f)
-				_2dZoom = 0.25f;
+			if (_2DZoom < 0.25f)
+				_2DZoom = 0.25f;
 		}
 
 		private void DrawGLToolbar()
 		{
 			// 2D
-			Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+			Setup2D(new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height));
 			TextureGL.Unbind();
 			GL.Enable(EnableCap.Blend);
 
-			float halfWidth = rendererControl.Width / 2.0f;
+			float halfWidth = _rendererControl.Width / 2.0f;
 			float halfImgWidth = 56.0f / 2.0f;
 
 			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
@@ -919,29 +917,31 @@ namespace MCSkin3D
 		public Rectangle GetViewport3D()
 		{
 			if (_currentViewMode == ViewMode.Perspective)
-				return new Rectangle(0, 0, rendererControl.Width, rendererControl.Height);
+				return new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height);
 			else
 			{
-				var halfHeight = (int) Math.Ceiling(rendererControl.Height / 2.0f);
-				return new Rectangle(0, 0, rendererControl.Width, halfHeight);
+				var halfHeight = (int) Math.Ceiling(_rendererControl.Height / 2.0f);
+				return new Rectangle(0, 0, _rendererControl.Width, halfHeight);
 			}
 		}
 
+		public static bool IsRendering { get; private set; }
+
+		static uint frameCount = 0;
+		static TimeSpan _compileSpan = TimeSpan.MinValue,
+						_batchSpan = TimeSpan.MinValue,
+						_sortSpan = TimeSpan.MinValue,
+						_renderSpan = TimeSpan.MinValue;
+
 		private void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
+			IsRendering = true;
 			if (GlobalSettings.RenderBenchmark)
-			{
-				_sortTimer.Reset();
-				_batchTimer.Reset();
-				_compileTimer.Reset();
-
-				_renderTimer.Reset();
 				_renderTimer.Start();
-			}
 
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 
-			_mousePoint = rendererControl.PointToClient(MousePosition);
+			_mousePoint = _rendererControl.PointToClient(MousePosition);
 
 			SetPreview();
 
@@ -956,42 +956,59 @@ namespace MCSkin3D
 
 			if (_currentViewMode == ViewMode.Perspective)
 			{
-				Setup3D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				Setup3D(new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height));
 				DrawPlayer(_previewPaint, skin, false);
 			}
 			else if (_currentViewMode == ViewMode.Orthographic)
 			{
-				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				Setup2D(new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height));
 				DrawPlayer2D(_previewPaint, skin, false);
 			}
 			else
 			{
-				var halfHeight = (int) Math.Ceiling(rendererControl.Height / 2.0f);
+				var halfHeight = (int) Math.Ceiling(_rendererControl.Height / 2.0f);
 
-				Setup3D(new Rectangle(0, 0, rendererControl.Width, halfHeight));
+				Setup3D(new Rectangle(0, 0, _rendererControl.Width, halfHeight));
 				DrawPlayer(_previewPaint, skin, false);
 
-				Setup2D(new Rectangle(0, halfHeight, rendererControl.Width, halfHeight));
+				Setup2D(new Rectangle(0, halfHeight, _rendererControl.Width, halfHeight));
 				DrawPlayer2D(_previewPaint, skin, false);
 			}
 
 			GL.PopMatrix();
 
+			_renderTimer.Stop();
+
+			frameCount++;
+
 			if (GlobalSettings.RenderBenchmark)
 			{
+				if (((++frameCount) % 60) == 0)
+				{
+					_compileSpan = TimeSpan.FromTicks(_compileTimer.Elapsed.Ticks / 60);
+					_batchSpan = TimeSpan.FromTicks(_batchTimer.Elapsed.Ticks / 60);
+					_sortSpan = TimeSpan.FromTicks(_sortTimer.Elapsed.Ticks / 60);
+					_renderSpan = TimeSpan.FromTicks(_renderTimer.Elapsed.Ticks / 60);
+
+					_sortTimer.Reset();
+					_batchTimer.Reset();
+					_compileTimer.Reset();
+
+					_renderTimer.Reset();
+				}
+
 				GL.PushMatrix();
 				GL.Enable(EnableCap.Blend);
-				_renderTimer.Stop();
 
-				Setup2D(new Rectangle(0, 0, rendererControl.Width, rendererControl.Height));
+				Setup2D(new Rectangle(0, 0, _rendererControl.Width, _rendererControl.Height));
 
-				DrawString(_font, "Compile Time: " + _compileTimer.Elapsed.ToString(), 6, 8);
+				DrawString(_font, "Compile Time: " + _compileSpan.ToString(), 6, 8);
 				GL.Translate(0, 8, 0);
-				DrawString(_font, "Batch Time: " + _batchTimer.Elapsed.ToString(), 6, 8);
+				DrawString(_font, "Batch Time: " + _batchSpan.ToString(), 6, 8);
 				GL.Translate(0, 8, 0);
-				DrawString(_font, "Sort Time: " + _sortTimer.Elapsed.ToString(), 6, 8);
+				DrawString(_font, "Sort Time: " + _sortSpan.ToString(), 6, 8);
 				GL.Translate(0, 8, 0);
-				DrawString(_font, "Total Frame Time: " + _renderTimer.Elapsed.ToString(), 6, 8);
+				DrawString(_font, "Total Frame Time: " + _renderSpan.ToString(), 6, 8);
 				GL.PopMatrix();
 			}
 
@@ -999,13 +1016,14 @@ namespace MCSkin3D
 				DrawGLToolbar();
 
 			if (!_screenshotMode)
-				rendererControl.SwapBuffers();
+				_rendererControl.SwapBuffers();
+			IsRendering = false;
 		}
 
 		private void CalculateMatrices()
 		{
 			Rectangle viewport = GetViewport3D();
-			projectionMatrix = Matrix4d.Perspective(45, viewport.Width / (double) viewport.Height, 0.01, 100000);
+			_projectionMatrix = Matrix4d.Perspective(45, viewport.Width / (double) viewport.Height, 0.01, 100000);
 
 			Bounds3 vec = Bounds3.EmptyBounds;
 			Bounds3 allBounds = Bounds3.EmptyBounds;
@@ -1034,16 +1052,16 @@ namespace MCSkin3D
 			GrassY = allBounds.Maxs.Y;
 			Vector3 center = vec.Center;
 
-			viewMatrix =
-				Matrix4.CreateTranslation(-center.X + _3dOffset.X, -center.Y + _3dOffset.Y, -center.Z + _3dOffset.Z) *
-				Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), MathHelper.DegreesToRadians(_3dRotationY)) *
-				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(_3dRotationX)) *
-				Matrix4.CreateTranslation(0, 0, _3dZoom);
+			_viewMatrix =
+				Matrix4.CreateTranslation(-center.X + _3DOffset.X, -center.Y + _3DOffset.Y, -center.Z + _3DOffset.Z) *
+				Matrix4.CreateFromAxisAngle(new Vector3(0, -1, 0), MathHelper.DegreesToRadians(_3DRotationY)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(_3DRotationX)) *
+				Matrix4.CreateTranslation(0, 0, _3DZoom);
 
-			cameraMatrix = viewMatrix;
-			cameraMatrix.Invert();
+			_cameraMatrix = _viewMatrix;
+			_cameraMatrix.Invert();
 
-			CameraPosition = Vector3.TransformPosition(Vector3.Zero, cameraMatrix);
+			CameraPosition = Vector3.TransformPosition(Vector3.Zero, _cameraMatrix);
 		}
 
 		private void Setup3D(Rectangle viewport)
@@ -1060,13 +1078,13 @@ namespace MCSkin3D
 			GL.LoadIdentity();
 
 			GL.Viewport(viewport);
-			Matrix4d mat = projectionMatrix;
+			Matrix4d mat = _projectionMatrix;
 			GL.MultMatrix(ref mat);
 
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
 
-			GL.LoadMatrix(ref viewMatrix);
+			GL.LoadMatrix(ref _viewMatrix);
 		}
 
 		private void Setup2D(Rectangle viewport)
@@ -1084,10 +1102,10 @@ namespace MCSkin3D
 
 		private void rendererControl_Resize(object sender, EventArgs e)
 		{
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 
 			CalculateMatrices();
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void _animTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -1119,16 +1137,16 @@ namespace MCSkin3D
 		{
 			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
 			{
-				_3dRotationY += (delta.X * ToolScale) * factor;
-				_3dRotationX += (delta.Y * ToolScale) * factor;
+				_3DRotationY += (delta.X * ToolScale) * factor;
+				_3DRotationX += (delta.Y * ToolScale) * factor;
 
 				CalculateMatrices();
-				rendererControl.Invalidate();
+				_rendererControl.Invalidate();
 			}
 			else
 			{
-				_2dCamOffsetX += delta.X / _2dZoom;
-				_2dCamOffsetY += delta.Y / _2dZoom;
+				_2DCamOffsetX += delta.X / _2DZoom;
+				_2DCamOffsetY += delta.Y / _2DZoom;
 			}
 		}
 
@@ -1136,23 +1154,23 @@ namespace MCSkin3D
 		{
 			if (_currentViewMode == ViewMode.Perspective || (_currentViewMode == ViewMode.Hybrid && _mouseIn3D))
 			{
-				_3dZoom += (-delta.Y * ToolScale) * factor;
+				_3DZoom += (-delta.Y * ToolScale) * factor;
 
 				CalculateMatrices();
-				rendererControl.Invalidate();
+				_rendererControl.Invalidate();
 			}
 			else
 			{
-				_2dZoom += -delta.Y / 25.0f;
+				_2DZoom += -delta.Y / 25.0f;
 
-				if (_2dZoom < 0.25f)
-					_2dZoom = 0.25f;
+				if (_2DZoom < 0.25f)
+					_2DZoom = 0.25f;
 			}
 		}
 
 		private void CheckMouse(int y)
 		{
-			if (y > (rendererControl.Height / 2))
+			if (y > (_rendererControl.Height / 2))
 				_mouseIn3D = true;
 			else
 				_mouseIn3D = false;
@@ -1191,7 +1209,7 @@ namespace MCSkin3D
 
 			CheckMouse(e.Y);
 
-			float halfWidth = rendererControl.Width / 2.0f;
+			float halfWidth = _rendererControl.Width / 2.0f;
 			float halfImgWidth = 56.0f / 2.0f;
 
 			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
@@ -1243,7 +1261,7 @@ namespace MCSkin3D
 				else
 					_tools[(int) Tools.Camera].Tool.MouseMove(_lastSkin, e);
 
-				rendererControl.Invalidate();
+				_rendererControl.Invalidate();
 			}
 
 			_mousePoint = e.Location;
@@ -1371,7 +1389,7 @@ namespace MCSkin3D
 			    !(e.Node is Skin))
 				return;
 
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 
 			if (_lastSkin != null && treeView1.SelectedNode != _lastSkin)
 			{
@@ -1414,7 +1432,7 @@ namespace MCSkin3D
 			_lastSkin = (Skin) treeView1.SelectedNode;
 
 			SetModel(skin.Model);
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 
 			VerifySelectionButtons();
 			FillPartList();
@@ -1505,72 +1523,72 @@ namespace MCSkin3D
 
 		private void headToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.Head, headToolStripMenuItem, toggleHeadToolStripButton);
+			ToggleVisiblePart(ModelPart.Head);
 		}
 
 		private void helmetToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.Helmet, helmetToolStripMenuItem, toggleHelmetToolStripButton);
+			ToggleVisiblePart(ModelPart.Helmet);
 		}
 
 		private void chestToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.Chest, chestToolStripMenuItem, toggleChestToolStripButton);
+			ToggleVisiblePart(ModelPart.Chest);
 		}
 
 		private void leftArmToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.LeftArm, leftArmToolStripMenuItem, toggleLeftArmToolStripButton);
+			ToggleVisiblePart(ModelPart.LeftArm);
 		}
 
 		private void rightArmToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.RightArm, rightArmToolStripMenuItem, toggleRightArmToolStripButton);
+			ToggleVisiblePart(ModelPart.RightArm);
 		}
 
 		private void leftLegToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.LeftLeg, leftLegToolStripMenuItem, toggleLeftLegToolStripButton);
+			ToggleVisiblePart(ModelPart.LeftLeg);
 		}
 
 		private void rightLegToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.RightLeg, rightLegToolStripMenuItem, toggleRightLegToolStripButton);
+			ToggleVisiblePart(ModelPart.RightLeg);
 		}
 
 		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.Head, headToolStripMenuItem, toggleHeadToolStripButton);
+			ToggleVisiblePart(ModelPart.Head);
 		}
 
 		private void toggleHelmetToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.Helmet, helmetToolStripMenuItem, toggleHelmetToolStripButton);
+			ToggleVisiblePart(ModelPart.Helmet);
 		}
 
 		private void toggleChestToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.Chest, chestToolStripMenuItem, toggleChestToolStripButton);
+			ToggleVisiblePart(ModelPart.Chest);
 		}
 
 		private void toggleLeftArmToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.LeftArm, leftArmToolStripMenuItem, toggleLeftArmToolStripButton);
+			ToggleVisiblePart(ModelPart.LeftArm);
 		}
 
 		private void toggleRightArmToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.RightArm, rightArmToolStripMenuItem, toggleRightArmToolStripButton);
+			ToggleVisiblePart(ModelPart.RightArm);
 		}
 
 		private void toggleLeftLegToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.LeftLeg, leftLegToolStripMenuItem, toggleLeftLegToolStripButton);
+			ToggleVisiblePart(ModelPart.LeftLeg);
 		}
 
 		private void toggleRightLegToolStripButton_Click(object sender, EventArgs e)
 		{
-			ToggleVisiblePart(ModelPart.RightLeg, rightLegToolStripMenuItem, toggleRightLegToolStripButton);
+			ToggleVisiblePart(ModelPart.RightLeg);
 		}
 
 		private void alphaCheckerboardToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1637,7 +1655,7 @@ namespace MCSkin3D
 				{
 					GlobalSettings.BackgroundColor = picker.CurrentColor;
 
-					rendererControl.Invalidate();
+					_rendererControl.Invalidate();
 				}
 			}
 		}
@@ -2167,7 +2185,7 @@ namespace MCSkin3D
 				parent.Image = Resources.right_arrow_next;
 
 			CalculateMatrices();
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void resetCameraToolStripButton_Click(object sender, EventArgs e)
@@ -2186,7 +2204,7 @@ namespace MCSkin3D
 					GlobalSettings.DynamicOverlayLineColor = picker.CurrentColor;
 					mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
 
-					rendererControl.Invalidate();
+					_rendererControl.Invalidate();
 				}
 			}
 		}
@@ -2202,7 +2220,7 @@ namespace MCSkin3D
 					GlobalSettings.DynamicOverlayTextColor = picker.CurrentColor;
 					mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
 
-					rendererControl.Invalidate();
+					_rendererControl.Invalidate();
 				}
 			}
 		}
@@ -2218,7 +2236,7 @@ namespace MCSkin3D
 					GlobalSettings.DynamicOverlayGridColor = picker.CurrentColor;
 					mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
 
-					rendererControl.Invalidate();
+					_rendererControl.Invalidate();
 				}
 			}
 		}
@@ -2260,36 +2278,36 @@ namespace MCSkin3D
 		{
 			splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
 
-			if (popoutForm == null)
+			if (_popoutForm == null)
 			{
 				int oldWidth = Width;
 				Width = helpToolStripMenuItem.Bounds.X + helpToolStripMenuItem.Bounds.Width + 18;
 
 				// Move the items to a new form
-				popoutForm = new Form();
-				popoutForm.Height = Height;
-				popoutForm.Width = (oldWidth - Width) + 4;
-				popoutForm.Text = "Render Window";
-				popoutForm.Icon = Icon;
-				popoutForm.ControlBox = false;
-				popoutForm.Show();
-				popoutForm.Location = new Point(Location.X + Width, Location.Y);
-				popoutForm.KeyDown += popoutForm_KeyDown;
-				popoutForm.KeyPreview = true;
+				_popoutForm = new Form();
+				_popoutForm.Height = Height;
+				_popoutForm.Width = (oldWidth - Width) + 4;
+				_popoutForm.Text = "Render Window";
+				_popoutForm.Icon = Icon;
+				_popoutForm.ControlBox = false;
+				_popoutForm.Show();
+				_popoutForm.Location = new Point(Location.X + Width, Location.Y);
+				_popoutForm.KeyDown += popoutForm_KeyDown;
+				_popoutForm.KeyPreview = true;
 
 				splitContainer1.Panel2.Controls.Remove(panel4);
-				popoutForm.Controls.Add(panel4);
+				_popoutForm.Controls.Add(panel4);
 			}
 			else
 			{
-				popoutForm.Controls.Remove(panel4);
+				_popoutForm.Controls.Remove(panel4);
 				splitContainer1.Panel2.Controls.Add(panel4);
 
-				Width += popoutForm.Width - 4;
+				Width += _popoutForm.Width - 4;
 
-				popoutForm.Close();
-				popoutForm.Dispose();
-				popoutForm = null;
+				_popoutForm.Close();
+				_popoutForm.Dispose();
+				_popoutForm = null;
 			}
 		}
 
@@ -2373,6 +2391,9 @@ namespace MCSkin3D
 
 			foreach (PartTreeNode n in owners)
 				n.CheckGroupImage();
+
+			for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
+				CheckQuickPartState((ModelPart)i);
 		}
 
 		private void RecursiveAssign(PartTreeNode node, bool setAll)
@@ -2391,10 +2412,39 @@ namespace MCSkin3D
 			}
 		}
 
+		void CheckQuickPartState(ModelPart part)
+		{
+			var meshes = new List<Mesh>();
+			var item = _partItems[(int)part];
+			var button = _partButtons[(int)part];
+
+			foreach (var m in CurrentModel.Meshes)
+				if (m.Part == part)
+					meshes.Add(m);
+
+			if (meshes.Count == 0)
+			{
+				item.Enabled = button.Enabled = false;
+				return;
+			}
+
+			item.Enabled = button.Enabled = true;
+			item.Checked = button.Checked = true;
+
+			foreach (var m in meshes)
+			{
+				if (CurrentModel.PartsEnabled[CurrentModel.Meshes.IndexOf(m)])
+					continue;
+
+				item.Checked = button.Checked = false;
+				break;
+			}
+		}
+
 		private void treeView2_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
-			Rectangle nodeBounds = e.Node.Bounds;
-			Point pos = e.Location;
+			var nodeBounds = e.Node.Bounds;
+			var pos = e.Location;
 			var node = (PartTreeNode) e.Node;
 
 			if (pos.X > nodeBounds.X - 18 && pos.X < nodeBounds.X - 4)
@@ -2407,8 +2457,11 @@ namespace MCSkin3D
 				else
 					node.PartEnabled = !node.PartEnabled;
 
+				for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
+					CheckQuickPartState((ModelPart)i);
+
 				CalculateMatrices();
-				rendererControl.Invalidate();
+				_rendererControl.Invalidate();
 			}
 		}
 
@@ -2556,21 +2609,21 @@ namespace MCSkin3D
 			InitMenuShortcut(helmetOnlyToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Helmet));
 			InitMenuShortcut(allToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.All));
 			InitMenuShortcut(headToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.Head, headToolStripMenuItem, toggleHeadToolStripButton));
+			                 () => ToggleVisiblePart(ModelPart.Head));
 			InitMenuShortcut(helmetToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.Helmet, helmetToolStripMenuItem, toggleHelmetToolStripButton));
+			                 () => ToggleVisiblePart(ModelPart.Helmet));
 			InitMenuShortcut(chestToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.Chest, chestToolStripMenuItem, toggleChestToolStripButton));
+			                 () => ToggleVisiblePart(ModelPart.Chest));
 			InitMenuShortcut(leftArmToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.LeftArm, leftArmToolStripMenuItem, toggleLeftArmToolStripButton));
+			                 () => ToggleVisiblePart(ModelPart.LeftArm));
 			InitMenuShortcut(rightArmToolStripMenuItem,
 			                 () =>
-			                 ToggleVisiblePart(ModelPart.RightArm, rightArmToolStripMenuItem, toggleRightArmToolStripButton));
+			                 ToggleVisiblePart(ModelPart.RightArm));
 			InitMenuShortcut(leftLegToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.LeftLeg, leftLegToolStripMenuItem, toggleLeftLegToolStripButton));
+			                 () => ToggleVisiblePart(ModelPart.LeftLeg));
 			InitMenuShortcut(rightLegToolStripMenuItem,
 			                 () =>
-			                 ToggleVisiblePart(ModelPart.RightLeg, rightLegToolStripMenuItem, toggleRightLegToolStripButton));
+			                 ToggleVisiblePart(ModelPart.RightLeg));
 			InitMenuShortcut(saveToolStripMenuItem, PerformSave);
 			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
@@ -2765,7 +2818,7 @@ namespace MCSkin3D
 			SetTransparencyMode(GlobalSettings.Transparency);
 			SetViewMode(_currentViewMode);
 
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 
 			var skins = new List<Skin>();
 			treeView1.BeginUpdate();
@@ -2866,7 +2919,7 @@ namespace MCSkin3D
 				}
 			}
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleAnimation()
@@ -2876,7 +2929,7 @@ namespace MCSkin3D
 			animateToolStripMenuItem.Checked = !animateToolStripMenuItem.Checked;
 			GlobalSettings.Animate = animateToolStripMenuItem.Checked;
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleFollowCursor()
@@ -2886,7 +2939,7 @@ namespace MCSkin3D
 			followCursorToolStripMenuItem.Checked = !followCursorToolStripMenuItem.Checked;
 			GlobalSettings.FollowCursor = followCursorToolStripMenuItem.Checked;
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleGrass()
@@ -2894,7 +2947,7 @@ namespace MCSkin3D
 			grassToolStripMenuItem.Checked = !grassToolStripMenuItem.Checked;
 			GlobalSettings.Grass = grassToolStripMenuItem.Checked;
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleGhosting()
@@ -2902,7 +2955,7 @@ namespace MCSkin3D
 			ghostHiddenPartsToolStripMenuItem.Checked = !ghostHiddenPartsToolStripMenuItem.Checked;
 			GlobalSettings.Ghost = ghostHiddenPartsToolStripMenuItem.Checked;
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void Perform10Mode()
@@ -2912,7 +2965,7 @@ namespace MCSkin3D
 			modeToolStripMenuItem1.Checked = !modeToolStripMenuItem1.Checked;
 			GlobalSettings.OnePointEightMode = modeToolStripMenuItem1.Checked;
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void DoneEditingNode(string newName, TreeNode _currentlyEditing)
@@ -2941,7 +2994,7 @@ namespace MCSkin3D
 
 		private void BeginUndo()
 		{
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 		}
 
 		private void DoUndo()
@@ -2959,7 +3012,7 @@ namespace MCSkin3D
 
 			SetCanSave(_lastSkin.Dirty = true);
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void PerformUndo()
@@ -2998,7 +3051,7 @@ namespace MCSkin3D
 			if (!_currentUndoBuffer.CanRedo)
 				return;
 
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 		}
 
 		private void DoRedo()
@@ -3010,7 +3063,7 @@ namespace MCSkin3D
 		{
 			SetCanSave(_lastSkin.Dirty = true);
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void PerformRedo()
@@ -3066,7 +3119,7 @@ namespace MCSkin3D
 			}
 
 			CalculateMatrices();
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void SetTransparencyMode(TransparencyMode trans)
@@ -3087,29 +3140,43 @@ namespace MCSkin3D
 					break;
 			}
 
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
-		private void ToggleVisiblePart(ModelPart flag, ToolStripMenuItem item, ToolStripButton itemButton)
+		private void ToggleVisiblePart(ModelPart part)
 		{
-			//item.Checked = hasNow;
-			//itemButton.Checked = hasNow;
+			var meshes = new List<Mesh>();
+			var item = _partItems[(int)part];
+			var button = _partButtons[(int)part];
 
-			rendererControl.Invalidate();
+			foreach (var m in CurrentModel.Meshes)
+				if (m.Part == part)
+					meshes.Add(m);
+
+			if (meshes.Count != 0)
+			{
+				item.Checked = button.Checked = !item.Checked;
+
+				foreach (var m in meshes)
+					CurrentModel.PartsEnabled[CurrentModel.Meshes.IndexOf(m)] = item.Checked;
+			}
+
+			CalculateMatrices();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleAlphaCheckerboard()
 		{
 			GlobalSettings.AlphaCheckerboard = !GlobalSettings.AlphaCheckerboard;
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleOverlay()
 		{
 			GlobalSettings.TextureOverlay = !GlobalSettings.TextureOverlay;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
-			rendererControl.Invalidate();
+			_rendererControl.Invalidate();
 		}
 
 		private void ToggleTransparencyMode()
@@ -3148,15 +3215,15 @@ namespace MCSkin3D
 
 		private Bitmap CopyScreenToBitmap()
 		{
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 			_screenshotMode = true;
 			rendererControl_Paint(null, null);
 			_screenshotMode = false;
 
-			var b = new Bitmap(rendererControl.Width, rendererControl.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			var b = new Bitmap(_rendererControl.Width, _rendererControl.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-			var pixels = new int[rendererControl.Width * rendererControl.Height];
-			GL.ReadPixels(0, 0, rendererControl.Width, rendererControl.Height, PixelFormat.Rgba,
+			var pixels = new int[_rendererControl.Width * _rendererControl.Height];
+			GL.ReadPixels(0, 0, _rendererControl.Width, _rendererControl.Height, PixelFormat.Rgba,
 			              PixelType.UnsignedByte, pixels);
 
 			BitmapData locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadWrite,
@@ -3276,7 +3343,7 @@ namespace MCSkin3D
 
 		private void PerformSaveSkin(Skin s)
 		{
-			rendererControl.MakeCurrent();
+			_rendererControl.MakeCurrent();
 
 			s.CommitChanges((s == _lastSkin) ? GlobalDirtiness.CurrentSkin : s.GLImage, true);
 		}
@@ -3923,6 +3990,9 @@ namespace MCSkin3D
 
 		#region Constructor
 
+		ToolStripMenuItem[] _partItems;
+		ToolStripButton[] _partButtons;
+
 		public Editor()
 		{
 			Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -4048,6 +4118,46 @@ namespace MCSkin3D
 
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 
+			SetSampleMenuItem(GlobalSettings.Multisamples);
+
+			// set up the GL control
+			var mode = new GraphicsMode();
+			_rendererControl =
+				new GLControl(new GraphicsMode(mode.ColorFormat, mode.Depth, mode.Stencil, GlobalSettings.Multisamples));
+			_rendererControl.BackColor = Color.Black;
+			_rendererControl.Dock = DockStyle.Fill;
+			_rendererControl.Location = new Point(0, 25);
+			_rendererControl.Name = "rendererControl";
+			_rendererControl.Size = new Size(641, 580);
+			_rendererControl.TabIndex = 4;
+			_rendererControl.Load += rendererControl_Load;
+			_rendererControl.Paint += rendererControl_Paint;
+			_rendererControl.MouseDown += rendererControl_MouseDown;
+			_rendererControl.MouseMove += rendererControl_MouseMove;
+			_rendererControl.MouseUp += rendererControl_MouseUp;
+			_rendererControl.MouseLeave += rendererControl_MouseLeave;
+			_rendererControl.Resize += rendererControl_Resize;
+			_rendererControl.MouseWheel += rendererControl_MouseWheel;
+			_rendererControl.MouseEnter += rendererControl_MouseEnter;
+
+			splitContainer4.Panel2.Controls.Add(_rendererControl);
+			_rendererControl.BringToFront();
+
+			var animTimer = new Timer();
+			animTimer.Interval = 22;
+			animTimer.Elapsed += animTimer_Elapsed;
+			animTimer.Start();
+
+			_animTimer.Elapsed += _animTimer_Elapsed;
+			_animTimer.SynchronizingObject = this;
+
+			if (!settingsLoaded)
+				MessageBox.Show(this, GetLanguageString("C_SETTINGSFAILED"));
+
+			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
+			treeView1.Scrollable = true;
+			splitContainer4.SplitterDistance = 74;
+
 			ModelLoader.LoadModels();
 
 			foreach (var x in ModelLoader.Models)
@@ -4074,47 +4184,11 @@ namespace MCSkin3D
 				}
 
 				collection.Add(new ModelToolStripMenuItem(x.Value));
+
+				// Create mesh data
+				//foreach (var m in x.Value.Meshes)
+				//	m.UserData = MeshRenderer.CreateUserData(m);
 			}
-
-			SetSampleMenuItem(GlobalSettings.Multisamples);
-
-			// set up the GL control
-			var mode = new GraphicsMode();
-			rendererControl =
-				new GLControl(new GraphicsMode(mode.ColorFormat, mode.Depth, mode.Stencil, GlobalSettings.Multisamples));
-			rendererControl.BackColor = Color.Black;
-			rendererControl.Dock = DockStyle.Fill;
-			rendererControl.Location = new Point(0, 25);
-			rendererControl.Name = "rendererControl";
-			rendererControl.Size = new Size(641, 580);
-			rendererControl.TabIndex = 4;
-			rendererControl.Load += rendererControl_Load;
-			rendererControl.Paint += rendererControl_Paint;
-			rendererControl.MouseDown += rendererControl_MouseDown;
-			rendererControl.MouseMove += rendererControl_MouseMove;
-			rendererControl.MouseUp += rendererControl_MouseUp;
-			rendererControl.MouseLeave += rendererControl_MouseLeave;
-			rendererControl.Resize += rendererControl_Resize;
-			rendererControl.MouseWheel += rendererControl_MouseWheel;
-			rendererControl.MouseEnter += rendererControl_MouseEnter;
-
-			splitContainer4.Panel2.Controls.Add(rendererControl);
-			rendererControl.BringToFront();
-
-			var animTimer = new Timer();
-			animTimer.Interval = 22;
-			animTimer.Elapsed += animTimer_Elapsed;
-			animTimer.Start();
-
-			_animTimer.Elapsed += _animTimer_Elapsed;
-			_animTimer.SynchronizingObject = this;
-
-			if (!settingsLoaded)
-				MessageBox.Show(this, GetLanguageString("C_SETTINGSFAILED"));
-
-			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
-			treeView1.Scrollable = true;
-			splitContainer4.SplitterDistance = 74;
 
 			if (GlobalSettings.OnePointEightMode)
 				ModelLoader.InvertBottomFaces();
@@ -4164,11 +4238,13 @@ namespace MCSkin3D
 			CurrentLanguage = useLanguage;
 
 			CreatePartList();
+			_partItems = new[] { null, headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem };
+			_partButtons = new[] { null, toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
 		}
 
 		private void rendererControl_MouseEnter(object sender, EventArgs e)
 		{
-			rendererControl.Focus();
+			_rendererControl.Focus();
 		}
 
 		private void _shortcutEditor_ShortcutExists(object sender, ShortcutExistsEventArgs e)

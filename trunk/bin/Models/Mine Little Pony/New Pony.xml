@@ -39,7 +39,7 @@
 						<Size>2,2,2</Size>
 						<TextureOffset>12,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Ear">
 						<Animation>
@@ -56,7 +56,7 @@
 						<Size>2,2,2</Size>
 						<TextureOffset>12,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Horn">
 						<Animation>
@@ -73,7 +73,7 @@
 						<Size>1,4,1</Size>
 						<TextureOffset>0,3</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
@@ -255,7 +255,7 @@
 						<Size>8,8,8</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0.5</Scale>
-						<Part>Head</Part>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body.Body">
 						<Animation>
@@ -272,7 +272,7 @@
 						<Size>8,8,4</Size>
 						<TextureOffset>16,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
@@ -282,7 +282,7 @@
 						<Size>0,8,8</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -293,7 +293,7 @@
 						<Size>0,8,8</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -304,7 +304,7 @@
 						<Size>8,0,12</Size>
 						<TextureOffset>32,20</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -315,7 +315,7 @@
 						<Size>8,0,8</Size>
 						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Cutie Mark">
@@ -326,7 +326,7 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>4,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -337,7 +337,7 @@
 						<Size>0,8,4</Size>
 						<TextureOffset>4,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -348,7 +348,7 @@
 						<Size>8,4,0</Size>
 						<TextureOffset>36,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -359,7 +359,7 @@
 						<Size>8,0,4</Size>
 						<TextureOffset>36,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -370,7 +370,7 @@
 						<Size>8,4,0</Size>
 						<TextureOffset>36,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -381,7 +381,7 @@
 						<Size>2,0,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -392,7 +392,7 @@
 						<Size>2,0,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -403,7 +403,7 @@
 						<Size>0,2,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -414,7 +414,7 @@
 						<Size>0,2,6</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
@@ -425,7 +425,7 @@
 						<Size>2,2,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>Chest</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Neck.Neck">
@@ -487,7 +487,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>40,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>RightArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
@@ -504,7 +504,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>40,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>LeftArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
@@ -521,7 +521,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>RightLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
@@ -538,7 +538,7 @@
 						<Size>4,12,4</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
 						<IsMirrored>False</IsMirrored>
@@ -548,7 +548,7 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
@@ -559,7 +559,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
@@ -570,7 +570,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
@@ -581,7 +581,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
@@ -592,7 +592,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
@@ -603,7 +603,7 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
@@ -614,7 +614,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
@@ -625,7 +625,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
@@ -636,7 +636,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
@@ -647,7 +647,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
@@ -658,7 +658,7 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
@@ -669,7 +669,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
@@ -680,7 +680,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
@@ -691,7 +691,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
@@ -702,7 +702,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
@@ -713,7 +713,7 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
@@ -724,7 +724,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
@@ -735,7 +735,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
@@ -746,7 +746,7 @@
 						<Size>0,4,4</Size>
 						<TextureOffset>36,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
@@ -757,7 +757,7 @@
 						<Size>4,4,0</Size>
 						<TextureOffset>32,4</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
@@ -768,7 +768,7 @@
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
@@ -786,7 +786,7 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
 						<Animation>
@@ -803,7 +803,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
 						<Animation>
@@ -820,7 +820,7 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
 						<Animation>
@@ -837,7 +837,7 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
 						<Animation>
@@ -854,7 +854,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
 						<Animation>
@@ -871,7 +871,7 @@
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -888,7 +888,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -905,7 +905,7 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -922,7 +922,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.2</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -939,7 +939,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.1</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -956,7 +956,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -973,7 +973,7 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.3</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
@@ -990,7 +990,7 @@
 						<Size>1,3,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.2</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1007,7 +1007,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1024,7 +1024,7 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1041,7 +1041,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.2</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1058,7 +1058,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.1</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1075,7 +1075,7 @@
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1092,7 +1092,7 @@
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.3</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
@@ -1109,7 +1109,7 @@
 						<Size>1,3,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.2</Scale>
-						<Part>Head</Part>
+						<Part>None</Part>
 					</Shape>
 				</Folder>
 			</Geometry>
