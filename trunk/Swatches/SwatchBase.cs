@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace MCSkin3D.Swatches
 {
 	public abstract class SwatchBase : ISwatch
 	{
+		#region ISwatch Members
+
 		public abstract string Name { get; set; }
 		public abstract string FilePath { get; set; }
 
@@ -17,7 +16,30 @@ namespace MCSkin3D.Swatches
 
 		// Operations not supported by this interface.
 		// These are because dupe colors are allowed.
-#region Not supported
+
+		// Operations implementors must implement.
+		public abstract void Insert(int index, NamedColor color);
+		public abstract void RemoveAt(int index);
+
+		public abstract NamedColor this[int index] { get; set; }
+
+		public abstract void Add(NamedColor color);
+		public abstract void Clear();
+		public abstract void CopyTo(NamedColor[] array, int start);
+
+		public abstract int Count { get; }
+
+		public abstract IEnumerator<NamedColor> GetEnumerator();
+
+		public string Format
+		{
+			get { return SwatchContainer.GetSwatchFormatName(GetType()); }
+		}
+
+		#endregion
+
+		#region Not supported
+
 		int IList<NamedColor>.IndexOf(NamedColor color)
 		{
 			throw new InvalidOperationException();
@@ -42,37 +64,12 @@ namespace MCSkin3D.Swatches
 		{
 			return GetEnumerator();
 		}
-#endregion
 
-		// Operations implementors must implement.
-		public abstract void Insert(int index, NamedColor color);
-		public abstract void RemoveAt(int index);
-
-		public abstract NamedColor this[int index]
-		{
-			get;
-			set;
-		}
-
-		public abstract void Add(NamedColor color);
-		public abstract void Clear();
-		public abstract void CopyTo(NamedColor[] array, int start);
-
-		public abstract int Count
-		{
-			get;
-		}
-
-		public abstract IEnumerator<NamedColor> GetEnumerator();
+		#endregion
 
 		public override string ToString()
 		{
 			return Name + " [" + SwatchContainer.GetSwatchFormatName(GetType()) + "]";
-		}
-
-		public string Format
-		{
-			get { return SwatchContainer.GetSwatchFormatName(GetType()); }
 		}
 	}
 }

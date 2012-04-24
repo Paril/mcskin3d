@@ -1,49 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using MCSkin3D.lemon42;
-using System.Globalization;
+using Paril.Controls.Color;
 
 namespace MCSkin3D.Controls
 {
 	public partial class ColorPanel : UserControl
 	{
-		ColorManager
-					_primaryColor = ColorManager.FromRGBA(255, 255, 255, 255),
-					_secondaryColor = ColorManager.FromRGBA(0, 0, 0, 255);
+		#region Events
 
-		bool _skipColors = false;
-		bool _secondaryIsFront = false;
+		private readonly AlphaSliderRenderer _alphaRenderer;
+		private readonly ColorSliderRenderer _blueRenderer;
+		private readonly ColorSliderRenderer _greenRenderer;
+		private readonly HueSliderRenderer _hueRenderer;
+		private readonly ColorSliderRenderer _redRenderer;
+		private readonly SaturationSliderRenderer _saturationRenderer;
+		private readonly ValueSliderRenderer _valueRenderer;
+		private bool _editingHex;
 
-		ColorSliderRenderer redRenderer, greenRenderer, blueRenderer;
-		AlphaSliderRenderer alphaRenderer;
-		HueSliderRenderer hueRenderer;
-		SaturationSliderRenderer saturationRenderer;
-		ValueSliderRenderer valueRenderer;
+		private ColorManager
+			_primaryColor = ColorManager.FromRGBA(255, 255, 255, 255),
+			_secondaryColor = ColorManager.FromRGBA(0, 0, 0, 255);
+
+		private bool _secondaryIsFront;
+		private bool _skipColors;
 
 		public ColorPanel()
 		{
 			InitializeComponent();
 
-			redColorSlider.Renderer = redRenderer = new ColorSliderRenderer(redColorSlider);
-			greenColorSlider.Renderer = greenRenderer = new ColorSliderRenderer(greenColorSlider);
-			blueColorSlider.Renderer = blueRenderer = new ColorSliderRenderer(blueColorSlider);
-			alphaColorSlider.Renderer = alphaRenderer = new AlphaSliderRenderer(alphaColorSlider);
+			redColorSlider.Renderer = _redRenderer = new ColorSliderRenderer(redColorSlider);
+			greenColorSlider.Renderer = _greenRenderer = new ColorSliderRenderer(greenColorSlider);
+			blueColorSlider.Renderer = _blueRenderer = new ColorSliderRenderer(blueColorSlider);
+			alphaColorSlider.Renderer = _alphaRenderer = new AlphaSliderRenderer(alphaColorSlider);
 
-			hueColorSlider.Renderer = hueRenderer = new HueSliderRenderer(hueColorSlider);
-			saturationColorSlider.Renderer = saturationRenderer = new SaturationSliderRenderer(saturationColorSlider);
-			valueColorSlider.Renderer = valueRenderer = new ValueSliderRenderer(valueColorSlider);
+			hueColorSlider.Renderer = _hueRenderer = new HueSliderRenderer(hueColorSlider);
+			saturationColorSlider.Renderer = _saturationRenderer = new SaturationSliderRenderer(saturationColorSlider);
+			valueColorSlider.Renderer = _valueRenderer = new ValueSliderRenderer(valueColorSlider);
 
 			SetColor(ColorManager.FromRGBA(255, 255, 255, 255));
 		}
 
 		#region Properties
-		Paril.Controls.Color.ColorPreview SelectedColorPreview
+
+		private ColorPreview SelectedColorPreview
 		{
 			get { return (_secondaryIsFront) ? colorPreview2 : colorPreview1; }
 		}
@@ -87,10 +90,15 @@ namespace MCSkin3D.Controls
 			}
 		}
 
-		public SwatchContainer SwatchContainer { get { return swatchContainer; } }
+		public SwatchContainer SwatchContainer
+		{
+			get { return swatchContainer; }
+		}
+
 		#endregion
 
 		#region Public Methods
+
 		public void SwitchColors()
 		{
 			if (_secondaryIsFront)
@@ -103,10 +111,10 @@ namespace MCSkin3D.Controls
 		{
 			loadingSwatchLabel.Visible = isLoading;
 		}
+
 		#endregion
 
-		#region Events
-		void SetColor(Control colorPreview, ref ColorManager currentColor, ColorManager newColor)
+		private void SetColor(Control colorPreview, ref ColorManager currentColor, ColorManager newColor)
 		{
 			currentColor = newColor;
 			colorPreview.ForeColor = currentColor.RGB;
@@ -126,19 +134,19 @@ namespace MCSkin3D.Controls
 			saturationNumericUpDown.Value = currentColor.HSV.S;
 			valueNumericUpDown.Value = currentColor.HSV.V;
 
-			redRenderer.StartColor = Color.FromArgb(255, 0, currentColor.RGB.G, currentColor.RGB.B);
-			greenRenderer.StartColor = Color.FromArgb(255, currentColor.RGB.R, 0, currentColor.RGB.B);
-			blueRenderer.StartColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 0);
+			_redRenderer.StartColor = Color.FromArgb(255, 0, currentColor.RGB.G, currentColor.RGB.B);
+			_greenRenderer.StartColor = Color.FromArgb(255, currentColor.RGB.R, 0, currentColor.RGB.B);
+			_blueRenderer.StartColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 0);
 
-			redRenderer.EndColor = Color.FromArgb(255, 255, currentColor.RGB.G, currentColor.RGB.B);
-			greenRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, 255, currentColor.RGB.B);
-			blueRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 255);
+			_redRenderer.EndColor = Color.FromArgb(255, 255, currentColor.RGB.G, currentColor.RGB.B);
+			_greenRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, 255, currentColor.RGB.B);
+			_blueRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.R, currentColor.RGB.G, 255);
 
-			alphaRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.ToColor());
+			_alphaRenderer.EndColor = Color.FromArgb(255, currentColor.RGB.ToColor());
 
-			hueRenderer.CurrentColor = currentColor;
-			saturationRenderer.CurrentColor = currentColor;
-			valueRenderer.CurrentColor = currentColor;
+			_hueRenderer.CurrentColor = currentColor;
+			_saturationRenderer.CurrentColor = currentColor;
+			_valueRenderer.CurrentColor = currentColor;
 
 			redColorSlider.Value = currentColor.RGB.R;
 			greenColorSlider.Value = currentColor.RGB.G;
@@ -150,12 +158,15 @@ namespace MCSkin3D.Controls
 			valueColorSlider.Value = currentColor.HSV.V;
 
 			if (!_editingHex)
-				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", newColor.RGB.R, newColor.RGB.G, newColor.RGB.B, newColor.RGB.A);
+			{
+				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", newColor.RGB.R, newColor.RGB.G, newColor.RGB.B,
+				                              newColor.RGB.A);
+			}
 
 			_skipColors = false;
 		}
 
-		void SetColor(ColorManager c)
+		private void SetColor(ColorManager c)
 		{
 			if (_secondaryIsFront)
 			{
@@ -179,11 +190,11 @@ namespace MCSkin3D.Controls
 			}
 		}
 
-		void colorTabControl_SelectedIndexChanged(object sender, EventArgs e)
+		private void colorTabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (colorTabControl.SelectedIndex == 0 || colorTabControl.SelectedIndex == 1)
 			{
-				var panel = (Panel)colorTabControl.SelectedTab.Controls[0];
+				var panel = (Panel) colorTabControl.SelectedTab.Controls[0];
 
 				panel.Controls.Add(colorPick1);
 				panel.Controls.Add(colorPreview1);
@@ -221,63 +232,70 @@ namespace MCSkin3D.Controls
 			SetColor(_secondaryColor);
 		}
 
-		void hueNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void hueNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA((short)hueNumericUpDown.Value, SelectedColor.HSV.S, SelectedColor.HSV.V, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA((short) hueNumericUpDown.Value, SelectedColor.HSV.S, SelectedColor.HSV.V,
+			                               SelectedColor.HSV.A));
 		}
 
-		void saturationNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void saturationNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte)saturationNumericUpDown.Value, SelectedColor.HSV.V, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte) saturationNumericUpDown.Value, SelectedColor.HSV.V,
+			                               SelectedColor.HSV.A));
 		}
 
-		void valueNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void valueNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte)valueNumericUpDown.Value, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte) valueNumericUpDown.Value,
+			                               SelectedColor.HSV.A));
 		}
 
-		void redNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void redNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA((byte)redNumericUpDown.Value, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA((byte) redNumericUpDown.Value, SelectedColor.RGB.G, SelectedColor.RGB.B,
+			                               SelectedColor.RGB.A));
 		}
 
-		void greenNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void greenNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte)greenNumericUpDown.Value, SelectedColor.RGB.B, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte) greenNumericUpDown.Value, SelectedColor.RGB.B,
+			                               SelectedColor.RGB.A));
 		}
 
-		void blueNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void blueNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte)blueNumericUpDown.Value, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte) blueNumericUpDown.Value,
+			                               SelectedColor.RGB.A));
 		}
 
-		void alphaNumericUpDown_ValueChanged(object sender, EventArgs e)
+		private void alphaNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, SelectedColor.RGB.B, (byte)alphaNumericUpDown.Value));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, SelectedColor.RGB.B,
+			                               (byte) alphaNumericUpDown.Value));
 		}
 
-		void hueColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void hueColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
@@ -285,55 +303,55 @@ namespace MCSkin3D.Controls
 			SetColor(ColorManager.FromHSVA(e.NewValue, SelectedColor.HSV.S, SelectedColor.HSV.V, SelectedColor.HSV.A));
 		}
 
-		void saturationColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void saturationColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte)e.NewValue, SelectedColor.HSV.V, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte) e.NewValue, SelectedColor.HSV.V, SelectedColor.HSV.A));
 		}
 
-		void valueColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void valueColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte)e.NewValue, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte) e.NewValue, SelectedColor.HSV.A));
 		}
 
-		void redColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void redColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA((byte)e.NewValue, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA((byte) e.NewValue, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
 		}
 
-		void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte)e.NewValue, SelectedColor.RGB.B, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte) e.NewValue, SelectedColor.RGB.B, SelectedColor.RGB.A));
 		}
 
-		void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte)e.NewValue, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte) e.NewValue, SelectedColor.RGB.A));
 		}
 
-		void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
+		private void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, SelectedColor.HSV.V, (byte)e.NewValue));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, SelectedColor.HSV.V, (byte) e.NewValue));
 		}
 
-		void swatchContainer_SwatchChanged(object sender, SwatchChangedEventArgs e)
+		private void swatchContainer_SwatchChanged(object sender, SwatchChangedEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 				SelectedColor = ColorManager.FromRGBA(e.Swatch.R, e.Swatch.G, e.Swatch.B, e.Swatch.A);
@@ -341,7 +359,6 @@ namespace MCSkin3D.Controls
 				UnselectedColor = ColorManager.FromRGBA(e.Swatch.R, e.Swatch.G, e.Swatch.B, e.Swatch.A);
 		}
 
-		bool _editingHex = false;
 		private void textBox1_TextChanged(object sender, EventArgs e)
 		{
 			if (_skipColors)
@@ -379,8 +396,10 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(colorPick1.CurrentHSV.H, colorPick1.CurrentHSV.S, colorPick1.CurrentHSV.V, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(colorPick1.CurrentHSV.H, colorPick1.CurrentHSV.S, colorPick1.CurrentHSV.V,
+			                               SelectedColor.HSV.A));
 		}
 	}
-		#endregion
+
+	#endregion
 }

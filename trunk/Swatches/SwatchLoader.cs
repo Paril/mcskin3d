@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace MCSkin3D.Swatches
 {
 	public class SwatchLoader
 	{
-		static void AddDirectory(string dir, List<ISwatch> swatches)
+		private static Thread _thread;
+
+		private static void AddDirectory(string dir, List<ISwatch> swatches)
 		{
-			foreach (var swatchFile in Directory.GetFiles(dir, "*"))
+			foreach (string swatchFile in Directory.GetFiles(dir, "*"))
 			{
-				var ext = Path.GetExtension(swatchFile);
+				string ext = Path.GetExtension(swatchFile);
 
 				ISwatch swatch = null;
 
@@ -34,22 +33,21 @@ namespace MCSkin3D.Swatches
 			}
 		}
 
-		static void SwatchLoadThreadFunc()
+		private static void SwatchLoadThreadFunc()
 		{
-			List<ISwatch> swatches = new List<ISwatch>();
+			var swatches = new List<ISwatch>();
 			AddDirectory("Swatches", swatches);
 
 			Editor.MainForm.Invoke(() =>
-				{
-					Editor.MainForm.ColorPanel.SwatchContainer.AddSwatches(swatches);
-					Editor.MainForm.ColorPanel.SwatchContainer.Enabled = true;
-					Editor.MainForm.ColorPanel.SetLoading(false);
-				});
+			                       {
+			                       	Editor.MainForm.ColorPanel.SwatchContainer.AddSwatches(swatches);
+			                       	Editor.MainForm.ColorPanel.SwatchContainer.Enabled = true;
+			                       	Editor.MainForm.ColorPanel.SetLoading(false);
+			                       });
 
 			_thread = null;
 		}
 
-		static Thread _thread;
 		public static void LoadSwatches()
 		{
 			Editor.MainForm.ColorPanel.SwatchContainer.Enabled = false;

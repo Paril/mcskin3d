@@ -16,11 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using MB.Controls;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using MB.Controls;
 using MCSkin3D.lemon42;
 
 namespace MCSkin3D
@@ -34,30 +32,31 @@ namespace MCSkin3D
 
 		public ColorManager CurrentColor { get; set; }
 
-        public override void Render(Graphics g)
-        {
-            //theCode, love theVariableNames :D [Xylem]
-            //Set the hue shades with the correct saturation and hue
-            Color[] theColors = {Color.Black,
-                           new ColorManager.HSVColor(CurrentColor.HSV.H, CurrentColor.HSV.S, 100).ToColor()
-								};
-            //Calculate positions
-            float[] thePositions = { 0.0f, 1.0f };
-            //Set blend
-            ColorBlend theBlend = new ColorBlend();
-            theBlend.Colors = theColors;
-            theBlend.Positions = thePositions;
-            //Get rectangle
-            Rectangle colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
-            //Make the linear brush and assign the custom blend to it
-            LinearGradientBrush theBrush = new LinearGradientBrush(colorRect,
-                                                              Color.Black,
-                                                              Color.White, 0, false);
-            theBrush.InterpolationColors = theBlend;
-            //Draw rectangle
-            g.FillRectangle(theBrush, colorRect);
-            //Draw border and trackbar
-            g.DrawRectangle(Pens.Black, new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4));
+		public override void Render(Graphics g)
+		{
+			//theCode, love theVariableNames :D [Xylem]
+			//Set the hue shades with the correct saturation and hue
+			Color[] theColors = {
+			                    	Color.Black,
+			                    	new ColorManager.HSVColor(CurrentColor.HSV.H, CurrentColor.HSV.S, 100).ToColor()
+			                    };
+			//Calculate positions
+			float[] thePositions = {0.0f, 1.0f};
+			//Set blend
+			var theBlend = new ColorBlend();
+			theBlend.Colors = theColors;
+			theBlend.Positions = thePositions;
+			//Get rectangle
+			var colorRect = new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4);
+			//Make the linear brush and assign the custom blend to it
+			var theBrush = new LinearGradientBrush(colorRect,
+			                                       Color.Black,
+			                                       Color.White, 0, false);
+			theBrush.InterpolationColors = theBlend;
+			//Draw rectangle
+			g.FillRectangle(theBrush, colorRect);
+			//Draw border and trackbar
+			g.DrawRectangle(Pens.Black, new Rectangle(0, (Slider.Height / 2) - 3, Slider.Width - 6, 4));
 			DrawThumb(g);
 		}
 	}

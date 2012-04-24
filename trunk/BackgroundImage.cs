@@ -16,16 +16,16 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
+using System.Windows.Forms;
 using Paril.OpenGL;
 
 namespace MCSkin3D
 {
-	class BackgroundImage
+	internal class BackgroundImage
 	{
 		public Texture GLImage;
+		public ToolStripMenuItem Item;
 		public string Name, Path;
-		public System.Windows.Forms.ToolStripMenuItem Item;
 
 		public BackgroundImage(string path, string name, Texture image)
 		{

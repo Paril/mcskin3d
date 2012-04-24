@@ -17,18 +17,16 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using Devcorp.Controls.Design;
 
 namespace Paril.Controls.Color
 {
-	public partial class SaturationSlider : Control
+	public class SaturationSlider : Control
 	{
 		#region Component Designer generated code
+
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -41,9 +39,7 @@ namespace Paril.Controls.Color
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
-			{
 				components.Dispose();
-			}
 			base.Dispose(disposing);
 		}
 
@@ -58,30 +54,40 @@ namespace Paril.Controls.Color
 
 		#endregion
 
+		private HSL _color;
+
+		private int _curLum;
+		private bool _down;
+
 		public SaturationSlider()
 		{
 			InitializeComponent();
 
-			SetStyle(ControlStyles.OptimizedDoubleBuffer | 
-				ControlStyles.UserMouse | 
-				ControlStyles.UserPaint | 
-				ControlStyles.AllPaintingInWmPaint, true);
+			SetStyle(ControlStyles.OptimizedDoubleBuffer |
+			         ControlStyles.UserMouse |
+			         ControlStyles.UserPaint |
+			         ControlStyles.AllPaintingInWmPaint, true);
 		}
 
-		Devcorp.Controls.Design.HSL _color;
-
-		public Devcorp.Controls.Design.HSL Color
+		public HSL Color
 		{
 			get { return _color; }
-			set { _color = value; Invalidate(); }
+			set
+			{
+				_color = value;
+				Invalidate();
+			}
 		}
-
-		int _curLum = 0;
 
 		public int CurrentLum
 		{
 			get { return _curLum; }
-			set { _curLum = value; OnLumChanged(EventArgs.Empty); Invalidate(); }
+			set
+			{
+				_curLum = value;
+				OnLumChanged(EventArgs.Empty);
+				Invalidate();
+			}
 		}
 
 		protected virtual void OnLumChanged(EventArgs e)
@@ -92,9 +98,9 @@ namespace Paril.Controls.Color
 
 		public event EventHandler LumChanged;
 
-		void CheckClick(MouseEventArgs e)
+		private void CheckClick(MouseEventArgs e)
 		{
-			Rectangle borderThing = new Rectangle(0, 8, Width - 8, Height - 16);
+			var borderThing = new Rectangle(0, 8, Width - 8, Height - 16);
 
 			if (e.Y <= borderThing.Y)
 				CurrentLum = 240;
@@ -102,15 +108,14 @@ namespace Paril.Controls.Color
 				CurrentLum = 0;
 			else
 			{
-				float div = (float)(e.Y - 8) / (float)borderThing.Height;
+				float div = (e.Y - 8) / (float) borderThing.Height;
 
-				CurrentLum = 240 - (int)(div * 240);
+				CurrentLum = 240 - (int) (div * 240);
 			}
 
 			Invalidate();
 		}
 
-		bool _down = false;
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			_down = true;
@@ -136,26 +141,26 @@ namespace Paril.Controls.Color
 		{
 			base.OnPaint(e);
 
-			Rectangle borderThing = new Rectangle(0, 8, Width - 8, Height - 16);
+			var borderThing = new Rectangle(0, 8, Width - 8, Height - 16);
 
-			var half = Color;
+			HSL half = Color;
 			half.Luminance = 0.5f;
-			ColorSpaceRenderer.GenerateColorSlider(e.Graphics, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoRGB(half).ToColor(), borderThing);
+			ColorSpaceRenderer.GenerateColorSlider(e.Graphics, ColorSpaceHelper.HSLtoRGB(half).ToColor(), borderThing);
 
 			ControlPaint.DrawBorder3D(e.Graphics, borderThing, Border3DStyle.SunkenOuter);
 
-			float inc = (float)(Height - 18) / 240.0f;
+			float inc = (Height - 18) / 240.0f;
 
-			float invLum = (float)(240 - _curLum);
+			float invLum = (240 - _curLum);
 
 			e.Graphics.FillPolygon(Brushes.Black,
-				new Point[]
-				{
-					new Point(Width - 7, 6 + (int)(invLum * inc) + 2),
-					new Point(Width - 1, 12 + (int)(invLum * inc) + 2),
-					new Point(Width - 1, 0 + (int)(invLum * inc) + 2),
-				}
-			);
+			                       new[]
+			                       {
+			                       	new Point(Width - 7, 6 + (int) (invLum * inc) + 2),
+			                       	new Point(Width - 1, 12 + (int) (invLum * inc) + 2),
+			                       	new Point(Width - 1, 0 + (int) (invLum * inc) + 2),
+			                       }
+				);
 		}
 	}
 }

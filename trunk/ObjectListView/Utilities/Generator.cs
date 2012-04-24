@@ -38,137 +38,147 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace BrightIdeasSoftware
 {
-    /// <summary>
-    /// The Generator class provides methods to dynamically create columns
-    /// for an ObjectListView based on the characteristics of a given collection
-    /// of model objects.
-    /// </summary>
-    public static class Generator
-    {
-        #region Public interface
+	/// <summary>
+	/// The Generator class provides methods to dynamically create columns
+	/// for an ObjectListView based on the characteristics of a given collection
+	/// of model objects.
+	/// </summary>
+	public static class Generator
+	{
+		#region Public interface
 
-        /// <summary>
-        /// Replace all columns of the given ObjectListView with columns generated
-        /// from the first member of the given enumerable. If the enumerable is 
-        /// empty or null, the ObjectListView will be cleared.
-        /// </summary>
-        /// <param name="olv">The ObjectListView to modify</param>
-        /// <param name="enumerable">The collection whose first element will be used to generate columns.</param>
-        static public void GenerateColumns(ObjectListView olv, IEnumerable enumerable) {
-            // Generate columns based on the type of the first model in the collection and then quit
-            if (enumerable != null) {
-                foreach (object model in enumerable) {
-                    Generator.GenerateColumns(olv, model.GetType());
-                    return;
-                }
-            }
+		/// <summary>
+		/// Replace all columns of the given ObjectListView with columns generated
+		/// from the first member of the given enumerable. If the enumerable is 
+		/// empty or null, the ObjectListView will be cleared.
+		/// </summary>
+		/// <param name="olv">The ObjectListView to modify</param>
+		/// <param name="enumerable">The collection whose first element will be used to generate columns.</param>
+		public static void GenerateColumns(ObjectListView olv, IEnumerable enumerable)
+		{
+			// Generate columns based on the type of the first model in the collection and then quit
+			if (enumerable != null)
+			{
+				foreach (object model in enumerable)
+				{
+					GenerateColumns(olv, model.GetType());
+					return;
+				}
+			}
 
-            // If we reach here, the collection was empty, so we clear the list
-            Generator.ReplaceColumns(olv, new List<OLVColumn>());
-        }
+			// If we reach here, the collection was empty, so we clear the list
+			ReplaceColumns(olv, new List<OLVColumn>());
+		}
 
-        /// <summary>
-        /// Generate columns into the given ObjectListView that come from the given 
-        /// model object type. 
-        /// </summary>
-        /// <param name="olv">The ObjectListView to modify</param>
-        /// <param name="type">The model type whose attributes will be considered.</param>
-        static public void GenerateColumns(ObjectListView olv, Type type) {
-            IList<OLVColumn> columns = Generator.GenerateColumns(type);
-            Generator.ReplaceColumns(olv, columns);
-        }
+		/// <summary>
+		/// Generate columns into the given ObjectListView that come from the given 
+		/// model object type. 
+		/// </summary>
+		/// <param name="olv">The ObjectListView to modify</param>
+		/// <param name="type">The model type whose attributes will be considered.</param>
+		public static void GenerateColumns(ObjectListView olv, Type type)
+		{
+			IList<OLVColumn> columns = GenerateColumns(type);
+			ReplaceColumns(olv, columns);
+		}
 
-        /// <summary>
-        /// Generate a list of OLVColumns based on the attributes of the given type
-        /// that have a OLVColumn attribute.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns>A collection of OLVColumns matching the attributes of Type that have OLVColumnAttributes.</returns>
-        static public IList<OLVColumn> GenerateColumns(Type type) {
-            List<OLVColumn> columns = new List<OLVColumn>();
-            
-            // Iterate all public properties in the class and build columns from those that have
-            // an OLVColumn attribute.
-            foreach (PropertyInfo pinfo in type.GetProperties()) {
-                OLVColumnAttribute attr = Attribute.GetCustomAttribute(pinfo, typeof(OLVColumnAttribute)) as OLVColumnAttribute;
-                if (attr != null)
-                    columns.Add(Generator.MakeColumnFromAttribute(pinfo.Name, attr, pinfo.CanWrite));
-            }
+		/// <summary>
+		/// Generate a list of OLVColumns based on the attributes of the given type
+		/// that have a OLVColumn attribute.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns>A collection of OLVColumns matching the attributes of Type that have OLVColumnAttributes.</returns>
+		public static IList<OLVColumn> GenerateColumns(Type type)
+		{
+			var columns = new List<OLVColumn>();
 
-            // How many columns have DisplayIndex specifically set?
-            int countPositiveDisplayIndex = 0;
-            foreach (OLVColumn col in columns)
-                if (col.DisplayIndex >= 0)
-                    countPositiveDisplayIndex += 1;
+			// Iterate all public properties in the class and build columns from those that have
+			// an OLVColumn attribute.
+			foreach (PropertyInfo pinfo in type.GetProperties())
+			{
+				var attr = Attribute.GetCustomAttribute(pinfo, typeof (OLVColumnAttribute)) as OLVColumnAttribute;
+				if (attr != null)
+					columns.Add(MakeColumnFromAttribute(pinfo.Name, attr, pinfo.CanWrite));
+			}
 
-            // Give columns that don't have a DisplayIndex an incremental index
-            int columnIndex = countPositiveDisplayIndex;
-            foreach (OLVColumn col in columns)
-                if (col.DisplayIndex < 0)
-                    col.DisplayIndex = (columnIndex++);
+			// How many columns have DisplayIndex specifically set?
+			int countPositiveDisplayIndex = 0;
+			foreach (OLVColumn col in columns)
+			{
+				if (col.DisplayIndex >= 0)
+					countPositiveDisplayIndex += 1;
+			}
 
-            columns.Sort(delegate(OLVColumn x, OLVColumn y) {
-                return x.DisplayIndex.CompareTo(y.DisplayIndex);
-            });
+			// Give columns that don't have a DisplayIndex an incremental index
+			int columnIndex = countPositiveDisplayIndex;
+			foreach (OLVColumn col in columns)
+			{
+				if (col.DisplayIndex < 0)
+					col.DisplayIndex = (columnIndex++);
+			}
 
-            return columns;
-        }
+			columns.Sort(delegate(OLVColumn x, OLVColumn y) { return x.DisplayIndex.CompareTo(y.DisplayIndex); });
 
-        #endregion
+			return columns;
+		}
 
-        #region Implementation
+		#endregion
 
-        static private void ReplaceColumns(ObjectListView olv, IList<OLVColumn> columns) {
-            olv.Clear();
-            olv.AllColumns.Clear();
-            olv.PrimarySortColumn = null;
-            olv.SecondarySortColumn = null;
-            if (columns.Count > 0) {
-                olv.AllColumns.AddRange(columns);
-                olv.RebuildColumns();
-            }
-        }
+		#region Implementation
 
-        private static OLVColumn MakeColumnFromAttribute(string aspectName, OLVColumnAttribute attr, bool editable) {
-            string title = String.IsNullOrEmpty(attr.Title) ? aspectName : attr.Title;
-            OLVColumn column = new OLVColumn(title, aspectName);
-            column.AspectToStringFormat = attr.AspectToStringFormat;
-            column.CheckBoxes = attr.CheckBoxes;
-            column.DisplayIndex = attr.DisplayIndex;
-            column.FillsFreeSpace = attr.FillsFreeSpace;
-            if (attr.FreeSpaceProportion.HasValue)
-                column.FreeSpaceProportion = attr.FreeSpaceProportion.Value;
-            column.GroupWithItemCountFormat = attr.GroupWithItemCountFormat;
-            column.GroupWithItemCountSingularFormat = attr.GroupWithItemCountSingularFormat;
-            column.Hyperlink = attr.Hyperlink;
-            column.ImageAspectName = attr.ImageAspectName;
-            if (attr.IsEditableSet)
-                column.IsEditable = attr.IsEditable;
-            else
-                column.IsEditable = editable;
-            column.IsTileViewColumn = attr.IsTileViewColumn;
-            column.IsVisible = attr.IsVisible;
-            column.MaximumWidth = attr.MaximumWidth;
-            column.MinimumWidth = attr.MinimumWidth;
-            column.Name = String.IsNullOrEmpty(attr.Name) ? aspectName : attr.Name;
-            column.Tag = attr.Tag;
-            column.TextAlign = attr.TextAlign;
-            column.ToolTipText = attr.ToolTipText;
-            column.TriStateCheckBoxes = attr.TriStateCheckBoxes;
-            column.UseInitialLetterForGroup = attr.UseInitialLetterForGroup;
-            column.Width = attr.Width;
-            if (attr.GroupCutoffs != null && attr.GroupDescriptions != null)
-                column.MakeGroupies(attr.GroupCutoffs, attr.GroupDescriptions);
-            return column;
-        }
+		private static void ReplaceColumns(ObjectListView olv, IList<OLVColumn> columns)
+		{
+			olv.Clear();
+			olv.AllColumns.Clear();
+			olv.PrimarySortColumn = null;
+			olv.SecondarySortColumn = null;
+			if (columns.Count > 0)
+			{
+				olv.AllColumns.AddRange(columns);
+				olv.RebuildColumns();
+			}
+		}
 
-        #endregion
+		private static OLVColumn MakeColumnFromAttribute(string aspectName, OLVColumnAttribute attr, bool editable)
+		{
+			string title = String.IsNullOrEmpty(attr.Title) ? aspectName : attr.Title;
+			var column = new OLVColumn(title, aspectName);
+			column.AspectToStringFormat = attr.AspectToStringFormat;
+			column.CheckBoxes = attr.CheckBoxes;
+			column.DisplayIndex = attr.DisplayIndex;
+			column.FillsFreeSpace = attr.FillsFreeSpace;
+			if (attr.FreeSpaceProportion.HasValue)
+				column.FreeSpaceProportion = attr.FreeSpaceProportion.Value;
+			column.GroupWithItemCountFormat = attr.GroupWithItemCountFormat;
+			column.GroupWithItemCountSingularFormat = attr.GroupWithItemCountSingularFormat;
+			column.Hyperlink = attr.Hyperlink;
+			column.ImageAspectName = attr.ImageAspectName;
+			if (attr.IsEditableSet)
+				column.IsEditable = attr.IsEditable;
+			else
+				column.IsEditable = editable;
+			column.IsTileViewColumn = attr.IsTileViewColumn;
+			column.IsVisible = attr.IsVisible;
+			column.MaximumWidth = attr.MaximumWidth;
+			column.MinimumWidth = attr.MinimumWidth;
+			column.Name = String.IsNullOrEmpty(attr.Name) ? aspectName : attr.Name;
+			column.Tag = attr.Tag;
+			column.TextAlign = attr.TextAlign;
+			column.ToolTipText = attr.ToolTipText;
+			column.TriStateCheckBoxes = attr.TriStateCheckBoxes;
+			column.UseInitialLetterForGroup = attr.UseInitialLetterForGroup;
+			column.Width = attr.Width;
+			if (attr.GroupCutoffs != null && attr.GroupDescriptions != null)
+				column.MakeGroupies(attr.GroupCutoffs, attr.GroupDescriptions);
+			return column;
+		}
 
-        /*
+		#endregion
+
+		/*
         #region Dynamic methods
 
         /// <summary>
@@ -294,6 +304,6 @@ namespace BrightIdeasSoftware
         }
 
         #endregion
-         */ 
-    }
+         */
+	}
 }

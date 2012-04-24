@@ -17,9 +17,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Paril.Components.Shortcuts
@@ -29,7 +26,17 @@ namespace Paril.Components.Shortcuts
 	/// </summary>
 	public class ControlShortcut : IShortcutImplementor
 	{
+		public ControlShortcut(string name, Keys keys, Control owner)
+		{
+			Control = owner;
+			Name = SaveName = name;
+			Keys = keys;
+		}
+
 		public Control Control { get; private set; }
+
+		#region IShortcutImplementor Members
+
 		public string Name { get; set; }
 		public string SaveName { get; private set; }
 		public Keys Keys { get; set; }
@@ -40,12 +47,7 @@ namespace Paril.Components.Shortcuts
 			return Control.Focused;
 		}
 
-		public ControlShortcut(string name, Keys keys, Control owner)
-		{
-			Control = owner;
-			Name = SaveName = name;
-			Keys = keys;
-		}
+		#endregion
 
 		public override string ToString()
 		{

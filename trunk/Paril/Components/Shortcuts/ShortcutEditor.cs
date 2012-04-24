@@ -18,10 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using MCSkin3D;
 
@@ -29,19 +26,34 @@ namespace Paril.Components.Shortcuts
 {
 	public partial class ShortcutEditor : Form
 	{
+		private readonly List<IShortcutImplementor> _shortcuts = new List<IShortcutImplementor>();
+
 		public ShortcutEditor()
 		{
 			InitializeComponent();
 		}
 
-		List<IShortcutImplementor> _shortcuts = new List<IShortcutImplementor>();
+		public int ShortcutCount
+		{
+			get { return _shortcuts.Count; }
+		}
 
-		IShortcutImplementor ShortcutInUse(Keys key)
+		public IEnumerable<IShortcutImplementor> Shortcuts
+		{
+			get { return _shortcuts; }
+		}
+
+		private IShortcutImplementor SelectedShortcut
+		{
+			get { return (IShortcutImplementor) listBox1.SelectedItem; }
+		}
+
+		private IShortcutImplementor ShortcutInUse(Keys key)
 		{
 			if (key == 0)
 				return null;
 
-			foreach (var s in _shortcuts)
+			foreach (IShortcutImplementor s in _shortcuts)
 			{
 				if (s.Keys != 0 && s.Keys == key)
 					return s;
@@ -66,19 +78,9 @@ namespace Paril.Components.Shortcuts
 			Editor.MainForm.languageProvider1.SetPropertyNames(shortcut, "Name");
 		}
 
-		public int ShortcutCount
-		{
-			get { return _shortcuts.Count; }
-		}
-
 		public IShortcutImplementor ShortcutAt(int index)
 		{
 			return _shortcuts[index];
-		}
-
-		public IEnumerable<IShortcutImplementor> Shortcuts
-		{
-			get { return _shortcuts; }
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -88,7 +90,7 @@ namespace Paril.Components.Shortcuts
 
 			listBox1.Items.Clear();
 
-			foreach (var cut in Shortcuts)
+			foreach (IShortcutImplementor cut in Shortcuts)
 				listBox1.Items.Add(cut);
 
 			if (listBox1.Items.Count > 0)
@@ -102,58 +104,58 @@ namespace Paril.Components.Shortcuts
 		{
 			switch (keys)
 			{
-			case Keys.Add:
-				return "+";
-			case Keys.Back:
-				return "Backspace";
-			case Keys.D0:
-				return "0";
-			case Keys.D1:
-				return "1";
-			case Keys.D2:
-				return "2";
-			case Keys.D3:
-				return "3";
-			case Keys.D4:
-				return "4";
-			case Keys.D5:
-				return "5";
-			case Keys.D6:
-				return "6";
-			case Keys.D7:
-				return "7";
-			case Keys.D8:
-				return "8";
-			case Keys.D9:
-				return "9";
-			case Keys.Divide:
-				return "/";
-			case Keys.Multiply:
-				return "*";
-			case Keys.Subtract:
-				return "-";
-			case Keys.Oem5:
-				return "\\";
-			case Keys.OemQuestion:
-				return "/";
-			case Keys.Oemcomma:
-				return ",";
-			case Keys.OemPeriod:
-				return ".";
-			case Keys.Oem1:
-				return ";";
-			case Keys.Oem7:
-				return "\'";
-			case Keys.OemOpenBrackets:
-				return "[";
-			case Keys.Oem6:
-				return "]";
-			case Keys.OemMinus:
-				return "-";
-			case Keys.Oemplus:
-				return "=";
-			case Keys.Oemtilde:
-				return "`";
+				case Keys.Add:
+					return "+";
+				case Keys.Back:
+					return "Backspace";
+				case Keys.D0:
+					return "0";
+				case Keys.D1:
+					return "1";
+				case Keys.D2:
+					return "2";
+				case Keys.D3:
+					return "3";
+				case Keys.D4:
+					return "4";
+				case Keys.D5:
+					return "5";
+				case Keys.D6:
+					return "6";
+				case Keys.D7:
+					return "7";
+				case Keys.D8:
+					return "8";
+				case Keys.D9:
+					return "9";
+				case Keys.Divide:
+					return "/";
+				case Keys.Multiply:
+					return "*";
+				case Keys.Subtract:
+					return "-";
+				case Keys.Oem5:
+					return "\\";
+				case Keys.OemQuestion:
+					return "/";
+				case Keys.Oemcomma:
+					return ",";
+				case Keys.OemPeriod:
+					return ".";
+				case Keys.Oem1:
+					return ";";
+				case Keys.Oem7:
+					return "\'";
+				case Keys.OemOpenBrackets:
+					return "[";
+				case Keys.Oem6:
+					return "]";
+				case Keys.OemMinus:
+					return "-";
+				case Keys.Oemplus:
+					return "=";
+				case Keys.Oemtilde:
+					return "`";
 			}
 
 			return keys.ToString();
@@ -174,11 +176,6 @@ namespace Paril.Components.Shortcuts
 			return s;
 		}
 
-		IShortcutImplementor SelectedShortcut
-		{
-			get { return (IShortcutImplementor)listBox1.SelectedItem; }
-		}
-
 		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (listBox1.SelectedItem == null)
@@ -197,11 +194,11 @@ namespace Paril.Components.Shortcuts
 			if (key != 0)
 			{
 				if (key != Keys.ControlKey &&
-					key != Keys.ShiftKey &&
-					key != Keys.Menu)
+				    key != Keys.ShiftKey &&
+				    key != Keys.Menu)
 				{
 					IShortcutImplementor already;
-					var oldCut = SelectedShortcut.Keys;
+					Keys oldCut = SelectedShortcut.Keys;
 					SelectedShortcut.Keys = 0;
 
 					if ((already = ShortcutInUse(key | ModifierKeys)) != null)
@@ -244,9 +241,10 @@ namespace Paril.Components.Shortcuts
 			if (e.Index == -1)
 				return;
 
-			IShortcutImplementor shortcut = (IShortcutImplementor)listBox1.Items[e.Index];
+			var shortcut = (IShortcutImplementor) listBox1.Items[e.Index];
 
-			TextRenderer.DrawText(e.Graphics, shortcut.ToString(), DefaultFont, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter);
+			TextRenderer.DrawText(e.Graphics, shortcut.ToString(), DefaultFont, e.Bounds, e.ForeColor,
+			                      TextFormatFlags.VerticalCenter);
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -262,13 +260,13 @@ namespace Paril.Components.Shortcuts
 
 	public class ShortcutExistsEventArgs : EventArgs
 	{
-		public string ShortcutName { get; set; }
-		public string OtherName { get; set; }
-
 		public ShortcutExistsEventArgs(string shortcut, string other)
 		{
 			ShortcutName = shortcut;
 			OtherName = other;
 		}
+
+		public string ShortcutName { get; set; }
+		public string OtherName { get; set; }
 	}
 }

@@ -5,86 +5,81 @@ namespace Devcorp.Controls.Design
 	/// <summary>
 	/// Structure to define YUV.
 	/// </summary>
-	public struct YUV 
+	public struct YUV
 	{
 		/// <summary>
 		/// Gets an empty YUV structure.
 		/// </summary>
-		public static readonly YUV Empty = new YUV();
+		public static readonly YUV Empty;
 
 		#region Fields
-		private double y; 
-		private double u; 
-		private double v; 
+
+		private double u;
+		private double v;
+		private double y;
+
 		#endregion
 
 		#region Operators
+
 		public static bool operator ==(YUV item1, YUV item2)
 		{
 			return (
-				item1.Y == item2.Y 
-				&& item1.U == item2.U 
-				&& item1.V == item2.V
-				);
+			       	item1.Y == item2.Y
+			       	&& item1.U == item2.U
+			       	&& item1.V == item2.V
+			       );
 		}
 
 		public static bool operator !=(YUV item1, YUV item2)
 		{
 			return (
-				item1.Y != item2.Y 
-				|| item1.U != item2.U 
-				|| item1.V != item2.V
-				);
+			       	item1.Y != item2.Y
+			       	|| item1.U != item2.U
+			       	|| item1.V != item2.V
+			       );
 		}
 
 		#endregion
 
 		#region Accessors
+
 		public double Y
-		{ 
-			get
-			{
-				return y;
-			} 
+		{
+			get { return y; }
 			set
-			{ 
-				y = value; 
-				y = (y>1)? 1 : ((y<0)? 0 : y); 
-			} 
-		} 
+			{
+				y = value;
+				y = (y > 1) ? 1 : ((y < 0) ? 0 : y);
+			}
+		}
 
 		public double U
-		{ 
-			get
-			{
-				return u;
-			} 
+		{
+			get { return u; }
 			set
-			{ 
-				u = value; 
-				u = (u>0.436)? 0.436 : ((u<-0.436)? -0.436 : u); 
-			} 
-		} 
+			{
+				u = value;
+				u = (u > 0.436) ? 0.436 : ((u < -0.436) ? -0.436 : u);
+			}
+		}
 
 		public double V
-		{ 
-			get
-			{
-				return v;
-			} 
+		{
+			get { return v; }
 			set
-			{ 
-				v = value; 
-				v = (v>0.615)? 0.615 : ((v<-0.615)? -0.615 : v); 
-			} 
-		} 
+			{
+				v = value;
+				v = (v > 0.615) ? 0.615 : ((v < -0.615) ? -0.615 : v);
+			}
+		}
 
 		#endregion
 
 		/// <summary>
 		/// Creates an instance of a YUV structure.
 		/// </summary>
-		public YUV(double y, double u, double v) 
+		public YUV(double y, double u, double v)
 		{
 			this.y = y;
 			this.u = u;
@@ -92,18 +87,19 @@ namespace Devcorp.Controls.Design
 		}
 
 		#region Methods
-		public override bool Equals(Object obj) 
-		{
-			if(obj==null || GetType()!=obj.GetType()) return false;
 
-			return (this == (YUV)obj);
+		public override bool Equals(Object obj)
+		{
+			if (obj == null || GetType() != obj.GetType()) return false;
+
+			return (this == (YUV) obj);
 		}
 
-		public override int GetHashCode() 
+		public override int GetHashCode()
 		{
 			return Y.GetHashCode() ^ U.GetHashCode() ^ V.GetHashCode();
 		}
 
 		#endregion
-	} 
+	}
 }

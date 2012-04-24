@@ -16,20 +16,20 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Paril.Drawing.Filters
 {
 	public class GaussianBlurFilter : MatrixFilter<float>
 	{
+		public GaussianBlurFilter(float weight)
+		{
+			Weight = weight;
+		}
+
 		public override NMatrix Matrix
 		{
 			get
 			{
-				NMatrix m = new NMatrix(3, 3);
+				var m = new NMatrix(3, 3);
 				m.SetAll(1);
 				m[1, 1] = Weight;
 				m[0, 1] = m[2, 1] = m[1, 0] = m[1, 2] = 2;
@@ -39,15 +39,6 @@ namespace Paril.Drawing.Filters
 			}
 		}
 
-		public float Weight
-		{
-			get;
-			set;
-		}
-
-		public GaussianBlurFilter(float weight)
-		{
-			Weight = weight;
-		}
+		public float Weight { get; set; }
 	}
 }

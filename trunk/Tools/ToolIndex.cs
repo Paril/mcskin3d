@@ -16,21 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace MCSkin3D
 {
 	public class ToolIndex
 	{
-		public string Name;
+		public ToolStripButton Button;
 		public Keys DefaultKeys;
 		public ToolStripMenuItem MenuItem;
-		public ToolStripButton Button;
-		public ITool Tool;
+		public string Name;
 		public ToolOptionBase OptionsPanel;
+		public ITool Tool;
 
 		public ToolIndex(ITool tool, ToolOptionBase options, string name, Image image, Keys defaultKey)
 		{

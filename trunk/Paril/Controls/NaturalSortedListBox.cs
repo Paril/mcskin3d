@@ -1,30 +1,33 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Collections;
 
 namespace Paril.Controls
 {
 	public class AlphanumComparatorFast : IComparer, IComparer<string>
 	{
+		#region IComparer Members
+
 		public int Compare(object o1, object o2)
 		{
 			string s1, s2;
 
 			if (o1 is string)
-				s1 = (string)o1;
+				s1 = (string) o1;
 			else
 				s1 = o1.ToString();
 
 			if (o2 is string)
-				s2 = (string)o2;
+				s2 = (string) o2;
 			else
 				s2 = o2.ToString();
 
 			return Compare(s1, s2);
 		}
+
+		#endregion
+
+		#region IComparer<string> Members
 
 		public int Compare(string s1, string s2)
 		{
@@ -40,9 +43,9 @@ namespace Paril.Controls
 				char ch2 = s2[marker2];
 
 				// Some buffers we can build up characters in for each chunk.
-				char[] space1 = new char[len1];
+				var space1 = new char[len1];
 				int loc1 = 0;
-				char[] space2 = new char[len2];
+				var space2 = new char[len2];
 				int loc2 = 0;
 
 				// Walk through all following characters that are digits or
@@ -68,13 +71,12 @@ namespace Paril.Controls
 						ch2 = s2[marker2];
 					else
 						break;
-				}
-				while (char.IsDigit(ch2) == char.IsDigit(space2[0]));
+				} while (char.IsDigit(ch2) == char.IsDigit(space2[0]));
 
 				// If we have collected numbers, compare them numerically.
 				// Otherwise, if we have strings, compare them alphabetically.
-				string str1 = new string(space1);
-				string str2 = new string(space2);
+				var str1 = new string(space1);
+				var str2 = new string(space2);
 
 				int result;
 
@@ -93,12 +95,18 @@ namespace Paril.Controls
 
 			return len1 - len2;
 		}
+
+		#endregion
 	}
 
-	class SortedListBox : ListBox
+	internal class SortedListBox : ListBox
 	{
 		public IComparer Comparer;
-		public SortedListBox() { }
+
+		public SortedListBox()
+		{
+		}
+
 		public SortedListBox(IComparer comparator)
 		{
 			Comparer = comparator;
@@ -106,7 +114,7 @@ namespace Paril.Controls
 
 		public void SortList()
 		{
-			this.Sort();
+			Sort();
 		}
 
 		protected override void Sort()
@@ -122,7 +130,7 @@ namespace Paril.Controls
 					int counter = Items.Count - 1;
 					swapped = false;
 
-					IList source = (IList)DataSource;
+					var source = (IList) DataSource;
 
 					while (counter > 0)
 					{
@@ -138,9 +146,8 @@ namespace Paril.Controls
 						// Decrement the counter.
 						counter -= 1;
 					}
-				}
-				while ((swapped == true));
-			}		
+				} while (swapped);
+			}
 		}
 	}
 }

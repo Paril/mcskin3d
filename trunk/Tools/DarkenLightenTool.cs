@@ -16,13 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
+using Devcorp.Controls.Design;
 using Paril.OpenGL;
 
 namespace MCSkin3D
@@ -37,9 +33,10 @@ namespace MCSkin3D
 		public override Color BlendColor(Color l, Color r)
 		{
 			bool ctrlIng = (Control.ModifierKeys & Keys.Shift) != 0;
-			bool switchTools = (!Editor.MainForm.DarkenLightenOptions.Inverted && ctrlIng) || (Editor.MainForm.DarkenLightenOptions.Inverted && !ctrlIng);
-			var hsl = Devcorp.Controls.Design.ColorSpaceHelper.RGBtoHSL(r);
-			var mod = l.A / 255.0f;
+			bool switchTools = (!Editor.MainForm.DarkenLightenOptions.Inverted && ctrlIng) ||
+			                   (Editor.MainForm.DarkenLightenOptions.Inverted && !ctrlIng);
+			HSL hsl = ColorSpaceHelper.RGBtoHSL(r);
+			float mod = l.A / 255.0f;
 
 			if (switchTools)
 				hsl.Luminance -= (GlobalSettings.DarkenLightenExposure * mod) / 5.0f;
@@ -51,7 +48,7 @@ namespace MCSkin3D
 			if (hsl.Luminance > 1)
 				hsl.Luminance = 1;
 
-			return Color.FromArgb(r.A, Devcorp.Controls.Design.ColorSpaceHelper.HSLtoColor(hsl));
+			return Color.FromArgb(r.A, ColorSpaceHelper.HSLtoColor(hsl));
 		}
 
 		public override Color GetLeftColor()

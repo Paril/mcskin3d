@@ -29,19 +29,16 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Drawing.Design;
-using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
-
-using BrightIdeasSoftware;
 
 namespace BrightIdeasSoftware.Design
 {
-    /*
+	/*
     /// <summary>
     /// A specialised designer for the ObjectListView.
     /// </summary>
@@ -87,116 +84,131 @@ namespace BrightIdeasSoftware.Design
         }
     }
     */
-    /// <summary>
-    /// This class works in conjunction with the OLVColumns property to allow OLVColumns
-    /// to be added to the ObjectListView.
-    /// </summary>
-    public class OLVColumnCollectionEditor : System.ComponentModel.Design.CollectionEditor
-    {
-        /// <summary>
-        /// Create a OLVColumnCollectionEditor
-        /// </summary>
-        /// <param name="t"></param>
-        public OLVColumnCollectionEditor(Type t)
-            : base(t) {
-        }
 
-        /// <summary>
-        /// What type of object does this editor create?
-        /// </summary>
-        /// <returns></returns>
-        protected override Type CreateCollectionItemType() {
-            return typeof(OLVColumn);
-        }
+	/// <summary>
+	/// This class works in conjunction with the OLVColumns property to allow OLVColumns
+	/// to be added to the ObjectListView.
+	/// </summary>
+	public class OLVColumnCollectionEditor : CollectionEditor
+	{
+		/// <summary>
+		/// Create a OLVColumnCollectionEditor
+		/// </summary>
+		/// <param name="t"></param>
+		public OLVColumnCollectionEditor(Type t)
+			: base(t)
+		{
+		}
 
-        /// <summary>
-        /// Edit a given value
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="provider"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value) {
-            // Figure out which ObjectListView we are working on. This should be the Instance of the context.
-            ObjectListView olv = null;
-            if (context != null)
-                olv = context.Instance as ObjectListView;
+		/// <summary>
+		/// What type of object does this editor create?
+		/// </summary>
+		/// <returns></returns>
+		protected override Type CreateCollectionItemType()
+		{
+			return typeof (OLVColumn);
+		}
 
-            if (olv == null) {
-                //THINK: Can this ever happen?
-                System.Diagnostics.Debug.WriteLine("context.Instance was NOT an ObjectListView");
+		/// <summary>
+		/// Edit a given value
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="provider"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+		{
+			// Figure out which ObjectListView we are working on. This should be the Instance of the context.
+			ObjectListView olv = null;
+			if (context != null)
+				olv = context.Instance as ObjectListView;
 
-                // Hack to figure out which ObjectListView we are working on
-                ListView.ColumnHeaderCollection cols = (ListView.ColumnHeaderCollection)value;
-                if (cols.Count == 0) {
-                    cols.Add(new OLVColumn());
-                    olv = (ObjectListView)cols[0].ListView;
-                    cols.Clear();
-                    olv.AllColumns.Clear();
-                } else
-                    olv = (ObjectListView)cols[0].ListView;
-            }
+			if (olv == null)
+			{
+				//THINK: Can this ever happen?
+				Debug.WriteLine("context.Instance was NOT an ObjectListView");
 
-            // Edit all the columns, not just the ones that are visible
-            base.EditValue(context, provider, olv.AllColumns);
+				// Hack to figure out which ObjectListView we are working on
+				var cols = (ListView.ColumnHeaderCollection) value;
+				if (cols.Count == 0)
+				{
+					cols.Add(new OLVColumn());
+					olv = (ObjectListView) cols[0].ListView;
+					cols.Clear();
+					olv.AllColumns.Clear();
+				}
+				else
+					olv = (ObjectListView) cols[0].ListView;
+			}
 
-            // Calculate just the visible columns
-            List<OLVColumn> newColumns = olv.GetFilteredColumns(View.Details);
-            olv.Columns.Clear();
-            olv.Columns.AddRange(newColumns.ToArray());
+			// Edit all the columns, not just the ones that are visible
+			base.EditValue(context, provider, olv.AllColumns);
 
-            return olv.Columns;
-        }
+			// Calculate just the visible columns
+			List<OLVColumn> newColumns = olv.GetFilteredColumns(View.Details);
+			olv.Columns.Clear();
+			olv.Columns.AddRange(newColumns.ToArray());
 
-        /// <summary>
-        /// What text should be shown in the list for the given object?
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected override string GetDisplayText(object value) {
-            OLVColumn col = value as OLVColumn;
-            if (col == null || String.IsNullOrEmpty(col.AspectName))
-                return base.GetDisplayText(value);
+			return olv.Columns;
+		}
 
-            return String.Format("{0} ({1})", base.GetDisplayText(value), col.AspectName);
-        }
-    }
+		/// <summary>
+		/// What text should be shown in the list for the given object?
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		protected override string GetDisplayText(object value)
+		{
+			var col = value as OLVColumn;
+			if (col == null || String.IsNullOrEmpty(col.AspectName))
+				return base.GetDisplayText(value);
+
+			return String.Format("{0} ({1})", base.GetDisplayText(value), col.AspectName);
+		}
+	}
 
 
-    /// <summary>
-    /// Control how the overlay is presented in the IDE
-    /// </summary>
-    internal class OverlayConverter : ExpandableObjectConverter
-    {
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
-            if (destinationType == typeof(string))
-                return true;
-            else
-                return base.CanConvertTo(context, destinationType);
-        }
+	/// <summary>
+	/// Control how the overlay is presented in the IDE
+	/// </summary>
+	internal class OverlayConverter : ExpandableObjectConverter
+	{
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+		{
+			if (destinationType == typeof (string))
+				return true;
+			else
+				return base.CanConvertTo(context, destinationType);
+		}
 
-        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType) {
-            if (destinationType == typeof(string)) {
-                ImageOverlay imageOverlay = value as ImageOverlay;
-                if (imageOverlay != null) {
-                    if (imageOverlay.Image == null)
-                        return "(none)";
-                    else
-                        return "(set)";
-                }
-                TextOverlay textOverlay = value as TextOverlay;
-                if (textOverlay != null) {
-                    if (String.IsNullOrEmpty(textOverlay.Text))
-                        return "(none)";
-                    else
-                        return "(set)";
-                }
-            }
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
+		                                 Type destinationType)
+		{
+			if (destinationType == typeof (string))
+			{
+				var imageOverlay = value as ImageOverlay;
+				if (imageOverlay != null)
+				{
+					if (imageOverlay.Image == null)
+						return "(none)";
+					else
+						return "(set)";
+				}
+				var textOverlay = value as TextOverlay;
+				if (textOverlay != null)
+				{
+					if (String.IsNullOrEmpty(textOverlay.Text))
+						return "(none)";
+					else
+						return "(set)";
+				}
+			}
 
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
-    }
-    /*
+			return base.ConvertTo(context, culture, value, destinationType);
+		}
+	}
+
+	/*
     // Everything from this point to the end of the file is a hack to get around
     // the fact that .NET's ListViewDesigner is internal. Being internal means that we cannot
     // subclass it or even reference it as our base designer class. So what follows 

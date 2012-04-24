@@ -16,11 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using MB.Controls;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using MB.Controls;
 using MCSkin3D.lemon42;
 
 namespace MCSkin3D
@@ -41,7 +39,7 @@ namespace MCSkin3D
 			Color c1 = new ColorManager.HSVColor(CurrentColor.HSV.H, 0, CurrentColor.HSV.V).ToColor();
 			Color c2 = new ColorManager.HSVColor(CurrentColor.HSV.H, 100, CurrentColor.HSV.V).ToColor();
 
-			LinearGradientBrush brush = new LinearGradientBrush(colorRect, c1, c2, LinearGradientMode.Horizontal);
+			var brush = new LinearGradientBrush(colorRect, c1, c2, LinearGradientMode.Horizontal);
 
 			//Draw color
 			g.FillRectangle(brush, colorRect);

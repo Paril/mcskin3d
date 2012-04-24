@@ -4,10 +4,10 @@ namespace Paril.Components.Update
 {
 	public struct Version
 	{
+		public int Build;
 		public int Major;
 		public int Minor;
 		public int Revision;
-		public int Build;
 
 		public Version(int major = 0, int minor = 0, int revision = 0, int build = 0) :
 			this()
@@ -21,7 +21,7 @@ namespace Paril.Components.Update
 		public Version(string s) :
 			this()
 		{
-			string[] split = s.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+			string[] split = s.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
 
 			for (int i = 0; i < split.Length; ++i)
 				this[i] = int.Parse(split[i]);
@@ -33,14 +33,14 @@ namespace Paril.Components.Update
 			{
 				switch (index)
 				{
-				case 0:
-					return Major;
-				case 1:
-					return Minor;
-				case 2:
-					return Revision;
-				case 3:
-					return Build;
+					case 0:
+						return Major;
+					case 1:
+						return Minor;
+					case 2:
+						return Revision;
+					case 3:
+						return Build;
 				}
 
 				throw new IndexOutOfRangeException();
@@ -50,18 +50,18 @@ namespace Paril.Components.Update
 			{
 				switch (index)
 				{
-				case 0:
-					Major = value;
-					break;
-				case 1:
-					Minor = value;
-					break;
-				case 2:
-					Revision = value;
-					break;
-				case 3:
-					Build = value;
-					break;
+					case 0:
+						Major = value;
+						break;
+					case 1:
+						Minor = value;
+						break;
+					case 2:
+						Revision = value;
+						break;
+					case 3:
+						Build = value;
+						break;
 				}
 			}
 		}
@@ -78,7 +78,8 @@ namespace Paril.Components.Update
 
 		public static bool operator ==(Version left, Version right)
 		{
-			return left.Major == right.Major && left.Minor == right.Minor && left.Revision == right.Revision && left.Build == right.Build;
+			return left.Major == right.Major && left.Minor == right.Minor && left.Revision == right.Revision &&
+			       left.Build == right.Build;
 		}
 
 		public static bool operator !=(Version left, Version right)
@@ -89,9 +90,10 @@ namespace Paril.Components.Update
 		public static bool operator >(Version left, Version right)
 		{
 			return (left.Major > right.Major) ||
-				(left.Major == right.Major && left.Minor > right.Minor) ||
-				(left.Major == right.Major && left.Minor == right.Minor && left.Revision > right.Revision) ||
-				(left.Major == right.Major && left.Minor == right.Minor && left.Revision == right.Revision && left.Build > right.Build);
+			       (left.Major == right.Major && left.Minor > right.Minor) ||
+			       (left.Major == right.Major && left.Minor == right.Minor && left.Revision > right.Revision) ||
+			       (left.Major == right.Major && left.Minor == right.Minor && left.Revision == right.Revision &&
+			        left.Build > right.Build);
 		}
 
 		public static bool operator <(Version left, Version right)
@@ -102,7 +104,7 @@ namespace Paril.Components.Update
 		public override bool Equals(object obj)
 		{
 			if (obj is Version)
-				return this == (Version)obj;
+				return this == (Version) obj;
 
 			return base.Equals(obj);
 		}

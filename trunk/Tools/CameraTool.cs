@@ -16,12 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
 using Paril.OpenGL;
 
@@ -29,34 +24,39 @@ namespace MCSkin3D
 {
 	public class CameraTool : ITool
 	{
+		private Screen _clickedScreen;
+		private Point _oldMouse;
+
+		#region ITool Members
+
 		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_oldMouse = e.Location;
 			_clickedScreen = Screen.FromPoint(Cursor.Position);
 		}
 
-		public void SelectedBrushChanged() { }
-
-		Point _oldMouse;
-		Screen _clickedScreen;
+		public void SelectedBrushChanged()
+		{
+		}
 
 		public void MouseMove(Skin skin, MouseEventArgs e)
 		{
 			var delta = new Point(e.X - _oldMouse.X, e.Y - _oldMouse.Y);
-			var position = Cursor.Position;
+			Point position = Cursor.Position;
 
 			if (GlobalSettings.InfiniteMouse)
 			{
 				Rectangle screenBounds = _clickedScreen.Bounds;
 				bool wasWrapped = false;
-				var oldMouseOnScreen = Editor.MainForm.Renderer.PointToScreen(_oldMouse);
+				Point oldMouseOnScreen = Editor.MainForm.Renderer.PointToScreen(_oldMouse);
 
 				if (position.X <= screenBounds.X && oldMouseOnScreen.X > screenBounds.X)
 				{
 					Cursor.Position = new Point(screenBounds.X + screenBounds.Width, position.Y);
 					wasWrapped = true;
 				}
-				else if (position.X >= screenBounds.X + screenBounds.Width - 1 && oldMouseOnScreen.X < screenBounds.X + screenBounds.Width - 1)
+				else if (position.X >= screenBounds.X + screenBounds.Width - 1 &&
+				         oldMouseOnScreen.X < screenBounds.X + screenBounds.Width - 1)
 				{
 					Cursor.Position = new Point(screenBounds.X, position.Y);
 					wasWrapped = true;
@@ -67,7 +67,8 @@ namespace MCSkin3D
 					Cursor.Position = new Point(position.X, screenBounds.Y + screenBounds.Height);
 					wasWrapped = true;
 				}
-				else if (position.Y >= screenBounds.Y + screenBounds.Height - 1 && oldMouseOnScreen.Y < screenBounds.Y + screenBounds.Height - 1)
+				else if (position.Y >= screenBounds.Y + screenBounds.Height - 1 &&
+				         oldMouseOnScreen.Y < screenBounds.Y + screenBounds.Height - 1)
 				{
 					Cursor.Position = new Point(position.X, screenBounds.Y);
 					wasWrapped = true;
@@ -85,7 +86,6 @@ namespace MCSkin3D
 				Editor.MainForm.RotateView(delta, 1);
 			else if (e.Button == Editor.MainForm.CameraZoom)
 				Editor.MainForm.ScaleView(delta, 1);
-
 		}
 
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
@@ -107,5 +107,7 @@ namespace MCSkin3D
 		{
 			return Editor.GetLanguageString("T_CAMERA");
 		}
+
+		#endregion
 	}
 }

@@ -37,7 +37,6 @@
 
 using System;
 using System.IO;
-
 using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -48,6 +47,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class ZipEntryFactory : IEntryFactory
 	{
 		#region Enumerations
+
 		/// <summary>
 		/// Defines the possible values to be used for the <see cref="ZipEntry.DateTime"/>.
 		/// </summary>
@@ -57,26 +57,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Use the recorded LastWriteTime value for the file.
 			/// </summary>
 			LastWriteTime,
+
 			/// <summary>
 			/// Use the recorded LastWriteTimeUtc value for the file
 			/// </summary>
 			LastWriteTimeUtc,
+
 			/// <summary>
 			/// Use the recorded CreateTime value for the file.
 			/// </summary>
 			CreateTime,
+
 			/// <summary>
 			/// Use the recorded CreateTimeUtc value for the file.
 			/// </summary>
 			CreateTimeUtc,
+
 			/// <summary>
 			/// Use the recorded LastAccessTime value for the file.
 			/// </summary>
 			LastAccessTime,
+
 			/// <summary>
 			/// Use the recorded LastAccessTimeUtc value for the file.
 			/// </summary>
 			LastAccessTimeUtc,
+
 			/// <summary>
 			/// Use a fixed value.
 			/// </summary>
@@ -87,9 +93,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// The <see cref="FixedDateTime"/> property can also be used to set this value.</remarks>
 			Fixed,
 		}
+
 		#endregion
 
 		#region Constructors
+
 		/// <summary>
 		/// Initialise a new instance of the <see cref="ZipEntryFactory"/> class.
 		/// </summary>
@@ -123,25 +131,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 
 		#region Properties
-		/// <summary>
-		/// Get / set the <see cref="INameTransform"/> to be used when creating new <see cref="ZipEntry"/> values.
-		/// </summary>
-		/// <remarks>
-		/// Setting this property to null will cause a default <see cref="ZipNameTransform">name transform</see> to be used.
-		/// </remarks>
-		public INameTransform NameTransform
-		{
-			get { return nameTransform_; }
-			set 
-			{
-				if (value == null) {
-					nameTransform_ = new ZipNameTransform();
-				}
-				else {
-					nameTransform_ = value;
-				}
-			}
-		}
 
 		/// <summary>
 		/// Get / set the <see cref="TimeSetting"/> in use.
@@ -160,9 +149,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return fixedDateTime_; }
 			set
 			{
-				if (value.Year < 1970) {
-					throw new ArgumentException("Value is too old to be valid", "value");
-				}
+				if (value.Year < 1970) throw new ArgumentException("Value is too old to be valid", "value");
 				fixedDateTime_ = value;
 			}
 		}
@@ -196,6 +183,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { isUnicodeText_ = value; }
 		}
 
+		/// <summary>
+		/// Get / set the <see cref="INameTransform"/> to be used when creating new <see cref="ZipEntry"/> values.
+		/// </summary>
+		/// <remarks>
+		/// Setting this property to null will cause a default <see cref="ZipNameTransform">name transform</see> to be used.
+		/// </remarks>
+		public INameTransform NameTransform
+		{
+			get { return nameTransform_; }
+			set
+			{
+				if (value == null) nameTransform_ = new ZipNameTransform();
+				else nameTransform_ = value;
+			}
+		}
+
 		#endregion
 
 		#region IEntryFactory Members
@@ -218,7 +221,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
 		public ZipEntry MakeFileEntry(string fileName, bool useFileSystem)
 		{
-			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(fileName));
+			var result = new ZipEntry(nameTransform_.TransformFile(fileName));
 			result.IsUnicodeText = isUnicodeText_;
 
 			int externalAttributes = 0;
@@ -226,9 +229,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			FileInfo fi = null;
 			if (useFileSystem)
-			{
 				fi = new FileInfo(fileName);
-			}
 
 			if ((fi != null) && fi.Exists)
 			{
@@ -281,14 +282,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				result.Size = fi.Length;
 
 				useAttributes = true;
-				externalAttributes = ((int)fi.Attributes & getAttributes_);
+				externalAttributes = ((int) fi.Attributes & getAttributes_);
 			}
 			else
 			{
 				if (timeSetting_ == TimeSetting.Fixed)
-				{
 					result.DateTime = fixedDateTime_;
-				}
 			}
 
 			if (useAttributes)
@@ -296,7 +295,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				externalAttributes |= setAttributes_;
 				result.ExternalFileAttributes = externalAttributes;
 			}
-			
+
 			return result;
 		}
 
@@ -318,19 +317,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"></see> representing a directory.</returns>
 		public ZipEntry MakeDirectoryEntry(string directoryName, bool useFileSystem)
 		{
-			
-			ZipEntry result = new ZipEntry(nameTransform_.TransformDirectory(directoryName));
-            result.IsUnicodeText = isUnicodeText_;
-            result.Size = 0;
-			
+			var result = new ZipEntry(nameTransform_.TransformDirectory(directoryName));
+			result.IsUnicodeText = isUnicodeText_;
+			result.Size = 0;
+
 			int externalAttributes = 0;
 
 			DirectoryInfo di = null;
 
 			if (useFileSystem)
-			{
 				di = new DirectoryInfo(directoryName);
-			}
 
 
 			if ((di != null) && di.Exists)
@@ -381,14 +377,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("Unhandled time setting in MakeDirectoryEntry");
 				}
 
-				externalAttributes = ((int)di.Attributes & getAttributes_);
+				externalAttributes = ((int) di.Attributes & getAttributes_);
 			}
 			else
 			{
 				if (timeSetting_ == TimeSetting.Fixed)
-				{
 					result.DateTime = fixedDateTime_;
-				}
 			}
 
 			// Always set directory attribute on.
@@ -397,17 +391,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			return result;
 		}
-		
+
 		#endregion
 
 		#region Instance Fields
-		INameTransform nameTransform_;
-		DateTime fixedDateTime_ = DateTime.Now;
-		TimeSetting timeSetting_;
-		bool isUnicodeText_;
 
-		int getAttributes_ = -1;
-		int setAttributes_;
+		private DateTime fixedDateTime_ = DateTime.Now;
+
+		private int getAttributes_ = -1;
+		private bool isUnicodeText_;
+		private INameTransform nameTransform_;
+		private int setAttributes_;
+		private TimeSetting timeSetting_;
+
 		#endregion
 	}
 }

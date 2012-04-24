@@ -16,12 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using OpenTK.Graphics.OpenGL;
-using Paril.OpenGL;
-using System.Drawing;
-using Paril.Drawing;
-
 namespace MCSkin3D
 {
 	public static class ImageUtilities

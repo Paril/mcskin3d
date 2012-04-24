@@ -1,14 +1,14 @@
-﻿using System;
-using OpenTK;
+﻿using OpenTK;
 
 namespace Paril.Drawing
 {
 	public struct Bounds3
 	{
-		public static readonly Bounds3 EmptyBounds = new Bounds3(new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), new Vector3(float.MinValue, float.MinValue, float.MinValue));
+		public static readonly Bounds3 EmptyBounds = new Bounds3(new Vector3(float.MaxValue, float.MaxValue, float.MaxValue),
+		                                                         new Vector3(float.MinValue, float.MinValue, float.MinValue));
 
-		public Vector3 Mins;
 		public Vector3 Maxs;
+		public Vector3 Mins;
 
 		public Bounds3(Vector3 mins, Vector3 maxs)
 		{
@@ -18,10 +18,7 @@ namespace Paril.Drawing
 
 		public Vector3 Center
 		{
-			get
-			{
-				return Mins + ((Maxs - Mins) / 2);
-			}
+			get { return Mins + ((Maxs - Mins) / 2); }
 		}
 
 		public static Bounds3 operator +(Bounds3 left, Vector3 right)

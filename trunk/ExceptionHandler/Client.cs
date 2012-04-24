@@ -1,32 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 namespace MCSkin3D.ExceptionHandler
 {
 	public class SendEventArgs : EventArgs
 	{
-		public string StatusString { get; set; }
-		public bool Failed { get; set; }
-
-		public SendEventArgs(string status, bool failed) :
-			base()
+		public SendEventArgs(string status, bool failed)
 		{
 			StatusString = status;
 			Failed = failed;
 		}
+
+		public string StatusString { get; set; }
+		public bool Failed { get; set; }
 	}
 
 	public class Client
 	{
-		public ErrorReport Report { get; set; }
-		public IPEndPoint EndPoint { get; set; }
-		public bool Running { get; private set; }
+		private Thread _thread;
+		private WaitHandle wh;
 
 		public Client(ErrorReport report, string host, int port)
 		{
@@ -34,16 +29,17 @@ namespace MCSkin3D.ExceptionHandler
 			EndPoint = new IPEndPoint(Dns.GetHostAddresses(host)[0], port);
 		}
 
+		public ErrorReport Report { get; set; }
+		public IPEndPoint EndPoint { get; set; }
+		public bool Running { get; private set; }
+
 		public event EventHandler<SendEventArgs> SendFinished;
 
-		Thread _thread;
-		System.Threading.WaitHandle wh;
-
-		void RunSendThread()
+		private void RunSendThread()
 		{
 			try
 			{
-				TcpClient client = new TcpClient();
+				var client = new TcpClient();
 				IAsyncResult ar = client.BeginConnect(EndPoint.Address, EndPoint.Port, null, null);
 				wh = ar.AsyncWaitHandle;
 				try
@@ -60,9 +56,9 @@ namespace MCSkin3D.ExceptionHandler
 				{
 					if (!wh.SafeWaitHandle.IsClosed)
 						wh.Close();
-				} 
+				}
 
-				var stream = client.GetStream();
+				NetworkStream stream = client.GetStream();
 
 				var writer = new BinaryWriter(stream);
 				var reader = new BinaryReader(stream);
@@ -78,50 +74,50 @@ namespace MCSkin3D.ExceptionHandler
 
 						switch (packet)
 						{
-						case ErrorReportPackets.ServerToClient_GoAhead:
+							case ErrorReportPackets.ServerToClient_GoAhead:
 							{
 								writer.Write(ErrorReportPackets.ClientToServer_Data);
 
 								byte bits = 0;
 
 								if (!string.IsNullOrEmpty(Report.Name))
-									bits |= (byte)ErrorReportContents.Name;
+									bits |= (byte) ErrorReportContents.Name;
 								if (!string.IsNullOrEmpty(Report.Email))
-									bits |= (byte)ErrorReportContents.Email;
+									bits |= (byte) ErrorReportContents.Email;
 								if (!string.IsNullOrEmpty(Report.HardwareInfo))
-									bits |= (byte)ErrorReportContents.Hardware;
+									bits |= (byte) ErrorReportContents.Hardware;
 								if (!string.IsNullOrEmpty(Report.ExtraInfo))
-									bits |= (byte)ErrorReportContents.Extra;
+									bits |= (byte) ErrorReportContents.Extra;
 
-								writer.Write((byte)bits);
+								writer.Write(bits);
 
 								writer.Write(Report.Exception);
 								writer.Write(Report.SoftwareInfo);
 
-								if ((bits & (byte)ErrorReportContents.Name) != 0)
+								if ((bits & (byte) ErrorReportContents.Name) != 0)
 									writer.Write(Report.Name);
-								if ((bits & (byte)ErrorReportContents.Email) != 0)
+								if ((bits & (byte) ErrorReportContents.Email) != 0)
 									writer.Write(Report.Email);
-								if ((bits & (byte)ErrorReportContents.Hardware) != 0)
+								if ((bits & (byte) ErrorReportContents.Hardware) != 0)
 									writer.Write(Report.HardwareInfo);
-								if ((bits & (byte)ErrorReportContents.Extra) != 0)
+								if ((bits & (byte) ErrorReportContents.Extra) != 0)
 									writer.Write(Report.ExtraInfo);
 							}
-							break;
-						case ErrorReportPackets.ServerToClient_Maintenence:
+								break;
+							case ErrorReportPackets.ServerToClient_Maintenence:
 							{
 								string maintenenceString = reader.ReadString();
 
 								Finished();
 								SendFinished(this, new SendEventArgs(maintenenceString, true));
 							}
-							break;
-						case ErrorReportPackets.ServerToClient_GotIt:
+								break;
+							case ErrorReportPackets.ServerToClient_GotIt:
 							{
 								Finished();
 								SendFinished(this, new SendEventArgs(null, false));
 							}
-							break;
+								break;
 						}
 					}
 
@@ -151,7 +147,7 @@ namespace MCSkin3D.ExceptionHandler
 			_thread.Start();
 		}
 
-		void Finished()
+		private void Finished()
 		{
 			Running = false;
 		}

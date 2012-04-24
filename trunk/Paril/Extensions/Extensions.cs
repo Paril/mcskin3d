@@ -16,10 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace Paril.Extensions
 {
@@ -44,9 +43,9 @@ namespace Paril.Extensions
 
 		public static List<TreeNode> GetNodeChain(this TreeNode node)
 		{
-			List<TreeNode> nodes = new List<TreeNode>();
+			var nodes = new List<TreeNode>();
 
-			for (var n = node; n != null; n = n.Parent)
+			for (TreeNode n = node; n != null; n = n.Parent)
 				nodes.Add(n);
 
 			return nodes;

@@ -18,25 +18,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.ComponentModel;
-using System.Reflection;
-using System.Drawing.Design;
-using System.Windows.Forms.Design;
 using System.Drawing;
-using System.IO;
+using System.Drawing.Design;
+using System.Linq;
+using System.Reflection;
+using System.Security.Permissions;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace MCSkin3D.Language
 {
-	class LanguageControlLink
+	internal class LanguageControlLink
 	{
-		public bool TextNamesSet;
-		public string[] TextNames;
 		public object Object;
-		public PropertyInfo[] PropertyNames;
 		public string OriginalString;
+		public PropertyInfo[] PropertyNames;
+		public string[] TextNames;
+		public bool TextNamesSet;
 
 		public LanguageControlLink(string names, object obj)
 		{
@@ -47,7 +46,7 @@ namespace MCSkin3D.Language
 			if (string.IsNullOrEmpty(OriginalString))
 				return;
 
-			var propNames = OriginalString.Split(';');
+			string[] propNames = OriginalString.Split(';');
 
 			PropertyNames = new PropertyInfo[propNames.Length];
 			TextNames = new string[propNames.Length];
@@ -58,7 +57,7 @@ namespace MCSkin3D.Language
 
 				if (PropertyNames[i] == null)
 					throw new Exception("Property \"" + propNames[i] + "\" not found!");
-				if (PropertyNames[i].PropertyType != typeof(string))
+				if (PropertyNames[i].PropertyType != typeof (string))
 					throw new Exception("Property \"" + propNames[i] + "\" is not a string!");
 			}
 		}
@@ -66,7 +65,7 @@ namespace MCSkin3D.Language
 		public void SetTextNames()
 		{
 			for (int i = 0; i < PropertyNames.Length; ++i)
-				TextNames[i] = (string)PropertyNames[i].GetValue(Object, null);
+				TextNames[i] = (string) PropertyNames[i].GetValue(Object, null);
 
 			TextNamesSet = true;
 		}
@@ -74,22 +73,18 @@ namespace MCSkin3D.Language
 
 	// This UITypeEditor can be associated with Int32, Double and Single
 	// properties to provide a design-mode angle selection interface.
-	[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
-	public class LanguageEditor : System.Drawing.Design.UITypeEditor
+	[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+	public class LanguageEditor : UITypeEditor
 	{
-		public LanguageEditor()
-		{
-		}
-
 		// Indicates whether the UITypeEditor provides a form-based (modal) dialog, 
 		// drop down dialog, or no UI outside of the properties window.
-		public override System.Drawing.Design.UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
+		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
 		{
 			return UITypeEditorEditStyle.DropDown;
 		}
 
 		// Displays the UI for value selection.
-		public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, System.IServiceProvider provider, object value)
+		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 		{
 			// Return the value if the value is not of type Int32, Double and Single.
 			//if (value.GetType() != typeof(double) && value.GetType() != typeof(float) && value.GetType() != typeof(int))
@@ -97,11 +92,11 @@ namespace MCSkin3D.Language
 
 			// Uses the IWindowsFormsEditorService to display a 
 			// drop-down UI in the Properties window.
-			IWindowsFormsEditorService edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+			var edSvc = (IWindowsFormsEditorService) provider.GetService(typeof (IWindowsFormsEditorService));
 			if (edSvc != null)
 			{
 				// Display an angle selection control and retrieve the value.
-				var dropDown = new LanguagePropertyChecker(context.Instance, (string)value);
+				var dropDown = new LanguagePropertyChecker(context.Instance, (string) value);
 				edSvc.DropDownControl(dropDown);
 
 				return dropDown.FinalValues;
@@ -111,25 +106,25 @@ namespace MCSkin3D.Language
 
 		// Indicates whether the UITypeEditor supports painting a 
 		// representation of a property's value.
-		public override bool GetPaintValueSupported(System.ComponentModel.ITypeDescriptorContext context)
+		public override bool GetPaintValueSupported(ITypeDescriptorContext context)
 		{
 			return false;
 		}
 	}
 
-	internal class LanguagePropertyChecker : System.Windows.Forms.UserControl
+	internal class LanguagePropertyChecker : UserControl
 	{
-		List<CheckBox> _boxes = new List<CheckBox>();
+		private readonly List<CheckBox> _boxes = new List<CheckBox>();
 
 		public LanguagePropertyChecker(object obj, string currentValues)
 		{
-			var vals = currentValues.Split(';');
+			string[] vals = currentValues.Split(';');
 			int y = 0;
-			List<PropertyInfo> props = new List<PropertyInfo>();
+			var props = new List<PropertyInfo>();
 
-			foreach (var prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+			foreach (PropertyInfo prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
 			{
-				if (prop.PropertyType != typeof(string))
+				if (prop.PropertyType != typeof (string))
 					continue;
 
 				props.Add(prop);
@@ -139,7 +134,7 @@ namespace MCSkin3D.Language
 
 			for (int i = 0; i < props.Count; ++i)
 			{
-				CheckBox box = new CheckBox();
+				var box = new CheckBox();
 				box.Text = props[i].Name;
 				box.Location = new Point(4, y);
 				box.AutoSize = true;
@@ -161,7 +156,7 @@ namespace MCSkin3D.Language
 			{
 				string s = "";
 
-				foreach (var box in _boxes)
+				foreach (CheckBox box in _boxes)
 				{
 					if (box.Checked)
 					{
@@ -180,10 +175,12 @@ namespace MCSkin3D.Language
 	/// <summary>
 	/// Class that provides language services to Form controls.
 	/// </summary>
-	[ProvideProperty("PropertyNames", typeof(object))]
+	[ProvideProperty("PropertyNames", typeof (object))]
 	public class LanguageProvider : Component, IExtenderProvider
 	{
-		Dictionary<object, LanguageControlLink> _properties = new Dictionary<object, LanguageControlLink>();
+		private readonly Dictionary<object, LanguageControlLink> _properties = new Dictionary<object, LanguageControlLink>();
+
+		#region IExtenderProvider Members
 
 		public bool CanExtend(object extendee)
 		{
@@ -196,6 +193,8 @@ namespace MCSkin3D.Language
 			return false;
 		}
 
+		#endregion
+
 		public void LanguageChanged(Language lang)
 		{
 			foreach (var obj in _properties)
@@ -205,7 +204,7 @@ namespace MCSkin3D.Language
 
 				for (int i = 0; i < obj.Value.PropertyNames.Length; ++i)
 				{
-					var strn = obj.Value.TextNames[i];
+					string strn = obj.Value.TextNames[i];
 
 					if (lang.StringTable.ContainsKey(strn))
 						obj.Value.PropertyNames[i].SetValue(obj.Value.Object, lang.StringTable[strn], null);
@@ -228,7 +227,7 @@ namespace MCSkin3D.Language
 		}
 
 		[DefaultValue("")]
-		[Editor(typeof(LanguageEditor), typeof(UITypeEditor))]
+		[Editor(typeof (LanguageEditor), typeof (UITypeEditor))]
 		public string GetPropertyNames(object control)
 		{
 			if (!_properties.ContainsKey(control))

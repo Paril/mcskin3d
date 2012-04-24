@@ -41,13 +41,14 @@
 
 using System;
 using System.IO;
-
-#if !NETCF_1_0
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
+
+#if !NETCF_1_0
+
 #endif
 
-namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams 
+namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
 	/// <summary>
 	/// A special stream deflating or compressing the bytes that are
@@ -57,6 +58,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	public class DeflaterOutputStream : Stream
 	{
 		#region Constructors
+
 		/// <summary>
 		/// Creates a new DeflaterOutputStream with a default Deflater and default buffer size.
 		/// </summary>
@@ -67,7 +69,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			: this(baseOutputStream, new Deflater(), 512)
 		{
 		}
-		
+
 		/// <summary>
 		/// Creates a new DeflaterOutputStream with the given Deflater and
 		/// default buffer size.
@@ -82,7 +84,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			: this(baseOutputStream, deflater, 512)
 		{
 		}
-		
+
 		/// <summary>
 		/// Creates a new DeflaterOutputStream with the given Deflater and
 		/// buffer size.
@@ -107,29 +109,23 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		public DeflaterOutputStream(Stream baseOutputStream, Deflater deflater, int bufferSize)
 		{
-			if ( baseOutputStream == null ) {
-				throw new ArgumentNullException("baseOutputStream");
-			}
+			if (baseOutputStream == null) throw new ArgumentNullException("baseOutputStream");
 
-			if (baseOutputStream.CanWrite == false) {
-				throw new ArgumentException("Must support writing", "baseOutputStream");
-			}
+			if (baseOutputStream.CanWrite == false) throw new ArgumentException("Must support writing", "baseOutputStream");
 
-			if (deflater == null) {
-				throw new ArgumentNullException("deflater");
-			}
-			
-			if (bufferSize < 512) {
-				throw new ArgumentOutOfRangeException("bufferSize");
-			}
-			
+			if (deflater == null) throw new ArgumentNullException("deflater");
+
+			if (bufferSize < 512) throw new ArgumentOutOfRangeException("bufferSize");
+
 			baseOutputStream_ = baseOutputStream;
 			buffer_ = new byte[bufferSize];
 			deflater_ = deflater;
 		}
+
 		#endregion
-		
+
 		#region Public API
+
 		/// <summary>
 		/// Finishes the stream by calling finish() on the deflater. 
 		/// </summary>
@@ -139,46 +135,43 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public virtual void Finish()
 		{
 			deflater_.Finish();
-			while (!deflater_.IsFinished)  {
+			while (!deflater_.IsFinished)
+			{
 				int len = deflater_.Deflate(buffer_, 0, buffer_.Length);
-				if (len <= 0) {
-					break;
-				}
+				if (len <= 0) break;
 
 #if NETCF_1_0
 				if ( keys != null ) {
 #else
-				if (cryptoTransform_ != null) {
-#endif	
+				if (cryptoTransform_ != null)
+				{
+#endif
 					EncryptBlock(buffer_, 0, len);
 				}
-				
+
 				baseOutputStream_.Write(buffer_, 0, len);
 			}
 
-			if (!deflater_.IsFinished) {
-				throw new SharpZipBaseException("Can't deflate all input?");
-			}
+			if (!deflater_.IsFinished) throw new SharpZipBaseException("Can't deflate all input?");
 
 			baseOutputStream_.Flush();
-			
+
 #if NETCF_1_0
 			if ( keys != null ) {
 				keys = null;
 			}
 #else
-			if (cryptoTransform_ != null) {
+			if (cryptoTransform_ != null)
+			{
 #if !NET_1_1 && !NETCF_2_0
-				if (cryptoTransform_ is ZipAESTransform) {
-					AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
-				}
+				if (cryptoTransform_ is ZipAESTransform) AESAuthCode = ((ZipAESTransform) cryptoTransform_).GetAuthCode();
 #endif
 				cryptoTransform_.Dispose();
 				cryptoTransform_ = null;
 			}
-#endif			
+#endif
 		}
-		
+
 		/// <summary>
 		/// Get/set flag indicating ownership of the underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
@@ -188,47 +181,43 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			get { return isStreamOwner_; }
 			set { isStreamOwner_ = value; }
 		}
-		
+
 		///	<summary>
 		/// Allows client to determine if an entry can be patched after its added
 		/// </summary>
-		public bool CanPatchEntries {
-			get { 
-				return baseOutputStream_.CanSeek; 
-			}
+		public bool CanPatchEntries
+		{
+			get { return baseOutputStream_.CanSeek; }
 		}
-		
+
 		#endregion
-		
+
 		#region Encryption
-		
-		string password;
-		
+
+		private string password;
+
 #if NETCF_1_0
 		uint[] keys;
 #else
-		ICryptoTransform cryptoTransform_;
+		private ICryptoTransform cryptoTransform_;
 
 		/// <summary>
 		/// Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
 		/// </summary>
 		protected byte[] AESAuthCode;
 #endif
-		
+
 		/// <summary>
 		/// Get/set the password used for encryption.
 		/// </summary>
 		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
-		public string Password {
-			get { 
-				return password; 
-			}
-			set {
-				if ( (value != null) && (value.Length == 0) ) {
-					password = null;
-				} else {
-					password = value; 
-				}
+		public string Password
+		{
+			get { return password; }
+			set
+			{
+				if ((value != null) && (value.Length == 0)) password = null;
+				else password = value;
 			}
 		}
 
@@ -275,9 +264,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			for (int i = 0; i < rawPassword.Length; ++i) {
 				UpdateKeys((byte)rawPassword[i]);
 			}
-			
-#else			
-			PkzipClassicManaged pkManaged = new PkzipClassicManaged();
+
+#else
+			var pkManaged = new PkzipClassicManaged();
 			byte[] key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(password));
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 #endif
@@ -288,27 +277,28 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Initializes encryption keys based on given password.
 		/// </summary>
 		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
-											out byte[] salt, out byte[] pwdVerifier) {
+		                                     out byte[] salt, out byte[] pwdVerifier)
+		{
 			salt = new byte[entry.AESSaltLen];
 			// Salt needs to be cryptographically random, and unique per file
 			if (_aesRnd == null)
 				_aesRnd = new RNGCryptoServiceProvider();
 			_aesRnd.GetBytes(salt);
-			int blockSize = entry.AESKeySize / 8;	// bits to bytes
+			int blockSize = entry.AESKeySize / 8; // bits to bytes
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
-			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
+			pwdVerifier = ((ZipAESTransform) cryptoTransform_).PwdVerifier;
 		}
 #endif
 
 #if NETCF_1_0
 		
-		/// <summary>
-		/// Encrypt a single byte 
-		/// </summary>
-		/// <returns>
-		/// The encrypted value
-		/// </returns>
+	/// <summary>
+	/// Encrypt a single byte 
+	/// </summary>
+	/// <returns>
+	/// The encrypted value
+	/// </returns>
 		protected byte EncryptByte()
 		{
 			uint temp = ((keys[2] & 0xFFFF) | 2);
@@ -330,6 +320,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		#endregion
 
 		#region Deflation Support
+
 		/// <summary>
 		/// Deflates everything in the input buffers.  This will call
 		/// <code>def.deflate()</code> until all bytes from the input buffers
@@ -337,83 +328,71 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected void Deflate()
 		{
-			while (!deflater_.IsNeedingInput) 
+			while (!deflater_.IsNeedingInput)
 			{
 				int deflateCount = deflater_.Deflate(buffer_, 0, buffer_.Length);
-				
-				if (deflateCount <= 0) {
-					break;
-				}
+
+				if (deflateCount <= 0) break;
 #if NETCF_1_0
-				if (keys != null) 
+				if (keys != null)
 #else
-				if (cryptoTransform_ != null) 
+				if (cryptoTransform_ != null)
 #endif
-				{
 					EncryptBlock(buffer_, 0, deflateCount);
-				}
-				
+
 				baseOutputStream_.Write(buffer_, 0, deflateCount);
 			}
-			
-			if (!deflater_.IsNeedingInput) {
-				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
-			}
+
+			if (!deflater_.IsNeedingInput) throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
 		}
+
 		#endregion
-		
+
 		#region Stream Overrides
+
 		/// <summary>
 		/// Gets value indicating stream can be read from
 		/// </summary>
-		public override bool CanRead 
+		public override bool CanRead
 		{
-			get {
-				return false;
-			}
+			get { return false; }
 		}
-		
+
 		/// <summary>
 		/// Gets a value indicating if seeking is supported for this stream
 		/// This property always returns false
 		/// </summary>
-		public override bool CanSeek {
-			get {
-				return false;
-			}
+		public override bool CanSeek
+		{
+			get { return false; }
 		}
-		
+
 		/// <summary>
 		/// Get value indicating if this stream supports writing
 		/// </summary>
-		public override bool CanWrite {
-			get {
-				return baseOutputStream_.CanWrite;
-			}
+		public override bool CanWrite
+		{
+			get { return baseOutputStream_.CanWrite; }
 		}
-		
+
 		/// <summary>
 		/// Get current length of stream
 		/// </summary>
-		public override long Length {
-			get {
-				return baseOutputStream_.Length;
-			}
+		public override long Length
+		{
+			get { return baseOutputStream_.Length; }
 		}
-		
+
 		/// <summary>
 		/// Gets the current position within the stream.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any attempt to set position</exception>
-		public override long Position {
-			get {
-				return baseOutputStream_.Position;
-			}
-			set {
-				throw new NotSupportedException("Position property not supported");
-			}
+		public override long Position
+		{
+			get { return baseOutputStream_.Position; }
+			set { throw new NotSupportedException("Position property not supported"); }
 		}
-		
+
 		/// <summary>
 		/// Sets the current position of this stream to the given value. Not supported by this class!
 		/// </summary>
@@ -425,7 +404,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream Seek not supported");
 		}
-		
+
 		/// <summary>
 		/// Sets the length of this stream to the given value. Not supported by this class!
 		/// </summary>
@@ -435,7 +414,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream SetLength not supported");
 		}
-		
+
 		/// <summary>
 		/// Read a byte from stream advancing position by one
 		/// </summary>
@@ -445,7 +424,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream ReadByte not supported");
 		}
-		
+
 		/// <summary>
 		/// Read a block of bytes from stream
 		/// </summary>
@@ -458,7 +437,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream Read not supported");
 		}
-		
+
 		/// <summary>
 		/// Asynchronous reads are not supported a NotSupportedException is always thrown
 		/// </summary>
@@ -473,7 +452,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream BeginRead not currently supported");
 		}
-		
+
 		/// <summary>
 		/// Asynchronous writes arent supported, a NotSupportedException is always thrown
 		/// </summary>
@@ -488,7 +467,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("BeginWrite is not supported");
 		}
-		
+
 		/// <summary>
 		/// Flushes the stream by calling <see cref="DeflaterOutputStream.Flush">Flush</see> on the deflater and then
 		/// on the underlying stream.  This ensures that all bytes are flushed.
@@ -499,41 +478,42 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			Deflate();
 			baseOutputStream_.Flush();
 		}
-		
+
 		/// <summary>
 		/// Calls <see cref="Finish"/> and closes the underlying
 		/// stream when <see cref="IsStreamOwner"></see> is true.
 		/// </summary>
 		public override void Close()
 		{
-			if ( !isClosed_ ) {
+			if (!isClosed_)
+			{
 				isClosed_ = true;
 
-				try {
+				try
+				{
 					Finish();
 #if NETCF_1_0
 					keys=null;
 #else
-					if ( cryptoTransform_ != null ) {
+					if (cryptoTransform_ != null)
+					{
 						GetAuthCodeIfAES();
 						cryptoTransform_.Dispose();
 						cryptoTransform_ = null;
 					}
 #endif
 				}
-				finally {
-					if( isStreamOwner_ ) {
-						baseOutputStream_.Close();
-					}
+				finally
+				{
+					if (isStreamOwner_) baseOutputStream_.Close();
 				}
 			}
 		}
 
-		private void GetAuthCodeIfAES() {
+		private void GetAuthCodeIfAES()
+		{
 #if !NET_1_1 && !NETCF_2_0
-			if (cryptoTransform_ is ZipAESTransform) {
-				AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
-			}
+			if (cryptoTransform_ is ZipAESTransform) AESAuthCode = ((ZipAESTransform) cryptoTransform_).GetAuthCode();
 #endif
 		}
 
@@ -545,11 +525,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		public override void WriteByte(byte value)
 		{
-			byte[] b = new byte[1];
+			var b = new byte[1];
 			b[0] = value;
 			Write(b, 0, 1);
 		}
-		
+
 		/// <summary>
 		/// Writes bytes from an array to the compressed stream.
 		/// </summary>
@@ -566,29 +546,32 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			deflater_.SetInput(buffer, offset, count);
 			Deflate();
-		}		
+		}
+
 		#endregion
-		
+
 		#region Instance Fields
+
 		/// <summary>
 		/// This buffer is used temporarily to retrieve the bytes from the
 		/// deflater and write them to the underlying output stream.
 		/// </summary>
-		byte[] buffer_;
-		
+		private readonly byte[] buffer_;
+
 		/// <summary>
 		/// The deflater which is used to deflate the stream.
 		/// </summary>
 		protected Deflater deflater_;
-		
+
 		/// <summary>
 		/// Base stream the deflater depends on.
 		/// </summary>
 		protected Stream baseOutputStream_;
 
-		bool isClosed_;
-		
-		bool isStreamOwner_ = true;
+		private bool isClosed_;
+
+		private bool isStreamOwner_ = true;
+
 		#endregion
 
 		#region Static Fields
@@ -597,6 +580,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		// Static to help ensure that multiple files within a zip will get different random salt
 		private static RNGCryptoServiceProvider _aesRnd;
 #endif
+
 		#endregion
 	}
 }

@@ -45,6 +45,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public interface IEntryFactory
 	{
 		/// <summary>
+		/// Get/set the <see cref="INameTransform"></see> applicable.
+		/// </summary>
+		INameTransform NameTransform { get; set; }
+
+		/// <summary>
 		/// Create a <see cref="ZipEntry"/> for a file given its name
 		/// </summary>
 		/// <param name="fileName">The name of the file to create an entry for.</param>
@@ -73,10 +78,5 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="useFileSystem">If true get details from the file system for this directory if it exists.</param>
 		/// <returns>Returns a <see cref="ZipEntry">directory entry</see> based on the <paramref name="directoryName"/> passed.</returns>
 		ZipEntry MakeDirectoryEntry(string directoryName, bool useFileSystem);
-		
-		/// <summary>
-		/// Get/set the <see cref="INameTransform"></see> applicable.
-		/// </summary>
-		INameTransform NameTransform { get; set;  }
 	}
 }

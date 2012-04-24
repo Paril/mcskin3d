@@ -991,7 +991,6 @@
 			this.splitContainer1.Size = new System.Drawing.Size(1052, 644);
 			this.splitContainer1.SplitterDistance = 302;
 			this.splitContainer1.TabIndex = 4;
-			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
 			// 
 			// splitContainer3
 			// 
@@ -1055,7 +1054,6 @@
 			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-			this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
 			this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
 			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
 			// 

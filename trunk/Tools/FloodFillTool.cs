@@ -17,35 +17,38 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
-using OpenTK;
-using Paril.OpenGL;
 using MCSkin3D.lemon42;
+using OpenTK;
+using Paril.Compatibility;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
-    //Added threshold [Xylem] 09/11/2011
+	//Added threshold [Xylem] 09/11/2011
 	public class FloodFillTool : ITool
 	{
-        public float Threshold //[0-1]
-        {
-            get { return GlobalSettings.FloodFillThreshold; }
-        }
+		private Rectangle _boundBox;
+		private bool _done;
+		private byte _threshold;
+		private PixelsChangedUndoable _undo;
 
-		PixelsChangedUndoable _undo;
-		Rectangle _boundBox;
-		bool _done = false;
+		public float Threshold //[0-1]
+		{
+			get { return GlobalSettings.FloodFillThreshold; }
+		}
 
-		public void SelectedBrushChanged() { }
+		#region ITool Members
+
+		public void SelectedBrushChanged()
+		{
+		}
 
 		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
-			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"), Editor.MainForm.SelectedTool.MenuItem.Text);
+			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"),
+			                                  Editor.MainForm.SelectedTool.MenuItem.Text);
 			_boundBox = new Rectangle(0, 0, skin.Width, skin.Height);
 
 			if ((Control.ModifierKeys & Keys.Control) != 0)
@@ -58,77 +61,22 @@ namespace MCSkin3D
 		{
 		}
 
-		static bool similarColor(Color color1, Color color2, byte threshold)
-		{
-			return
-					Math.Abs((int)color1.R - (int)color2.R) <= threshold &&
-					Math.Abs((int)color1.G - (int)color2.G) <= threshold &&
-					Math.Abs((int)color1.B - (int)color2.B) <= threshold &&
-					Math.Abs((int)color1.A - (int)color2.A) <= threshold
-					;
-		}
-		//Same as similarColor, but avoids some calculations if it can; use this if threshold may be 255 or 0
-		static bool similarColor2(Color color1, Color color2, byte threshold)
-		{
-			if (threshold == 255)
-				return true;
-			else if (threshold == 0)
-			{
-				return
-						color1.R == color2.R &&
-						color1.G == color2.G &&
-						color1.B == color2.B &&
-						color1.A == color2.A
-						;
-			}
-			else
-				return similarColor(color1, color2, threshold);
-		}
-
-		byte _threshold;
-		private void recursiveFill(int x, int y, Color oldColor, ColorManager newColor, ref ColorGrabber pixels, bool[,] hitPixels, Skin skin)
-		{
-			if (!_boundBox.Contains(x, y))
-				return;
-
-			if (hitPixels[x, y])
-				return;
-
-			var c = pixels[x, y];
-			var real = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-
-			if (!similarColor2(oldColor, real, _threshold))
-				return;
-
-			if (!_undo.Points.ContainsKey(new Point(x, y)))
-				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor.RGB, 0)));
-
-			pixels[x, y] = new ColorPixel(newColor.RGB.R | (newColor.RGB.G << 8) | (newColor.RGB.B << 16) | (newColor.RGB.A << 24));
-			hitPixels[x, y] = true;
-
-            recursiveFill(x, y - 1, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x + 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
-            recursiveFill(x + 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x + 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
-            recursiveFill(x, y + 1, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x - 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
-            recursiveFill(x - 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x - 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
-		}
-
 		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (_done)
 				return false;
 
 			var curve = new BezierCurveQuadric(new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 2));
-			_threshold = (byte)((1 - (curve.CalculatePoint(Threshold)).X) * 255);//(byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255);
+			_threshold = (byte) ((1 - (curve.CalculatePoint(Threshold)).X) * 255);
+			//(byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255);
 
-			var c = pixels[x, y];
-			var oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
-			var newColor = ((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.ColorPanel.UnselectedColor : Editor.MainForm.ColorPanel.SelectedColor;
+			ColorPixel c = pixels[x, y];
+			Color oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+			ColorManager newColor = ((Control.ModifierKeys & Keys.Shift) != 0)
+			                        	? Editor.MainForm.ColorPanel.UnselectedColor
+			                        	: Editor.MainForm.ColorPanel.SelectedColor;
 
-            recursiveFill(x, y, oldColor, newColor, ref pixels, new bool[skin.Width, skin.Height], skin);
+			recursiveFill(x, y, oldColor, newColor, ref pixels, new bool[skin.Width,skin.Height], skin);
 			_done = true;
 			return true;
 		}
@@ -138,28 +86,32 @@ namespace MCSkin3D
 			if (x == -1)
 				return false;
 
-			Point highlightPoint = new Point(x, y);
+			var highlightPoint = new Point(x, y);
 			bool doHighlight = ((Control.ModifierKeys & Keys.Control) != 0);
 
 			Color newColor;
 			if (doHighlight)
 			{
-				var part = Editor.CurrentModel.GetTextureFaceBounds(highlightPoint, skin);
+				Rectangle part = Editor.CurrentModel.GetTextureFaceBounds(highlightPoint, skin);
 
 				for (int ry = part.Y; ry < part.Y + part.Height; ++ry)
+				{
 					for (int rx = part.X; rx < part.X + part.Width; ++rx)
 					{
-						var px = pixels[rx, ry];
+						ColorPixel px = pixels[rx, ry];
 						Color c = Color.FromArgb(px.Alpha, px.Red, px.Green, px.Blue);
 						Color blendMe = Color.FromArgb(64, Color.Green);
-						newColor = (Color)ColorBlending.AlphaBlend(blendMe, c);
+						newColor = (Color) ColorBlending.AlphaBlend(blendMe, c);
 
 						pixels[rx, ry] = new ColorPixel((newColor.R << 0) | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 					}
-
+				}
 			}
 
-			newColor = (((Control.ModifierKeys & Keys.Shift) != 0) ? Editor.MainForm.ColorPanel.UnselectedColor : Editor.MainForm.ColorPanel.SelectedColor).RGB;
+			newColor =
+				(((Control.ModifierKeys & Keys.Shift) != 0)
+				 	? Editor.MainForm.ColorPanel.UnselectedColor
+				 	: Editor.MainForm.ColorPanel.SelectedColor).RGB;
 			pixels[x, y] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 			return true;
 		}
@@ -178,6 +130,68 @@ namespace MCSkin3D
 		public string GetStatusLabelText()
 		{
 			return Editor.GetLanguageString("T_FILL");
+		}
+
+		#endregion
+
+		private static bool similarColor(Color color1, Color color2, byte threshold)
+		{
+			return
+				Math.Abs(color1.R - color2.R) <= threshold &&
+				Math.Abs(color1.G - color2.G) <= threshold &&
+				Math.Abs(color1.B - color2.B) <= threshold &&
+				Math.Abs(color1.A - color2.A) <= threshold
+				;
+		}
+
+		//Same as similarColor, but avoids some calculations if it can; use this if threshold may be 255 or 0
+		private static bool similarColor2(Color color1, Color color2, byte threshold)
+		{
+			if (threshold == 255)
+				return true;
+			else if (threshold == 0)
+			{
+				return
+					color1.R == color2.R &&
+					color1.G == color2.G &&
+					color1.B == color2.B &&
+					color1.A == color2.A
+					;
+			}
+			else
+				return similarColor(color1, color2, threshold);
+		}
+
+		private void recursiveFill(int x, int y, Color oldColor, ColorManager newColor, ref ColorGrabber pixels,
+		                           bool[,] hitPixels, Skin skin)
+		{
+			if (!_boundBox.Contains(x, y))
+				return;
+
+			if (hitPixels[x, y])
+				return;
+
+			ColorPixel c = pixels[x, y];
+			Color real = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+
+			if (!similarColor2(oldColor, real, _threshold))
+				return;
+
+			if (!_undo.Points.ContainsKey(new Point(x, y)))
+				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor.RGB, 0)));
+
+			pixels[x, y] =
+				new ColorPixel(newColor.RGB.R | (newColor.RGB.G << 8) | (newColor.RGB.B << 16) | (newColor.RGB.A << 24));
+			hitPixels[x, y] = true;
+
+			recursiveFill(x, y - 1, oldColor, newColor, ref pixels, hitPixels, skin);
+			//recursiveFill(x + 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
+			recursiveFill(x + 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
+			//recursiveFill(x + 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
+			recursiveFill(x, y + 1, oldColor, newColor, ref pixels, hitPixels, skin);
+			//recursiveFill(x - 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
+			recursiveFill(x - 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
+			//recursiveFill(x - 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
 		}
 	}
 }

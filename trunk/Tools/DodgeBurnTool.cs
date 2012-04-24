@@ -16,12 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Paril.Compatibility;
 using System.Windows.Forms;
 using Paril.OpenGL;
 
@@ -37,8 +32,9 @@ namespace MCSkin3D
 		public override Color BlendColor(Color l, Color r)
 		{
 			bool ctrlIng = (Control.ModifierKeys & Keys.Shift) != 0;
-			bool switchTools = (!Editor.MainForm.DodgeBurnOptions.Inverted && ctrlIng) || (Editor.MainForm.DodgeBurnOptions.Inverted && !ctrlIng);
-			var mod = l.A / 255.0f;
+			bool switchTools = (!Editor.MainForm.DodgeBurnOptions.Inverted && ctrlIng) ||
+			                   (Editor.MainForm.DodgeBurnOptions.Inverted && !ctrlIng);
+			float mod = l.A / 255.0f;
 
 			if (switchTools)
 				return Color.FromArgb(ColorBlending.Burn(r, 1 - ((GlobalSettings.DodgeBurnExposure * mod) / 10.0f)).ToArgb());

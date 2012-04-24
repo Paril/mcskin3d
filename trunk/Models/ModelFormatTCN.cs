@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Paril.OpenGL;
-using OpenTK;
-using System.Xml;
 using System.IO;
+using System.Xml;
+using ICSharpCode.SharpZipLib.Zip;
+using OpenTK;
+using Paril.OpenGL;
 
 namespace MCSkin3D.Models
 {
-	class TCNRenderBase
+	internal class TCNRenderBase
 	{
 		public bool IsMirrored;
 		public Vector3 Offset;
+		public ModelPart Part;
 		public Vector3 Position;
 		public Vector3 Rotation;
-		public Vector3 Size;
 		public float Scale;
+		public Vector3 Size;
 		public Vector2 TextureOffset;
-		public ModelPart Part;
 
 		public virtual void Parse(XmlNode node)
 		{
@@ -43,12 +42,12 @@ namespace MCSkin3D.Models
 				else if (name == "textureoffset")
 					TextureOffset = Mesh.StringToVertex2(child.InnerText);
 				else if (name == "part")
-					Part = (ModelPart)Enum.Parse(typeof(ModelPart), child.InnerText);
+					Part = (ModelPart) Enum.Parse(typeof (ModelPart), child.InnerText);
 			}
 		}
 	}
 
-	class TCNRenderBox : TCNRenderBase
+	internal class TCNRenderBox : TCNRenderBase
 	{
 		public bool IsDecorative;
 		public bool IsFixed;
@@ -69,7 +68,7 @@ namespace MCSkin3D.Models
 		}
 	}
 
-	class TCNRenderPlane : TCNRenderBase
+	internal class TCNRenderPlane : TCNRenderBase
 	{
 		public int Side;
 
@@ -87,18 +86,17 @@ namespace MCSkin3D.Models
 		}
 	}
 
-	class TCNShape
+	internal class TCNShape
 	{
-		public string type;
-		public string name;
-
+		private static readonly Dictionary<string, Type> _guidMap = new Dictionary<string, Type>();
 		public TCNRenderBase RenderData;
+		public string name;
+		public string type;
 
-		static Dictionary<string, Type> _guidMap = new Dictionary<string, Type>();
 		static TCNShape()
 		{
-			_guidMap.Add("d9e621f7-957f-4b77-b1ae-20dcd0da7751", typeof(TCNRenderBox));
-			_guidMap.Add("ab894c83-e399-4236-808b-25a78d56f5e1", typeof(TCNRenderPlane));
+			_guidMap.Add("d9e621f7-957f-4b77-b1ae-20dcd0da7751", typeof (TCNRenderBox));
+			_guidMap.Add("ab894c83-e399-4236-808b-25a78d56f5e1", typeof (TCNRenderPlane));
 		}
 
 		public void Parse(XmlNode node)
@@ -115,18 +113,18 @@ namespace MCSkin3D.Models
 
 			if (_guidMap.TryGetValue(type, out renderType))
 			{
-				RenderData = (TCNRenderBase)renderType.GetConstructors()[0].Invoke(null);
+				RenderData = (TCNRenderBase) renderType.GetConstructors()[0].Invoke(null);
 				RenderData.Parse(node);
 			}
 		}
 	}
 
-	class TCNFolder
+	internal class TCNFolder
 	{
-		public string type;
 		public string Name;
 
 		public List<TCNShape> Shapes = new List<TCNShape>();
+		public string type;
 
 		public void Parse(XmlNode node)
 		{
@@ -144,7 +142,7 @@ namespace MCSkin3D.Models
 
 				if (name == "shape")
 				{
-					TCNShape shape = new TCNShape();
+					var shape = new TCNShape();
 					shape.Parse(child);
 					Shapes.Add(shape);
 				}
@@ -152,9 +150,8 @@ namespace MCSkin3D.Models
 		}
 	}
 
-	class TCNModel
+	internal class TCNModel
 	{
-		public string texture;
 		public string BaseClass;
 
 		public List<TCNFolder> Geometry = new List<TCNFolder>();
@@ -162,6 +159,7 @@ namespace MCSkin3D.Models
 		public Vector3 GlScale;
 		public string Name;
 		public Vector2 TextureSize;
+		public string texture;
 
 		public void Parse(XmlNode node)
 		{
@@ -183,7 +181,7 @@ namespace MCSkin3D.Models
 					{
 						if (folderChild.Name.ToLower() == "folder")
 						{
-							TCNFolder folder = new TCNFolder();
+							var folder = new TCNFolder();
 							folder.Parse(folderChild);
 							Geometry.Add(folder);
 						}
@@ -199,9 +197,8 @@ namespace MCSkin3D.Models
 		}
 	}
 
-	class TCNFile
+	internal class TCNFile
 	{
-		public string Version;
 		public string Author;
 		public string DateCreated;
 		public string Description;
@@ -212,6 +209,7 @@ namespace MCSkin3D.Models
 		public string PreviewImage;
 		public string ProjectName;
 		public string ProjectType;
+		public string Version;
 
 		public void Parse(XmlNode node)
 		{
@@ -240,7 +238,7 @@ namespace MCSkin3D.Models
 					{
 						if (modelChild.Name.ToLower() == "model")
 						{
-							TCNModel model = new TCNModel();
+							var model = new TCNModel();
 							model.Parse(modelChild);
 							Models.Add(model);
 						}
@@ -259,37 +257,39 @@ namespace MCSkin3D.Models
 
 		public Model Convert()
 		{
-			MCSkin3D.ModelLoader.ModelBase mb = new ModelLoader.ModelBase();
+			var mb = new ModelLoader.ModelBase();
 
-			foreach (var x in Models)
+			foreach (TCNModel x in Models)
 			{
-				foreach (var y in x.Geometry)
+				foreach (TCNFolder y in x.Geometry)
 				{
-					foreach (var z in y.Shapes)
+					foreach (TCNShape z in y.Shapes)
 					{
-						mb.textureWidth = (int)x.TextureSize.X;
-						mb.textureHeight = (int)x.TextureSize.Y;
+						mb.textureWidth = (int) x.TextureSize.X;
+						mb.textureHeight = (int) x.TextureSize.Y;
 
 						if (z.RenderData == null)
 							continue;
 
 						if (z.RenderData is TCNRenderBox)
 						{
-							var box = (TCNRenderBox)z.RenderData;
+							var box = (TCNRenderBox) z.RenderData;
 
-							MCSkin3D.ModelLoader.ModelRenderer renderer = new ModelLoader.ModelRenderer(mb, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, box.Part);
+							var renderer = new ModelLoader.ModelRenderer(mb, (int) box.TextureOffset.X, (int) box.TextureOffset.Y, box.Part);
 							renderer.setRotationPoint(box.Offset.X, box.Offset.Y, box.Offset.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
 							renderer.mirror = box.IsMirrored;
-							renderer.addBox(z.name, box.Position.X, box.Position.Y, box.Position.Z, (int)box.Size.X, (int)box.Size.Y, (int)box.Size.Z, box.Scale);
+							renderer.addBox(z.name, box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+							                (int) box.Size.Z, box.Scale);
 						}
 						else if (z.RenderData is TCNRenderPlane)
 						{
-							var box = (TCNRenderPlane)z.RenderData;
+							var box = (TCNRenderPlane) z.RenderData;
 
-							MCSkin3D.ModelLoader.PlaneRenderer renderer = new ModelLoader.PlaneRenderer(mb, z.name, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, box.Part);
+							var renderer = new ModelLoader.PlaneRenderer(mb, z.name, (int) box.TextureOffset.X, (int) box.TextureOffset.Y,
+							                                             box.Part);
 							renderer.setRotationPoint(box.Offset.X, box.Offset.Y, box.Offset.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
@@ -299,13 +299,16 @@ namespace MCSkin3D.Models
 							switch (box.Side)
 							{
 								case 0:
-									renderer.addBackPlane(box.Position.X, box.Position.Y, box.Position.Z, (int)box.Size.X, (int)box.Size.Y, (int)box.Size.Z, box.Scale);
+									renderer.addBackPlane(box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+									                      (int) box.Size.Z, box.Scale);
 									break;
 								case 1:
-									renderer.addSidePlane(box.Position.X, box.Position.Y, box.Position.Z, (int)box.Size.X, (int)box.Size.Y, (int)box.Size.Z, box.Scale);
+									renderer.addSidePlane(box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+									                      (int) box.Size.Z, box.Scale);
 									break;
 								case 2:
-									renderer.addTopPlane(box.Position.X, box.Position.Y, box.Position.Z, (int)box.Size.X, (int)box.Size.Y, (int)box.Size.Z, box.Scale);
+									renderer.addTopPlane(box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+									                     (int) box.Size.Z, box.Scale);
 									break;
 							}
 						}
@@ -313,20 +316,22 @@ namespace MCSkin3D.Models
 				}
 			}
 
-			return mb.Compile(Name, 1, (int)Models[0].TextureSize.X, (int)Models[0].TextureSize.Y);
+			return mb.Compile(Name, 1, (int) Models[0].TextureSize.X, (int) Models[0].TextureSize.Y);
 		}
 	}
 
 	public class ModelFormatTCN : IModelFormat
 	{
+		#region IModelFormat Members
+
 		public Model Load(string fileName)
 		{
-			XmlDocument document = new XmlDocument();
+			var document = new XmlDocument();
 
 			if (fileName.EndsWith(".tcn"))
 			{
-				ICSharpCode.SharpZipLib.Zip.ZipFile file = new ICSharpCode.SharpZipLib.Zip.ZipFile(new FileStream(fileName, FileMode.Open, FileAccess.Read));
-				var model = file.GetEntry("model.xml");
+				var file = new ZipFile(new FileStream(fileName, FileMode.Open, FileAccess.Read));
+				ZipEntry model = file.GetEntry("model.xml");
 
 				document.Load(file.GetInputStream(model));
 			}
@@ -335,10 +340,12 @@ namespace MCSkin3D.Models
 			else
 				throw new FileLoadException();
 
-			TCNFile tcnModel = new TCNFile();
+			var tcnModel = new TCNFile();
 			tcnModel.Parse(document.DocumentElement);
 
 			return tcnModel.Convert();
 		}
+
+		#endregion
 	}
 }

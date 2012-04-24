@@ -1,31 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using BrightIdeasSoftware;
-using System.Xml;
 using System.IO;
-using System.Threading;
 using System.Net;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using System.Collections;
+using System.Xml;
+using BrightIdeasSoftware;
 
 namespace MCSkin3D.UpdateSystem
 {
 	public partial class Updater : Form
 	{
-		public string UpdateXMLURL { get; set; }
-
-		public List<Guid> InstalledUpdates
-		{
-			get;
-			set;
-		}
+		private static readonly ImageList _updateImages = new ImageList();
+		private static readonly string _tempDirectory = Environment.ExpandEnvironmentVariables("%temp%");
+		private static readonly string _mcskin3dTemp = _tempDirectory + '\\' + "mcskin3d";
+		private static readonly object lockObj = new object();
+		private Thread _updateThread;
+		private List<UpdateItem> _updates;
 
 		public Updater()
 		{
@@ -39,42 +34,24 @@ namespace MCSkin3D.UpdateSystem
 
 			InstalledUpdates = new List<Guid>();
 			if (installedUpdatesFiles != null)
-				using (StreamReader sr = new StreamReader(installedUpdatesFiles))
+			{
+				using (var sr = new StreamReader(installedUpdatesFiles))
 					InstalledUpdates.Add(new Guid(sr.ReadLine()));
+			}
 		}
+
+		public string UpdateXMLURL { get; set; }
+
+		public List<Guid> InstalledUpdates { get; set; }
 
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 		}
 
-		class UpdateItem : IComparable<UpdateItem>
-		{
-			public string Name { get; set; }
-			public string Information { get; set; }
-			public string Size { get; set; }
-			public string Date { get; set; }
-			public string Group { get; set; }
-			public bool IsChecked { get; set; }
-			public string DownloadURL { get; set; }
-			public string GroupImageURL { get; set; }
-			public int Progress { get; set; }
-			public DateTime RealDate { get; set; }
-			public Guid Guid { get; set; }
-
-			public int ImageIndex { get; set; }
-
-			public UpdateItem() { }
-
-			public int CompareTo(UpdateItem item)
-			{
-				return RealDate.CompareTo(item.RealDate);
-			}
-		}
-
 		// FIXME: RSS instead?
-		static List<UpdateItem> LoadUpdates(XmlDocument document)
+		private static List<UpdateItem> LoadUpdates(XmlDocument document)
 		{
-			List<UpdateItem> items = new List<UpdateItem>();
+			var items = new List<UpdateItem>();
 
 			if (document.DocumentElement.Name.ToLower() == "updates")
 			{
@@ -83,7 +60,7 @@ namespace MCSkin3D.UpdateSystem
 					if (x.Name.ToLower() != "update")
 						continue;
 
-					UpdateItem item = new UpdateItem();
+					var item = new UpdateItem();
 
 					foreach (XmlNode subNode in x.ChildNodes)
 					{
@@ -97,7 +74,7 @@ namespace MCSkin3D.UpdateSystem
 						{
 							item.Date = subNode.InnerText;
 
-							string[] data = item.Date.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+							string[] data = item.Date.Split(new[] {'-'}, StringSplitOptions.RemoveEmptyEntries);
 							int month = int.Parse(data[0]);
 							int day = int.Parse(data[1]);
 							int year = int.Parse(data[2]);
@@ -123,22 +100,16 @@ namespace MCSkin3D.UpdateSystem
 			return items;
 		}
 
-		List<UpdateItem> _updates = null;
-		Thread _updateThread = null;
-		static ImageList _updateImages = new ImageList();
-		static readonly string _tempDirectory = Environment.ExpandEnvironmentVariables("%temp%");
-		static readonly string _mcskin3dTemp = _tempDirectory + '\\' + "mcskin3d";
-
-		void GetUpdateData()
+		private void GetUpdateData()
 		{
-			WebClient client = new WebClient();
-			XmlDocument doc = new XmlDocument();
+			var client = new WebClient();
+			var doc = new XmlDocument();
 
 			_updateImages.ColorDepth = ColorDepth.Depth32Bit;
 
-			using (MemoryStream ms = new MemoryStream())
+			using (var ms = new MemoryStream())
 			{
-				var data = client.DownloadData(UpdateXMLURL);
+				byte[] data = client.DownloadData(UpdateXMLURL);
 				ms.Write(data, 0, data.Length);
 
 				ms.Position = 0;
@@ -148,15 +119,12 @@ namespace MCSkin3D.UpdateSystem
 			}
 
 			_updates = LoadUpdates(doc);
-			_updates.RemoveAll(delegate(UpdateItem item)
-			{
-				return InstalledUpdates.Contains(item.Guid);
-			});
+			_updates.RemoveAll(delegate(UpdateItem item) { return InstalledUpdates.Contains(item.Guid); });
 			_updates.Sort();
 
-			List<string> fileNames = new List<string>();
+			var fileNames = new List<string>();
 
-			foreach (var u in _updates)
+			foreach (UpdateItem u in _updates)
 			{
 				string url = u.GroupImageURL;
 				string fileName = Path.GetFileName(url);
@@ -164,7 +132,7 @@ namespace MCSkin3D.UpdateSystem
 				if (!Directory.Exists(_mcskin3dTemp))
 					Directory.CreateDirectory(_mcskin3dTemp);
 
-				var fileDir = _mcskin3dTemp + '\\' + fileName;
+				string fileDir = _mcskin3dTemp + '\\' + fileName;
 
 				if (!File.Exists(fileDir))
 					client.DownloadFile(url, fileDir);
@@ -178,16 +146,18 @@ namespace MCSkin3D.UpdateSystem
 				u.ImageIndex = fileNames.IndexOf(fileDir);
 			}
 
-			Invoke((Action)UpdateFinished);
+			Invoke((Action) UpdateFinished);
 		}
 
-		void UpdateFinished()
+		private void UpdateFinished()
 		{
 			objectListView1.SmallImageList = objectListView1.LargeImageList = _updateImages;
 
 			objectListView1.BeginUpdate();
 			objectListView1.SetObjects(_updates);
-			objectListView1.Columns[1].Width = objectListView1.Width - (objectListView1.Columns[0].Width + objectListView1.Columns[2].Width + objectListView1.Columns[3].Width) - 4;
+			objectListView1.Columns[1].Width = objectListView1.Width -
+			                                   (objectListView1.Columns[0].Width + objectListView1.Columns[2].Width +
+			                                    objectListView1.Columns[3].Width) - 4;
 			objectListView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			objectListView1.EndUpdate();
 			objectListView1.Sort(3);
@@ -197,31 +167,29 @@ namespace MCSkin3D.UpdateSystem
 			panel2.Visible = false;
 		}
 
-		static readonly object lockObj = new object();
-
-		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+		private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
 			lock (lockObj)
 				Monitor.Pulse(lockObj);
 		}
 
-		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+		private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			Invoke((Action)delegate()
-			{
-				((UpdateItem)e.UserState).Progress = e.ProgressPercentage;
-				objectListView1.RedrawItems(0, _updates.Count - 1, false);
-			});
+			Invoke((Action) delegate
+			                {
+			                	((UpdateItem) e.UserState).Progress = e.ProgressPercentage;
+			                	objectListView1.RedrawItems(0, _updates.Count - 1, false);
+			                });
 		}
 
-		void DownloadUpdateData()
+		private void DownloadUpdateData()
 		{
-			WebClient client = new WebClient();
+			var client = new WebClient();
 
-			client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-			client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+			client.DownloadProgressChanged += client_DownloadProgressChanged;
+			client.DownloadFileCompleted += client_DownloadFileCompleted;
 
-			foreach (var u in _updates)
+			foreach (UpdateItem u in _updates)
 			{
 				if (!objectListView1.IsChecked(u))
 					continue;
@@ -233,7 +201,7 @@ namespace MCSkin3D.UpdateSystem
 				if (!Directory.Exists(_mcskin3dTemp))
 					Directory.CreateDirectory(_mcskin3dTemp);
 
-				var fileDir = _mcskin3dTemp + '\\' + fileName;
+				string fileDir = _mcskin3dTemp + '\\' + fileName;
 
 				client.DownloadFileAsync(new Uri(url), fileDir, u);
 
@@ -241,11 +209,11 @@ namespace MCSkin3D.UpdateSystem
 					Monitor.Wait(lockObj);
 			}
 
-			Invoke((Action)delegate()
-			{
-				DialogResult = DialogResult.OK;
-				Close();
-			});
+			Invoke((Action) delegate
+			                {
+			                	DialogResult = DialogResult.OK;
+			                	Close();
+			                });
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -276,55 +244,66 @@ namespace MCSkin3D.UpdateSystem
 
 			olvColumn5.Renderer = new BarRenderer(0, 100);
 
-			foreach (var c in objectListView1.Columns)
+			foreach (object c in objectListView1.Columns)
 			{
-				OLVColumn col = (OLVColumn)c;
+				var col = (OLVColumn) c;
 
-				col.GroupKeyGetter = delegate(object row)
-				{
-					return ((UpdateItem)row).Group;
-				};
+				col.GroupKeyGetter = delegate(object row) { return ((UpdateItem) row).Group; };
 
-				col.GroupKeyToTitleConverter = delegate(object key)
-				{
-					return (string)key;
-				};
+				col.GroupKeyToTitleConverter = delegate(object key) { return (string) key; };
 			}
 
 			objectListView1.AllColumns[0].RendererDelegate = delegate(EventArgs args, Graphics g, Rectangle r, Object rowObject)
-			{
-				g.FillRectangle(new SolidBrush(objectListView1.BackColor), new Rectangle(r.X - 1, r.Y - 1, objectListView1.Width, r.Height + 2));
+			                                                 {
+			                                                 	g.FillRectangle(new SolidBrush(objectListView1.BackColor),
+			                                                 	                new Rectangle(r.X - 1, r.Y - 1,
+			                                                 	                              objectListView1.Width, r.Height + 2));
 
-				DrawListViewSubItemEventArgs realArgs = (DrawListViewSubItemEventArgs)args;
+			                                                 	var realArgs = (DrawListViewSubItemEventArgs) args;
 
-				/*if ((realArgs.ItemState & ListViewItemStates.Selected) != 0)
+			                                                 	/*if ((realArgs.ItemState & ListViewItemStates.Selected) != 0)
 				{
 					using (var brush = new SolidBrush(SystemColors.Highlight))
 						g.FillRectangle(brush, r.X - 1, r.Y, r.Width + 2, r.Height);
 				}*/
 
-				bool isHot = objectListView1.HotRowIndex == realArgs.ItemIndex && objectListView1.PointToClient(Cursor.Position).X < r.X + 5 + 17;
+			                                                 	bool isHot = objectListView1.HotRowIndex == realArgs.ItemIndex &&
+			                                                 	             objectListView1.PointToClient(Cursor.Position).X <
+			                                                 	             r.X + 5 + 17;
 
-				CheckBoxRenderer.DrawCheckBox(g, new Point(r.X + 5, r.Y + 2), realArgs.Item.Checked ? (isHot ? CheckBoxState.CheckedHot : CheckBoxState.CheckedNormal) : (isHot ? CheckBoxState.UncheckedHot : CheckBoxState.UncheckedNormal));
+			                                                 	CheckBoxRenderer.DrawCheckBox(g, new Point(r.X + 5, r.Y + 2),
+			                                                 	                              realArgs.Item.Checked
+			                                                 	                              	? (isHot
+			                                                 	                              	   	? CheckBoxState.CheckedHot
+			                                                 	                              	   	: CheckBoxState.CheckedNormal)
+			                                                 	                              	: (isHot
+			                                                 	                              	   	? CheckBoxState.UncheckedHot
+			                                                 	                              	   	: CheckBoxState.UncheckedNormal));
 
-				g.DrawImage(realArgs.Item.ImageList.Images[((UpdateItem)rowObject).ImageIndex], new Point(r.X + 24, r.Y));
+			                                                 	g.DrawImage(
+			                                                 		realArgs.Item.ImageList.Images[((UpdateItem) rowObject).ImageIndex
+			                                                 			], new Point(r.X + 24, r.Y));
 
-				TextRenderer.DrawText(g, realArgs.Item.Text, Font, new Rectangle(r.X + 24 + 16, r.Y, r.Width - (24 + 16), r.Height), SystemColors.ControlText,
-					TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
+			                                                 	TextRenderer.DrawText(g, realArgs.Item.Text, Font,
+			                                                 	                      new Rectangle(r.X + 24 + 16, r.Y,
+			                                                 	                                    r.Width - (24 + 16), r.Height),
+			                                                 	                      SystemColors.ControlText,
+			                                                 	                      TextFormatFlags.Left |
+			                                                 	                      TextFormatFlags.VerticalCenter);
 
-				return true;
-			};
+			                                                 	return true;
+			                                                 };
 
 			objectListView1.CheckedAspectName = "IsChecked";
 			objectListView1.EndUpdate();
 		}
 
 
-		void objectListView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+		private void objectListView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
 		{
 		}
 
-		void objectListView1_DrawItem(object sender, DrawListViewItemEventArgs e)
+		private void objectListView1_DrawItem(object sender, DrawListViewItemEventArgs e)
 		{
 		}
 
@@ -333,5 +312,35 @@ namespace MCSkin3D.UpdateSystem
 			DialogResult = DialogResult.Cancel;
 			Close();
 		}
+
+		#region Nested type: UpdateItem
+
+		private class UpdateItem : IComparable<UpdateItem>
+		{
+			public string Name { get; set; }
+			public string Information { get; set; }
+			public string Size { get; set; }
+			public string Date { get; set; }
+			public string Group { get; set; }
+			public bool IsChecked { get; set; }
+			public string DownloadURL { get; set; }
+			public string GroupImageURL { get; set; }
+			public int Progress { get; set; }
+			public DateTime RealDate { get; set; }
+			public Guid Guid { get; set; }
+
+			public int ImageIndex { get; set; }
+
+			#region IComparable<UpdateItem> Members
+
+			public int CompareTo(UpdateItem item)
+			{
+				return RealDate.CompareTo(item.RealDate);
+			}
+
+			#endregion
+		}
+
+		#endregion
 	}
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Paril.OpenGL;
+﻿using Paril.OpenGL;
 
 namespace MCSkin3D.Models
 {

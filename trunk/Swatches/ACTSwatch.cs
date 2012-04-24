@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 using System.IO;
-using System.Drawing;
-using MiscUtil.IO;
 using MiscUtil.Conversion;
+using MiscUtil.IO;
 
 namespace MCSkin3D.Swatches
 {
@@ -18,7 +14,8 @@ namespace MCSkin3D.Swatches
 
 		public override void Load()
 		{
-			using (EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Little, File.Open(FilePath, FileMode.Open, FileAccess.Read)))
+			using (
+				var reader = new EndianBinaryReader(EndianBitConverter.Little, File.Open(FilePath, FileMode.Open, FileAccess.Read)))
 			{
 				while ((reader.BaseStream.Length - reader.BaseStream.Position) >= 3)
 				{
@@ -33,13 +30,15 @@ namespace MCSkin3D.Swatches
 
 		public override void Save()
 		{
-			using (EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Little, File.Open(FilePath, FileMode.Create, FileAccess.Write)))
+			using (
+				var writer = new EndianBinaryWriter(EndianBitConverter.Little,
+				                                    File.Open(FilePath, FileMode.Create, FileAccess.Write)))
 			{
-				foreach (var c in this)
+				foreach (NamedColor c in this)
 				{
-					writer.Write((byte)c.Color.R);
-					writer.Write((byte)c.Color.G);
-					writer.Write((byte)c.Color.B);
+					writer.Write(c.Color.R);
+					writer.Write(c.Color.G);
+					writer.Write(c.Color.B);
 				}
 			}
 		}

@@ -16,21 +16,18 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Paril.Settings;
 using System.ComponentModel;
-using Paril.Settings.Serializers;
-using System.Security.Cryptography;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Security.Cryptography;
+using Paril.Settings;
+using Paril.Settings.Serializers;
 
 namespace MCSkin3D
 {
 	public static class GlobalSettings
 	{
+		private static Settings Settings;
+
 		[Savable]
 		public static bool Animate { get; set; }
 
@@ -61,12 +58,12 @@ namespace MCSkin3D
 
 		[Savable]
 		[DefaultValue("")]
-		[TypeSerializer(typeof(PasswordSerializer<AesManaged>), false)]
+		[TypeSerializer(typeof (PasswordSerializer<AesManaged>), false)]
 		public static string LastPassword { get; set; }
 
 		[Savable]
 		[DefaultValue(TransparencyMode.Helmet)]
-		[TypeSerializer(typeof(EnumSerializer<TransparencyMode>), true)]
+		[TypeSerializer(typeof (EnumSerializer<TransparencyMode>), true)]
 		public static TransparencyMode Transparency { get; set; }
 
 		[Savable]
@@ -87,7 +84,7 @@ namespace MCSkin3D
 
 		[Savable]
 		[DefaultValue("135 206 235 255")]
-		[TypeSerializer(typeof(ColorSerializer), true)]
+		[TypeSerializer(typeof (ColorSerializer), true)]
 		public static Color BackgroundColor { get; set; }
 
 		[Savable]
@@ -119,8 +116,8 @@ namespace MCSkin3D
 		[DefaultValue(0.20f)]
 		public static float NoiseSaturation { get; set; }
 
-        [Savable]
-        public static string LanguageFile { get; set; }
+		[Savable]
+		public static string LanguageFile { get; set; }
 
 		[Savable]
 		[DefaultValue(24)]
@@ -135,7 +132,7 @@ namespace MCSkin3D
 
 		[Savable]
 		[DefaultValue("Skins\\")]
-		[TypeSerializer(typeof(StringArraySerializer), true)]
+		[TypeSerializer(typeof (StringArraySerializer), true)]
 		public static string[] SkinDirectories { get; set; }
 
 		[Savable]
@@ -144,12 +141,12 @@ namespace MCSkin3D
 
 		[Savable]
 		[DefaultValue("255 255 255 255")]
-		[TypeSerializer(typeof(ColorSerializer), true)]
+		[TypeSerializer(typeof (ColorSerializer), true)]
 		public static Color DynamicOverlayLineColor { get; set; }
 
 		[Savable]
 		[DefaultValue("255 255 255 255")]
-		[TypeSerializer(typeof(ColorSerializer), true)]
+		[TypeSerializer(typeof (ColorSerializer), true)]
 		public static Color DynamicOverlayTextColor { get; set; }
 
 		[Savable]
@@ -162,7 +159,7 @@ namespace MCSkin3D
 
 		[Savable]
 		[DefaultValue("255 255 255 127")]
-		[TypeSerializer(typeof(ColorSerializer), true)]
+		[TypeSerializer(typeof (ColorSerializer), true)]
 		public static Color DynamicOverlayGridColor { get; set; }
 
 		[Savable]
@@ -173,14 +170,12 @@ namespace MCSkin3D
 		[DefaultValue(false)]
 		public static bool RenderBenchmark { get; set; }
 
-		static Settings Settings = null;
-
 		public static bool Load()
 		{
 			try
 			{
 				Settings = new Settings();
-				Settings.Structures.Add(typeof(GlobalSettings));
+				Settings.Structures.Add(typeof (GlobalSettings));
 				Settings.Load("settings.ini");
 				return true;
 			}

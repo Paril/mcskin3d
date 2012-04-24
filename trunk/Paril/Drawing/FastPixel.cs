@@ -17,224 +17,229 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace Paril.Drawing
 {
-    public class FastPixel : IDisposable
-    {
-        private byte[] rgbValues = null;
-        private BitmapData bmpData;
-        private IntPtr bmpPtr;
-        private bool locked = false;
+	public class FastPixel : IDisposable
+	{
+		private readonly bool _autoRelease;
+		private readonly Bitmap _bitmap;
+		private readonly int _height;
+		private readonly bool _isAlpha;
+		private readonly int _width;
+		private BitmapData bmpData;
+		private IntPtr bmpPtr;
+		private bool locked;
+		private byte[] rgbValues;
 
-        private bool _isAlpha = false;
-        private Bitmap _bitmap;
-        private int _width;
-        private int _height;
+		public FastPixel(Bitmap bitmap)
+		{
+			if (bitmap == null)
+				throw new ArgumentException("FastPixel with no bitmap");
+			if ((bitmap.PixelFormat == (bitmap.PixelFormat | PixelFormat.Indexed)))
+				throw new ArgumentException("Cannot lock an Indexed image.");
+			_bitmap = bitmap;
+			_isAlpha = (Bitmap.PixelFormat == (Bitmap.PixelFormat | PixelFormat.Alpha));
+			_width = bitmap.Width;
+			_height = bitmap.Height;
+			_autoRelease = false;
+		}
 
-        private bool _autoRelease = false;
+		public FastPixel(Bitmap bitmap, bool autoRelease)
+		{
+			if (bitmap == null)
+				throw new ArgumentException("FastPixel with no bitmap");
+			if ((bitmap.PixelFormat == (bitmap.PixelFormat | PixelFormat.Indexed)))
+				throw new ArgumentException("Cannot lock an Indexed image.");
+			_bitmap = bitmap;
+			_isAlpha = (Bitmap.PixelFormat == (Bitmap.PixelFormat | PixelFormat.Alpha));
+			_width = bitmap.Width;
+			_height = bitmap.Height;
+			_autoRelease = autoRelease;
 
-        public int Width
-        {
-            get { return this._width; }
-        }
-        public int Height
-        {
-            get { return this._height; }
-        }
-        public bool IsAlphaBitmap
-        {
-            get { return this._isAlpha; }
-        }
-        public Bitmap Bitmap
-        {
-            get { return this._bitmap; }
-        }
+			Lock();
+		}
 
-        public FastPixel(Bitmap bitmap)
-        {
-            if (bitmap == null)
-                throw new ArgumentException("FastPixel with no bitmap");
-            if ((bitmap.PixelFormat == (bitmap.PixelFormat | PixelFormat.Indexed)))
-                throw new ArgumentException("Cannot lock an Indexed image.");
-            this._bitmap = bitmap;
-            this._isAlpha = (this.Bitmap.PixelFormat == (this.Bitmap.PixelFormat | PixelFormat.Alpha));
-            this._width = bitmap.Width;
-            this._height = bitmap.Height;
-            _autoRelease = false;
-        }
+		public int Width
+		{
+			get { return _width; }
+		}
 
-        public FastPixel(Bitmap bitmap, bool autoRelease)
-        {
-            if (bitmap == null)
-                throw new ArgumentException("FastPixel with no bitmap");
-            if ((bitmap.PixelFormat == (bitmap.PixelFormat | PixelFormat.Indexed)))
-                throw new ArgumentException("Cannot lock an Indexed image.");
-            this._bitmap = bitmap;
-            this._isAlpha = (this.Bitmap.PixelFormat == (this.Bitmap.PixelFormat | PixelFormat.Alpha));
-            this._width = bitmap.Width;
-            this._height = bitmap.Height;
-            this._autoRelease = autoRelease;
+		public int Height
+		{
+			get { return _height; }
+		}
 
-            Lock();
-        }
+		public bool IsAlphaBitmap
+		{
+			get { return _isAlpha; }
+		}
 
-        public void Lock()
-        {
-            if (this.locked)
-                throw new ArgumentException("Bitmap already locked.");
+		public Bitmap Bitmap
+		{
+			get { return _bitmap; }
+		}
 
-            Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
-            this.bmpData = this.Bitmap.LockBits(rect, ImageLockMode.ReadWrite, this.Bitmap.PixelFormat);
-            this.bmpPtr = this.bmpData.Scan0;
+		public void Lock()
+		{
+			if (locked)
+				throw new ArgumentException("Bitmap already locked.");
 
-            if (this.IsAlphaBitmap)
-            {
-                int bytes = (this.Width * this.Height) * 4;
-                rgbValues = new byte[bytes];
+			var rect = new Rectangle(0, 0, Width, Height);
+			bmpData = Bitmap.LockBits(rect, ImageLockMode.ReadWrite, Bitmap.PixelFormat);
+			bmpPtr = bmpData.Scan0;
 
-                System.Runtime.InteropServices.Marshal.Copy(this.bmpPtr, rgbValues, 0, this.rgbValues.Length);
-            }
-            else
-            {
-                int bytes = (this.Width * this.Height) * 3;
-                rgbValues = new byte[bytes];
+			if (IsAlphaBitmap)
+			{
+				int bytes = (Width * Height) * 4;
+				rgbValues = new byte[bytes];
 
-                System.Runtime.InteropServices.Marshal.Copy(this.bmpPtr, rgbValues, 0, this.rgbValues.Length);
-            }
+				Marshal.Copy(bmpPtr, rgbValues, 0, rgbValues.Length);
+			}
+			else
+			{
+				int bytes = (Width * Height) * 3;
+				rgbValues = new byte[bytes];
 
-            this.locked = true;
-        }
-        public void Unlock(bool setPixels)
-        {
-            if (!this.locked)
-                throw new ArgumentException("Bitmap not locked.");
-            // Copy the RGB values back to the bitmap
-            if (setPixels) System.Runtime.InteropServices.Marshal.Copy(this.rgbValues, 0, this.bmpPtr, this.rgbValues.Length);
-            // Unlock the bits.
-            this.Bitmap.UnlockBits(bmpData);
-            this.locked = false;
-        }
+				Marshal.Copy(bmpPtr, rgbValues, 0, rgbValues.Length);
+			}
 
-        public void Clear(System.Drawing.Color colour)
-        {
-            if (!this.locked)
-                throw new ArgumentException("Bitmap not locked.");
+			locked = true;
+		}
 
-            if (this.IsAlphaBitmap)
-            {
-                for (int index = 0; index <= this.rgbValues.Length - 1; index += 4)
-                {
-                    this.rgbValues[index] = colour.B;
-                    this.rgbValues[index + 1] = colour.G;
-                    this.rgbValues[index + 2] = colour.R;
-                    this.rgbValues[index + 3] = colour.A;
-                }
-            }
-            else
-            {
-                for (int index = 0; index <= this.rgbValues.Length - 1; index += 3)
-                {
-                    this.rgbValues[index] = colour.B;
-                    this.rgbValues[index + 1] = colour.G;
-                    this.rgbValues[index + 2] = colour.R;
-                }
-            }
-        }
-		public void SetPixel(Point location, System.Drawing.Color colour)
-        {
-            this.SetPixel(location.X, location.Y, colour);
-        }
-		public void SetPixel(int x, int y, System.Drawing.Color colour)
-        {
-            if (!this.locked)
-                throw new ArgumentException("Bitmap not locked.");
+		public void Unlock(bool setPixels)
+		{
+			if (!locked)
+				throw new ArgumentException("Bitmap not locked.");
+			// Copy the RGB values back to the bitmap
+			if (setPixels) Marshal.Copy(rgbValues, 0, bmpPtr, rgbValues.Length);
+			// Unlock the bits.
+			Bitmap.UnlockBits(bmpData);
+			locked = false;
+		}
 
-            if (this.IsAlphaBitmap)
-            {
-                int index = ((y * this.Width + x) * 4);
-                this.rgbValues[index] = colour.B;
-                this.rgbValues[index + 1] = colour.G;
-                this.rgbValues[index + 2] = colour.R;
-                this.rgbValues[index + 3] = colour.A;
-            }
-            else
-            {
-                int index = ((y * this.Width + x) * 3);
-                this.rgbValues[index] = colour.B;
-                this.rgbValues[index + 1] = colour.G;
-                this.rgbValues[index + 2] = colour.R;
-            }
-        }
-		public System.Drawing.Color GetPixel(Point location)
-        {
-            return this.GetPixel(location.X, location.Y);
-        }
-		public System.Drawing.Color GetPixel(int x, int y)
-        {
-            if (!this.locked)
-                throw new ArgumentException("Bitmap not locked.");
+		public void Clear(Color colour)
+		{
+			if (!locked)
+				throw new ArgumentException("Bitmap not locked.");
 
-            if (this.IsAlphaBitmap)
-            {
-                int index = ((y * this.Width + x) * 4);
-                int b = this.rgbValues[index];
-                int g = this.rgbValues[index + 1];
-                int r = this.rgbValues[index + 2];
-                int a = this.rgbValues[index + 3];
-				return System.Drawing.Color.FromArgb(a, r, g, b);
-            }
-            else
-            {
-                int index = ((y * this.Width + x) * 3);
-                int b = this.rgbValues[index];
-                int g = this.rgbValues[index + 1];
-                int r = this.rgbValues[index + 2];
-				return System.Drawing.Color.FromArgb(r, g, b);
-            }
-        }
+			if (IsAlphaBitmap)
+			{
+				for (int index = 0; index <= rgbValues.Length - 1; index += 4)
+				{
+					rgbValues[index] = colour.B;
+					rgbValues[index + 1] = colour.G;
+					rgbValues[index + 2] = colour.R;
+					rgbValues[index + 3] = colour.A;
+				}
+			}
+			else
+			{
+				for (int index = 0; index <= rgbValues.Length - 1; index += 3)
+				{
+					rgbValues[index] = colour.B;
+					rgbValues[index + 1] = colour.G;
+					rgbValues[index + 2] = colour.R;
+				}
+			}
+		}
 
-        #region "IDisposable Support"
-        private bool disposedValue;
-        // To detect redundant calls
+		public void SetPixel(Point location, Color colour)
+		{
+			SetPixel(location.X, location.Y, colour);
+		}
 
-        // IDisposable
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                    Unlock(_autoRelease);
+		public void SetPixel(int x, int y, Color colour)
+		{
+			if (!locked)
+				throw new ArgumentException("Bitmap not locked.");
 
-                }
-            }
-            // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
-            // TODO: set large fields to null.
-            this.disposedValue = true;
-        }
+			if (IsAlphaBitmap)
+			{
+				int index = ((y * Width + x) * 4);
+				rgbValues[index] = colour.B;
+				rgbValues[index + 1] = colour.G;
+				rgbValues[index + 2] = colour.R;
+				rgbValues[index + 3] = colour.A;
+			}
+			else
+			{
+				int index = ((y * Width + x) * 3);
+				rgbValues[index] = colour.B;
+				rgbValues[index + 1] = colour.G;
+				rgbValues[index + 2] = colour.R;
+			}
+		}
 
-        // TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-        //Protected Overrides Sub Finalize()
-        //    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        //    Dispose(False)
-        //    MyBase.Finalize()
-        //End Sub
+		public Color GetPixel(Point location)
+		{
+			return GetPixel(location.X, location.Y);
+		}
 
-        // This code added by Visual Basic to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
+		public Color GetPixel(int x, int y)
+		{
+			if (!locked)
+				throw new ArgumentException("Bitmap not locked.");
 
-    }
+			if (IsAlphaBitmap)
+			{
+				int index = ((y * Width + x) * 4);
+				int b = rgbValues[index];
+				int g = rgbValues[index + 1];
+				int r = rgbValues[index + 2];
+				int a = rgbValues[index + 3];
+				return Color.FromArgb(a, r, g, b);
+			}
+			else
+			{
+				int index = ((y * Width + x) * 3);
+				int b = rgbValues[index];
+				int g = rgbValues[index + 1];
+				int r = rgbValues[index + 2];
+				return Color.FromArgb(r, g, b);
+			}
+		}
+
+		#region "IDisposable Support"
+
+		private bool disposedValue;
+		// To detect redundant calls
+
+		// IDisposable
+
+		// TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+		//Protected Overrides Sub Finalize()
+		//    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+		//    Dispose(False)
+		//    MyBase.Finalize()
+		//End Sub
+
+		// This code added by Visual Basic to correctly implement the disposable pattern.
+		public void Dispose()
+		{
+			// Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					// TODO: dispose managed state (managed objects).
+					Unlock(_autoRelease);
+				}
+			}
+			// TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+			// TODO: set large fields to null.
+			disposedValue = true;
+		}
+
+		#endregion
+	}
 }
