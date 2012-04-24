@@ -22,6 +22,7 @@
 						<Size>16,16,16</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -38,6 +39,7 @@
 						<Size>2,14,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -54,6 +56,7 @@
 						<Size>2,14,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -70,6 +73,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -86,6 +90,7 @@
 						<Size>2,14,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -102,6 +107,7 @@
 						<Size>2,12,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -118,6 +124,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -134,6 +141,7 @@
 						<Size>2,12,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -150,6 +158,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Tentacle">
 						<Animation>
@@ -166,6 +175,7 @@
 						<Size>2,10,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

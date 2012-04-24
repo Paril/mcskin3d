@@ -57,6 +57,12 @@ namespace MCSkin3D
 			this.panel1.Controls.Add(_swatchDisplayer);
 
 			_swatchDisplayer.BringToFront();
+
+			foreach (var f in _swatchNames)
+			{
+				var item = convertSwatchStripButton.DropDownItems.Add(f);
+				item.Click += item_Click;
+			}
 		}
 
 		public event EventHandler<SwatchChangedEventArgs> SwatchChanged
@@ -101,6 +107,22 @@ namespace MCSkin3D
 			}
 
 			_swatchDisplayer.Swatch = (comboBox1.SelectedItem as ISwatch);
+			SetCheckedItem();
+		}
+
+		void SetCheckedItem()
+		{
+			foreach (ToolStripMenuItem x in convertSwatchStripButton.DropDownItems)
+				x.Checked = false;
+
+			for (int i = 0; i < _swatchTypes.Length; ++i)
+			{
+				if (SwatchDisplayer.Swatch.GetType() == _swatchTypes[i])
+				{
+					((ToolStripMenuItem)convertSwatchStripButton.DropDownItems[i]).Checked = true;
+					break;
+				}
+			}
 		}
 
 		void SetZoomAbility()
@@ -163,59 +185,39 @@ namespace MCSkin3D
 
 			return "???";
 		}
-		
-		private void convertSwatchTtripButton_Click(object sender, EventArgs e)
+
+		void item_Click(object sender, EventArgs e)
 		{
-			if (SwatchDisplayer.Swatch == null)
+			ToolStripMenuItem item = (ToolStripMenuItem)sender;
+			int selectedFormat = convertSwatchStripButton.DropDownItems.IndexOf(item);
+			var newType = _swatchTypes[selectedFormat];
+
+			if (newType == SwatchDisplayer.Swatch.GetType())
 				return;
 
-			using (SwatchConverterDialog converter = new SwatchConverterDialog())
+			var newPath = Path.GetDirectoryName(SwatchDisplayer.Swatch.FilePath) + '\\' + Path.GetFileNameWithoutExtension(SwatchDisplayer.Swatch.FilePath) + '.' + _swatchFormatNames[selectedFormat].ToLower();
+
+			if (File.Exists(newPath))
 			{
-				converter.StartPosition = FormStartPosition.CenterParent;
-				converter.SwatchFormats = _swatchNames;
-
-				int _oldFormat = -1;
-
-				for (int i = 0; i < _swatchTypes.Length; ++i)
-				{
-					if (SwatchDisplayer.Swatch.GetType() == _swatchTypes[i])
-					{
-						converter.OldFormat = _swatchNames[i];
-						converter.SelectedFormat = _oldFormat = i;
-						break;
-					}
-				}
-
-				if (converter.ShowDialog() == DialogResult.OK)
-				{
-					var newType = _swatchTypes[converter.SelectedFormat];
-
-					if (converter.SelectedFormat == _oldFormat)
-						return;
-
-					var newPath = Path.GetDirectoryName(SwatchDisplayer.Swatch.FilePath) + '\\' + Path.GetFileNameWithoutExtension(SwatchDisplayer.Swatch.FilePath) + '.' + _swatchFormatNames[converter.SelectedFormat].ToLower();
-
-					if (File.Exists(newPath))
-					{
-						System.Media.SystemSounds.Exclamation.Play();
-						return;
-					}
-
-					ISwatch swatch = (ISwatch)newType.GetConstructors()[0].Invoke(new object[] { newPath });
-
-					foreach (var c in SwatchDisplayer.Swatch)
-						swatch.Add(c);
-
-					swatch.Save();
-
-					var index = comboBox1.Items.IndexOf(SwatchDisplayer.Swatch);
-
-					SwatchDisplayer.Swatch.Name = null; // just to check if we broke it later or not
-					SwatchDisplayer.Swatch.FilePath = null;
-
-					comboBox1.Items[index] = swatch;
-				}
+				System.Media.SystemSounds.Exclamation.Play();
+				return;
 			}
+
+			ISwatch swatch = (ISwatch)newType.GetConstructors()[0].Invoke(new object[] { newPath });
+
+			foreach (var c in SwatchDisplayer.Swatch)
+				swatch.Add(c);
+
+			swatch.Save();
+
+			var index = comboBox1.Items.IndexOf(SwatchDisplayer.Swatch);
+
+			SwatchDisplayer.Swatch.Name = null; // just to check if we broke it later or not
+			SwatchDisplayer.Swatch.FilePath = null;
+
+			comboBox1.Items[index] = swatch;
+
+			SetCheckedItem();
 		}
 
 		bool _creatingSwatch = false;
@@ -345,9 +347,9 @@ namespace MCSkin3D
 			}
 		}
 
-		private void convertSwatchTtripButton_ButtonClick(object sender, EventArgs e)
+		private void convertSwatchStripButton_ButtonClick(object sender, EventArgs e)
 		{
-			convertSwatchTtripButton.ShowDropDown();
+			convertSwatchStripButton.ShowDropDown();
 		}
 	}
 

@@ -43,15 +43,14 @@ namespace MB.Controls
 
 		public void DrawThumb(Graphics g)
 		{
-			LinearGradientBrush brush;
-
 			if (TrackBarRenderer.IsSupported)
-				TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, (this.Slider.MouseInThumbRegion) ? (Form.MouseButtons & MouseButtons.Left) != 0 ? TrackBarThumbState.Pressed : TrackBarThumbState.Hot : TrackBarThumbState.Normal);
+				TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect, (this.Slider.MouseInThumbRegion) ? (Control.MouseButtons & MouseButtons.Left) != 0 ? TrackBarThumbState.Pressed : TrackBarThumbState.Hot : TrackBarThumbState.Normal);
 			else
 			{
+				LinearGradientBrush brush;
 				if (this.Slider.MouseInThumbRegion)
 				{
-					if ((Form.MouseButtons & MouseButtons.Left) != 0)
+					if ((Control.MouseButtons & MouseButtons.Left) != 0)
 						brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y), new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.White, SystemColors.Highlight);
 					else
 						brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y), new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), SystemColors.Highlight, Color.White);

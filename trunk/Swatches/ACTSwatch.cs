@@ -33,7 +33,7 @@ namespace MCSkin3D.Swatches
 
 		public override void Save()
 		{
-			using (EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Little, File.Open(FilePath, FileMode.Open, FileAccess.Write)))
+			using (EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Little, File.Open(FilePath, FileMode.Create, FileAccess.Write)))
 			{
 				foreach (var c in this)
 				{

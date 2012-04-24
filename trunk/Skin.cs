@@ -129,58 +129,65 @@ namespace MCSkin3D
 
 		public void SetImages(bool updateGL = true)
 		{
-			if (Head != null)
+			try
 			{
-				Head.Dispose();
+				if (Head != null)
+				{
+					Head.Dispose();
+
+					if (updateGL)
+					{
+						GLImage.Dispose();
+						GLImage = null;
+					}
+				}
+
+				using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+					Image = new Bitmap(file);
+
+				Size = Image.Size;
+
+				float scale = Size.Width / 64.0f;
+				int headSize = (int)(8.0f * scale);
+				int helmetLoc = (int)(40.0f * scale);
+
+				Head = new Bitmap(headSize, headSize);
+				using (Graphics g = Graphics.FromImage(Head))
+				{
+					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
+					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize), GraphicsUnit.Pixel);
+				}
+
+				Image.Dispose();
+				Image = null;
 
 				if (updateGL)
 				{
-					GLImage.Dispose();
-					GLImage = null;
+					GLImage = new TextureGL(File.FullName);
+					GLImage.SetMipmapping(false);
+					GLImage.SetRepeat(false);
 				}
-			}
 
-			using (var file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
-				Image = new Bitmap(file);
-
-			Size = Image.Size;
-
-			float scale = Size.Width / 64.0f;
-			int headSize = (int)(8.0f * scale);
-			int helmetLoc = (int)(40.0f * scale);
-
-			Head = new Bitmap(headSize, headSize);
-			using (Graphics g = Graphics.FromImage(Head))
-			{
-				g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize), GraphicsUnit.Pixel);
-				g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize), GraphicsUnit.Pixel);
-			}
-
-			Image.Dispose();
-			Image = null;
-
-			if (updateGL)
-			{
-				GLImage = new TextureGL(File.FullName);
-				GLImage.SetMipmapping(false);
-				GLImage.SetRepeat(false);
-			}
-
-			if (Model == null)
-			{
-				var metadata = PNGMetadata.ReadMetadata(File.FullName);
-
-				if (metadata.ContainsKey("Model"))
+				if (Model == null)
 				{
-					Model = ModelLoader.GetModelForPath(metadata["Model"]);
+					var metadata = PNGMetadata.ReadMetadata(File.FullName);
 
-					if (Model == null)
+					if (metadata.ContainsKey("Model"))
+					{
+						Model = ModelLoader.GetModelForPath(metadata["Model"]);
+
+						if (Model == null)
+							Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+					}
+					else
 						Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
-				}
-				else
-					Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
 
-				SetTransparentParts();
+					SetTransparentParts();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error loading skin \"" + File.FullName + "\"", ex);
 			}
 		}
 

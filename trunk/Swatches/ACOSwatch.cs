@@ -33,6 +33,9 @@ namespace MCSkin3D.Swatches
 		static void WriteString(EndianBinaryWriter writer, string s)
 		{
 			//writer.Write((ushort)0);
+			if (s == null)
+				s = "";
+
 			writer.Write((ushort)s.Length + 1);
 
 			for (ushort i = 0; i < s.Length; ++i)

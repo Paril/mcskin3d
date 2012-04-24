@@ -171,14 +171,6 @@ namespace MCSkin3D
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
 			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointEightMode;
 
-			SetCheckbox(VisiblePartFlags.HeadFlag, headToolStripMenuItem);
-			SetCheckbox(VisiblePartFlags.ChestFlag, chestToolStripMenuItem);
-			SetCheckbox(VisiblePartFlags.LeftArmFlag, leftArmToolStripMenuItem);
-			SetCheckbox(VisiblePartFlags.RightArmFlag, rightArmToolStripMenuItem);
-			SetCheckbox(VisiblePartFlags.HelmetFlag, helmetToolStripMenuItem);
-			SetCheckbox(VisiblePartFlags.LeftLegFlag, leftLegToolStripMenuItem);
-			SetCheckbox(VisiblePartFlags.RightLegFlag, rightLegToolStripMenuItem);
-
 			Language.Language useLanguage = null;
 			try
 			{
@@ -574,13 +566,13 @@ namespace MCSkin3D
 			InitMenuShortcut(offToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Off));
 			InitMenuShortcut(helmetOnlyToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Helmet));
 			InitMenuShortcut(allToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.All));
-			InitMenuShortcut(headToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.HeadFlag));
-			InitMenuShortcut(helmetToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.HelmetFlag));
-			InitMenuShortcut(chestToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.ChestFlag));
-			InitMenuShortcut(leftArmToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.LeftArmFlag));
-			InitMenuShortcut(rightArmToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.RightArmFlag));
-			InitMenuShortcut(leftLegToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.LeftLegFlag));
-			InitMenuShortcut(rightLegToolStripMenuItem, () => ToggleVisiblePart(VisiblePartFlags.RightLegFlag));
+			InitMenuShortcut(headToolStripMenuItem, () => ToggleVisiblePart(ModelPart.Head, headToolStripMenuItem, toggleHeadToolStripButton));
+			InitMenuShortcut(helmetToolStripMenuItem, () => ToggleVisiblePart(ModelPart.Helmet, helmetToolStripMenuItem, toggleHelmetToolStripButton));
+			InitMenuShortcut(chestToolStripMenuItem, () => ToggleVisiblePart(ModelPart.Chest, chestToolStripMenuItem, toggleChestToolStripButton));
+			InitMenuShortcut(leftArmToolStripMenuItem, () => ToggleVisiblePart(ModelPart.LeftArm, leftArmToolStripMenuItem, toggleLeftArmToolStripButton));
+			InitMenuShortcut(rightArmToolStripMenuItem, () => ToggleVisiblePart(ModelPart.RightArm, rightArmToolStripMenuItem, toggleRightArmToolStripButton));
+			InitMenuShortcut(leftLegToolStripMenuItem, () => ToggleVisiblePart(ModelPart.LeftLeg, leftLegToolStripMenuItem, toggleLeftLegToolStripButton));
+			InitMenuShortcut(rightLegToolStripMenuItem, () => ToggleVisiblePart(ModelPart.RightLeg, rightLegToolStripMenuItem, toggleRightLegToolStripButton));
 			InitMenuShortcut(saveToolStripMenuItem, PerformSave);
 			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
@@ -797,8 +789,6 @@ namespace MCSkin3D
 			treeView1.EndUpdate();
 			treeView1.SelectedNode = _tempToSelect;
 
-			SetVisibleParts();
-
 			toolToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			modeToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			threeDToolStripMenuItem.DropDown.Closing += DontCloseMe;
@@ -841,15 +831,6 @@ namespace MCSkin3D
 		// Private functions
 		// =====================================================================
 		#region Private Functions
-		// Utility function, sets a tool strip checkbox item's state if the flag is present
-		void SetCheckbox(VisiblePartFlags flag, ToolStripMenuItem checkbox)
-		{
-			if ((GlobalSettings.ViewFlags & flag) != 0)
-				checkbox.Checked = true;
-			else
-				checkbox.Checked = false;
-		}
-
 		Dictionary<Point, bool> _paintedPixels = new Dictionary<Point, bool>();
 
 		public Dictionary<Point, bool> PaintedPixels
@@ -979,7 +960,7 @@ namespace MCSkin3D
 		void UploadThread(object param)
 		{
 			var parms = (object[])param;
-			ErrorReturn error = (ErrorReturn)parms[3];
+			var error = (ErrorReturn)parms[3];
 
 			error.Code = ErrorCodes.Succeeded;
 			error.Exception = null;
@@ -987,12 +968,12 @@ namespace MCSkin3D
 
 			try
 			{
-				CookieContainer cookies = new CookieContainer();
-				var request = (HttpWebRequest)HttpWebRequest.Create("http://www.minecraft.net/login");
+				var cookies = new CookieContainer();
+				var request = (HttpWebRequest)WebRequest.Create("http://www.minecraft.net/login");
 				request.CookieContainer = cookies;
 				request.Timeout = 10000;
 				var response = request.GetResponse();
-				StreamReader sr = new StreamReader(response.GetResponseStream());
+				var sr = new StreamReader(response.GetResponseStream());
 				var text = sr.ReadToEnd();
 
 				var match = Regex.Match(text, @"<input type=""hidden"" name=""authenticityToken"" value=""(.*?)"">");
@@ -1007,19 +988,19 @@ namespace MCSkin3D
 
 				response.Close();
 
-				string requestTemplate = @"authenticityToken={0}&redirect=http%3A%2F%2Fwww.minecraft.net%2Fprofile&username={1}&password={2}";
-				string requestContent = string.Format(requestTemplate, authToken, parms[0].ToString(), parms[1].ToString());
+				const string requestTemplate = @"authenticityToken={0}&redirect=http%3A%2F%2Fwww.minecraft.net%2Fprofile&username={1}&password={2}";
+				var requestContent = string.Format(requestTemplate, authToken, parms[0].ToString(), parms[1].ToString());
 				var inBytes = Encoding.UTF8.GetBytes(requestContent);
 
 				// craft the login request
-				request = (HttpWebRequest)HttpWebRequest.Create("https://www.minecraft.net/login");
+				request = (HttpWebRequest)WebRequest.Create("https://www.minecraft.net/login");
 				request.Method = "POST";
 				request.ContentType = "application/x-www-form-urlencoded";
 				request.CookieContainer = cookies;
 				request.ContentLength = inBytes.Length;
 				request.Timeout = 10000;
 
-				using (Stream dataStream = request.GetRequestStream())
+				using (var dataStream = request.GetRequestStream())
 					dataStream.Write(inBytes, 0, inBytes.Length);
 
 				response = request.GetResponse();
@@ -1761,64 +1742,10 @@ namespace MCSkin3D
 			rendererControl.Invalidate();
 		}
 
-		ToolStripMenuItem[] _toggleMenuItems;
-		ToolStripButton[] _toggleButtons;
-		void SetVisibleParts()
+		void ToggleVisiblePart(ModelPart flag, ToolStripMenuItem item, ToolStripButton itemButton)
 		{
-			if (_toggleMenuItems == null)
-			{
-				_toggleMenuItems = new ToolStripMenuItem[] { headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem };
-				_toggleButtons = new ToolStripButton[] { toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
-			}
-
-			for (int i = 0; i < _toggleButtons.Length; ++i)
-				_toggleMenuItems[i].Checked = _toggleButtons[i].Checked = ((GlobalSettings.ViewFlags & (VisiblePartFlags)(1 << i)) != 0);
-		}
-
-		void ToggleVisiblePart(VisiblePartFlags flag)
-		{
-			GlobalSettings.ViewFlags ^= flag;
-
-			bool hasNow = (GlobalSettings.ViewFlags & flag) != 0;
-
-			ToolStripMenuItem item = null;
-			ToolStripButton itemButton = null;
-
-			// TODO: ugly
-			switch (flag)
-			{
-				case VisiblePartFlags.HeadFlag:
-					item = headToolStripMenuItem;
-					itemButton = toggleHeadToolStripButton;
-					break;
-				case VisiblePartFlags.HelmetFlag:
-					item = helmetToolStripMenuItem;
-					itemButton = toggleHelmetToolStripButton;
-					break;
-				case VisiblePartFlags.ChestFlag:
-					item = chestToolStripMenuItem;
-					itemButton = toggleChestToolStripButton;
-					break;
-				case VisiblePartFlags.LeftArmFlag:
-					item = leftArmToolStripMenuItem;
-					itemButton = toggleLeftArmToolStripButton;
-					break;
-				case VisiblePartFlags.RightArmFlag:
-					item = rightArmToolStripMenuItem;
-					itemButton = toggleRightArmToolStripButton;
-					break;
-				case VisiblePartFlags.LeftLegFlag:
-					item = leftLegToolStripMenuItem;
-					itemButton = toggleLeftLegToolStripButton;
-					break;
-				case VisiblePartFlags.RightLegFlag:
-					item = rightLegToolStripMenuItem;
-					itemButton = toggleRightLegToolStripButton;
-					break;
-			}
-
-			item.Checked = hasNow;
-			itemButton.Checked = hasNow;
+			//item.Checked = hasNow;
+			//itemButton.Checked = hasNow;
 
 			rendererControl.Invalidate();
 		}
@@ -1986,7 +1913,7 @@ namespace MCSkin3D
 			int index = 0;
 			foreach (var b in _backgrounds)
 			{
-				ToolStripMenuItem item = (b.Item == null) ? new ToolStripMenuItem(b.Name) : b.Item;
+				ToolStripMenuItem item = b.Item ?? new ToolStripMenuItem(b.Name);
 				b.Item = item;
 
 				if (b.Path == GlobalSettings.LastBackground)
@@ -3193,40 +3120,20 @@ namespace MCSkin3D
 			SetTransparencyMode(TransparencyMode.All);
 		}
 
-		void headToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.HeadFlag);
-		}
-
-		void helmetToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.HelmetFlag);
-		}
-
-		void chestToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.ChestFlag);
-		}
-
-		void leftArmToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.LeftArmFlag);
-		}
-
-		void rightArmToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.RightArmFlag);
-		}
-
-		void leftLegToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.LeftLegFlag);
-		}
-
-		void rightLegToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.RightLegFlag);
-		}
+		void headToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.Head, headToolStripMenuItem, toggleHeadToolStripButton); }
+		void helmetToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.Helmet, helmetToolStripMenuItem, toggleHelmetToolStripButton); }
+		void chestToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.Chest, chestToolStripMenuItem, toggleChestToolStripButton); }
+		void leftArmToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.LeftArm, leftArmToolStripMenuItem, toggleLeftArmToolStripButton); }
+		void rightArmToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.RightArm, rightArmToolStripMenuItem, toggleRightArmToolStripButton); }
+		void leftLegToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.LeftLeg, leftLegToolStripMenuItem, toggleLeftLegToolStripButton); }
+		void rightLegToolStripMenuItem_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.RightLeg, rightLegToolStripMenuItem, toggleRightLegToolStripButton); }
+		void toggleHeadToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.Head, headToolStripMenuItem, toggleHeadToolStripButton); }
+		void toggleHelmetToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.Helmet, helmetToolStripMenuItem, toggleHelmetToolStripButton); }
+		void toggleChestToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.Chest, chestToolStripMenuItem, toggleChestToolStripButton); }
+		void toggleLeftArmToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.LeftArm, leftArmToolStripMenuItem, toggleLeftArmToolStripButton); }
+		void toggleRightArmToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.RightArm, rightArmToolStripMenuItem, toggleRightArmToolStripButton); }
+		void toggleLeftLegToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.LeftLeg, leftLegToolStripMenuItem, toggleLeftLegToolStripButton); }
+		void toggleRightLegToolStripButton_Click(object sender, EventArgs e) { ToggleVisiblePart(ModelPart.RightLeg, rightLegToolStripMenuItem, toggleRightLegToolStripButton); }
 
 		void alphaCheckerboardToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -3348,42 +3255,6 @@ namespace MCSkin3D
 		{
 			GlobalSettings.AutoUpdate = automaticallyCheckForUpdatesToolStripMenuItem.Checked = !automaticallyCheckForUpdatesToolStripMenuItem.Checked;
 		}
-
-		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.HeadFlag);
-		}
-
-		private void toggleHelmetToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.HelmetFlag);
-		}
-
-		private void toggleChestToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.ChestFlag);
-		}
-
-		private void toggleLeftArmToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.LeftArmFlag);
-		}
-
-		private void toggleRightArmToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.RightArmFlag);
-		}
-
-		private void toggleLeftLegToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.LeftLegFlag);
-		}
-
-		private void toggleRightLegToolStripButton_Click(object sender, EventArgs e)
-		{
-			ToggleVisiblePart(VisiblePartFlags.RightLegFlag);
-		}
-
 		private void labelEditTextBox_Leave(object sender, EventArgs e)
 		{
 			DoneEditingNode(labelEditTextBox.Text, _currentlyEditing);
@@ -4075,8 +3946,27 @@ namespace MCSkin3D
 					Model.PartsEnabled[PartIndex] = value;
 					SelectedImageIndex = ImageIndex = (value) ? 3 : 0;
 
-					if (Parent != null)
-						((PartTreeNode)Parent).CheckGroupImage();
+					for (var node = Parent; node != null; node = node.Parent)
+						((PartTreeNode)node).CheckGroupImage();
+				}
+			}
+
+			public void RecursiveGroupImageCheck(PartTreeNode node, ref bool hasEnabled, ref bool hasDisabled)
+			{
+				if (hasEnabled && hasDisabled)
+					return;
+
+				if (node.Nodes.Count == 0)
+				{
+					if (node.PartEnabled)
+						hasEnabled = true;
+					else
+						hasDisabled = true;
+				}
+				else
+				{
+					foreach (PartTreeNode n in node.Nodes)
+						RecursiveGroupImageCheck(n, ref hasEnabled, ref hasDisabled);
 				}
 			}
 
@@ -4085,12 +3975,7 @@ namespace MCSkin3D
 				bool hasEnabled = false, hasDisabled = false;
 
 				foreach (PartTreeNode node in Nodes)
-				{
-					if (node.PartEnabled)
-						hasEnabled = true;
-					else
-						hasDisabled = true;
-				}
+					RecursiveGroupImageCheck(node, ref hasEnabled, ref hasDisabled);
 
 				if (hasEnabled && hasDisabled)
 					SelectedImageIndex = ImageIndex = 6;
@@ -4137,6 +4022,42 @@ namespace MCSkin3D
 			treeView2.ImageList = list;
 		}
 
+		PartTreeNode CreateNodePath(TreeView treeView, Model m, Mesh part, string[] path, List<PartTreeNode> owners)
+		{
+			PartTreeNode node = null;
+
+			for (int i = 0; i < path.Length - 1; ++i)
+			{
+				if (node == null)
+				{
+					var nodes = treeView.Nodes.Find(path[i], false);
+
+					if (nodes.Length == 0)
+					{
+						treeView.Nodes.Add(node = new PartTreeNode(CurrentModel, part, -1, path[i]));
+						owners.Add(node);
+					}
+					else
+						node = (PartTreeNode)nodes[0];
+				}
+				else
+				{
+					var nodes = node.Nodes.Find(path[i], false);
+
+					if (nodes.Length == 0)
+					{
+						var old = node;
+						old.Nodes.Add(node = new PartTreeNode(CurrentModel, part, -1, path[i]));
+						owners.Add(node);
+					}
+					else
+						node = (PartTreeNode)nodes[0];
+				}
+			}
+
+			return node;
+		}
+
 		void FillPartList()
 		{
 			List<PartTreeNode> owners = new List<PartTreeNode>();
@@ -4148,19 +4069,12 @@ namespace MCSkin3D
 			{
 				var name = part.Name;
 
-				if (name.Contains('|'))
+				if (name.Contains('.'))
 				{
-					var args = name.Split('|');
-					var ownerNodes = treeView2.Nodes.Find(args[1], false);
-					var owner = (ownerNodes.Length != 0) ? ownerNodes[0] : null;
+					var args = name.Split('.');
+					var owner = CreateNodePath(treeView2, CurrentModel, part, args, owners);
 
-					if (owner == null)
-					{
-						owner = treeView2.Nodes[treeView2.Nodes.Add(new PartTreeNode(CurrentModel, part, -1, args[1]))];
-						owners.Add((PartTreeNode)owner);
-					}
-
-					owner.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex, args[0]));
+					owner.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex, args[args.Length - 1]));
 				}
 				else
 					treeView2.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex));
@@ -4170,6 +4084,22 @@ namespace MCSkin3D
 
 			foreach (var n in owners)
 				n.CheckGroupImage();
+		}
+
+		void RecursiveAssign(PartTreeNode node, bool setAll)
+		{
+			foreach (PartTreeNode subNode in node.Nodes)
+			{
+				if (subNode.Nodes.Count != 0)
+					RecursiveAssign(subNode, setAll);
+				else
+				{
+					if (setAll)
+						subNode.PartEnabled = true;
+					else
+						subNode.PartEnabled = !subNode.PartEnabled;
+				}
+			}
 		}
 
 		private void treeView2_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -4183,13 +4113,7 @@ namespace MCSkin3D
 				if (node.Nodes.Count != 0)
 				{
 					bool setAll = node.ImageIndex == 6;
-					foreach (PartTreeNode subNode in node.Nodes)
-					{
-						if (setAll)
-							subNode.PartEnabled = true;
-						else
-							subNode.PartEnabled = !subNode.PartEnabled;
-					}
+					RecursiveAssign(node, setAll);
 				}
 				else
 					node.PartEnabled = !node.PartEnabled;

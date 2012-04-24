@@ -22,6 +22,7 @@
 						<Size>8,8,8</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>-0.5</Scale>
+						<Part>Head</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Top">
 						<Animation>
@@ -38,6 +39,7 @@
 						<Size>12,2,2</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>-0.5</Scale>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Bottom">
 						<Animation>
@@ -54,6 +56,7 @@
 						<Size>12,2,2</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>-0.5</Scale>
+						<Part>Chest</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
 						<Animation>
@@ -70,6 +73,7 @@
 						<Size>10,10,10</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>-0.5</Scale>
+						<Part>LeftArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
 						<Animation>
@@ -86,6 +90,7 @@
 						<Size>12,12,12</Size>
 						<TextureOffset>0,36</TextureOffset>
 						<Scale>-0.5</Scale>
+						<Part>RightArm</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

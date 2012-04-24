@@ -18,6 +18,7 @@ namespace MCSkin3D.Models
 		public Vector3 Size;
 		public float Scale;
 		public Vector2 TextureOffset;
+		public ModelPart Part;
 
 		public virtual void Parse(XmlNode node)
 		{
@@ -41,6 +42,8 @@ namespace MCSkin3D.Models
 					Scale = float.Parse(child.InnerText);
 				else if (name == "textureoffset")
 					TextureOffset = Mesh.StringToVertex2(child.InnerText);
+				else if (name == "part")
+					Part = (ModelPart)Enum.Parse(typeof(ModelPart), child.InnerText);
 			}
 		}
 	}
@@ -274,7 +277,7 @@ namespace MCSkin3D.Models
 						{
 							var box = (TCNRenderBox)z.RenderData;
 
-							MCSkin3D.ModelLoader.ModelRenderer renderer = new ModelLoader.ModelRenderer(mb, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, VisiblePartFlags.ChestFlag, false, false);
+							MCSkin3D.ModelLoader.ModelRenderer renderer = new ModelLoader.ModelRenderer(mb, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, box.Part);
 							renderer.setRotationPoint(box.Offset.X, box.Offset.Y, box.Offset.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
@@ -286,7 +289,7 @@ namespace MCSkin3D.Models
 						{
 							var box = (TCNRenderPlane)z.RenderData;
 
-							MCSkin3D.ModelLoader.PlaneRenderer renderer = new ModelLoader.PlaneRenderer(mb, z.name, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, VisiblePartFlags.ChestFlag, false, false);
+							MCSkin3D.ModelLoader.PlaneRenderer renderer = new ModelLoader.PlaneRenderer(mb, z.name, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, box.Part);
 							renderer.setRotationPoint(box.Offset.X, box.Offset.Y, box.Offset.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);

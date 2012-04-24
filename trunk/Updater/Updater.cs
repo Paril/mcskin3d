@@ -178,7 +178,7 @@ namespace MCSkin3D.UpdateSystem
 				u.ImageIndex = fileNames.IndexOf(fileDir);
 			}
 
-			Invoke((Action)delegate() { UpdateFinished(); });
+			Invoke((Action)UpdateFinished);
 		}
 
 		void UpdateFinished()

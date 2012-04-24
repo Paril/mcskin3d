@@ -22,6 +22,7 @@
 						<Size>20,16,2</Size>
 						<TextureOffset>0,10</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
 						<Animation>
@@ -38,6 +39,7 @@
 						<Size>16,8,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
 						<Animation>
@@ -54,6 +56,7 @@
 						<Size>16,8,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
 						<Animation>
@@ -70,6 +73,7 @@
 						<Size>16,8,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
 						<Animation>
@@ -86,6 +90,7 @@
 						<Size>16,8,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leather">
 						<Animation>
@@ -102,6 +107,7 @@
 						<Size>18,14,1</Size>
 						<TextureOffset>44,10</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

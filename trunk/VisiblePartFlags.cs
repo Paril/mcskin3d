@@ -20,16 +20,15 @@ using System;
 
 namespace MCSkin3D
 {
-	public enum VisiblePartFlags
+	public enum ModelPart
 	{
-		HeadFlag = 1,
-		HelmetFlag = 2,
-		ChestFlag = 4,
-		LeftArmFlag = 8,
-		RightArmFlag = 16,
-		LeftLegFlag = 32,
-		RightLegFlag = 64,
-
-		Default = HeadFlag | HelmetFlag | ChestFlag | LeftArmFlag | RightArmFlag | LeftLegFlag | RightLegFlag,
+		None = 0,
+		Head = 1,
+		Helmet = 2,
+		Chest = 3,
+		LeftArm = 4,
+		RightArm = 5,
+		LeftLeg = 6,
+		RightLeg = 7
 	}
 }

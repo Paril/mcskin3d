@@ -22,6 +22,7 @@
 						<Size>6,10,0</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Head</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Cover">
 						<Animation>
@@ -38,6 +39,7 @@
 						<Size>6,10,0</Size>
 						<TextureOffset>16,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Chest</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Spine">
 						<Animation>
@@ -54,6 +56,7 @@
 						<Size>2,10,0</Size>
 						<TextureOffset>12,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
 						<Animation>
@@ -70,6 +73,7 @@
 						<Size>5,8,1</Size>
 						<TextureOffset>0,10</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
 						<Animation>
@@ -86,6 +90,7 @@
 						<Size>5,8,1</Size>
 						<TextureOffset>12,10</TextureOffset>
 						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
 						<Animation>
@@ -102,6 +107,7 @@
 						<Size>5,8,0</Size>
 						<TextureOffset>24,10</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
 						<Animation>
@@ -118,6 +124,7 @@
 						<Size>5,8,0</Size>
 						<TextureOffset>24,10</TextureOffset>
 						<Scale>0</Scale>
+						<Part>RightLeg</Part>
 					</Shape>
 				</Folder>
 			</Geometry>

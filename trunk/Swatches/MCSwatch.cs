@@ -114,7 +114,7 @@ namespace MCSkin3D.Swatches
 
 					if (split.Length == 4)
 						_colors.Add(new NamedColor(null, c));
-					else if (split.Length == 5)
+					else if (split.Length >= 5)
 					{
 						int startText = 0;
 
@@ -125,7 +125,7 @@ namespace MCSkin3D.Swatches
 						_colors.Add(new NamedColor(line.Substring(startText), c));
 					}
 					else
-						throw new FileLoadException();
+						throw new Exception("Couldn't load swatch: misformed line");
 				}
 			}
 		}
