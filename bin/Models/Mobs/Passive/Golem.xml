@@ -22,7 +22,7 @@
 						<Size>8,10,8</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Chest</Part>
+						<Part>Head</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Nose">
 						<Animation>
@@ -39,7 +39,7 @@
 						<Size>2,4,2</Size>
 						<TextureOffset>24,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Chest</Part>
+						<Part>Head</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Chest">
 						<Animation>
@@ -90,7 +90,7 @@
 						<Size>4,30,6</Size>
 						<TextureOffset>60,21</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Chest</Part>
+						<Part>RightArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
 						<Animation>
@@ -107,7 +107,7 @@
 						<Size>4,30,6</Size>
 						<TextureOffset>60,58</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Chest</Part>
+						<Part>LeftArm</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Leg">
 						<Animation>
@@ -124,7 +124,7 @@
 						<Size>6,16,5</Size>
 						<TextureOffset>37,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Chest</Part>
+						<Part>RightLeg</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Leg">
 						<Animation>
@@ -141,7 +141,7 @@
 						<Size>6,16,5</Size>
 						<TextureOffset>60,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>Chest</Part>
+						<Part>LeftLeg</Part>
 					</Shape>
 				</Folder>
 			</Geometry>
