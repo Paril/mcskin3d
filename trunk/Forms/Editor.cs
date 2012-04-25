@@ -218,6 +218,8 @@ namespace MCSkin3D
 				MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
 				MainForm.StampOptions.languageProvider1.LanguageChanged(value);
 				MainForm._importFromSite.languageProvider1.LanguageChanged(value);
+				MainForm.colorPanel.languageProvider1.LanguageChanged(value);
+				MainForm.colorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
 
 				if (MainForm._selectedTool != null)
 					MainForm.toolStripStatusLabel1.Text = MainForm._selectedTool.Tool.GetStatusLabelText();
