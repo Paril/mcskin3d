@@ -188,7 +188,6 @@ namespace Paril.OpenGL
 					face.Vertices = new Vector3[faceNode["Vertices"].ChildNodes.Count];
 					face.TexCoords = new Vector2[face.Vertices.Length];
 					face.Indices = new int[face.Vertices.Length];
-					face.Colors = new Color4[face.Vertices.Length];
 
 					int i = 0;
 					foreach (XmlElement vertexNode in faceNode["Vertices"])
@@ -219,6 +218,7 @@ namespace Paril.OpenGL
 				}
 
 				mesh.CalculateCenter();
+				mesh.CalculateMatrix();
 
 				model.Meshes.Add(mesh);
 			}

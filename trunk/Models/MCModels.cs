@@ -3389,7 +3389,7 @@ namespace MCSkin3D.Models
 				a.rotationPointZ = b.rotationPointZ = 5F;
 				o = 0;
 			}
-			else if ( /*itemfishingrod.aa()*/false)
+			/*else if (false)
 			{
 				n.rotationPointY = 12F;
 				g.rotationPointY = 15F;
@@ -3403,7 +3403,7 @@ namespace MCSkin3D.Models
 				a.rotationPointZ = b.rotationPointZ = 5F;
 				o = 2;
 			}
-			else if ( /*itemfishingrod.ah()*/false)
+			else if (false)
 			{
 				n.rotateAngleX = 0.7853982F;
 				n.rotationPointY = 8F;
@@ -3440,7 +3440,7 @@ namespace MCSkin3D.Models
 				a.rotationPointZ = b.rotationPointZ = 5F;
 				e.rotateAngleX = 0.9F;
 				o = 1;
-			}
+			}*/
 		}
 	}
 

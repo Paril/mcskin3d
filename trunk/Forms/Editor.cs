@@ -290,7 +290,7 @@ namespace MCSkin3D
 			GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest); // Really Nice Perspective Calculations
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int) TextureEnvMode.Modulate);
+			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvMode.Modulate);
 			GL.Enable(EnableCap.CullFace);
 
 			_toolboxUpNormal = new TextureGL(Resources.buttong);
@@ -315,10 +315,10 @@ namespace MCSkin3D
 				try
 				{
 					var image = new TextureGL(file);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Clamp);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Clamp);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
 					_backgrounds.Add(new BackgroundImage(file, Path.GetFileNameWithoutExtension(file), image));
 				}
@@ -362,27 +362,27 @@ namespace MCSkin3D
 				GlobalDirtiness.CurrentSkin.SetMipmapping(false);
 				GlobalDirtiness.CurrentSkin.SetRepeat(false);
 
-				arra = new byte[4 * 4 * 4];
+				arra = new byte[2 * 2 * 4];
 				fixed (byte* texData = arra)
 				{
 					byte* d = texData;
 
-					for (int y = 0; y < 4; ++y)
+					for (int y = 0; y < 2; ++y)
 					{
-						for (int x = 0; x < 4; ++x)
+						for (int x = 0; x < 2; ++x)
 						{
 							bool dark = ((x + (y & 1)) & 1) == 1;
 
 							if (dark)
-								*((int*) d) = (80 << 0) | (80 << 8) | (80 << 16) | (255 << 24);
+								*((int*)d) = (80 << 0) | (80 << 8) | (80 << 16) | (255 << 24);
 							else
-								*((int*) d) = (127 << 0) | (127 << 8) | (127 << 16) | (255 << 24);
+								*((int*)d) = (127 << 0) | (127 << 8) | (127 << 16) | (255 << 24);
 							d += 4;
 						}
 					}
 				}
 
-				_alphaTex.Upload(arra, 4, 4);
+				_alphaTex.Upload(arra, 2, 2);
 				_alphaTex.SetMipmapping(false);
 				_alphaTex.SetRepeat(true);
 			}
@@ -391,14 +391,21 @@ namespace MCSkin3D
 				MeshRenderer = new ClientArrayRenderer();
 			else
 				MeshRenderer = new ImmediateRenderer();
+
+			// Compile model userdata
+			foreach (var model in ModelLoader.Models)
+			{
+				foreach (var m in model.Value.Meshes)
+					m.UserData = MeshRenderer.CreateUserData(m);
+			}
 		}
 
 		private void item_Clicked(object sender, EventArgs e)
 		{
 			var item = (ToolStripMenuItem) sender;
-			GlobalSettings.LastBackground = item.Text;
 			_backgrounds[_selectedBackground].Item.Checked = false;
 			_selectedBackground = (int) item.Tag;
+			GlobalSettings.LastBackground = _backgrounds[_selectedBackground].Path;
 			item.Checked = true;
 		}
 
@@ -532,11 +539,11 @@ namespace MCSkin3D
 				GL.Begin(BeginMode.Quads);
 				GL.TexCoord2(0, 0);
 				GL.Vertex2(0, 0);
-				GL.TexCoord2(_currentViewport.Width / 32.0f, 0);
+				GL.TexCoord2(_currentViewport.Width / 16.0f, 0);
 				GL.Vertex2(_currentViewport.Width, 0);
-				GL.TexCoord2(_currentViewport.Width / 32.0f, _currentViewport.Height / 32.0f);
+				GL.TexCoord2(_currentViewport.Width / 16.0f, _currentViewport.Height / 16.0f);
 				GL.Vertex2(_currentViewport.Width, _currentViewport.Height);
-				GL.TexCoord2(0, _currentViewport.Height / 32.0f);
+				GL.TexCoord2(0, _currentViewport.Height / 16.0f);
 				GL.Vertex2(0, _currentViewport.Height);
 				GL.End();
 			}
@@ -724,22 +731,7 @@ namespace MCSkin3D
 					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
 						mesh.Rotate = helmetRotate;
 
-					if (meshVisible == false && GlobalSettings.Ghost && !pickView)
-					{
-						foreach (Face f in mesh.Faces)
-						{
-							for (int i = 0; i < f.Colors.Length; ++i)
-								f.Colors[i] = new Color4(1, 1, 1, 0.25f);
-						}
-					}
-					else
-					{
-						foreach (Face f in mesh.Faces)
-						{
-							for (int i = 0; i < f.Colors.Length; ++i)
-								f.Colors[i] = Color4.White;
-						}
-					}
+					mesh.DrawTransparent = (meshVisible == false && GlobalSettings.Ghost && !pickView);
 
 					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
 						mesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
@@ -2928,20 +2920,24 @@ namespace MCSkin3D
 		{
 			return;
 
+#if DISABLED
 			animateToolStripMenuItem.Checked = !animateToolStripMenuItem.Checked;
 			GlobalSettings.Animate = animateToolStripMenuItem.Checked;
 
 			_rendererControl.Invalidate();
+#endif
 		}
 
 		private void ToggleFollowCursor()
 		{
 			return;
 
+#if DISABLED
 			followCursorToolStripMenuItem.Checked = !followCursorToolStripMenuItem.Checked;
 			GlobalSettings.FollowCursor = followCursorToolStripMenuItem.Checked;
 
 			_rendererControl.Invalidate();
+#endif
 		}
 
 		private void ToggleGrass()
@@ -4186,10 +4182,6 @@ namespace MCSkin3D
 				}
 
 				collection.Add(new ModelToolStripMenuItem(x.Value));
-
-				// Create mesh data
-				//foreach (var m in x.Value.Meshes)
-				//	m.UserData = MeshRenderer.CreateUserData(m);
 			}
 
 			if (GlobalSettings.OnePointEightMode)

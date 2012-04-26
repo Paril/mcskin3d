@@ -25,7 +25,9 @@ namespace Paril.OpenGL
 		public float RotateFactor;
 		public Texture Texture;
 		public Vector3 Translate;
+		public bool DrawTransparent;
 		public IMeshUserData UserData;
+		public Matrix4 Matrix;
 
 		public Mesh(string name)
 		{
@@ -124,6 +126,17 @@ namespace Paril.OpenGL
 			}
 
 			Center /= count;
+		}
+
+		public void CalculateMatrix()
+		{
+			Matrix = 
+				Matrix4.CreateTranslation(Translate) *
+				Matrix4.CreateTranslation(-Pivot) *
+				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(Rotate.X)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.DegreesToRadians(Rotate.Y)) *
+				Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), MathHelper.DegreesToRadians(Rotate.Z)) *
+				Matrix4.CreateTranslation(Pivot);
 		}
 	}
 }
