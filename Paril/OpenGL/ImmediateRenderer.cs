@@ -32,25 +32,25 @@ namespace Paril.OpenGL
 
 			GL.PushMatrix();
 
-			GL.Translate(mesh.Pivot);
-			GL.Rotate(mesh.Rotate.X, 1, 0, 0);
-			GL.Rotate(mesh.Rotate.Y, 0, 1, 0);
-			GL.Rotate(mesh.Rotate.Z, 0, 0, 1);
-			GL.Translate(-mesh.Pivot);
+			GL.MultMatrix(ref mesh.Matrix);
 
-			GL.Translate(mesh.Translate);
+			if (mesh.DrawTransparent)
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)63);
+			else
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 
 			GL.Begin(mesh.Mode);
 			foreach (Face face in mesh.Faces)
 			{
 				foreach (int index in face.Indices)
 				{
-					GL.Color4(face.Colors[index]);
 					GL.TexCoord2(face.TexCoords[index]);
 					GL.Vertex3(face.Vertices[index]);
 				}
 			}
 			GL.End();
+
+			GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 
 			GL.PopMatrix();
 		}

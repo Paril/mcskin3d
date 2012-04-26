@@ -240,6 +240,7 @@
     <Compile Include="ObjectListView\VirtualObjectListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Paril\OpenGL\ClientArrayMeshUserData.cs" />
     <Compile Include="Paril\OpenGL\ColorGrabber.cs" />
     <Compile Include="Controls\Brushes.cs">
       <SubType>Component</SubType>

@@ -229,7 +229,6 @@ namespace MCSkin3D
 
 							var cwIndices = new[] {0, 1, 2, 3};
 							var cwwIndices = new[] {3, 2, 1, 0};
-							var colors = new[] {Color4.White, Color4.White, Color4.White, Color4.White};
 
 							foreach (TexturedQuad quad in face.field_40680_i)
 							{
@@ -242,7 +241,7 @@ namespace MCSkin3D
 									texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
 								}
 
-								var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwwIndices);
+								var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), cwwIndices);
 
 								Vector3 zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
 								Vector3 one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
@@ -261,6 +260,7 @@ namespace MCSkin3D
 							}
 
 							mesh.CalculateCenter();
+							mesh.CalculateMatrix();
 
 							model.Meshes.Add(mesh);
 						}
@@ -282,7 +282,6 @@ namespace MCSkin3D
 
 						var cwIndices = new[] {0, 1, 2, 3};
 						var cwwIndices = new[] {3, 2, 1, 0};
-						var colors = new[] {Color4.White, Color4.White, Color4.White, Color4.White};
 
 						foreach (TexturedQuad quad in box.faces)
 						{
@@ -295,7 +294,7 @@ namespace MCSkin3D
 								texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
 							}
 
-							var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), colors, cwIndices);
+							var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), cwIndices);
 
 							Vector3 zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
 							Vector3 one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
@@ -314,6 +313,7 @@ namespace MCSkin3D
 						}
 
 						mesh.CalculateCenter();
+						mesh.CalculateMatrix();
 
 						model.Meshes.Add(mesh);
 					}

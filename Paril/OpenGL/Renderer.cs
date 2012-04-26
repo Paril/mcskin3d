@@ -127,7 +127,7 @@ namespace Paril.OpenGL
 
 		public void AddMesh(Mesh mesh)
 		{
-			if (mesh.HasTransparency || mesh.Faces[0].Colors[0].A != 1)
+			if (mesh.HasTransparency || mesh.DrawTransparent)
 				_transparentMeshes.Add(mesh);
 			else
 				_opaqueMeshes.Add(mesh);

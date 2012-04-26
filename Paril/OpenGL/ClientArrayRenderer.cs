@@ -17,6 +17,9 @@
 //
 
 using OpenTK.Graphics.OpenGL;
+using OpenTK;
+using OpenTK.Graphics;
+using System.Collections.Generic;
 
 namespace Paril.OpenGL
 {
@@ -26,13 +29,8 @@ namespace Paril.OpenGL
 	/// </summary>
 	public class ClientArrayRenderer : Renderer
 	{
-		private readonly bool _compiled;
-
 		public ClientArrayRenderer()
 		{
-			if (GL.GetString(StringName.Extensions).Contains("GL_EXT_compiled_vertex_array"))
-				_compiled = true;
-
 			GL.EnableClientState(ArrayCap.VertexArray);
 			GL.EnableClientState(ArrayCap.ColorArray);
 			GL.EnableClientState(ArrayCap.TextureCoordArray);
@@ -44,26 +42,16 @@ namespace Paril.OpenGL
 
 			GL.PushMatrix();
 
-			GL.Translate(mesh.Pivot);
-			GL.Rotate(mesh.Rotate.X, 1, 0, 0);
-			GL.Rotate(mesh.Rotate.Y, 0, 1, 0);
-			GL.Rotate(mesh.Rotate.Z, 0, 0, 1);
-			GL.Translate(-mesh.Pivot);
+			GL.MultMatrix(ref mesh.Matrix);
 
-			GL.Translate(mesh.Translate);
+			var data = mesh.GetUserData<ClientArrayMeshUserData>();
 
-			foreach (Face face in mesh.Faces)
-			{
-				GL.VertexPointer(3, VertexPointerType.Float, 0, face.Vertices);
-				GL.TexCoordPointer(2, TexCoordPointerType.Float, 0, face.TexCoords);
-				GL.ColorPointer(4, ColorPointerType.Float, 0, face.Colors);
+			GL.VertexPointer(3, VertexPointerType.Float, 0, data.VerticeArray);
+			GL.TexCoordPointer(2, TexCoordPointerType.Float, 0, data.TexCoordArray);
+			GL.ColorPointer(4, ColorPointerType.Float, 0, data.ColorArray);
 
-				if (_compiled)
-					GL.Ext.LockArrays(0, face.Indices.Length);
-				GL.DrawElements(mesh.Mode, face.Indices.Length, DrawElementsType.UnsignedInt, face.Indices);
-				if (_compiled)
-					GL.Ext.UnlockArrays();
-			}
+			GL.DrawElements(mesh.Mode, data.IndiceArray.Length, DrawElementsType.UnsignedInt, data.IndiceArray);
+
 
 			GL.PopMatrix();
 		}
@@ -74,6 +62,36 @@ namespace Paril.OpenGL
 
 		protected override void PostRender()
 		{
+		}
+
+		public override IMeshUserData CreateUserData(Mesh mesh)
+		{
+			ClientArrayMeshUserData data = new ClientArrayMeshUserData();
+
+			List<Vector3> vertices = new List<Vector3>();
+			List<Vector2> texCoords = new List<Vector2>();
+			List<Color4> colors = new List<Color4>();
+			List<int> indices = new List<int>();
+
+			int totalCount = 0;
+			foreach (var f in mesh.Faces)
+			{
+				vertices.AddRange(f.Vertices);
+				texCoords.AddRange(f.TexCoords);
+				colors.AddRange(new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White });
+
+				foreach (var c in f.Indices)
+					indices.Add(c + totalCount);
+
+				totalCount += f.Vertices.Length;
+			}
+
+			data.VerticeArray = vertices.ToArray();
+			data.TexCoordArray = texCoords.ToArray();
+			data.ColorArray = colors.ToArray();
+			data.IndiceArray = indices.ToArray();
+
+			return data;
 		}
 	}
 }

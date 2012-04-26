@@ -180,5 +180,26 @@ namespace ServerTest
 
 			_server.MaintenenceString = _maintenenceString;
 		}
+
+		private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				e.Cancel = true;
+				notifyIcon1.Visible = true;
+				Hide();
+			}
+		}
+
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+
+		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			Show();
+			notifyIcon1.Visible = false;
+		}
 	}
 }

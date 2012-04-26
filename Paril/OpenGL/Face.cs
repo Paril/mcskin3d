@@ -6,19 +6,17 @@ namespace Paril.OpenGL
 {
 	public struct Face
 	{
-		public Color4[] Colors;
 		public bool Downface;
 		public int[] Indices;
 		public Vector3 Normal;
 		public Vector2[] TexCoords;
 		public Vector3[] Vertices;
 
-		public Face(Vector3[] vertices, Vector2[] texCoords, Color4[] colors, int[] indices) :
+		public Face(Vector3[] vertices, Vector2[] texCoords, int[] indices) :
 			this()
 		{
 			Vertices = vertices;
 			TexCoords = texCoords;
-			Colors = colors;
 			Indices = indices;
 		}
 
