@@ -382,6 +382,7 @@
     <Compile Include="SharpZip\Zip\ZipInputStream.cs" />
     <Compile Include="SharpZip\Zip\ZipNameTransform.cs" />
     <Compile Include="SharpZip\Zip\ZipOutputStream.cs" />
+    <Compile Include="SkinLoader.cs" />
     <Compile Include="SVN.cs" />
     <Compile Include="Swatches\ACOSwatch.cs" />
     <Compile Include="Swatches\ACTSwatch.cs" />

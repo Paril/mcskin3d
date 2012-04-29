@@ -362,25 +362,25 @@ namespace MCSkin3D
 				GlobalDirtiness.CurrentSkin.SetMipmapping(false);
 				GlobalDirtiness.CurrentSkin.SetRepeat(false);
 
-				arra = new byte[2 * 2 * 4];
-				fixed (byte* texData = arra)
+				arra = new byte[]
 				{
-					byte* d = texData;
-
-					for (int y = 0; y < 2; ++y)
-					{
-						for (int x = 0; x < 2; ++x)
-						{
-							bool dark = ((x + (y & 1)) & 1) == 1;
-
-							if (dark)
-								*((int*)d) = (80 << 0) | (80 << 8) | (80 << 16) | (255 << 24);
-							else
-								*((int*)d) = (127 << 0) | (127 << 8) | (127 << 16) | (255 << 24);
-							d += 4;
-						}
-					}
-				}
+					127,
+					127,
+					127,
+					255,
+					80,
+					80,
+					80,
+					255,
+					80,
+					80,
+					80,
+					255,
+					127,
+					127,
+					127,
+					255
+				};
 
 				_alphaTex.Upload(arra, 2, 2);
 				_alphaTex.SetMipmapping(false);
@@ -391,13 +391,6 @@ namespace MCSkin3D
 				MeshRenderer = new ClientArrayRenderer();
 			else
 				MeshRenderer = new ImmediateRenderer();
-
-			// Compile model userdata
-			foreach (var model in ModelLoader.Models)
-			{
-				foreach (var m in model.Value.Meshes)
-					m.UserData = MeshRenderer.CreateUserData(m);
-			}
 		}
 
 		private void item_Clicked(object sender, EventArgs e)
@@ -731,7 +724,12 @@ namespace MCSkin3D
 					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
 						mesh.Rotate = helmetRotate;
 
+					// Lazy Man Update!
+					mesh.LastDrawTransparent = mesh.DrawTransparent;
 					mesh.DrawTransparent = (meshVisible == false && GlobalSettings.Ghost && !pickView);
+
+					if (mesh.LastDrawTransparent != mesh.DrawTransparent)
+						MeshRenderer.UpdateUserData(mesh);
 
 					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
 						mesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
@@ -1833,9 +1831,75 @@ namespace MCSkin3D
 			return _currentLanguage.StringTable[id];
 		}
 
+		public void FinishedLoadingModels()
+		{
+			foreach (var x in ModelLoader.Models)
+			{
+				ToolStripItemCollection collection = toolStripDropDownButton1.DropDownItems;
+				string path = Path.GetDirectoryName(x.Value.File.ToString()).Substring(6);
+
+				while (!string.IsNullOrEmpty(path))
+				{
+					string sub = path.Substring(1, path.IndexOf('\\', 1) == -1 ? (path.Length - 1) : (path.IndexOf('\\', 1) - 1));
+
+					ToolStripItem[] subMenu = collection.Find(sub, false);
+
+					if (subMenu.Length == 0)
+					{
+						var item = ((ToolStripMenuItem)collection.Add(sub));
+						item.Name = item.Text;
+						collection = item.DropDownItems;
+					}
+					else
+						collection = ((ToolStripMenuItem)subMenu[0]).DropDownItems;
+
+					path = path.Remove(0, sub.Length + 1);
+				}
+
+				collection.Add(new ModelToolStripMenuItem(x.Value));
+			}
+
+			if (GlobalSettings.OnePointEightMode)
+				ModelLoader.InvertBottomFaces();
+
+			toolStripDropDownButton1.Enabled = true;
+			toolStripDropDownButton1.Text = "None";
+
+			_rendererControl.MakeCurrent();
+
+			// Compile model userdata
+			foreach (var model in ModelLoader.Models)
+			{
+				foreach (var m in model.Value.Meshes)
+				{
+					m.UserData = MeshRenderer.CreateUserData(m);
+					MeshRenderer.UpdateUserData(m);
+				}
+			}
+		}
+
+		public void FinishedLoadingSkins(List<Skin> skins, List<TreeNode> rootNodes, TreeNode selected)
+		{
+			treeView1.BeginUpdate();
+
+			foreach (var root in rootNodes)
+				treeView1.Nodes.Add(root);
+
+			foreach (Skin s in skins)
+				s.SetImages();
+
+			treeView1.EndUpdate();
+			treeView1.SelectedNode = selected;
+
+			toolStrip2.Enabled = true;
+			treeView1.Enabled = true;
+			loadingSkinLabel.Visible = false;
+		}
+
 		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
 			SwatchLoader.LoadSwatches();
+			ModelLoader.LoadModels();
 		}
 
 		private void languageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1904,6 +1968,9 @@ namespace MCSkin3D
 
 		private void PerformDecreaseResolution()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (_lastSkin == null)
 				return;
 			if (_lastSkin.Width <= 1 || _lastSkin.Height <= 1)
@@ -1923,6 +1990,9 @@ namespace MCSkin3D
 
 		private void PerformIncreaseResolution()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (_lastSkin == null)
 				return;
 			if (!ShowDontAskAgain())
@@ -1940,6 +2010,9 @@ namespace MCSkin3D
 
 		public void PerformImportFromSite()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			string accountName = _importFromSite.Show();
 
 			if (string.IsNullOrEmpty(accountName))
@@ -2686,11 +2759,17 @@ namespace MCSkin3D
 
 		private void PerformTreeViewZoomIn()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			treeView1.ZoomIn();
 		}
 
 		private void PerformTreeViewZoomOut()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			treeView1.ZoomOut();
 		}
 
@@ -2722,8 +2801,6 @@ namespace MCSkin3D
 		#endregion
 
 		#region Overrides
-
-		private TreeNode _tempToSelect;
 
 		private bool CheckKeyShortcut(KeyEventArgs e)
 		{
@@ -2777,34 +2854,6 @@ namespace MCSkin3D
 			GlobalSettings.Save();
 		}
 
-		private void RecurseAddDirectories(string path, TreeNodeCollection nodes, List<Skin> skins)
-		{
-			var di = new DirectoryInfo(path);
-
-			foreach (FileInfo file in di.GetFiles("*.png", SearchOption.TopDirectoryOnly))
-			{
-				var skin = new Skin(file);
-				nodes.Add(skin);
-
-				if (_tempToSelect == null)
-					_tempToSelect = skin;
-				else if (GlobalSettings.LastSkin == skin.File.ToString())
-					_tempToSelect = skin;
-
-				skins.Add(skin);
-			}
-
-			foreach (DirectoryInfo dir in di.GetDirectories())
-			{
-				if ((dir.Attributes & FileAttributes.Hidden) != 0)
-					continue;
-
-				var folderNode = new FolderNode(dir.FullName);
-				RecurseAddDirectories(dir.FullName, folderNode.Nodes, skins);
-				nodes.Add(folderNode);
-			}
-		}
-
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -2813,27 +2862,6 @@ namespace MCSkin3D
 			SetViewMode(_currentViewMode);
 
 			_rendererControl.MakeCurrent();
-
-			var skins = new List<Skin>();
-			treeView1.BeginUpdate();
-
-			if (HasOneRoot)
-				RecurseAddDirectories(RootFolderString, treeView1.Nodes, skins);
-			else
-			{
-				foreach (string x in GlobalSettings.SkinDirectories)
-				{
-					var folder = new FolderNode(x);
-					RecurseAddDirectories(x, folder.Nodes, skins);
-					treeView1.Nodes.Add(folder);
-				}
-			}
-
-			foreach (Skin s in skins)
-				s.SetImages();
-
-			treeView1.EndUpdate();
-			treeView1.SelectedNode = _tempToSelect;
 
 			toolToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			modeToolStripMenuItem.DropDown.Closing += DontCloseMe;
@@ -3508,6 +3536,9 @@ namespace MCSkin3D
 
 		private void PerformImportSkin()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (_rightClickedNode == null)
 				_rightClickedNode = treeView1.SelectedNode;
 
@@ -3529,6 +3560,9 @@ namespace MCSkin3D
 
 		private void PerformNewFolder()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			string folderLocation;
 			TreeNodeCollection collection;
 
@@ -3558,6 +3592,9 @@ namespace MCSkin3D
 
 		private void PerformNewSkin()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			string folderLocation;
 			TreeNodeCollection collection;
 
@@ -3620,6 +3657,9 @@ namespace MCSkin3D
 
 		private void PerformDeleteSkin()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (treeView1.SelectedNode is Skin)
 			{
 				if (
@@ -3662,6 +3702,9 @@ namespace MCSkin3D
 
 		private void PerformCloneSkin()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (treeView1.SelectedNode == null ||
 			    !(treeView1.SelectedNode is Skin))
 				return;
@@ -3686,6 +3729,9 @@ namespace MCSkin3D
 
 		private void PerformNameChange()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (treeView1.SelectedNode != null)
 			{
 				_currentlyEditing = treeView1.SelectedNode;
@@ -3877,6 +3923,9 @@ namespace MCSkin3D
 
 		private void PerformUpload()
 		{
+			if (!treeView1.Enabled)
+				return;
+
 			if (_lastSkin == null)
 				return;
 
@@ -4156,36 +4205,7 @@ namespace MCSkin3D
 			treeView1.Scrollable = true;
 			splitContainer4.SplitterDistance = 74;
 
-			ModelLoader.LoadModels();
-
-			foreach (var x in ModelLoader.Models)
-			{
-				ToolStripItemCollection collection = toolStripDropDownButton1.DropDownItems;
-				string path = Path.GetDirectoryName(x.Value.File.ToString()).Substring(6);
-
-				while (!string.IsNullOrEmpty(path))
-				{
-					string sub = path.Substring(1, path.IndexOf('\\', 1) == -1 ? (path.Length - 1) : (path.IndexOf('\\', 1) - 1));
-
-					ToolStripItem[] subMenu = collection.Find(sub, false);
-
-					if (subMenu.Length == 0)
-					{
-						var item = ((ToolStripMenuItem) collection.Add(sub));
-						item.Name = item.Text;
-						collection = item.DropDownItems;
-					}
-					else
-						collection = ((ToolStripMenuItem) subMenu[0]).DropDownItems;
-
-					path = path.Remove(0, sub.Length + 1);
-				}
-
-				collection.Add(new ModelToolStripMenuItem(x.Value));
-			}
-
-			if (GlobalSettings.OnePointEightMode)
-				ModelLoader.InvertBottomFaces();
+			toolStripDropDownButton1.Text = GetLanguageString("M_LOADING");
 
 			mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += mLINESIZEToolStripMenuItem_NumericBox_ValueChanged;
 			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
