@@ -25,7 +25,7 @@ namespace Paril.OpenGL
 		public float RotateFactor;
 		public Texture Texture;
 		public Vector3 Translate;
-		public bool DrawTransparent;
+		public bool DrawTransparent, LastDrawTransparent;
 		public IMeshUserData UserData;
 		public Matrix4 Matrix;
 

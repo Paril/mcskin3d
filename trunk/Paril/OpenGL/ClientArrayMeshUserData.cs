@@ -9,9 +9,9 @@ namespace Paril.OpenGL
 {
 	public class ClientArrayMeshUserData : IMeshUserData
 	{
-		public Vector3[] VerticeArray;
-		public Vector2[] TexCoordArray;
-		public Color4[] ColorArray;
-		public int[] IndiceArray;
+		public float[] VerticeArray;
+		public float[] TexCoordArray;
+		public float[] ColorArray;
+		public byte[] IndiceArray;
 	}
 }

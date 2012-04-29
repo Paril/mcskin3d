@@ -20,6 +20,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK;
 using OpenTK.Graphics;
 using System.Collections.Generic;
+using System;
 
 namespace Paril.OpenGL
 {
@@ -50,8 +51,7 @@ namespace Paril.OpenGL
 			GL.TexCoordPointer(2, TexCoordPointerType.Float, 0, data.TexCoordArray);
 			GL.ColorPointer(4, ColorPointerType.Float, 0, data.ColorArray);
 
-			GL.DrawElements(mesh.Mode, data.IndiceArray.Length, DrawElementsType.UnsignedInt, data.IndiceArray);
-
+			GL.DrawElements(mesh.Mode, data.IndiceArray.Length, DrawElementsType.UnsignedByte, data.IndiceArray);
 
 			GL.PopMatrix();
 		}
@@ -70,28 +70,63 @@ namespace Paril.OpenGL
 
 			List<Vector3> vertices = new List<Vector3>();
 			List<Vector2> texCoords = new List<Vector2>();
-			List<Color4> colors = new List<Color4>();
-			List<int> indices = new List<int>();
+			List<byte> indices = new List<byte>();
 
 			int totalCount = 0;
 			foreach (var f in mesh.Faces)
 			{
 				vertices.AddRange(f.Vertices);
 				texCoords.AddRange(f.TexCoords);
-				colors.AddRange(new Color4[] { Color4.White, Color4.White, Color4.White, Color4.White });
 
 				foreach (var c in f.Indices)
-					indices.Add(c + totalCount);
+					indices.Add((byte)(c + totalCount));
 
 				totalCount += f.Vertices.Length;
 			}
 
-			data.VerticeArray = vertices.ToArray();
-			data.TexCoordArray = texCoords.ToArray();
-			data.ColorArray = colors.ToArray();
+			data.VerticeArray = new float[vertices.Count * 3];
+			data.TexCoordArray = new float[texCoords.Count * 2];
 			data.IndiceArray = indices.ToArray();
 
+			int vi = 0;
+			foreach (var x in vertices)
+			{
+				data.VerticeArray[vi++] = x.X;
+				data.VerticeArray[vi++] = x.Y;
+				data.VerticeArray[vi++] = x.Z;
+			}
+
+			vi = 0;
+			foreach (var x in texCoords)
+			{
+				data.TexCoordArray[vi++] = x.X;
+				data.TexCoordArray[vi++] = x.Y;
+			}
+
 			return data;
+		}
+
+		public override void UpdateUserData(Mesh mesh)
+		{
+			List<Color4> colors = new List<Color4>();
+
+			Color4 color = new Color4(1, 1, 1, mesh.DrawTransparent ? 0.25f : 1.0f); 
+	
+			foreach (var x in mesh.Faces)
+				colors.AddRange(new Color4[] { color, color, color, color });
+
+			ClientArrayMeshUserData data = mesh.GetUserData<ClientArrayMeshUserData>();
+
+			data.ColorArray = new float[colors.Count * 4];
+
+			int vi = 0;
+			foreach (var x in colors)
+			{
+				data.ColorArray[vi++] = x.R;
+				data.ColorArray[vi++] = x.G;
+				data.ColorArray[vi++] = x.B;
+				data.ColorArray[vi++] = x.A;
+			}
 		}
 	}
 }

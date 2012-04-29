@@ -120,12 +120,9 @@
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.treeView1 = new MCSkin3D.SkinTreeView();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.treeView2 = new System.Windows.Forms.TreeView();
 			this.toolStrip2 = new Paril.Controls.NativeToolStrip();
-			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.treeZoomOutToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.treeZoomInToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
 			this.importToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.newSkinToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -138,8 +135,11 @@
 			this.decResToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.incResToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.fetchToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.loadingSkinLabel = new System.Windows.Forms.Label();
+			this.treeView1 = new MCSkin3D.SkinTreeView();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.treeView2 = new System.Windows.Forms.TreeView();
 			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.colorPanel = new MCSkin3D.Controls.ColorPanel();
 			this.panel4 = new System.Windows.Forms.Panel();
@@ -149,6 +149,7 @@
 			this.toolStrip1 = new Paril.Controls.NativeToolStrip();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAlltoolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.uploadToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.undoToolStripButton = new System.Windows.Forms.ToolStripSplitButton();
 			this.redoToolStripButton = new System.Windows.Forms.ToolStripSplitButton();
@@ -183,8 +184,8 @@
 			this.splitContainer3.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
 			this.toolStrip2.SuspendLayout();
+			this.tabPage2.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -1003,7 +1004,6 @@
 			// splitContainer3.Panel1
 			// 
 			this.splitContainer3.Panel1.Controls.Add(this.tabControl1);
-			this.splitContainer3.Panel1.Controls.Add(this.toolStrip2);
 			this.splitContainer3.Panel1.Controls.Add(this.hScrollBar1);
 			// 
 			// splitContainer3.Panel2
@@ -1018,73 +1018,35 @@
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 25);
+			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(302, 321);
+			this.tabControl1.Size = new System.Drawing.Size(302, 346);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.loadingSkinLabel);
 			this.tabPage1.Controls.Add(this.treeView1);
+			this.tabPage1.Controls.Add(this.toolStrip2);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Size = new System.Drawing.Size(294, 295);
+			this.tabPage1.Size = new System.Drawing.Size(294, 320);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Skins";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// treeView1
-			// 
-			this.treeView1.AllowDrop = true;
-			this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.treeView1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
-			this.treeView1.FullRowSelect = true;
-			this.treeView1.HotTracking = true;
-			this.treeView1.ItemHeight = 23;
-			this.treeView1.Location = new System.Drawing.Point(0, 0);
-			this.treeView1.Margin = new System.Windows.Forms.Padding(0);
-			this.treeView1.Name = "treeView1";
-			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
-			this.treeView1.Size = new System.Drawing.Size(294, 295);
-			this.treeView1.Sorted = true;
-			this.treeView1.TabIndex = 1;
-			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-			this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
-			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
-			// 
-			// tabPage2
-			// 
-			this.tabPage2.Controls.Add(this.treeView2);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(294, 295);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Parts";
-			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// treeView2
-			// 
-			this.treeView2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.treeView2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.treeView2.HideSelection = false;
-			this.treeView2.Location = new System.Drawing.Point(0, 0);
-			this.treeView2.Name = "treeView2";
-			this.treeView2.Size = new System.Drawing.Size(294, 295);
-			this.treeView2.TabIndex = 0;
-			this.treeView2.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView2_NodeMouseClick);
-			// 
 			// toolStrip2
 			// 
+			this.toolStrip2.Enabled = false;
 			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.toolStrip2.ImeMode = System.Windows.Forms.ImeMode.On;
 			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton2,
-            this.toolStripButton1,
+            this.treeZoomOutToolStripButton,
+            this.treeZoomInToolStripButton,
             this.toolStripSeparator13,
             this.importToolStripButton,
             this.newSkinToolStripButton,
@@ -1097,35 +1059,34 @@
             this.decResToolStripButton,
             this.incResToolStripButton,
             this.toolStripSeparator12,
-            this.uploadToolStripButton,
             this.fetchToolStripButton});
 			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(302, 25);
+			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
 			this.toolStrip2.TabIndex = 6;
 			this.toolStrip2.Text = "toolStrip2";
 			// 
-			// toolStripButton2
+			// treeZoomOutToolStripButton
 			// 
-			this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton2.Image = global::MCSkin3D.Properties.Resources.ZoomOutHS;
-			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Black;
-			this.toolStripButton2.Name = "toolStripButton2";
-			this.languageProvider1.SetPropertyNames(this.toolStripButton2, "Text");
-			this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton2.Text = "T_TREE_ZOOMOUT";
-			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+			this.treeZoomOutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.treeZoomOutToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomOutHS;
+			this.treeZoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.treeZoomOutToolStripButton.Name = "treeZoomOutToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.treeZoomOutToolStripButton, "Text");
+			this.treeZoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.treeZoomOutToolStripButton.Text = "T_TREE_ZOOMOUT";
+			this.treeZoomOutToolStripButton.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
-			// toolStripButton1
+			// treeZoomInToolStripButton
 			// 
-			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton1.Image = global::MCSkin3D.Properties.Resources.ZoomInHS;
-			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Black;
-			this.toolStripButton1.Name = "toolStripButton1";
-			this.languageProvider1.SetPropertyNames(this.toolStripButton1, "Text");
-			this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton1.Text = "T_TREE_ZOOMIN";
-			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+			this.treeZoomInToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.treeZoomInToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomInHS;
+			this.treeZoomInToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+			this.treeZoomInToolStripButton.Name = "treeZoomInToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.treeZoomInToolStripButton, "Text");
+			this.treeZoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.treeZoomInToolStripButton.Text = "T_TREE_ZOOMIN";
+			this.treeZoomInToolStripButton.Click += new System.EventHandler(this.toolStripButton1_Click);
 			// 
 			// toolStripSeparator13
 			// 
@@ -1235,17 +1196,6 @@
 			this.toolStripSeparator12.Name = "toolStripSeparator12";
 			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
 			// 
-			// uploadToolStripButton
-			// 
-			this.uploadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uploadToolStripButton.Image = global::MCSkin3D.Properties.Resources.upload;
-			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.uploadToolStripButton.Name = "uploadToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.uploadToolStripButton, "Text");
-			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
-			this.uploadToolStripButton.Click += new System.EventHandler(this.uploadToolStripButton_Click);
-			// 
 			// fetchToolStripButton
 			// 
 			this.fetchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1256,6 +1206,64 @@
 			this.fetchToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.fetchToolStripButton.Text = "M_FETCH_NAME";
 			this.fetchToolStripButton.Click += new System.EventHandler(this.toolStripButton6_Click);
+			// 
+			// loadingSkinLabel
+			// 
+			this.loadingSkinLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.loadingSkinLabel.BackColor = System.Drawing.SystemColors.Control;
+			this.loadingSkinLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.loadingSkinLabel.Location = new System.Drawing.Point(47, 107);
+			this.loadingSkinLabel.Name = "loadingSkinLabel";
+			this.languageProvider1.SetPropertyNames(this.loadingSkinLabel, "Text");
+			this.loadingSkinLabel.Size = new System.Drawing.Size(200, 107);
+			this.loadingSkinLabel.TabIndex = 2;
+			this.loadingSkinLabel.Text = "M_LOADING";
+			this.loadingSkinLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// treeView1
+			// 
+			this.treeView1.AllowDrop = true;
+			this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
+			this.treeView1.Enabled = false;
+			this.treeView1.FullRowSelect = true;
+			this.treeView1.HotTracking = true;
+			this.treeView1.ItemHeight = 23;
+			this.treeView1.Location = new System.Drawing.Point(0, 25);
+			this.treeView1.Margin = new System.Windows.Forms.Padding(0);
+			this.treeView1.Name = "treeView1";
+			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
+			this.treeView1.Size = new System.Drawing.Size(294, 295);
+			this.treeView1.Sorted = true;
+			this.treeView1.TabIndex = 1;
+			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+			this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
+			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Controls.Add(this.treeView2);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Size = new System.Drawing.Size(294, 320);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "Parts";
+			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// treeView2
+			// 
+			this.treeView2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.treeView2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView2.HideSelection = false;
+			this.treeView2.Location = new System.Drawing.Point(0, 0);
+			this.treeView2.Name = "treeView2";
+			this.treeView2.Size = new System.Drawing.Size(294, 320);
+			this.treeView2.TabIndex = 0;
+			this.treeView2.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView2_NodeMouseClick);
 			// 
 			// hScrollBar1
 			// 
@@ -1333,6 +1341,7 @@
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripButton,
             this.saveAlltoolStripButton,
+            this.uploadToolStripButton,
             this.toolStripSeparator6,
             this.undoToolStripButton,
             this.redoToolStripButton,
@@ -1383,6 +1392,16 @@
 			this.saveAlltoolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveAlltoolStripButton.Text = "T_SAVEALL";
 			this.saveAlltoolStripButton.Click += new System.EventHandler(this.saveAlltoolStripButton_Click);
+			// 
+			// uploadToolStripButton
+			// 
+			this.uploadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.uploadToolStripButton.Image = global::MCSkin3D.Properties.Resources.upload;
+			this.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.uploadToolStripButton.Name = "uploadToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.uploadToolStripButton, "Text");
+			this.uploadToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.uploadToolStripButton.Text = "T_TREE_UPLOAD";
 			// 
 			// toolStripSeparator6
 			// 
@@ -1571,6 +1590,7 @@
 			// toolStripDropDownButton1
 			// 
 			this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.toolStripDropDownButton1.Enabled = false;
 			this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
 			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -1620,14 +1640,14 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
 			this.splitContainer3.Panel1.ResumeLayout(false);
-			this.splitContainer3.Panel1.PerformLayout();
 			this.splitContainer3.Panel2.ResumeLayout(false);
 			this.splitContainer3.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.tabPage2.ResumeLayout(false);
+			this.tabPage1.PerformLayout();
 			this.toolStrip2.ResumeLayout(false);
 			this.toolStrip2.PerformLayout();
+			this.tabPage2.ResumeLayout(false);
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
 			this.splitContainer4.ResumeLayout(false);
@@ -1724,7 +1744,6 @@
 		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
-		private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
 		private Paril.Controls.NativeToolStrip toolStrip2;
 		private System.Windows.Forms.ToolStripButton importToolStripButton;
 		private System.Windows.Forms.ToolStripButton newFolderToolStripButton;
@@ -1735,9 +1754,8 @@
 		private System.Windows.Forms.ToolStripButton hybridToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem hybridViewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
-		private System.Windows.Forms.ToolStripButton uploadToolStripButton;
-		private System.Windows.Forms.ToolStripButton toolStripButton2;
-		private System.Windows.Forms.ToolStripButton toolStripButton1;
+		private System.Windows.Forms.ToolStripButton treeZoomOutToolStripButton;
+		private System.Windows.Forms.ToolStripButton treeZoomInToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
 		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
 		public Language.LanguageProvider languageProvider1;
@@ -1783,6 +1801,9 @@
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.TreeView treeView2;
+		public System.Windows.Forms.Label loadingSkinLabel;
+		private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton uploadToolStripButton;
 	}
 }
 

@@ -143,5 +143,9 @@ namespace Paril.OpenGL
 
 		public abstract void RenderMesh(Mesh mesh);
 		public virtual IMeshUserData CreateUserData(Mesh mesh) { return null; }
+
+		// Some change occured in the mesh which requires an update to its userdata.
+		// At the moment, only used to properly set the color array.
+		public virtual void UpdateUserData(Mesh mesh) { }
 	}
 }

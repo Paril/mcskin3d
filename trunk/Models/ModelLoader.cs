@@ -26,6 +26,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Paril.OpenGL;
+using System.Threading;
 
 namespace MCSkin3D
 {
@@ -66,7 +67,7 @@ namespace MCSkin3D
 			}
 		}
 
-		public static void LoadModels()
+		public static void LoadModelThread()
 		{
 			new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
 			new ModelBiped().Save("Human", 1, 64, 32, "Models\\Mobs\\Passive\\Human.xml");
@@ -132,6 +133,22 @@ namespace MCSkin3D
 				{
 				}
 			}
+
+			Editor.MainForm.Invoke(Editor.MainForm.FinishedLoadingModels);
+
+			SkinLoader.LoadSkins();
+		}
+
+		static Thread _loadModelThread;
+		public static void LoadModels()
+		{
+			_loadModelThread = new Thread(LoadModelThread);
+			_loadModelThread.Start();
+		}
+
+		public static void CancelLoadModels()
+		{
+			_loadModelThread.Abort();
 		}
 
 		public static Model GetModelForPath(string p)

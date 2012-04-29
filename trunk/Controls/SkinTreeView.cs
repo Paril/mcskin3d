@@ -31,31 +31,6 @@ using Timer = System.Timers.Timer;
 
 namespace MCSkin3D
 {
-	// Summary:
-	//     Exposes a method that compares two objects.
-	[ComVisible(true)]
-	public class SkinNodeSorter : IComparer
-	{
-		#region IComparer Members
-
-		public int Compare(object x, object y)
-		{
-			var l = (TreeNode) x;
-			var r = (TreeNode) y;
-
-			if (l is Skin && !(r is Skin))
-				return 1;
-			else if (!(l is Skin) && r is Skin)
-				return -1;
-			else if (l is Skin && r is Skin)
-				return ((Skin) l).Name.CompareTo(((Skin) r).Name);
-
-			return l.Text.CompareTo(r.Text);
-		}
-
-		#endregion
-	}
-
 	public class SkinTreeView : TreeView
 	{
 		private const int GWL_STYLE = (-16);
@@ -113,6 +88,14 @@ namespace MCSkin3D
 			style |= 0x8000;
 
 			SetWindowLong(Handle, GWL_STYLE, style);
+		}
+
+		protected override void OnEnabledChanged(EventArgs e)
+		{
+			base.OnEnabledChanged(e);
+
+			BackColor = Enabled ? SystemColors.Window : SystemColors.Control;
+			Invalidate();
 		}
 
 		public Point ScrollPosition
@@ -816,4 +799,30 @@ namespace MCSkin3D
 			}
 		}
 	}
+
+	// Summary:
+	//     Exposes a method that compares two objects.
+	[ComVisible(true)]
+	public class SkinNodeSorter : IComparer
+	{
+		#region IComparer Members
+
+		public int Compare(object x, object y)
+		{
+			var l = (TreeNode)x;
+			var r = (TreeNode)y;
+
+			if (l is Skin && !(r is Skin))
+				return 1;
+			else if (!(l is Skin) && r is Skin)
+				return -1;
+			else if (l is Skin && r is Skin)
+				return ((Skin)l).Name.CompareTo(((Skin)r).Name);
+
+			return l.Text.CompareTo(r.Text);
+		}
+
+		#endregion
+	}
+
 }
