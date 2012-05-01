@@ -220,6 +220,7 @@ namespace MCSkin3D
 				MainForm._importFromSite.languageProvider1.LanguageChanged(value);
 				MainForm.colorPanel.languageProvider1.LanguageChanged(value);
 				MainForm.colorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
+				MainForm.toolStrip2.LanguageProvider.LanguageChanged(value);
 
 				if (MainForm._selectedTool != null)
 					MainForm.toolStripStatusLabel1.Text = MainForm._selectedTool.Tool.GetStatusLabelText();
@@ -237,7 +238,7 @@ namespace MCSkin3D
 			get
 			{
 				if (HasOneRoot)
-					return Path.GetDirectoryName(GlobalSettings.SkinDirectories[0]);
+					return new DirectoryInfo(GlobalSettings.SkinDirectories[0]).FullName;
 
 				throw new InvalidOperationException();
 			}
@@ -971,8 +972,6 @@ namespace MCSkin3D
 
 			_renderTimer.Stop();
 
-			frameCount++;
-
 			if (GlobalSettings.RenderBenchmark)
 			{
 				if (((++frameCount) % 60) == 0)
@@ -1315,7 +1314,7 @@ namespace MCSkin3D
 		private void VerifySelectionButtons()
 		{
 			changeNameToolStripMenuItem.Enabled =
-				deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = cloneToolStripButton.Enabled = true;
+				deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = toolStrip2.CloneToolStripButton.Enabled = true;
 			mDECRESToolStripMenuItem.Enabled = mINCRESToolStripMenuItem.Enabled = true;
 
 			if (treeView1.SelectedNode == null)
@@ -1325,14 +1324,14 @@ namespace MCSkin3D
 					changeNameToolStripMenuItem.Enabled =
 					deleteToolStripMenuItem.Enabled =
 					cloneToolStripMenuItem.Enabled =
-					cloneToolStripButton.Enabled = false;
+					toolStrip2.CloneToolStripButton.Enabled = false;
 			}
 			else if (!(treeView1.SelectedNode is Skin))
 			{
 				mDECRESToolStripMenuItem.Enabled =
 					mINCRESToolStripMenuItem.Enabled =
 					cloneToolStripMenuItem.Enabled =
-					cloneToolStripButton.Enabled = false;
+					toolStrip2.CloneToolStripButton.Enabled = false;
 			}
 			else if (treeView1.SelectedNode is Skin)
 			{
@@ -1347,17 +1346,17 @@ namespace MCSkin3D
 			string folderLocation = GetFolderLocationForNode(treeView1.SelectedNode);
 			bool canDoOperation = string.IsNullOrEmpty(folderLocation);
 
-			importToolStripButton.Enabled = !canDoOperation;
-			newSkinToolStripButton.Enabled = !canDoOperation;
-			newFolderToolStripButton.Enabled = !canDoOperation;
-			fetchToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.ImportToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.NewSkinToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.NewFolderToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.FetchToolStripButton.Enabled = !canDoOperation;
 
 			bool itemSelected = treeView1.SelectedNode == null;
 
-			renameToolStripButton.Enabled = !itemSelected;
-			deleteToolStripButton.Enabled = !itemSelected;
-			decResToolStripButton.Enabled = !itemSelected;
-			incResToolStripButton.Enabled = !itemSelected;
+			toolStrip2.RenameToolStripButton.Enabled = !itemSelected;
+			toolStrip2.DeleteToolStripButton.Enabled = !itemSelected;
+			toolStrip2.DecResToolStripButton.Enabled = !itemSelected;
+			toolStrip2.IncResToolStripButton.Enabled = !itemSelected;
 			uploadToolStripButton.Enabled = !itemSelected;
 		}
 
@@ -1878,27 +1877,33 @@ namespace MCSkin3D
 			}
 		}
 
-		public void FinishedLoadingSkins(List<Skin> skins, List<TreeNode> rootNodes, TreeNode selected)
+		public void BeginFinishedLoadingSkins(List<TreeNode> rootNodes)
 		{
 			treeView1.BeginUpdate();
 
 			foreach (var root in rootNodes)
 				treeView1.Nodes.Add(root);
+		}
 
-			foreach (Skin s in skins)
-				s.SetImages();
+		public void FinishedLoadingSkins(List<Skin> skins, TreeNode selected)
+		{
+			try
+			{	
+				treeView1.EndUpdate();
+				treeView1.SelectedNode = selected;
 
-			treeView1.EndUpdate();
-			treeView1.SelectedNode = selected;
-
-			toolStrip2.Enabled = true;
-			treeView1.Enabled = true;
-			loadingSkinLabel.Visible = false;
+				toolStrip2.Enabled = true;
+				treeView1.Enabled = true;
+				loadingSkinLabel.Visible = false;
+			}
+			catch (Exception ex)
+			{
+				Program.RaiseException(ex);
+			}
 		}
 
 		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
-			SwatchLoader.LoadSwatches();
 			ModelLoader.LoadModels();
 		}
 
@@ -1912,44 +1917,9 @@ namespace MCSkin3D
 			PerformUpload();
 		}
 
-		private void importToolStripButton_Click(object sender, EventArgs e)
-		{
-			PerformImportSkin();
-		}
-
-		private void newFolderToolStripButton_Click(object sender, EventArgs e)
-		{
-			PerformNewFolder();
-		}
-
-		private void renameToolStripButton_Click(object sender, EventArgs e)
-		{
-			PerformNameChange();
-		}
-
-		private void deleteToolStripButton_Click(object sender, EventArgs e)
-		{
-			PerformDeleteSkin();
-		}
-
-		private void cloneToolStripButton_Click(object sender, EventArgs e)
-		{
-			PerformCloneSkin();
-		}
-
 		private void uploadToolStripButton_Click(object sender, EventArgs e)
 		{
 			PerformUpload();
-		}
-
-		private void toolStripButton2_Click(object sender, EventArgs e)
-		{
-			PerformTreeViewZoomOut();
-		}
-
-		private void toolStripButton1_Click(object sender, EventArgs e)
-		{
-			PerformTreeViewZoomIn();
 		}
 
 		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -1966,7 +1936,7 @@ namespace MCSkin3D
 			return ret;
 		}
 
-		private void PerformDecreaseResolution()
+		public void PerformDecreaseResolution()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -1988,7 +1958,7 @@ namespace MCSkin3D
 			grabber.Save();
 		}
 
-		private void PerformIncreaseResolution()
+		public void PerformIncreaseResolution()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -2061,26 +2031,6 @@ namespace MCSkin3D
 		private void mINCRESToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PerformIncreaseResolution();
-		}
-
-		private void toolStripButton4_Click(object sender, EventArgs e)
-		{
-			PerformDecreaseResolution();
-		}
-
-		private void toolStripButton3_Click(object sender, EventArgs e)
-		{
-			PerformIncreaseResolution();
-		}
-
-		private void toolStripButton5_Click(object sender, EventArgs e)
-		{
-			PerformNewSkin();
-		}
-
-		private void toolStripButton6_Click(object sender, EventArgs e)
-		{
-			PerformImportFromSite();
 		}
 
 		private void mFETCHNAMEToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2757,7 +2707,7 @@ namespace MCSkin3D
 			SetSelectedTool((ToolIndex) item.Tag);
 		}
 
-		private void PerformTreeViewZoomIn()
+		public void PerformTreeViewZoomIn()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -2765,7 +2715,7 @@ namespace MCSkin3D
 			treeView1.ZoomIn();
 		}
 
-		private void PerformTreeViewZoomOut()
+		public void PerformTreeViewZoomOut()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -2830,7 +2780,7 @@ namespace MCSkin3D
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			SwatchLoader.CancelLoadSwatches();
+			ModelLoader.CancelLoadModels();
 
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
 			{
@@ -3534,7 +3484,7 @@ namespace MCSkin3D
 				ImportSkin(f, folderLocation, parentNode);
 		}
 
-		private void PerformImportSkin()
+		public void PerformImportSkin()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -3558,7 +3508,7 @@ namespace MCSkin3D
 			}
 		}
 
-		private void PerformNewFolder()
+		public void PerformNewFolder()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -3590,7 +3540,7 @@ namespace MCSkin3D
 			PerformNameChange();
 		}
 
-		private void PerformNewSkin()
+		public void PerformNewSkin()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -3655,7 +3605,7 @@ namespace MCSkin3D
 			Directory.Delete(GetFolderForNode(node), true);
 		}
 
-		private void PerformDeleteSkin()
+		public void PerformDeleteSkin()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -3700,7 +3650,7 @@ namespace MCSkin3D
 			}
 		}
 
-		private void PerformCloneSkin()
+		public void PerformCloneSkin()
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -3727,7 +3677,7 @@ namespace MCSkin3D
 			newSkin.SetImages();
 		}
 
-		private void PerformNameChange()
+		public void PerformNameChange()
 		{
 			if (!treeView1.Enabled)
 				return;

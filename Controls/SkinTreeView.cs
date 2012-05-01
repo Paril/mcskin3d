@@ -527,6 +527,9 @@ namespace MCSkin3D
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			if (!Enabled)
+				return;
+
 			if (!DesignMode)
 			{
 				_oldScrollValue = Editor.MainForm.hScrollBar1.Value;

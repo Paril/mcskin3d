@@ -123,6 +123,9 @@
     <Compile Include="Controls\ListViewExpanded.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\SkinTreeViewToolBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ExceptionHandler\Client.cs" />
     <Compile Include="ExceptionHandler\ClientForm.cs">
       <SubType>Form</SubType>

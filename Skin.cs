@@ -142,6 +142,13 @@ namespace MCSkin3D
 			return head;
 		}
 
+		static void SetImage(Skin skin)
+		{
+			skin.GLImage = new TextureGL(skin.File.FullName);
+			skin.GLImage.SetMipmapping(false);
+			skin.GLImage.SetRepeat(false);
+		}
+
 		public void SetImages(bool updateGL = true)
 		{
 			try
@@ -180,9 +187,10 @@ namespace MCSkin3D
 
 				if (updateGL)
 				{
-					GLImage = new TextureGL(File.FullName);
-					GLImage.SetMipmapping(false);
-					GLImage.SetRepeat(false);
+					if (Editor.MainForm.InvokeRequired)
+						Editor.MainForm.Invoke((Action<Skin>)SetImage, this);
+					else
+						SetImage(this);
 				}
 
 				if (Model == null)

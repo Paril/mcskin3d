@@ -6,8 +6,6 @@ namespace MCSkin3D.Swatches
 {
 	public class SwatchLoader
 	{
-		private static Thread _thread;
-
 		private static void AddDirectory(string dir, List<ISwatch> swatches)
 		{
 			foreach (string swatchFile in Directory.GetFiles(dir, "*"))
@@ -33,7 +31,7 @@ namespace MCSkin3D.Swatches
 			}
 		}
 
-		private static void SwatchLoadThreadFunc()
+		public static void LoadSwatches()
 		{
 			var swatches = new List<ISwatch>();
 			AddDirectory("Swatches", swatches);
@@ -44,24 +42,6 @@ namespace MCSkin3D.Swatches
 			                       	Editor.MainForm.ColorPanel.SwatchContainer.Enabled = true;
 			                       	Editor.MainForm.ColorPanel.SetLoading(false);
 			                       });
-
-			_thread = null;
-		}
-
-		public static void LoadSwatches()
-		{
-			Editor.MainForm.ColorPanel.SwatchContainer.Enabled = false;
-			_thread = new Thread(SwatchLoadThreadFunc);
-			_thread.Start();
-		}
-
-		public static void CancelLoadSwatches()
-		{
-			if (_thread != null)
-			{
-				_thread.Abort();
-				_thread = null;
-			}
 		}
 	}
 }

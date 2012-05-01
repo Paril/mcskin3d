@@ -120,24 +120,9 @@
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.toolStrip2 = new Paril.Controls.NativeToolStrip();
-			this.treeZoomOutToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.treeZoomInToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-			this.importToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.newSkinToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.newFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-			this.renameToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.deleteToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.cloneToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-			this.decResToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.incResToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.fetchToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.loadingSkinLabel = new System.Windows.Forms.Label();
 			this.treeView1 = new MCSkin3D.SkinTreeView();
+			this.toolStrip2 = new MCSkin3D.Controls.SkinTreeViewToolBar();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.treeView2 = new System.Windows.Forms.TreeView();
 			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
@@ -1025,6 +1010,17 @@
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(302, 346);
 			this.tabControl1.TabIndex = 0;
+			//
+			// toolStrip2
+			//
+			this.toolStrip2.Enabled = false;
+			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.toolStrip2.ImeMode = System.Windows.Forms.ImeMode.On;
+			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip2.Name = "toolStrip2";
+			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
+			this.toolStrip2.TabIndex = 6;
+			this.toolStrip2.Text = "toolStrip2";
 			// 
 			// tabPage1
 			// 
@@ -1038,174 +1034,6 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Skins";
 			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
-			// toolStrip2
-			// 
-			this.toolStrip2.Enabled = false;
-			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.toolStrip2.ImeMode = System.Windows.Forms.ImeMode.On;
-			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.treeZoomOutToolStripButton,
-            this.treeZoomInToolStripButton,
-            this.toolStripSeparator13,
-            this.importToolStripButton,
-            this.newSkinToolStripButton,
-            this.newFolderToolStripButton,
-            this.toolStripSeparator11,
-            this.renameToolStripButton,
-            this.deleteToolStripButton,
-            this.cloneToolStripButton,
-            this.toolStripSeparator14,
-            this.decResToolStripButton,
-            this.incResToolStripButton,
-            this.toolStripSeparator12,
-            this.fetchToolStripButton});
-			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
-			this.toolStrip2.TabIndex = 6;
-			this.toolStrip2.Text = "toolStrip2";
-			// 
-			// treeZoomOutToolStripButton
-			// 
-			this.treeZoomOutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.treeZoomOutToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomOutHS;
-			this.treeZoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.treeZoomOutToolStripButton.Name = "treeZoomOutToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.treeZoomOutToolStripButton, "Text");
-			this.treeZoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.treeZoomOutToolStripButton.Text = "T_TREE_ZOOMOUT";
-			this.treeZoomOutToolStripButton.Click += new System.EventHandler(this.toolStripButton2_Click);
-			// 
-			// treeZoomInToolStripButton
-			// 
-			this.treeZoomInToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.treeZoomInToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomInHS;
-			this.treeZoomInToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.treeZoomInToolStripButton.Name = "treeZoomInToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.treeZoomInToolStripButton, "Text");
-			this.treeZoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.treeZoomInToolStripButton.Text = "T_TREE_ZOOMIN";
-			this.treeZoomInToolStripButton.Click += new System.EventHandler(this.toolStripButton1_Click);
-			// 
-			// toolStripSeparator13
-			// 
-			this.toolStripSeparator13.Name = "toolStripSeparator13";
-			this.toolStripSeparator13.Size = new System.Drawing.Size(6, 25);
-			// 
-			// importToolStripButton
-			// 
-			this.importToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.importToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
-			this.importToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.importToolStripButton.Name = "importToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.importToolStripButton, "Text");
-			this.importToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.importToolStripButton.Text = "T_TREE_IMPORTHERE";
-			this.importToolStripButton.Click += new System.EventHandler(this.importToolStripButton_Click);
-			// 
-			// newSkinToolStripButton
-			// 
-			this.newSkinToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newSkinToolStripButton.Image = global::MCSkin3D.Properties.Resources.newskin;
-			this.newSkinToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.newSkinToolStripButton.Name = "newSkinToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.newSkinToolStripButton, "Text");
-			this.newSkinToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.newSkinToolStripButton.Text = "M_NEWSKIN_HERE";
-			this.newSkinToolStripButton.Click += new System.EventHandler(this.toolStripButton5_Click);
-			// 
-			// newFolderToolStripButton
-			// 
-			this.newFolderToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newFolderToolStripButton.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
-			this.newFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.newFolderToolStripButton.Name = "newFolderToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.newFolderToolStripButton, "Text");
-			this.newFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.newFolderToolStripButton.Text = "T_TREE_NEWFOLDER";
-			this.newFolderToolStripButton.Click += new System.EventHandler(this.newFolderToolStripButton_Click);
-			// 
-			// toolStripSeparator11
-			// 
-			this.toolStripSeparator11.Name = "toolStripSeparator11";
-			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
-			// 
-			// renameToolStripButton
-			// 
-			this.renameToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.renameToolStripButton.Image = global::MCSkin3D.Properties.Resources.Rename;
-			this.renameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.renameToolStripButton.Name = "renameToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.renameToolStripButton, "Text");
-			this.renameToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.renameToolStripButton.Text = "T_TREE_RENAME";
-			this.renameToolStripButton.Click += new System.EventHandler(this.renameToolStripButton_Click);
-			// 
-			// deleteToolStripButton
-			// 
-			this.deleteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.deleteToolStripButton.Image = global::MCSkin3D.Properties.Resources.delete;
-			this.deleteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.deleteToolStripButton.Name = "deleteToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.deleteToolStripButton, "Text");
-			this.deleteToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.deleteToolStripButton.Text = "T_TREE_DELETE";
-			this.deleteToolStripButton.Click += new System.EventHandler(this.deleteToolStripButton_Click);
-			// 
-			// cloneToolStripButton
-			// 
-			this.cloneToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.cloneToolStripButton.Image = global::MCSkin3D.Properties.Resources.clone;
-			this.cloneToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.cloneToolStripButton.Name = "cloneToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.cloneToolStripButton, "Text");
-			this.cloneToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.cloneToolStripButton.Text = "T_TREE_CLONE";
-			this.cloneToolStripButton.Click += new System.EventHandler(this.cloneToolStripButton_Click);
-			// 
-			// toolStripSeparator14
-			// 
-			this.toolStripSeparator14.Name = "toolStripSeparator14";
-			this.toolStripSeparator14.Size = new System.Drawing.Size(6, 25);
-			// 
-			// decResToolStripButton
-			// 
-			this.decResToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.decResToolStripButton.Image = global::MCSkin3D.Properties.Resources.incres;
-			this.decResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.decResToolStripButton.Name = "decResToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.decResToolStripButton, "Text");
-			this.decResToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.decResToolStripButton.Text = "T_DECRES";
-			this.decResToolStripButton.Click += new System.EventHandler(this.toolStripButton4_Click);
-			// 
-			// incResToolStripButton
-			// 
-			this.incResToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.incResToolStripButton.Image = global::MCSkin3D.Properties.Resources.decres;
-			this.incResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.incResToolStripButton.Name = "incResToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.incResToolStripButton, "Text");
-			this.incResToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.incResToolStripButton.Text = "T_INCRES";
-			this.incResToolStripButton.Click += new System.EventHandler(this.toolStripButton3_Click);
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
-			// 
-			// fetchToolStripButton
-			// 
-			this.fetchToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.fetchToolStripButton.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
-			this.fetchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.fetchToolStripButton.Name = "fetchToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.fetchToolStripButton, "Text");
-			this.fetchToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.fetchToolStripButton.Text = "M_FETCH_NAME";
-			this.fetchToolStripButton.Click += new System.EventHandler(this.toolStripButton6_Click);
 			// 
 			// loadingSkinLabel
 			// 
@@ -1744,20 +1572,10 @@
 		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleLeftLegToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleRightLegToolStripButton;
-		private Paril.Controls.NativeToolStrip toolStrip2;
-		private System.Windows.Forms.ToolStripButton importToolStripButton;
-		private System.Windows.Forms.ToolStripButton newFolderToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-		private System.Windows.Forms.ToolStripButton renameToolStripButton;
-		private System.Windows.Forms.ToolStripButton deleteToolStripButton;
-		private System.Windows.Forms.ToolStripButton cloneToolStripButton;
+		private MCSkin3D.Controls.SkinTreeViewToolBar toolStrip2;
 		private System.Windows.Forms.ToolStripButton hybridToolStripButton;
-		private System.Windows.Forms.ToolStripMenuItem hybridViewToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
-		private System.Windows.Forms.ToolStripButton treeZoomOutToolStripButton;
-		private System.Windows.Forms.ToolStripButton treeZoomInToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
 		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem hybridViewToolStripMenuItem;
 		public Language.LanguageProvider languageProvider1;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
@@ -1765,12 +1583,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem mDECRESToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mINCRESToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
-		private System.Windows.Forms.ToolStripButton decResToolStripButton;
-		private System.Windows.Forms.ToolStripButton incResToolStripButton;
-		private System.Windows.Forms.ToolStripButton newSkinToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-		private System.Windows.Forms.ToolStripButton fetchToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;
