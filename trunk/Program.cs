@@ -95,8 +95,13 @@ namespace MCSkin3D
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
 		{
+			RaiseException(e.Exception);
+		}
+
+		public static void RaiseException(Exception ex)
+		{
 			var form = new ExceptionForm();
-			form.Exception = e.Exception;
+			form.Exception = ex;
 			form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
 			SystemSounds.Asterisk.Play();
 			form.ShowDialog();

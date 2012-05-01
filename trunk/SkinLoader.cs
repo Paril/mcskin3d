@@ -57,7 +57,12 @@ namespace MCSkin3D
 				}
 			}
 
-			Editor.MainForm.Invoke((Action<List<Skin>, List<TreeNode>, TreeNode>)Editor.MainForm.FinishedLoadingSkins, skins, rootNodes, _tempToSelect);
+			Editor.MainForm.Invoke((Action<List<TreeNode>>)Editor.MainForm.BeginFinishedLoadingSkins, rootNodes);
+
+			foreach (Skin s in skins)
+				s.SetImages();
+
+			Editor.MainForm.Invoke((Action<List<Skin>, TreeNode>)Editor.MainForm.FinishedLoadingSkins, skins, _tempToSelect);
 		}
 	}
 }

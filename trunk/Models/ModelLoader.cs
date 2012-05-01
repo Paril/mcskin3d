@@ -27,6 +27,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Paril.OpenGL;
 using System.Threading;
+using MCSkin3D.Swatches;
 
 namespace MCSkin3D
 {
@@ -69,74 +70,87 @@ namespace MCSkin3D
 
 		public static void LoadModelThread()
 		{
-			new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
-			new ModelBiped().Save("Human", 1, 64, 32, "Models\\Mobs\\Passive\\Human.xml");
-			new ModelVillager().Save("Villager", 1, 64, 64, "Models\\Mobs\\Passive\\Villager.xml");
-			new ModelCow().Save("Cow", 1, 64, 32, "Models\\Mobs\\Passive\\Cow.xml");
-			new ModelChicken().Save("Chicken", 1, 64, 32, "Models\\Mobs\\Passive\\Chicken.xml");
-			new ModelSquid().Save("Squid", 1, 64, 32, "Models\\Mobs\\Passive\\Squid.xml");
-			new ModelWolf().Save("Wolf", 1, 64, 32, "Models\\Mobs\\Passive\\Wolf.xml");
-			new ModelSheep1().Save("Sheep Fur", 1, 64, 32, "Models\\Mobs\\Passive\\Sheep Fur.xml");
-			new ModelSheep2().Save("Sheep", 1, 64, 32, "Models\\Mobs\\Passive\\Sheep.xml");
-			new ModelSnowMan().Save("SnowMan", 1, 64, 64, "Models\\Mobs\\Passive\\SnowMan.xml");
-
-			new ModelChest().Save("Chest", 1, 64, 64, "Models\\Other\\Chest.xml");
-			new ModelLargeChest().Save("Large Chest", 1, 128, 64, "Models\\Other\\LargeChest.xml");
-			new ModelBoat().Save("Boat", 1, 64, 32, "Models\\Other\\Boat.xml");
-			new SignModel().Save("Sign", 1, 64, 32, "Models\\Other\\Sign.xml");
-			new ModelBook().Save("Book", 1, 64, 32, "Models\\Other\\Book.xml");
-			new ModelMinecart().Save("Minecart", 1, 64, 32, "Models\\Other\\Minecart.xml");
-			new ModelEnderCrystal().Save("Ender Crystal", 1, 128, 64, "Models\\Other\\EnderCrystal.xml");
-
-			new ModelCreeper().Save("Creeper", 1, 64, 32, "Models\\Mobs\\Hostile\\Creeper.xml");
-			new ModelSlime(0).Save("Tiny Slime", 1, 64, 32, "Models\\Mobs\\Hostile\\TinySlime.xml");
-			new ModelSlime(16).Save("Small Slime", 2, 64, 32, "Models\\Mobs\\Hostile\\SmallSlime.xml");
-			new ModelSlime(16).Save("Medium Slime", 3, 64, 32, "Models\\Mobs\\Hostile\\MediumSlime.xml");
-			new ModelSlime(16).Save("Huge Slime", 4, 64, 32, "Models\\Mobs\\Hostile\\HugeSlime.xml");
-			new ModelMagmaCube().Save("Tiny Magma Cube", 1, 64, 32, "Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
-			new ModelMagmaCube().Save("Small Magma Cube", 2, 64, 32, "Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
-			new ModelMagmaCube().Save("Medium Magma Cube", 3, 64, 32, "Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
-			new ModelMagmaCube().Save("Huge Magma Cube", 4, 64, 32, "Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
-			new ModelBlaze().Save("Blaze", 1, 64, 32, "Models\\Mobs\\Hostile\\Blaze.xml");
-			new ModelSilverfish().Save("Silverfish", 1, 64, 32, "Models\\Mobs\\Hostile\\Silverfish.xml");
-			new ModelEnderman().Save("Enderman", 1, 64, 32, "Models\\Mobs\\Hostile\\Enderman.xml");
-			new ModelGhast().Save("Ghast", 1, 64, 32, "Models\\Mobs\\Hostile\\Ghast.xml");
-			new ModelSpider().Save("Spider", 1, 64, 32, "Models\\Mobs\\Hostile\\Spider.xml");
-			new ModelZombie().Save("Zombie", 1, 64, 32, "Models\\Mobs\\Hostile\\Zombie.xml");
-			new ModelSkeleton().Save("Skeleton", 1, 64, 32, "Models\\Mobs\\Hostile\\Skeleton.xml");
-			new ModelCloak().Save("Cloak", 1, 64, 32, "Models\\Other\\Cloak.xml");
-			new ModelArmor().Save("Armor", 1, 64, 32, "Models\\Other\\Armor.xml");
-
-			new ModelOzelot().Save("Ozelot", 1, 64, 32, "Models\\Mobs\\Passive\\Ozelot.xml");
-			new ModelGolem().Save("Golem", 1, 128, 128, "Models\\Mobs\\Passive\\Golem.xml");
-
-			new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
-			new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");
-
-			Directory.CreateDirectory("Models");
-
-			var tcnParser = new ModelFormatTCN();
-
-			foreach (string m in Directory.GetFiles("Models", "*.*", SearchOption.AllDirectories))
+			try
 			{
-				try
-				{
-					Model model = tcnParser.Load(m);
+				SwatchLoader.LoadSwatches();
 
-					if (model == null)
-						continue;
+				new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
+				new ModelBiped().Save("Human", 1, 64, 32, "Models\\Mobs\\Passive\\Human.xml");
+				new ModelVillager().Save("Villager", 1, 64, 64, "Models\\Mobs\\Passive\\Villager.xml");
+				new ModelCow().Save("Cow", 1, 64, 32, "Models\\Mobs\\Passive\\Cow.xml");
+				new ModelChicken().Save("Chicken", 1, 64, 32, "Models\\Mobs\\Passive\\Chicken.xml");
+				new ModelSquid().Save("Squid", 1, 64, 32, "Models\\Mobs\\Passive\\Squid.xml");
+				new ModelWolf().Save("Wolf", 1, 64, 32, "Models\\Mobs\\Passive\\Wolf.xml");
+				new ModelSheep1().Save("Sheep Fur", 1, 64, 32, "Models\\Mobs\\Passive\\Sheep Fur.xml");
+				new ModelSheep2().Save("Sheep", 1, 64, 32, "Models\\Mobs\\Passive\\Sheep.xml");
+				new ModelSnowMan().Save("SnowMan", 1, 64, 64, "Models\\Mobs\\Passive\\SnowMan.xml");
 
-					model.File = new FileInfo(m);
-					Models.Add(model.Path, model);
-				}
-				catch
+				new ModelChest().Save("Chest", 1, 64, 64, "Models\\Other\\Chest.xml");
+				new ModelLargeChest().Save("Large Chest", 1, 128, 64, "Models\\Other\\LargeChest.xml");
+				new ModelBoat().Save("Boat", 1, 64, 32, "Models\\Other\\Boat.xml");
+				new SignModel().Save("Sign", 1, 64, 32, "Models\\Other\\Sign.xml");
+				new ModelBook().Save("Book", 1, 64, 32, "Models\\Other\\Book.xml");
+				new ModelMinecart().Save("Minecart", 1, 64, 32, "Models\\Other\\Minecart.xml");
+				new ModelEnderCrystal().Save("Ender Crystal", 1, 128, 64, "Models\\Other\\EnderCrystal.xml");
+
+				new ModelCreeper().Save("Creeper", 1, 64, 32, "Models\\Mobs\\Hostile\\Creeper.xml");
+				new ModelSlime(0).Save("Tiny Slime", 1, 64, 32, "Models\\Mobs\\Hostile\\TinySlime.xml");
+				new ModelSlime(16).Save("Small Slime", 2, 64, 32, "Models\\Mobs\\Hostile\\SmallSlime.xml");
+				new ModelSlime(16).Save("Medium Slime", 3, 64, 32, "Models\\Mobs\\Hostile\\MediumSlime.xml");
+				new ModelSlime(16).Save("Huge Slime", 4, 64, 32, "Models\\Mobs\\Hostile\\HugeSlime.xml");
+				new ModelMagmaCube().Save("Tiny Magma Cube", 1, 64, 32, "Models\\Mobs\\Hostile\\TinyMagmaCube.xml");
+				new ModelMagmaCube().Save("Small Magma Cube", 2, 64, 32, "Models\\Mobs\\Hostile\\SmallMagmaCube.xml");
+				new ModelMagmaCube().Save("Medium Magma Cube", 3, 64, 32, "Models\\Mobs\\Hostile\\MediumMagmaCube.xml");
+				new ModelMagmaCube().Save("Huge Magma Cube", 4, 64, 32, "Models\\Mobs\\Hostile\\HugeMagmaCube.xml");
+				new ModelBlaze().Save("Blaze", 1, 64, 32, "Models\\Mobs\\Hostile\\Blaze.xml");
+				new ModelSilverfish().Save("Silverfish", 1, 64, 32, "Models\\Mobs\\Hostile\\Silverfish.xml");
+				new ModelEnderman().Save("Enderman", 1, 64, 32, "Models\\Mobs\\Hostile\\Enderman.xml");
+				new ModelGhast().Save("Ghast", 1, 64, 32, "Models\\Mobs\\Hostile\\Ghast.xml");
+				new ModelSpider().Save("Spider", 1, 64, 32, "Models\\Mobs\\Hostile\\Spider.xml");
+				new ModelZombie().Save("Zombie", 1, 64, 32, "Models\\Mobs\\Hostile\\Zombie.xml");
+				new ModelSkeleton().Save("Skeleton", 1, 64, 32, "Models\\Mobs\\Hostile\\Skeleton.xml");
+				new ModelCloak().Save("Cloak", 1, 64, 32, "Models\\Other\\Cloak.xml");
+				new ModelArmor().Save("Armor", 1, 64, 32, "Models\\Other\\Armor.xml");
+
+				new ModelOzelot().Save("Ozelot", 1, 64, 32, "Models\\Mobs\\Passive\\Ozelot.xml");
+				new ModelGolem().Save("Golem", 1, 128, 128, "Models\\Mobs\\Passive\\Golem.xml");
+
+				new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
+				new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");
+
+				Directory.CreateDirectory("Models");
+
+				var tcnParser = new ModelFormatTCN();
+
+				foreach (string m in Directory.GetFiles("Models", "*.*", SearchOption.AllDirectories))
 				{
+					try
+					{
+						Model model = tcnParser.Load(m);
+
+						if (model == null)
+							continue;
+
+						model.File = new FileInfo(m);
+						Models.Add(model.Path, model);
+					}
+					catch
+					{
+					}
 				}
+
+				Editor.MainForm.Invoke(Editor.MainForm.FinishedLoadingModels);
+
+				SkinLoader.LoadSkins();
 			}
-
-			Editor.MainForm.Invoke(Editor.MainForm.FinishedLoadingModels);
-
-			SkinLoader.LoadSkins();
+			catch (Exception ex)
+			{
+				Editor.MainForm.Invoke((Action)delegate() { Program.RaiseException(ex); });
+			}
+			finally
+			{
+				_loadModelThread = null;
+			}
 		}
 
 		static Thread _loadModelThread;
@@ -148,7 +162,10 @@ namespace MCSkin3D
 
 		public static void CancelLoadModels()
 		{
-			_loadModelThread.Abort();
+			if (_loadModelThread != null)
+				_loadModelThread.Abort();
+
+			_loadModelThread = null;
 		}
 
 		public static Model GetModelForPath(string p)
