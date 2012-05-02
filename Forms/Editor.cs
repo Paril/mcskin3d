@@ -1316,22 +1316,39 @@ namespace MCSkin3D
 			changeNameToolStripMenuItem.Enabled =
 				deleteToolStripMenuItem.Enabled = cloneToolStripMenuItem.Enabled = toolStrip2.CloneToolStripButton.Enabled = true;
 			mDECRESToolStripMenuItem.Enabled = mINCRESToolStripMenuItem.Enabled = true;
+			bROWSEIDToolStripMenuItem.Enabled = treeView1.SelectedNode != null;
 
-			if (treeView1.SelectedNode == null)
+			string folderLocation = GetFolderLocationForNode(treeView1.SelectedNode);
+			bool canDoOperation = string.IsNullOrEmpty(folderLocation);
+
+			toolStrip2.ImportToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.NewSkinToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.NewFolderToolStripButton.Enabled = !canDoOperation;
+			toolStrip2.FetchToolStripButton.Enabled = !canDoOperation;
+
+			importHereToolStripMenuItem.Enabled = !canDoOperation;
+			newSkinToolStripMenuItem.Enabled = !canDoOperation;
+			this.newFolderToolStripMenuItem.Enabled = !canDoOperation;
+			this.mFETCHNAMEToolStripMenuItem.Enabled = !canDoOperation;
+
+			bool itemSelected = treeView1.SelectedNode == null || (!HasOneRoot && treeView1.SelectedNode.Parent == null);
+
+			toolStrip2.RenameToolStripButton.Enabled = !itemSelected;
+			toolStrip2.DeleteToolStripButton.Enabled = !itemSelected;
+			toolStrip2.DecResToolStripButton.Enabled = !itemSelected;
+			toolStrip2.IncResToolStripButton.Enabled = !itemSelected;
+			uploadToolStripButton.Enabled = !itemSelected;
+
+			changeNameToolStripMenuItem.Enabled = !itemSelected;
+			deleteToolStripMenuItem.Enabled = !itemSelected;
+			mDECRESToolStripMenuItem.Enabled = !itemSelected;
+			mINCRESToolStripMenuItem.Enabled = !itemSelected;
+
+			if (treeView1.SelectedNode == null ||
+				!(treeView1.SelectedNode is Skin))
 			{
-				mDECRESToolStripMenuItem.Enabled =
-					mINCRESToolStripMenuItem.Enabled =
-					changeNameToolStripMenuItem.Enabled =
-					deleteToolStripMenuItem.Enabled =
-					cloneToolStripMenuItem.Enabled =
-					toolStrip2.CloneToolStripButton.Enabled = false;
-			}
-			else if (!(treeView1.SelectedNode is Skin))
-			{
-				mDECRESToolStripMenuItem.Enabled =
-					mINCRESToolStripMenuItem.Enabled =
-					cloneToolStripMenuItem.Enabled =
-					toolStrip2.CloneToolStripButton.Enabled = false;
+				cloneToolStripMenuItem.Enabled =
+				toolStrip2.CloneToolStripButton.Enabled = false;
 			}
 			else if (treeView1.SelectedNode is Skin)
 			{
@@ -1342,22 +1359,6 @@ namespace MCSkin3D
 				//else if (skin.Width == 256 || skin.Height == 128)
 				//	mINCRESToolStripMenuItem.Enabled = false;
 			}
-
-			string folderLocation = GetFolderLocationForNode(treeView1.SelectedNode);
-			bool canDoOperation = string.IsNullOrEmpty(folderLocation);
-
-			toolStrip2.ImportToolStripButton.Enabled = !canDoOperation;
-			toolStrip2.NewSkinToolStripButton.Enabled = !canDoOperation;
-			toolStrip2.NewFolderToolStripButton.Enabled = !canDoOperation;
-			toolStrip2.FetchToolStripButton.Enabled = !canDoOperation;
-
-			bool itemSelected = treeView1.SelectedNode == null;
-
-			toolStrip2.RenameToolStripButton.Enabled = !itemSelected;
-			toolStrip2.DeleteToolStripButton.Enabled = !itemSelected;
-			toolStrip2.DecResToolStripButton.Enabled = !itemSelected;
-			toolStrip2.IncResToolStripButton.Enabled = !itemSelected;
-			uploadToolStripButton.Enabled = !itemSelected;
 		}
 
 		private Bitmap GenerateCheckBoxBitmap(CheckBoxState state)
@@ -1594,8 +1595,6 @@ namespace MCSkin3D
 
 		private void ShowUpdater()
 		{
-			MessageBox.Show("Not finished!");
-
 			Hide();
 
 			using (var upd = new UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml", "__installedupdates"))
@@ -2266,6 +2265,9 @@ namespace MCSkin3D
 
 		private void PerformBrowseTo()
 		{
+			if (treeView1.SelectedNode == null)
+				return;
+
 			if (treeView1.SelectedNode is Skin)
 				Process.Start("explorer.exe", "/select,\"" + ((Skin) treeView1.SelectedNode).File.FullName + "\"");
 			else
@@ -3445,7 +3447,7 @@ namespace MCSkin3D
 				else if (HasOneRoot)
 					folderLocation = RootFolderString + '\\';
 			}
-			else
+			else if (HasOneRoot)
 				folderLocation = RootFolderString + '\\';
 
 			return folderLocation;
@@ -3472,7 +3474,7 @@ namespace MCSkin3D
 				else if (HasOneRoot)
 					folderLocation = RootFolderString + '\\';
 			}
-			else
+			else if (HasOneRoot)
 				folderLocation = RootFolderString + '\\';
 		}
 

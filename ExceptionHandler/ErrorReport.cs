@@ -1,4 +1,5 @@
-﻿namespace MCSkin3D.ExceptionHandler
+﻿using System;
+namespace MCSkin3D.ExceptionHandler
 {
 	public struct ErrorReport
 	{
@@ -8,6 +9,22 @@
 		public string Email { get; set; }
 		public string HardwareInfo { get; set; }
 		public string ExtraInfo { get; set; }
+
+		public string ToString(DateTime received)
+		{
+			return "Received Report @ " + received.ToString() + "\r\n\r\n" +
+					"Software: " + SoftwareInfo + "\r\n\r\n" +
+					"Name: " + Name + "\r\n" +
+					"Email: " + Email + "\r\n" +
+					"Hardware: " + HardwareInfo + "\r\n" +
+					"Extra: " + ExtraInfo + "\r\n" + "\r\n" +
+					Exception;
+		}
+
+		public override string ToString()
+		{
+			return ToString(DateTime.Now);
+		}
 	}
 
 	public static class ErrorReportPackets

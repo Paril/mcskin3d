@@ -104,8 +104,8 @@
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.importHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.newSkinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.newFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.changeNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -169,7 +169,6 @@
 			this.splitContainer3.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.toolStrip2.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
@@ -836,8 +835,8 @@
 			// 
 			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importHereToolStripMenuItem,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem1,
+            this.newSkinToolStripMenuItem,
+            this.newFolderToolStripMenuItem,
             this.toolStripSeparator10,
             this.changeNameToolStripMenuItem,
             this.deleteToolStripMenuItem,
@@ -861,24 +860,24 @@
 			this.importHereToolStripMenuItem.Text = "M_IMPORT_HERE";
 			this.importHereToolStripMenuItem.Click += new System.EventHandler(this.importHereToolStripMenuItem_Click);
 			// 
-			// toolStripMenuItem4
+			// newSkinToolStripMenuItem
 			// 
-			this.toolStripMenuItem4.Image = global::MCSkin3D.Properties.Resources.newskin;
-			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem4, "Text");
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(191, 22);
-			this.toolStripMenuItem4.Text = "M_NEWSKIN_HERE";
-			this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+			this.newSkinToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.newskin;
+			this.newSkinToolStripMenuItem.Name = "newSkinToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.newSkinToolStripMenuItem, "Text");
+			this.newSkinToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.newSkinToolStripMenuItem.Text = "M_NEWSKIN_HERE";
+			this.newSkinToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
 			// 
-			// toolStripMenuItem1
+			// newFolderToolStripMenuItem
 			// 
-			this.toolStripMenuItem1.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
-			this.toolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.languageProvider1.SetPropertyNames(this.toolStripMenuItem1, "Text");
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
-			this.toolStripMenuItem1.Text = "M_NEWFOLDER_HERE";
-			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+			this.newFolderToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
+			this.newFolderToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.newFolderToolStripMenuItem.Name = "newFolderToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.newFolderToolStripMenuItem, "Text");
+			this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.newFolderToolStripMenuItem.Text = "M_NEWFOLDER_HERE";
+			this.newFolderToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
 			// 
 			// toolStripSeparator10
 			// 
@@ -1010,17 +1009,6 @@
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(302, 346);
 			this.tabControl1.TabIndex = 0;
-			//
-			// toolStrip2
-			//
-			this.toolStrip2.Enabled = false;
-			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.toolStrip2.ImeMode = System.Windows.Forms.ImeMode.On;
-			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
-			this.toolStrip2.TabIndex = 6;
-			this.toolStrip2.Text = "toolStrip2";
 			// 
 			// tabPage1
 			// 
@@ -1070,6 +1058,17 @@
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
 			this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
 			this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
+			// 
+			// toolStrip2
+			// 
+			this.toolStrip2.Enabled = false;
+			this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.toolStrip2.ImeMode = System.Windows.Forms.ImeMode.On;
+			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip2.Name = "toolStrip2";
+			this.toolStrip2.Size = new System.Drawing.Size(294, 25);
+			this.toolStrip2.TabIndex = 6;
+			this.toolStrip2.Text = "toolStrip2";
 			// 
 			// tabPage2
 			// 
@@ -1473,8 +1472,6 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
-			this.toolStrip2.ResumeLayout(false);
-			this.toolStrip2.PerformLayout();
 			this.tabPage2.ResumeLayout(false);
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
@@ -1541,7 +1538,7 @@
 		private Paril.Controls.VisibleSplitContainer splitContainer1;
 		private Paril.Controls.VisibleSplitContainer splitContainer3;
 		private System.Windows.Forms.ToolStripMenuItem importHereToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem newFolderToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
 		private System.Windows.Forms.ToolStripMenuItem ghostHiddenPartsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem backgroundsToolStripMenuItem;
@@ -1583,7 +1580,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem mDECRESToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mINCRESToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+		private System.Windows.Forms.ToolStripMenuItem newSkinToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;

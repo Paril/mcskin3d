@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ClientTest;
 using System.IO;
+using MCSkin3D.ExceptionHandler;
 
 namespace ServerTest
 {
@@ -121,25 +122,11 @@ namespace ServerTest
 				fileName += ".txt";
 
 				File.WriteAllText(fileName,
-				"Received Report @ " + DateTime.Now.ToString() + "\r\n\r\n" +
-					"Software: " + e.Report.SoftwareInfo + "\r\n\r\n" +
-					"Name: " + e.Report.Name + "\r\n" +
-					"Email: " + e.Report.Email + "\r\n" +
-					"Hardware: " + e.Report.HardwareInfo + "\r\n" +
-					"Extra: " + e.Report.ExtraInfo + "\r\n" + "\r\n" +
-					e.Report.Exception);
+				wrap.Report.ToString(wrap.Received));
 
 				_reports.Add(wrap);
 				PopulateTreeview();
 			});
-		}
-
-		private void textBox2_TextChanged(object sender, EventArgs e)
-		{
-			/*if (string.IsNullOrEmpty(textBox2.Text))
-				_server.MaintenenceString = null;
-			else
-				_server.MaintenenceString = textBox2.Text;*/
 		}
 
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -148,13 +135,7 @@ namespace ServerTest
 			{
 				ReportWrapper wrap = (ReportWrapper)e.Node.Tag;
 
-				textBox1.Text = "Received Report @ " + wrap.Received.ToString() + "\r\n\r\n" +
-				"Software: " + wrap.Report.SoftwareInfo + "\r\n\r\n" +
-				"Name: " + wrap.Report.Name + "\r\n" +
-				"Email: " + wrap.Report.Email + "\r\n" +
-				"Hardware: " + wrap.Report.HardwareInfo + "\r\n" +
-				"Extra: " + wrap.Report.ExtraInfo + "\r\n" + "\r\n" +
-				wrap.Report.Exception;
+				textBox1.Text = wrap.Report.ToString(wrap.Received);
 			}
 		}
 
