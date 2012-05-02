@@ -252,5 +252,10 @@ namespace MCSkin3D.ExceptionHandler
 				_sendingReport = false;
 			}
 		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			SimpleReportViewer.ShowReportViewer(BuildErrorReport().ToString());
+		}
 	}
 }

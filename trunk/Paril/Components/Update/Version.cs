@@ -2,7 +2,7 @@
 
 namespace Paril.Components.Update
 {
-	public struct Version
+	public struct Version : IComparable<Version>
 	{
 		public int Build;
 		public int Major;
@@ -38,9 +38,9 @@ namespace Paril.Components.Update
 					case 1:
 						return Minor;
 					case 2:
-						return Revision;
-					case 3:
 						return Build;
+					case 3:
+						return Revision;
 				}
 
 				throw new IndexOutOfRangeException();
@@ -57,10 +57,10 @@ namespace Paril.Components.Update
 						Minor = value;
 						break;
 					case 2:
-						Revision = value;
+						Build = value;
 						break;
 					case 3:
-						Build = value;
+						Revision = value;
 						break;
 				}
 			}
@@ -99,6 +99,16 @@ namespace Paril.Components.Update
 		public static bool operator <(Version left, Version right)
 		{
 			return left != right && right > left;
+		}
+
+		public int CompareTo(Version other)
+		{
+			if (this < other)
+				return -1;
+			else if (this > other)
+				return 1;
+
+			return 0;
 		}
 
 		public override bool Equals(object obj)

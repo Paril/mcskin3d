@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using BrightIdeasSoftware;
+using Version = Paril.Components.Update.Version;
 
 namespace MCSkin3D.UpdateSystem
 {
@@ -33,10 +34,17 @@ namespace MCSkin3D.UpdateSystem
 			UpdateXMLURL = url;
 
 			InstalledUpdates = new List<Guid>();
-			if (installedUpdatesFiles != null)
+			if (installedUpdatesFiles != null && File.Exists(installedUpdatesFiles))
 			{
 				using (var sr = new StreamReader(installedUpdatesFiles))
-					InstalledUpdates.Add(new Guid(sr.ReadLine()));
+					while (!sr.EndOfStream)
+						InstalledUpdates.Add(new Guid(sr.ReadLine()));
+			}
+			else
+			{
+				var file = new FileInfo(installedUpdatesFiles);
+				file.Create().Dispose();
+				file.Attributes |= FileAttributes.Hidden;
 			}
 		}
 
@@ -64,33 +72,49 @@ namespace MCSkin3D.UpdateSystem
 
 					foreach (XmlNode subNode in x.ChildNodes)
 					{
-						if (subNode.Name.ToLower() == "name")
+						var subName = subNode.Name.ToLower();
+
+						if (subName == "name")
 							item.Name = subNode.InnerText;
-						else if (subNode.Name.ToLower() == "info")
+						else if (subName == "info")
 							item.Information = subNode.InnerText;
-						else if (subNode.Name.ToLower() == "size")
+						else if (subName == "size")
 							item.Size = subNode.InnerText;
-						else if (subNode.Name.ToLower() == "date")
+						else if (subName == "date")
 						{
 							item.Date = subNode.InnerText;
 
-							string[] data = item.Date.Split(new[] {'-'}, StringSplitOptions.RemoveEmptyEntries);
+							string[] data = item.Date.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 							int month = int.Parse(data[0]);
 							int day = int.Parse(data[1]);
 							int year = int.Parse(data[2]);
 
 							item.RealDate = new DateTime(year, month, day);
 						}
-						else if (subNode.Name.ToLower() == "group")
+						else if (subName == "group")
 							item.Group = subNode.InnerText;
-						else if (subNode.Name.ToLower() == "ismajor")
-							item.IsChecked = bool.Parse(subNode.InnerText);
-						else if (subNode.Name.ToLower() == "downloadurl")
+						else if (subName == "ismajor")
+							item.IsMajor = item.IsChecked = bool.Parse(subNode.InnerText);
+						else if (subName == "isprogramupdate")
+							item.IsProgramUpdate = bool.Parse(subNode.InnerText);
+						else if (subName == "downloadurl")
 							item.DownloadURL = subNode.InnerText;
-						else if (subNode.Name.ToLower() == "groupimageurl")
+						else if (subName == "groupimageurl")
 							item.GroupImageURL = subNode.InnerText;
-						else if (subNode.Name.ToLower() == "guid")
+						else if (subName == "guid")
 							item.Guid = new Guid(subNode.InnerText);
+						else if (subName == "version")
+							item.Version = Version.Parse(subNode.InnerText);
+						else if (subName == "minversion")
+						{
+							item.MinVersion = Version.Parse(subNode.InnerText);
+							item.HasMinVersion = true;
+						}
+						else if (subName == "maxversion")
+						{
+							item.MaxVersion = Version.Parse(subNode.InnerText);
+							item.HasMaxVersion = true;
+						}
 					}
 
 					items.Add(item);
@@ -119,7 +143,22 @@ namespace MCSkin3D.UpdateSystem
 			}
 
 			_updates = LoadUpdates(doc);
-			_updates.RemoveAll(delegate(UpdateItem item) { return InstalledUpdates.Contains(item.Guid); });
+			_updates.RemoveAll(
+				item =>
+				{
+					if (InstalledUpdates.Contains(item.Guid))
+						return true;
+
+					// this update isn't compatible with our version
+					if (item.HasMinVersion && Program.Version < item.MinVersion)
+						return true;
+					if (item.HasMaxVersion && Program.Version > item.MaxVersion)
+						return true;
+
+					return false;
+				}
+			);
+
 			_updates.Sort();
 
 			var fileNames = new List<string>();
@@ -169,6 +208,12 @@ namespace MCSkin3D.UpdateSystem
 
 		private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
+			Invoke((Action)delegate
+			{
+				((UpdateItem)e.UserState).Progress = 100;
+				objectListView1.RedrawItems(0, _updates.Count - 1, false);
+			});
+
 			lock (lockObj)
 				Monitor.Pulse(lockObj);
 		}
@@ -191,7 +236,7 @@ namespace MCSkin3D.UpdateSystem
 
 			foreach (UpdateItem u in _updates)
 			{
-				if (!objectListView1.IsChecked(u))
+				if (!u.IsChecked)
 					continue;
 
 				string url = u.DownloadURL;
@@ -211,6 +256,8 @@ namespace MCSkin3D.UpdateSystem
 
 			Invoke((Action) delegate
 			                {
+								MessageBox.Show(Editor.GetLanguageString("M_UPDATESTARTING"));
+
 			                	DialogResult = DialogResult.OK;
 			                	Close();
 			                });
@@ -236,7 +283,7 @@ namespace MCSkin3D.UpdateSystem
 			objectListView1.BeginUpdate();
 			objectListView1.View = View.Details;
 			objectListView1.CheckBoxes = true;
-			objectListView1.GridLines = true;
+			objectListView1.GridLines = false;
 			objectListView1.AllowColumnReorder = false;
 			objectListView1.FullRowSelect = true;
 			objectListView1.ShowItemCountOnGroups = true;
@@ -260,12 +307,6 @@ namespace MCSkin3D.UpdateSystem
 			                                                 	                              objectListView1.Width, r.Height + 2));
 
 			                                                 	var realArgs = (DrawListViewSubItemEventArgs) args;
-
-			                                                 	/*if ((realArgs.ItemState & ListViewItemStates.Selected) != 0)
-				{
-					using (var brush = new SolidBrush(SystemColors.Highlight))
-						g.FillRectangle(brush, r.X - 1, r.Y, r.Width + 2, r.Height);
-				}*/
 
 			                                                 	bool isHot = objectListView1.HotRowIndex == realArgs.ItemIndex &&
 			                                                 	             objectListView1.PointToClient(Cursor.Position).X <
@@ -322,20 +363,39 @@ namespace MCSkin3D.UpdateSystem
 			public string Size { get; set; }
 			public string Date { get; set; }
 			public string Group { get; set; }
-			public bool IsChecked { get; set; }
 			public string DownloadURL { get; set; }
 			public string GroupImageURL { get; set; }
+			public bool IsMajor { get; set; }
+			public bool IsProgramUpdate { get; set; }
 			public int Progress { get; set; }
 			public DateTime RealDate { get; set; }
 			public Guid Guid { get; set; }
+			public Version Version { get; set; }
+
+			public bool HasMinVersion { get; set; }
+			public Version MinVersion { get; set; }
+
+			public bool HasMaxVersion { get; set; }
+			public Version MaxVersion { get; set; }
 
 			public int ImageIndex { get; set; }
+			public bool IsChecked { get; set; }
+
+			public UpdateItem()
+			{
+				HasMinVersion = HasMaxVersion = false;
+			}
 
 			#region IComparable<UpdateItem> Members
 
 			public int CompareTo(UpdateItem item)
 			{
-				return RealDate.CompareTo(item.RealDate);
+				int cmp = RealDate.CompareTo(item.RealDate);
+
+				if (cmp == 0)
+					cmp = Version.CompareTo(item.Version);
+
+				return cmp;
 			}
 
 			#endregion

@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Net.Sockets;
 using System.IO;
+using MCSkin3D.ExceptionHandler;
 
 namespace ClientTest
 {
