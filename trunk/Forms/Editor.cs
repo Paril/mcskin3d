@@ -38,7 +38,6 @@ using MCSkin3D.Controls;
 using MCSkin3D.Forms;
 using MCSkin3D.Language;
 using MCSkin3D.Properties;
-using MCSkin3D.Swatches;
 using MultiPainter;
 using OpenTK;
 using OpenTK.Graphics;
@@ -56,6 +55,7 @@ using PopupControl;
 using KeyPressEventArgs = System.Windows.Forms.KeyPressEventArgs;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using Timer = System.Timers.Timer;
+using MCSkin3D.UpdateSystem;
 
 namespace MCSkin3D
 {
@@ -69,7 +69,6 @@ namespace MCSkin3D
 		private readonly UndoRedoPanel _redoListBox;
 		private readonly List<ToolIndex> _tools = new List<ToolIndex>();
 		private readonly UndoRedoPanel _undoListBox;
-		private readonly Updater _updater;
 		private readonly GLControl _rendererControl;
 
 		private float _2DCamOffsetX;
@@ -575,31 +574,33 @@ namespace MCSkin3D
 
 			if (!pickView)
 			{
-				// Grid test
 				TextureGL.Unbind();
 
-				GL.Color4(GlobalSettings.DynamicOverlayGridColor);
-				GL.PushMatrix();
-				GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
-				GL.Begin(BeginMode.Lines);
-
-				float wX = skin.Width / CurrentModel.DefaultWidth;
-				float wY = skin.Height / CurrentModel.DefaultHeight;
-
-				for (int i = 0; i <= skin.Width; ++i)
+				if (GlobalSettings.GridEnabled && GlobalSettings.DynamicOverlayGridColor.A > 0)
 				{
-					GL.Vertex2(i / wX, 0);
-					GL.Vertex2(i / wX, skin.Height / wY);
-				}
+					GL.Color4(GlobalSettings.DynamicOverlayGridColor);
+					GL.PushMatrix();
+					GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
+					GL.Begin(BeginMode.Lines);
 
-				for (int i = 0; i <= skin.Height; ++i)
-				{
-					GL.Vertex2(0, i / wY);
-					GL.Vertex2(skin.Width / wX, i / wY);
-				}
+					float wX = skin.Width / CurrentModel.DefaultWidth;
+					float wY = skin.Height / CurrentModel.DefaultHeight;
 
-				GL.End();
-				GL.PopMatrix();
+					for (int i = 0; i <= skin.Width; ++i)
+					{
+						GL.Vertex2(i / wX, 0);
+						GL.Vertex2(i / wX, skin.Height / wY);
+					}
+
+					for (int i = 0; i <= skin.Height; ++i)
+					{
+						GL.Vertex2(0, i / wY);
+						GL.Vertex2(skin.Width / wX, i / wY);
+					}
+
+					GL.End();
+					GL.PopMatrix();
+				}
 
 				if (GlobalSettings.TextureOverlay && skin != null)
 				{
@@ -1593,30 +1594,16 @@ namespace MCSkin3D
 			ToggleOverlay();
 		}
 
+		Updater _updater;
 		private void ShowUpdater()
 		{
 			Hide();
 
-			using (var upd = new UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml", "__installedupdates"))
-			{
-				if (upd.ShowDialog() == DialogResult.Cancel)
-					Show();
-				else
-					Close();
-			}
+			_updater.Show(this);
 		}
 
 		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (_updater.Checking)
-			{
-				_updater.Abort();
-				ShowUpdater();
-				return;
-			}
-
-			//_updater.PrintOnEqual = true;
-			//_updater.CheckForUpdate();
 			ShowUpdater();
 		}
 
@@ -1897,13 +1884,29 @@ namespace MCSkin3D
 			}
 			catch (Exception ex)
 			{
+				if (ex is ThreadAbortException)
+					return;
+
 				Program.RaiseException(ex);
 			}
 		}
 
 		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
+			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/updates.xml");
+			_updater.FormHidden += _updater_FormHidden;
+			_updater.UpdatesAvailable += new EventHandler(_updater_UpdatesAvailable);
+
 			ModelLoader.LoadModels();
+
+			try
+			{
+				if (Directory.Exists("__updateFiles"))
+					Directory.Delete("__updateFiles", true);
+			}
+			catch
+			{
+			}
 		}
 
 		private void languageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2330,6 +2333,173 @@ namespace MCSkin3D
 			}
 		}
 
+
+		#region Nested type: PartTreeNode
+
+		private class PartTreeNode : TreeNode
+		{
+			public PartTreeNode(Model model, Mesh mesh, int index)
+			{
+				Name = Text = mesh.Name;
+				Model = model;
+				Mesh = mesh;
+				PartIndex = index;
+
+				if (PartIndex != -1)
+					PartEnabled = model.PartsEnabled[index];
+			}
+
+			public PartTreeNode(Model model, Mesh mesh, int index, string name) :
+				this(model, mesh, index)
+			{
+				Text = name;
+
+				if (name.StartsWith("@"))
+				{
+					IsRadio = true;
+					Text = name.Substring(1);
+				}
+
+				Name = name;
+			}
+
+			private Model Model { get; set; }
+			private Mesh Mesh { get; set; }
+			private int PartIndex { get; set; }
+			public bool IsRadio { get; set; }
+
+			public bool PartEnabled
+			{
+				get
+				{
+					if (PartIndex == -1)
+					{
+						bool hasEnabled = false, hasDisabled = false;
+
+						foreach (PartTreeNode node in Nodes)
+							RecursiveGroupImageCheck(node, ref hasEnabled, ref hasDisabled);
+
+						return hasEnabled;
+					}
+
+					return Model.PartsEnabled[PartIndex];
+				}
+
+				set
+				{
+					Model.PartsEnabled[PartIndex] = value;
+					SelectedImageIndex = ImageIndex = (value) ? IsRadio ? 10 : 3 : IsRadio ? 9 : 0;
+
+					for (TreeNode node = Parent; node != null; node = node.Parent)
+						((PartTreeNode)node).CheckGroupImage();
+				}
+			}
+
+			private void RecursiveGroupImageCheck(PartTreeNode node, ref bool hasEnabled, ref bool hasDisabled)
+			{
+				if (hasEnabled && hasDisabled)
+					return;
+
+				if (node.Nodes.Count == 0)
+				{
+					if (node.PartEnabled)
+						hasEnabled = true;
+					else
+						hasDisabled = true;
+				}
+				else
+				{
+					foreach (PartTreeNode n in node.Nodes)
+						RecursiveGroupImageCheck(n, ref hasEnabled, ref hasDisabled);
+				}
+			}
+
+			public PartTreeNode IsOtherRadioButtonEnabled()
+			{
+				TreeNodeCollection parentCollection;
+
+				if (Parent != null)
+					parentCollection = Parent.Nodes;
+				else
+					parentCollection = TreeView.Nodes;
+
+				foreach (PartTreeNode node in parentCollection)
+				{
+					if (node == this)
+						continue;
+					if (node.IsRadio && node.PartEnabled)
+						return node;
+				}
+
+				return null;
+			}
+
+			public void CheckGroupImage()
+			{
+				bool hasEnabled = false, hasDisabled = false;
+
+				foreach (PartTreeNode node in Nodes)
+					RecursiveGroupImageCheck(node, ref hasEnabled, ref hasDisabled);
+
+				if (hasEnabled && hasDisabled)
+					SelectedImageIndex = ImageIndex = 6;
+				else if (hasEnabled)
+					SelectedImageIndex = ImageIndex = IsRadio ? 10 : 3;
+				else if (hasDisabled)
+					SelectedImageIndex = ImageIndex = IsRadio ? 9 : 0;
+			}
+
+			public static void RecursiveAssign(PartTreeNode node, bool setAll, bool setTo = true)
+			{
+				foreach (PartTreeNode subNode in node.Nodes)
+				{
+					if (subNode.Nodes.Count != 0)
+						RecursiveAssign(subNode, setAll, setTo);
+					else
+					{
+						if (setAll)
+							subNode.PartEnabled = setTo;
+						else
+							subNode.PartEnabled = !subNode.PartEnabled;
+					}
+				}
+
+				node.CheckGroupImage();
+			}
+
+			public void TogglePart()
+			{
+				if (Nodes.Count != 0)
+				{
+					if (ImageIndex == 9)
+					{
+						RecursiveAssign(this, true);
+
+						var other = IsOtherRadioButtonEnabled();
+
+						if (other != null)
+						{
+							RecursiveAssign(other, true, false);
+							other.CheckGroupImage();
+						}
+
+						CheckGroupImage();
+					}
+					else
+					{
+						bool setAll = ImageIndex == 6;
+						RecursiveAssign(this, setAll);
+
+						CheckGroupImage();
+					}
+				}
+				else
+					PartEnabled = !PartEnabled;
+			}
+		}
+
+		#endregion
+
 		private void CreatePartList()
 		{
 			var list = new ImageList();
@@ -2344,11 +2514,13 @@ namespace MCSkin3D
 			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.MixedNormal));
 			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.MixedHot));
 			list.Images.Add(GenerateCheckBoxBitmap(CheckBoxState.MixedPressed));
+			list.Images.Add(Resources.radio_unchecked);
+			list.Images.Add(Resources.radio_checked);
 
 			treeView2.ImageList = list;
 		}
 
-		private PartTreeNode CreateNodePath(TreeView treeView, Model m, Mesh part, string[] path, List<PartTreeNode> owners)
+		private PartTreeNode CreateNodePath(TreeView treeView, Model m, Mesh part, string[] path, List<PartTreeNode> owners, List<PartTreeNode> radios)
 		{
 			PartTreeNode node = null;
 
@@ -2362,6 +2534,9 @@ namespace MCSkin3D
 					{
 						treeView.Nodes.Add(node = new PartTreeNode(CurrentModel, part, -1, path[i]));
 						owners.Add(node);
+
+						if (node.IsRadio)
+							radios.Add(node);
 					}
 					else
 						node = (PartTreeNode) nodes[0];
@@ -2375,9 +2550,12 @@ namespace MCSkin3D
 						PartTreeNode old = node;
 						old.Nodes.Add(node = new PartTreeNode(CurrentModel, part, -1, path[i]));
 						owners.Add(node);
+
+						if (node.IsRadio)
+							radios.Add(node);
 					}
 					else
-						node = (PartTreeNode) nodes[0];
+						node = (PartTreeNode)nodes[0];
 				}
 			}
 
@@ -2387,6 +2565,7 @@ namespace MCSkin3D
 		private void FillPartList()
 		{
 			var owners = new List<PartTreeNode>();
+			var radios = new List<PartTreeNode>();
 
 			treeView2.Nodes.Clear();
 
@@ -2394,41 +2573,42 @@ namespace MCSkin3D
 			foreach (Mesh part in CurrentModel.Meshes)
 			{
 				string name = part.Name;
+				PartTreeNode node;
 
 				if (name.Contains('.'))
 				{
 					string[] args = name.Split('.');
-					PartTreeNode owner = CreateNodePath(treeView2, CurrentModel, part, args, owners);
+					PartTreeNode owner = CreateNodePath(treeView2, CurrentModel, part, args, owners, radios);
 
-					owner.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex, args[args.Length - 1]));
+					owner.Nodes.Add(node = new PartTreeNode(CurrentModel, part, meshIndex, args[args.Length - 1]));
 				}
 				else
-					treeView2.Nodes.Add(new PartTreeNode(CurrentModel, part, meshIndex));
+					treeView2.Nodes.Add(node = new PartTreeNode(CurrentModel, part, meshIndex));
+
+				if (node.IsRadio)
+					radios.Add(node);
 
 				meshIndex++;
 			}
 
+			radios.Reverse();
+
 			foreach (PartTreeNode n in owners)
 				n.CheckGroupImage();
 
-			for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
-				CheckQuickPartState((ModelPart)i);
-		}
-
-		private void RecursiveAssign(PartTreeNode node, bool setAll)
-		{
-			foreach (PartTreeNode subNode in node.Nodes)
+			foreach (var r in radios)
 			{
-				if (subNode.Nodes.Count != 0)
-					RecursiveAssign(subNode, setAll);
-				else
+				var other = r.IsOtherRadioButtonEnabled();
+
+				if (other != null)
 				{
-					if (setAll)
-						subNode.PartEnabled = true;
-					else
-						subNode.PartEnabled = !subNode.PartEnabled;
+					PartTreeNode.RecursiveAssign(r, true, false);
+					r.CheckGroupImage();
 				}
 			}
+
+			for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
+				CheckQuickPartState((ModelPart)i);
 		}
 
 		void CheckQuickPartState(ModelPart part)
@@ -2468,13 +2648,7 @@ namespace MCSkin3D
 
 			if (pos.X > nodeBounds.X - 18 && pos.X < nodeBounds.X - 4)
 			{
-				if (node.Nodes.Count != 0)
-				{
-					bool setAll = node.ImageIndex == 6;
-					RecursiveAssign(node, setAll);
-				}
-				else
-					node.PartEnabled = !node.PartEnabled;
+				node.TogglePart();
 
 				for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
 					CheckQuickPartState((ModelPart)i);
@@ -2782,6 +2956,7 @@ namespace MCSkin3D
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
+			_updater.StopUpdates();
 			ModelLoader.CancelLoadModels();
 
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
@@ -2795,7 +2970,6 @@ namespace MCSkin3D
 				}
 			}
 
-			_updater.Abort();
 			GlobalSettings.ShortcutKeys = CompileShortcutKeys();
 
 			colorPanel.SwatchContainer.SaveSwatches();
@@ -2898,8 +3072,6 @@ namespace MCSkin3D
 
 		private void ToggleAnimation()
 		{
-			return;
-
 #if DISABLED
 			animateToolStripMenuItem.Checked = !animateToolStripMenuItem.Checked;
 			GlobalSettings.Animate = animateToolStripMenuItem.Checked;
@@ -2910,8 +3082,6 @@ namespace MCSkin3D
 
 		private void ToggleFollowCursor()
 		{
-			return;
-
 #if DISABLED
 			followCursorToolStripMenuItem.Checked = !followCursorToolStripMenuItem.Checked;
 			GlobalSettings.FollowCursor = followCursorToolStripMenuItem.Checked;
@@ -4109,12 +4279,6 @@ namespace MCSkin3D
 			foreach (string x in GlobalSettings.SkinDirectories)
 				Directory.CreateDirectory(x);
 
-			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/update", Program.Version.ToString());
-			_updater.UpdateHandler = new AssemblyVersion();
-			_updater.NewVersionAvailable += _updater_NewVersionAvailable;
-			_updater.SameVersion += _updater_SameVersion;
-			_updater.CheckForUpdate();
-
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 
 			SetSampleMenuItem(GlobalSettings.Multisamples);
@@ -4178,6 +4342,7 @@ namespace MCSkin3D
 			mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
 			mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
 			mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
+			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
 
 			_undoListBox = new UndoRedoPanel();
 			_undoListBox.ActionString = "L_UNDOACTIONS";
@@ -4208,6 +4373,23 @@ namespace MCSkin3D
 			_partButtons = new[] { null, toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
 		}
 
+		void _updater_UpdatesAvailable(object sender, EventArgs e)
+		{
+			Invoke((Action)delegate()
+			{
+				if (MessageBox.Show(GetLanguageString("B_MSG_NEWUPDATE"), "Update!", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					ShowUpdater();
+			});	
+		}
+
+		void _updater_FormHidden(object sender, EventArgs e)
+		{
+			if (_updater.DialogResult == DialogResult.Cancel)
+				Show();
+			else
+				Close();
+		}
+
 		private void rendererControl_MouseEnter(object sender, EventArgs e)
 		{
 			_rendererControl.Focus();
@@ -4220,79 +4402,10 @@ namespace MCSkin3D
 
 		#endregion
 
-		#region Nested type: PartTreeNode
-
-		private class PartTreeNode : TreeNode
+		private void gridEnabledToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			public PartTreeNode(Model model, Mesh mesh, int index)
-			{
-				Name = Text = mesh.Name;
-				Model = model;
-				Mesh = mesh;
-				PartIndex = index;
-
-				if (PartIndex != -1)
-					PartEnabled = model.PartsEnabled[index];
-			}
-
-			public PartTreeNode(Model model, Mesh mesh, int index, string name) :
-				this(model, mesh, index)
-			{
-				Name = Text = name;
-			}
-
-			private Model Model { get; set; }
-			private Mesh Mesh { get; set; }
-			private int PartIndex { get; set; }
-
-			public bool PartEnabled
-			{
-				get { return Model.PartsEnabled[PartIndex]; }
-				set
-				{
-					Model.PartsEnabled[PartIndex] = value;
-					SelectedImageIndex = ImageIndex = (value) ? 3 : 0;
-
-					for (TreeNode node = Parent; node != null; node = node.Parent)
-						((PartTreeNode) node).CheckGroupImage();
-				}
-			}
-
-			private void RecursiveGroupImageCheck(PartTreeNode node, ref bool hasEnabled, ref bool hasDisabled)
-			{
-				if (hasEnabled && hasDisabled)
-					return;
-
-				if (node.Nodes.Count == 0)
-				{
-					if (node.PartEnabled)
-						hasEnabled = true;
-					else
-						hasDisabled = true;
-				}
-				else
-				{
-					foreach (PartTreeNode n in node.Nodes)
-						RecursiveGroupImageCheck(n, ref hasEnabled, ref hasDisabled);
-				}
-			}
-
-			public void CheckGroupImage()
-			{
-				bool hasEnabled = false, hasDisabled = false;
-
-				foreach (PartTreeNode node in Nodes)
-					RecursiveGroupImageCheck(node, ref hasEnabled, ref hasDisabled);
-
-				if (hasEnabled && hasDisabled)
-					SelectedImageIndex = ImageIndex = 6;
-				else if (hasEnabled)
-					SelectedImageIndex = ImageIndex = 3;
-				else if (hasDisabled)
-					SelectedImageIndex = ImageIndex = 0;
-			}
+			GlobalSettings.GridEnabled = !GlobalSettings.GridEnabled;
+			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
 		}
-
-		#endregion
 	}
 }

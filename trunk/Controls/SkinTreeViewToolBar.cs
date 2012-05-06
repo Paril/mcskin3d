@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Szotar.WindowsForms;
-using MCSkin3D.Language;
 using System.Windows.Forms;
+using MCSkin3D.Language;
+using Szotar.WindowsForms;
 
 namespace MCSkin3D.Controls
 {

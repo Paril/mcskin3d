@@ -75,7 +75,7 @@
 						<Scale>0</Scale>
 						<Part>Helmet</Part>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,1,-7</Position>
@@ -86,7 +86,7 @@
 						<Part>Head</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-1,0,-7</Position>
@@ -97,7 +97,7 @@
 						<Part>Head</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,1,-7</Position>
@@ -108,7 +108,7 @@
 						<Part>Head</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>1,1,-7</Position>
@@ -119,7 +119,7 @@
 						<Part>Head</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-1,0,-7</Position>
@@ -130,7 +130,7 @@
 						<Part>Head</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,3,-7</Position>
@@ -141,7 +141,7 @@
 						<Part>Head</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,1,-7</Position>
@@ -152,7 +152,7 @@
 						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>2,1,-7</Position>
@@ -163,7 +163,7 @@
 						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-1,0,-7</Position>
@@ -174,7 +174,7 @@
 						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Female.Female Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>1,0,-7</Position>
@@ -185,7 +185,7 @@
 						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Male.Male Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,0,-7</Position>
@@ -196,7 +196,7 @@
 						<Part>Head</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Male.Male Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,0,-7</Position>
@@ -207,7 +207,7 @@
 						<Part>Head</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Male.Male Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,3,-7</Position>
@@ -218,7 +218,7 @@
 						<Part>Head</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Male.Male Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>-2,0,-7</Position>
@@ -229,7 +229,7 @@
 						<Part>Head</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.Male.Male Muzzle">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
 						<IsMirrored>False</IsMirrored>
 						<Offset>0,0,0</Offset>
 						<Position>2,0,-7</Position>
@@ -771,7 +771,7 @@
 						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -788,7 +788,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -805,7 +805,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -822,7 +822,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -839,7 +839,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -856,7 +856,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -873,7 +873,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -890,7 +890,7 @@
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -907,7 +907,7 @@
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -924,7 +924,7 @@
 						<Scale>-0.2</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -941,7 +941,7 @@
 						<Scale>-0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -958,7 +958,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -975,7 +975,7 @@
 						<Scale>0.3</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -992,7 +992,7 @@
 						<Scale>0.2</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -1009,7 +1009,7 @@
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -1026,7 +1026,7 @@
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -1043,7 +1043,7 @@
 						<Scale>-0.2</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -1060,7 +1060,7 @@
 						<Scale>-0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -1077,7 +1077,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -1094,7 +1094,7 @@
 						<Scale>0.3</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>

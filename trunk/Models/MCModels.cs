@@ -2201,50 +2201,50 @@ namespace MCSkin3D.Models
 			headpiece[2].addBox("Horn", -0.5F, -11F, -3.5F, 1, 4, 1, strech);
 			headpiece[2].setRotationPoint(f2, f3 + f, f4);
 			MuzzleFemale = new ModelLoader.PlaneRenderer[10];
-			MuzzleFemale[0] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 10, 14, ModelPart.Head);
+			MuzzleFemale[0] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 10, 14, ModelPart.Head);
 			MuzzleFemale[0].addBackPlane(-2F, 1.0F, -7F, 4, 2, 0, strech);
 			MuzzleFemale[0].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[1] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 11, 13, ModelPart.Head);
+			MuzzleFemale[1] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 11, 13, ModelPart.Head);
 			MuzzleFemale[1].addBackPlane(-1F, 0F, -7F, 2, 1, 0, strech);
 			MuzzleFemale[1].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[2] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 9, 14, ModelPart.Head);
+			MuzzleFemale[2] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 9, 14, ModelPart.Head);
 			MuzzleFemale[2].addTopPlane(-2F, 1.0F, -7F, 1, 0, 1, strech);
 			MuzzleFemale[2].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[3] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 14, 14, ModelPart.Head);
+			MuzzleFemale[3] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 14, 14, ModelPart.Head);
 			MuzzleFemale[3].addTopPlane(1.0F, 1.0F, -7F, 1, 0, 1, strech);
 			MuzzleFemale[3].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[4] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 11, 12, ModelPart.Head);
+			MuzzleFemale[4] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 11, 12, ModelPart.Head);
 			MuzzleFemale[4].addTopPlane(-1F, 0F, -7F, 2, 0, 1, strech);
 			MuzzleFemale[4].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[5] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 18, 7, ModelPart.Head);
+			MuzzleFemale[5] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 18, 7, ModelPart.Head);
 			MuzzleFemale[5].addTopPlane(-2F, 3F, -7F, 4, 0, 1, strech);
 			MuzzleFemale[5].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[6] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 9, 14, ModelPart.Head);
+			MuzzleFemale[6] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 9, 14, ModelPart.Head);
 			MuzzleFemale[6].addSidePlane(-2F, 1.0F, -7F, 0, 2, 1, strech);
 			MuzzleFemale[6].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[7] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 14, 14, ModelPart.Head);
+			MuzzleFemale[7] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 14, 14, ModelPart.Head);
 			MuzzleFemale[7].addSidePlane(2.0F, 1.0F, -7F, 0, 2, 1, strech);
 			MuzzleFemale[7].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[8] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 11, 12, ModelPart.Head);
+			MuzzleFemale[8] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 11, 12, ModelPart.Head);
 			MuzzleFemale[8].addSidePlane(-1F, 0F, -7F, 0, 1, 1, strech);
 			MuzzleFemale[8].setRotationPoint(f2, f3 + f, f4);
-			MuzzleFemale[9] = new ModelLoader.PlaneRenderer(this, "Muzzles.Female.Female Muzzle", 12, 12, ModelPart.Head);
+			MuzzleFemale[9] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Female.Female Muzzle", 12, 12, ModelPart.Head);
 			MuzzleFemale[9].addSidePlane(1.0F, 0F, -7F, 0, 1, 1, strech);
 			MuzzleFemale[9].setRotationPoint(f2, f3 + f, f4);
 			MuzzleMale = new ModelLoader.PlaneRenderer[5];
-			MuzzleMale[0] = new ModelLoader.PlaneRenderer(this, "Muzzles.Male.Male Muzzle", 10, 13, ModelPart.Head);
+			MuzzleMale[0] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Male.Male Muzzle", 10, 13, ModelPart.Head);
 			MuzzleMale[0].addBackPlane(-2.0F, 0F, -7.0F, 4, 3, 0, strech);
 			MuzzleMale[0].setRotationPoint(f2, f3 + f, f4);
-			MuzzleMale[1] = new ModelLoader.PlaneRenderer(this, "Muzzles.Male.Male Muzzle", 10, 13, ModelPart.Head);
+			MuzzleMale[1] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Male.Male Muzzle", 10, 13, ModelPart.Head);
 			MuzzleMale[1].addTopPlane(-2.0F, 0F, -7.0F, 4, 0, 1, strech);
 			MuzzleMale[1].setRotationPoint(f2, f3 + f, f4);
-			MuzzleMale[2] = new ModelLoader.PlaneRenderer(this, "Muzzles.Male.Male Muzzle", 18, 7, ModelPart.Head);
+			MuzzleMale[2] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Male.Male Muzzle", 18, 7, ModelPart.Head);
 			MuzzleMale[2].addTopPlane(-2.0F, 3.0F, -7.0F, 4, 0, 1, strech);
 			MuzzleMale[2].setRotationPoint(f2, f3 + f, f4);
-			MuzzleMale[3] = new ModelLoader.PlaneRenderer(this, "Muzzles.Male.Male Muzzle", 10, 13, ModelPart.Head);
+			MuzzleMale[3] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Male.Male Muzzle", 10, 13, ModelPart.Head);
 			MuzzleMale[3].addSidePlane(-2.0F, 0F, -7.0F, 0, 3, 1, strech);
 			MuzzleMale[3].setRotationPoint(f2, f3 + f, f4);
-			MuzzleMale[4] = new ModelLoader.PlaneRenderer(this, "Muzzles.Male.Male Muzzle", 13, 13, ModelPart.Head);
+			MuzzleMale[4] = new ModelLoader.PlaneRenderer(this, "Muzzles.@Male.Male Muzzle", 13, 13, ModelPart.Head);
 			MuzzleMale[4].addSidePlane(2.0F, 0F, -7.0F, 0, 3, 1, strech);
 			MuzzleMale[4].setRotationPoint(f2, f3 + f, f4);
 			helmet = new ModelLoader.ModelRenderer(this, 32, 0, ModelPart.Helmet);
@@ -2425,25 +2425,25 @@ namespace MCSkin3D.Models
 			LeftWing = new ModelLoader.ModelRenderer[3];
 			LeftWing[0] = new ModelLoader.ModelRenderer(this, 56, 16, ModelPart.None);
 			LeftWing[0].mirror = true;
-			LeftWing[0].addBox("Wings.Folded.Left Wing.Left Wing", 4F, 5F, 2.0F, 2, 6, 2, strech);
+			LeftWing[0].addBox("Wings.@Folded.Left Wing.Left Wing", 4F, 5F, 2.0F, 2, 6, 2, strech);
 			LeftWing[0].setRotationPoint(f14, f15 + f, f16);
 			LeftWing[1] = new ModelLoader.ModelRenderer(this, 56, 16, ModelPart.None);
 			LeftWing[1].mirror = true;
-			LeftWing[1].addBox("Wings.Folded.Left Wing.Left Wing", 4F, 5F, 4F, 2, 8, 2, strech);
+			LeftWing[1].addBox("Wings.@Folded.Left Wing.Left Wing", 4F, 5F, 4F, 2, 8, 2, strech);
 			LeftWing[1].setRotationPoint(f14, f15 + f, f16);
 			LeftWing[2] = new ModelLoader.ModelRenderer(this, 56, 16, ModelPart.None);
 			LeftWing[2].mirror = true;
-			LeftWing[2].addBox("Wings.Folded.Left Wing.Left Wing", 4F, 5F, 6F, 2, 6, 2, strech);
+			LeftWing[2].addBox("Wings.@Folded.Left Wing.Left Wing", 4F, 5F, 6F, 2, 6, 2, strech);
 			LeftWing[2].setRotationPoint(f14, f15 + f, f16);
 			RightWing = new ModelLoader.ModelRenderer[3];
 			RightWing[0] = new ModelLoader.ModelRenderer(this, 56, 16, ModelPart.None);
-			RightWing[0].addBox("Wings.Folded.Right Wing.Right Wing", -6F, 5F, 2.0F, 2, 6, 2, strech);
+			RightWing[0].addBox("Wings.@Folded.Right Wing.Right Wing", -6F, 5F, 2.0F, 2, 6, 2, strech);
 			RightWing[0].setRotationPoint(f14, f15 + f, f16);
 			RightWing[1] = new ModelLoader.ModelRenderer(this, 56, 16, ModelPart.None);
-			RightWing[1].addBox("Wings.Folded.Right Wing.Right Wing", -6F, 5F, 4F, 2, 8, 2, strech);
+			RightWing[1].addBox("Wings.@Folded.Right Wing.Right Wing", -6F, 5F, 4F, 2, 8, 2, strech);
 			RightWing[1].setRotationPoint(f14, f15 + f, f16);
 			RightWing[2] = new ModelLoader.ModelRenderer(this, 56, 16, ModelPart.None);
-			RightWing[2].addBox("Wings.Folded.Right Wing.Right Wing", -6F, 5F, 6F, 2, 6, 2, strech);
+			RightWing[2].addBox("Wings.@Folded.Right Wing.Right Wing", -6F, 5F, 6F, 2, 6, 2, strech);
 			RightWing[2].setRotationPoint(f14, f15 + f, f16);
 			float f17 = f2 + 4.5F;
 			float f18 = f3 + 5F;
@@ -2451,35 +2451,35 @@ namespace MCSkin3D.Models
 			LeftWingExt = new ModelLoader.ModelRenderer[7];
 			LeftWingExt[0] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[0].mirror = true;
-			LeftWingExt[0].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, 0.0F, 0.0F, 1, 8, 2,
+			LeftWingExt[0].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, 0.0F, 0.0F, 1, 8, 2,
 			                      strech + 0.1F);
 			LeftWingExt[0].setRotationPoint(f17, f18 + f, f19);
 			LeftWingExt[1] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[1].mirror = true;
-			LeftWingExt[1].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
+			LeftWingExt[1].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, 8F, 0.0F, 1, 6, 2, strech + 0.1F);
 			LeftWingExt[1].setRotationPoint(f17, f18 + f, f19);
 			LeftWingExt[2] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[2].mirror = true;
-			LeftWingExt[2].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, -1.2F, -0.2F, 1, 8, 2,
+			LeftWingExt[2].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, -1.2F, -0.2F, 1, 8, 2,
 			                      strech - 0.2F);
 			LeftWingExt[2].setRotationPoint(f17, f18 + f, f19);
 			LeftWingExt[3] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[3].mirror = true;
-			LeftWingExt[3].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, 1.8F, 1.3F, 1, 8, 2,
+			LeftWingExt[3].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, 1.8F, 1.3F, 1, 8, 2,
 			                      strech - 0.1F);
 			LeftWingExt[3].setRotationPoint(f17, f18 + f, f19);
 			LeftWingExt[4] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[4].mirror = true;
-			LeftWingExt[4].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
+			LeftWingExt[4].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, 5F, 2.0F, 1, 8, 2, strech);
 			LeftWingExt[4].setRotationPoint(f17, f18 + f, f19);
 			LeftWingExt[5] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[5].mirror = true;
-			LeftWingExt[5].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, 0.0F, -0.2F, 1, 6, 2,
+			LeftWingExt[5].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, 0.0F, -0.2F, 1, 6, 2,
 			                      strech + 0.3F);
 			LeftWingExt[5].setRotationPoint(f17, f18 + f, f19);
 			LeftWingExt[6] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			LeftWingExt[6].mirror = true;
-			LeftWingExt[6].addBox("Wings.Extended.Left Wing Extended.Left Wing Extended", 0.0F, 0.0F, 0.2F, 1, 3, 2,
+			LeftWingExt[6].addBox("Wings.@Extended.Left Wing Extended.Left Wing Extended", 0.0F, 0.0F, 0.2F, 1, 3, 2,
 			                      strech + 0.2F);
 			LeftWingExt[6].setRotationPoint(f17, f18 + f, f19);
 			float f20 = f2 - 4.5F;
@@ -2488,36 +2488,36 @@ namespace MCSkin3D.Models
 			RightWingExt = new ModelLoader.ModelRenderer[7];
 			RightWingExt[0] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[0].mirror = true;
-			RightWingExt[0].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 0.0F, 0.0F, 1, 8, 2,
+			RightWingExt[0].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 0.0F, 0.0F, 1, 8, 2,
 			                       strech + 0.1F);
 			RightWingExt[0].setRotationPoint(f20, f21 + f, f22);
 			RightWingExt[1] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[1].mirror = true;
-			RightWingExt[1].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 8F, 0.0F, 1, 6, 2,
+			RightWingExt[1].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 8F, 0.0F, 1, 6, 2,
 			                       strech + 0.1F);
 			RightWingExt[1].setRotationPoint(f20, f21 + f, f22);
 			RightWingExt[2] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[2].mirror = true;
-			RightWingExt[2].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, -1.2F, -0.2F, 1, 8, 2,
+			RightWingExt[2].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, -1.2F, -0.2F, 1, 8, 2,
 			                       strech - 0.2F);
 			RightWingExt[2].setRotationPoint(f20, f21 + f, f22);
 			RightWingExt[3] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[3].mirror = true;
-			RightWingExt[3].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 1.8F, 1.3F, 1, 8, 2,
+			RightWingExt[3].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 1.8F, 1.3F, 1, 8, 2,
 			                       strech - 0.1F);
 			RightWingExt[3].setRotationPoint(f20, f21 + f, f22);
 			RightWingExt[4] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[4].mirror = true;
-			RightWingExt[4].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 5F, 2.0F, 1, 8, 2, strech);
+			RightWingExt[4].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 5F, 2.0F, 1, 8, 2, strech);
 			RightWingExt[4].setRotationPoint(f20, f21 + f, f22);
 			RightWingExt[5] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[5].mirror = true;
-			RightWingExt[5].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 0.0F, -0.2F, 1, 6, 2,
+			RightWingExt[5].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 0.0F, -0.2F, 1, 6, 2,
 			                       strech + 0.3F);
 			RightWingExt[5].setRotationPoint(f20, f21 + f, f22);
 			RightWingExt[6] = new ModelLoader.ModelRenderer(this, 56, 19, ModelPart.None);
 			RightWingExt[6].mirror = true;
-			RightWingExt[6].addBox("Wings.Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 0.0F, 0.2F, 1, 3, 2,
+			RightWingExt[6].addBox("Wings.@Extended.Right Wing Extended.Right Wing Extended", 0.0F - 1, 0.0F, 0.2F, 1, 3, 2,
 			                       strech + 0.2F);
 			RightWingExt[6].setRotationPoint(f20, f21 + f, f22);
 			WingRotateAngleX = LeftWingExt[0].rotateAngleX;

@@ -20,14 +20,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using MCSkin3D.Models;
+using MCSkin3D.Swatches;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Paril.OpenGL;
-using System.Threading;
-using MCSkin3D.Swatches;
 
 namespace MCSkin3D
 {
@@ -145,7 +144,10 @@ namespace MCSkin3D
 			}
 			catch (Exception ex)
 			{
-				Editor.MainForm.Invoke((Action)delegate() { Program.RaiseException(ex); });
+				if (ex is ThreadAbortException)
+					return;
+
+				Program.RaiseException(ex);
 			}
 			finally
 			{

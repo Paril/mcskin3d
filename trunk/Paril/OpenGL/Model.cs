@@ -7,7 +7,6 @@ using System.IO.Compression;
 using System.Xml;
 using MCSkin3D;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Paril.OpenGL
