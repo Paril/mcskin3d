@@ -5,6 +5,7 @@ using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenTK;
 using Paril.OpenGL;
+using System.Globalization;
 
 namespace MCSkin3D.Models
 {
@@ -38,7 +39,7 @@ namespace MCSkin3D.Models
 				else if (name == "size")
 					Size = Mesh.StringToVertex3(child.InnerText);
 				else if (name == "scale")
-					Scale = float.Parse(child.InnerText);
+					Scale = float.Parse(child.InnerText, CultureInfo.InvariantCulture.NumberFormat);
 				else if (name == "textureoffset")
 					TextureOffset = Mesh.StringToVertex2(child.InnerText);
 				else if (name == "part")

@@ -27,6 +27,7 @@ using MCSkin3D.Swatches;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Paril.OpenGL;
+using System.Globalization;
 
 namespace MCSkin3D
 {
@@ -395,7 +396,7 @@ namespace MCSkin3D
 					{
 						if (mesh is ModelRenderer)
 						{
-							var renderer = (ModelRenderer) mesh;
+							var renderer = (ModelRenderer)mesh;
 
 							foreach (ModelBox x in renderer.cubeList)
 							{
@@ -413,18 +414,18 @@ namespace MCSkin3D
 								writer.WriteElementString("IsFixed", "False");
 								writer.WriteElementString("IsMirrored", renderer.mirror.ToString());
 								writer.WriteElementString("Offset",
-								                          renderer.rotationPointX + "," + renderer.rotationPointY + "," +
-								                          renderer.rotationPointZ);
-								writer.WriteElementString("Position", x.x + "," + x.y + "," + x.z);
+														  renderer.rotationPointX.ToString(CultureInfo.InvariantCulture) + "," + renderer.rotationPointY.ToString(CultureInfo.InvariantCulture) + "," +
+														  renderer.rotationPointZ.ToString(CultureInfo.InvariantCulture));
+								writer.WriteElementString("Position", x.x.ToString(CultureInfo.InvariantCulture) + "," + x.y.ToString(CultureInfo.InvariantCulture) + "," + x.z.ToString(CultureInfo.InvariantCulture));
 								writer.WriteElementString("Rotation",
-								                          MathHelper.RadiansToDegrees(renderer.rotateAngleX) + "," +
-								                          MathHelper.RadiansToDegrees(renderer.rotateAngleY) + "," +
-								                          MathHelper.RadiansToDegrees(renderer.rotateAngleZ));
-								writer.WriteElementString("Size", (x.xMax - x.x) + "," + (x.yMax - x.y) + "," + (x.zMax - x.z));
+								                          MathHelper.RadiansToDegrees(renderer.rotateAngleX).ToString(CultureInfo.InvariantCulture) + "," +
+														  MathHelper.RadiansToDegrees(renderer.rotateAngleY).ToString(CultureInfo.InvariantCulture) + "," +
+														  MathHelper.RadiansToDegrees(renderer.rotateAngleZ).ToString(CultureInfo.InvariantCulture));
+								writer.WriteElementString("Size", (x.xMax - x.x).ToString(CultureInfo.InvariantCulture) + "," + (x.yMax - x.y).ToString(CultureInfo.InvariantCulture) + "," + (x.zMax - x.z).ToString(CultureInfo.InvariantCulture));
 								writer.WriteElementString("TextureOffset", x.texX + "," + x.texY);
 
 								// Paril: MCSkin3D additions
-								writer.WriteElementString("Scale", x.sizeOfs.ToString());
+								writer.WriteElementString("Scale", x.sizeOfs.ToString(CultureInfo.InvariantCulture));
 								writer.WriteElementString("Part", renderer.Flags.ToString());
 
 								writer.WriteEndElement();
@@ -440,15 +441,15 @@ namespace MCSkin3D
 
 							writer.WriteElementString("IsMirrored", renderer.mirror.ToString());
 							writer.WriteElementString("Offset",
-							                          renderer.rotationPointX + "," + renderer.rotationPointY + "," + renderer.rotationPointZ);
-							writer.WriteElementString("Position", renderer.x + "," + renderer.y + "," + renderer.z);
+													  renderer.rotationPointX.ToString(CultureInfo.InvariantCulture) + "," + renderer.rotationPointY.ToString(CultureInfo.InvariantCulture) + "," + renderer.rotationPointZ.ToString(CultureInfo.InvariantCulture));
+							writer.WriteElementString("Position", renderer.x.ToString(CultureInfo.InvariantCulture) + "," + renderer.y.ToString(CultureInfo.InvariantCulture) + "," + renderer.z.ToString(CultureInfo.InvariantCulture));
 							writer.WriteElementString("Rotation",
-							                          MathHelper.RadiansToDegrees(renderer.rotateAngleX) + "," +
-							                          MathHelper.RadiansToDegrees(renderer.rotateAngleY) + "," +
-							                          MathHelper.RadiansToDegrees(renderer.rotateAngleZ));
+													  MathHelper.RadiansToDegrees(renderer.rotateAngleX).ToString(CultureInfo.InvariantCulture) + "," +
+													  MathHelper.RadiansToDegrees(renderer.rotateAngleY).ToString(CultureInfo.InvariantCulture) + "," +
+													  MathHelper.RadiansToDegrees(renderer.rotateAngleZ).ToString(CultureInfo.InvariantCulture));
 							writer.WriteElementString("Size",
-							                          (renderer.xMax - renderer.x) + "," + (renderer.yMax - renderer.y) + "," +
-							                          (renderer.zMax - renderer.z));
+													  (renderer.xMax - renderer.x).ToString(CultureInfo.InvariantCulture) + "," + (renderer.yMax - renderer.y).ToString(CultureInfo.InvariantCulture) + "," +
+													  (renderer.zMax - renderer.z).ToString(CultureInfo.InvariantCulture));
 							writer.WriteElementString("TextureOffset", renderer.textureOffsetX + "," + renderer.textureOffsetY);
 
 							writer.WriteElementString("Scale", renderer.Offset.ToString());
