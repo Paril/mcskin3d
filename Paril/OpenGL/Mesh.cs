@@ -70,44 +70,6 @@ namespace Paril.OpenGL
 							   float.Parse(spl[1], CultureInfo.InvariantCulture));
 		}
 
-		public void Write(XmlWriter writer)
-		{
-			writer.WriteStartElement("Mesh");
-			writer.WriteAttributeString("Name", Name);
-			writer.WriteAttributeString("Mode", Mode.ToString());
-			writer.WriteAttributeString("Translate", VertexToString(Translate));
-			writer.WriteAttributeString("Pivot", VertexToString(Pivot));
-			writer.WriteAttributeString("IsHelmet", HasTransparency.ToString());
-			writer.WriteAttributeString("FollowCursor", FollowCursor.ToString());
-			writer.WriteAttributeString("RotateFactor", RotateFactor.ToString());
-			writer.WriteAttributeString("Rotate", VertexToString(Rotate));
-			writer.WriteAttributeString("Part", Part.ToString());
-
-			foreach (Face f in Faces)
-			{
-				writer.WriteStartElement("Face");
-
-				writer.WriteStartElement("Vertices");
-				foreach (Vector3 v in f.Vertices)
-					writer.WriteElementString("Vertex", VertexToString(v));
-				writer.WriteEndElement();
-
-				writer.WriteStartElement("TexCoords");
-				foreach (Vector2 v in f.TexCoords)
-					writer.WriteElementString("Coord", VertexToString(v));
-				writer.WriteEndElement();
-
-				writer.WriteStartElement("Indices");
-				foreach (int v in f.Indices)
-					writer.WriteElementString("Index", v.ToString());
-				writer.WriteEndElement();
-
-				writer.WriteEndElement();
-			}
-
-			writer.WriteEndElement();
-		}
-
 		public void CalculateCenter()
 		{
 			int count = 0;
