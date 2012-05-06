@@ -170,6 +170,10 @@ namespace MCSkin3D
 		[DefaultValue(false)]
 		public static bool RenderBenchmark { get; set; }
 
+		[Savable]
+		[DefaultValue(false)]
+		public static bool GridEnabled { get; set; }
+
 		public static bool Load()
 		{
 			try

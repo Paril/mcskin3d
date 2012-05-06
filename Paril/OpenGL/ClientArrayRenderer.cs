@@ -16,11 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using OpenTK.Graphics.OpenGL;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
-using System.Collections.Generic;
-using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace Paril.OpenGL
 {

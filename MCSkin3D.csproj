@@ -446,7 +446,6 @@
     <Compile Include="Controls\LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
-    <Compile Include="Paril\Components\Update\Updater.cs" />
     <Compile Include="Paril\Controls\Color\ColorPreview.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -579,6 +578,8 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\radio_checked.png" />
+    <None Include="Resources\radio_unchecked.png" />
     <None Include="Resources\renameswatch.png" />
     <None Include="Resources\convertswatch.png" />
     <None Include="Resources\deleteswatch.png" />

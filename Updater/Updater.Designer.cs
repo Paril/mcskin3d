@@ -83,8 +83,7 @@
 			// 
 			// tableLayoutPanel1
 			// 
-			this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.tableLayoutPanel1.AutoSize = true;
 			this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -219,6 +218,7 @@
 			this.Name = "Updater";
 			this.ShowIcon = false;
 			this.Text = "MCSkin3D Updater";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Updater_FormClosing);
 			this.Load += new System.EventHandler(this.Updater_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tableLayoutPanel1.ResumeLayout(false);

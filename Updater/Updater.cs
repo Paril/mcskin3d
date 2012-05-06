@@ -11,14 +11,15 @@ using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using BrightIdeasSoftware;
 using Version = Paril.Components.Update.Version;
+using System.Diagnostics;
+using System.Linq;
 
 namespace MCSkin3D.UpdateSystem
 {
 	public partial class Updater : Form
 	{
 		private static readonly ImageList _updateImages = new ImageList();
-		private static readonly string _tempDirectory = Environment.ExpandEnvironmentVariables("%temp%");
-		private static readonly string _mcskin3dTemp = _tempDirectory + '\\' + "mcskin3d";
+		private static readonly string _mcskin3dTemp = "__updateFiles\\";
 		private static readonly object lockObj = new object();
 		private Thread _updateThread;
 		private List<UpdateItem> _updates;
@@ -28,36 +29,109 @@ namespace MCSkin3D.UpdateSystem
 			InitializeComponent();
 		}
 
-		public Updater(string url, string installedUpdatesFiles) :
+		public event EventHandler UpdatesAvailable;
+		public bool checkedAlready = false;
+
+		public Updater(string url) :
 			this()
 		{
 			UpdateXMLURL = url;
 
-			InstalledUpdates = new List<Guid>();
-			if (installedUpdatesFiles != null && File.Exists(installedUpdatesFiles))
+			if (InstalledUpdates == null)
 			{
-				using (var sr = new StreamReader(installedUpdatesFiles))
-					while (!sr.EndOfStream)
-						InstalledUpdates.Add(new Guid(sr.ReadLine()));
+				InstalledUpdates = new List<Guid>();
+
+				if (File.Exists("__installedUpdates"))
+				{
+					using (var sr = new StreamReader("__installedUpdates"))
+						while (!sr.EndOfStream)
+						{
+							try
+							{
+								InstalledUpdates.Add(new Guid(sr.ReadLine()));
+							}
+							catch { }
+						}
+				}
+				else
+				{
+					var file = new FileInfo("__installedUpdates");
+					file.Create().Dispose();
+					file.Attributes |= FileAttributes.Hidden;
+				}
 			}
-			else
+
+			objectListView1.BeginUpdate();
+			objectListView1.View = View.Details;
+			objectListView1.CheckBoxes = true;
+			objectListView1.GridLines = false;
+			objectListView1.AllowColumnReorder = false;
+			objectListView1.FullRowSelect = true;
+			objectListView1.ShowItemCountOnGroups = true;
+			objectListView1.OwnerDraw = true;
+
+			olvColumn5.Renderer = new BarRenderer(0, 100);
+
+			foreach (object c in objectListView1.Columns)
 			{
-				var file = new FileInfo(installedUpdatesFiles);
-				file.Create().Dispose();
-				file.Attributes |= FileAttributes.Hidden;
+				var col = (OLVColumn)c;
+
+				col.GroupKeyGetter = delegate(object row) { return ((UpdateItem)row).Group; };
+
+				col.GroupKeyToTitleConverter = delegate(object key) { return (string)key; };
+			}
+
+			objectListView1.AllColumns[0].RendererDelegate = delegate(EventArgs args, Graphics g, Rectangle r, Object rowObject)
+			{
+				g.FillRectangle(new SolidBrush(objectListView1.BackColor),
+								new Rectangle(r.X - 1, r.Y - 1,
+											  objectListView1.Width, r.Height + 2));
+
+				var realArgs = (DrawListViewSubItemEventArgs)args;
+
+				bool isHot = objectListView1.HotRowIndex == realArgs.ItemIndex &&
+							 objectListView1.PointToClient(Cursor.Position).X <
+							 r.X + 5 + 17;
+
+				CheckBoxRenderer.DrawCheckBox(g, new Point(r.X + 5, r.Y + 2),
+											  realArgs.Item.Checked
+												? (isHot
+													? CheckBoxState.CheckedHot
+													: CheckBoxState.CheckedNormal)
+												: (isHot
+													? CheckBoxState.UncheckedHot
+													: CheckBoxState.UncheckedNormal));
+
+				g.DrawImage(
+					realArgs.Item.ImageList.Images[((UpdateItem)rowObject).ImageIndex
+						], new Point(r.X + 24, r.Y));
+
+				TextRenderer.DrawText(g, realArgs.Item.Text, Font,
+									  new Rectangle(r.X + 24 + 16, r.Y,
+													r.Width - (24 + 16), r.Height),
+									  SystemColors.ControlText,
+									  TextFormatFlags.Left |
+									  TextFormatFlags.VerticalCenter);
+
+				return true;
+			};
+
+			objectListView1.CheckedAspectName = "IsChecked";
+			objectListView1.EndUpdate();
+
+			if (GlobalSettings.AutoUpdate)
+			{
+				checkedAlready = true;
+				_updateThread = new Thread(GetUpdateData);
+				_updateThread.Start();
 			}
 		}
 
 		public string UpdateXMLURL { get; set; }
-
 		public List<Guid> InstalledUpdates { get; set; }
 
-		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-		}
-
 		// FIXME: RSS instead?
-		private static List<UpdateItem> LoadUpdates(XmlDocument document)
+		private List<UpdateItem> LoadUpdates(XmlDocument document)
 		{
 			var items = new List<UpdateItem>();
 
@@ -117,6 +191,9 @@ namespace MCSkin3D.UpdateSystem
 						}
 					}
 
+					if (item.Guid.Equals(Guid.Empty))
+						continue; // bad update
+
 					items.Add(item);
 				}
 			}
@@ -124,7 +201,7 @@ namespace MCSkin3D.UpdateSystem
 			return items;
 		}
 
-		private void GetUpdateData()
+		List<UpdateItem> GetUpdates()
 		{
 			var client = new WebClient();
 			var doc = new XmlDocument();
@@ -142,50 +219,83 @@ namespace MCSkin3D.UpdateSystem
 					doc.LoadXml(sr.ReadToEnd());
 			}
 
-			_updates = LoadUpdates(doc);
-			_updates.RemoveAll(
-				item =>
-				{
-					if (InstalledUpdates.Contains(item.Guid))
-						return true;
+			client.Dispose();
 
-					// this update isn't compatible with our version
-					if (item.HasMinVersion && Program.Version < item.MinVersion)
-						return true;
-					if (item.HasMaxVersion && Program.Version > item.MaxVersion)
-						return true;
+			return LoadUpdates(doc);
+		}
 
-					return false;
-				}
-			);
-
-			_updates.Sort();
-
-			var fileNames = new List<string>();
-
-			foreach (UpdateItem u in _updates)
+		bool doneChecking = false;
+		private void GetUpdateData()
+		{
+			try
 			{
-				string url = u.GroupImageURL;
-				string fileName = Path.GetFileName(url);
-
-				if (!Directory.Exists(_mcskin3dTemp))
-					Directory.CreateDirectory(_mcskin3dTemp);
-
-				string fileDir = _mcskin3dTemp + '\\' + fileName;
-
-				if (!File.Exists(fileDir))
-					client.DownloadFile(url, fileDir);
-
-				if (!fileNames.Contains(fileDir))
+				try
 				{
-					fileNames.Add(fileDir);
-					_updateImages.Images.Add(Image.FromFile(fileDir));
+					_updates = GetUpdates();
+					_updates.RemoveAll(
+						item =>
+						{
+							if (InstalledUpdates.Contains(item.Guid))
+								return true;
+
+							// this update isn't compatible with our version
+							if (item.HasMinVersion && Program.Version < item.MinVersion)
+								return true;
+							if (item.HasMaxVersion && Program.Version > item.MaxVersion)
+								return true;
+
+							return false;
+						}
+					);
+
+					_updates.Sort();
+
+					var fileNames = new List<string>();
+
+					foreach (UpdateItem u in _updates)
+					{
+						string url = u.GroupImageURL;
+						string fileName = Path.GetFileName(url);
+
+						if (!Directory.Exists(_mcskin3dTemp))
+						{
+							var di = Directory.CreateDirectory(_mcskin3dTemp);
+							di.Attributes |= FileAttributes.Hidden;
+						}
+
+						string fileDir = _mcskin3dTemp + '\\' + fileName;
+
+						if (!File.Exists(fileDir))
+							using (var cl = new WebClient())
+								cl.DownloadFile(url, fileDir);
+
+						if (!fileNames.Contains(fileDir))
+						{
+							fileNames.Add(fileDir);
+							_updateImages.Images.Add(Image.FromFile(fileDir));
+						}
+
+						u.ImageIndex = fileNames.IndexOf(fileDir);
+					}
+				}
+				catch
+				{
 				}
 
-				u.ImageIndex = fileNames.IndexOf(fileDir);
-			}
+				doneChecking = true;
 
-			Invoke((Action) UpdateFinished);
+				if (Visible)
+					Invoke((Action)UpdateFinished);
+				else if (_updates.Any(item => item.IsProgramUpdate))
+					UpdatesAvailable(this, EventArgs.Empty);
+			}
+			catch (Exception ex)
+			{
+				if (ex is ThreadAbortException)
+					return;
+
+				Program.RaiseException(ex);
+			}
 		}
 
 		private void UpdateFinished()
@@ -208,11 +318,12 @@ namespace MCSkin3D.UpdateSystem
 
 		private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
-			Invoke((Action)delegate
-			{
-				((UpdateItem)e.UserState).Progress = 100;
-				objectListView1.RedrawItems(0, _updates.Count - 1, false);
-			});
+			if (e.UserState != null)
+				Invoke((Action)delegate
+				{
+					((UpdateItem)e.UserState).Progress = 100;
+					objectListView1.RedrawItems(0, _updates.Count - 1, false);
+				});
 
 			lock (lockObj)
 				Monitor.Pulse(lockObj);
@@ -220,47 +331,97 @@ namespace MCSkin3D.UpdateSystem
 
 		private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
+			if (e.UserState != null)
 			Invoke((Action) delegate
-			                {
-			                	((UpdateItem) e.UserState).Progress = e.ProgressPercentage;
-			                	objectListView1.RedrawItems(0, _updates.Count - 1, false);
-			                });
+								{
+			                		((UpdateItem) e.UserState).Progress = e.ProgressPercentage;
+			                		objectListView1.RedrawItems(0, _updates.Count - 1, false);
+								});
 		}
+
+		public event EventHandler FormHidden;
 
 		private void DownloadUpdateData()
 		{
-			var client = new WebClient();
-
-			client.DownloadProgressChanged += client_DownloadProgressChanged;
-			client.DownloadFileCompleted += client_DownloadFileCompleted;
-
-			foreach (UpdateItem u in _updates)
+			try
 			{
-				if (!u.IsChecked)
-					continue;
+				var client = new WebClient();
 
-				string url = u.DownloadURL;
-
-				string fileName = Path.GetFileName(url);
+				client.DownloadProgressChanged += client_DownloadProgressChanged;
+				client.DownloadFileCompleted += client_DownloadFileCompleted;
 
 				if (!Directory.Exists(_mcskin3dTemp))
 					Directory.CreateDirectory(_mcskin3dTemp);
 
+				string url = "http://alteredsoftworks.com/mcskin3d/UpdateInstaller.exe";
+				string fileName = Path.GetFileName(url);
 				string fileDir = _mcskin3dTemp + '\\' + fileName;
 
-				client.DownloadFileAsync(new Uri(url), fileDir, u);
+				client.DownloadFileAsync(new Uri(url), fileDir, null);
 
 				lock (lockObj)
 					Monitor.Wait(lockObj);
+
+				foreach (UpdateItem u in _updates)
+				{
+					if (!u.IsChecked)
+						continue;
+
+					url = u.DownloadURL;
+					fileName = Path.GetFileName(url);
+					var withoutExt = Path.GetFileNameWithoutExtension(fileName);
+
+					using (var dataFile = new BinaryWriter(File.Create(_mcskin3dTemp + '\\' + withoutExt + ".dat")))
+					{
+						dataFile.Write(u.Name);
+
+						dataFile.Write(u.RealDate.Day);
+						dataFile.Write(u.RealDate.Month);
+						dataFile.Write(u.RealDate.Year);
+
+						dataFile.Write(u.IsMajor);
+						dataFile.Write(u.IsProgramUpdate);
+
+						dataFile.Write(u.Version.Major);
+						dataFile.Write(u.Version.Minor);
+						dataFile.Write(u.Version.Build);
+						dataFile.Write(u.Version.Revision);
+
+						dataFile.Write(u.Guid.ToByteArray());
+					}
+
+					fileDir = _mcskin3dTemp + '\\' + fileName;
+
+					client.DownloadFileAsync(new Uri(url), fileDir, u);
+
+					lock (lockObj)
+						Monitor.Wait(lockObj);
+				}
+
+				Invoke((Action)delegate
+								{
+									MessageBox.Show(Editor.GetLanguageString("M_UPDATESTARTING"));
+
+									var psi = new ProcessStartInfo();
+									psi.WorkingDirectory = "__updateFiles\\";
+									psi.FileName = new FileInfo("__updateFiles\\UpdateInstaller.exe").FullName;
+									Process.Start(psi);
+
+									DialogResult = DialogResult.OK;
+
+									if (FormHidden != null)
+										FormHidden(this, EventArgs.Empty);
+
+									Hide();
+								});
 			}
+			catch (Exception ex)
+			{
+				if (ex is ThreadAbortException)
+					return;
 
-			Invoke((Action) delegate
-			                {
-								MessageBox.Show(Editor.GetLanguageString("M_UPDATESTARTING"));
-
-			                	DialogResult = DialogResult.OK;
-			                	Close();
-			                });
+				Program.RaiseException(ex);
+			}
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -277,68 +438,15 @@ namespace MCSkin3D.UpdateSystem
 
 		private void Updater_Load(object sender, EventArgs e)
 		{
-			_updateThread = new Thread(GetUpdateData);
-			_updateThread.Start();
-
-			objectListView1.BeginUpdate();
-			objectListView1.View = View.Details;
-			objectListView1.CheckBoxes = true;
-			objectListView1.GridLines = false;
-			objectListView1.AllowColumnReorder = false;
-			objectListView1.FullRowSelect = true;
-			objectListView1.ShowItemCountOnGroups = true;
-			objectListView1.OwnerDraw = true;
-
-			olvColumn5.Renderer = new BarRenderer(0, 100);
-
-			foreach (object c in objectListView1.Columns)
+			if (!checkedAlready)
 			{
-				var col = (OLVColumn) c;
-
-				col.GroupKeyGetter = delegate(object row) { return ((UpdateItem) row).Group; };
-
-				col.GroupKeyToTitleConverter = delegate(object key) { return (string) key; };
+				checkedAlready = true;
+				_updateThread = new Thread(GetUpdateData);
+				_updateThread.Start();
 			}
-
-			objectListView1.AllColumns[0].RendererDelegate = delegate(EventArgs args, Graphics g, Rectangle r, Object rowObject)
-			                                                 {
-			                                                 	g.FillRectangle(new SolidBrush(objectListView1.BackColor),
-			                                                 	                new Rectangle(r.X - 1, r.Y - 1,
-			                                                 	                              objectListView1.Width, r.Height + 2));
-
-			                                                 	var realArgs = (DrawListViewSubItemEventArgs) args;
-
-			                                                 	bool isHot = objectListView1.HotRowIndex == realArgs.ItemIndex &&
-			                                                 	             objectListView1.PointToClient(Cursor.Position).X <
-			                                                 	             r.X + 5 + 17;
-
-			                                                 	CheckBoxRenderer.DrawCheckBox(g, new Point(r.X + 5, r.Y + 2),
-			                                                 	                              realArgs.Item.Checked
-			                                                 	                              	? (isHot
-			                                                 	                              	   	? CheckBoxState.CheckedHot
-			                                                 	                              	   	: CheckBoxState.CheckedNormal)
-			                                                 	                              	: (isHot
-			                                                 	                              	   	? CheckBoxState.UncheckedHot
-			                                                 	                              	   	: CheckBoxState.UncheckedNormal));
-
-			                                                 	g.DrawImage(
-			                                                 		realArgs.Item.ImageList.Images[((UpdateItem) rowObject).ImageIndex
-			                                                 			], new Point(r.X + 24, r.Y));
-
-			                                                 	TextRenderer.DrawText(g, realArgs.Item.Text, Font,
-			                                                 	                      new Rectangle(r.X + 24 + 16, r.Y,
-			                                                 	                                    r.Width - (24 + 16), r.Height),
-			                                                 	                      SystemColors.ControlText,
-			                                                 	                      TextFormatFlags.Left |
-			                                                 	                      TextFormatFlags.VerticalCenter);
-
-			                                                 	return true;
-			                                                 };
-
-			objectListView1.CheckedAspectName = "IsChecked";
-			objectListView1.EndUpdate();
+			else if (_updates != null && doneChecking)
+				UpdateFinished();
 		}
-
 
 		private void objectListView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
 		{
@@ -351,7 +459,11 @@ namespace MCSkin3D.UpdateSystem
 		private void button2_Click(object sender, EventArgs e)
 		{
 			DialogResult = DialogResult.Cancel;
-			Close();
+
+			if (FormHidden != null)
+				FormHidden(this, EventArgs.Empty);
+
+			Hide();
 		}
 
 		#region Nested type: UpdateItem
@@ -395,6 +507,9 @@ namespace MCSkin3D.UpdateSystem
 				if (cmp == 0)
 					cmp = Version.CompareTo(item.Version);
 
+				if (cmp == 0)
+					cmp = Name.CompareTo(item.Name);
+
 				return cmp;
 			}
 
@@ -402,5 +517,25 @@ namespace MCSkin3D.UpdateSystem
 		}
 
 		#endregion
+
+		private void Updater_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				e.Cancel = true;
+				DialogResult = DialogResult.Cancel;
+				
+				if (FormHidden != null)
+					FormHidden(this, EventArgs.Empty);
+
+				Hide();
+			}
+		}
+
+		public void StopUpdates()
+		{
+			if (_updateThread.ThreadState == System.Threading.ThreadState.Running)
+				_updateThread.Abort();
+		}
 	}
 }

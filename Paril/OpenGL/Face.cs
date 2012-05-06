@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using OpenTK;
-using OpenTK.Graphics;
 
 namespace Paril.OpenGL
 {

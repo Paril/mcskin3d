@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using VS = System.Windows.Forms.VisualStyles;
 
 /*
 <li>Base class for custom tooltips.</li>

@@ -84,11 +84,7 @@ namespace MCSkin3D
 			}
 			catch (Exception ex)
 			{
-				var form = new ExceptionForm();
-				form.Exception = ex;
-				form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
-				SystemSounds.Asterisk.Play();
-				form.ShowDialog();
+				RaiseException(ex);
 			}
 #endif
 		}
@@ -100,11 +96,21 @@ namespace MCSkin3D
 
 		public static void RaiseException(Exception ex)
 		{
+			if (Editor.MainForm.InvokeRequired)
+			{
+				Editor.MainForm.Invoke((Action)delegate() { RaiseException(ex); });
+				return;
+			}
+
 			var form = new ExceptionForm();
 			form.Exception = ex;
 			form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
 			SystemSounds.Asterisk.Play();
-			form.ShowDialog();
+
+			if (Editor.MainForm.Visible)
+				form.ShowDialog(Editor.MainForm);
+			else
+				form.ShowDialog();
 		}
 	}
 }
