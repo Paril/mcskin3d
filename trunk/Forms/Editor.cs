@@ -4411,5 +4411,15 @@ namespace MCSkin3D
 			GlobalSettings.GridEnabled = !GlobalSettings.GridEnabled;
 			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
 		}
+
+		private void officialMinecraftForumsThreadToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Process.Start("http://www.minecraftforum.net/topic/746941-mcskin3d-new-skinning-program/");
+		}
+
+		private void planetMinecraftSubmissionToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Process.Start("http://www.planetminecraft.com/mod/mcskin3d/");
+		}
 	}
 }

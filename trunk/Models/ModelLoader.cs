@@ -74,6 +74,7 @@ namespace MCSkin3D
 			{
 				SwatchLoader.LoadSwatches();
 
+#if BETA
 				new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
 				new ModelBiped().Save("Human", 1, 64, 32, "Models\\Mobs\\Passive\\Human.xml");
 				new ModelVillager().Save("Villager", 1, 64, 64, "Models\\Mobs\\Passive\\Villager.xml");
@@ -117,6 +118,7 @@ namespace MCSkin3D
 
 				new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
 				new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");
+#endif
 
 				Directory.CreateDirectory("Models");
 
