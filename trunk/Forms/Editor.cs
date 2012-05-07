@@ -2845,6 +2845,10 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("T_DECRES", Keys.Control | Keys.Shift | Keys.D, PerformDecreaseResolution);
 			InitUnlinkedShortcut("T_INCRES", Keys.Control | Keys.Shift | Keys.I, PerformIncreaseResolution);
 			InitUnlinkedShortcut("T_RESETCAMERA", Keys.Control | Keys.Shift | Keys.R, PerformResetCamera);
+
+			InitUnlinkedShortcut("T_SWATCHEDIT", Keys.Shift | Keys.S, ColorPanel.SwatchContainer.ToggleEditMode);
+			InitUnlinkedShortcut("T_ADDSWATCH", Keys.Shift | Keys.A, ColorPanel.SwatchContainer.PerformAddSwatch);
+			InitUnlinkedShortcut("T_DELETESWATCH", Keys.Shift | Keys.R, ColorPanel.SwatchContainer.PerformRemoveSwatch);
 		}
 
 		private void PerformSwitchColor()

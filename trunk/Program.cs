@@ -64,6 +64,8 @@ namespace MCSkin3D
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static void MainCore()
 		{
+			MainThread = Thread.CurrentThread;
+
 #if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += Application_ThreadException;
@@ -112,5 +114,7 @@ namespace MCSkin3D
 			else
 				form.ShowDialog();
 		}
+
+		public static Thread MainThread { get; set; }
 	}
 }

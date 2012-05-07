@@ -91,7 +91,7 @@ namespace MCSkin3D
 				new SignModel().Save("Sign", 1, 64, 32, "Models\\Other\\Sign.xml");
 				new ModelBook().Save("Book", 1, 64, 32, "Models\\Other\\Book.xml");
 				new ModelMinecart().Save("Minecart", 1, 64, 32, "Models\\Other\\Minecart.xml");
-				new ModelEnderCrystal().Save("Ender Crystal", 1, 128, 64, "Models\\Other\\EnderCrystal.xml");
+				new ModelEnderCrystal().Save("Ender Crystal", 1, 64, 32, "Models\\Other\\EnderCrystal.xml");
 
 				new ModelCreeper().Save("Creeper", 1, 64, 32, "Models\\Mobs\\Hostile\\Creeper.xml");
 				new ModelSlime(0).Save("Tiny Slime", 1, 64, 32, "Models\\Mobs\\Hostile\\TinySlime.xml");

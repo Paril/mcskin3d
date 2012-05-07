@@ -25,18 +25,18 @@
 *- Multi-monitor support
 *- Optimized color class
 	-- Probably not as optimized as I'd like, but, it works.
-?- Figure out what the stupid issue is with the stupid GL control being slower when the stupid cursor is over it.
+*- Swatch editor
+*- Cleanup moar
+*- Consider interface changes
+*- Dynamic detection of transparency of parts
+*- New part system
 ?- Clear skin option
 ?- Handle more upload errors
 ?- Selection tool, copy/paste
 ?- Layers
 ?- Tutorial system
 ?- Don't rely on OpenGL to store finalized image
-?- Swatch editor
-?- Cleanup moar
-?- Consider interface changes
 ?- Mouse shortcuts / "multitool"
-?- Mineshafter support
 ?- Fit keyboard shortcuts into tooltips
 ?- Smudge tool
 ?- Double-check language strings, ensure all English strings in source are language-ized
@@ -44,9 +44,9 @@
 ?- Automated saving?
 ?- Make sure people are aware that new skins are added (select them, etc)
 ?- Ability to see resolution/model from the treeview
-?- Dynamic detection of transparency of parts
-?- New part system
 ?- Colorize
+/- Figure out what the stupid issue is with the stupid GL control being slower when the stupid cursor is over it.
+/- Mineshafter support
 /- Lighting options
 /- Add other "common" color formats (CMYK, etc)
 /- Automatic compilation of skin overlays
