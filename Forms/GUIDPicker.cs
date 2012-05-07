@@ -52,8 +52,24 @@ namespace MCSkin3D.Forms
 			}
 		}
 
+		void SaveValues()
+		{
+			using (var sw = new StreamWriter(File.Create(_fileName), Encoding.Unicode))
+			{
+				foreach (GUIDIndex x in comboBox1.Items)
+					sw.WriteLine(x.Name + '|' + x.Date.ToString() + '|' + x.Guid.ToString());
+			}
+		}
+
 		private void GUIDPicker_Load(object sender, EventArgs e)
 		{
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			SaveValues();
+
+			base.OnFormClosing(e);
 		}
 
 		private Guid GenGuid()
