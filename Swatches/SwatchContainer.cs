@@ -327,6 +327,26 @@ namespace MCSkin3D
 
 		private void addSwatchToolStripButton_Click(object sender, EventArgs e)
 		{
+			PerformAddSwatch();
+		}
+
+		private void removeSwatchToolStripButton_Click(object sender, EventArgs e)
+		{
+			PerformRemoveSwatch();
+		}
+
+		private void convertSwatchStripButton_ButtonClick(object sender, EventArgs e)
+		{
+			convertSwatchStripButton.ShowDropDown();
+		}
+
+		private void editModeToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleEditMode();
+		}
+
+		public void PerformAddSwatch()
+		{
 			ISwatch swatch = SwatchDisplayer.Swatch;
 
 			if (swatch == null)
@@ -336,7 +356,7 @@ namespace MCSkin3D
 			SwatchDisplayer.RecalculateSize();
 		}
 
-		private void removeSwatchToolStripButton_Click(object sender, EventArgs e)
+		public void PerformRemoveSwatch()
 		{
 			ISwatch swatch = SwatchDisplayer.Swatch;
 
@@ -362,9 +382,9 @@ namespace MCSkin3D
 			}
 		}
 
-		private void convertSwatchStripButton_ButtonClick(object sender, EventArgs e)
+		public void ToggleEditMode()
 		{
-			convertSwatchStripButton.ShowDropDown();
+			editModeToolStripButton.Checked = !editModeToolStripButton.Checked;
 		}
 	}
 

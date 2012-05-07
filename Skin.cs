@@ -144,6 +144,7 @@ namespace MCSkin3D
 
 		static void SetImage(Skin skin)
 		{
+			Editor.MainForm.Renderer.MakeCurrent();
 			skin.GLImage = new TextureGL(skin.File.FullName);
 			skin.GLImage.SetMipmapping(false);
 			skin.GLImage.SetRepeat(false);
@@ -207,7 +208,10 @@ namespace MCSkin3D
 					else
 						Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
 
-					SetTransparentParts();
+					if (Editor.MainForm.InvokeRequired)
+						Editor.MainForm.Invoke(SetTransparentParts);
+					else
+						SetTransparentParts();
 				}
 			}
 			catch (Exception ex)

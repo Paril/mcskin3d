@@ -50,7 +50,7 @@ namespace Paril.OpenGL
 			GL.TexCoordPointer(2, TexCoordPointerType.Float, 0, data.TexCoordArray);
 			GL.ColorPointer(4, ColorPointerType.Float, 0, data.ColorArray);
 
-			GL.DrawArrays(mesh.Mode, 0, data.VerticeArray.Length / 3);
+			GL.DrawElements(mesh.Mode, data.IndiceArray.Length, DrawElementsType.UnsignedByte, data.IndiceArray);
 
 			GL.PopMatrix();
 		}

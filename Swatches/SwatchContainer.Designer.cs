@@ -218,7 +218,6 @@
 			// 
 			// editModeToolStripButton
 			// 
-			this.editModeToolStripButton.CheckOnClick = true;
 			this.editModeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.editModeToolStripButton.Image = global::MCSkin3D.Properties.Resources.pipette;
 			this.editModeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -226,6 +225,7 @@
 			this.languageProvider1.SetPropertyNames(this.editModeToolStripButton, "Text");
 			this.editModeToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.editModeToolStripButton.Text = "T_SWATCHEDIT";
+			this.editModeToolStripButton.Click += new System.EventHandler(this.editModeToolStripButton_Click);
 			// 
 			// addSwatchToolStripButton
 			// 

@@ -1020,11 +1020,36 @@ namespace MCSkin3D.Models
 		public ModelEnderCrystal()
 		{
 			field_41058_h = new ModelLoader.ModelRenderer(this, "glass", ModelPart.Head);
-			field_41058_h.setTextureOffset(0, 0).addBox("Glass", -4F, -4F, -4F, 8, 8, 8);
+			field_41058_h.setTextureOffset(0, 0).addBox("Glass", -4F, -4F, -4F, 8, 8, 8, -0.5f);
+
+			field_41058_h.rotateAngleX = 0.7071f;
+			field_41058_h.rotateAngleY = 1.0f;
+			field_41058_h.rotateAngleZ = -0.7071f;
+
+			field_41058_h.setRotationPoint(0, -6.4f, 0);
+
+			field_41058_h = new ModelLoader.ModelRenderer(this, "glass", ModelPart.Head);
+			field_41058_h.setTextureOffset(0, 0).addBox("Glass", -4F, -4F, -4F, 8, 8, 8, -0.5f);
+
+			field_41058_h.rotateAngleX = -0.7071f;
+			field_41058_h.rotateAngleY = 1.0f;
+			field_41058_h.rotateAngleZ = 0.14f;
+
+			field_41058_h.setRotationPoint(0, -6.4f, 0);
+
 			field_41057_g = new ModelLoader.ModelRenderer(this, "cube", ModelPart.Helmet);
-			field_41057_g.setTextureOffset(32, 0).addBox("Cube", -4F, -4F, -4F, 8, 8, 8);
+			field_41057_g.setTextureOffset(32, 0).addBox("Cube", -4F, -4F, -4F, 8, 8, 8, -1.0f);
+
+			field_41057_g.rotateAngleX = -0.7071f;
+			field_41057_g.rotateAngleY = 1.0f;
+			field_41057_g.rotateAngleZ = 0.7071f;
+
+			field_41057_g.setRotationPoint(0, -6.4f, 0);
+
 			field_41059_i = new ModelLoader.ModelRenderer(this, "base", ModelPart.Chest);
 			field_41059_i.setTextureOffset(0, 16).addBox("Base", -6F, 0.0F, -6F, 12, 4, 12);
+
+			field_41059_i.setRotationPoint(0, 0, 0);
 		}
 	}
 

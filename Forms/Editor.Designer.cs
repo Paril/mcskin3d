@@ -598,6 +598,7 @@
 			this.mGRIDCOLORToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
 			this.mGRIDCOLORToolStripMenuItem.Text = "M_GRIDCOLOR";
 			this.mGRIDCOLORToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+			this.mGRIDCOLORToolStripMenuItem.Click += new System.EventHandler(this.mGRIDCOLORToolStripMenuItem_Click);
 			// 
 			// mSHAREDToolStripMenuItem
 			// 

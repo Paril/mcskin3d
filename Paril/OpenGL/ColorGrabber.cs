@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading;
+using MCSkin3D;
 
 namespace Paril.OpenGL
 {
@@ -88,6 +90,9 @@ namespace Paril.OpenGL
 
 		public ColorGrabber(Texture texture, int width, int height)
 		{
+			if (Thread.CurrentThread != Program.MainThread)
+				throw new ThreadStateException();
+
 			OnWrite = null;
 			_texture = texture;
 			_width = width;
