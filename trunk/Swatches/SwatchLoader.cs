@@ -5,6 +5,8 @@ namespace MCSkin3D.Swatches
 {
 	public class SwatchLoader
 	{
+		public static List<ISwatch> Swatches { get; private set; }
+
 		private static void AddDirectory(string dir, List<ISwatch> swatches)
 		{
 			foreach (string swatchFile in Directory.GetFiles(dir, "*"))
@@ -32,15 +34,15 @@ namespace MCSkin3D.Swatches
 
 		public static void LoadSwatches()
 		{
-			var swatches = new List<ISwatch>();
-			AddDirectory("Swatches", swatches);
+			Swatches = new List<ISwatch>();
+			AddDirectory("Swatches", Swatches);
+		}
 
-			Editor.MainForm.Invoke(() =>
-			                       {
-			                       	Editor.MainForm.ColorPanel.SwatchContainer.AddSwatches(swatches);
-			                       	Editor.MainForm.ColorPanel.SwatchContainer.Enabled = true;
-			                       	Editor.MainForm.ColorPanel.SetLoading(false);
-			                       });
+		public static void FinishedLoadingSwatches()
+		{
+			Editor.MainForm.ColorPanel.SwatchContainer.AddSwatches(Swatches);
+			Editor.MainForm.ColorPanel.SwatchContainer.Enabled = true;
+			Editor.MainForm.ColorPanel.SetLoading(false);
 		}
 	}
 }

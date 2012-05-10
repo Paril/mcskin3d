@@ -277,13 +277,13 @@ namespace MCSkin3D.Models
 							var box = (TCNRenderBox) z.RenderData;
 
 							var renderer = new ModelLoader.ModelRenderer(mb, (int) box.TextureOffset.X, (int) box.TextureOffset.Y, box.Part);
-							renderer.setRotationPoint(box.Offset.X, box.Offset.Y, box.Offset.Z);
+							renderer.addBox(z.name, box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
+											(int)box.Size.Z, box.Scale);
+							renderer.setRotationPoint(box.Position.X, box.Position.Y, box.Position.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
 							renderer.mirror = box.IsMirrored;
-							renderer.addBox(z.name, box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
-							                (int) box.Size.Z, box.Scale);
 						}
 						else if (z.RenderData is TCNRenderPlane)
 						{

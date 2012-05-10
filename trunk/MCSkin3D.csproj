@@ -146,6 +146,13 @@
     <Compile Include="Forms\GUIDPicker.Designer.cs">
       <DependentUpon>GUIDPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="MCSkin3DAppContext.cs" />
+    <Compile Include="Splash\Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Splash\Splash.Designer.cs">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
     <Compile Include="lemon42\Color\ColorManager.cs" />
     <Compile Include="lemon42\Color\ColorPick.cs">
       <SubType>UserControl</SubType>
@@ -249,6 +256,7 @@
     <Compile Include="ObjectListView\VirtualObjectListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Paril\Imaging\SafeSave.cs" />
     <Compile Include="Paril\OpenGL\ClientArrayMeshUserData.cs" />
     <Compile Include="Paril\OpenGL\ColorGrabber.cs" />
     <Compile Include="Controls\Brushes.cs">
@@ -585,6 +593,8 @@
     <None Include="Resources\deleteswatch.png" />
     <None Include="Resources\newswatch.png" />
     <None Include="icons\smaller3D.png" />
+    <None Include="icons\mcskin3d128.png" />
+    <None Include="icons\mcskin3d192.png" />
     <Content Include="Icon_new.ico" />
     <None Include="Resources\Generic_Application.png" />
     <None Include="Resources\sort-descending.png" />
@@ -609,6 +619,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GUIDPicker.resx">
       <DependentUpon>GUIDPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Splash\Splash.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectListView\ObjectListViewResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

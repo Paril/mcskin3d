@@ -237,18 +237,26 @@ namespace MCSkin3D.ExceptionHandler
 			_sendingReport = true;
 			button2.Text = Editor.GetLanguageString("C_CANCEL");
 
-			_client = new Client(BuildErrorReport(), "exception.alteredsoftworks.com", 8888);
+			_client = new Client(BuildErrorReport(),
+				
+#if BETA
+				Environment.UserName == "Paril" ? "192.168.0.102" : "exception.alteredsoftworks.com",
+#else
+				"exception.alteredsoftworks.com",
+#endif
+ 8888);
 			_client.SendFinished += _client_SendFinished;
 			_client.SendToServer();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			if (!_sendingReport)
+			if (!_sendingReport || _client == null)
 				Close();
 			else
 			{
 				_client.Abort();
+				_client = null;
 				_sendingReport = false;
 			}
 		}

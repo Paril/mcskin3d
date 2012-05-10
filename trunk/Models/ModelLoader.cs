@@ -68,11 +68,12 @@ namespace MCSkin3D
 			}
 		}
 
-		public static void LoadModelThread()
+		public static void LoadModels()
 		{
 			try
 			{
-				SwatchLoader.LoadSwatches();
+				if (!Directory.Exists("Models"))
+					return;
 
 #if BETA
 				new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
@@ -113,14 +114,12 @@ namespace MCSkin3D
 				new ModelCloak().Save("Cloak", 1, 64, 32, "Models\\Other\\Cloak.xml");
 				new ModelArmor().Save("Armor", 1, 64, 32, "Models\\Other\\Armor.xml");
 
-				new ModelOzelot().Save("Ozelot", 1, 64, 32, "Models\\Mobs\\Passive\\Ozelot.xml");
+				new ModelOzelot().Save("Ocelot", 1, 64, 32, "Models\\Mobs\\Passive\\Ozelot.xml");
 				new ModelGolem().Save("Golem", 1, 128, 128, "Models\\Mobs\\Passive\\Golem.xml");
 
 				new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
 				new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");
 #endif
-
-				Directory.CreateDirectory("Models");
 
 				var tcnParser = new ModelFormatTCN();
 
@@ -140,10 +139,6 @@ namespace MCSkin3D
 					{
 					}
 				}
-
-				Editor.MainForm.Invoke(Editor.MainForm.FinishedLoadingModels);
-
-				SkinLoader.LoadSkins();
 			}
 			catch (Exception ex)
 			{
@@ -154,23 +149,7 @@ namespace MCSkin3D
 			}
 			finally
 			{
-				_loadModelThread = null;
 			}
-		}
-
-		static Thread _loadModelThread;
-		public static void LoadModels()
-		{
-			_loadModelThread = new Thread(LoadModelThread);
-			_loadModelThread.Start();
-		}
-
-		public static void CancelLoadModels()
-		{
-			if (_loadModelThread != null)
-				_loadModelThread.Abort();
-
-			_loadModelThread = null;
 		}
 
 		public static Model GetModelForPath(string p)

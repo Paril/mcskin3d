@@ -27,6 +27,7 @@ namespace MCSkin3D
 	public static class GlobalSettings
 	{
 		private static Settings Settings;
+		public static bool Loaded;
 
 		[Savable]
 		public static bool Animate { get; set; }
@@ -174,19 +175,19 @@ namespace MCSkin3D
 		[DefaultValue(false)]
 		public static bool GridEnabled { get; set; }
 
-		public static bool Load()
+		public static void Load()
 		{
 			try
 			{
 				Settings = new Settings();
 				Settings.Structures.Add(typeof (GlobalSettings));
 				Settings.Load("settings.ini");
-				return true;
+				Loaded = true;
 			}
 			catch
 			{
 				Settings.LoadDefaults();
-				return false;
+				Loaded = false;
 			}
 		}
 

@@ -51,11 +51,13 @@ using Paril.Drawing;
 using Paril.Extensions;
 using Paril.Net;
 using Paril.OpenGL;
+using Paril.Imaging;
 using PopupControl;
 using KeyPressEventArgs = System.Windows.Forms.KeyPressEventArgs;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using Timer = System.Timers.Timer;
 using MCSkin3D.UpdateSystem;
+using MCSkin3D.Swatches;
 
 namespace MCSkin3D
 {
@@ -64,12 +66,12 @@ namespace MCSkin3D
 		#region Variables
 
 		private static readonly ShortcutEditor _shortcutEditor = new ShortcutEditor();
-		private readonly List<BackgroundImage> _backgrounds = new List<BackgroundImage>();
-		private readonly Dictionary<Size, Texture> _charPaintSizes = new Dictionary<Size, Texture>();
-		private readonly UndoRedoPanel _redoListBox;
-		private readonly List<ToolIndex> _tools = new List<ToolIndex>();
-		private readonly UndoRedoPanel _undoListBox;
-		private readonly GLControl _rendererControl;
+		private List<BackgroundImage> _backgrounds = new List<BackgroundImage>();
+		private Dictionary<Size, Texture> _charPaintSizes = new Dictionary<Size, Texture>();
+		private UndoRedoPanel _redoListBox;
+		private List<ToolIndex> _tools = new List<ToolIndex>();
+		private UndoRedoPanel _undoListBox;
+		private GLControl _rendererControl;
 
 		private float _2DCamOffsetX;
 		private float _2DCamOffsetY;
@@ -200,31 +202,37 @@ namespace MCSkin3D
 			get { return _currentLanguage; }
 			set
 			{
-				if (_currentLanguage != null)
+				if (_currentLanguage != null &&
+					_currentLanguage.Item != null)
 					_currentLanguage.Item.Checked = false;
 
 				_currentLanguage = value;
 				GlobalSettings.LanguageFile = _currentLanguage.Culture.Name;
-				MainForm.languageProvider1.LanguageChanged(value);
-				MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
-				MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
-				MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
-				MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
-				MainForm.ColorPanel.languageProvider1.LanguageChanged(value);
-				MainForm.ColorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
-				MainForm.login.languageProvider1.LanguageChanged(value);
-				MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
-				MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
-				MainForm.StampOptions.languageProvider1.LanguageChanged(value);
-				MainForm._importFromSite.languageProvider1.LanguageChanged(value);
-				MainForm.colorPanel.languageProvider1.LanguageChanged(value);
-				MainForm.colorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
-				MainForm.toolStrip2.LanguageProvider.LanguageChanged(value);
+
+				if (_initialized)
+				{
+					MainForm.languageProvider1.LanguageChanged(value);
+					MainForm.DarkenLightenOptions.languageProvider1.LanguageChanged(value);
+					MainForm.PencilOptions.languageProvider1.LanguageChanged(value);
+					MainForm.DodgeBurnOptions.languageProvider1.LanguageChanged(value);
+					MainForm.FloodFillOptions.languageProvider1.LanguageChanged(value);
+					MainForm.ColorPanel.languageProvider1.LanguageChanged(value);
+					MainForm.ColorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
+					MainForm.login.languageProvider1.LanguageChanged(value);
+					MainForm.NoiseOptions.languageProvider1.LanguageChanged(value);
+					MainForm.EraserOptions.languageProvider1.LanguageChanged(value);
+					MainForm.StampOptions.languageProvider1.LanguageChanged(value);
+					MainForm._importFromSite.languageProvider1.LanguageChanged(value);
+					MainForm.colorPanel.languageProvider1.LanguageChanged(value);
+					MainForm.colorPanel.SwatchContainer.languageProvider1.LanguageChanged(value);
+					MainForm.toolStrip2.LanguageProvider.LanguageChanged(value);
+				}
 
 				if (MainForm._selectedTool != null)
 					MainForm.toolStripStatusLabel1.Text = MainForm._selectedTool.Tool.GetStatusLabelText();
 
-				_currentLanguage.Item.Checked = true;
+				if (_currentLanguage.Item != null)
+					_currentLanguage.Item.Checked = true;
 			}
 		}
 
@@ -278,9 +286,8 @@ namespace MCSkin3D
 		// Private functions
 		// =====================================================================
 
-		private void rendererControl_Load(object sender, EventArgs e)
+		private void InitGL()
 		{
-			_rendererControl.Invalidate();
 			GL.ClearColor(GlobalSettings.BackgroundColor);
 
 			GL.Enable(EnableCap.Texture2D);
@@ -1594,17 +1601,16 @@ namespace MCSkin3D
 			ToggleOverlay();
 		}
 
-		Updater _updater;
-		private void ShowUpdater()
+		static void ShowUpdater(Form owner)
 		{
-			Hide();
+			owner.Hide();
 
-			_updater.Show(this);
+			Program.Context.Updater.Show(owner);
 		}
 
 		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowUpdater();
+			ShowUpdater(this);
 		}
 
 		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1893,20 +1899,6 @@ namespace MCSkin3D
 
 		private void MCSkin3D_Load(object sender, EventArgs e)
 		{
-			_updater = new Updater("http://alteredsoftworks.com/mcskin3d/updates.xml");
-			_updater.FormHidden += _updater_FormHidden;
-			_updater.UpdatesAvailable += new EventHandler(_updater_UpdatesAvailable);
-
-			ModelLoader.LoadModels();
-
-			try
-			{
-				if (Directory.Exists("__updateFiles"))
-					Directory.Delete("__updateFiles", true);
-			}
-			catch
-			{
-			}
 		}
 
 		private void languageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2502,6 +2494,9 @@ namespace MCSkin3D
 
 		private void CreatePartList()
 		{
+			_partItems = new[] { null, headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem };
+			_partButtons = new[] { null, toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
+
 			var list = new ImageList();
 			list.ColorDepth = ColorDepth.Depth32Bit;
 			list.ImageSize = new Size(16, 16);
@@ -2663,21 +2658,6 @@ namespace MCSkin3D
 		public void Invoke(Action action)
 		{
 			Invoke((Delegate) action);
-		}
-
-		private void _updater_SameVersion(object sender, EventArgs e)
-		{
-			Invoke(() => MessageBox.Show(this, GetLanguageString("B_MSG_UPTODATE")));
-		}
-
-		private void _updater_NewVersionAvailable(object sender, EventArgs e)
-		{
-			Invoke(delegate
-			       {
-			       	if (MessageBox.Show(this, GetLanguageString("B_MSG_NEWUPDATE"), "Woo!", MessageBoxButtons.YesNo) ==
-			       	    DialogResult.Yes)
-			       		ShowUpdater();
-			       });
 		}
 
 		#endregion
@@ -2960,8 +2940,8 @@ namespace MCSkin3D
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			_updater.StopUpdates();
-			ModelLoader.CancelLoadModels();
+			if (Program.Context.Updater != null)
+				Program.Context.Updater.StopUpdates();
 
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
 			{
@@ -2981,7 +2961,7 @@ namespace MCSkin3D
 			if (_newSkinDirs != null)
 				GlobalSettings.SkinDirectories = _newSkinDirs;
 
-			GlobalSettings.Save();
+			base.OnFormClosing(e);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -3016,13 +2996,17 @@ namespace MCSkin3D
 				Application.Exit();
 			}
 
-			if (Environment.CurrentDirectory.StartsWith(Environment.ExpandEnvironmentVariables("%temp%")))
+			if (!Directory.Exists("Models") ||
+				Environment.CurrentDirectory.StartsWith(Environment.ExpandEnvironmentVariables("%temp%")))
 			{
 				MessageBox.Show(GetLanguageString("M_TEMP"));
 				Application.Exit();
 			}
 
-			//new GUIDPicker("..\\update_guids.txt").ShowDialog();
+			Program.Context.Updater.FormHidden += _updater_FormHidden;
+			Program.Context.Updater.UpdatesAvailable += _updater_UpdatesAvailable;
+
+			//new GUIDPicker("..\\guids").ShowDialog();
 		}
 
 		private void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -3200,14 +3184,14 @@ namespace MCSkin3D
 
 		private void BeginRedo()
 		{
-			if (!_currentUndoBuffer.CanRedo)
-				return;
-
 			_rendererControl.MakeCurrent();
 		}
 
 		private void DoRedo()
 		{
+			if (!_currentUndoBuffer.CanRedo)
+				throw new Exception();
+
 			_currentUndoBuffer.Redo();
 		}
 
@@ -3220,6 +3204,9 @@ namespace MCSkin3D
 
 		private void PerformRedo()
 		{
+			if (!_currentUndoBuffer.CanRedo)
+				return;
+
 			BeginRedo();
 			DoRedo();
 			EndRedo();
@@ -3544,7 +3531,7 @@ namespace MCSkin3D
 		{
 			Skin skin = _lastSkin;
 
-			if (!skin.Dirty)
+			if (skin == null || !skin.Dirty)
 				return;
 
 			SetCanSave(false);
@@ -3747,7 +3734,7 @@ namespace MCSkin3D
 					g.FillRectangle(System.Drawing.Brushes.White, 32, 16, 32, 16);
 				}
 
-				bmp.Save(folderLocation + newSkinName + ".png");
+				bmp.SaveSafe(folderLocation + newSkinName + ".png");
 			}
 
 			var newSkin = new Skin(folderLocation + newSkinName + ".png");
@@ -4135,6 +4122,20 @@ namespace MCSkin3D
 			public string ReportedError;
 		}
 
+		void FinishedLoadingLanguages()
+		{
+			foreach (Language.Language lang in LanguageLoader.Languages)
+			{
+				lang.Item =
+					new ToolStripMenuItem((lang.Culture != null)
+											? (char.ToUpper(lang.Culture.NativeName[0]) + lang.Culture.NativeName.Substring(1))
+											: lang.Name);
+				lang.Item.Tag = lang;
+				lang.Item.Click += languageToolStripMenuItem_Click;
+				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
+			}
+		}
+
 		#endregion
 
 		#endregion
@@ -4168,16 +4169,65 @@ namespace MCSkin3D
 
 		public Editor()
 		{
-			Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			MainForm = this;
 			InitializeComponent();
 
-			bool settingsLoaded = GlobalSettings.Load();
+			KeyPreview = true;
+			Text = "MCSkin3D v" + Program.Version.ToString();
 
-			Icon = Resources.Icon_new;
+#if BETA
+			Text += " [Beta]";
+#endif
 
-			LanguageLoader.LoadLanguages("Languages");
+			_animTimer.Elapsed += _animTimer_Elapsed;
+			_animTimer.SynchronizingObject = this;
 
+			// Settings
+			this.mGRIDOPACITYToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(this.mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged);
+			this.mGRIDOPACITYToolStripMenuItem.NumericBox.Minimum = 0;
+			this.mGRIDOPACITYToolStripMenuItem.NumericBox.Maximum = 255;
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(this.mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged);
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Minimum = 1;
+			this.mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Maximum = 16;
+			this.mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(this.mLINESIZEToolStripMenuItem_NumericBox_ValueChanged);
+			this.mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
+			this.mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
+
+			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
+			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
+			grassToolStripMenuItem.Checked = GlobalSettings.Grass;
+			ghostHiddenPartsToolStripMenuItem.Checked = GlobalSettings.Ghost;
+
+			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
+			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
+			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointEightMode;
+			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
+
+			SetSampleMenuItem(GlobalSettings.Multisamples);
+
+			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
+
+			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayTextSize;
+
+			mGRIDOPACITYToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayGridColor.A;
+
+			mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
+			mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
+			mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
+			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
+			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
+			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
+			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
+			treeView1.Scrollable = true;
+			splitContainer4.SplitterDistance = 74;
+		}
+
+		static bool _initialized = false;
+		public void Initialize(Language.Language language)
+		{
+			Editor.CurrentLanguage = language;
+
+			// tools
 			DodgeBurnOptions = new DodgeBurnOptions();
 			DarkenLightenOptions = new DarkenLightenOptions();
 			PencilOptions = new PencilOptions();
@@ -4192,62 +4242,10 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new DropperTool(), null, "T_TOOL_DROPPER", Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Resources.dodge, Keys.B));
 			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN",
-			                         Resources.darkenlighten, Keys.L));
+									 Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Resources.fill_bucket, Keys.F));
 			_tools.Add(new ToolIndex(new NoiseTool(), NoiseOptions, "T_TOOL_NOISE", Resources.noise, Keys.N));
 			_tools.Add(new ToolIndex(new StampTool(), StampOptions, "T_TOOL_STAMP", Resources.stamp_pattern, Keys.M));
-
-			animateToolStripMenuItem.Checked = GlobalSettings.Animate;
-			followCursorToolStripMenuItem.Checked = GlobalSettings.FollowCursor;
-			grassToolStripMenuItem.Checked = GlobalSettings.Grass;
-			ghostHiddenPartsToolStripMenuItem.Checked = GlobalSettings.Ghost;
-
-			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
-			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
-			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointEightMode;
-
-			Language.Language useLanguage = null;
-			try
-			{
-				// stage 1 (prelim): if no language, see if our languages contain it
-				if (string.IsNullOrEmpty(GlobalSettings.LanguageFile))
-				{
-					useLanguage =
-						LanguageLoader.FindLanguage((CultureInfo.CurrentUICulture.IsNeutralCulture == false)
-						                            	? CultureInfo.CurrentUICulture.Parent.Name
-						                            	: CultureInfo.CurrentUICulture.Name);
-				}
-				// stage 2: load from last used language
-				if (useLanguage == null)
-					useLanguage = LanguageLoader.FindLanguage(GlobalSettings.LanguageFile);
-				// stage 3: use English file, if it exists
-				if (useLanguage == null)
-					useLanguage = LanguageLoader.FindLanguage("English");
-			}
-			catch
-			{
-			}
-			finally
-			{
-				// stage 4: fallback to built-in English file
-				if (useLanguage == null)
-				{
-					MessageBox.Show(this,
-					                "For some reason, the default language files were missing or failed to load (did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
-					useLanguage = LanguageLoader.LoadDefault();
-				}
-			}
-
-			foreach (Language.Language lang in LanguageLoader.Languages)
-			{
-				lang.Item =
-					new ToolStripMenuItem((lang.Culture != null)
-					                      	? (char.ToUpper(lang.Culture.NativeName[0]) + lang.Culture.NativeName.Substring(1))
-					                      	: lang.Name);
-				lang.Item.Tag = lang;
-				lang.Item.Click += languageToolStripMenuItem_Click;
-				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
-			}
 
 			for (int i = _tools.Count - 1; i >= 0; --i)
 			{
@@ -4260,44 +4258,34 @@ namespace MCSkin3D
 				languageProvider1.SetPropertyNames(_tools[i].Button, "Text");
 			}
 
+			SetSelectedTool(_tools[0]);
+
+			// Shortcuts
 			InitShortcuts();
 			LoadShortcutKeys(GlobalSettings.ShortcutKeys);
 			_shortcutEditor.ShortcutExists += _shortcutEditor_ShortcutExists;
-			CurrentLanguage = useLanguage;
+
 			Brushes.LoadBrushes();
-
-			SetSelectedTool(_tools[0]);
-
-			KeyPreview = true;
-			Text = "MCSkin3D v" + Program.Version.ToString();
-
-#if BETA
-			Text += " [Beta]";
-#endif
-
-			if (!Directory.Exists("Swatches"))
-				MessageBox.Show(this, GetLanguageString("B_MSG_DIRMISSING"));
-
-			Directory.CreateDirectory("Swatches");
 
 			foreach (string x in GlobalSettings.SkinDirectories)
 				Directory.CreateDirectory(x);
-
-			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
-
-			SetSampleMenuItem(GlobalSettings.Multisamples);
 
 			// set up the GL control
 			var mode = new GraphicsMode();
 			_rendererControl =
 				new GLControl(new GraphicsMode(mode.ColorFormat, mode.Depth, mode.Stencil, GlobalSettings.Multisamples));
+
+			if (_rendererControl.Context == null)
+			{
+				_rendererControl.BackColor = Color.White;
+			}
+
 			_rendererControl.BackColor = Color.Black;
 			_rendererControl.Dock = DockStyle.Fill;
 			_rendererControl.Location = new Point(0, 25);
 			_rendererControl.Name = "rendererControl";
 			_rendererControl.Size = new Size(641, 580);
 			_rendererControl.TabIndex = 4;
-			_rendererControl.Load += rendererControl_Load;
 			_rendererControl.Paint += rendererControl_Paint;
 			_rendererControl.MouseDown += rendererControl_MouseDown;
 			_rendererControl.MouseMove += rendererControl_MouseMove;
@@ -4310,43 +4298,12 @@ namespace MCSkin3D
 			splitContainer4.Panel2.Controls.Add(_rendererControl);
 			_rendererControl.BringToFront();
 
-			var animTimer = new Timer();
-			animTimer.Interval = 22;
-			animTimer.Elapsed += animTimer_Elapsed;
-			animTimer.Start();
+			InitGL();
 
-			_animTimer.Elapsed += _animTimer_Elapsed;
-			_animTimer.SynchronizingObject = this;
-
-			if (!settingsLoaded)
+#if NO
+			if (!GlobalSettings.Loaded)
 				MessageBox.Show(this, GetLanguageString("C_SETTINGSFAILED"));
-
-			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
-			treeView1.Scrollable = true;
-			splitContainer4.SplitterDistance = 74;
-
-			toolStripDropDownButton1.Text = GetLanguageString("M_LOADING");
-
-			mLINESIZEToolStripMenuItem.NumericBox.ValueChanged += mLINESIZEToolStripMenuItem_NumericBox_ValueChanged;
-			mLINESIZEToolStripMenuItem.NumericBox.Minimum = 1;
-			mLINESIZEToolStripMenuItem.NumericBox.Maximum = 16;
-			mLINESIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayLineSize;
-
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.ValueChanged +=
-				mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged;
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Minimum = 1;
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Maximum = 16;
-			mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayTextSize;
-
-			mGRIDOPACITYToolStripMenuItem.NumericBox.ValueChanged += mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged;
-			mGRIDOPACITYToolStripMenuItem.NumericBox.Minimum = 0;
-			mGRIDOPACITYToolStripMenuItem.NumericBox.Maximum = 255;
-			mGRIDOPACITYToolStripMenuItem.NumericBox.Value = GlobalSettings.DynamicOverlayGridColor.A;
-
-			mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
-			mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
-			mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
-			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
+#endif
 
 			_undoListBox = new UndoRedoPanel();
 			_undoListBox.ActionString = "L_UNDOACTIONS";
@@ -4368,30 +4325,43 @@ namespace MCSkin3D
 
 			undoToolStripButton.DropDown.AutoClose = redoToolStripButton.DropDown.AutoClose = true;
 
-			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
-			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
-			CurrentLanguage = useLanguage;
+			_initialized = true;
+			CurrentLanguage = CurrentLanguage; // FIXME: don't require this.
 
 			CreatePartList();
-			_partItems = new[] { null, headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem };
-			_partButtons = new[] { null, toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
+		}
+
+		public static bool DisplayUpdateMessage(Form owner)
+		{
+			bool retVal = true;
+
+			owner.Invoke((Action)delegate()
+			{
+				if (MessageBox.Show(GetLanguageString("B_MSG_NEWUPDATE"), "Update!", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					ShowUpdater(owner);
+				else
+					retVal = false;
+			});
+
+			return retVal;
+		}
+
+		public static void UpdateFormHidden(Form owner)
+		{
+			if (Program.Context.Updater.DialogResult == DialogResult.Cancel)
+				owner.Show();
+			else
+				owner.Close();
 		}
 
 		void _updater_UpdatesAvailable(object sender, EventArgs e)
 		{
-			Invoke((Action)delegate()
-			{
-				if (MessageBox.Show(GetLanguageString("B_MSG_NEWUPDATE"), "Update!", MessageBoxButtons.YesNo) == DialogResult.Yes)
-					ShowUpdater();
-			});	
+			DisplayUpdateMessage(this);
 		}
 
 		void _updater_FormHidden(object sender, EventArgs e)
 		{
-			if (_updater.DialogResult == DialogResult.Cancel)
-				Show();
-			else
-				Close();
+			UpdateFormHidden(this);
 		}
 
 		private void rendererControl_MouseEnter(object sender, EventArgs e)

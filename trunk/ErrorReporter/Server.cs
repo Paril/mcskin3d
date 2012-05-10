@@ -66,92 +66,98 @@ namespace ClientTest
 
 				while (true)
 				{
-					lock (_lockObject)
+					try
 					{
-						while (_listener.Pending())
+						lock (_lockObject)
 						{
-							ConnectedClient client = new ConnectedClient();
-							client.Client = _listener.AcceptTcpClient();
-							client.LastReceived = DateTime.Now;
-							var stream = client.Client.GetStream();
-							client.Reader = new BinaryReader(stream);
-							client.Writer = new BinaryWriter(stream);
-							_clients.Add(client);
-						}
-
-						List<ConnectedClient> removeClients = new List<ConnectedClient>();
-
-						foreach (var client in _clients)
-						{
-							if ((DateTime.Now - client.LastReceived).TotalMinutes >= 1) // timeout
-								removeClients.Add(client);
-							else if (client.Client.Available != 0)
+							while (_listener.Pending())
 							{
+								ConnectedClient client = new ConnectedClient();
+								client.Client = _listener.AcceptTcpClient();
 								client.LastReceived = DateTime.Now;
+								var stream = client.Client.GetStream();
+								client.Reader = new BinaryReader(stream);
+								client.Writer = new BinaryWriter(stream);
+								_clients.Add(client);
+							}
 
-								byte packet = client.Reader.ReadByte();
+							List<ConnectedClient> removeClients = new List<ConnectedClient>();
 
-								switch (packet)
+							foreach (var client in _clients)
+							{
+								if ((DateTime.Now - client.LastReceived).TotalMinutes >= 1) // timeout
+									removeClients.Add(client);
+								else if (client.Client.Available != 0)
 								{
-								case ErrorReportPackets.ClientToServer_SendRequest:
+									client.LastReceived = DateTime.Now;
+
+									byte packet = client.Reader.ReadByte();
+
+									switch (packet)
 									{
-										byte protocol = client.Reader.ReadByte();
+										case ErrorReportPackets.ClientToServer_SendRequest:
+											{
+												byte protocol = client.Reader.ReadByte();
 
-										if (protocol != ErrorReportPackets.ProtocolVersion)
-										{
-											removeClients.Add(client);
+												if (protocol != ErrorReportPackets.ProtocolVersion)
+												{
+													removeClients.Add(client);
 
-											client.Writer.Write(ErrorReportPackets.ServerToClient_Maintenence);
-											client.Writer.Write("Your version of the ExceptionHandler protocol is older than the server! Try updating the program.");
-										}
-										else if (MaintenenceString != null)
-										{
-											removeClients.Add(client);
+													client.Writer.Write(ErrorReportPackets.ServerToClient_Maintenence);
+													client.Writer.Write("Your version of the ExceptionHandler protocol is older than the server! Try updating the program.");
+												}
+												else if (MaintenenceString != null)
+												{
+													removeClients.Add(client);
 
-											client.Writer.Write(ErrorReportPackets.ServerToClient_Maintenence);
-											client.Writer.Write(MaintenenceString);
-										}
-										else
-											client.Writer.Write(ErrorReportPackets.ServerToClient_GoAhead);
+													client.Writer.Write(ErrorReportPackets.ServerToClient_Maintenence);
+													client.Writer.Write(MaintenenceString);
+												}
+												else
+													client.Writer.Write(ErrorReportPackets.ServerToClient_GoAhead);
+											}
+											break;
+										case ErrorReportPackets.ClientToServer_Data:
+											{
+												byte bits = client.Reader.ReadByte();
+												ErrorReport report = new ErrorReport();
+
+												report.Exception = client.Reader.ReadString();
+												report.SoftwareInfo = client.Reader.ReadString();
+
+												if ((bits & (byte)ErrorReportContents.Name) != 0)
+													report.Name = client.Reader.ReadString();
+												if ((bits & (byte)ErrorReportContents.Email) != 0)
+													report.Email = client.Reader.ReadString();
+												if ((bits & (byte)ErrorReportContents.Hardware) != 0)
+													report.HardwareInfo = client.Reader.ReadString();
+												if ((bits & (byte)ErrorReportContents.Extra) != 0)
+													report.ExtraInfo = client.Reader.ReadString();
+
+												ReceivedReport(this, new ReceivedReportEventArgs(ref report));
+
+												client.Writer.Write(ErrorReportPackets.ServerToClient_GotIt);
+												removeClients.Add(client);
+											}
+											break;
 									}
-									break;
-								case ErrorReportPackets.ClientToServer_Data:
-									{
-										byte bits = client.Reader.ReadByte();
-										ErrorReport report = new ErrorReport();
-
-										report.Exception = client.Reader.ReadString();
-										report.SoftwareInfo = client.Reader.ReadString();
-
-										if ((bits & (byte)ErrorReportContents.Name) != 0)
-											report.Name = client.Reader.ReadString();
-										if ((bits & (byte)ErrorReportContents.Email) != 0)
-											report.Email = client.Reader.ReadString();
-										if ((bits & (byte)ErrorReportContents.Hardware) != 0)
-											report.HardwareInfo = client.Reader.ReadString();
-										if ((bits & (byte)ErrorReportContents.Extra) != 0)
-											report.ExtraInfo = client.Reader.ReadString();
-
-										ReceivedReport(this, new ReceivedReportEventArgs(ref report));
-
-										client.Writer.Write(ErrorReportPackets.ServerToClient_GotIt);
-										removeClients.Add(client);
-									}
-									break;
 								}
 							}
-						}
 
-						foreach (var c in removeClients)
-						{
-							c.Reader.Close();
-							c.Writer.Close();
-							c.Client.Close();
-							_clients.Remove(c);
-						}
+							foreach (var c in removeClients)
+							{
+								c.Reader.Close();
+								c.Writer.Close();
+								c.Client.Close();
+								_clients.Remove(c);
+							}
 
-						if (Running == false)
-							break;
+							if (Running == false)
+								break;
+						}
+					}
+					catch
+					{
 					}
 
 					Thread.Sleep(100);

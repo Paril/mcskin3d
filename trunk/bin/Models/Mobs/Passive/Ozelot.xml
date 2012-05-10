@@ -197,9 +197,9 @@
 				</Folder>
 			</Geometry>
 			<GlScale>1,1,1</GlScale>
-			<Name>Ozelot</Name>
+			<Name>Ocelot</Name>
 			<TextureSize>64,32</TextureSize>
 		</Model>
 	</Models>
-	<Name>Ozelot</Name>
+	<Name>Ocelot</Name>
 </Techne>
