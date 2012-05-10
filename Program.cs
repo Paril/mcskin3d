@@ -26,12 +26,14 @@ using System.Windows.Forms;
 using MCSkin3D.ExceptionHandler;
 using SVN;
 using Version = Paril.Components.Update.Version;
+using MCSkin3D.Forms;
 
 namespace MCSkin3D
 {
 	internal static class Program
 	{
 		public static Version Version;
+		public static MCSkin3DAppContext Context;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -80,8 +82,7 @@ namespace MCSkin3D
 #endif
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new Editor());
-
+				Application.Run(new MCSkin3DAppContext());
 #if !DEBUG
 			}
 			catch (Exception ex)

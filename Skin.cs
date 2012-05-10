@@ -186,10 +186,12 @@ namespace MCSkin3D
 				Image.Dispose();
 				Image = null;
 
+				Form f = (Editor.MainForm.IsHandleCreated) ? (Form)Editor.MainForm : (Form)Program.Context.SplashForm;
+
 				if (updateGL)
 				{
-					if (Editor.MainForm.InvokeRequired)
-						Editor.MainForm.Invoke((Action<Skin>)SetImage, this);
+					if (f.InvokeRequired)
+						f.Invoke((Action<Skin>)SetImage, this);
 					else
 						SetImage(this);
 				}
@@ -208,8 +210,8 @@ namespace MCSkin3D
 					else
 						Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
 
-					if (Editor.MainForm.InvokeRequired)
-						Editor.MainForm.Invoke(SetTransparentParts);
+					if (f.InvokeRequired)
+						f.Invoke((Action)SetTransparentParts);
 					else
 						SetTransparentParts();
 				}

@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			MCSkin3D.lemon42.ColorManager colorManager7 = new MCSkin3D.lemon42.ColorManager();
-			MCSkin3D.lemon42.ColorManager colorManager8 = new MCSkin3D.lemon42.ColorManager();
+			MCSkin3D.lemon42.ColorManager colorManager1 = new MCSkin3D.lemon42.ColorManager();
+			MCSkin3D.lemon42.ColorManager colorManager2 = new MCSkin3D.lemon42.ColorManager();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
 			this.mainMenuStrip = new Paril.Controls.NativeMenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,6 +104,9 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.automaticallyCheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.planetMinecraftSubmissionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.officialMinecraftForumsThreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.importHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newSkinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -162,9 +165,6 @@
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.miniToolStrip = new MCSkin3D.Controls.SkinTreeViewToolBar();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.officialMinecraftForumsThreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.planetMinecraftSubmissionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -843,7 +843,7 @@
 			// 
 			this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.checkForUpdatesToolStripMenuItem, "Text");
-			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "M_CHECKUPDATES";
 			this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
 			// 
@@ -851,9 +851,28 @@
 			// 
 			this.automaticallyCheckForUpdatesToolStripMenuItem.Name = "automaticallyCheckForUpdatesToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.automaticallyCheckForUpdatesToolStripMenuItem, "Text");
-			this.automaticallyCheckForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+			this.automaticallyCheckForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
 			this.automaticallyCheckForUpdatesToolStripMenuItem.Text = "M_AUTOUPDATE";
 			this.automaticallyCheckForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.automaticallyCheckForUpdatesToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(246, 6);
+			// 
+			// planetMinecraftSubmissionToolStripMenuItem
+			// 
+			this.planetMinecraftSubmissionToolStripMenuItem.Name = "planetMinecraftSubmissionToolStripMenuItem";
+			this.planetMinecraftSubmissionToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+			this.planetMinecraftSubmissionToolStripMenuItem.Text = "PlanetMinecraft Submission";
+			this.planetMinecraftSubmissionToolStripMenuItem.Click += new System.EventHandler(this.planetMinecraftSubmissionToolStripMenuItem_Click);
+			// 
+			// officialMinecraftForumsThreadToolStripMenuItem
+			// 
+			this.officialMinecraftForumsThreadToolStripMenuItem.Name = "officialMinecraftForumsThreadToolStripMenuItem";
+			this.officialMinecraftForumsThreadToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+			this.officialMinecraftForumsThreadToolStripMenuItem.Text = "Official Minecraft Forums Thread";
+			this.officialMinecraftForumsThreadToolStripMenuItem.Click += new System.EventHandler(this.officialMinecraftForumsThreadToolStripMenuItem_Click);
 			// 
 			// contextMenuStrip1
 			// 
@@ -1133,12 +1152,12 @@
 			this.colorPanel.Location = new System.Drawing.Point(0, 0);
 			this.colorPanel.MinimumSize = new System.Drawing.Size(303, 277);
 			this.colorPanel.Name = "colorPanel";
-			colorManager7.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
-			this.colorPanel.SelectedColor = colorManager7;
+			colorManager1.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
+			this.colorPanel.SelectedColor = colorManager1;
 			this.colorPanel.Size = new System.Drawing.Size(303, 277);
 			this.colorPanel.TabIndex = 0;
-			colorManager8.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
-			this.colorPanel.UnselectedColor = colorManager8;
+			colorManager2.CurrentSpace = MCSkin3D.lemon42.ColorManager.ColorSpace.RGB;
+			this.colorPanel.UnselectedColor = colorManager2;
 			// 
 			// panel4
 			// 
@@ -1486,25 +1505,6 @@
 			this.miniToolStrip.Size = new System.Drawing.Size(294, 25);
 			this.miniToolStrip.TabIndex = 6;
 			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(246, 6);
-			// 
-			// officialMinecraftForumsThreadToolStripMenuItem
-			// 
-			this.officialMinecraftForumsThreadToolStripMenuItem.Name = "officialMinecraftForumsThreadToolStripMenuItem";
-			this.officialMinecraftForumsThreadToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
-			this.officialMinecraftForumsThreadToolStripMenuItem.Text = "Official Minecraft Forums Thread";
-			this.officialMinecraftForumsThreadToolStripMenuItem.Click += new System.EventHandler(this.officialMinecraftForumsThreadToolStripMenuItem_Click);
-			// 
-			// planetMinecraftSubmissionToolStripMenuItem
-			// 
-			this.planetMinecraftSubmissionToolStripMenuItem.Name = "planetMinecraftSubmissionToolStripMenuItem";
-			this.planetMinecraftSubmissionToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
-			this.planetMinecraftSubmissionToolStripMenuItem.Text = "PlanetMinecraft Submission";
-			this.planetMinecraftSubmissionToolStripMenuItem.Click += new System.EventHandler(this.planetMinecraftSubmissionToolStripMenuItem_Click);
-			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1513,6 +1513,7 @@
 			this.Controls.Add(this.labelEditTextBox);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.Name = "Editor";
 			this.Text = "MCSkin3D";

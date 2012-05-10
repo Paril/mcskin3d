@@ -118,13 +118,23 @@ namespace MCSkin3D.UpdateSystem
 
 			objectListView1.CheckedAspectName = "IsChecked";
 			objectListView1.EndUpdate();
+		}
 
-			if (GlobalSettings.AutoUpdate)
-			{
-				checkedAlready = true;
-				_updateThread = new Thread(GetUpdateData);
-				_updateThread.Start();
-			}
+		void GetUpdateDataVoid()
+		{
+			GetUpdateData();
+		}
+
+		public void CheckForUpdates()
+		{
+			checkedAlready = true;
+			_updateThread = new Thread(GetUpdateDataVoid);
+			_updateThread.Start();
+		}
+
+		public void TellCheckForUpdate()
+		{
+			checkedAlready = true;
 		}
 
 		public string UpdateXMLURL { get; set; }
@@ -204,6 +214,7 @@ namespace MCSkin3D.UpdateSystem
 		List<UpdateItem> GetUpdates()
 		{
 			var client = new WebClient();
+			client.Proxy = null;
 			var doc = new XmlDocument();
 
 			_updateImages.ColorDepth = ColorDepth.Depth32Bit;
@@ -225,7 +236,7 @@ namespace MCSkin3D.UpdateSystem
 		}
 
 		bool doneChecking = false;
-		private void GetUpdateData()
+		public bool GetUpdateData()
 		{
 			try
 			{
@@ -252,30 +263,33 @@ namespace MCSkin3D.UpdateSystem
 
 					var fileNames = new List<string>();
 
-					foreach (UpdateItem u in _updates)
+					using (var cl = new WebClient())
 					{
-						string url = u.GroupImageURL;
-						string fileName = Path.GetFileName(url);
-
-						if (!Directory.Exists(_mcskin3dTemp))
+						cl.Proxy = null;
+						foreach (UpdateItem u in _updates)
 						{
-							var di = Directory.CreateDirectory(_mcskin3dTemp);
-							di.Attributes |= FileAttributes.Hidden;
-						}
+							string url = u.GroupImageURL;
+							string fileName = Path.GetFileName(url);
 
-						string fileDir = _mcskin3dTemp + '\\' + fileName;
+							if (!Directory.Exists(_mcskin3dTemp))
+							{
+								var di = Directory.CreateDirectory(_mcskin3dTemp);
+								di.Attributes |= FileAttributes.Hidden;
+							}
 
-						if (!File.Exists(fileDir))
-							using (var cl = new WebClient())
+							string fileDir = _mcskin3dTemp + '\\' + fileName;
+
+							if (!File.Exists(fileDir))
 								cl.DownloadFile(url, fileDir);
 
-						if (!fileNames.Contains(fileDir))
-						{
-							fileNames.Add(fileDir);
-							_updateImages.Images.Add(Image.FromFile(fileDir));
-						}
+							if (!fileNames.Contains(fileDir))
+							{
+								fileNames.Add(fileDir);
+								_updateImages.Images.Add(Image.FromFile(fileDir));
+							}
 
-						u.ImageIndex = fileNames.IndexOf(fileDir);
+							u.ImageIndex = fileNames.IndexOf(fileDir);
+						}
 					}
 				}
 				catch
@@ -287,15 +301,20 @@ namespace MCSkin3D.UpdateSystem
 				if (Visible)
 					Invoke((Action)UpdateFinished);
 				else if (_updates.Any(item => item.IsProgramUpdate))
+				{
 					UpdatesAvailable(this, EventArgs.Empty);
+					return true;
+				}
 			}
 			catch (Exception ex)
 			{
 				if (ex is ThreadAbortException)
-					return;
+					return false;
 
 				Program.RaiseException(ex);
 			}
+
+			return false;
 		}
 
 		private void UpdateFinished()
@@ -346,6 +365,7 @@ namespace MCSkin3D.UpdateSystem
 			try
 			{
 				var client = new WebClient();
+				client.Proxy = null;
 
 				client.DownloadProgressChanged += client_DownloadProgressChanged;
 				client.DownloadFileCompleted += client_DownloadFileCompleted;
@@ -441,7 +461,7 @@ namespace MCSkin3D.UpdateSystem
 			if (!checkedAlready)
 			{
 				checkedAlready = true;
-				_updateThread = new Thread(GetUpdateData);
+				_updateThread = new Thread(GetUpdateDataVoid);
 				_updateThread.Start();
 			}
 			else if (_updates != null && doneChecking)
@@ -534,7 +554,8 @@ namespace MCSkin3D.UpdateSystem
 
 		public void StopUpdates()
 		{
-			if (_updateThread.ThreadState == System.Threading.ThreadState.Running)
+			if (_updateThread != null && 
+				_updateThread.ThreadState == System.Threading.ThreadState.Running)
 				_updateThread.Abort();
 		}
 	}

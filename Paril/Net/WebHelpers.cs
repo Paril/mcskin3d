@@ -25,7 +25,10 @@ namespace Paril.Net
 		public static byte[] DownloadFile(string url)
 		{
 			var wc = new WebClient();
-			return wc.DownloadData(url);
+			wc.Proxy = null;
+			var data = wc.DownloadData(url);
+			wc.Dispose();
+			return data;
 		}
 	}
 }
