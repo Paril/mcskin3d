@@ -19,7 +19,6 @@ namespace MCSkin3D.UpdateSystem
 	public partial class Updater : Form
 	{
 		private static readonly ImageList _updateImages = new ImageList();
-		private static readonly string _mcskin3dTemp = "__updateFiles\\";
 		private static readonly object lockObj = new object();
 		private Thread _updateThread;
 		private List<UpdateItem> _updates;
@@ -41,9 +40,9 @@ namespace MCSkin3D.UpdateSystem
 			{
 				InstalledUpdates = new List<Guid>();
 
-				if (File.Exists("__installedUpdates"))
+				if (File.Exists(GlobalSettings.GetDataURI("__installedUpdates")))
 				{
-					using (var sr = new StreamReader("__installedUpdates"))
+					using (var sr = new StreamReader(GlobalSettings.GetDataURI("__installedUpdates")))
 						while (!sr.EndOfStream)
 						{
 							try
@@ -55,7 +54,7 @@ namespace MCSkin3D.UpdateSystem
 				}
 				else
 				{
-					var file = new FileInfo("__installedUpdates");
+					var file = new FileInfo(GlobalSettings.GetDataURI("__installedUpdates"));
 					file.Create().Dispose();
 					file.Attributes |= FileAttributes.Hidden;
 				}
@@ -271,13 +270,13 @@ namespace MCSkin3D.UpdateSystem
 							string url = u.GroupImageURL;
 							string fileName = Path.GetFileName(url);
 
-							if (!Directory.Exists(_mcskin3dTemp))
+							if (!Directory.Exists(GlobalSettings.GetDataURI("__updateFiles\\")))
 							{
-								var di = Directory.CreateDirectory(_mcskin3dTemp);
+								var di = Directory.CreateDirectory(GlobalSettings.GetDataURI("__updateFiles\\"));
 								di.Attributes |= FileAttributes.Hidden;
 							}
 
-							string fileDir = _mcskin3dTemp + '\\' + fileName;
+							string fileDir = GlobalSettings.GetDataURI("__updateFiles\\") + fileName;
 
 							if (!File.Exists(fileDir))
 								cl.DownloadFile(url, fileDir);
@@ -370,12 +369,12 @@ namespace MCSkin3D.UpdateSystem
 				client.DownloadProgressChanged += client_DownloadProgressChanged;
 				client.DownloadFileCompleted += client_DownloadFileCompleted;
 
-				if (!Directory.Exists(_mcskin3dTemp))
-					Directory.CreateDirectory(_mcskin3dTemp);
+				if (!Directory.Exists(GlobalSettings.GetDataURI("__updateFiles\\")))
+					Directory.CreateDirectory(GlobalSettings.GetDataURI("__updateFiles\\"));
 
 				string url = "http://alteredsoftworks.com/mcskin3d/UpdateInstaller.exe";
 				string fileName = Path.GetFileName(url);
-				string fileDir = _mcskin3dTemp + '\\' + fileName;
+				string fileDir = GlobalSettings.GetDataURI("__updateFiles\\") + fileName;
 
 				client.DownloadFileAsync(new Uri(url), fileDir, null);
 
@@ -391,7 +390,7 @@ namespace MCSkin3D.UpdateSystem
 					fileName = Path.GetFileName(url);
 					var withoutExt = Path.GetFileNameWithoutExtension(fileName);
 
-					using (var dataFile = new BinaryWriter(File.Create(_mcskin3dTemp + '\\' + withoutExt + ".dat")))
+					using (var dataFile = new BinaryWriter(File.Create(GlobalSettings.GetDataURI("__updateFiles\\") + withoutExt + ".dat")))
 					{
 						dataFile.Write(u.Name);
 
@@ -410,7 +409,7 @@ namespace MCSkin3D.UpdateSystem
 						dataFile.Write(u.Guid.ToByteArray());
 					}
 
-					fileDir = _mcskin3dTemp + '\\' + fileName;
+					fileDir = GlobalSettings.GetDataURI("__updateFiles\\") + fileName;
 
 					client.DownloadFileAsync(new Uri(url), fileDir, u);
 
@@ -423,8 +422,9 @@ namespace MCSkin3D.UpdateSystem
 									MessageBox.Show(Editor.GetLanguageString("M_UPDATESTARTING"));
 
 									var psi = new ProcessStartInfo();
-									psi.WorkingDirectory = "__updateFiles\\";
-									psi.FileName = new FileInfo("__updateFiles\\UpdateInstaller.exe").FullName;
+									psi.WorkingDirectory = GlobalSettings.GetDataURI("__updateFiles\\");
+									psi.FileName = new FileInfo(GlobalSettings.GetDataURI("__updateFiles\\") + "UpdateInstaller.exe").FullName;
+									psi.Arguments = "\"" + Environment.CurrentDirectory + "\"";
 									Process.Start(psi);
 
 									DialogResult = DialogResult.OK;

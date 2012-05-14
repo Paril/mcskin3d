@@ -97,7 +97,7 @@ namespace MCSkin3D
 		}
 
 		#region IDisposable Members
-
+		
 		public void Dispose()
 		{
 			if (GLImage != null)

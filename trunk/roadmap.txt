@@ -1,6 +1,35 @@
+1.5:
+?- Clear skin option
+?- Handle more upload errors
+?- Selection tool, copy/paste
+?- Layers
+?- Tutorial system
+?- Don't rely on OpenGL to store finalized image
+?- Mouse shortcuts / "multitool"
+?- Fit keyboard shortcuts into tooltips
+?- Smudge tool
+?- Plugin system
+?- Double-check language strings, ensure all English strings in source are language-ized
+?- Ability to move the model around as well (change center)
+?- Automated saving?
+?- Make sure people are aware that new skins are added (select them, etc)
+?- Ability to see resolution/model from the treeview
+?- Colorize
+
+1.4.1:
+*- Fix Techne model support (swapped box position and rotate position by accident)
+*- Splash screen
+	- Needs an image.
+?- Error reporter protocol 2
+	- Use binary rather than ASCII transfer
+	- GZip (or LZMA?) the data for space
+	- More precise information (raw exception data, etc)
+	- Improvements to server program
+?- News feed using RSS
+?- Still getting fill bucket errors...
+
 1.4:
 *- Error reporting service
-	- Almost done.
 *- Better versioning system (minor/build as well)
 	*-- Update program
 *- Custom model support
@@ -30,21 +59,6 @@
 *- Consider interface changes
 *- Dynamic detection of transparency of parts
 *- New part system
-?- Clear skin option
-?- Handle more upload errors
-?- Selection tool, copy/paste
-?- Layers
-?- Tutorial system
-?- Don't rely on OpenGL to store finalized image
-?- Mouse shortcuts / "multitool"
-?- Fit keyboard shortcuts into tooltips
-?- Smudge tool
-?- Double-check language strings, ensure all English strings in source are language-ized
-?- Ability to move the model around as well (change center)
-?- Automated saving?
-?- Make sure people are aware that new skins are added (select them, etc)
-?- Ability to see resolution/model from the treeview
-?- Colorize
 /- Figure out what the stupid issue is with the stupid GL control being slower when the stupid cursor is over it.
 /- Mineshafter support
 /- Lighting options

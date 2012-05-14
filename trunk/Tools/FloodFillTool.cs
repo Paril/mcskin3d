@@ -23,6 +23,7 @@ using MCSkin3D.lemon42;
 using OpenTK;
 using Paril.Compatibility;
 using Paril.OpenGL;
+using System.Collections;
 
 namespace MCSkin3D
 {
@@ -76,7 +77,7 @@ namespace MCSkin3D
 			                        	? Editor.MainForm.ColorPanel.UnselectedColor
 			                        	: Editor.MainForm.ColorPanel.SelectedColor;
 
-			recursiveFill(x, y, oldColor, newColor, ref pixels, new bool[skin.Width,skin.Height], skin);
+			FloodFill(x, y, oldColor, newColor, ref pixels);
 			_done = true;
 			return true;
 		}
@@ -134,7 +135,7 @@ namespace MCSkin3D
 
 		#endregion
 
-		private static bool similarColor(Color color1, Color color2, byte threshold)
+		private static bool SimilarColor(Color color1, Color color2, byte threshold)
 		{
 			return
 				Math.Abs(color1.R - color2.R) <= threshold &&
@@ -145,7 +146,7 @@ namespace MCSkin3D
 		}
 
 		//Same as similarColor, but avoids some calculations if it can; use this if threshold may be 255 or 0
-		private static bool similarColor2(Color color1, Color color2, byte threshold)
+		private static bool SimilarColor2(Color color1, Color color2, byte threshold)
 		{
 			if (threshold == 255)
 				return true;
@@ -159,39 +160,42 @@ namespace MCSkin3D
 					;
 			}
 			else
-				return similarColor(color1, color2, threshold);
+				return SimilarColor(color1, color2, threshold);
 		}
 
-		private void recursiveFill(int x, int y, Color oldColor, ColorManager newColor, ref ColorGrabber pixels,
-		                           bool[,] hitPixels, Skin skin)
+		private void FloodFill(int x, int y, Color oldColor, ColorManager newColor, ref ColorGrabber pixels)
 		{
-			if (!_boundBox.Contains(x, y))
-				return;
+			Queue q = new Queue();
 
-			if (hitPixels[x, y])
-				return;
+			q.Enqueue(new Point(x, y));
 
-			ColorPixel c = pixels[x, y];
-			Color real = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
+			while (q.Count != 0)
+			{
+				Point pop = (Point)q.Dequeue();
 
-			if (!similarColor2(oldColor, real, _threshold))
-				return;
+				ColorPixel c = pixels[pop.X, pop.Y];
+				Color real = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 
-			if (!_undo.Points.ContainsKey(new Point(x, y)))
-				_undo.Points.Add(new Point(x, y), Tuple.MakeTuple(real, new ColorAlpha(newColor.RGB, 0)));
+				if (!SimilarColor2(oldColor, real, _threshold))
+					continue;
 
-			pixels[x, y] =
-				new ColorPixel(newColor.RGB.R | (newColor.RGB.G << 8) | (newColor.RGB.B << 16) | (newColor.RGB.A << 24));
-			hitPixels[x, y] = true;
+				if (!_undo.Points.ContainsKey(pop))
+				{
+					_undo.Points.Add(pop, Tuple.MakeTuple(real, new ColorAlpha(newColor.RGB, 0)));
 
-			recursiveFill(x, y - 1, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x + 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
-			recursiveFill(x + 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x + 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
-			recursiveFill(x, y + 1, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x - 1, y + 1, oldColor, newColor, pixels, hitPixels, skin);
-			recursiveFill(x - 1, y, oldColor, newColor, ref pixels, hitPixels, skin);
-			//recursiveFill(x - 1, y - 1, oldColor, newColor, pixels, hitPixels, skin);
+					pixels[pop.X, pop.Y] =
+						new ColorPixel(newColor.RGB.R | (newColor.RGB.G << 8) | (newColor.RGB.B << 16) | (newColor.RGB.A << 24));
+
+					if (_boundBox.Contains(pop.X - 1, pop.Y))
+						q.Enqueue(new Point(pop.X - 1, pop.Y));
+					if (_boundBox.Contains(pop.X + 1, pop.Y))
+						q.Enqueue(new Point(pop.X + 1, pop.Y));
+					if (_boundBox.Contains(pop.X, pop.Y - 1))
+						q.Enqueue(new Point(pop.X, pop.Y - 1));
+					if (_boundBox.Contains(pop.X, pop.Y + 1))
+						q.Enqueue(new Point(pop.X, pop.Y + 1));
+				}
+			}
 		}
 	}
 }

@@ -165,7 +165,7 @@ namespace ClientTest
 
 				_listener.Stop();
 			}
-			catch (Exception ex)
+			catch
 			{
 				Finished();
 			}

@@ -7,6 +7,7 @@ using MCSkin3D.Forms;
 using System.IO;
 using System.Reflection;
 using MCSkin3D.UpdateSystem;
+using System.Threading;
 
 namespace MCSkin3D
 {
@@ -18,18 +19,18 @@ namespace MCSkin3D
 
 		public MCSkin3DAppContext()
 		{
+			Program.Context = this;
+			Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			GlobalSettings.Load();
+
 			try
 			{
-				if (Directory.Exists("__updateFiles"))
-					Directory.Delete("__updateFiles", true);
+				if (Directory.Exists(GlobalSettings.GetDataURI("__updateFiles")))
+					Directory.Delete(GlobalSettings.GetDataURI("__updateFiles"), true);
 			}
 			catch
 			{
 			}
-
-			Program.Context = this;
-			Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			GlobalSettings.Load();
 
 			SplashForm = new Splash();
 
@@ -42,8 +43,6 @@ namespace MCSkin3D
 			Form.FormClosed += (sender, e) => ExitThread();
 			
 			SplashForm.Show();
-
-			Splash.BeginLoaderThread();
 		}
 
 		public void DoneLoadingSplash()
@@ -51,7 +50,6 @@ namespace MCSkin3D
 			Updater.FormHidden -= SplashForm.Updater_FormClosed;
 			Updater.UpdatesAvailable -= SplashForm.Updater_UpdatesAvailable;
 
-			SplashForm.Close();
 			Form.Show();
 		}
 	}

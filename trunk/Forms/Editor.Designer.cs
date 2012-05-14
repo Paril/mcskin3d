@@ -100,6 +100,10 @@
 			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
 			this.modeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.mINVERTBOTTOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.rendererToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.clientArraysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.immediateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -194,7 +198,7 @@
             this.helpToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
-			this.mainMenuStrip.Size = new System.Drawing.Size(1096, 24);
+			this.mainMenuStrip.Size = new System.Drawing.Size(1059, 24);
 			this.mainMenuStrip.TabIndex = 1;
 			this.mainMenuStrip.Text = "mainMenuStrip";
 			// 
@@ -768,7 +772,9 @@
             this.mSKINDIRSToolStripMenuItem,
             this.toolStripMenuItem6,
             this.modeToolStripMenuItem1,
-            this.mINVERTBOTTOMToolStripMenuItem});
+            this.mINVERTBOTTOMToolStripMenuItem,
+            this.toolStripSeparator12,
+            this.rendererToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.optionsToolStripMenuItem, "Text");
 			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
@@ -818,6 +824,37 @@
 			this.mINVERTBOTTOMToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.mINVERTBOTTOMToolStripMenuItem.Text = "M_INVERTBOTTOM";
 			this.mINVERTBOTTOMToolStripMenuItem.Click += new System.EventHandler(this.mINVERTBOTTOMToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(176, 6);
+			// 
+			// rendererToolStripMenuItem
+			// 
+			this.rendererToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clientArraysToolStripMenuItem,
+            this.immediateToolStripMenuItem});
+			this.rendererToolStripMenuItem.Name = "rendererToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.rendererToolStripMenuItem, "Text");
+			this.rendererToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.rendererToolStripMenuItem.Text = "M_RENDERER";
+			// 
+			// clientArraysToolStripMenuItem
+			// 
+			this.clientArraysToolStripMenuItem.Name = "clientArraysToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.clientArraysToolStripMenuItem, "Text");
+			this.clientArraysToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.clientArraysToolStripMenuItem.Text = "M_CLIENTARRAYS";
+			this.clientArraysToolStripMenuItem.Click += new System.EventHandler(this.clientArraysToolStripMenuItem_Click);
+			// 
+			// immediateToolStripMenuItem
+			// 
+			this.immediateToolStripMenuItem.Name = "immediateToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.immediateToolStripMenuItem, "Text");
+			this.immediateToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.immediateToolStripMenuItem.Text = "M_IMMEDIATE";
+			this.immediateToolStripMenuItem.Click += new System.EventHandler(this.immediateToolStripMenuItem_Click);
 			// 
 			// languageToolStripMenuItem
 			// 
@@ -1016,7 +1053,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.panel4);
-			this.splitContainer1.Size = new System.Drawing.Size(1096, 644);
+			this.splitContainer1.Size = new System.Drawing.Size(1059, 644);
 			this.splitContainer1.SplitterDistance = 302;
 			this.splitContainer1.TabIndex = 4;
 			// 
@@ -1089,12 +1126,14 @@
 			this.treeView1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
 			this.treeView1.Enabled = false;
 			this.treeView1.FullRowSelect = true;
+			this.treeView1.HideSelection = false;
 			this.treeView1.HotTracking = true;
 			this.treeView1.ItemHeight = 23;
 			this.treeView1.Location = new System.Drawing.Point(0, 25);
 			this.treeView1.Margin = new System.Windows.Forms.Padding(0);
 			this.treeView1.Name = "treeView1";
 			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
+			this.treeView1.ShowNodeToolTips = true;
 			this.treeView1.Size = new System.Drawing.Size(294, 295);
 			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
@@ -1167,7 +1206,7 @@
 			this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel4.Location = new System.Drawing.Point(0, 0);
 			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(790, 644);
+			this.panel4.Size = new System.Drawing.Size(753, 644);
 			this.panel4.TabIndex = 1;
 			// 
 			// splitContainer4
@@ -1180,7 +1219,7 @@
 			this.splitContainer4.Name = "splitContainer4";
 			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.splitContainer4.Panel1MinSize = 0;
-			this.splitContainer4.Size = new System.Drawing.Size(790, 597);
+			this.splitContainer4.Size = new System.Drawing.Size(753, 597);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
@@ -1192,7 +1231,7 @@
             this.toolStripStatusLabel1});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 622);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(790, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(753, 22);
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
@@ -1236,7 +1275,7 @@
             this.toolStripButton7});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(790, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(753, 25);
 			this.toolStrip1.TabIndex = 5;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1509,7 +1548,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1096, 668);
+			this.ClientSize = new System.Drawing.Size(1059, 668);
 			this.Controls.Add(this.labelEditTextBox);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
@@ -1678,6 +1717,10 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem officialMinecraftForumsThreadToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem planetMinecraftSubmissionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripMenuItem rendererToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clientArraysToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem immediateToolStripMenuItem;
 	}
 }
 

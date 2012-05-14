@@ -152,6 +152,8 @@ namespace ServerTest
 				_dlg.Show();
 				_dlg.FormClosed += new FormClosedEventHandler(dlg_FormClosed);
 			}
+			else
+				_server.MaintenenceString = null;
 		}
 
 		void dlg_FormClosed(object sender, FormClosedEventArgs e)

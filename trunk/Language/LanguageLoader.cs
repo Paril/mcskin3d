@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using MCSkin3D.Properties;
+using MCSkin3D.Macros;
 
 namespace MCSkin3D.Language
 {
@@ -56,7 +57,8 @@ namespace MCSkin3D.Language
 
 		public static Language LoadDefault()
 		{
-			using (var writer = new FileStream("Languages\\English.lang", FileMode.Create))
+			Directory.CreateDirectory(GlobalSettings.GetDataURI("Languages"));
+			using (var writer = new FileStream(MacroHandler.ReplaceMacros(GlobalSettings.GetDataURI("Languages\\English.lang")), FileMode.Create))
 				writer.Write(Resources.English, 0, Resources.English.Length);
 
 			using (var reader = new StreamReader(new MemoryStream(Resources.English), Encoding.Unicode))

@@ -146,7 +146,11 @@
     <Compile Include="Forms\GUIDPicker.Designer.cs">
       <DependentUpon>GUIDPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Macros\Macros.cs" />
     <Compile Include="MCSkin3DAppContext.cs" />
+    <Compile Include="Paril\Controls\TextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Splash\Splash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -586,6 +590,7 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\mcskin3d.png" />
     <None Include="Resources\radio_checked.png" />
     <None Include="Resources\radio_unchecked.png" />
     <None Include="Resources\renameswatch.png" />
@@ -663,7 +668,6 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="MCSkin3D.exe.manifest" />
     <None Include="Resources\import_from_mc.png" />
     <None Include="Resources\newskin.png" />
     <None Include="Resources\incres.png" />

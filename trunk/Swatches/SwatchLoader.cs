@@ -35,7 +35,7 @@ namespace MCSkin3D.Swatches
 		public static void LoadSwatches()
 		{
 			Swatches = new List<ISwatch>();
-			AddDirectory("Swatches", Swatches);
+			AddDirectory(GlobalSettings.GetDataURI("Swatches"), Swatches);
 		}
 
 		public static void FinishedLoadingSwatches()

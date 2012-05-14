@@ -178,6 +178,8 @@ namespace MCSkin3D.Models
 					BaseClass = child.InnerText;
 				else if (name == "geometry")
 				{
+					TCNFolder rootFolder = new TCNFolder();
+
 					foreach (XmlNode folderChild in child.ChildNodes)
 					{
 						if (folderChild.Name.ToLower() == "folder")
@@ -186,7 +188,16 @@ namespace MCSkin3D.Models
 							folder.Parse(folderChild);
 							Geometry.Add(folder);
 						}
+						else if (folderChild.Name.ToLower() == "shape")
+						{
+							var shape = new TCNShape();
+							shape.Parse(folderChild);
+							rootFolder.Shapes.Add(shape);
+						}
 					}
+
+					if (rootFolder.Shapes.Count != 0)
+						Geometry.Add(rootFolder);
 				}
 				else if (name == "glscale")
 					GlScale = Mesh.StringToVertex3(child.InnerText);
@@ -277,13 +288,13 @@ namespace MCSkin3D.Models
 							var box = (TCNRenderBox) z.RenderData;
 
 							var renderer = new ModelLoader.ModelRenderer(mb, (int) box.TextureOffset.X, (int) box.TextureOffset.Y, box.Part);
+							renderer.mirror = box.IsMirrored;
 							renderer.addBox(z.name, box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
 											(int)box.Size.Z, box.Scale);
 							renderer.setRotationPoint(box.Position.X, box.Position.Y, box.Position.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
-							renderer.mirror = box.IsMirrored;
 						}
 						else if (z.RenderData is TCNRenderPlane)
 						{
@@ -291,24 +302,24 @@ namespace MCSkin3D.Models
 
 							var renderer = new ModelLoader.PlaneRenderer(mb, z.name, (int) box.TextureOffset.X, (int) box.TextureOffset.Y,
 							                                             box.Part);
-							renderer.setRotationPoint(box.Offset.X, box.Offset.Y, box.Offset.Z);
+							renderer.mirror = box.IsMirrored;
+							renderer.setRotationPoint(box.Position.X, box.Position.Y, box.Position.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
-							renderer.mirror = box.IsMirrored;
 
 							switch (box.Side)
 							{
 								case 0:
-									renderer.addBackPlane(box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+									renderer.addBackPlane(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
 									                      (int) box.Size.Z, box.Scale);
 									break;
 								case 1:
-									renderer.addSidePlane(box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+									renderer.addSidePlane(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
 									                      (int) box.Size.Z, box.Scale);
 									break;
 								case 2:
-									renderer.addTopPlane(box.Position.X, box.Position.Y, box.Position.Z, (int) box.Size.X, (int) box.Size.Y,
+									renderer.addTopPlane(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
 									                     (int) box.Size.Z, box.Scale);
 									break;
 							}
@@ -332,9 +343,17 @@ namespace MCSkin3D.Models
 			if (fileName.EndsWith(".tcn"))
 			{
 				var file = new ZipFile(new FileStream(fileName, FileMode.Open, FileAccess.Read));
-				ZipEntry model = file.GetEntry("model.xml");
 
-				document.Load(file.GetInputStream(model));
+				var enumerator = file.GetEnumerator();
+
+				while (enumerator.MoveNext())
+				{
+					if (((ZipEntry)enumerator.Current).Name.EndsWith(".xml"))
+					{
+						document.Load(file.GetInputStream((ZipEntry)enumerator.Current));
+						break;
+					}
+				}
 			}
 			else if (fileName.EndsWith(".xml"))
 				document.Load(fileName);

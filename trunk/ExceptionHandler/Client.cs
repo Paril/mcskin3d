@@ -80,7 +80,7 @@ namespace MCSkin3D.ExceptionHandler
 
 								byte bits = 0;
 
-								if (!string.IsNullOrEmpty(Report.Name))
+/*								if (!string.IsNullOrEmpty(Report.Name))
 									bits |= (byte) ErrorReportContents.Name;
 								if (!string.IsNullOrEmpty(Report.Email))
 									bits |= (byte) ErrorReportContents.Email;
@@ -101,7 +101,7 @@ namespace MCSkin3D.ExceptionHandler
 								if ((bits & (byte) ErrorReportContents.Hardware) != 0)
 									writer.Write(Report.HardwareInfo);
 								if ((bits & (byte) ErrorReportContents.Extra) != 0)
-									writer.Write(Report.ExtraInfo);
+									writer.Write(Report.ExtraInfo);*/
 							}
 								break;
 							case ErrorReportPackets.ServerToClient_Maintenence:

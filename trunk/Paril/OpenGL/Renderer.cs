@@ -90,6 +90,8 @@ namespace Paril.OpenGL
 			}
 
 			GL.Disable(EnableCap.Blend);
+			GL.CullFace(CullFaceMode.Front);
+			GL.Disable(EnableCap.CullFace);
 
 			PostRender();
 
@@ -118,6 +120,9 @@ namespace Paril.OpenGL
 				GL.CullFace(CullFaceMode.Front);
 				RenderMesh(mesh);
 			}
+
+			GL.CullFace(CullFaceMode.Front);
+			GL.Disable(EnableCap.CullFace);
 
 			PostRender();
 

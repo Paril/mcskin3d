@@ -1,3 +1,10 @@
+Version 1.4.1
+- Splash screen, designed to precache & load things off-thread and provide an easy way for the program to catch load issues
+- Made it a bit more apparent that adding a name/email to an exception report is not required
+- Fixed many issues on loading (thank all of you who submitted reports!)
+- Fixed Techne models not loading properly
+- Made flood-fill use a queue rather than being stack-based (stack overflows yay)
+
 Version 1.4
 - New versioning system (Major.Minor.Build.SVN Revision)
 - Fixed a rendering CPU eater with mouse movement
