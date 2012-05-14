@@ -16,8 +16,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>0,6,-8</Offset>
-						<Position>-3,-4,-4</Position>
+						<Offset>-3,-4,-4</Offset>
+						<Position>0,6,-8</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>6,6,6</Size>
 						<TextureOffset>0,0</TextureOffset>
@@ -33,8 +33,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>0,5,2</Offset>
-						<Position>-4,-10,-7</Position>
+						<Offset>-4,-10,-7</Offset>
+						<Position>0,5,2</Position>
 						<Rotation>89.99998,0,0</Rotation>
 						<Size>8,16,6</Size>
 						<TextureOffset>28,8</TextureOffset>
@@ -50,8 +50,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-3,12,7</Offset>
-						<Position>-2,0,-2</Position>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,12,7</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,6,4</Size>
 						<TextureOffset>0,16</TextureOffset>
@@ -67,8 +67,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>3,12,7</Offset>
-						<Position>-2,0,-2</Position>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,12,7</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,6,4</Size>
 						<TextureOffset>0,16</TextureOffset>
@@ -84,8 +84,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-3,12,-5</Offset>
-						<Position>-2,0,-2</Position>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,12,-5</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,6,4</Size>
 						<TextureOffset>0,16</TextureOffset>
@@ -101,8 +101,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>3,12,-5</Offset>
-						<Position>-2,0,-2</Position>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,12,-5</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,6,4</Size>
 						<TextureOffset>0,16</TextureOffset>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using MCSkin3D.Macros;
 
 namespace MCSkin3D
 {
@@ -49,8 +50,9 @@ namespace MCSkin3D
 			{
 				foreach (string x in GlobalSettings.SkinDirectories)
 				{
-					var folder = new FolderNode(x);
-					RecurseAddDirectories(x, folder.Nodes, skins);
+					var expanded = MacroHandler.ReplaceMacros(x);
+					var folder = new FolderNode(expanded);
+					RecurseAddDirectories(expanded, folder.Nodes, skins);
 					rootNodes.Add(folder);
 				}
 			}

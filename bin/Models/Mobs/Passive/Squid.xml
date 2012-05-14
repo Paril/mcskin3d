@@ -16,8 +16,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>0,8,0</Offset>
-						<Position>-6,-8,-6</Position>
+						<Offset>-6,-8,-6</Offset>
+						<Position>0,8,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>12,16,12</Size>
 						<TextureOffset>0,0</TextureOffset>
@@ -33,8 +33,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>5,15,0</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>5,15,0</Position>
 						<Rotation>0,90,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -50,8 +50,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>3.535534,15,3.535534</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>3.535534,15,3.535534</Position>
 						<Rotation>0,45,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -67,8 +67,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>3.061516E-16,15,5</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>3.061516E-16,15,5</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -84,8 +84,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-3.535534,15,3.535534</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>-3.535534,15,3.535534</Position>
 						<Rotation>0,-45,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -101,8 +101,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-5,15,6.123032E-16</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>-5,15,6.123032E-16</Position>
 						<Rotation>0,-90,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -118,8 +118,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-3.535534,15,-3.535534</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>-3.535534,15,-3.535534</Position>
 						<Rotation>0,-135,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -135,8 +135,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-9.184548E-16,15,-5</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>-9.184548E-16,15,-5</Position>
 						<Rotation>0,-180,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>
@@ -152,8 +152,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>3.535534,15,-3.535534</Offset>
-						<Position>-1,0,-1</Position>
+						<Offset>-1,0,-1</Offset>
+						<Position>3.535534,15,-3.535534</Position>
 						<Rotation>0,-225,0</Rotation>
 						<Size>2,18,2</Size>
 						<TextureOffset>48,0</TextureOffset>

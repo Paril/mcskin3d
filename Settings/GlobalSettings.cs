@@ -21,6 +21,9 @@ using System.Drawing;
 using System.Security.Cryptography;
 using Paril.Settings;
 using Paril.Settings.Serializers;
+using System.IO;
+using MCSkin3D.Macros;
+using System;
 
 namespace MCSkin3D
 {
@@ -132,7 +135,7 @@ namespace MCSkin3D
 		public static bool ResChangeDontShowAgain { get; set; }
 
 		[Savable]
-		[DefaultValue("Skins\\")]
+		[DefaultValue("$(DataLocation)Skins\\")]
 		[TypeSerializer(typeof (StringArraySerializer), true)]
 		public static string[] SkinDirectories { get; set; }
 
@@ -175,13 +178,46 @@ namespace MCSkin3D
 		[DefaultValue(false)]
 		public static bool GridEnabled { get; set; }
 
+		[Savable]
+		[DefaultValue(-1)]
+		public static int RenderMode { get; set; }
+
+		public static class InstallData
+		{
+			[Savable]
+			[DefaultValue(".\\")]
+			public static string DataLocation { get; set; }
+		}
+
+		public static string GetDataURI(string fileOrFolder)
+		{
+			return new DirectoryInfo(Environment.ExpandEnvironmentVariables(InstallData.DataLocation)).FullName + fileOrFolder;
+		}
+
 		public static void Load()
 		{
+			if (File.Exists("installData.ini"))
+			{
+				var installData = new Settings();
+				installData.Structures.Add(typeof(InstallData));
+				installData.Load("installData.ini");
+			}
+			else
+				InstallData.DataLocation = ".\\";
+
+			if (!InstallData.DataLocation.EndsWith("\\"))
+				InstallData.DataLocation += '\\';
+
+			MacroHandler.RegisterMacro("DataLocation", InstallData.DataLocation);
+			MacroHandler.RegisterMacro("ProgramLocation", Environment.CurrentDirectory);
+			MacroHandler.RegisterMacro("DefaultSkinFolder", MacroHandler.ReplaceMacros(GlobalSettings.SkinDirectories[0]));
+
 			try
 			{
 				Settings = new Settings();
-				Settings.Structures.Add(typeof (GlobalSettings));
-				Settings.Load("settings.ini");
+				Settings.Structures.Add(typeof(GlobalSettings));
+
+				Settings.Load(GetDataURI("settings.ini"));
 				Loaded = true;
 			}
 			catch
@@ -193,7 +229,7 @@ namespace MCSkin3D
 
 		public static void Save()
 		{
-			Settings.Save("settings.ini");
+			Settings.Save(GetDataURI("settings.ini"));
 		}
 	}
 }

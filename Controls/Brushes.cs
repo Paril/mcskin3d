@@ -123,7 +123,7 @@ namespace MCSkin3D
 
 		public static void LoadBrushes()
 		{
-			foreach (string file in Directory.GetFiles("Brushes", "*.png", SearchOption.AllDirectories))
+			foreach (string file in Directory.GetFiles(GlobalSettings.GetDataURI("Brushes"), "*.png", SearchOption.AllDirectories))
 			{
 				try
 				{

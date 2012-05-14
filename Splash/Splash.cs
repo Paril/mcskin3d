@@ -39,7 +39,7 @@ namespace MCSkin3D.Forms
 
 		Language.Language LoadLanguages()
 		{
-			LanguageLoader.LoadLanguages("Languages");
+			LanguageLoader.LoadLanguages(GlobalSettings.GetDataURI("Languages"));
 
 			Language.Language useLanguage = null;
 			try
@@ -82,44 +82,56 @@ namespace MCSkin3D.Forms
 
 		void PerformLoading()
 		{
-			SetLoadingString("Loading Languages...");
-
-			var language = LoadLanguages();
-
-			SetLoadingString("Initializing base forms...");
-			
-			Program.Context.SplashForm.Invoke((Action)(() => Editor.MainForm.Initialize(language)));
-
-			if (GlobalSettings.AutoUpdate)
+			try
 			{
-				SetLoadingString("Checking for updates...");
+				SetLoadingString("Loading Languages...");
 
-				Program.Context.Updater.TellCheckForUpdate();
-				if (Program.Context.Updater.GetUpdateData())
-				{
-					if (_updateBox)
+				var language = LoadLanguages();
+
+				SetLoadingString("Initializing base forms...");
+
+				Program.Context.SplashForm.Invoke((Action)(() =>
 					{
-						lock (_lockObj)
-							Monitor.Wait(_lockObj);
+						Editor.MainForm.Initialize(language);
+						Editor.MainForm.FinishedLoadingLanguages();
+					}));
+
+				if (GlobalSettings.AutoUpdate)
+				{
+					SetLoadingString("Checking for updates...");
+
+					Program.Context.Updater.TellCheckForUpdate();
+					if (Program.Context.Updater.GetUpdateData())
+					{
+						if (_updateBox)
+						{
+							lock (_lockObj)
+								Monitor.Wait(_lockObj);
+						}
 					}
 				}
+
+				SetLoadingString("Loading swatches...");
+
+				SwatchLoader.LoadSwatches();
+				Program.Context.SplashForm.Invoke((Action)SwatchLoader.FinishedLoadingSwatches);
+
+				SetLoadingString("Loading models...");
+
+				ModelLoader.LoadModels();
+				Program.Context.SplashForm.Invoke((Action)Editor.MainForm.FinishedLoadingModels);
+
+				SetLoadingString("Loading skins...");
+
+				SkinLoader.LoadSkins();
+
+				Program.Context.SplashForm.Invoke((Action)Program.Context.DoneLoadingSplash);
+				Program.Context.Form.Invoke((Action)(() => Program.Context.SplashForm.Close()));
 			}
-
-			SetLoadingString("Loading swatches...");
-
-			SwatchLoader.LoadSwatches();
-			Program.Context.SplashForm.Invoke((Action)SwatchLoader.FinishedLoadingSwatches);
-
-			SetLoadingString("Loading models...");
-
-			ModelLoader.LoadModels();
-			Program.Context.SplashForm.Invoke((Action)Editor.MainForm.FinishedLoadingModels);
-
-			SetLoadingString("Loading skins...");
-
-			SkinLoader.LoadSkins();
-
-			Program.Context.SplashForm.Invoke((Action)Program.Context.DoneLoadingSplash);
+			catch (Exception ex)
+			{
+				Program.RaiseException(new Exception("Failed to initialize program during \"" + label1.Text + "\"", ex));
+			}
 		}
 
 		public static void BeginLoaderThread()
@@ -139,6 +151,11 @@ namespace MCSkin3D.Forms
 
 			lock (_lockObj)
 				Monitor.Pulse(_lockObj);
+		}
+
+		private void Splash_Load(object sender, EventArgs e)
+		{
+			Splash.BeginLoaderThread();
 		}
 	}
 }

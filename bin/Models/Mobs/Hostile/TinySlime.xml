@@ -16,8 +16,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>0,0,0</Offset>
-						<Position>-4,16,-4</Position>
+						<Offset>-4,16,-4</Offset>
+						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
 						<TextureOffset>0,0</TextureOffset>

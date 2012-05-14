@@ -272,7 +272,7 @@ namespace MCSkin3D
 					SwatchDisplayer.Swatch.Name = textBox1.Text;
 				else
 				{
-					var newSwatch = new MCSwatch("Swatches\\" + textBox1.Text + ".swtch");
+					var newSwatch = new MCSwatch(GlobalSettings.GetDataURI("Swatches\\" + textBox1.Text + ".swtch"));
 					newSwatch.Save();
 
 					comboBox1.Items.Add(newSwatch);

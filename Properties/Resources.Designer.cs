@@ -375,6 +375,20 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap mcskin3d {
+            get {
+                object obj = ResourceManager.GetObject("mcskin3d", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap mcskin3d1 {
+            get {
+                object obj = ResourceManager.GetObject("mcskin3d1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap mcskin3d128 {
             get {
                 object obj = ResourceManager.GetObject("mcskin3d128", resourceCulture);
