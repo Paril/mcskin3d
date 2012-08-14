@@ -11,6 +11,8 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Diagnostics;
 using System.Threading;
+using MCSkin3D.Macros;
+using Paril.Settings;
 
 namespace UpdateInstaller
 {
@@ -90,66 +92,64 @@ namespace UpdateInstaller
 			}
 		}
 
+		static class GlobalSettings
+		{
+			[Savable]
+			[DefaultValue("$(DataLocation)Skins\\")]
+			[TypeSerializer(typeof(StringArraySerializer), true)]
+			public static string[] SkinDirectories { get; set; }
+		}
+
 		void DoUpdates()
 		{
-			List<UpdateData> _updates = new List<UpdateData>();
-
-			UpdateProgress("Enumerating updates...", 0, 0);
-
-			bool allDone = true;
-			foreach (var datFile in Directory.GetFiles(".", "*.dat"))
+			if (Environment.GetCommandLineArgs().Length != 2)
+				MessageBox.Show("Due to some rather large breaking changes in MCSkin3D 1.4.1, the update system will no longer work with 1.4.0. Please head to the forum thread (via Help) and download 1.4.1 manually. Sorry for the inconvenience!");
+			else
 			{
-				try
-				{
-					var name = Path.GetFileNameWithoutExtension(datFile);
+				Settings globalSettings = new Settings();
+				globalSettings.Structures.Add(typeof(GlobalSettings));
+				globalSettings.Load("..\\settings.ini");
 
-					UpdateData data = new UpdateData();
-					data.ZipPath = name + ".zip";
+				MacroHandler.RegisterMacro("DataLocation", new DirectoryInfo(Environment.CurrentDirectory).Parent.FullName);
+				MacroHandler.RegisterMacro("DefaultSkinFolder", MacroHandler.ReplaceMacros(GlobalSettings.SkinDirectories[0]));
 
-					using (var reader = new BinaryReader(File.Open(datFile, FileMode.Open, FileAccess.Read)))
-					{
-						data.Name = reader.ReadString();
+				List<UpdateData> _updates = new List<UpdateData>();
 
-						int day = reader.ReadInt32();
-						int month = reader.ReadInt32();
-						int year = reader.ReadInt32();
+				UpdateProgress("Enumerating updates...", 0, 0);
 
-						data.Date = new DateTime(year, month, day);
-
-						data.IsMajor = reader.ReadBoolean();
-						data.IsProgramUpdate = reader.ReadBoolean();
-
-						int major = reader.ReadInt32();
-						int minor = reader.ReadInt32();
-						int build = reader.ReadInt32();
-						int revision = reader.ReadInt32();
-
-						data.Version = new Version(major, minor, revision, build);
-						data.GUID = new Guid(reader.ReadBytes(16));
-
-						_updates.Add(data);
-					}
-				}
-				catch
-				{
-					allDone = false;
-				}
-			}
-
-			_updates.Sort();
-
-			UpdateProgress("Preparing to install...", 0, _updates.Count);
-
-			FastZip zip = new FastZip();
-
-			using (var installed = new StreamWriter("../__installedupdates", true))
-				foreach (var u in _updates)
+				bool allDone = true;
+				foreach (var datFile in Directory.GetFiles(".", "*.dat"))
 				{
 					try
 					{
-						UpdateProgress("Installing \"" + u.Name + "\"...", progressBar1.Value + 1, _updates.Count);
-						zip.ExtractZip(u.ZipPath, "../", FastZip.Overwrite.Always, null, "", "", true);
-						installed.WriteLine(u.GUID);
+						var name = Path.GetFileNameWithoutExtension(datFile);
+
+						UpdateData data = new UpdateData();
+						data.ZipPath = name + ".zip";
+
+						using (var reader = new BinaryReader(File.Open(datFile, FileMode.Open, FileAccess.Read)))
+						{
+							data.Name = reader.ReadString();
+
+							int day = reader.ReadInt32();
+							int month = reader.ReadInt32();
+							int year = reader.ReadInt32();
+
+							data.Date = new DateTime(year, month, day);
+
+							data.IsMajor = reader.ReadBoolean();
+							data.IsProgramUpdate = reader.ReadBoolean();
+
+							int major = reader.ReadInt32();
+							int minor = reader.ReadInt32();
+							int build = reader.ReadInt32();
+							int revision = reader.ReadInt32();
+
+							data.Version = new Version(major, minor, revision, build);
+							data.GUID = new Guid(reader.ReadBytes(16));
+
+							_updates.Add(data);
+						}
 					}
 					catch
 					{
@@ -157,13 +157,69 @@ namespace UpdateInstaller
 					}
 				}
 
-			Invoke((Action)delegate()
-			{
-				if (allDone)
-					MessageBox.Show("All updates have installed successfully. MCSkin3D will now restart.", "Success!", MessageBoxButtons.OK);
-				else
-					MessageBox.Show("One or more updates failed to install. Please report this to the MCSkin3D team.", "Failure?", MessageBoxButtons.OK);
-			});
+				_updates.Sort();
+
+				UpdateProgress("Preparing to install...", 0, _updates.Count);
+				var fz = new FastZip();
+
+				using (var installed = new StreamWriter("../__installedupdates", true))
+					foreach (var u in _updates)
+					{
+						try
+						{
+							UpdateProgress("Installing \"" + u.Name + "\"...", progressBar1.Value + 1, _updates.Count);
+
+							var zip = new ZipFile(File.Open(u.ZipPath, FileMode.Open, FileAccess.Read));
+							zip.IsStreamOwner = true;
+
+							// find the cfg file
+							ZipEntry configFile = null;
+
+							foreach (ZipEntry entry in zip)
+							{
+								if (entry.IsFile &&
+									entry.Name.EndsWith(".cfg"))
+								{
+									configFile = entry;
+									break;
+								}
+							}
+
+							if (configFile == null)
+								throw new Exception();
+
+							using (var reader = new StreamReader(zip.GetInputStream(configFile)))
+							{
+								while (!reader.EndOfStream)
+								{
+									var line = reader.ReadLine().Split('|');
+									var entry = zip.FindEntry(line[0], true);
+
+									if (entry == -1)
+										throw new Exception();
+
+									fz.ExtractZip(zip.GetInputStream(entry), MacroHandler.ReplaceMacros(line[1]), FastZip.Overwrite.Always, null, "", "", true, true);
+								}
+							}
+
+							zip.Close();
+
+							installed.WriteLine(u.GUID);
+						}
+						catch
+						{
+							allDone = false;
+						}
+					}
+
+				Invoke((Action)delegate()
+				{
+					if (allDone)
+						MessageBox.Show("All updates have installed successfully. MCSkin3D will now restart.", "Success!", MessageBoxButtons.OK);
+					else
+						MessageBox.Show("One or more updates failed to install. Please report this to the MCSkin3D team.", "Failure?", MessageBoxButtons.OK);
+				});
+			}
 
 			ProcessStartInfo psi = new ProcessStartInfo();
 			psi.WorkingDirectory = Environment.CurrentDirectory + "..\\";

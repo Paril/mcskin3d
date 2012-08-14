@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace MCSkin3D.ExceptionHandler
 {
@@ -75,48 +76,37 @@ namespace MCSkin3D.ExceptionHandler
 						switch (packet)
 						{
 							case ErrorReportPackets.ServerToClient_GoAhead:
-							{
-								writer.Write(ErrorReportPackets.ClientToServer_Data);
+								{
+									writer.Write(ErrorReportPackets.ClientToServer_Data);
 
-								byte bits = 0;
+									using (MemoryStream ms = new MemoryStream())
+									{
+										using (DeflaterOutputStream dos = new DeflaterOutputStream(ms))
+										{
+											Report.Write(dos);
+											dos.Finish();
 
-/*								if (!string.IsNullOrEmpty(Report.Name))
-									bits |= (byte) ErrorReportContents.Name;
-								if (!string.IsNullOrEmpty(Report.Email))
-									bits |= (byte) ErrorReportContents.Email;
-								if (!string.IsNullOrEmpty(Report.HardwareInfo))
-									bits |= (byte) ErrorReportContents.Hardware;
-								if (!string.IsNullOrEmpty(Report.ExtraInfo))
-									bits |= (byte) ErrorReportContents.Extra;
+											var asArray = ms.ToArray();
 
-								writer.Write(bits);
-
-								writer.Write(Report.Exception);
-								writer.Write(Report.SoftwareInfo);
-
-								if ((bits & (byte) ErrorReportContents.Name) != 0)
-									writer.Write(Report.Name);
-								if ((bits & (byte) ErrorReportContents.Email) != 0)
-									writer.Write(Report.Email);
-								if ((bits & (byte) ErrorReportContents.Hardware) != 0)
-									writer.Write(Report.HardwareInfo);
-								if ((bits & (byte) ErrorReportContents.Extra) != 0)
-									writer.Write(Report.ExtraInfo);*/
-							}
+											writer.Write(asArray.Length);
+											writer.Write(asArray);
+										}
+									}
+								}
 								break;
 							case ErrorReportPackets.ServerToClient_Maintenence:
-							{
-								string maintenenceString = reader.ReadString();
+								{
+									string maintenenceString = reader.ReadString();
 
-								Finished();
-								SendFinished(this, new SendEventArgs(maintenenceString, true));
-							}
+									Finished();
+									SendFinished(this, new SendEventArgs(maintenenceString, true));
+								}
 								break;
 							case ErrorReportPackets.ServerToClient_GotIt:
-							{
-								Finished();
-								SendFinished(this, new SendEventArgs(null, false));
-							}
+								{
+									Finished();
+									SendFinished(this, new SendEventArgs(null, false));
+								}
 								break;
 						}
 					}

@@ -30,7 +30,7 @@
 		{
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.button1 = new System.Windows.Forms.Button();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -59,6 +59,10 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// SimpleReportViewer
 			// 
 			this.AcceptButton = this.button1;
@@ -81,6 +85,6 @@
 
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Button button1;
-		private Language.LanguageProvider languageProvider1;
+		private MCSkin3D.Languages.LanguageProvider languageProvider1;
 	}
 }

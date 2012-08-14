@@ -26,8 +26,10 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.ComponentModel.Design.Serialization;
+using System.ComponentModel.Design;
 
-namespace MCSkin3D.Language
+namespace MCSkin3D.Languages
 {
 	internal class LanguageControlLink
 	{
@@ -37,35 +39,48 @@ namespace MCSkin3D.Language
 		public string[] TextNames;
 		public bool TextNamesSet;
 
-		public LanguageControlLink(string names, object obj)
+		public LanguageControlLink(string names, object obj, bool design = false)
 		{
-			TextNamesSet = false;
-			Object = obj;
-			OriginalString = names;
-
-			if (string.IsNullOrEmpty(OriginalString))
-				return;
-
-			string[] propNames = OriginalString.Split(';');
-
-			PropertyNames = new PropertyInfo[propNames.Length];
-			TextNames = new string[propNames.Length];
-
-			for (int i = 0; i < propNames.Length; ++i)
+			try
 			{
-				PropertyNames[i] = Object.GetType().GetProperty(propNames[i]);
+				TextNamesSet = false;
+				Object = obj;
+				OriginalString = names;
 
-				if (PropertyNames[i] == null)
-					throw new Exception("Property \"" + propNames[i] + "\" not found!");
-				if (PropertyNames[i].PropertyType != typeof (string))
-					throw new Exception("Property \"" + propNames[i] + "\" is not a string!");
+				if (string.IsNullOrEmpty(OriginalString))
+					return;
+
+				string[] propNames = OriginalString.Split(';');
+
+				PropertyNames = new PropertyInfo[propNames.Length];
+				TextNames = new string[propNames.Length];
+
+				for (int i = 0; i < propNames.Length; ++i)
+				{
+					PropertyNames[i] = Object.GetType().GetProperty(propNames[i]);
+
+					if (PropertyNames[i] == null)
+						throw new Exception("Property \"" + propNames[i] + "\" not found!");
+					if (PropertyNames[i].PropertyType != typeof(string))
+						throw new Exception("Property \"" + propNames[i] + "\" is not a string!");
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Something happened for " + ((Control)obj).Name, ex);
 			}
 		}
 
 		public void SetTextNames()
 		{
 			for (int i = 0; i < PropertyNames.Length; ++i)
-				TextNames[i] = (string) PropertyNames[i].GetValue(Object, null);
+			{
+				TextNames[i] = (string)PropertyNames[i].GetValue(Object, null);
+
+				foreach (var c in TextNames[i])
+					if (!char.IsUpper(c) && !char.IsPunctuation(c) && !char.IsNumber(c))
+						throw new Exception();
+			}
 
 			TextNamesSet = true;
 		}
@@ -195,35 +210,58 @@ namespace MCSkin3D.Language
 
 		#endregion
 
-		public void LanguageChanged(Language lang)
+		protected override void Dispose(bool disposing)
 		{
-			foreach (var obj in _properties)
+			LanguageHandler.UnregisterProvider(this);
+
+			base.Dispose(disposing);
+		}
+
+		Language _language;
+
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public Language Language
+		{
+			get { return _language; }
+			set
 			{
-				if (!obj.Value.TextNamesSet)
-					obj.Value.SetTextNames();
+				_language = value;
 
-				for (int i = 0; i < obj.Value.PropertyNames.Length; ++i)
+				foreach (var obj in _properties)
 				{
-					string strn = obj.Value.TextNames[i];
+					if (!obj.Value.TextNamesSet)
+						obj.Value.SetTextNames();
 
-					if (lang.StringTable.ContainsKey(strn))
-						obj.Value.PropertyNames[i].SetValue(obj.Value.Object, lang.StringTable[strn], null);
-					else
+					for (int i = 0; i < obj.Value.PropertyNames.Length; ++i)
 					{
+						string strn = obj.Value.TextNames[i];
+
+						if (_language.StringTable.ContainsKey(strn))
+							obj.Value.PropertyNames[i].SetValue(obj.Value.Object, _language.StringTable[strn], null);
 #if BETA
-						MessageBox.Show("Stringtable string not found: " + strn);
-#endif
+						else
+						{
+							MessageBox.Show("Stringtable string not found: " + strn);
+						}
 					}
+#endif
 				}
 			}
+		}
+
+		Control _baseControl;
+		public Control BaseControl
+		{
+			get { return _baseControl; }
+			set { _baseControl = value; LanguageHandler.RegisterProvider(this); }
 		}
 
 		public void SetPropertyNames(object control, string names)
 		{
 			if (!_properties.ContainsKey(control))
-				_properties.Add(control, new LanguageControlLink(names, control));
+				_properties.Add(control, new LanguageControlLink(names, control, DesignMode));
 			else
-				_properties[control] = new LanguageControlLink(names, control);
+				_properties[control] = new LanguageControlLink(names, control, DesignMode);
 		}
 
 		[DefaultValue("")]

@@ -27,6 +27,7 @@ using MCSkin3D.ExceptionHandler;
 using SVN;
 using Version = Paril.Components.Update.Version;
 using MCSkin3D.Forms;
+using MCSkin3D.Languages;
 
 namespace MCSkin3D
 {
@@ -99,15 +100,20 @@ namespace MCSkin3D
 
 		public static void RaiseException(Exception ex)
 		{
-			if (Editor.MainForm.InvokeRequired)
+			var raiseForm = Editor.MainForm.IsHandleCreated ? (Form)Editor.MainForm : (Form)Program.Context.SplashForm;
+
+			if (raiseForm.InvokeRequired)
 			{
-				Editor.MainForm.Invoke((Action)delegate() { RaiseException(ex); });
+				raiseForm.Invoke((Action)delegate() { RaiseException(ex); });
 				return;
 			}
 
 			var form = new ExceptionForm();
 			form.Exception = ex;
-			form.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
+
+			if (Editor.CurrentLanguage == null)
+				Editor.CurrentLanguage = Language.Parse(new StreamReader(new MemoryStream(Properties.Resources.English)));
+
 			SystemSounds.Asterisk.Play();
 
 			if (Editor.MainForm.Visible)

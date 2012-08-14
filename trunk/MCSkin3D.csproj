@@ -100,6 +100,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Management" />
@@ -146,6 +147,7 @@
     <Compile Include="Forms\GUIDPicker.Designer.cs">
       <DependentUpon>GUIDPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Languages\LanguageHandler.cs" />
     <Compile Include="Macros\Macros.cs" />
     <Compile Include="MCSkin3DAppContext.cs" />
     <Compile Include="Paril\Controls\TextBox.cs">
@@ -450,9 +452,9 @@
     <Compile Include="Forms\ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Language\Language.cs" />
-    <Compile Include="Language\LanguageLoader.cs" />
-    <Compile Include="Language\LanguageProvider.cs">
+    <Compile Include="Languages\Language.cs" />
+    <Compile Include="Languages\LanguageLoader.cs" />
+    <Compile Include="Languages\LanguageProvider.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\LuminanceSliderRenderer.cs" />
@@ -590,6 +592,7 @@
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
+    <None Include="Resources\cube_sides.png" />
     <None Include="Resources\mcskin3d.png" />
     <None Include="Resources\radio_checked.png" />
     <None Include="Resources\radio_unchecked.png" />

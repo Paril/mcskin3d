@@ -182,6 +182,12 @@
     <Compile Include="..\SharpZip\Zip\ZipOutputStream.cs">
       <Link>Zip\ZipOutputStream.cs</Link>
     </Compile>
+    <Compile Include="..\Macros\Macros.cs">
+      <Link>Macros\Macros.cs</Link>
+    </Compile>
+    <Compile Include="..\Paril\Settings\Settings.cs">
+      <Link>Paril\Settings\Settings.cs</Link>
+    </Compile>
     <EmbeddedResource Include="Installer.resx">
       <DependentUpon>Installer.cs</DependentUpon>
     </EmbeddedResource>

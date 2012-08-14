@@ -23,7 +23,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace MCSkin3D.Language
+namespace MCSkin3D.Languages
 {
 	public class Language
 	{

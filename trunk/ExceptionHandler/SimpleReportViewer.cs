@@ -20,7 +20,6 @@ namespace MCSkin3D.ExceptionHandler
 			{
 				viewer.StartPosition = FormStartPosition.CenterParent;
 				viewer.textBox1.Text = report;
-				viewer.languageProvider1.LanguageChanged(Editor.CurrentLanguage);
 				viewer.ShowDialog();
 			}
 		}

@@ -214,6 +214,13 @@ namespace MCSkin3D.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap cube_sides {
+            get {
+                object obj = ResourceManager.GetObject("cube_sides", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap darkenlighten {
             get {
                 object obj = ResourceManager.GetObject("darkenlighten", resourceCulture);

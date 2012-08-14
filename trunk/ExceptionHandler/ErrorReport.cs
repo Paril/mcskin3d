@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Collections.Specialized;
-using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
 using System.Management;
 using System.IO;
@@ -25,7 +24,8 @@ namespace MCSkin3D.ExceptionHandler
 
 	public struct StackFrame
 	{
-		public MethodBase Method { get; set; }
+		public string Method { get; set; }
+		public string MethodType { get; set; }
 		public string FileName { get; set; }
 		public int FileLine { get; set; }
 		public int FileColumn { get; set; }
@@ -33,7 +33,8 @@ namespace MCSkin3D.ExceptionHandler
 		public StackFrame(System.Diagnostics.StackFrame frame) :
 			this()
 		{
-			Method = frame.GetMethod();
+			Method = frame.GetMethod().ToString();
+			MethodType = frame.GetMethod().DeclaringType.ToString();
 
 			FileName = frame.GetFileName();
 			FileLine = frame.GetFileLineNumber();
@@ -43,14 +44,14 @@ namespace MCSkin3D.ExceptionHandler
 
 	public struct ExceptionData
 	{
-		public Type Type { get; set; }
+		public string Type { get; set; }
 		public string Message { get; set; }
 		public List<StackFrame> Frames { get; private set; }
 
 		public ExceptionData(Exception exception) :
 			this()
 		{
-			Type = exception.GetType();
+			Type = exception.GetType().FullName;
 			Message = exception.Message;
 			Frames = new List<StackFrame>();
 
@@ -67,78 +68,18 @@ namespace MCSkin3D.ExceptionHandler
 		public static readonly uint MagicHeader = 0xDEADF00D;
 		public static readonly uint VersionHeader = 1;
 
-		private ErrorReport() { }
-
 		public string Name { get; set; }
 		public string Email { get; set; }
 		public string Description { get; set; }
 
-		public List<ExceptionData> Data { get; private set; }
+		public List<ExceptionData> Data { get; set; }
 
-		public StringDictionary SoftwareData { get; private set; }
-		public StringDictionary OpenGLData { get; private set; }
+		public Dictionary<string, string> SoftwareData { get; set; }
+		public Dictionary<string, string> OpenGLData { get; set; }
 
-		public StringDictionary HardwareData { get; private set; }
+		public Dictionary<string, string> HardwareData { get; set; }
 
-		public StringDictionary UserData { get; private set; }
-
-		#region Is64BitOperatingSystem (IsWow64Process)
-
-		/// <summary>
-		/// The function determines whether the current operating system is a 
-		/// 64-bit operating system.
-		/// </summary>
-		/// <returns>
-		/// The function returns true if the operating system is 64-bit; 
-		/// otherwise, it returns false.
-		/// </returns>
-		public static bool Is64BitOperatingSystem()
-		{
-			if (IntPtr.Size == 8) // 64-bit programs run only on Win64
-				return true;
-			else // 32-bit programs run on both 32-bit and 64-bit Windows
-			{
-				// Detect whether the current process is a 32-bit process 
-				// running on a 64-bit system.
-				bool flag;
-				return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
-						 IsWow64Process(GetCurrentProcess(), out flag)) && flag);
-			}
-		}
-
-		/// <summary>
-		/// The function determins whether a method exists in the export 
-		/// table of a certain module.
-		/// </summary>
-		/// <param name="moduleName">The name of the module</param>
-		/// <param name="methodName">The name of the method</param>
-		/// <returns>
-		/// The function returns true if the method specified by methodName 
-		/// exists in the export table of the module specified by moduleName.
-		/// </returns>
-		private static bool DoesWin32MethodExist(string moduleName, string methodName)
-		{
-			IntPtr moduleHandle = GetModuleHandle(moduleName);
-			if (moduleHandle == IntPtr.Zero)
-				return false;
-			return (GetProcAddress(moduleHandle, methodName) != IntPtr.Zero);
-		}
-
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr GetCurrentProcess();
-
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		private static extern IntPtr GetModuleHandle(string moduleName);
-
-		[DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern IntPtr GetProcAddress(IntPtr hModule,
-													[MarshalAs(UnmanagedType.LPStr)] string procName);
-
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool IsWow64Process(IntPtr hProcess, out bool wow64Process);
-
-		#endregion
+		public Dictionary<string, string> UserData { get; set; }
 
 		static void WriteNullTerminatedString(BinaryWriter writer, string s)
 		{
@@ -177,15 +118,15 @@ namespace MCSkin3D.ExceptionHandler
 
 				foreach (var ex in Data)
 				{
-					WriteNullTerminatedString(bw, ex.Type.FullName);
+					WriteNullTerminatedString(bw, ex.Type);
 					WriteNullTerminatedString(bw, ex.Message);
 
-					bw.Write((ushort)ex.Frames.Count);
+					bw.Write((byte)ex.Frames.Count);
 
 					foreach (var frame in ex.Frames)
 					{
-						WriteNullTerminatedString(bw, frame.Method.DeclaringType.ToString());
-						WriteNullTerminatedString(bw, frame.Method.ToString());
+						WriteNullTerminatedString(bw, frame.Method);
+						WriteNullTerminatedString(bw, frame.MethodType);
 
 						bool hasData = !string.IsNullOrEmpty(frame.FileName);
 
@@ -202,7 +143,7 @@ namespace MCSkin3D.ExceptionHandler
 
 				bw.Write(SoftwareData.Count);
 
-				foreach (DictionaryEntry data in SoftwareData)
+				foreach (var data in SoftwareData)
 				{
 					WriteNullTerminatedString(bw, data.Key.ToString());
 					WriteNullTerminatedString(bw, data.Value.ToString());
@@ -210,7 +151,7 @@ namespace MCSkin3D.ExceptionHandler
 
 				bw.Write(OpenGLData.Count);
 
-				foreach (DictionaryEntry data in OpenGLData)
+				foreach (var data in OpenGLData)
 				{
 					WriteNullTerminatedString(bw, data.Key.ToString());
 					WriteNullTerminatedString(bw, data.Value.ToString());
@@ -218,7 +159,7 @@ namespace MCSkin3D.ExceptionHandler
 
 				bw.Write(HardwareData.Count);
 
-				foreach (DictionaryEntry data in HardwareData)
+				foreach (var data in HardwareData)
 				{
 					WriteNullTerminatedString(bw, data.Key.ToString());
 					WriteNullTerminatedString(bw, data.Value.ToString());
@@ -226,7 +167,7 @@ namespace MCSkin3D.ExceptionHandler
 
 				bw.Write(UserData.Count);
 
-				foreach (DictionaryEntry data in UserData)
+				foreach (var data in UserData)
 				{
 					WriteNullTerminatedString(bw, data.Key.ToString());
 					WriteNullTerminatedString(bw, data.Value.ToString());
@@ -242,93 +183,136 @@ namespace MCSkin3D.ExceptionHandler
 			using (var br = new BinaryReader(reader))
 			{
 				ErrorReport report = new ErrorReport();
-				
+
+				report.SoftwareData = new Dictionary<string, string>();
+				report.OpenGLData = new Dictionary<string, string>();
+				report.HardwareData = new Dictionary<string, string>();
+				report.UserData = new Dictionary<string, string>();
+
+				var magic = br.ReadUInt32();
+				var version = br.ReadUInt32();
+
+				if (magic != MagicHeader)
+					throw new FileLoadException();
+
+				if (version != VersionHeader)
+					throw new Exception();
+
+				report.Name = ReadNullTerminatedString(br);
+				report.Email = ReadNullTerminatedString(br);
+				report.Description = ReadNullTerminatedString(br);
+
+				int num = br.ReadInt32();
+
+				while (--num >= 0)
+				{
+					ExceptionData data = new ExceptionData();
+					
+					data.Type = ReadNullTerminatedString(br);
+					data.Message = ReadNullTerminatedString(br);
+
+					short numFrames = br.ReadByte();
+
+					while (--numFrames >= 0)
+					{
+						StackFrame frame = new StackFrame();
+
+						frame.Method = ReadNullTerminatedString(br);
+						frame.MethodType = ReadNullTerminatedString(br);
+
+						bool hasData = br.ReadBoolean();
+
+						if (hasData)
+						{
+							frame.FileName = ReadNullTerminatedString(br);
+							frame.FileLine = br.ReadInt32();
+							frame.FileColumn = br.ReadInt32();
+						}
+
+						data.Frames.Add(frame);
+					}
+
+					report.Data.Add(data);
+				}
+
+				num = br.ReadInt32();
+
+				while (--num >= 0)
+				{
+					string key = ReadNullTerminatedString(br);
+					string value = ReadNullTerminatedString(br);
+
+					report.SoftwareData.Add(key, value);
+				}
+
+				num = br.ReadInt32();
+
+				while (--num >= 0)
+				{
+					string key = ReadNullTerminatedString(br);
+					string value = ReadNullTerminatedString(br);
+
+					report.OpenGLData.Add(key, value);
+				}
+
+				num = br.ReadInt32();
+
+				while (--num >= 0)
+				{
+					string key = ReadNullTerminatedString(br);
+					string value = ReadNullTerminatedString(br);
+
+					report.HardwareData.Add(key, value);
+				}
+
+				num = br.ReadInt32();
+
+				while (--num >= 0)
+				{
+					string key = ReadNullTerminatedString(br);
+					string value = ReadNullTerminatedString(br);
+
+					report.UserData.Add(key, value);
+				}
+
 				return report;
 			}
 		}
 
-		public static ErrorReport Construct(string name, string email, string description, Exception topException, bool hardware)
+		public override string ToString()
 		{
-			ErrorReport report = new ErrorReport();
+			StringWriter writer = new StringWriter();
 
-			report.Name = name;
-			report.Email = email;
-			report.Description = description;
+			writer.WriteLine("User Data");
+			writer.WriteLine("---------------------------------");
+			writer.WriteLine("Name: " + (string.IsNullOrEmpty(Name) ? "Anonymous" : Name));
+			writer.WriteLine("Email: " + (string.IsNullOrEmpty(Email) ? "Anonymous" : Email));
+			writer.WriteLine("Description: " + Description);
+			writer.WriteLine();
 
-			report.Data = new List<ExceptionData>();
+			writer.WriteLine("Exception Data");
+			writer.WriteLine("---------------------------------");
 
-			report.UserData = new StringDictionary();
-
-			for (var ex = topException; ex != null; ex = ex.InnerException)
-				report.Data.Add(new ExceptionData(ex));
-
-			// build GL info
-			try
+			foreach (var e in Data)
 			{
-				report.OpenGLData = new StringDictionary();
-				report.OpenGLData.Add("vendor", Editor.GLVendor);
-				report.OpenGLData.Add("version", Editor.GLVersion);
-				report.OpenGLData.Add("renderer", Editor.GLRenderer);
-				report.OpenGLData.Add("extensions", Editor.GLExtensions);
-			}
-			catch
-			{
-			}
+				writer.WriteLine(e.Type);
+				writer.WriteLine(e.Message);
 
-			// build software info
-			report.SoftwareData = new StringDictionary();
-
-			report.SoftwareData.Add("osversion", Environment.OSVersion.ToString());
-			report.SoftwareData.Add("is64bit", (Is64BitOperatingSystem() ? "true" : "false"));
-			report.SoftwareData.Add("frameworkversion", Environment.Version.ToString());
-			report.SoftwareData.Add("softwareversion", Program.Version.ToString());
-
-			// build hardware info
-			report.HardwareData = new StringDictionary();
-
-			if (hardware)
-			{
-				var searcher =
-					new ManagementObjectSearcher("Select * from Win32_VideoController");
-
-				foreach (ManagementObject video in searcher.Get())
+				if (e.Frames.Count == 0)
+					writer.WriteLine("No Stack Trace Available");
+				else
 				{
-					foreach (PropertyData prop in video.Properties)
+					foreach (var f in e.Frames)
 					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							report.HardwareData.Add("video|" + prop.Name, prop.Value.ToString());
-					}
-				}
+						writer.WriteLine(" " + f.MethodType + " :: " + f.Method);
 
-				searcher =
-					new ManagementObjectSearcher("Select * from Win32_PhysicalMemoryArray");
-
-				foreach (ManagementObject video in searcher.Get())
-				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							report.HardwareData.Add("memory|" + prop.Name, prop.Value.ToString());
-					}
-				}
-
-				searcher =
-					new ManagementObjectSearcher("Select * from Win32_Processor");
-
-				foreach (ManagementObject video in searcher.Get())
-				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							report.HardwareData.Add("processor|" + prop.Name, prop.Value.ToString());
+						if (!string.IsNullOrEmpty(f.FileName))
+							writer.WriteLine("  - " + f.FileName + " " + f.FileLine + ":" + f.FileColumn);
 					}
 				}
 			}
-
-			return report;
+			
+			return writer.ToString();
 		}
 	}
 

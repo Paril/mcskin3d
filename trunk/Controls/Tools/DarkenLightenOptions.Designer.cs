@@ -34,7 +34,7 @@
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.radioButton1 = new System.Windows.Forms.RadioButton();
 			this.radioButton2 = new System.Windows.Forms.RadioButton();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -109,6 +109,10 @@
 			this.radioButton2.Text = "O_DARKEN";
 			this.radioButton2.UseVisualStyleBackColor = true;
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// groupBox3
 			// 
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -179,7 +183,7 @@
 		private System.Windows.Forms.NumericUpDown numericUpDown1;
 		private System.Windows.Forms.RadioButton radioButton1;
 		private System.Windows.Forms.RadioButton radioButton2;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.GroupBox groupBox1;

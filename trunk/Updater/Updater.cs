@@ -140,10 +140,8 @@ namespace MCSkin3D.UpdateSystem
 		public List<Guid> InstalledUpdates { get; set; }
 
 		// FIXME: RSS instead?
-		private List<UpdateItem> LoadUpdates(XmlDocument document)
+		private void LoadUpdates(XmlDocument document, List<UpdateItem> items)
 		{
-			var items = new List<UpdateItem>();
-
 			if (document.DocumentElement.Name.ToLower() == "updates")
 			{
 				foreach (XmlNode x in document.DocumentElement.ChildNodes)
@@ -206,11 +204,9 @@ namespace MCSkin3D.UpdateSystem
 					items.Add(item);
 				}
 			}
-
-			return items;
 		}
 
-		List<UpdateItem> GetUpdates()
+		void GetUpdates(List<UpdateItem> updates)
 		{
 			var client = new WebClient();
 			client.Proxy = null;
@@ -231,7 +227,7 @@ namespace MCSkin3D.UpdateSystem
 
 			client.Dispose();
 
-			return LoadUpdates(doc);
+			LoadUpdates(doc, updates);
 		}
 
 		bool doneChecking = false;
@@ -239,9 +235,11 @@ namespace MCSkin3D.UpdateSystem
 		{
 			try
 			{
+				_updates = new List<UpdateItem>();
+
 				try
 				{
-					_updates = GetUpdates();
+					GetUpdates(_updates);
 					_updates.RemoveAll(
 						item =>
 						{

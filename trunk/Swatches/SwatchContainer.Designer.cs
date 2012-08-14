@@ -45,7 +45,7 @@
 			this.editModeToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.addSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.removeSwatchToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.nativeToolStrip1.SuspendLayout();
@@ -249,6 +249,10 @@
 			this.removeSwatchToolStripButton.Text = "T_DELETESWATCH";
 			this.removeSwatchToolStripButton.Click += new System.EventHandler(this.removeSwatchToolStripButton_Click);
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// SwatchContainer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -278,7 +282,7 @@
 		private Paril.Controls.NativeToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.ToolStripButton toolStripButton2;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton editModeToolStripButton;
 		private System.Windows.Forms.ToolStripButton removeSwatchToolStripButton;

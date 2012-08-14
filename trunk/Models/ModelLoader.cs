@@ -74,7 +74,7 @@ namespace MCSkin3D
 				return;
 
 #if BETA
-			new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
+			/*new ModelPig().Save("Pig", 1, 64, 32, "Models\\Mobs\\Passive\\Pig.xml");
 			new ModelBiped().Save("Human", 1, 64, 32, "Models\\Mobs\\Passive\\Human.xml");
 			new ModelVillager().Save("Villager", 1, 64, 64, "Models\\Mobs\\Passive\\Villager.xml");
 			new ModelCow().Save("Cow", 1, 64, 32, "Models\\Mobs\\Passive\\Cow.xml");
@@ -116,7 +116,7 @@ namespace MCSkin3D
 			new ModelGolem().Save("Golem", 1, 128, 128, "Models\\Mobs\\Passive\\Golem.xml");
 
 			new pm_Pony().init(true, true).Save("Pony", 1, 64, 32, "Models\\Mine Little Pony\\Pony.xml");
-			new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");
+			new pm_newPonyAdv().init(0, 0).Save("New Pony", 1, 64, 32, "Models\\Mine Little Pony\\New Pony.xml");*/
 #endif
 
 			var tcnParser = new ModelFormatTCN();

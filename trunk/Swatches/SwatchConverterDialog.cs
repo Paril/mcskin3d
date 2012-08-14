@@ -46,7 +46,6 @@ namespace MCSkin3D.Swatches
 
 		private void SwatchConverterDialog_Load(object sender, EventArgs e)
 		{
-			languageProvider1.LanguageChanged(Editor.CurrentLanguage);
 		}
 
 		private void button1_Click(object sender, EventArgs e)

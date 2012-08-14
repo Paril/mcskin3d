@@ -284,6 +284,15 @@ namespace MCSkin3D
 			mouseDown = false;
 		}
 
+		static Bitmap
+			FolderOpen_32x32_72 = Resources.FolderOpen_32x32_72,
+			Folder_32x32 = Resources.Folder_32x32,
+			arrow_state_blue_expanded = Resources.arrow_state_blue_expanded,
+			arrow_state_grey_expanded = Resources.arrow_state_grey_expanded,
+			clone = Resources.clone,
+			arrow_state_blue_right = Resources.arrow_state_blue_right,
+			arrow_state_grey_right = Resources.arrow_state_grey_right;
+
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			_hoverPoint = e.Location;
@@ -342,9 +351,9 @@ namespace MCSkin3D
 					else
 					{
 						if (SelectedNode.IsExpanded)
-							prevImage = Resources.FolderOpen_32x32_72;
+							prevImage = FolderOpen_32x32_72;
 						else
-							prevImage = Resources.Folder_32x32;
+							prevImage = Folder_32x32;
 					}
 
 					g.DrawImage(prevImage, new Rectangle(0, 0, 32, 32), new Rectangle(0, 0, prevImage.Width, prevImage.Height),
@@ -417,13 +426,14 @@ namespace MCSkin3D
 
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
 			Skin skin = e.Node is Skin ? (Skin) e.Node : null;
+			bool skinIsNull = skin == null;
 
 			if (e.Node.IsSelected || e.Node == _overNode)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width,
 				                         e.Bounds.Height - 1);
 			}
-			else if (skin != null && skin.File.ToString() == GlobalSettings.LastSkin)
+			else if (!skinIsNull && skin.IsLastSkin)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width,
 				                         e.Bounds.Height - 1);
@@ -433,35 +443,35 @@ namespace MCSkin3D
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 			e.Graphics.SmoothingMode = SmoothingMode.None;
 
-			if (skin == null)
+			if (skinIsNull)
 			{
 				if (e.Node.IsExpanded)
-					e.Graphics.DrawImage(Resources.FolderOpen_32x32_72, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
+					e.Graphics.DrawImage(FolderOpen_32x32_72, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
 				else
-					e.Graphics.DrawImage(Resources.Folder_32x32, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
+					e.Graphics.DrawImage(Folder_32x32, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
 
 				if (e.Node.Level == 0 && !Editor.HasOneRoot)
 				{
-					e.Graphics.DrawImage(Resources.clone, realX + (ItemHeight - Resources.clone.Width) - 1,
-					                     e.Bounds.Y + (ItemHeight - Resources.clone.Height) - 1, Resources.clone.Width,
-					                     Resources.clone.Height);
+					e.Graphics.DrawImage(clone, realX + (ItemHeight - clone.Width) - 1,
+					                     e.Bounds.Y + (ItemHeight - clone.Height) - 1, clone.Width,
+					                     clone.Height);
 				}
 			}
 			else
 				e.Graphics.DrawImage(skin.Head, realX, e.Bounds.Y, ItemHeight - 1, ItemHeight - 1);
 
-			if (skin == null && e.Node.Nodes.Count != 0)
+			if (skinIsNull && e.Node.Nodes.Count != 0)
 			{
 				if (e.Node.IsExpanded)
 				{
 					if ((e.State & TreeNodeStates.Hot) != 0)
 					{
-						e.Graphics.DrawImage(Resources.arrow_state_blue_expanded,
+						e.Graphics.DrawImage(arrow_state_blue_expanded,
 						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 					else
 					{
-						e.Graphics.DrawImage(Resources.arrow_state_grey_expanded,
+						e.Graphics.DrawImage(arrow_state_grey_expanded,
 						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 				}
@@ -469,12 +479,12 @@ namespace MCSkin3D
 				{
 					if ((e.State & TreeNodeStates.Hot) != 0)
 					{
-						e.Graphics.DrawImage(Resources.arrow_state_blue_right,
+						e.Graphics.DrawImage(arrow_state_blue_right,
 						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 					else
 					{
-						e.Graphics.DrawImage(Resources.arrow_state_grey_right,
+						e.Graphics.DrawImage(arrow_state_grey_right,
 						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 				}

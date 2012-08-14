@@ -19,14 +19,14 @@
 1.4.1:
 *- Fix Techne model support (swapped box position and rotate position by accident)
 *- Splash screen
-	- Needs an image.
+	*- Needs an image.
+*- Still getting fill bucket errors...
 ?- Error reporter protocol 2
 	- Use binary rather than ASCII transfer
 	- GZip (or LZMA?) the data for space
 	- More precise information (raw exception data, etc)
 	- Improvements to server program
 ?- News feed using RSS
-?- Still getting fill bucket errors...
 
 1.4:
 *- Error reporting service

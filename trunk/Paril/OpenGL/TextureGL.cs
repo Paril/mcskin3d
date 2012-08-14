@@ -63,22 +63,29 @@ namespace Paril.OpenGL
 			SetMipmapping(false);
 			SetRepeat(false);
 
-			var goodData = new int[image.Width * image.Height];
-			int i = 0;
+			IntPtr data = System.Runtime.InteropServices.Marshal.AllocHGlobal(image.Width * image.Height * sizeof(int));
 
-			using (var fp = new FastPixel(image, true))
+			unsafe
 			{
-				for (int y = 0; y < image.Height; ++y)
+				int *ptr = (int*)data.ToPointer();
+				int i = 0;
+
+				using (var fp = new FastPixel(image, true))
 				{
-					for (int x = 0; x < image.Width; ++x)
+					for (int y = 0; y < image.Height; ++y)
 					{
-						Color argb = fp.GetPixel(x, y);
-						goodData[i++] = (argb.R << 0) | (argb.G << 8) | (argb.B << 16) | (argb.A << 24);
+						for (int x = 0; x < image.Width; ++x)
+						{
+							Color argb = fp.GetPixel(x, y);
+							ptr[i++] = (argb.R << 0) | (argb.G << 8) | (argb.B << 16) | (argb.A << 24);
+						}
 					}
 				}
+
+				Upload((IntPtr)ptr, image.Width, image.Height);
 			}
 
-			Upload(goodData, image.Width, image.Height);
+			System.Runtime.InteropServices.Marshal.FreeHGlobal(data);
 		}
 
 		public override void Upload<T>(T[] array, int width, int height)
@@ -86,14 +93,42 @@ namespace Paril.OpenGL
 			Bind();
 
 			GL.TexImage2D(TextureTarget.Texture2D,
-			              0,
-			              PixelInternalFormat.Rgba,
-			              width,
-			              height,
-			              0,
-			              PixelFormat.Rgba,
-			              PixelType.UnsignedByte,
-			              array);
+						  0,
+						  PixelInternalFormat.Rgba,
+						  width,
+						  height,
+						  0,
+						  PixelFormat.Rgba,
+						  PixelType.UnsignedByte,
+						  array);
+
+			ErrorCode err = GL.GetError();
+
+			if (err != ErrorCode.NoError)
+			{
+				Dispose();
+				throw new Exception(err.ToString());
+			}
+			else
+			{
+				_width = width;
+				_height = height;
+			}
+		}
+
+		public override void Upload(IntPtr ptr, int width, int height)
+		{
+			Bind();
+
+			GL.TexImage2D(TextureTarget.Texture2D,
+						  0,
+						  PixelInternalFormat.Rgba,
+						  width,
+						  height,
+						  0,
+						  PixelFormat.Rgba,
+						  PixelType.UnsignedByte,
+						  ptr);
 
 			ErrorCode err = GL.GetError();
 
@@ -110,6 +145,12 @@ namespace Paril.OpenGL
 		}
 
 		public override void Get<T>(T[] array)
+		{
+			Bind();
+			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);
+		}
+
+		public override void Get(IntPtr array)
 		{
 			Bind();
 			GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, array);

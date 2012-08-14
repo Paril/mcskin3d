@@ -31,7 +31,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -66,6 +66,10 @@
 			this.numericUpDown1.Size = new System.Drawing.Size(40, 20);
 			this.numericUpDown1.TabIndex = 3;
 			this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
 			// 
 			// groupBox1
 			// 
@@ -103,7 +107,7 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.GroupBox groupBox1;
 	}
 }

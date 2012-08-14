@@ -33,7 +33,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -86,6 +86,10 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// ImportSite
 			// 
 			this.AcceptButton = this.button2;
@@ -115,6 +119,6 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button2;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 	}
 }

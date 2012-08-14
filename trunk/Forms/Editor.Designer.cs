@@ -167,8 +167,8 @@
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
 			this.miniToolStrip = new MCSkin3D.Controls.SkinTreeViewToolBar();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -1514,6 +1514,7 @@
 			this.toolStripButton7.Image = global::MCSkin3D.Properties.Resources.WindowsHS;
 			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton7.Name = "toolStripButton7";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton7, "Text");
 			this.toolStripButton7.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton7.Text = "W_POPOUT";
 			this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
@@ -1543,6 +1544,10 @@
 			this.miniToolStrip.Name = "miniToolStrip";
 			this.miniToolStrip.Size = new System.Drawing.Size(294, 25);
 			this.miniToolStrip.TabIndex = 6;
+			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
 			// 
 			// Editor
 			// 
@@ -1668,7 +1673,6 @@
 		private System.Windows.Forms.ToolStripButton hybridToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem hybridViewToolStripMenuItem;
-		public Language.LanguageProvider languageProvider1;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		public System.Windows.Forms.HScrollBar hScrollBar1;
@@ -1721,6 +1725,7 @@
 		private System.Windows.Forms.ToolStripMenuItem rendererToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem clientArraysToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem immediateToolStripMenuItem;
+		public Languages.LanguageProvider languageProvider1;
 	}
 }
 
