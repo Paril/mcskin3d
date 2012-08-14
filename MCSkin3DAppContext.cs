@@ -34,7 +34,13 @@ namespace MCSkin3D
 
 			SplashForm = new Splash();
 
-			Updater = new UpdateSystem.Updater("http://alteredsoftworks.com/mcskin3d/updates.xml");
+			Updater = new UpdateSystem.Updater(
+#if BETA
+				"http://alteredsoftworks.com/mcskin3d/updates_beta.xml"
+#else
+				"http://alteredsoftworks.com/mcskin3d/updates.xml"
+#endif
+);
 			Updater.FormHidden += SplashForm.Updater_FormClosed;
 			Updater.UpdatesAvailable += SplashForm.Updater_UpdatesAvailable;
 

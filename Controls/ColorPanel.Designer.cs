@@ -31,9 +31,16 @@
 			this.colorTabControl = new System.Windows.Forms.TabControl();
 			this.rgbTabPage = new System.Windows.Forms.TabPage();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.alphaColorSlider = new MB.Controls.ColorSlider();
+			this.colorPick1 = new MCSkin3D.lemon42.ColorPick();
+			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
+			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
 			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.redColorSlider = new MB.Controls.ColorSlider();
 			this.label9 = new System.Windows.Forms.Label();
+			this.blueColorSlider = new MB.Controls.ColorSlider();
 			this.redNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.greenColorSlider = new MB.Controls.ColorSlider();
 			this.label2 = new System.Windows.Forms.Label();
 			this.greenNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.alphaNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -44,26 +51,19 @@
 			this.hsvTabPage = new System.Windows.Forms.TabPage();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.hueNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.hueColorSlider = new MB.Controls.ColorSlider();
 			this.label6 = new System.Windows.Forms.Label();
+			this.valueColorSlider = new MB.Controls.ColorSlider();
 			this.saturationNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.saturationColorSlider = new MB.Controls.ColorSlider();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
 			this.valueNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.swatchTabPage = new System.Windows.Forms.TabPage();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.loadingSwatchLabel = new System.Windows.Forms.Label();
-			this.alphaColorSlider = new MB.Controls.ColorSlider();
-			this.colorPick1 = new MCSkin3D.lemon42.ColorPick();
-			this.colorPreview1 = new Paril.Controls.Color.ColorPreview();
-			this.colorPreview2 = new Paril.Controls.Color.ColorPreview();
-			this.redColorSlider = new MB.Controls.ColorSlider();
-			this.blueColorSlider = new MB.Controls.ColorSlider();
-			this.greenColorSlider = new MB.Controls.ColorSlider();
-			this.hueColorSlider = new MB.Controls.ColorSlider();
-			this.valueColorSlider = new MB.Controls.ColorSlider();
-			this.saturationColorSlider = new MB.Controls.ColorSlider();
 			this.swatchContainer = new MCSkin3D.SwatchContainer();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.colorTabControl.SuspendLayout();
 			this.rgbTabPage.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -131,6 +131,54 @@
 			this.panel2.Size = new System.Drawing.Size(295, 251);
 			this.panel2.TabIndex = 1;
 			// 
+			// alphaColorSlider
+			// 
+			this.alphaColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.alphaColorSlider.LargeChange = ((uint)(5u));
+			this.alphaColorSlider.Location = new System.Drawing.Point(24, 224);
+			this.alphaColorSlider.Maximum = 255;
+			this.alphaColorSlider.Name = "alphaColorSlider";
+			this.alphaColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.alphaColorSlider.SmallChange = ((uint)(1u));
+			this.alphaColorSlider.TabIndex = 22;
+			this.alphaColorSlider.Text = "Alpha";
+			this.alphaColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alphaColorSlider_Scroll);
+			// 
+			// colorPick1
+			// 
+			this.colorPick1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.colorPick1.CurrentAlpha = ((short)(255));
+			this.colorPick1.CurrentHue = ((short)(0));
+			this.colorPick1.CurrentSat = ((short)(0));
+			this.colorPick1.CurrentVal = ((short)(0));
+			this.colorPick1.Location = new System.Drawing.Point(35, 9);
+			this.colorPick1.Name = "colorPick1";
+			this.colorPick1.Size = new System.Drawing.Size(147, 150);
+			this.colorPick1.TabIndex = 21;
+			this.colorPick1.HSVChanged += new System.EventHandler(this.colorPick1_HSVChanged);
+			// 
+			// colorPreview1
+			// 
+			this.colorPreview1.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.colorPreview1.Location = new System.Drawing.Point(213, 35);
+			this.colorPreview1.Name = "colorPreview1";
+			this.colorPreview1.Size = new System.Drawing.Size(36, 36);
+			this.colorPreview1.TabIndex = 17;
+			this.colorPreview1.Text = "colorPreview1";
+			this.colorPreview1.Click += new System.EventHandler(this.colorPreview1_Click);
+			// 
+			// colorPreview2
+			// 
+			this.colorPreview2.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.colorPreview2.Location = new System.Drawing.Point(228, 50);
+			this.colorPreview2.Name = "colorPreview2";
+			this.colorPreview2.Size = new System.Drawing.Size(36, 36);
+			this.colorPreview2.TabIndex = 20;
+			this.colorPreview2.Text = "colorPreview2";
+			this.colorPreview2.Click += new System.EventHandler(this.colorPreview2_Click);
+			// 
 			// textBox1
 			// 
 			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -142,6 +190,21 @@
 			this.textBox1.Text = "FFFFFFFF";
 			this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
 			// 
+			// redColorSlider
+			// 
+			this.redColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.redColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.redColorSlider.LargeChange = ((uint)(5u));
+			this.redColorSlider.Location = new System.Drawing.Point(24, 164);
+			this.redColorSlider.Maximum = 255;
+			this.redColorSlider.Name = "redColorSlider";
+			this.redColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.redColorSlider.SmallChange = ((uint)(1u));
+			this.redColorSlider.TabIndex = 12;
+			this.redColorSlider.Text = "colorSlider1";
+			this.redColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.redColorSlider_Scroll);
+			// 
 			// label9
 			// 
 			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -151,6 +214,21 @@
 			this.label9.Size = new System.Drawing.Size(14, 13);
 			this.label9.TabIndex = 18;
 			this.label9.Text = "#";
+			// 
+			// blueColorSlider
+			// 
+			this.blueColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.blueColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.blueColorSlider.LargeChange = ((uint)(5u));
+			this.blueColorSlider.Location = new System.Drawing.Point(24, 204);
+			this.blueColorSlider.Maximum = 255;
+			this.blueColorSlider.Name = "blueColorSlider";
+			this.blueColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.blueColorSlider.SmallChange = ((uint)(1u));
+			this.blueColorSlider.TabIndex = 13;
+			this.blueColorSlider.Text = "colorSlider2";
+			this.blueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.blueColorSlider_Scroll);
 			// 
 			// redNumericUpDown
 			// 
@@ -170,6 +248,21 @@
             0,
             0});
 			this.redNumericUpDown.ValueChanged += new System.EventHandler(this.redNumericUpDown_ValueChanged);
+			// 
+			// greenColorSlider
+			// 
+			this.greenColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.greenColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.greenColorSlider.LargeChange = ((uint)(5u));
+			this.greenColorSlider.Location = new System.Drawing.Point(24, 184);
+			this.greenColorSlider.Maximum = 255;
+			this.greenColorSlider.Name = "greenColorSlider";
+			this.greenColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.greenColorSlider.SmallChange = ((uint)(1u));
+			this.greenColorSlider.TabIndex = 14;
+			this.greenColorSlider.Text = "colorSlider3";
+			this.greenColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.greenColorSlider_Scroll);
 			// 
 			// label2
 			// 
@@ -306,15 +399,30 @@
             0,
             0,
             0});
+			this.hueNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
 			this.hueNumericUpDown.Name = "hueNumericUpDown";
 			this.hueNumericUpDown.Size = new System.Drawing.Size(40, 20);
 			this.hueNumericUpDown.TabIndex = 16;
-			this.hueNumericUpDown.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
 			this.hueNumericUpDown.ValueChanged += new System.EventHandler(this.hueNumericUpDown_ValueChanged);
+			// 
+			// hueColorSlider
+			// 
+			this.hueColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.hueColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.hueColorSlider.LargeChange = ((uint)(5u));
+			this.hueColorSlider.Location = new System.Drawing.Point(24, 164);
+			this.hueColorSlider.Maximum = 360;
+			this.hueColorSlider.Name = "hueColorSlider";
+			this.hueColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.hueColorSlider.SmallChange = ((uint)(1u));
+			this.hueColorSlider.TabIndex = 24;
+			this.hueColorSlider.Text = "colorSlider1";
+			this.hueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hueColorSlider_Scroll);
 			// 
 			// label6
 			// 
@@ -325,6 +433,20 @@
 			this.label6.Size = new System.Drawing.Size(15, 13);
 			this.label6.TabIndex = 17;
 			this.label6.Text = "H";
+			// 
+			// valueColorSlider
+			// 
+			this.valueColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.valueColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.valueColorSlider.LargeChange = ((uint)(5u));
+			this.valueColorSlider.Location = new System.Drawing.Point(24, 204);
+			this.valueColorSlider.Name = "valueColorSlider";
+			this.valueColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.valueColorSlider.SmallChange = ((uint)(1u));
+			this.valueColorSlider.TabIndex = 25;
+			this.valueColorSlider.Text = "colorSlider2";
+			this.valueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.valueColorSlider_Scroll);
 			// 
 			// saturationNumericUpDown
 			// 
@@ -339,6 +461,20 @@
             0,
             0});
 			this.saturationNumericUpDown.ValueChanged += new System.EventHandler(this.saturationNumericUpDown_ValueChanged);
+			// 
+			// saturationColorSlider
+			// 
+			this.saturationColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.saturationColorSlider.BackColor = System.Drawing.Color.Transparent;
+			this.saturationColorSlider.LargeChange = ((uint)(5u));
+			this.saturationColorSlider.Location = new System.Drawing.Point(24, 184);
+			this.saturationColorSlider.Name = "saturationColorSlider";
+			this.saturationColorSlider.Size = new System.Drawing.Size(218, 20);
+			this.saturationColorSlider.SmallChange = ((uint)(1u));
+			this.saturationColorSlider.TabIndex = 26;
+			this.saturationColorSlider.Text = "colorSlider3";
+			this.saturationColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.saturationColorSlider_Scroll);
 			// 
 			// label7
 			// 
@@ -411,142 +547,6 @@
 			this.loadingSwatchLabel.Text = "M_LOADING";
 			this.loadingSwatchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// alphaColorSlider
-			// 
-			this.alphaColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.alphaColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.alphaColorSlider.LargeChange = ((uint)(5u));
-			this.alphaColorSlider.Location = new System.Drawing.Point(24, 224);
-			this.alphaColorSlider.Maximum = 255;
-			this.alphaColorSlider.Name = "alphaColorSlider";
-			this.alphaColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.alphaColorSlider.SmallChange = ((uint)(1u));
-			this.alphaColorSlider.TabIndex = 22;
-			this.alphaColorSlider.Text = "Alpha";
-			this.alphaColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.alphaColorSlider_Scroll);
-			// 
-			// colorPick1
-			// 
-			this.colorPick1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.colorPick1.CurrentAlpha = ((short)(255));
-			this.colorPick1.CurrentHue = ((short)(0));
-			this.colorPick1.CurrentSat = ((short)(0));
-			this.colorPick1.CurrentVal = ((short)(0));
-			this.colorPick1.Location = new System.Drawing.Point(35, 9);
-			this.colorPick1.Name = "colorPick1";
-			this.colorPick1.Size = new System.Drawing.Size(147, 150);
-			this.colorPick1.TabIndex = 21;
-			this.colorPick1.HSVChanged += new System.EventHandler(this.colorPick1_HSVChanged);
-			// 
-			// colorPreview1
-			// 
-			this.colorPreview1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.colorPreview1.Location = new System.Drawing.Point(213, 35);
-			this.colorPreview1.Name = "colorPreview1";
-			this.colorPreview1.Size = new System.Drawing.Size(36, 36);
-			this.colorPreview1.TabIndex = 17;
-			this.colorPreview1.Text = "colorPreview1";
-			this.colorPreview1.Click += new System.EventHandler(this.colorPreview1_Click);
-			// 
-			// colorPreview2
-			// 
-			this.colorPreview2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.colorPreview2.Location = new System.Drawing.Point(228, 50);
-			this.colorPreview2.Name = "colorPreview2";
-			this.colorPreview2.Size = new System.Drawing.Size(36, 36);
-			this.colorPreview2.TabIndex = 20;
-			this.colorPreview2.Text = "colorPreview2";
-			this.colorPreview2.Click += new System.EventHandler(this.colorPreview2_Click);
-			// 
-			// redColorSlider
-			// 
-			this.redColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.redColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.redColorSlider.LargeChange = ((uint)(5u));
-			this.redColorSlider.Location = new System.Drawing.Point(24, 164);
-			this.redColorSlider.Maximum = 255;
-			this.redColorSlider.Name = "redColorSlider";
-			this.redColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.redColorSlider.SmallChange = ((uint)(1u));
-			this.redColorSlider.TabIndex = 12;
-			this.redColorSlider.Text = "colorSlider1";
-			this.redColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.redColorSlider_Scroll);
-			// 
-			// blueColorSlider
-			// 
-			this.blueColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.blueColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.blueColorSlider.LargeChange = ((uint)(5u));
-			this.blueColorSlider.Location = new System.Drawing.Point(24, 204);
-			this.blueColorSlider.Maximum = 255;
-			this.blueColorSlider.Name = "blueColorSlider";
-			this.blueColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.blueColorSlider.SmallChange = ((uint)(1u));
-			this.blueColorSlider.TabIndex = 13;
-			this.blueColorSlider.Text = "colorSlider2";
-			this.blueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.blueColorSlider_Scroll);
-			// 
-			// greenColorSlider
-			// 
-			this.greenColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.greenColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.greenColorSlider.LargeChange = ((uint)(5u));
-			this.greenColorSlider.Location = new System.Drawing.Point(24, 184);
-			this.greenColorSlider.Maximum = 255;
-			this.greenColorSlider.Name = "greenColorSlider";
-			this.greenColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.greenColorSlider.SmallChange = ((uint)(1u));
-			this.greenColorSlider.TabIndex = 14;
-			this.greenColorSlider.Text = "colorSlider3";
-			this.greenColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.greenColorSlider_Scroll);
-			// 
-			// hueColorSlider
-			// 
-			this.hueColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.hueColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.hueColorSlider.LargeChange = ((uint)(5u));
-			this.hueColorSlider.Location = new System.Drawing.Point(24, 164);
-			this.hueColorSlider.Maximum = 360;
-			this.hueColorSlider.Name = "hueColorSlider";
-			this.hueColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.hueColorSlider.SmallChange = ((uint)(1u));
-			this.hueColorSlider.TabIndex = 24;
-			this.hueColorSlider.Text = "colorSlider1";
-			this.hueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hueColorSlider_Scroll);
-			// 
-			// valueColorSlider
-			// 
-			this.valueColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.valueColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.valueColorSlider.LargeChange = ((uint)(5u));
-			this.valueColorSlider.Location = new System.Drawing.Point(24, 204);
-			this.valueColorSlider.Name = "valueColorSlider";
-			this.valueColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.valueColorSlider.SmallChange = ((uint)(1u));
-			this.valueColorSlider.TabIndex = 25;
-			this.valueColorSlider.Text = "colorSlider2";
-			this.valueColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.valueColorSlider_Scroll);
-			// 
-			// saturationColorSlider
-			// 
-			this.saturationColorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.saturationColorSlider.BackColor = System.Drawing.Color.Transparent;
-			this.saturationColorSlider.LargeChange = ((uint)(5u));
-			this.saturationColorSlider.Location = new System.Drawing.Point(24, 184);
-			this.saturationColorSlider.Name = "saturationColorSlider";
-			this.saturationColorSlider.Size = new System.Drawing.Size(218, 20);
-			this.saturationColorSlider.SmallChange = ((uint)(1u));
-			this.saturationColorSlider.TabIndex = 26;
-			this.saturationColorSlider.Text = "colorSlider3";
-			this.saturationColorSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.saturationColorSlider_Scroll);
-			// 
 			// swatchContainer
 			// 
 			this.swatchContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -556,6 +556,10 @@
 			this.swatchContainer.Size = new System.Drawing.Size(295, 251);
 			this.swatchContainer.TabIndex = 0;
 			this.swatchContainer.SwatchChanged += new System.EventHandler<MCSkin3D.SwatchChangedEventArgs>(this.swatchContainer_SwatchChanged);
+			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
 			// 
 			// ColorPanel
 			// 
@@ -587,7 +591,7 @@
 
 		#endregion
 
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.TabControl colorTabControl;
 		private System.Windows.Forms.TabPage rgbTabPage;
 		private System.Windows.Forms.Panel panel2;

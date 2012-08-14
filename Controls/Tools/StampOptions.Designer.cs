@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.groupBox2.SuspendLayout();
@@ -46,6 +46,10 @@
 			this.checkBox1.Text = "O_INCREMENTAL";
 			this.checkBox1.UseVisualStyleBackColor = true;
 			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
 			// 
 			// groupBox1
 			// 
@@ -91,7 +95,7 @@
 		#endregion
 
 		private System.Windows.Forms.CheckBox checkBox1;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.GroupBox groupBox2;
 	}

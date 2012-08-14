@@ -32,7 +32,7 @@
 			this.button2 = new System.Windows.Forms.Button();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.SuspendLayout();
 			// 
 			// button1
@@ -81,6 +81,10 @@
 			this.label1.Text = "M_IRREVERSIBLE";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// DontAskAgain
 			// 
 			this.AcceptButton = this.button2;
@@ -106,6 +110,6 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Label label1;
-		private Language.LanguageProvider languageProvider1;
+		private MCSkin3D.Languages.LanguageProvider languageProvider1;
 	}
 }

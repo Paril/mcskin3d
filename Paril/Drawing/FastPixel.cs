@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 
 namespace Paril.Drawing
 {
-	public class FastPixel : IDisposable
+	public unsafe class FastPixel : IDisposable
 	{
 		private readonly bool _autoRelease;
 		private readonly Bitmap _bitmap;
@@ -33,7 +33,8 @@ namespace Paril.Drawing
 		private BitmapData bmpData;
 		private IntPtr bmpPtr;
 		private bool locked;
-		private byte[] rgbValues;
+		private byte *rgbValues;
+		private int rgbValuesLen;
 
 		public FastPixel(Bitmap bitmap)
 		{
@@ -83,6 +84,9 @@ namespace Paril.Drawing
 			get { return _bitmap; }
 		}
 
+		[DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+		public static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
+
 		public void Lock()
 		{
 			if (locked)
@@ -95,16 +99,19 @@ namespace Paril.Drawing
 			if (IsAlphaBitmap)
 			{
 				int bytes = (Width * Height) * 4;
-				rgbValues = new byte[bytes];
 
-				Marshal.Copy(bmpPtr, rgbValues, 0, rgbValues.Length);
+				rgbValues = (byte*)Marshal.AllocHGlobal(bytes);
+				rgbValuesLen = bytes;
+
+				memcpy((IntPtr)rgbValues, bmpPtr, rgbValuesLen);
 			}
 			else
 			{
 				int bytes = (Width * Height) * 3;
-				rgbValues = new byte[bytes];
+				rgbValues = (byte*)Marshal.AllocHGlobal(bytes);
+				rgbValuesLen = bytes;
 
-				Marshal.Copy(bmpPtr, rgbValues, 0, rgbValues.Length);
+				memcpy((IntPtr)rgbValues, bmpPtr, rgbValuesLen);
 			}
 
 			locked = true;
@@ -115,7 +122,7 @@ namespace Paril.Drawing
 			if (!locked)
 				throw new ArgumentException("Bitmap not locked.");
 			// Copy the RGB values back to the bitmap
-			if (setPixels) Marshal.Copy(rgbValues, 0, bmpPtr, rgbValues.Length);
+			if (setPixels) memcpy(bmpPtr, (IntPtr)rgbValues, rgbValuesLen);
 			// Unlock the bits.
 			Bitmap.UnlockBits(bmpData);
 			locked = false;
@@ -128,7 +135,7 @@ namespace Paril.Drawing
 
 			if (IsAlphaBitmap)
 			{
-				for (int index = 0; index <= rgbValues.Length - 1; index += 4)
+				for (int index = 0; index <= rgbValuesLen - 1; index += 4)
 				{
 					rgbValues[index] = colour.B;
 					rgbValues[index + 1] = colour.G;
@@ -138,7 +145,7 @@ namespace Paril.Drawing
 			}
 			else
 			{
-				for (int index = 0; index <= rgbValues.Length - 1; index += 3)
+				for (int index = 0; index <= rgbValuesLen - 1; index += 3)
 				{
 					rgbValues[index] = colour.B;
 					rgbValues[index + 1] = colour.G;

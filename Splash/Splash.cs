@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using MCSkin3D.Language;
+using MCSkin3D.Languages;
 using System.Globalization;
 using MCSkin3D.Swatches;
 
@@ -37,11 +37,11 @@ namespace MCSkin3D.Forms
 		{
 		}
 
-		Language.Language LoadLanguages()
+		Language LoadLanguages()
 		{
 			LanguageLoader.LoadLanguages(GlobalSettings.GetDataURI("Languages"));
 
-			Language.Language useLanguage = null;
+			Language useLanguage = null;
 			try
 			{
 				// stage 1 (prelim): if no language, see if our languages contain it
@@ -69,7 +69,7 @@ namespace MCSkin3D.Forms
 				// stage 4: fallback to built-in English file
 				if (useLanguage == null)
 				{
-					MessageBox.Show(this, "For some reason, the default language files were missing or failed to load (did you extract?) - we'll supply you with a base language of English just so you know what you're doing!");
+					Program.Context.SplashForm.Invoke((Action)(() => MessageBox.Show(this, "For some reason, the default language files were missing or failed to load (did you extract?) - we'll supply you with a base language of English just so you know what you're doing!")));
 					useLanguage = LanguageLoader.LoadDefault();
 				}
 			}
@@ -92,8 +92,8 @@ namespace MCSkin3D.Forms
 
 				Program.Context.SplashForm.Invoke((Action)(() =>
 					{
-						Editor.MainForm.Initialize(language);
 						Editor.MainForm.FinishedLoadingLanguages();
+						Editor.MainForm.Initialize(language);
 					}));
 
 				if (GlobalSettings.AutoUpdate)
@@ -126,11 +126,17 @@ namespace MCSkin3D.Forms
 				SkinLoader.LoadSkins();
 
 				Program.Context.SplashForm.Invoke((Action)Program.Context.DoneLoadingSplash);
-				Program.Context.Form.Invoke((Action)(() => Program.Context.SplashForm.Close()));
+				Program.Context.Form.Invoke((Action)(() =>
+					{
+						Program.Context.SplashForm.Close();
+						GC.Collect();
+					}
+					));
 			}
 			catch (Exception ex)
 			{
 				Program.RaiseException(new Exception("Failed to initialize program during \"" + label1.Text + "\"", ex));
+				Application.Exit();
 			}
 		}
 
@@ -155,7 +161,13 @@ namespace MCSkin3D.Forms
 
 		private void Splash_Load(object sender, EventArgs e)
 		{
-			Splash.BeginLoaderThread();
+			SetLoadingString("Doing nothing yet...");
+
+			System.Timers.Timer timer = new System.Timers.Timer();
+			timer.Interval = 100;
+			timer.Elapsed += (s, ev) => Splash.BeginLoaderThread();
+			timer.AutoReset = false;
+			timer.Start();
 		}
 	}
 }

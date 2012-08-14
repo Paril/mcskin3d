@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.IO;
 using MCSkin3D.ExceptionHandler;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ClientTest
 {
@@ -104,7 +105,7 @@ namespace ClientTest
 													removeClients.Add(client);
 
 													client.Writer.Write(ErrorReportPackets.ServerToClient_Maintenence);
-													client.Writer.Write("Your version of the ExceptionHandler protocol is older than the server! Try updating the program.");
+													client.Writer.Write("Currently testing a new version of the exception handler - as a result, 1.4 reports are deprecated. Thanks, though!");
 												}
 												else if (MaintenenceString != null)
 												{
@@ -119,20 +120,26 @@ namespace ClientTest
 											break;
 										case ErrorReportPackets.ClientToServer_Data:
 											{
-												byte bits = client.Reader.ReadByte();
-												ErrorReport report = new ErrorReport();
+												ErrorReport report;
 
-												report.Exception = client.Reader.ReadString();
-												report.SoftwareInfo = client.Reader.ReadString();
+												int length = client.Reader.ReadInt32();
+												byte[] bytes = client.Reader.ReadBytes(length);
 
-												if ((bits & (byte)ErrorReportContents.Name) != 0)
-													report.Name = client.Reader.ReadString();
-												if ((bits & (byte)ErrorReportContents.Email) != 0)
-													report.Email = client.Reader.ReadString();
-												if ((bits & (byte)ErrorReportContents.Hardware) != 0)
-													report.HardwareInfo = client.Reader.ReadString();
-												if ((bits & (byte)ErrorReportContents.Extra) != 0)
-													report.ExtraInfo = client.Reader.ReadString();
+												using (MemoryStream ms = new MemoryStream(bytes),
+													newStream = new MemoryStream())
+												{
+													using (var inflate = new InflaterInputStream(ms))
+													{
+														int len;
+														byte[] buff = new byte[length];
+
+														while ((len = inflate.Read(buff, 0, length)) > 0)
+															newStream.Write(buff, 0, len);
+
+														newStream.Position = 0;
+														report = ErrorReport.FromStream(newStream);
+													}
+												}
 
 												ReceivedReport(this, new ReceivedReportEventArgs(ref report));
 
@@ -169,6 +176,10 @@ namespace ClientTest
 			{
 				Finished();
 			}
+		}
+
+		void ReadReportFrom(ErrorReport report, MemoryStream newStream)
+		{
 		}
 
 		public void ListenForReports()

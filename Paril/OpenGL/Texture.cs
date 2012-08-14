@@ -40,7 +40,9 @@ namespace Paril.OpenGL
 		public abstract void Load(Bitmap image);
 
 		public abstract void Upload<T>(T[] array, int width, int height) where T : struct;
+		public abstract void Upload(IntPtr array, int width, int height);
 		public abstract void Get<T>(T[] array) where T : struct;
+		public abstract void Get(IntPtr array);
 
 		public abstract void SetMipmapping(bool enable);
 		public abstract void SetRepeat(bool enable);

@@ -17,16 +17,16 @@ namespace MCSkin3D.Swatches
 
 		private static string ReadString(EndianBinaryReader reader)
 		{
-			string str = "";
-
 			reader.ReadUInt16();
 			ushort len = reader.ReadUInt16();
+			char[] chars = new char[len];
 
 			for (ushort i = 0; i < len - 1; ++i)
-				str += (char) reader.ReadUInt16();
+				chars[i] = (char)reader.ReadUInt16();
+	
 			reader.ReadUInt16();
 
-			return str;
+			return new string(chars);
 		}
 
 		private static void WriteString(EndianBinaryWriter writer, string s)

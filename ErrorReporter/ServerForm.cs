@@ -31,11 +31,38 @@ namespace ServerTest
 			Pop2(0);
 		}
 
+		void SomeFunc()
+		{
+			Pop();
+		}
+
 		private void ServerForm_Load(object sender, EventArgs e)
 		{
 			_server = new Server(8888);
 			_server.ReceivedReport += new EventHandler<ReceivedReportEventArgs>(_server_ReceivedReport);
 			_server.ListenForReports();
+
+			try
+			{
+				SomeFunc();
+			}
+			catch (Exception ex)
+			{
+				var report = new ErrorReport();
+				report.Name = "Paril";
+				report.Description = "I crashed it D:";
+				report.Email = "Email Here";
+
+				report.Data = new List<ExceptionData>();
+				for (var lex = (Exception)new InvalidOperationException("Invalid", ex); lex != null; lex = lex.InnerException)
+					report.Data.Add(new ExceptionData(lex));
+
+				var wrap = new ReportWrapper(report);
+				string fileName = wrap.Received.ToString("d_M_yyyy_h_m_s_tt");
+
+				_reports.Add(wrap);
+				PopulateTreeview();
+			}
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -43,37 +70,6 @@ namespace ServerTest
 			_server.Close();
 
 			base.OnFormClosed(e);
-		}
-
-		class ReportWrapper
-		{
-			public ErrorReport Report;
-			public DateTime Received;
-
-			public string ExceptionType;
-			public string ExceptionMessage;
-			public List<string> ExceptionStack = new List<string>();
-
-			public ReportWrapper(ErrorReport report)
-			{
-				Received = DateTime.Now;
-				Report = report;
-
-				int firstNewline = report.Exception.IndexOf("\r\n");
-				string left = (firstNewline == -1) ? report.Exception : report.Exception.Substring(0, firstNewline);
-				int comma = left.IndexOf(':');
-
-				ExceptionType = left.Substring(0, comma).Trim();
-				ExceptionMessage = left.Substring(comma + 1).Trim();
-
-				if (firstNewline != -1)
-				{
-					string stack = report.Exception.Substring(firstNewline + 2);
-					string[] stackList = stack.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-					ExceptionStack.AddRange(stackList);
-				}
-			}
 		}
 
 		List<ReportWrapper> _reports = new List<ReportWrapper>();
@@ -122,7 +118,7 @@ namespace ServerTest
 				fileName += ".txt";
 
 				File.WriteAllText(fileName,
-				wrap.Report.ToString(wrap.Received));
+				wrap.Report.ToString());
 
 				_reports.Add(wrap);
 				PopulateTreeview();
@@ -135,7 +131,7 @@ namespace ServerTest
 			{
 				ReportWrapper wrap = (ReportWrapper)e.Node.Tag;
 
-				textBox1.Text = wrap.Report.ToString(wrap.Received);
+				reportViewer1.Populate(wrap);
 			}
 		}
 
@@ -183,6 +179,23 @@ namespace ServerTest
 		{
 			Show();
 			notifyIcon1.Visible = false;
+		}
+
+		private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+	}
+
+	public class ReportWrapper
+	{
+		public ErrorReport Report;
+		public DateTime Received;
+
+		public ReportWrapper(ErrorReport report)
+		{
+			Received = DateTime.Now;
+			Report = report;
 		}
 	}
 }

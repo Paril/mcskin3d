@@ -33,7 +33,7 @@ namespace MCSkin3D.Macros
 					s = s.Remove(m.Index, m.Length).Insert(m.Index, _macros[m.Groups[1].Value]);
 			}
 
-			return s;
+			return Environment.ExpandEnvironmentVariables(s);
 		}
 	}
 }

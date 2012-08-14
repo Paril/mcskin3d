@@ -25,10 +25,12 @@ namespace Paril.OpenGL
 		{
 			get
 			{
-				if (File.Directory.FullName.Length < Environment.CurrentDirectory.Length + 1 + "Models/".Length)
+				var dl = GlobalSettings.GetDataURI("Models");
+
+				if (File.Directory.FullName.Length < dl.Length + 1)
 					return Name;
 				return
-					File.Directory.FullName.Substring(Environment.CurrentDirectory.Length + 1 + "Models/".Length).Replace('\\', '/') +
+					File.Directory.FullName.Substring(dl.Length + 1).Replace('\\', '/') +
 					'/' + Name;
 			}
 		}

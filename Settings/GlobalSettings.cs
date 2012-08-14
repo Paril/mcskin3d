@@ -209,8 +209,6 @@ namespace MCSkin3D
 				InstallData.DataLocation += '\\';
 
 			MacroHandler.RegisterMacro("DataLocation", InstallData.DataLocation);
-			MacroHandler.RegisterMacro("ProgramLocation", Environment.CurrentDirectory);
-			MacroHandler.RegisterMacro("DefaultSkinFolder", MacroHandler.ReplaceMacros(GlobalSettings.SkinDirectories[0]));
 
 			try
 			{
@@ -225,6 +223,8 @@ namespace MCSkin3D
 				Settings.LoadDefaults();
 				Loaded = false;
 			}
+
+			MacroHandler.RegisterMacro("DefaultSkinFolder", MacroHandler.ReplaceMacros(GlobalSettings.SkinDirectories[0]));
 		}
 
 		public static void Save()

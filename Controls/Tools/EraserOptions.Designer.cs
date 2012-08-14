@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -43,6 +43,10 @@
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "G_BRUSH";
+			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
 			// 
 			// EraserOptions
 			// 
@@ -59,7 +63,7 @@
 		#endregion
 
 		private System.Windows.Forms.GroupBox groupBox1;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 
 	}
 }

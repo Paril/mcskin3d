@@ -237,6 +237,13 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
+			_skipColors = true;
+			if (hueNumericUpDown.Value == 360)
+				hueNumericUpDown.Value = 0;
+			else if (hueNumericUpDown.Value == -1)
+				hueNumericUpDown.Value = 360;
+			_skipColors = false;
+
 			SetColor(ColorManager.FromHSVA((short) hueNumericUpDown.Value, SelectedColor.HSV.S, SelectedColor.HSV.V,
 			                               SelectedColor.HSV.A));
 		}

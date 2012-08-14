@@ -156,7 +156,6 @@ namespace Paril.Imaging
 
 								keyword += c;
 							}
-							;
 
 							string text = Encoding.ASCII.GetString(br.ReadBytes((int) (len - count)));
 							metadata.Add(keyword, text);

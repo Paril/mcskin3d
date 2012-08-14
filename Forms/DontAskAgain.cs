@@ -18,6 +18,7 @@
 
 using System;
 using System.Windows.Forms;
+using MCSkin3D.Languages;
 
 namespace MCSkin3D.Forms
 {
@@ -39,7 +40,7 @@ namespace MCSkin3D.Forms
 		/// <param name="labelValue">Label string</param>
 		/// <param name="againValue">The current stored boolean and reference to the new one</param>
 		/// <returns></returns>
-		public static bool Show(Language.Language language, string labelValue, ref bool dontShow)
+		public static bool Show(Language language, string labelValue, ref bool dontShow)
 		{
 			if (dontShow)
 				return true;
@@ -48,7 +49,6 @@ namespace MCSkin3D.Forms
 			{
 				form.StartPosition = FormStartPosition.CenterParent;
 				form.label1.Text = labelValue;
-				form.languageProvider1.LanguageChanged(language);
 
 				form.ShowDialog();
 

@@ -22,7 +22,7 @@ using System.Text;
 using MCSkin3D.Properties;
 using MCSkin3D.Macros;
 
-namespace MCSkin3D.Language
+namespace MCSkin3D.Languages
 {
 	public static class LanguageLoader
 	{
@@ -30,6 +30,9 @@ namespace MCSkin3D.Language
 
 		public static void LoadLanguages(string path)
 		{
+			if (!Directory.Exists(path))
+				return;
+
 			foreach (string file in Directory.GetFiles(path, "*.lang"))
 			{
 				try

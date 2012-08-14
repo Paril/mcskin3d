@@ -34,6 +34,10 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.panel4 = new System.Windows.Forms.Panel();
+			this.panel5 = new System.Windows.Forms.Panel();
+			this.label8 = new System.Windows.Forms.Label();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.label9 = new System.Windows.Forms.Label();
 			this.panel6 = new System.Windows.Forms.Panel();
 			this.label4 = new System.Windows.Forms.Label();
 			this.textBox3 = new System.Windows.Forms.TextBox();
@@ -43,10 +47,6 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.label5 = new System.Windows.Forms.Label();
-			this.panel5 = new System.Windows.Forms.Panel();
-			this.label8 = new System.Windows.Forms.Label();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.label9 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.label2 = new System.Windows.Forms.Label();
@@ -55,12 +55,12 @@
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
-			this.languageProvider1 = new MCSkin3D.Language.LanguageProvider();
+			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.panel1.SuspendLayout();
 			this.panel4.SuspendLayout();
-			this.panel6.SuspendLayout();
 			this.panel5.SuspendLayout();
+			this.panel6.SuspendLayout();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.panel3.SuspendLayout();
@@ -117,6 +117,51 @@
 			this.panel4.Name = "panel4";
 			this.panel4.Size = new System.Drawing.Size(322, 165);
 			this.panel4.TabIndex = 10;
+			// 
+			// panel5
+			// 
+			this.panel5.Controls.Add(this.label8);
+			this.panel5.Controls.Add(this.progressBar1);
+			this.panel5.Controls.Add(this.label9);
+			this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel5.Location = new System.Drawing.Point(0, 0);
+			this.panel5.Name = "panel5";
+			this.panel5.Size = new System.Drawing.Size(322, 165);
+			this.panel5.TabIndex = 4;
+			this.panel5.Visible = false;
+			// 
+			// label8
+			// 
+			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label8.Location = new System.Drawing.Point(3, 21);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(316, 13);
+			this.label8.TabIndex = 1;
+			this.label8.Text = "Sending error report...";
+			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// progressBar1
+			// 
+			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.progressBar1.Location = new System.Drawing.Point(0, 37);
+			this.progressBar1.MarqueeAnimationSpeed = 25;
+			this.progressBar1.Name = "progressBar1";
+			this.progressBar1.Size = new System.Drawing.Size(322, 16);
+			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+			this.progressBar1.TabIndex = 0;
+			// 
+			// label9
+			// 
+			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label9.Location = new System.Drawing.Point(3, 3);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(316, 159);
+			this.label9.TabIndex = 2;
+			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// panel6
 			// 
@@ -211,51 +256,6 @@
 			this.label5.Size = new System.Drawing.Size(88, 13);
 			this.label5.TabIndex = 4;
 			this.label5.Text = "M_EXPT_EMAIL";
-			// 
-			// panel5
-			// 
-			this.panel5.Controls.Add(this.label8);
-			this.panel5.Controls.Add(this.progressBar1);
-			this.panel5.Controls.Add(this.label9);
-			this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel5.Location = new System.Drawing.Point(0, 0);
-			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(322, 165);
-			this.panel5.TabIndex = 4;
-			this.panel5.Visible = false;
-			// 
-			// label8
-			// 
-			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label8.Location = new System.Drawing.Point(3, 21);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(316, 13);
-			this.label8.TabIndex = 1;
-			this.label8.Text = "Sending error report...";
-			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// progressBar1
-			// 
-			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar1.Location = new System.Drawing.Point(0, 37);
-			this.progressBar1.MarqueeAnimationSpeed = 25;
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(322, 16);
-			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-			this.progressBar1.TabIndex = 0;
-			// 
-			// label9
-			// 
-			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label9.Location = new System.Drawing.Point(3, 3);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(316, 159);
-			this.label9.TabIndex = 2;
-			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// panel2
 			// 
@@ -352,6 +352,10 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// ExceptionForm
 			// 
 			this.AcceptButton = this.button1;
@@ -375,9 +379,9 @@
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.panel4.ResumeLayout(false);
+			this.panel5.ResumeLayout(false);
 			this.panel6.ResumeLayout(false);
 			this.panel6.PerformLayout();
-			this.panel5.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -414,7 +418,7 @@
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.Windows.Forms.Panel panel6;
-		public Language.LanguageProvider languageProvider1;
+		public MCSkin3D.Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.Label label9;
 
 	}

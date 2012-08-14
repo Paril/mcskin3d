@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using MCSkin3D;
+using System;
 
 namespace Paril.OpenGL
 {
@@ -61,20 +62,20 @@ namespace Paril.OpenGL
 		}
 	}
 
-	public interface IColorGrabber<T>
+	public unsafe interface IColorGrabber<T> : IDisposable
 	{
 		T Texture { get; set; }
 		int Width { get; }
 		int Height { get; }
 		ColorPixel this[int x, int y] { get; set; }
-		ColorPixel[] Array { get; set; }
+		ColorPixel *Array { get; }
 
 		void Resize(int width, int height);
 		void Load();
 		void Save();
 	}
 
-	public struct ColorGrabber : IColorGrabber<Texture>
+	public unsafe struct ColorGrabber : IColorGrabber<Texture>
 	{
 		#region Delegates
 
@@ -83,10 +84,11 @@ namespace Paril.OpenGL
 		#endregion
 
 		public OnWriteDelegate OnWrite;
-		private ColorPixel[] _array;
+		private ColorPixel *_array;
 		private int _height;
 		private Texture _texture;
 		private int _width;
+		private bool _disposed;
 
 		public ColorGrabber(Texture texture, int width, int height)
 		{
@@ -98,8 +100,23 @@ namespace Paril.OpenGL
 			_width = width;
 			_height = height;
 			_array = null;
+			_disposed = false;
 
 			Resize(width, height);
+		}
+
+		public void Dispose()
+		{
+			if (!_disposed)
+			{
+				_disposed = true;
+
+				if (_array != null)
+				{
+					Marshal.FreeHGlobal((IntPtr)_array);
+					_array = null;
+				}
+			}
 		}
 
 		public bool Valid
@@ -127,7 +144,7 @@ namespace Paril.OpenGL
 
 		public void Resize(int width, int height)
 		{
-			_array = new ColorPixel[width * height];
+			_array = (ColorPixel*)Marshal.AllocHGlobal(width * height * sizeof(ColorPixel));
 			_width = width;
 			_height = height;
 		}
@@ -137,7 +154,10 @@ namespace Paril.OpenGL
 			if (_texture == null)
 				return;
 
-			_texture.Get(_array);
+			if (_array == null)
+				throw new Exception();
+
+			_texture.Get((IntPtr)_array);
 		}
 
 		public void Save()
@@ -145,7 +165,7 @@ namespace Paril.OpenGL
 			if (_texture == null)
 				return;
 
-			_texture.Upload(_array, _width, _height);
+			_texture.Upload((IntPtr)_array, _width, _height);
 		}
 
 		public ColorPixel this[int x, int y]
@@ -158,10 +178,9 @@ namespace Paril.OpenGL
 			}
 		}
 
-		public ColorPixel[] Array
+		public ColorPixel *Array
 		{
 			get { return _array; }
-			set { value.CopyTo(_array, 0); }
 		}
 
 		#endregion

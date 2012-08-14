@@ -38,9 +38,9 @@ namespace MCSkin3D
 		public bool Dirty;
 		public Texture GLImage;
 		public Bitmap Head;
-		public Bitmap Image;
 		public Size Size;
 		public UndoBuffer Undo;
+		public bool IsLastSkin { get; set; }
 
 		public Skin(string fileName)
 		{
@@ -111,36 +111,9 @@ namespace MCSkin3D
 				Head.Dispose();
 				Head = null;
 			}
-
-			if (Image != null)
-			{
-				Image.Dispose();
-				Image = null;
-			}
 		}
 
 		#endregion
-
-		public static Image getHeadFromFile(String str, Size s)
-		{
-			Image img = new Bitmap(str);
-
-			float scale = img.Size.Width / 64.0f;
-			var headSize = (int) (8.0f * scale);
-
-			Image head = new Bitmap(32, 32);
-			using (Graphics g = Graphics.FromImage(head))
-			{
-				g.InterpolationMode = InterpolationMode.NearestNeighbor;
-				g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				g.DrawImage(img, new Rectangle(0, 0, head.Width, head.Height), new Rectangle(headSize, headSize, headSize, headSize),
-				            GraphicsUnit.Pixel);
-			}
-
-			img.Dispose();
-			img = null;
-			return head;
-		}
 
 		static void SetImage(Skin skin)
 		{
@@ -160,15 +133,17 @@ namespace MCSkin3D
 
 					if (updateGL)
 					{
-						GLImage.Dispose();
-						GLImage = null;
+						Unload();
+						Create();
 					}
 				}
 
-				using (FileStream file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
-					Image = new Bitmap(file);
+				Bitmap image;
 
-				Size = Image.Size;
+				using (FileStream file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+					image = new Bitmap(file);
+
+				Size = image.Size;
 
 				float scale = Size.Width / 64.0f;
 				var headSize = (int) (8.0f * scale);
@@ -177,24 +152,14 @@ namespace MCSkin3D
 				Head = new Bitmap(headSize, headSize);
 				using (Graphics g = Graphics.FromImage(Head))
 				{
-					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize),
+					g.DrawImage(image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize),
 					            GraphicsUnit.Pixel);
-					g.DrawImage(Image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize),
+					g.DrawImage(image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize),
 					            GraphicsUnit.Pixel);
 				}
 
-				Image.Dispose();
-				Image = null;
-
-				Form f = (Editor.MainForm.IsHandleCreated) ? (Form)Editor.MainForm : (Form)Program.Context.SplashForm;
-
-				if (updateGL)
-				{
-					if (f.InvokeRequired)
-						f.Invoke((Action<Skin>)SetImage, this);
-					else
-						SetImage(this);
-				}
+				image.Dispose();
+				image = null;
 
 				if (Model == null)
 				{
@@ -209,17 +174,33 @@ namespace MCSkin3D
 					}
 					else
 						Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
-
-					if (f.InvokeRequired)
-						f.Invoke((Action)SetTransparentParts);
-					else
-						SetTransparentParts();
 				}
 			}
 			catch (Exception ex)
 			{
 				throw new Exception("Error loading skin \"" + File.FullName + "\"", ex);
 			}
+		}
+
+		public void Create()
+		{
+			Form f = (Editor.MainForm.IsHandleCreated) ? (Form)Editor.MainForm : (Form)Program.Context.SplashForm;
+
+			if (f.InvokeRequired)
+				f.Invoke((Action<Skin>)SetImage, this);
+			else
+				SetImage(this);
+
+			if (f.InvokeRequired)
+				f.Invoke((Action)SetTransparentParts);
+			else
+				SetTransparentParts();
+		}
+
+		public void Unload()
+		{
+			GLImage.Dispose();
+			GLImage = null;
 		}
 
 		public override string ToString()

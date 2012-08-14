@@ -91,14 +91,14 @@ namespace Paril.Components.Update
 		{
 			return (left.Major > right.Major) ||
 			       (left.Major == right.Major && left.Minor > right.Minor) ||
-			       (left.Major == right.Major && left.Minor == right.Minor && left.Revision > right.Revision) ||
-			       (left.Major == right.Major && left.Minor == right.Minor && left.Revision == right.Revision &&
-			        left.Build > right.Build);
+				   (left.Major == right.Major && left.Minor == right.Minor && left.Build > right.Build) ||
+				   (left.Major == right.Major && left.Minor == right.Minor && left.Build == right.Build &&
+					left.Revision > right.Revision);
 		}
 
 		public static bool operator <(Version left, Version right)
 		{
-			return left != right && right > left;
+			return left != right && !(left > right);
 		}
 
 		public int CompareTo(Version other)

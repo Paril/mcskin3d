@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using MCSkin3D.Language;
+using MCSkin3D.Languages;
 using Szotar.WindowsForms;
 
 namespace MCSkin3D.Controls
@@ -183,6 +183,8 @@ namespace MCSkin3D.Controls
 			this.FetchToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.FetchToolStripButton.Text = "M_FETCH_NAME";
 			this.FetchToolStripButton.Click += new System.EventHandler(this.fetchToolStripButton_Click);
+
+			this.LanguageProvider.BaseControl = this;
 		}
 
 		private void treeZoomOutToolStripButton_Click(object sender, EventArgs e)
