@@ -204,11 +204,11 @@ namespace MCSkin3D
 			get { return LanguageHandler.Language; }
 			set
 			{
-				LanguageHandler.Language = value;
-
 				if (LanguageHandler.Language != null &&
 					LanguageHandler.Language.Item != null)
 					LanguageHandler.Language.Item.Checked = false;
+
+				LanguageHandler.Language = value;
 
 				GlobalSettings.LanguageFile = LanguageHandler.Language.Culture.Name;
 
@@ -1105,6 +1105,9 @@ namespace MCSkin3D
 				GL.Enable(EnableCap.Blend);
 
 				Setup2D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
+
+				GL.Color3(Color.White);
+				TextureGL.Unbind();
 
 				DrawString(_font, "Compile Time: " + _compileSpan.ToString(), 6, 8);
 				GL.Translate(0, 8, 0);
