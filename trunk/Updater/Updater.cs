@@ -444,6 +444,9 @@ namespace MCSkin3D.UpdateSystem
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			if (objectListView1.SelectedIndices.Count == 0)
+				return;
+
 			objectListView1.BeginUpdate();
 			olvColumn2.IsVisible = false;
 			olvColumn5.IsVisible = true;

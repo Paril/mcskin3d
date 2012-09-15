@@ -141,7 +141,7 @@ namespace Paril.Imaging
 
 						if (type == "tEXt")
 						{
-							string keyword = "";
+							List<char> keyword = new List<char>();
 							uint count = 0;
 							char c = '\0';
 
@@ -154,11 +154,11 @@ namespace Paril.Imaging
 								if (c == '\0')
 									break;
 
-								keyword += c;
+								keyword.Add(c);
 							}
 
 							string text = Encoding.ASCII.GetString(br.ReadBytes((int) (len - count)));
-							metadata.Add(keyword, text);
+							metadata.Add(new string(keyword.ToArray()), text);
 						}
 						else
 							br.ReadBytes((int) len);
