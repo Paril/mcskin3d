@@ -1132,7 +1132,7 @@ namespace MCSkin3D
 		private void CalculateMatrices()
 		{
 			Rectangle viewport = GetViewport3D();
-			_projectionMatrix = Matrix4d.Perspective(45, viewport.Width / (double) viewport.Height, 0.01, 100000);
+			_projectionMatrix = Matrix4d.Perspective(45, viewport.Width / (double) viewport.Height, 4, 512);
 
 			Bounds3 vec = Bounds3.EmptyBounds;
 			Bounds3 allBounds = Bounds3.EmptyBounds;
