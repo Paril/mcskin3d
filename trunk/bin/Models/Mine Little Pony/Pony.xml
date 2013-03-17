@@ -16,7 +16,7 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-4,-4,-6</Offset>
+						<Offset>-4,-5,-6</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
@@ -33,7 +33,7 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-4,-6,-1</Offset>
+						<Offset>-4,-7,-1</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>2,2,2</Size>
@@ -49,8 +49,8 @@
 						</Animation>
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
-						<IsMirrored>False</IsMirrored>
-						<Offset>2,-6,-1</Offset>
+						<IsMirrored>True</IsMirrored>
+						<Offset>2,-7,-1</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>2,2,2</Size>
@@ -67,13 +67,178 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-0.5,-10,-4</Offset>
+						<Offset>-0.5,-11,-3.5</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>28.64789,0,0</Rotation>
 						<Size>1,4,1</Size>
-						<TextureOffset>56,0</TextureOffset>
+						<TextureOffset>0,3</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Helmet</Part>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,2,0</Size>
+						<TextureOffset>10,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,1,0</Size>
+						<TextureOffset>11,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>1,0,1</Size>
+						<TextureOffset>9,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>1,1,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>1,0,1</Size>
+						<TextureOffset>14,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,0,1</Size>
+						<TextureOffset>11,12</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,3,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,0,1</Size>
+						<TextureOffset>18,7</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,2,1</Size>
+						<TextureOffset>9,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,1,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,2,1</Size>
+						<TextureOffset>14,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,1,1</Size>
+						<TextureOffset>11,12</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Female.Female Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>1,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,1,1</Size>
+						<TextureOffset>12,12</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,3,0</Size>
+						<TextureOffset>10,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,0,1</Size>
+						<TextureOffset>10,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,3,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,0,1</Size>
+						<TextureOffset>18,7</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,3,1</Size>
+						<TextureOffset>10,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Muzzles.@Male.Male Muzzle">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,0,-7</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,3,1</Size>
+						<TextureOffset>13,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Hair">
 						<Animation>
@@ -84,7 +249,7 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
-						<Offset>-4,-4,-6</Offset>
+						<Offset>-4,-5,-6</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
@@ -132,23 +297,22 @@
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
-						<IsMirrored>False</IsMirrored>
-						<Offset>-4,4,2</Offset>
+						<Offset>-4,4,-14</Offset>
 						<Position>0,0,0</Position>
-						<Rotation>0,0,0</Rotation>
-						<Size>8,0,8</Size>
-						<TextureOffset>24,0</TextureOffset>
+						<Rotation>0,180,0</Rotation>
+						<Size>8,0,12</Size>
+						<TextureOffset>32,20</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
-						<Offset>-4,12,2</Offset>
+						<Offset>-4,12,-10</Offset>
 						<Position>0,0,0</Position>
-						<Rotation>0,0,0</Rotation>
+						<Rotation>0,180,0</Rotation>
 						<Size>8,0,8</Size>
-						<TextureOffset>24,0</TextureOffset>
+						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
 						<Side>2</Side>
@@ -159,7 +323,7 @@
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>0,8,4</Size>
-						<TextureOffset>0,20</TextureOffset>
+						<TextureOffset>4,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
 						<Side>1</Side>
@@ -170,21 +334,21 @@
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>0,8,4</Size>
-						<TextureOffset>0,20</TextureOffset>
+						<TextureOffset>4,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
-						<Offset>-4,4,10</Offset>
+						<Offset>-4,4,14</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>8,0,4</Size>
-						<TextureOffset>24,0</TextureOffset>
+						<Size>8,4,0</Size>
+						<TextureOffset>36,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
-						<Side>2</Side>
+						<Side>0</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
@@ -192,18 +356,18 @@
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,0,4</Size>
-						<TextureOffset>24,0</TextureOffset>
+						<TextureOffset>36,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
 						<Side>2</Side>
 					</Shape>
 					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
 						<IsMirrored>False</IsMirrored>
-						<Offset>-4,4,14</Offset>
+						<Offset>-4,8,14</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>8,8,0</Size>
-						<TextureOffset>24,0</TextureOffset>
+						<Size>8,4,0</Size>
+						<TextureOffset>36,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>Chest</Part>
 						<Side>0</Side>
@@ -252,7 +416,62 @@
 						<Part>Chest</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Body.Body">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,10,14</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>28.64789,0,0</Rotation>
+						<Size>2,2,0</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Neck.Neck">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1.2,-2.8</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>9.511099,0,0</Rotation>
+						<Size>4,4,0</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Neck.Neck">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1.2,1.2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>9.511099,0,0</Rotation>
+						<Size>4,4,0</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Neck.Neck">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1.2,-2.8</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>9.511099,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Neck.Neck">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,1.2,-2.8</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>9.511099,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -269,7 +488,7 @@
 						<Scale>0</Scale>
 						<Part>RightArm</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -286,7 +505,7 @@
 						<Scale>0</Scale>
 						<Part>LeftArm</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Leg">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -299,11 +518,11 @@
 						<Position>-2,8,10</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,12,4</Size>
-						<TextureOffset>40,16</TextureOffset>
+						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>RightLeg</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Leg">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leg">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -316,14 +535,14 @@
 						<Position>2,8,10</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,12,4</Size>
-						<TextureOffset>40,16</TextureOffset>
+						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>LeftLeg</Part>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>-2,1,2</Offset>
-						<Position>0,1,14</Position>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>4,0,4</Size>
 						<TextureOffset>32,0</TextureOffset>
@@ -331,106 +550,227 @@
 						<Part>None</Part>
 						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
-						<IsMirrored>False</IsMirrored>
-						<Offset>-2,17,2</Offset>
-						<Position>0,1,14</Position>
-						<Rotation>0,0,0</Rotation>
-						<Size>4,0,4</Size>
-						<TextureOffset>32,0</TextureOffset>
-						<Scale>0</Scale>
-						<Part>None</Part>
-						<Side>2</Side>
-					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>-2,1,2</Offset>
-						<Position>0,1,14</Position>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>4,8,0</Size>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,1,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,1,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>-2,1,6</Offset>
-						<Position>0,1,14</Position>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>4,8,0</Size>
+						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.1/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,5,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,0,4</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,5,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,5,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,0</Size>
+						<TextureOffset>32,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,5,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,5,6</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,0</Size>
+						<TextureOffset>32,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.2/4.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>-2,9,2</Offset>
-						<Position>0,1,14</Position>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>4,8,0</Size>
+						<Size>4,0,4</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,9,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,9,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,9,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
 						<IsMirrored>False</IsMirrored>
 						<Offset>-2,9,6</Offset>
-						<Position>0,1,14</Position>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>4,8,0</Size>
+						<Size>4,4,0</Size>
 						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 						<Side>0</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
-						<IsMirrored>True</IsMirrored>
-						<Offset>2,1,2</Offset>
-						<Position>0,1,14</Position>
-						<Rotation>0,0,0</Rotation>
-						<Size>0,8,4</Size>
-						<TextureOffset>36,0</TextureOffset>
-						<Scale>0</Scale>
-						<Part>None</Part>
-						<Side>1</Side>
-					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.3/4.Tail">
 						<IsMirrored>False</IsMirrored>
-						<Offset>-2,1,2</Offset>
-						<Position>0,1,14</Position>
+						<Offset>-2,13,2</Offset>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>0,8,4</Size>
-						<TextureOffset>36,0</TextureOffset>
+						<Size>4,0,4</Size>
+						<TextureOffset>32,0</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
-						<Side>1</Side>
+						<Side>2</Side>
 					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
-						<IsMirrored>True</IsMirrored>
-						<Offset>2,9,2</Offset>
-						<Position>0,1,14</Position>
-						<Rotation>0,0,0</Rotation>
-						<Size>0,8,4</Size>
-						<TextureOffset>36,0</TextureOffset>
-						<Scale>0</Scale>
-						<Part>None</Part>
-						<Side>1</Side>
-					</Shape>
-					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.Tail">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
 						<IsMirrored>False</IsMirrored>
-						<Offset>-2,9,2</Offset>
-						<Position>0,1,14</Position>
+						<Offset>-2,13,2</Offset>
+						<Position>0,0.8000002,14</Position>
 						<Rotation>0,0,0</Rotation>
-						<Size>0,8,4</Size>
-						<TextureOffset>36,0</TextureOffset>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,4</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 						<Side>1</Side>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,13,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,0</Size>
+						<TextureOffset>32,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>2,13,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>0,4,4</Size>
+						<TextureOffset>36,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>1</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,13,6</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,0</Size>
+						<TextureOffset>32,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>0</Side>
+					</Shape>
+					<Shape type="ab894c83-e399-4236-808b-25a78d56f5e1" name="Tail.4/4.Tail">
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,17,2</Offset>
+						<Position>0,0.8000002,14</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,0,4</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Side>2</Side>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -441,13 +781,13 @@
 						<IsMirrored>True</IsMirrored>
 						<Offset>4,5,2</Offset>
 						<Position>0,13,-3</Position>
-						<Rotation>90,0,0</Rotation>
+						<Rotation>90.00001,0,0</Rotation>
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -458,13 +798,13 @@
 						<IsMirrored>True</IsMirrored>
 						<Offset>4,5,4</Offset>
 						<Position>0,13,-3</Position>
-						<Rotation>90,0,0</Rotation>
+						<Rotation>90.00001,0,0</Rotation>
 						<Size>2,8,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Left Wing.Left Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Left Wing.Left Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -475,13 +815,13 @@
 						<IsMirrored>True</IsMirrored>
 						<Offset>4,5,6</Offset>
 						<Position>0,13,-3</Position>
-						<Rotation>90,0,0</Rotation>
+						<Rotation>90.00001,0,0</Rotation>
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -492,13 +832,13 @@
 						<IsMirrored>False</IsMirrored>
 						<Offset>-6,5,2</Offset>
 						<Position>0,13,-3</Position>
-						<Rotation>90,0,0</Rotation>
+						<Rotation>90.00001,0,0</Rotation>
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -509,13 +849,13 @@
 						<IsMirrored>False</IsMirrored>
 						<Offset>-6,5,4</Offset>
 						<Position>0,13,-3</Position>
-						<Rotation>90,0,0</Rotation>
+						<Rotation>90.00001,0,0</Rotation>
 						<Size>2,8,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Folded.Right Wing.Right Wing">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Folded.Right Wing.Right Wing">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -526,13 +866,13 @@
 						<IsMirrored>False</IsMirrored>
 						<Offset>-6,5,6</Offset>
 						<Position>0,13,-3</Position>
-						<Rotation>90,0,0</Rotation>
+						<Rotation>90.00001,0,0</Rotation>
 						<Size>2,6,2</Size>
 						<TextureOffset>56,16</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -549,7 +889,7 @@
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -566,7 +906,7 @@
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -583,7 +923,7 @@
 						<Scale>-0.2</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -600,7 +940,7 @@
 						<Scale>-0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -617,7 +957,7 @@
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -634,7 +974,7 @@
 						<Scale>0.3</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Left Wing Extended.Left Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Left Wing Extended.Left Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -651,7 +991,7 @@
 						<Scale>0.2</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -660,15 +1000,15 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,0,0</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,0,0</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -677,15 +1017,15 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,8,0</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,8,0</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -694,15 +1034,15 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,-1.2,-0.2</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,-1.2,-0.2</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>-48.70141,0,0</Rotation>
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.2</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -711,15 +1051,15 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,1.8,1.3</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,1.8,1.3</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>-42.97183,0,0</Rotation>
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>-0.1</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -728,15 +1068,15 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,5,2</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,5,2</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>-28.64789,0,0</Rotation>
 						<Size>1,8,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -745,15 +1085,15 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,0,-0.2</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,0,-0.2</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>1,6,2</Size>
 						<TextureOffset>56,19</TextureOffset>
 						<Scale>0.3</Scale>
 						<Part>None</Part>
 					</Shape>
-					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.Extended.Right Wing Extended.Right Wing Extended">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Wings.@Extended.Right Wing Extended.Right Wing Extended">
 						<Animation>
 							<AnimationAngles>0,0,0</AnimationAngles>
 							<AnimationDuration>0,0,0</AnimationDuration>
@@ -762,8 +1102,8 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
-						<Offset>0,0,0.2</Offset>
-						<Position>-5.5,5,6</Position>
+						<Offset>-1,0,0.2</Offset>
+						<Position>-4.5,5,6</Position>
 						<Rotation>-48.70141,0,0</Rotation>
 						<Size>1,3,2</Size>
 						<TextureOffset>56,19</TextureOffset>
@@ -773,9 +1113,9 @@
 				</Folder>
 			</Geometry>
 			<GlScale>1,1,1</GlScale>
-			<Name>Pony</Name>
+			<Name>New Pony</Name>
 			<TextureSize>64,32</TextureSize>
 		</Model>
 	</Models>
-	<Name>Pony</Name>
+	<Name>New Pony</Name>
 </Techne>
