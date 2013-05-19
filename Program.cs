@@ -1,6 +1,6 @@
 ﻿//
 //    MCSkin3D, a 3d skin management studio for Minecraft
-//    Copyright (C) 2011-2012 Altered Softworks & MCSkin3D Team
+//    Copyright (C) 2013 Altered Softworks & MCSkin3D Team
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -16,6 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using MCSkin3D.ExceptionHandler;
+using MCSkin3D.Languages;
+using SVN;
 using System;
 using System.IO;
 using System.Media;
@@ -23,11 +26,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
-using MCSkin3D.ExceptionHandler;
-using SVN;
 using Version = Paril.Components.Update.Version;
-using MCSkin3D.Forms;
-using MCSkin3D.Languages;
 
 namespace MCSkin3D
 {
