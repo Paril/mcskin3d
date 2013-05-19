@@ -765,9 +765,7 @@
   <ItemGroup>
     <None Include="Resources\Video.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Jonas\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\OpenTK.dll" />
     <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
