@@ -243,8 +243,8 @@ namespace MCSkin3D.Languages
 						{
 							MessageBox.Show("Stringtable string not found: " + strn);
 						}
-					}
 #endif
+					}
 				}
 			}
 		}

@@ -169,6 +169,7 @@
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.miniToolStrip = new MCSkin3D.Controls.SkinTreeViewToolBar();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
+			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -209,6 +210,7 @@
             this.saveAsToolStripMenuItem,
             this.saveAllToolStripMenuItem,
             this.uploadToolStripMenuItem,
+            this.toolStripMenuItem4,
             this.toolStripSeparator5,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -1549,6 +1551,13 @@
 			// 
 			this.languageProvider1.BaseControl = this;
 			// 
+			// toolStripMenuItem4
+			// 
+			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(211, 22);
+			this.toolStripMenuItem4.Text = "M_EXPORTMODEL";
+			this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click_1);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1726,6 +1735,7 @@
 		private System.Windows.Forms.ToolStripMenuItem clientArraysToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem immediateToolStripMenuItem;
 		public Languages.LanguageProvider languageProvider1;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
 	}
 }
 
