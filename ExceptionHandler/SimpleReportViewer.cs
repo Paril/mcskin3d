@@ -28,5 +28,11 @@ namespace MCSkin3D.ExceptionHandler
 		{
 			Close();
 		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(textBox1.Text);
+			MessageBox.Show("Copied!");
+		}
 	}
 }
