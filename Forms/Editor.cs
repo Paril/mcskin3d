@@ -4555,5 +4555,70 @@ namespace MCSkin3D
 		{
 			ChangeRenderMode(0);
 		}
+
+		private void toolStripMenuItem4_Click_1(object sender, EventArgs e)
+		{
+			Dictionary<Vector3, int> vertDict = new Dictionary<Vector3, int>();
+			Dictionary<Vector2, int> texCoordDict = new Dictionary<Vector2, int>();
+
+			foreach (var m in CurrentModel.Meshes)
+			{
+				foreach (var f in m.Faces)
+				{
+					if (f.Indices.Length != 4)
+					{
+						Debugger.Break();
+						continue;
+					}
+
+					for (var i = 0; i < 4; ++i)
+					{
+						var fv = Vector3.Transform(f.Vertices[i], m.Matrix);
+						var ft = f.TexCoords[i];
+
+						if (!vertDict.ContainsKey(fv))
+							vertDict.Add(fv, vertDict.Count);
+						if (!texCoordDict.ContainsKey(ft))
+							texCoordDict.Add(ft, texCoordDict.Count);
+					}
+				}
+			}
+
+			string s = "";
+
+			foreach (var v in vertDict)
+				s += String.Format("v {0} {1} {2}\r\n", v.Key.X, -v.Key.Y, v.Key.Z);
+
+			foreach (var v in texCoordDict)
+				s += String.Format("vt {0} {1}\r\n", v.Key.X, 1 - v.Key.Y);
+
+			foreach (var m in CurrentModel.Meshes)
+			{
+				s += String.Format("g {0}\r\n", m.Name);
+				s += "s 1\r\n";
+
+				foreach (var f in m.Faces)
+				{
+					if (f.Indices.Length != 4)
+					{
+						Debugger.Break();
+						continue;
+					}
+
+					int[] vi = new int[4];
+					int[] vt = new int[4];
+
+					for (var i = 0; i < 4; ++i)
+					{
+						vi[i] = vertDict[Vector3.Transform(f.Vertices[i], m.Matrix)] + 1;
+						vt[i] = texCoordDict[f.TexCoords[i]] + 1;
+					}
+
+					s += String.Format("f {0}/{1} {2}/{3} {4}/{5} {6}/{7}\r\n", vi[0], vt[0], vi[1], vt[1], vi[2], vt[2], vi[3], vt[3]);
+				}
+			}
+
+			Clipboard.SetText(s);
+		}
 	}
 }
