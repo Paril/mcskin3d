@@ -15,7 +15,7 @@ namespace MCSkin3D
 	{
 		public Form Form;
 		public Splash SplashForm;
-		public Updater Updater;
+		public UpdateSystem.UpdateChecker Updater;
 
 		public MCSkin3DAppContext()
 		{
@@ -33,16 +33,7 @@ namespace MCSkin3D
 			}
 
 			SplashForm = new Splash();
-
-			Updater = new UpdateSystem.Updater(
-#if BETA
-				"http://alteredsoftworks.com/mcskin3d/updates_beta.xml"
-#else
-				"http://alteredsoftworks.com/mcskin3d/updates.xml"
-#endif
-);
-			Updater.FormHidden += SplashForm.Updater_FormClosed;
-			Updater.UpdatesAvailable += SplashForm.Updater_UpdatesAvailable;
+			Updater = new UpdateSystem.UpdateChecker("http://alteredsoftworks.com/mcskin3d/update");
 
 			Form = new Editor();
 			Form.FormClosing += (sender, e) => GlobalSettings.Save();
@@ -53,9 +44,6 @@ namespace MCSkin3D
 
 		public void DoneLoadingSplash()
 		{
-			Updater.FormHidden -= SplashForm.Updater_FormClosed;
-			Updater.UpdatesAvailable -= SplashForm.Updater_UpdatesAvailable;
-
 			Form.Show();
 		}
 	}

@@ -1721,16 +1721,25 @@ namespace MCSkin3D
 			ToggleOverlay();
 		}
 
-		static void ShowUpdater(Form owner)
+		public static void ShowUpdateDialog(IWin32Window owner)
 		{
-			owner.Hide();
+			if (MessageBox.Show(owner, "There is a new update available. Would you like to head to a download location?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				Process.Start("http://www.planetminecraft.com/mod/mcskin3d/");
+		}
 
-			Program.Context.Updater.Show(owner);
+		static void CheckForUpdates(IWin32Window owner)
+		{
+			if (Program.Context.Updater.CheckForUpdates())
+				ShowUpdateDialog(owner);
+			else
+				MessageBox.Show(owner, "You have the latest version.");
 		}
 
 		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowUpdater(this);
+			string x = null;
+			x.Split('\n');
+			CheckForUpdates(this);
 		}
 
 		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3065,9 +3074,6 @@ namespace MCSkin3D
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			if (Program.Context.Updater != null)
-				Program.Context.Updater.StopUpdates();
-
 			if (RecursiveNodeIsDirty(treeView1.Nodes))
 			{
 				if (
@@ -3127,9 +3133,6 @@ namespace MCSkin3D
 				MessageBox.Show(GetLanguageString("M_TEMP"));
 				Application.Exit();
 			}
-
-			Program.Context.Updater.FormHidden += _updater_FormHidden;
-			Program.Context.Updater.UpdatesAvailable += _updater_UpdatesAvailable;
 
 			//new GUIDPicker("..\\guids").ShowDialog();
 		}
@@ -4307,7 +4310,7 @@ namespace MCSkin3D
 			InitializeComponent();
 
 			KeyPreview = true;
-			Text = "MCSkin3D v" + Program.Version.ToString();
+			Text = Program.Name + " v" + Program.Version.ToString();
 
 #if BETA
 			Text += " [Beta]";
@@ -4474,39 +4477,6 @@ namespace MCSkin3D
 
 			CreatePartList();
 			Renderer.Invalidate();
-		}
-
-		public static bool DisplayUpdateMessage(Form owner)
-		{
-			bool retVal = true;
-
-			owner.Invoke((Action)delegate()
-			{
-				if (MessageBox.Show(GetLanguageString("B_MSG_NEWUPDATE"), "Update!", MessageBoxButtons.YesNo) == DialogResult.Yes)
-					ShowUpdater(owner);
-				else
-					retVal = false;
-			});
-
-			return retVal;
-		}
-
-		public static void UpdateFormHidden(Form owner)
-		{
-			if (Program.Context.Updater.DialogResult == DialogResult.Cancel)
-				owner.Show();
-			else
-				owner.Close();
-		}
-
-		void _updater_UpdatesAvailable(object sender, EventArgs e)
-		{
-			DisplayUpdateMessage(this);
-		}
-
-		void _updater_FormHidden(object sender, EventArgs e)
-		{
-			UpdateFormHidden(this);
 		}
 
 		private void rendererControl_MouseEnter(object sender, EventArgs e)

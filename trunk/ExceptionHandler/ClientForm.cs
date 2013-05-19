@@ -12,13 +12,6 @@ namespace MCSkin3D.ExceptionHandler
 {
 	public partial class ExceptionForm : Form
 	{
-		internal const UInt32 MF_ENABLED = 0x00000000;
-		internal const UInt32 MF_GRAYED = 0x00000001;
-		internal const UInt32 MF_DISABLED = 0x00000002;
-		private uint SC_CLOSE = 61536;
-		private Client _client;
-		private bool _sendingReport;
-
 		public ExceptionForm()
 		{
 			InitializeComponent();
@@ -107,30 +100,10 @@ namespace MCSkin3D.ExceptionHandler
 			}
 
 			int offs = label3.Height - oldHeight;
-			panel4.Location = new Point(panel4.Location.X, panel4.Location.Y + offs);
 
 			Height += offs;
 
 			linkLabel1.Location = new Point(label2.Location.X + label2.Width - 4, label2.Location.Y);
-		}
-
-		private void _client_SendFinished(object sender, SendEventArgs e)
-		{
-			Invoke((Action) delegate
-			                {
-			                	label8.Visible = false;
-			                	progressBar1.Value = progressBar1.Maximum;
-			                	progressBar1.Style = ProgressBarStyle.Continuous;
-			                	button2.Text = Editor.GetLanguageString("M_EXPT_CLOSE");
-
-			                	if (e.Failed)
-			                		label9.Text = Editor.GetLanguageString("M_EXPT_FAILED") + "\r\n" + e.StatusString;
-			                	else
-			                		label9.Text = Editor.GetLanguageString("M_EXPT_SUCCEED");
-
-			                	_sendingReport = false;
-			                	EnableMenuItem(GetSystemMenu(Handle, false), SC_CLOSE, MF_ENABLED);
-			                });
 		}
 
 		private void ExceptionForm_Load(object sender, EventArgs e)
@@ -207,13 +180,9 @@ namespace MCSkin3D.ExceptionHandler
 
 		#endregion
 
-		public static ErrorReport Construct(string name, string email, string description, Exception topException, bool hardware)
+		public static ErrorReport Construct(Exception topException)
 		{
 			ErrorReport report = new ErrorReport();
-
-			report.Name = name;
-			report.Email = email;
-			report.Description = description;
 
 			report.Data = new List<ExceptionData>();
 
@@ -246,45 +215,42 @@ namespace MCSkin3D.ExceptionHandler
 			// build hardware info
 			report.HardwareData = new Dictionary<string, string>();
 
-			if (hardware)
+			var searcher =
+				new ManagementObjectSearcher("Select * from Win32_VideoController");
+
+			foreach (ManagementObject video in searcher.Get())
 			{
-				var searcher =
-					new ManagementObjectSearcher("Select * from Win32_VideoController");
-
-				foreach (ManagementObject video in searcher.Get())
+				foreach (PropertyData prop in video.Properties)
 				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							report.HardwareData.Add("video|" + prop.Name, prop.Value.ToString());
-					}
+					if (prop.Value != null &&
+						prop.Name != "SystemName")
+						report.HardwareData.Add("video|" + prop.Name, prop.Value.ToString());
 				}
+			}
 
-				searcher =
-					new ManagementObjectSearcher("Select * from Win32_PhysicalMemoryArray");
+			searcher =
+				new ManagementObjectSearcher("Select * from Win32_PhysicalMemoryArray");
 
-				foreach (ManagementObject video in searcher.Get())
+			foreach (ManagementObject video in searcher.Get())
+			{
+				foreach (PropertyData prop in video.Properties)
 				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							report.HardwareData.Add("memory|" + prop.Name, prop.Value.ToString());
-					}
+					if (prop.Value != null &&
+						prop.Name != "SystemName")
+						report.HardwareData.Add("memory|" + prop.Name, prop.Value.ToString());
 				}
+			}
 
-				searcher =
-					new ManagementObjectSearcher("Select * from Win32_Processor");
+			searcher =
+				new ManagementObjectSearcher("Select * from Win32_Processor");
 
-				foreach (ManagementObject video in searcher.Get())
+			foreach (ManagementObject video in searcher.Get())
+			{
+				foreach (PropertyData prop in video.Properties)
 				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							report.HardwareData.Add("processor|" + prop.Name, prop.Value.ToString());
-					}
+					if (prop.Value != null &&
+						prop.Name != "SystemName")
+						report.HardwareData.Add("processor|" + prop.Name, prop.Value.ToString());
 				}
 			}
 
@@ -293,48 +259,12 @@ namespace MCSkin3D.ExceptionHandler
 
 		private ErrorReport BuildErrorReport()
 		{
-			return Construct(textBox1.Text, textBox2.Text, textBox3.Text, Exception, checkBox1.Checked);
-		}
-
-		[DllImport("user32.dll")]
-		private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
-
-		[DllImport("user32.dll")]
-		private static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem,
-		                                          uint uEnable);
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			EnableMenuItem(GetSystemMenu(Handle, false), SC_CLOSE, MF_GRAYED);
-
-			panel6.Visible = false;
-			panel5.Visible = true;
-			button1.Enabled = false;
-			_sendingReport = true;
-			button2.Text = Editor.GetLanguageString("C_CANCEL");
-
-			_client = new Client(BuildErrorReport(),
-				
-#if BETA
-				Environment.UserName == "Paril" ? "192.168.0.102" : "exception.alteredsoftworks.com",
-#else
-				"exception.alteredsoftworks.com",
-#endif
- 8888);
-			_client.SendFinished += _client_SendFinished;
-			_client.SendToServer();
+			return Construct(Exception);
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			if (!_sendingReport || _client == null)
-				Close();
-			else
-			{
-				_client.Abort();
-				_client = null;
-				_sendingReport = false;
-			}
+			Close();
 		}
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

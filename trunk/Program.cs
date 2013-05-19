@@ -33,6 +33,7 @@ namespace MCSkin3D
 {
 	internal static class Program
 	{
+		public const string Name = "MCSkin3D LE";
 		public static Version Version;
 		public static MCSkin3DAppContext Context;
 
@@ -42,24 +43,21 @@ namespace MCSkin3D
 		[STAThread]
 		private static void Main()
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-			                                           {
-			                                           	String resourceName = "MCSkin3D.Resources." +
-			                                           	                      new AssemblyName(args.Name).Name + ".dll";
+			AppDomain.CurrentDomain.AssemblyResolve +=
+			(sender, args) =>
+			{
+				String resourceName = "MCSkin3D.Resources." + new AssemblyName(args.Name).Name + ".dll";
 
-			                                           	using (
-			                                           		Stream stream =
-			                                           			Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)
-			                                           		)
-			                                           	{
-			                                           		if (stream == null)
-			                                           			return null;
+				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+				{
+					if (stream == null)
+						return null;
 
-			                                           		var assemblyData = new Byte[stream.Length];
-			                                           		stream.Read(assemblyData, 0, assemblyData.Length);
-			                                           		return Assembly.Load(assemblyData);
-			                                           	}
-			                                           };
+					var assemblyData = new Byte[stream.Length];
+					stream.Read(assemblyData, 0, assemblyData.Length);
+					return Assembly.Load(assemblyData);
+				}
+			};
 
 			MainCore();
 		}

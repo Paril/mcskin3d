@@ -78,7 +78,6 @@ namespace MCSkin3D.Forms
 		}
 
 		object _lockObj = new object();
-		bool _updateBox = true;
 
 		void PerformLoading()
 		{
@@ -100,14 +99,12 @@ namespace MCSkin3D.Forms
 				{
 					SetLoadingString("Checking for updates...");
 
-					Program.Context.Updater.TellCheckForUpdate();
-					if (Program.Context.Updater.GetUpdateData())
+					if (Program.Context.Updater.CheckForUpdates())
 					{
-						if (_updateBox)
+						Program.Context.SplashForm.Invoke((Action)(() =>
 						{
-							lock (_lockObj)
-								Monitor.Wait(_lockObj);
-						}
+							Editor.ShowUpdateDialog(Program.Context.SplashForm);
+						}));
 					}
 				}
 
@@ -144,19 +141,6 @@ namespace MCSkin3D.Forms
 		{
 			_loaderThread = new Thread(Program.Context.SplashForm.PerformLoading);
 			_loaderThread.Start();
-		}
-
-		public void Updater_UpdatesAvailable(object sender, EventArgs e)
-		{
-			_updateBox = Editor.DisplayUpdateMessage(this);
-		}
-
-		public void Updater_FormClosed(object sender, EventArgs e)
-		{
-			Editor.UpdateFormHidden(this);
-
-			lock (_lockObj)
-				Monitor.Pulse(_lockObj);
 		}
 
 		private void Splash_Load(object sender, EventArgs e)

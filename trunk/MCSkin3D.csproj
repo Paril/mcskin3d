@@ -127,7 +127,6 @@
     <Compile Include="Controls\SkinTreeViewToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ExceptionHandler\Client.cs" />
     <Compile Include="ExceptionHandler\ClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -583,12 +582,7 @@
     <Compile Include="Controls\Tools\PencilOptions.Designer.cs">
       <DependentUpon>PencilOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Updater\Updater.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Updater\Updater.Designer.cs">
-      <DependentUpon>Updater.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Updater\Updater.cs" />
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
     <Compile Include="Devcorp\YUV.cs" />
@@ -640,9 +634,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Swatches\SwatchConverterDialog.resx">
       <DependentUpon>SwatchConverterDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Updater\Updater.resx">
-      <DependentUpon>Updater.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Resources\WindowsHS.png" />
     <None Include="Resources\browseto.png" />
