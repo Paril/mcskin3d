@@ -63,29 +63,29 @@ namespace Paril.OpenGL
 			SetMipmapping(false);
 			SetRepeat(false);
 
-			IntPtr data = System.Runtime.InteropServices.Marshal.AllocHGlobal(image.Width * image.Height * sizeof(int));
+			int[,] tempData = new int[image.Width, image.Height];
 
 			unsafe
 			{
-				int *ptr = (int*)data.ToPointer();
-				int i = 0;
-
-				using (var fp = new FastPixel(image, true))
+				fixed (int *ptr = tempData)
 				{
-					for (int y = 0; y < image.Height; ++y)
+					int i = 0;
+
+					using (var fp = new FastPixel(image, true))
 					{
-						for (int x = 0; x < image.Width; ++x)
+						for (int y = 0; y < image.Height; ++y)
 						{
-							Color argb = fp.GetPixel(x, y);
-							ptr[i++] = (argb.R << 0) | (argb.G << 8) | (argb.B << 16) | (argb.A << 24);
+							for (int x = 0; x < image.Width; ++x)
+							{
+								Color argb = fp.GetPixel(x, y);
+								ptr[i++] = (argb.R << 0) | (argb.G << 8) | (argb.B << 16) | (argb.A << 24);
+							}
 						}
 					}
+
+					Upload((IntPtr)ptr, image.Width, image.Height);
 				}
-
-				Upload((IntPtr)ptr, image.Width, image.Height);
 			}
-
-			System.Runtime.InteropServices.Marshal.FreeHGlobal(data);
 		}
 
 		public override void Upload<T>(T[] array, int width, int height)

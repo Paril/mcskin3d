@@ -145,6 +145,7 @@ namespace MCSkin3D.Forms
 
 		private void Splash_Load(object sender, EventArgs e)
 		{
+			label4.Text = Program.Name + " v" + Program.Version.ToString();
 			SetLoadingString("Doing nothing yet...");
 
 			System.Timers.Timer timer = new System.Timers.Timer();

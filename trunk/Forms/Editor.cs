@@ -59,6 +59,7 @@ using Timer = System.Timers.Timer;
 using MCSkin3D.UpdateSystem;
 using MCSkin3D.Swatches;
 using MCSkin3D.Macros;
+using System.Collections.Specialized;
 
 namespace MCSkin3D
 {
@@ -2298,7 +2299,26 @@ namespace MCSkin3D
 
 			if (_lastSkin.Model != Model)
 			{
-				_lastSkin.Model = Model;
+				var oldAspect = (float)_lastSkin.Width / (float)_lastSkin.Height;
+				var newAspect = (float)Model.DefaultWidth / (float)Model.DefaultHeight;
+
+				if (Math.Abs(oldAspect - newAspect) > 0.01f)
+				{
+					if (MessageBox.Show("The aspect ratio of the model you're trying to assign to this skin is not the same as the skin's size. Changing this will require MCSkin3D to adjust the aspect ratio on this skin.\n\nAre you sure you want to do this? This is a destructive, NON-UNDOABLE operation!", "Question", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+						return;
+
+					_lastSkin.Model = Model;
+					_lastSkin.Resize((int)Model.DefaultWidth, (int)Model.DefaultHeight);
+
+					var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height);
+					grabber.Load();
+					grabber.Texture = GlobalDirtiness.CurrentSkin;
+					grabber.Save();
+					grabber.Texture = _previewPaint;
+					grabber.Save();
+				}
+				else
+					_lastSkin.Model = Model;
 
 				_lastSkin.Dirty = true;
 				SetCanSave(true);
@@ -4007,75 +4027,95 @@ namespace MCSkin3D
 		private readonly Login login = new Login();
 		private Thread _uploadThread;
 
-		public static Exception HttpUploadFile(string url, string file, string paramName, string contentType,
-		                                       Dictionary<string, byte[]> nvc, CookieContainer cookies)
+		public class CookieAwareWebClient : WebClient
 		{
-			//log.Debug(string.Format("Uploading {0} to {1}", file, url));
-			string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
-			byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+			public CookieContainer Cookies = new CookieContainer();
 
-			var wr = (HttpWebRequest) WebRequest.Create(url);
-			wr.ContentType = "multipart/form-data; boundary=" + boundary;
-			wr.Method = "POST";
-			wr.KeepAlive = true;
-			wr.CookieContainer = cookies;
-			wr.Credentials = CredentialCache.DefaultCredentials;
-			wr.Timeout = 10000;
-
-			Stream rs = wr.GetRequestStream();
-
-			const string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
-			foreach (var kvp in nvc)
+			protected override WebRequest GetWebRequest(Uri address)
 			{
-				rs.Write(boundarybytes, 0, boundarybytes.Length);
-				string formitem = string.Format(formdataTemplate, kvp.Key, Encoding.ASCII.GetString(kvp.Value));
-				byte[] formitembytes = Encoding.UTF8.GetBytes(formitem);
-				rs.Write(formitembytes, 0, formitembytes.Length);
-			}
-			rs.Write(boundarybytes, 0, boundarybytes.Length);
-
-			const string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
-			string header = string.Format(headerTemplate, paramName, Path.GetFileName(file), contentType);
-			byte[] headerbytes = Encoding.UTF8.GetBytes(header);
-			rs.Write(headerbytes, 0, headerbytes.Length);
-
-			var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-			var buffer = new byte[4096];
-			int bytesRead = 0;
-			while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-				rs.Write(buffer, 0, bytesRead);
-			fileStream.Close();
-
-			byte[] trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
-			rs.Write(trailer, 0, trailer.Length);
-			rs.Close();
-
-			WebResponse wresp = null;
-			Exception ret = null;
-			try
-			{
-				wresp = wr.GetResponse();
-				Stream stream2 = wresp.GetResponseStream();
-				var reader2 = new StreamReader(stream2);
-				//log.Debug(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
-			}
-			catch (Exception ex)
-			{
-				//log.Error("Error uploading file", ex);
-				if (wresp != null)
+				WebRequest request = base.GetWebRequest(address);
+				if (request is HttpWebRequest)
 				{
-					wresp.Close();
-					wresp = null;
+					(request as HttpWebRequest).CookieContainer = Cookies;
+					request.Timeout = 10000;
+					request.Proxy = null;
+				}
+				return request;
+			}
+
+			public Exception UploadFileEx(string url, string file, string paramName, string contentType, Dictionary<string, string> nvc)
+			{
+				//log.Debug(string.Format("Uploading {0} to {1}", file, url));
+				string boundary = "---------------------------" + DateTime.Now.Ticks.ToString();
+				byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+				var wr = (HttpWebRequest)HttpWebRequest.Create(url);
+				wr.ContentType = "multipart/form-data; boundary=" + boundary;
+				wr.CookieContainer = Cookies;
+				wr.Referer = "http://www.minecraft.net/profile";
+				wr.Method = "POST";
+				wr.Timeout = 10000;
+				wr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31";
+
+				wr.Headers.Set("Origin", "http://minecraft.net");
+				wr.AllowAutoRedirect = false;
+
+				Stream rs = wr.GetRequestStream();
+
+				const string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+				foreach (var kvp in nvc)
+				{
+					rs.Write(boundarybytes, 0, boundarybytes.Length);
+					string formitem = string.Format(formdataTemplate, kvp.Key, kvp.Value);
+					byte[] formitembytes = Encoding.UTF8.GetBytes(formitem);
+					rs.Write(formitembytes, 0, formitembytes.Length);
+				}
+				rs.Write(boundarybytes, 0, boundarybytes.Length);
+
+				const string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+				string header = string.Format(headerTemplate, paramName, Path.GetFileName(file), contentType);
+				byte[] headerbytes = Encoding.UTF8.GetBytes(header);
+				rs.Write(headerbytes, 0, headerbytes.Length);
+
+				var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+				var buffer = new byte[4096];
+				int bytesRead = 0;
+				while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+					rs.Write(buffer, 0, bytesRead);
+				fileStream.Close();
+
+				byte[] trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+				rs.Write(trailer, 0, trailer.Length);
+				rs.Close();
+
+				HttpWebResponse wresp = null;
+				Exception ret = null;
+				try
+				{
+					wresp = (HttpWebResponse)wr.GetResponse();
+
+					if (wresp.Cookies["PLAY_FLASH"].Value.Contains("success"))
+						return null;
+
+					throw new Exception("Failed to upload skin");
+				}
+				catch (Exception ex)
+				{
+					if (wresp != null)
+					{
+						wresp.Close();
+						wresp = null;
+					}
+
+					ret = ex;
+				}
+				finally
+				{
+					wr = null;
 				}
 
-				ret = ex;
+				return ret;
 			}
-			finally
-			{
-				wr = null;
-			}
-
-			return ret;
 		}
 
 		private void UploadThread(object param)
@@ -4089,13 +4129,8 @@ namespace MCSkin3D
 
 			try
 			{
-				var cookies = new CookieContainer();
-				var request = (HttpWebRequest) WebRequest.Create("http://www.minecraft.net/login");
-				request.CookieContainer = cookies;
-				request.Timeout = 10000;
-				WebResponse response = request.GetResponse();
-				var sr = new StreamReader(response.GetResponseStream());
-				string text = sr.ReadToEnd();
+				CookieAwareWebClient client = new CookieAwareWebClient();
+				var text = client.DownloadString("http://minecraft.net/login");
 
 				Match match = Regex.Match(text, @"<input type=""hidden"" name=""authenticityToken"" value=""(.*?)"">");
 				string authToken = null;
@@ -4105,34 +4140,15 @@ namespace MCSkin3D
 				if (authToken == null)
 					return;
 
-				sr.Dispose();
+				var data = new NameValueCollection();
+				data.Add("authenticityToken", authToken);
+				data.Add("username", (string)parms[0]);
+				data.Add("password", (string)parms[1]);
+				data.Add("redirect", "/profile");
 
-				response.Close();
+				var returnData = Encoding.UTF8.GetString(client.UploadValues("https://minecraft.net/login", data));
 
-				const string requestTemplate =
-					@"authenticityToken={0}&redirect=http%3A%2F%2Fwww.minecraft.net%2Fprofile&username={1}&password={2}";
-				string requestContent = string.Format(requestTemplate, authToken, parms[0], parms[1]);
-				byte[] inBytes = Encoding.UTF8.GetBytes(requestContent);
-
-				// craft the login request
-				request = (HttpWebRequest) WebRequest.Create("https://www.minecraft.net/login");
-				request.Method = "POST";
-				request.ContentType = "application/x-www-form-urlencoded";
-				request.CookieContainer = cookies;
-				request.ContentLength = inBytes.Length;
-				request.Timeout = 10000;
-
-				using (Stream dataStream = request.GetRequestStream())
-					dataStream.Write(inBytes, 0, inBytes.Length);
-
-				response = request.GetResponse();
-				sr = new StreamReader(response.GetResponseStream());
-				text = sr.ReadToEnd();
-
-				match = Regex.Match(text, @"<p class=""error"">([\w\W]*?)</p>");
-
-				sr.Dispose();
-				response.Close();
+				match = Regex.Match(returnData, @"<p class=""error"">([\w\W]*?)</p>");
 
 				if (match.Success)
 				{
@@ -4141,12 +4157,9 @@ namespace MCSkin3D
 				}
 				else
 				{
-					var dict = new Dictionary<string, byte[]>();
-					dict.Add("authenticityToken", Encoding.ASCII.GetBytes(authToken));
-					if (
-						(error.Exception =
-						 HttpUploadFile("http://www.minecraft.net/profile/skin", parms[2].ToString(), "skin", "image/png", dict, cookies)) !=
-						null)
+					var dict = new Dictionary<string, string>();
+					dict.Add("authenticityToken", authToken);
+					if ((error.Exception = client.UploadFileEx("http://minecraft.net/profile/skin", parms[2].ToString(), "skin", "image/png", dict)) != null)
 						error.Code = ErrorCodes.Unknown;
 				}
 			}
@@ -4218,7 +4231,8 @@ namespace MCSkin3D
 				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK,
 				                MessageBoxIcon.Information);
 				GlobalSettings.LastSkin = _lastSkin.File.ToString();
-				_uploadedSkin.IsLastSkin = false;
+				if (_uploadedSkin != null)
+					_uploadedSkin.IsLastSkin = false;
 				_uploadedSkin = _lastSkin;
 				_uploadedSkin.IsLastSkin = true;
 				treeView1.Invalidate();
