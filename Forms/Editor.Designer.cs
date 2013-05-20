@@ -38,7 +38,6 @@
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -210,7 +209,6 @@
             this.saveAsToolStripMenuItem,
             this.saveAllToolStripMenuItem,
             this.uploadToolStripMenuItem,
-            this.toolStripMenuItem4,
             this.toolStripSeparator5,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -258,13 +256,6 @@
 			this.uploadToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
 			this.uploadToolStripMenuItem.Text = "M_UPLOAD";
 			this.uploadToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
-			// 
-			// toolStripMenuItem4
-			// 
-			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(211, 22);
-			this.toolStripMenuItem4.Text = "M_EXPORTMODEL";
-			this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click_1);
 			// 
 			// toolStripSeparator5
 			// 
@@ -1735,7 +1726,6 @@
 		private System.Windows.Forms.ToolStripMenuItem clientArraysToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem immediateToolStripMenuItem;
 		public Languages.LanguageProvider languageProvider1;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
 	}
 }
 
