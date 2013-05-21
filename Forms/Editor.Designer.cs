@@ -129,7 +129,6 @@
 			this.splitContainer3 = new Paril.Controls.VisibleSplitContainer();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.loadingSkinLabel = new System.Windows.Forms.Label();
 			this.treeView1 = new MCSkin3D.SkinTreeView();
 			this.toolStrip2 = new MCSkin3D.Controls.SkinTreeViewToolBar();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -1092,7 +1091,6 @@
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.Add(this.loadingSkinLabel);
 			this.tabPage1.Controls.Add(this.treeView1);
 			this.tabPage1.Controls.Add(this.toolStrip2);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -1102,21 +1100,6 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Skins";
 			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
-			// loadingSkinLabel
-			// 
-			this.loadingSkinLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadingSkinLabel.BackColor = System.Drawing.SystemColors.Control;
-			this.loadingSkinLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.loadingSkinLabel.Location = new System.Drawing.Point(47, 107);
-			this.loadingSkinLabel.Name = "loadingSkinLabel";
-			this.languageProvider1.SetPropertyNames(this.loadingSkinLabel, "Text");
-			this.loadingSkinLabel.Size = new System.Drawing.Size(200, 107);
-			this.loadingSkinLabel.TabIndex = 2;
-			this.loadingSkinLabel.Text = "M_LOADING";
-			this.loadingSkinLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// treeView1
 			// 
@@ -1712,7 +1695,6 @@
 		private Controls.ColorToolStripMenuItem mGRIDCOLORToolStripMenuItem;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
-		public System.Windows.Forms.Label loadingSkinLabel;
 		private SkinTreeView treeView1;
 		private Controls.SkinTreeViewToolBar toolStrip2;
 		private System.Windows.Forms.TabPage tabPage2;
