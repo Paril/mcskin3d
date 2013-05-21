@@ -1,7 +1,7 @@
-﻿using System.Drawing;
-using System.IO;
-using MiscUtil.Conversion;
+﻿using MiscUtil.Conversion;
 using MiscUtil.IO;
+using System.Drawing;
+using System.IO;
 
 namespace MCSkin3D.Swatches
 {

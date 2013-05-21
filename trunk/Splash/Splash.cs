@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
-using MCSkin3D.Languages;
-using System.Globalization;
+﻿using MCSkin3D.Languages;
 using MCSkin3D.Swatches;
+using System;
+using System.Globalization;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace MCSkin3D.Forms
 {

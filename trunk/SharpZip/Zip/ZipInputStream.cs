@@ -40,12 +40,12 @@
 // HISTORY
 //	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
 
-using System;
-using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Encryption;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using System;
+using System.IO;
 
 #if !NETCF_1_0
 

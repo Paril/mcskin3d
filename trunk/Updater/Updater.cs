@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using System.Xml;
-using BrightIdeasSoftware;
 using Version = Paril.Components.Update.Version;
-using System.Diagnostics;
-using System.Linq;
 
 namespace MCSkin3D.UpdateSystem
 {

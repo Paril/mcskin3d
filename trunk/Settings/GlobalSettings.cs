@@ -16,14 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System.ComponentModel;
-using System.Drawing;
-using System.Security.Cryptography;
+using MCSkin3D.Macros;
 using Paril.Settings;
 using Paril.Settings.Serializers;
-using System.IO;
-using MCSkin3D.Macros;
 using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace MCSkin3D
 {

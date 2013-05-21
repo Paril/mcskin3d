@@ -16,11 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System.Drawing;
-using System.Windows.Forms;
 using MCSkin3D.lemon42;
 using Paril.Compatibility;
 using Paril.OpenGL;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace MCSkin3D
 {

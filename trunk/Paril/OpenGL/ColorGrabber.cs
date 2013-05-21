@@ -1,8 +1,8 @@
-﻿using System.Drawing;
+﻿using MCSkin3D;
+using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
-using MCSkin3D;
-using System;
 
 namespace Paril.OpenGL
 {

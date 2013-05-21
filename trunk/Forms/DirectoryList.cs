@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DaveChambers.FolderBrowserDialogEx;
+using Paril.Controls;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using DaveChambers.FolderBrowserDialogEx;
-using Paril.Controls;
 
 namespace MCSkin3D.Forms
 {

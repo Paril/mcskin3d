@@ -16,14 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using Paril.Controls;
+using Paril.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using Paril.Controls;
-using Paril.Drawing;
 
 namespace MCSkin3D
 {

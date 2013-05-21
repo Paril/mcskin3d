@@ -33,10 +33,10 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.Collections;
 using System.IO;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {

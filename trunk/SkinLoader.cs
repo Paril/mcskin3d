@@ -1,9 +1,9 @@
-﻿using System;
+﻿using MCSkin3D.Macros;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using MCSkin3D.Macros;
 
 namespace MCSkin3D
 {

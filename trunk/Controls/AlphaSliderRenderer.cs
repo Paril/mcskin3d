@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using MB.Controls;
+using System.Drawing;
 using System.Drawing.Drawing2D;
-using MB.Controls;
 
 namespace MCSkin3D
 {

@@ -16,27 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Media;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Timers;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using MCSkin3D.Controls;
 using MCSkin3D.Forms;
 using MCSkin3D.Languages;
+using MCSkin3D.Macros;
 using MCSkin3D.Properties;
 using MultiPainter;
 using OpenTK;
@@ -45,21 +28,33 @@ using OpenTK.Graphics.OpenGL;
 using Paril.Compatibility;
 using Paril.Components;
 using Paril.Components.Shortcuts;
-using Paril.Components.Update;
 using Paril.Controls;
 using Paril.Drawing;
 using Paril.Extensions;
+using Paril.Imaging;
 using Paril.Net;
 using Paril.OpenGL;
-using Paril.Imaging;
 using PopupControl;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Timers;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using KeyPressEventArgs = System.Windows.Forms.KeyPressEventArgs;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using Timer = System.Timers.Timer;
-using MCSkin3D.UpdateSystem;
-using MCSkin3D.Swatches;
-using MCSkin3D.Macros;
-using System.Collections.Specialized;
 
 namespace MCSkin3D
 {

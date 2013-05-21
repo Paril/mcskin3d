@@ -42,6 +42,11 @@
 //	2010-03-02	Z-1650	Fixed updating ODT archives in memory. Exposed exceptions in updating.
 //	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
 
+using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Encryption;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections;
 using System.Globalization;
@@ -49,11 +54,6 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Core;
-using ICSharpCode.SharpZipLib.Encryption;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 #if !NETCF_1_0
 #endif

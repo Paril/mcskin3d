@@ -39,10 +39,10 @@
 // HISTORY
 //	22-12-2009	DavidPierson	Added AES support
 
+using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
-using ICSharpCode.SharpZipLib.Encryption;
 
 #if !NETCF_1_0
 

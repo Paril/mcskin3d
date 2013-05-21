@@ -16,18 +16,16 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Xml;
 using MCSkin3D.Models;
-using MCSkin3D.Swatches;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Paril.OpenGL;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Xml;
 
 namespace MCSkin3D
 {

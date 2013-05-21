@@ -16,11 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using MCSkin3D.Macros;
+using MCSkin3D.Properties;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using MCSkin3D.Properties;
-using MCSkin3D.Macros;
 
 namespace MCSkin3D.Languages
 {

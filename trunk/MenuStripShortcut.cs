@@ -16,9 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using Paril.Components.Shortcuts;
 using System;
 using System.Windows.Forms;
-using Paril.Components.Shortcuts;
 
 namespace MCSkin3D
 {

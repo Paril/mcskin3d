@@ -16,13 +16,13 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using MCSkin3D.Swatches;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Media;
 using System.Windows.Forms;
-using MCSkin3D.Swatches;
 
 namespace MCSkin3D
 {
