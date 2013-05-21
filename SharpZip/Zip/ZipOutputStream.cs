@@ -41,12 +41,12 @@
 //	22-12-2009	Z-1649	Added AES support
 //	22-02-2010	Z-1648	Zero byte entries would create invalid zip files
 
-using System;
-using System.Collections;
-using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using System;
+using System.Collections;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {

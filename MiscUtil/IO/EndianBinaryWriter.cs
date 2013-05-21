@@ -1,7 +1,7 @@
+using MiscUtil.Conversion;
 using System;
 using System.IO;
 using System.Text;
-using MiscUtil.Conversion;
 
 namespace MiscUtil.IO
 {

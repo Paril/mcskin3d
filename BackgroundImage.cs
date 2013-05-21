@@ -16,8 +16,8 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System.Windows.Forms;
 using Paril.OpenGL;
+using System.Windows.Forms;
 
 namespace MCSkin3D
 {

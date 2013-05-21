@@ -16,6 +16,8 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using MCSkin3D.Properties;
+using Paril.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -25,8 +27,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
-using MCSkin3D.Properties;
-using Paril.Extensions;
 using Timer = System.Timers.Timer;
 
 namespace MCSkin3D

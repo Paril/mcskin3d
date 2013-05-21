@@ -16,12 +16,12 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using Paril.Compatibility;
 using Paril.Components;
 using Paril.OpenGL;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace MCSkin3D
 {

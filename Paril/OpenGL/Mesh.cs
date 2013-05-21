@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Xml;
-using MCSkin3D;
+﻿using MCSkin3D;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Paril.Drawing;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Paril.OpenGL
 {

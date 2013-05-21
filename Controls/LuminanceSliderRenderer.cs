@@ -16,10 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using MB.Controls;
 using MCSkin3D.lemon42;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace MCSkin3D
 {

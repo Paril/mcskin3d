@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MCSkin3D;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
-using MCSkin3D;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace Paril.OpenGL
 {

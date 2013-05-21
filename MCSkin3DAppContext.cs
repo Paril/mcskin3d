@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using MCSkin3D.Forms;
+﻿using MCSkin3D.Forms;
+using System;
 using System.IO;
 using System.Reflection;
-using MCSkin3D.UpdateSystem;
-using System.Threading;
+using System.Windows.Forms;
 
 namespace MCSkin3D
 {

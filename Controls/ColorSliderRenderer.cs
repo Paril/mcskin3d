@@ -16,9 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using MB.Controls;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using MB.Controls;
 
 namespace MCSkin3D
 {

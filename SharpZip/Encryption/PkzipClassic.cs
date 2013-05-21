@@ -38,9 +38,9 @@
 
 #if !NETCF_1_0
 
+using ICSharpCode.SharpZipLib.Checksums;
 using System;
 using System.Security.Cryptography;
-using ICSharpCode.SharpZipLib.Checksums;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {

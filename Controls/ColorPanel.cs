@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MCSkin3D.lemon42;
+using Paril.Controls.Color;
+using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using MCSkin3D.lemon42;
-using Paril.Controls.Color;
 
 namespace MCSkin3D.Controls
 {

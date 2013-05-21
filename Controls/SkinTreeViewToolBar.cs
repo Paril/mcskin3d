@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MCSkin3D.Languages;
+using System;
 using System.Windows.Forms;
-using MCSkin3D.Languages;
 using Szotar.WindowsForms;
 
 namespace MCSkin3D.Controls

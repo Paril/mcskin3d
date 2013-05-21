@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Devcorp.Controls.Design;
+using MiscUtil.Conversion;
+using MiscUtil.IO;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
-using Devcorp.Controls.Design;
-using MiscUtil.Conversion;
-using MiscUtil.IO;
 
 namespace MCSkin3D.Swatches
 {

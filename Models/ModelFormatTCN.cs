@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using OpenTK;
 using Paril.OpenGL;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Xml;
 
 namespace MCSkin3D.Models
 {

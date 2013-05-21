@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using OpenTK;
+﻿using OpenTK;
+using System.Drawing;
 
 namespace Paril.OpenGL
 {

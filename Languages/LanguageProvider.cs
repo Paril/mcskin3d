@@ -26,8 +26,6 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.ComponentModel.Design.Serialization;
-using System.ComponentModel.Design;
 
 namespace MCSkin3D.Languages
 {
