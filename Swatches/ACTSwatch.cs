@@ -26,6 +26,8 @@ namespace MCSkin3D.Swatches
 					Add(new NamedColor("Unnamed", Color.FromArgb(255, r, g, b)));
 				}
 			}
+
+			Dirty = false;
 		}
 
 		public override void Save()
