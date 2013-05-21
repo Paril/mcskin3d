@@ -2009,7 +2009,6 @@ namespace MCSkin3D
 
 			toolStrip2.Enabled = true;
 			treeView1.Enabled = true;
-			loadingSkinLabel.Visible = false;
 
 			foreach (var s in skins)
 			{

@@ -184,8 +184,7 @@ namespace MCSkin3D.lemon42
 			base.OnPaint(e);
 			Graphics g = e.Graphics;
 
-			using (Bitmap triangle = ColorPickRenderer.ColorTriangle(_currentHue, Width - thickness * 2, 2))
-				g.DrawImageUnscaled(triangle, thickness, thickness);
+			ColorPickRenderer.ColorTriangleInPlace(g, _currentHue, Width - thickness * 2, thickness);
 
 			g.DrawImageUnscaled(wheel, 0, 0);
 
@@ -539,7 +538,6 @@ namespace MCSkin3D.lemon42
 	public class ColorPickRenderer
 	{
 		public static Bitmap ColorWheel(int size, int width, int multisampling)
-			//4x multisampling recomended for optimum quality and speed.
 		{
 			if (width < 1 || size < 1)
 				return null;
@@ -582,34 +580,40 @@ namespace MCSkin3D.lemon42
 			}
 		}
 
-		public static Bitmap ColorTriangle(int angle, int size, int multisampling)
+		public static float Snap(float v, float g)
 		{
-			size = size * multisampling;
-			using (var b = new Bitmap(size, size))
-			using (Graphics g = Graphics.FromImage(b))
-			{
-				var gp = new GraphicsPath();
-
-				var origin = new Point(size / 2, size / 2);
-				var first = new PointF(size, size / 2.0f);
-				gp.AddPolygon(new PointF[3]
-				              {
-				              	first, ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(120)),
-				              	ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(240))
-				              });
-
-				using (var pgb = new PathGradientBrush(gp))
-				{
-					pgb.SurroundColors = new[] {Color.Black, Color.White};
-					pgb.CenterPoint = ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(120));
-					pgb.CenterColor = ColorManager.HSVtoRGB((short) angle, 100, 100, 255);
-					g.FillPath(pgb, gp);
-				}
-
-				return ColorPickUtil.ResizeImage(ColorPickUtil.rotateImage(b, (float) angle - 120), size / multisampling);
-			}
+			return ((int)(v / g + 0.5f) * g);
 		}
 
-		//2-3x multisampling recommended ;)
+		public static void ColorTriangleInPlace(Graphics g, int angle, int size, int thickness)
+		{
+			var saved = g.Save();
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			g.TranslateTransform(thickness, thickness);
+			g.TranslateTransform(size / 2, size / 2);
+			g.RotateTransform(angle - 120);
+			g.TranslateTransform(-size / 2, -size / 2);
+
+			var origin = new Point(size / 2, size / 2);
+			var first = new PointF(size, size / 2.0f);
+			var points = new PointF[3]
+				            {
+								first, ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(120)),
+								ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(240))
+				            };
+
+			for (var i = 0; i < points.Length; ++i)
+				points[i] = new PointF(Snap(points[i].X, 0.5f), Snap(points[i].Y, 0.5f));
+
+			using (var pgb = new PathGradientBrush(points, WrapMode.TileFlipXY))
+			{
+				pgb.SurroundColors = new[] { Color.Black, Color.White };
+				pgb.CenterPoint = ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(120));
+				pgb.CenterColor = ColorManager.HSVtoRGB((short)angle, 100, 100, 255);
+				g.FillPolygon(pgb, points);
+			}
+			g.Restore(saved);
+		}
 	}
 }
