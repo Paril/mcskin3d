@@ -36,6 +36,8 @@ namespace MCSkin3D.Swatches
 			get { return SwatchContainer.GetSwatchFormatName(GetType()); }
 		}
 
+		public bool Dirty { get; protected set; }
+
 		#endregion
 
 		#region Not supported

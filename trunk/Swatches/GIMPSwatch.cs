@@ -58,6 +58,8 @@ namespace MCSkin3D.Swatches
 					}
 				}
 			}
+
+			Dirty = false;
 		}
 
 		public override void Save()

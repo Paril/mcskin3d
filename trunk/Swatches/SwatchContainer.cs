@@ -116,7 +116,13 @@ namespace MCSkin3D
 		public void SaveSwatches()
 		{
 			foreach (ISwatch swatch in comboBox1.Items)
-				swatch.Save();
+			{
+				if (swatch.Dirty)
+				{
+					swatch.Save();
+					MessageBox.Show("Swatch " + swatch.Name + " saved");
+				}
+			}
 		}
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

@@ -29,7 +29,7 @@ namespace MCSkin3D.Swatches
 		public override NamedColor this[int index]
 		{
 			get { return _colors[index]; }
-			set { _colors[index] = value; }
+			set { _colors[index] = value; Dirty = true; }
 		}
 
 		public override string Name
@@ -60,11 +60,13 @@ namespace MCSkin3D.Swatches
 
 		public override void Add(NamedColor color)
 		{
+			Dirty = true;
 			_colors.Add(color);
 		}
 
 		public override void Clear()
 		{
+			Dirty = true;
 			_colors.Clear();
 		}
 
@@ -80,11 +82,13 @@ namespace MCSkin3D.Swatches
 
 		public override void Insert(int index, NamedColor color)
 		{
+			Dirty = true;
 			_colors.Insert(index, color);
 		}
 
 		public override void RemoveAt(int index)
 		{
+			Dirty = true;
 			_colors.RemoveAt(index);
 		}
 
@@ -124,6 +128,8 @@ namespace MCSkin3D.Swatches
 						throw new Exception("Couldn't load swatch: misformed line");
 				}
 			}
+
+			Dirty = false;
 		}
 
 		public override void Save()

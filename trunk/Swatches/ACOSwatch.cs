@@ -157,20 +157,22 @@ namespace MCSkin3D.Swatches
 		{
 			using (
 				var reader = new EndianBinaryReader(EndianBitConverter.Big, File.Open(FilePath, FileMode.Open, FileAccess.Read),
-				                                    Encoding.Unicode))
+													Encoding.Unicode))
 			{
 				ushort version = reader.ReadUInt16();
 				LoadACOData(reader, version);
 
-				if (reader.BaseStream.Position == reader.BaseStream.Length)
-					return;
+				if (reader.BaseStream.Position != reader.BaseStream.Length)
+				{
+					// Version 2 is here, so clear what we have
+					Clear();
 
-				// Version 2 is here, so clear what we have
-				Clear();
-
-				version = reader.ReadUInt16();
-				LoadACOData(reader, version);
+					version = reader.ReadUInt16();
+					LoadACOData(reader, version);
+				}
 			}
+
+			Dirty = false;
 		}
 
 		private void WriteRGBColor(EndianBinaryWriter writer, NamedColor c)
