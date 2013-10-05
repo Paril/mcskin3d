@@ -39,7 +39,7 @@ namespace MCSkin3D
 		{
 		}
 
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			ColorPixel c = pixels[x, y];
 			ColorManager oldColor = ColorManager.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha);
@@ -51,12 +51,12 @@ namespace MCSkin3D
 			return false;
 		}
 
-		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool RequestPreview(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			return false;
 		}
 
-		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public bool EndClick(ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			return false;
 		}

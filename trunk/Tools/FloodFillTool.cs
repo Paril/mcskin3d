@@ -62,7 +62,7 @@ namespace MCSkin3D
 		{
 		}
 
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (_done)
 				return false;
@@ -77,12 +77,12 @@ namespace MCSkin3D
 			                        	? Editor.MainForm.ColorPanel.UnselectedColor
 			                        	: Editor.MainForm.ColorPanel.SelectedColor;
 
-			FloodFill(x, y, oldColor, newColor, ref pixels);
+			FloodFill(x, y, oldColor, newColor, pixels);
 			_done = true;
 			return true;
 		}
 
-		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool RequestPreview(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (x == -1)
 				return false;
@@ -117,7 +117,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public bool EndClick(ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			_done = false;
 			if (_undo.Points.Count != 0)
@@ -163,7 +163,7 @@ namespace MCSkin3D
 				return SimilarColor(color1, color2, threshold);
 		}
 
-		private void FloodFill(int x, int y, Color oldColor, ColorManager newColor, ref ColorGrabber pixels)
+		private void FloodFill(int x, int y, Color oldColor, ColorManager newColor, ColorGrabber pixels)
 		{
 			Queue q = new Queue();
 

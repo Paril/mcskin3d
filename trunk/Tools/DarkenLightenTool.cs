@@ -25,9 +25,9 @@ namespace MCSkin3D
 {
 	public class DarkenLightenTool : BrushToolBase
 	{
-		public override bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public override bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			return MouseMoveOnSkin(ref pixels, skin, x, y, GlobalSettings.DarkenLightenIncremental);
+			return MouseMoveOnSkin(pixels, skin, x, y, GlobalSettings.DarkenLightenIncremental);
 		}
 
 		public override Color BlendColor(Color l, Color r)

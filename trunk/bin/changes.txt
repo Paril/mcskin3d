@@ -1,3 +1,12 @@
+Version 1.4.2.252
+- Renamed to "LE" for Light Edition
+-- I removed a lot of useless, bloat features.
+-- A few were watered down to be more simplistic and fit for compatibility, such as updating.
+- Fixed a few swatch editing quirks.
+- Added an orientation indicator (non-customizable right now).
+- Fixed many crashes
+- Techne support is still a bit iffy but better
+
 Version 1.4.1
 - Splash screen, designed to precache & load things off-thread and provide an easy way for the program to catch load issues
 - Made it a bit more apparent that adding a name/email to an exception report is not required
