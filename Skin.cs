@@ -212,41 +212,43 @@ namespace MCSkin3D
 
 		public void CommitChanges(Texture currentSkin, bool save)
 		{
-			var grabber = new ColorGrabber(currentSkin, Width, Height);
-			grabber.Load();
-
-			if (currentSkin != GLImage)
+			using (var grabber = new ColorGrabber(currentSkin, Width, Height))
 			{
-				grabber.Texture = GLImage;
-				grabber.Save();
-			}
+				grabber.Load();
 
-			if (save)
-			{
-				var newBitmap = new Bitmap(Width, Height);
-
-				using (var fp = new FastPixel(newBitmap, true))
+				if (currentSkin != GLImage)
 				{
-					for (int y = 0; y < Height; ++y)
-					{
-						for (int x = 0; x < Width; ++x)
-						{
-							ColorPixel c = grabber[x, y];
-							fp.SetPixel(x, y, Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue));
-						}
-					}
+					grabber.Texture = GLImage;
+					grabber.Save();
 				}
 
-				newBitmap.Save(File.FullName);
-				newBitmap.Dispose();
+				if (save)
+				{
+					var newBitmap = new Bitmap(Width, Height);
 
-				var md = new Dictionary<string, string>();
-				md.Add("Model", Model.Path);
-				PNGMetadata.WriteMetadata(File.FullName, md);
+					using (var fp = new FastPixel(newBitmap, true))
+					{
+						for (int y = 0; y < Height; ++y)
+						{
+							for (int x = 0; x < Width; ++x)
+							{
+								ColorPixel c = grabber[x, y];
+								fp.SetPixel(x, y, Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue));
+							}
+						}
+					}
 
-				SetImages(true);
+					newBitmap.Save(File.FullName);
+					newBitmap.Dispose();
 
-				Dirty = false;
+					var md = new Dictionary<string, string>();
+					md.Add("Model", Model.Path);
+					PNGMetadata.WriteMetadata(File.FullName, md);
+
+					SetImages(true);
+
+					Dirty = false;
+				}
 			}
 		}
 
@@ -351,19 +353,21 @@ namespace MCSkin3D
 
 		public void SetTransparentParts()
 		{
-			var grabber = new ColorGrabber(GLImage, Width, Height);
-			grabber.Load();
-
-			int mesh = 0;
-
-			TransparentParts.Clear();
-
-			foreach (Mesh m in Model.Meshes)
+			using (var grabber = new ColorGrabber(GLImage, Width, Height))
 			{
-				TransparentParts.Add(mesh, false);
+				grabber.Load();
 
-				CheckTransparentPart(grabber, mesh);
-				mesh++;
+				int mesh = 0;
+
+				TransparentParts.Clear();
+
+				foreach (Mesh m in Model.Meshes)
+				{
+					TransparentParts.Add(mesh, false);
+
+					CheckTransparentPart(grabber, mesh);
+					mesh++;
+				}
 			}
 		}
 	}

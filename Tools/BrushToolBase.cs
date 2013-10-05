@@ -49,7 +49,7 @@ namespace MCSkin3D
 		{
 		}
 
-		public virtual bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public virtual bool RequestPreview(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			if (x == -1)
 				return false;
@@ -86,7 +86,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public virtual bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public virtual bool EndClick(ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			if (_undo.Points.Count != 0)
 			{
@@ -100,12 +100,12 @@ namespace MCSkin3D
 			return false;
 		}
 
-		public abstract bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y);
+		public abstract bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y);
 		public abstract string GetStatusLabelText();
 
 		#endregion
 
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
+		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
 		{
 			if (x == _oldPixel.X && y == _oldPixel.Y)
 				return false;

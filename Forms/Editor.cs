@@ -339,41 +339,38 @@ namespace MCSkin3D
 			GlobalDirtiness.CurrentSkin = new TextureGL();
 			_alphaTex = new TextureGL();
 
-			unsafe
+			var arra = new byte[64 * 32];
+			_previewPaint.Upload(arra, 64, 32);
+			_previewPaint.SetMipmapping(false);
+			_previewPaint.SetRepeat(false);
+
+			GlobalDirtiness.CurrentSkin.Upload(arra, 64, 32);
+			GlobalDirtiness.CurrentSkin.SetMipmapping(false);
+			GlobalDirtiness.CurrentSkin.SetRepeat(false);
+
+			arra = new byte[]
 			{
-				var arra = new byte[64 * 32];
-				_previewPaint.Upload(arra, 64, 32);
-				_previewPaint.SetMipmapping(false);
-				_previewPaint.SetRepeat(false);
+				127,
+				127,
+				127,
+				255,
+				80,
+				80,
+				80,
+				255,
+				80,
+				80,
+				80,
+				255,
+				127,
+				127,
+				127,
+				255
+			};
 
-				GlobalDirtiness.CurrentSkin.Upload(arra, 64, 32);
-				GlobalDirtiness.CurrentSkin.SetMipmapping(false);
-				GlobalDirtiness.CurrentSkin.SetRepeat(false);
-
-				arra = new byte[]
-				{
-					127,
-					127,
-					127,
-					255,
-					80,
-					80,
-					80,
-					255,
-					80,
-					80,
-					80,
-					255,
-					127,
-					127,
-					127,
-					255
-				};
-
-				_alphaTex.Upload(arra, 2, 2);
-				_alphaTex.SetMipmapping(false);
-				_alphaTex.SetRepeat(true);
-			}
+			_alphaTex.Upload(arra, 2, 2);
+			_alphaTex.SetMipmapping(false);
+			_alphaTex.SetRepeat(true);
 
 			bool supportsArrays = GL.GetString(StringName.Extensions).Contains("GL_EXT_vertex_array");
 			bool forceImmediate = GlobalSettings.RenderMode == 0;
@@ -757,38 +754,39 @@ namespace MCSkin3D
 		{
 			if (_lastSkin == null)
 			{
-				var preview = new ColorGrabber(_previewPaint, 64, 32);
-				preview.Save();
+				using (var preview = new ColorGrabber(_previewPaint, 64, 32))
+					preview.Save();
 			}
 			else
 			{
 				Skin skin = _lastSkin;
 
-				var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
-
-				bool pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
-
-				//if (pick)
+				using (var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 				{
-					currentSkin.Load();
-					if (_selectedTool.Tool.RequestPreview(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
+					bool pick = GetPick(_mousePoint.X, _mousePoint.Y, ref _pickPosition);
+
+					//if (pick)
 					{
+						currentSkin.Load();
+						if (_selectedTool.Tool.RequestPreview(currentSkin, skin, _pickPosition.X, _pickPosition.Y))
+						{
+							currentSkin.Texture = _previewPaint;
+							currentSkin.Save();
+						}
+						else
+						{
+							currentSkin.Texture = _previewPaint;
+							currentSkin.Save();
+						}
+					}
+					/*else
+					{
+						currentSkin.Texture = _lastSkin.GLImage;
+						currentSkin.Load();
 						currentSkin.Texture = _previewPaint;
 						currentSkin.Save();
-					}
-					else
-					{
-						currentSkin.Texture = _previewPaint;
-						currentSkin.Save();
-					}
+					}*/
 				}
-				/*else
-				{
-					currentSkin.Texture = _lastSkin.GLImage;
-					currentSkin.Load();
-					currentSkin.Texture = _previewPaint;
-					currentSkin.Save();
-				}*/
 			}
 		}
 
@@ -1287,24 +1285,26 @@ namespace MCSkin3D
 
 		public void SetPartTransparencies()
 		{
-			var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height);
-			grabber.Load();
-
-			var paintedParts = new Dictionary<int, bool>();
-
-			foreach (var p in _paintedPixels)
+			using (var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height))
 			{
-				List<int> parts = CurrentModel.GetIntersectingParts(p.Key, _lastSkin);
+				grabber.Load();
 
-				foreach (int part in parts)
+				var paintedParts = new Dictionary<int, bool>();
+
+				foreach (var p in _paintedPixels)
 				{
-					if (!paintedParts.ContainsKey(part))
-						paintedParts.Add(part, true);
-				}
-			}
+					List<int> parts = CurrentModel.GetIntersectingParts(p.Key, _lastSkin);
 
-			foreach (var p in paintedParts)
-				_lastSkin.CheckTransparentPart(grabber, p.Key);
+					foreach (int part in parts)
+					{
+						if (!paintedParts.ContainsKey(part))
+							paintedParts.Add(part, true);
+					}
+				}
+
+				foreach (var p in paintedParts)
+					_lastSkin.CheckTransparentPart(grabber, p.Key);
+			}
 
 			_paintedPixels.Clear();
 		}
@@ -1339,16 +1339,30 @@ namespace MCSkin3D
 			_mouseIsDown = true;
 			//_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
 
-			if (e.Button == MouseButtons.Left)
+			using (var backup = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 			{
-				if (_isValidPick)
-					_selectedTool.Tool.BeginClick(_lastSkin, _pickPosition, e);
-				else
-					_selectedTool.Tool.BeginClick(_lastSkin, new Point(-1, -1), e);
-				UseToolOnViewport(e.X, e.Y);
+				backup.Load();
+
+				try
+				{
+					if (e.Button == MouseButtons.Left)
+					{
+						if (_isValidPick)
+							_selectedTool.Tool.BeginClick(_lastSkin, _pickPosition, e);
+						else
+							_selectedTool.Tool.BeginClick(_lastSkin, new Point(-1, -1), e);
+						UseToolOnViewport(e.X, e.Y);
+					}
+					else
+						_tools[(int)Tools.Camera].Tool.BeginClick(_lastSkin, Point.Empty, e);
+				}
+				catch (Exception ex)
+				{
+					backup.Save();
+					this.saveAllToolStripMenuItem_Click(null, null);
+					throw ex;
+				}
 			}
-			else
-				_tools[(int) Tools.Camera].Tool.BeginClick(_lastSkin, Point.Empty, e);
 		}
 
 		private void rendererControl_MouseMove(object sender, MouseEventArgs e)
@@ -1360,19 +1374,33 @@ namespace MCSkin3D
 
 			_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
 
-			if (_mouseIsDown)
+			using (var backup = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 			{
-				if (e.Button == MouseButtons.Left)
-				{
-					_selectedTool.Tool.MouseMove(_lastSkin, e);
-					UseToolOnViewport(e.X, e.Y);
-				}
-				else
-					_tools[(int) Tools.Camera].Tool.MouseMove(_lastSkin, e);
-			}
+				backup.Load();
 
-			_mousePoint = e.Location;
-			Renderer.Invalidate();
+				try
+				{
+					if (_mouseIsDown)
+					{
+						if (e.Button == MouseButtons.Left)
+						{
+							_selectedTool.Tool.MouseMove(_lastSkin, e);
+							UseToolOnViewport(e.X, e.Y);
+						}
+						else
+							_tools[(int)Tools.Camera].Tool.MouseMove(_lastSkin, e);
+					}
+
+					_mousePoint = e.Location;
+					Renderer.Invalidate();
+				}
+				catch (Exception ex)
+				{
+					backup.Save();
+					this.saveAllToolStripMenuItem_Click(null, null);
+					throw ex;
+				}
+			}
 		}
 
 		private void rendererControl_MouseUp(object sender, MouseEventArgs e)
@@ -1382,27 +1410,41 @@ namespace MCSkin3D
 			if (skin == null)
 				return;
 
-			if (_mouseIsDown)
+			using (var backup = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 			{
-				var currentSkin = new ColorGrabber();
+				backup.Load();
 
-				if (e.Button == MouseButtons.Left)
+				try
 				{
-					currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
-					currentSkin.Load();
-
-					if (_selectedTool.Tool.EndClick(ref currentSkin, skin, e))
+					if (_mouseIsDown)
 					{
-						SetCanSave(true);
-						skin.Dirty = true;
-						treeView1.Invalidate();
-						currentSkin.Save();
-					}
+						var currentSkin = new ColorGrabber();
 
-					SetPartTransparencies();
+						if (e.Button == MouseButtons.Left)
+						{
+							currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
+							currentSkin.Load();
+
+							if (_selectedTool.Tool.EndClick(currentSkin, skin, e))
+							{
+								SetCanSave(true);
+								skin.Dirty = true;
+								treeView1.Invalidate();
+								currentSkin.Save();
+							}
+
+							SetPartTransparencies();
+						}
+						else
+							_tools[(int)Tools.Camera].Tool.EndClick(currentSkin, _lastSkin, e);
+					}
 				}
-				else
-					_tools[(int) Tools.Camera].Tool.EndClick(ref currentSkin, _lastSkin, e);
+				catch (Exception ex)
+				{
+					backup.Save();
+					this.saveAllToolStripMenuItem_Click(null, null);
+					throw ex;
+				}
 			}
 
 			_mouseIsDown = false;
@@ -1525,21 +1567,23 @@ namespace MCSkin3D
 				_currentUndoBuffer = null;
 				TextureGL.Unbind();
 
-				var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, 64, 32);
-				currentSkin.Save();
+				using (var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, 64, 32))
+					currentSkin.Save();
 
 				undoToolStripMenuItem.Enabled = undoToolStripButton.Enabled = false;
 				redoToolStripMenuItem.Enabled = redoToolStripButton.Enabled = false;
 			}
 			else
 			{
-				var glImage = new ColorGrabber(skin.GLImage, skin.Width, skin.Height);
-				glImage.Load();
+				using (var glImage = new ColorGrabber(skin.GLImage, skin.Width, skin.Height))
+				{
+					glImage.Load();
 
-				glImage.Texture = GlobalDirtiness.CurrentSkin;
-				glImage.Save();
-				glImage.Texture = _previewPaint;
-				glImage.Save();
+					glImage.Texture = GlobalDirtiness.CurrentSkin;
+					glImage.Save();
+					glImage.Texture = _previewPaint;
+					glImage.Save();
+				}
 
 				_currentUndoBuffer = skin.Undo;
 				CheckUndo();
@@ -2068,12 +2112,14 @@ namespace MCSkin3D
 
 			_lastSkin.Resize(_lastSkin.Width / 2, _lastSkin.Height / 2);
 
-			var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height);
-			grabber.Load();
-			grabber.Texture = GlobalDirtiness.CurrentSkin;
-			grabber.Save();
-			grabber.Texture = _previewPaint;
-			grabber.Save();
+			using (var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height))
+			{
+				grabber.Load();
+				grabber.Texture = GlobalDirtiness.CurrentSkin;
+				grabber.Save();
+				grabber.Texture = _previewPaint;
+				grabber.Save();
+			}
 		}
 
 		public void PerformIncreaseResolution()
@@ -2088,12 +2134,14 @@ namespace MCSkin3D
 
 			_lastSkin.Resize(_lastSkin.Width * 2, _lastSkin.Height * 2);
 
-			var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height);
-			grabber.Load();
-			grabber.Texture = GlobalDirtiness.CurrentSkin;
-			grabber.Save();
-			grabber.Texture = _previewPaint;
-			grabber.Save();
+			using (var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height))
+			{
+				grabber.Load();
+				grabber.Texture = GlobalDirtiness.CurrentSkin;
+				grabber.Save();
+				grabber.Texture = _previewPaint;
+				grabber.Save();
+			}
 		}
 
 		public void PerformImportFromSite()
@@ -2209,61 +2257,63 @@ namespace MCSkin3D
 		private void mINVERTBOTTOMToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (treeView1.SelectedNode == null ||
-			    _lastSkin == null)
+				_lastSkin == null)
 				return;
 
-			var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height);
-			grabber.Load();
-
-			var toInvert = new List<Rectangle>();
-
-			foreach (Mesh meshes in CurrentModel.Meshes)
+			using (var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height))
 			{
-				foreach (Face face in meshes.Faces)
-				{
-					if (face.Downface)
-					{
-						Rectangle rect = face.TexCoordsToInteger(_lastSkin.Width, _lastSkin.Height);
+				grabber.Load();
 
-						if (!toInvert.Contains(rect))
-							toInvert.Add(rect);
+				var toInvert = new List<Rectangle>();
+
+				foreach (Mesh meshes in CurrentModel.Meshes)
+				{
+					foreach (Face face in meshes.Faces)
+					{
+						if (face.Downface)
+						{
+							Rectangle rect = face.TexCoordsToInteger(_lastSkin.Width, _lastSkin.Height);
+
+							if (!toInvert.Contains(rect))
+								toInvert.Add(rect);
+						}
 					}
 				}
-			}
 
-			var undoable = new PixelsChangedUndoable(GetLanguageString("U_PIXELSCHANGED"), GetLanguageString("M_INVERTBOTTOM"));
+				var undoable = new PixelsChangedUndoable(GetLanguageString("U_PIXELSCHANGED"), GetLanguageString("M_INVERTBOTTOM"));
 
-			foreach (Rectangle rect in toInvert)
-			{
-				for (int x = rect.X; x < rect.X + rect.Width; ++x)
+				foreach (Rectangle rect in toInvert)
 				{
-					for (int y = rect.Y, y2 = rect.Y + rect.Height - 1; y2 > y; ++y, --y2)
+					for (int x = rect.X; x < rect.X + rect.Width; ++x)
 					{
-						ColorPixel topPixel = grabber[x, y];
-						ColorPixel bottomPixel = grabber[x, y2];
+						for (int y = rect.Y, y2 = rect.Y + rect.Height - 1; y2 > y; ++y, --y2)
+						{
+							ColorPixel topPixel = grabber[x, y];
+							ColorPixel bottomPixel = grabber[x, y2];
 
-						undoable.Points.Add(new Point(x, y),
-						                    Tuple.MakeTuple(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue),
-						                                    new ColorAlpha(
-						                                    	Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green,
-						                                    	               bottomPixel.Blue), -1)));
-						undoable.Points.Add(new Point(x, y2),
-						                    Tuple.MakeTuple(
-						                    	Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green, bottomPixel.Blue),
-						                    	new ColorAlpha(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue),
-						                    	               -1)));
+							undoable.Points.Add(new Point(x, y),
+												Tuple.MakeTuple(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue),
+																new ColorAlpha(
+																	Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green,
+																				   bottomPixel.Blue), -1)));
+							undoable.Points.Add(new Point(x, y2),
+												Tuple.MakeTuple(
+													Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green, bottomPixel.Blue),
+													new ColorAlpha(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue),
+																   -1)));
 
-						grabber[x, y] = bottomPixel;
-						grabber[x, y2] = topPixel;
+							grabber[x, y] = bottomPixel;
+							grabber[x, y2] = topPixel;
+						}
 					}
 				}
+
+				_lastSkin.Undo.AddBuffer(undoable);
+				CheckUndo();
+				SetCanSave(_lastSkin.Dirty = true);
+
+				grabber.Save();
 			}
-
-			_lastSkin.Undo.AddBuffer(undoable);
-			CheckUndo();
-			SetCanSave(_lastSkin.Dirty = true);
-
-			grabber.Save();
 		}
 
 		private void mLINESIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
@@ -2304,12 +2354,14 @@ namespace MCSkin3D
 					_lastSkin.Model = Model;
 					_lastSkin.Resize((int)Model.DefaultWidth, (int)Model.DefaultHeight);
 
-					var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height);
-					grabber.Load();
-					grabber.Texture = GlobalDirtiness.CurrentSkin;
-					grabber.Save();
-					grabber.Texture = _previewPaint;
-					grabber.Save();
+					using (var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height))
+					{
+						grabber.Load();
+						grabber.Texture = GlobalDirtiness.CurrentSkin;
+						grabber.Save();
+						grabber.Texture = _previewPaint;
+						grabber.Save();
+					}
 				}
 				else
 					_lastSkin.Model = Model;
@@ -3184,16 +3236,17 @@ namespace MCSkin3D
 			{
 				Skin skin = _lastSkin;
 
-				var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
-				currentSkin.Load();
-
-				currentSkin.OnWrite = PixelWritten;
-
-				if (_selectedTool.Tool.MouseMoveOnSkin(ref currentSkin, skin, _pickPosition.X, _pickPosition.Y))
+				using (var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 				{
-					SetCanSave(true);
-					skin.Dirty = true;
-					currentSkin.Save();
+					currentSkin.Load();
+					currentSkin.OnWrite = PixelWritten;
+
+					if (_selectedTool.Tool.MouseMoveOnSkin(currentSkin, skin, _pickPosition.X, _pickPosition.Y))
+					{
+						SetCanSave(true);
+						skin.Dirty = true;
+						currentSkin.Save();
+					}
 				}
 			}
 
@@ -3576,48 +3629,50 @@ namespace MCSkin3D
 		{
 			Skin skin = _lastSkin;
 
-			var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height);
-			grabber.Load();
-
-			var b = new Bitmap(skin.Width, skin.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-			BitmapData locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadWrite,
-			                               System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-			unsafe
+			using (var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 			{
-				void *inPixels = grabber.Array;
-				void *outPixels = locked.Scan0.ToPointer();
+				grabber.Load();
 
-				var inInt = (int*) inPixels;
-				var outInt = (int*) outPixels;
+				var b = new Bitmap(skin.Width, skin.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-				for (int y = 0; y < b.Height; ++y)
+				BitmapData locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadWrite,
+											   System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+				unsafe
 				{
-					for (int x = 0; x < b.Width; ++x)
-					{
-						Color color = Color.FromArgb((*inInt >> 24) & 0xFF, (*inInt >> 0) & 0xFF, (*inInt >> 8) & 0xFF,
-							                            (*inInt >> 16) & 0xFF);
-						*outInt = color.ToArgb();
+					void *inPixels = grabber.Array;
+					void *outPixels = locked.Scan0.ToPointer();
 
-						inInt++;
-						outInt++;
+					var inInt = (int*)inPixels;
+					var outInt = (int*)outPixels;
+
+					for (int y = 0; y < b.Height; ++y)
+					{
+						for (int x = 0; x < b.Width; ++x)
+						{
+							Color color = Color.FromArgb((*inInt >> 24) & 0xFF, (*inInt >> 0) & 0xFF, (*inInt >> 8) & 0xFF,
+															(*inInt >> 16) & 0xFF);
+							*outInt = color.ToArgb();
+
+							inInt++;
+							outInt++;
+						}
 					}
 				}
+
+				b.UnlockBits(locked);
+
+				using (var sfd = new SaveFileDialog())
+				{
+					sfd.Filter = "Skin Image|*.png";
+					sfd.RestoreDirectory = true;
+
+					if (sfd.ShowDialog() == DialogResult.OK)
+						b.Save(sfd.FileName);
+				}
+
+				b.Dispose();
 			}
-
-			b.UnlockBits(locked);
-
-			using (var sfd = new SaveFileDialog())
-			{
-				sfd.Filter = "Skin Image|*.png";
-				sfd.RestoreDirectory = true;
-
-				if (sfd.ShowDialog() == DialogResult.OK)
-					b.Save(sfd.FileName);
-			}
-
-			b.Dispose();
 		}
 
 		private void PerformSaveSkin(Skin s)
@@ -4388,8 +4443,7 @@ namespace MCSkin3D
 			_tools.Add(new ToolIndex(new EraserTool(), EraserOptions, "T_TOOL_ERASER", Resources.erase, Keys.E));
 			_tools.Add(new ToolIndex(new DropperTool(), null, "T_TOOL_DROPPER", Resources.pipette, Keys.D));
 			_tools.Add(new ToolIndex(new DodgeBurnTool(), DodgeBurnOptions, "T_TOOL_DODGEBURN", Resources.dodge, Keys.B));
-			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN",
-									 Resources.darkenlighten, Keys.L));
+			_tools.Add(new ToolIndex(new DarkenLightenTool(), DarkenLightenOptions, "T_TOOL_DARKENLIGHTEN", Resources.darkenlighten, Keys.L));
 			_tools.Add(new ToolIndex(new FloodFillTool(), FloodFillOptions, "T_TOOL_BUCKET", Resources.fill_bucket, Keys.F));
 			_tools.Add(new ToolIndex(new NoiseTool(), NoiseOptions, "T_TOOL_NOISE", Resources.noise, Keys.N));
 			_tools.Add(new ToolIndex(new StampTool(), StampOptions, "T_TOOL_STAMP", Resources.stamp_pattern, Keys.M));

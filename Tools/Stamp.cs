@@ -39,9 +39,9 @@ namespace MCSkin3D
 
 		#region ITool Members
 
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			return MouseMoveOnSkin(ref pixels, skin, x, y, GlobalSettings.PencilIncremental);
+			return MouseMoveOnSkin(pixels, skin, x, y, GlobalSettings.PencilIncremental);
 		}
 
 		public void SelectedBrushChanged()
@@ -59,7 +59,7 @@ namespace MCSkin3D
 		{
 		}
 
-		public virtual bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public virtual bool RequestPreview(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			Brush brush = Brushes.SelectedBrush;
 			if (_brushThatWasStamped != brush)
@@ -109,7 +109,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public virtual bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public virtual bool EndClick(ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			if (_undo.Points.Count != 0)
 			{
@@ -135,7 +135,7 @@ namespace MCSkin3D
 			return (Color) ColorBlending.AlphaBlend(l, r);
 		}
 
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
+		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
 		{
 			Brush brush = Brushes.SelectedBrush;
 			if (_brushThatWasStamped != brush)

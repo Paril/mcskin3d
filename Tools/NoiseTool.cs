@@ -61,9 +61,9 @@ namespace MCSkin3D
 			return Color.White;
 		}
 
-		public override bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public override bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			return MouseMoveOnSkin(ref pixels, skin, x, y, false);
+			return MouseMoveOnSkin(pixels, skin, x, y, false);
 		}
 
 		public override string GetStatusLabelText()
@@ -71,15 +71,15 @@ namespace MCSkin3D
 			return Editor.GetLanguageString("T_NOISE");
 		}
 
-		public override bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public override bool RequestPreview(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			_noise = new Random(_seed);
-			return base.RequestPreview(ref pixels, skin, x, y);
+			return base.RequestPreview(pixels, skin, x, y);
 		}
 
-		public override bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public override bool EndClick(ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
-			base.EndClick(ref pixels, skin, e);
+			base.EndClick(pixels, skin, e);
 			_seed = _noise.Next();
 			_noise = _noise2 = new Random(_seed);
 

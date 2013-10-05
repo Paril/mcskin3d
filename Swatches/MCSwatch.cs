@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace MCSkin3D.Swatches
 {

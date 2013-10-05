@@ -75,7 +75,7 @@ namespace Paril.OpenGL
 		void Save();
 	}
 
-	public unsafe struct ColorGrabber : IColorGrabber<Texture>
+	public unsafe class ColorGrabber : IColorGrabber<Texture>
 	{
 		#region Delegates
 
@@ -103,6 +103,10 @@ namespace Paril.OpenGL
 			_disposed = false;
 
 			Resize(width, height);
+		}
+
+		public ColorGrabber()
+		{
 		}
 
 		public void Dispose()
@@ -144,6 +148,9 @@ namespace Paril.OpenGL
 
 		public void Resize(int width, int height)
 		{
+			if (_array != null)
+				Marshal.FreeHGlobal((IntPtr)_array);
+
 			_array = (ColorPixel*)Marshal.AllocHGlobal(width * height * sizeof(ColorPixel));
 			_width = width;
 			_height = height;

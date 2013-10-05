@@ -28,9 +28,9 @@ namespace MCSkin3D
 			return Color.FromArgb(0, 0, 0, 0);
 		}
 
-		public override bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public override bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
-			return MouseMoveOnSkin(ref pixels, skin, x, y, false);
+			return MouseMoveOnSkin(pixels, skin, x, y, false);
 		}
 
 		public override Color GetLeftColor()

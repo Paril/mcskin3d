@@ -88,17 +88,17 @@ namespace MCSkin3D
 				Editor.MainForm.ScaleView(delta, 1);
 		}
 
-		public bool MouseMoveOnSkin(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			return false;
 		}
 
-		public bool RequestPreview(ref ColorGrabber pixels, Skin skin, int x, int y)
+		public bool RequestPreview(ColorGrabber pixels, Skin skin, int x, int y)
 		{
 			return false;
 		}
 
-		public bool EndClick(ref ColorGrabber pixels, Skin skin, MouseEventArgs e)
+		public bool EndClick(ColorGrabber pixels, Skin skin, MouseEventArgs e)
 		{
 			return false;
 		}
