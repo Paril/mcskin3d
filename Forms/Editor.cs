@@ -1010,117 +1010,124 @@ namespace MCSkin3D
 
 		private void rendererControl_Paint(object sender, PaintEventArgs e)
 		{
-			IsRendering = true;
-			if (GlobalSettings.RenderBenchmark)
-				_renderTimer.Start();
-
-			Renderer.MakeCurrent();
-
-			_mousePoint = Renderer.PointToClient(MousePosition);
-
-			SetPreview();
-
-			//GL.ClearColor(GlobalSettings.BackgroundColor);
-			GL.Color4((byte) 255, (byte) 255, (byte) 255, (byte) 255);
-
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-			Skin skin = _lastSkin;
-
-			GL.PushMatrix();
-
-			if (_currentViewMode == ViewMode.Perspective)
+			try
 			{
-				Setup3D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
-				DrawPlayer(_previewPaint, skin, false);
+				IsRendering = true;
+				if (GlobalSettings.RenderBenchmark)
+					_renderTimer.Start();
 
-				int sizeOfMiniport = 120;
-				float sizeOfCube = sizeOfMiniport;
+				Renderer.MakeCurrent();
 
-				Setup2D(new Rectangle(Renderer.Width - sizeOfMiniport, Renderer.Height - sizeOfMiniport, sizeOfMiniport, sizeOfMiniport));
-				GL.Enable(EnableCap.DepthTest);
-				GL.Enable(EnableCap.CullFace);
-				GL.Enable(EnableCap.Blend);
-				GL.CullFace(CullFaceMode.Back);
+				_mousePoint = Renderer.PointToClient(MousePosition);
 
-				TextureGL.Unbind();
+				SetPreview();
 
-				GL.Translate(sizeOfCube / 2, sizeOfCube / 2, -8);
-				GL.Rotate(-_3DRotationX, 1, 0, 0);
-				GL.Rotate(-_3DRotationY, 0, 1, 0);
-				DrawCube(sizeOfCube / 2, sizeOfCube / 2, sizeOfCube / 2, true);
+				//GL.ClearColor(GlobalSettings.BackgroundColor);
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 
-				GL.Disable(EnableCap.DepthTest);
-				GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-				DrawCube(sizeOfCube / 2, sizeOfCube / 2, sizeOfCube / 2, false);
-				GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-				GL.Disable(EnableCap.Blend);
-				GL.Disable(EnableCap.CullFace);
-				GL.CullFace(CullFaceMode.Front);
-			}
-			else if (_currentViewMode == ViewMode.Orthographic)
-			{
-				Setup2D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
-				DrawPlayer2D(_previewPaint, skin, false);
-			}
-			else
-			{
-				var halfHeight = (int) Math.Ceiling(Renderer.Height / 2.0f);
-
-				Setup3D(new Rectangle(0, 0, Renderer.Width, halfHeight));
-				DrawPlayer(_previewPaint, skin, false);
-
-				Setup2D(new Rectangle(0, halfHeight, Renderer.Width, halfHeight));
-				DrawPlayer2D(_previewPaint, skin, false);
-			}
-
-			GL.PopMatrix();
-
-			_renderTimer.Stop();
-
-			if (GlobalSettings.RenderBenchmark)
-			{
-				if (((++frameCount) % 60) == 0)
-				{
-					_compileSpan = TimeSpan.FromTicks(_compileTimer.Elapsed.Ticks / 60);
-					_batchSpan = TimeSpan.FromTicks(_batchTimer.Elapsed.Ticks / 60);
-					_sortSpan = TimeSpan.FromTicks(_sortTimer.Elapsed.Ticks / 60);
-					_renderSpan = TimeSpan.FromTicks(_renderTimer.Elapsed.Ticks / 60);
-
-					_sortTimer.Reset();
-					_batchTimer.Reset();
-					_compileTimer.Reset();
-
-					_renderTimer.Reset();
-				}
+				Skin skin = _lastSkin;
 
 				GL.PushMatrix();
-				GL.Enable(EnableCap.Blend);
 
-				Setup2D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
+				if (_currentViewMode == ViewMode.Perspective)
+				{
+					Setup3D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
+					DrawPlayer(_previewPaint, skin, false);
 
-				GL.Color3(Color.White);
-				TextureGL.Unbind();
+					int sizeOfMiniport = 120;
+					float sizeOfCube = sizeOfMiniport;
 
-				DrawString(_font, "Compile Time: " + _compileSpan.ToString(), 6, 8);
-				GL.Translate(0, 8, 0);
-				DrawString(_font, "Batch Time: " + _batchSpan.ToString(), 6, 8);
-				GL.Translate(0, 8, 0);
-				DrawString(_font, "Sort Time: " + _sortSpan.ToString(), 6, 8);
-				GL.Translate(0, 8, 0);
-				DrawString(_font, "Total Frame Time: " + _renderSpan.ToString(), 6, 8);
-				GL.Translate(0, 8, 0);
-				DrawString(_font, "Render Mode: " + ((MeshRenderer.GetType() == typeof(ClientArrayRenderer)) ? "Client Arrays" : "Immediate Mode"), 6, 8);
+					Setup2D(new Rectangle(Renderer.Width - sizeOfMiniport, Renderer.Height - sizeOfMiniport, sizeOfMiniport, sizeOfMiniport));
+					GL.Enable(EnableCap.DepthTest);
+					GL.Enable(EnableCap.CullFace);
+					GL.Enable(EnableCap.Blend);
+					GL.CullFace(CullFaceMode.Back);
+
+					TextureGL.Unbind();
+
+					GL.Translate(sizeOfCube / 2, sizeOfCube / 2, -8);
+					GL.Rotate(-_3DRotationX, 1, 0, 0);
+					GL.Rotate(-_3DRotationY, 0, 1, 0);
+					DrawCube(sizeOfCube / 2, sizeOfCube / 2, sizeOfCube / 2, true);
+
+					GL.Disable(EnableCap.DepthTest);
+					GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+					DrawCube(sizeOfCube / 2, sizeOfCube / 2, sizeOfCube / 2, false);
+					GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+					GL.Disable(EnableCap.Blend);
+					GL.Disable(EnableCap.CullFace);
+					GL.CullFace(CullFaceMode.Front);
+				}
+				else if (_currentViewMode == ViewMode.Orthographic)
+				{
+					Setup2D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
+					DrawPlayer2D(_previewPaint, skin, false);
+				}
+				else
+				{
+					var halfHeight = (int)Math.Ceiling(Renderer.Height / 2.0f);
+
+					Setup3D(new Rectangle(0, 0, Renderer.Width, halfHeight));
+					DrawPlayer(_previewPaint, skin, false);
+
+					Setup2D(new Rectangle(0, halfHeight, Renderer.Width, halfHeight));
+					DrawPlayer2D(_previewPaint, skin, false);
+				}
+
 				GL.PopMatrix();
+
+				_renderTimer.Stop();
+
+				if (GlobalSettings.RenderBenchmark)
+				{
+					if (((++frameCount) % 60) == 0)
+					{
+						_compileSpan = TimeSpan.FromTicks(_compileTimer.Elapsed.Ticks / 60);
+						_batchSpan = TimeSpan.FromTicks(_batchTimer.Elapsed.Ticks / 60);
+						_sortSpan = TimeSpan.FromTicks(_sortTimer.Elapsed.Ticks / 60);
+						_renderSpan = TimeSpan.FromTicks(_renderTimer.Elapsed.Ticks / 60);
+
+						_sortTimer.Reset();
+						_batchTimer.Reset();
+						_compileTimer.Reset();
+
+						_renderTimer.Reset();
+					}
+
+					GL.PushMatrix();
+					GL.Enable(EnableCap.Blend);
+
+					Setup2D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
+
+					GL.Color3(Color.White);
+					TextureGL.Unbind();
+
+					DrawString(_font, "Compile Time: " + _compileSpan.ToString(), 6, 8);
+					GL.Translate(0, 8, 0);
+					DrawString(_font, "Batch Time: " + _batchSpan.ToString(), 6, 8);
+					GL.Translate(0, 8, 0);
+					DrawString(_font, "Sort Time: " + _sortSpan.ToString(), 6, 8);
+					GL.Translate(0, 8, 0);
+					DrawString(_font, "Total Frame Time: " + _renderSpan.ToString(), 6, 8);
+					GL.Translate(0, 8, 0);
+					DrawString(_font, "Render Mode: " + ((MeshRenderer.GetType() == typeof(ClientArrayRenderer)) ? "Client Arrays" : "Immediate Mode"), 6, 8);
+					GL.PopMatrix();
+				}
+
+				if (!_screenshotMode)
+					DrawGLToolbar();
+
+				if (!_screenshotMode)
+					Renderer.SwapBuffers();
+				IsRendering = false;
 			}
-
-			if (!_screenshotMode)
-				DrawGLToolbar();
-
-			if (!_screenshotMode)
-				Renderer.SwapBuffers();
-			IsRendering = false;
+			catch (Exception ex)
+			{
+				Program.RaiseException(ex);
+			}
 		}
 
 		private void CalculateMatrices()

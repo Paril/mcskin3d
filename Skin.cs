@@ -184,9 +184,8 @@ namespace MCSkin3D
 					}
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				//throw new Exception("Error loading skin \"" + File.FullName + "\"", ex);
 				MessageBox.Show(String.Format(Editor.GetLanguageString("E_SKINERROR"), File.FullName));
 				return false;
 			}

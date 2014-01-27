@@ -158,12 +158,12 @@
 			this.screenshotToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.toggleHeadToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toggleHelmetToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleChestToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleHelmetToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleChestArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftArmArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightArmArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -1452,17 +1452,6 @@
 			this.toggleHeadToolStripButton.Text = "T_TOGGLEHEAD";
 			this.toggleHeadToolStripButton.Click += new System.EventHandler(this.toggleHeadToolStripButton_Click);
 			// 
-			// toggleHelmetToolStripButton
-			// 
-			this.toggleHelmetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleHelmetToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_helmet;
-			this.toggleHelmetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleHelmetToolStripButton.Name = "toggleHelmetToolStripButton";
-			this.languageProvider1.SetPropertyNames(this.toggleHelmetToolStripButton, "Text");
-			this.toggleHelmetToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.toggleHelmetToolStripButton.Text = "T_TOGGLEHELMET";
-			this.toggleHelmetToolStripButton.Click += new System.EventHandler(this.toggleHelmetToolStripButton_Click);
-			// 
 			// toggleChestToolStripButton
 			// 
 			this.toggleChestToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1517,6 +1506,17 @@
 			this.toggleRightLegToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
+			// 
+			// toggleHelmetToolStripButton
+			// 
+			this.toggleHelmetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleHelmetToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_helmet;
+			this.toggleHelmetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleHelmetToolStripButton.Name = "toggleHelmetToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleHelmetToolStripButton, "Text");
+			this.toggleHelmetToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleHelmetToolStripButton.Text = "T_TOGGLEHELMET";
+			this.toggleHelmetToolStripButton.Click += new System.EventHandler(this.toggleHelmetToolStripButton_Click);
 			// 
 			// toggleChestArmorToolStripButton
 			// 

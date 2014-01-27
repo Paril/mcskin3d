@@ -418,6 +418,7 @@
     <Compile Include="Updater\Updater.cs" />
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
+    <EmbeddedResource Include="Resources\ThirdParty.dll" />
     <None Include="Resources\show_right_leg_armor.png" />
     <None Include="Resources\show_right_arm_armor.png" />
     <None Include="Resources\show_left_leg_armor.png" />
@@ -602,6 +603,7 @@
     <ProjectReference Include="ThirdParty\ThirdParty.csproj">
       <Project>{08d4d1ab-359a-42d9-8b5b-27cd18f76f4a}</Project>
       <Name>ThirdParty</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
