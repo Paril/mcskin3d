@@ -20,13 +20,19 @@ namespace MCSkin3D
 {
 	public enum ModelPart
 	{
-		None = 0,
-		Head = 1,
-		Helmet = 2,
-		Chest = 3,
-		LeftArm = 4,
-		RightArm = 5,
-		LeftLeg = 6,
-		RightLeg = 7
+		None,
+		Head,
+		Helmet,
+		Chest,
+		LeftArm,
+		RightArm,
+		LeftLeg,
+		RightLeg,
+
+		ChestArmor,
+		LeftArmArmor,
+		RightArmArmor,
+		LeftLegArmor,
+		RightLegArmor
 	}
 }

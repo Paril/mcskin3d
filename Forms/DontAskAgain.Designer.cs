@@ -30,9 +30,9 @@
 		{
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// button1
@@ -60,17 +60,6 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(208, 93);
-			this.checkBox1.Name = "checkBox1";
-			this.languageProvider1.SetPropertyNames(this.checkBox1, "Text");
-			this.checkBox1.Size = new System.Drawing.Size(92, 17);
-			this.checkBox1.TabIndex = 2;
-			this.checkBox1.Text = "D_DONTASK";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			// 
 			// label1
 			// 
 			this.label1.Location = new System.Drawing.Point(12, 9);
@@ -84,6 +73,17 @@
 			// languageProvider1
 			// 
 			this.languageProvider1.BaseControl = this;
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Location = new System.Drawing.Point(208, 93);
+			this.checkBox1.Name = "checkBox1";
+			this.languageProvider1.SetPropertyNames(this.checkBox1, "Text");
+			this.checkBox1.Size = new System.Drawing.Size(92, 17);
+			this.checkBox1.TabIndex = 2;
+			this.checkBox1.Text = "D_DONTASK";
+			this.checkBox1.UseVisualStyleBackColor = true;
 			// 
 			// DontAskAgain
 			// 
@@ -108,8 +108,8 @@
 
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Label label1;
 		private MCSkin3D.Languages.LanguageProvider languageProvider1;
+		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }

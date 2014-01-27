@@ -1,0 +1,5 @@
+F:\projects\MCSkinner spaces now\ThirdParty\bin\Release\ThirdParty.dll
+F:\projects\MCSkinner spaces now\ThirdParty\bin\Release\ThirdParty.pdb
+F:\projects\MCSkinner spaces now\ThirdParty\obj\Release\ThirdParty.csprojResolveAssemblyReference.cache
+F:\projects\MCSkinner spaces now\ThirdParty\obj\Release\ThirdParty.dll
+F:\projects\MCSkinner spaces now\ThirdParty\obj\Release\ThirdParty.pdb

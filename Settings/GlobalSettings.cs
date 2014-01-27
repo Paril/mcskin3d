@@ -140,10 +140,6 @@ namespace MCSkin3D
 		public static string[] SkinDirectories { get; set; }
 
 		[Savable]
-		[DefaultValue(false)]
-		public static bool OnePointEightMode { get; set; }
-
-		[Savable]
 		[DefaultValue("255 255 255 255")]
 		[TypeSerializer(typeof (ColorSerializer), true)]
 		public static Color DynamicOverlayLineColor { get; set; }

@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCSkin3D", "MCSkin3D.csproj", "{B8AAE3D4-4ADD-4BE6-B116-087ECDD6D8B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9EFB9E6-5A02-4943-AC85-7D1AFABE2AD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThirdParty", "ThirdParty\ThirdParty.csproj", "{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,24 @@ Global
 		{B8AAE3D4-4ADD-4BE6-B116-087ECDD6D8B3}.Release|Win32.ActiveCfg = Release|x86
 		{B8AAE3D4-4ADD-4BE6-B116-087ECDD6D8B3}.Release|x86.ActiveCfg = Release|x86
 		{B8AAE3D4-4ADD-4BE6-B116-087ECDD6D8B3}.Release|x86.Build.0 = Release|x86
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release Beta|Any CPU.Build.0 = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release Beta|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release Beta|Mixed Platforms.Build.0 = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release Beta|Win32.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release Beta|x86.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{08D4D1AB-359A-42D9-8B5B-27CD18F76F4A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

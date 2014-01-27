@@ -33,39 +33,6 @@ namespace MCSkin3D
 	{
 		public static Dictionary<string, Model> Models = new Dictionary<string, Model>();
 
-		public static void InvertBottomFaces()
-		{
-			foreach (Model m in Models.Values)
-			{
-				foreach (Mesh mesh in m.Meshes)
-				{
-					foreach (Face face in mesh.Faces)
-					{
-						if (face.Downface)
-						{
-							float minY = 1, maxY = 0;
-
-							for (int i = 0; i < 4; ++i)
-							{
-								if (face.TexCoords[i].Y < minY)
-									minY = face.TexCoords[i].Y;
-								if (face.TexCoords[i].Y > maxY)
-									maxY = face.TexCoords[i].Y;
-							}
-
-							for (int i = 0; i < 4; ++i)
-							{
-								if (face.TexCoords[i].Y == minY)
-									face.TexCoords[i].Y = maxY;
-								else
-									face.TexCoords[i].Y = minY;
-							}
-						}
-					}
-				}
-			}
-		}
-
 		public static void LoadModels()
 		{
 			if (!Directory.Exists(GlobalSettings.GetDataURI("Models")))
