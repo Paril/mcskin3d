@@ -1716,6 +1716,31 @@ namespace MCSkin3D
 			ToggleVisiblePart(ModelPart.RightLeg);
 		}
 
+		private void chestArmorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.ChestArmor);
+		}
+
+		private void leftArmArmorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.LeftArmArmor);
+		}
+
+		private void rightArmArmorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.RightArmArmor);
+		}
+
+		private void leftLegArmorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.LeftLegArmor);
+		}
+
+		private void rightLegArmorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.RightLegArmor);
+		}
+
 		private void toggleHeadToolStripButton_Click(object sender, EventArgs e)
 		{
 			ToggleVisiblePart(ModelPart.Head);
@@ -1749,6 +1774,31 @@ namespace MCSkin3D
 		private void toggleRightLegToolStripButton_Click(object sender, EventArgs e)
 		{
 			ToggleVisiblePart(ModelPart.RightLeg);
+		}
+
+		private void toggleChestArmorToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.ChestArmor);
+		}
+
+		private void toggleLeftArmArmorToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.LeftArmArmor);
+		}
+
+		private void toggleRightArmArmorToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.RightArmArmor);
+		}
+
+		private void toggleLeftLegArmorToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.LeftLegArmor);
+		}
+
+		private void toggleRightLegArmorToolStripButton_Click(object sender, EventArgs e)
+		{
+			ToggleVisiblePart(ModelPart.RightLegArmor);
 		}
 
 		private void alphaCheckerboardToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2019,9 +2069,6 @@ namespace MCSkin3D
 				collection.Add(new ModelToolStripMenuItem(x.Value));
 			}
 
-			if (GlobalSettings.OnePointEightMode)
-				ModelLoader.InvertBottomFaces();
-
 			toolStripDropDownButton1.Enabled = true;
 			toolStripDropDownButton1.Text = "None";
 
@@ -2249,73 +2296,6 @@ namespace MCSkin3D
 			}
 		}
 
-		private void modeToolStripMenuItem1_Click(object sender, EventArgs e)
-		{
-			Perform10Mode();
-		}
-
-		private void mINVERTBOTTOMToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (treeView1.SelectedNode == null ||
-				_lastSkin == null)
-				return;
-
-			using (var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, _lastSkin.Width, _lastSkin.Height))
-			{
-				grabber.Load();
-
-				var toInvert = new List<Rectangle>();
-
-				foreach (Mesh meshes in CurrentModel.Meshes)
-				{
-					foreach (Face face in meshes.Faces)
-					{
-						if (face.Downface)
-						{
-							Rectangle rect = face.TexCoordsToInteger(_lastSkin.Width, _lastSkin.Height);
-
-							if (!toInvert.Contains(rect))
-								toInvert.Add(rect);
-						}
-					}
-				}
-
-				var undoable = new PixelsChangedUndoable(GetLanguageString("U_PIXELSCHANGED"), GetLanguageString("M_INVERTBOTTOM"));
-
-				foreach (Rectangle rect in toInvert)
-				{
-					for (int x = rect.X; x < rect.X + rect.Width; ++x)
-					{
-						for (int y = rect.Y, y2 = rect.Y + rect.Height - 1; y2 > y; ++y, --y2)
-						{
-							ColorPixel topPixel = grabber[x, y];
-							ColorPixel bottomPixel = grabber[x, y2];
-
-							undoable.Points.Add(new Point(x, y),
-												Tuple.MakeTuple(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue),
-																new ColorAlpha(
-																	Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green,
-																				   bottomPixel.Blue), -1)));
-							undoable.Points.Add(new Point(x, y2),
-												Tuple.MakeTuple(
-													Color.FromArgb(bottomPixel.Alpha, bottomPixel.Red, bottomPixel.Green, bottomPixel.Blue),
-													new ColorAlpha(Color.FromArgb(topPixel.Alpha, topPixel.Red, topPixel.Green, topPixel.Blue),
-																   -1)));
-
-							grabber[x, y] = bottomPixel;
-							grabber[x, y2] = topPixel;
-						}
-					}
-				}
-
-				_lastSkin.Undo.AddBuffer(undoable);
-				CheckUndo();
-				SetCanSave(_lastSkin.Dirty = true);
-
-				grabber.Save();
-			}
-		}
-
 		private void mLINESIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayLineSize = (int) mLINESIZEToolStripMenuItem.NumericBox.Value;
@@ -2348,11 +2328,12 @@ namespace MCSkin3D
 
 				if (Math.Abs(oldAspect - newAspect) > 0.01f)
 				{
-					if (MessageBox.Show("The aspect ratio of the model you're trying to assign to this skin is not the same as the skin's size. Changing this will require MCSkin3D to adjust the aspect ratio on this skin.\n\nAre you sure you want to do this? This is a destructive, NON-UNDOABLE operation!", "Question", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+					ResizeType resizeType;
+					if ((resizeType = SkinSizeMismatch.Show(GetLanguageString("M_SKINSIZEMISMATCH"))) == ResizeType.None)
 						return;
 
 					_lastSkin.Model = Model;
-					_lastSkin.Resize((int)Model.DefaultWidth, (int)Model.DefaultHeight);
+					_lastSkin.Resize((int)Model.DefaultWidth, (int)Model.DefaultHeight, resizeType);
 
 					using (var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height))
 					{
@@ -2694,8 +2675,8 @@ namespace MCSkin3D
 
 		private void CreatePartList()
 		{
-			_partItems = new[] { null, headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem };
-			_partButtons = new[] { null, toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton };
+			_partItems = new[] { null, headToolStripMenuItem, helmetToolStripMenuItem, chestToolStripMenuItem, leftArmToolStripMenuItem, rightArmToolStripMenuItem, leftLegToolStripMenuItem, rightLegToolStripMenuItem, chestArmorToolStripMenuItem, leftArmArmorToolStripMenuItem, rightArmArmorToolStripMenuItem, leftLegArmorToolStripMenuItem, rightLegArmorToolStripMenuItem };
+			_partButtons = new[] { null, toggleHeadToolStripButton, toggleHelmetToolStripButton, toggleChestToolStripButton, toggleLeftArmToolStripButton, toggleRightArmToolStripButton, toggleLeftLegToolStripButton, toggleRightLegToolStripButton, toggleChestArmorToolStripButton, toggleLeftArmArmorToolStripButton, toggleRightArmArmorToolStripButton, toggleLeftLegArmorToolStripButton, toggleRightLegArmorToolStripButton };
 
 			var list = new ImageList();
 			list.ColorDepth = ColorDepth.Depth32Bit;
@@ -2802,7 +2783,7 @@ namespace MCSkin3D
 				}
 			}
 
-			for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
+			for (int i = 1; i <= (int)ModelPart.RightLegArmor; ++i)
 				CheckQuickPartState((ModelPart)i);
 		}
 
@@ -2845,7 +2826,7 @@ namespace MCSkin3D
 			{
 				node.TogglePart();
 
-				for (int i = 1; i <= (int)ModelPart.RightLeg; ++i)
+				for (int i = 1; i <= (int)ModelPart.RightLegArmor; ++i)
 					CheckQuickPartState((ModelPart)i);
 
 				CalculateMatrices();
@@ -2990,13 +2971,21 @@ namespace MCSkin3D
 			InitMenuShortcut(leftArmToolStripMenuItem,
 			                 () => ToggleVisiblePart(ModelPart.LeftArm));
 			InitMenuShortcut(rightArmToolStripMenuItem,
-			                 () =>
-			                 ToggleVisiblePart(ModelPart.RightArm));
+			                 () => ToggleVisiblePart(ModelPart.RightArm));
 			InitMenuShortcut(leftLegToolStripMenuItem,
 			                 () => ToggleVisiblePart(ModelPart.LeftLeg));
 			InitMenuShortcut(rightLegToolStripMenuItem,
-			                 () =>
-			                 ToggleVisiblePart(ModelPart.RightLeg));
+							 () => ToggleVisiblePart(ModelPart.RightLeg));
+			InitMenuShortcut(chestArmorToolStripMenuItem,
+							 () => ToggleVisiblePart(ModelPart.ChestArmor));
+			InitMenuShortcut(leftArmArmorToolStripMenuItem,
+							 () => ToggleVisiblePart(ModelPart.LeftArmArmor));
+			InitMenuShortcut(rightArmArmorToolStripMenuItem,
+							 () => ToggleVisiblePart(ModelPart.RightArmArmor));
+			InitMenuShortcut(leftLegArmorToolStripMenuItem,
+							 () => ToggleVisiblePart(ModelPart.LeftLegArmor));
+			InitMenuShortcut(rightLegArmorToolStripMenuItem,
+							 () => ToggleVisiblePart(ModelPart.RightLegArmor));
 			InitMenuShortcut(saveToolStripMenuItem, PerformSave);
 			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
@@ -3178,14 +3167,6 @@ namespace MCSkin3D
 			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			mSHAREDToolStripMenuItem.DropDown.Closing += DontCloseMe;
 
-			optionsToolStripMenuItem.DropDown.Closing += (sender, args) =>
-			                                             {
-			                                             	if (modeToolStripMenuItem1.Selected &&
-			                                             	    (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked ||
-			                                             	     args.CloseReason == ToolStripDropDownCloseReason.Keyboard))
-			                                             		args.Cancel = true;
-			                                             };
-
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
 				MessageBox.Show(GetLanguageString("B_MSG_PIXELFORMAT"), GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK,
@@ -3199,8 +3180,6 @@ namespace MCSkin3D
 				MessageBox.Show(GetLanguageString("M_TEMP"));
 				Application.Exit();
 			}
-
-			//new GUIDPicker("..\\guids").ShowDialog();
 		}
 
 		private void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
@@ -3285,16 +3264,6 @@ namespace MCSkin3D
 		{
 			ghostHiddenPartsToolStripMenuItem.Checked = !ghostHiddenPartsToolStripMenuItem.Checked;
 			GlobalSettings.Ghost = ghostHiddenPartsToolStripMenuItem.Checked;
-
-			Renderer.Invalidate();
-		}
-
-		private void Perform10Mode()
-		{
-			ModelLoader.InvertBottomFaces();
-
-			modeToolStripMenuItem1.Checked = !modeToolStripMenuItem1.Checked;
-			GlobalSettings.OnePointEightMode = modeToolStripMenuItem1.Checked;
 
 			Renderer.Invalidate();
 		}
@@ -4400,7 +4369,6 @@ namespace MCSkin3D
 
 			alphaCheckerboardToolStripMenuItem.Checked = GlobalSettings.AlphaCheckerboard;
 			textureOverlayToolStripMenuItem.Checked = GlobalSettings.TextureOverlay;
-			modeToolStripMenuItem1.Checked = GlobalSettings.OnePointEightMode;
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 
 			SetSampleMenuItem(GlobalSettings.Multisamples);

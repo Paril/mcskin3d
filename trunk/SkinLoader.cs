@@ -59,8 +59,15 @@ namespace MCSkin3D
 
 			Program.Context.SplashForm.Invoke((Action<List<TreeNode>>)Editor.MainForm.BeginFinishedLoadingSkins, rootNodes);
 
+			var invalidSkins = new List<Skin>();
+
 			foreach (Skin s in skins)
-				s.SetImages();
+			{
+				if (!s.SetImages())
+					invalidSkins.Add(s);
+			}
+
+			skins.RemoveAll((s) => invalidSkins.Contains(s));
 
 			Program.Context.SplashForm.Invoke((Action<List<Skin>, TreeNode>)Editor.MainForm.FinishedLoadingSkins, skins, _tempToSelect);
 		}

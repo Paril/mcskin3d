@@ -16,6 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using MCSkin3D.Forms;
 using OpenTK;
 using Paril.Components;
 using Paril.Drawing;
@@ -123,10 +124,17 @@ namespace MCSkin3D
 			skin.GLImage.SetRepeat(false);
 		}
 
-		public void SetImages(bool updateGL = true)
+		public bool SetImages(bool updateGL = true)
 		{
+			Bitmap image = null;
+
 			try
 			{
+				using (FileStream file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+					image = new Bitmap(file);
+
+				Size = image.Size;
+
 				if (Head != null)
 				{
 					Head.Dispose();
@@ -137,13 +145,6 @@ namespace MCSkin3D
 						Create();
 					}
 				}
-
-				Bitmap image;
-
-				using (FileStream file = File.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
-					image = new Bitmap(file);
-
-				Size = image.Size;
 
 				float scale = Size.Width / 64.0f;
 				var headSize = (int) (8.0f * scale);
@@ -158,9 +159,6 @@ namespace MCSkin3D
 					            GraphicsUnit.Pixel);
 				}
 
-				image.Dispose();
-				image = null;
-
 				if (Model == null)
 				{
 					Dictionary<string, string> metadata = PNGMetadata.ReadMetadata(File.FullName);
@@ -170,16 +168,35 @@ namespace MCSkin3D
 						Model = ModelLoader.GetModelForPath(metadata["Model"]);
 
 						if (Model == null)
-							Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+						{
+							if (image.Height == 64)
+								Model = ModelLoader.GetModelForPath("Mobs/Passive/Human (1.8)");
+							else
+								Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+						}
 					}
 					else
-						Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+					{
+						if (image.Height == 64)
+							Model = ModelLoader.GetModelForPath("Mobs/Passive/Human (1.8)");
+						else
+							Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+					}
 				}
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Error loading skin \"" + File.FullName + "\"", ex);
+				//throw new Exception("Error loading skin \"" + File.FullName + "\"", ex);
+				MessageBox.Show(String.Format(Editor.GetLanguageString("E_SKINERROR"), File.FullName));
+				return false;
 			}
+			finally
+			{
+				if (image != null)
+					image.Dispose();
+			}
+
+			return true;
 		}
 
 		public void Create()
@@ -272,7 +289,7 @@ namespace MCSkin3D
 			return true;
 		}
 
-		public void Resize(int width, int height)
+		public void Resize(int width, int height, ResizeType type = ResizeType.Scale)
 		{
 			using (var newBitmap = new Bitmap(width, height))
 			{
@@ -281,9 +298,15 @@ namespace MCSkin3D
 					g.SmoothingMode = SmoothingMode.None;
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
 					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					g.Clear(Color.FromArgb(0, 0, 0, 0));
 
 					using (Image temp = System.Drawing.Image.FromFile(File.FullName))
-						g.DrawImage(temp, 0, 0, newBitmap.Width, newBitmap.Height);
+					{
+						if (type == ResizeType.Scale)
+							g.DrawImage(temp, 0, 0, newBitmap.Width, newBitmap.Height);
+						else
+							g.DrawImage(temp, 0, 0, temp.Width, temp.Height);
+					}
 				}
 
 				newBitmap.Save(File.FullName);

@@ -87,19 +87,21 @@
 			this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.visiblePartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.headToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.helmetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.chestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.leftArmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rightArmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.leftLegToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rightLegToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.helmetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.chestArmorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.leftArmArmorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.rightArmArmorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.leftLegArmorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.rightLegArmorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.keyboardShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
-			this.modeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.mINVERTBOTTOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.rendererToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clientArraysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -162,6 +164,11 @@
 			this.toggleRightArmToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleLeftLegToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toggleRightLegToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleChestArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleLeftArmArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleRightArmArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleLeftLegArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toggleRightLegArmorToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
@@ -197,7 +204,7 @@
             this.helpToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
-			this.mainMenuStrip.Size = new System.Drawing.Size(1059, 24);
+			this.mainMenuStrip.Size = new System.Drawing.Size(1240, 24);
 			this.mainMenuStrip.TabIndex = 1;
 			this.mainMenuStrip.Text = "mainMenuStrip";
 			// 
@@ -682,12 +689,17 @@
 			// 
 			this.visiblePartsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.headToolStripMenuItem,
-            this.helmetToolStripMenuItem,
             this.chestToolStripMenuItem,
             this.leftArmToolStripMenuItem,
             this.rightArmToolStripMenuItem,
             this.leftLegToolStripMenuItem,
-            this.rightLegToolStripMenuItem});
+            this.rightLegToolStripMenuItem,
+            this.helmetToolStripMenuItem,
+            this.chestArmorToolStripMenuItem,
+            this.leftArmArmorToolStripMenuItem,
+            this.rightArmArmorToolStripMenuItem,
+            this.leftLegArmorToolStripMenuItem,
+            this.rightLegArmorToolStripMenuItem});
 			this.visiblePartsToolStripMenuItem.Name = "visiblePartsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.visiblePartsToolStripMenuItem, "Text");
 			this.visiblePartsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
@@ -699,27 +711,17 @@
 			this.headToolStripMenuItem.Name = "headToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.headToolStripMenuItem, "Text");
 			this.headToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
-			this.headToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.headToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
 			this.headToolStripMenuItem.Text = "M_HEAD";
 			this.headToolStripMenuItem.Click += new System.EventHandler(this.headToolStripMenuItem_Click);
-			// 
-			// helmetToolStripMenuItem
-			// 
-			this.helmetToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_helmet;
-			this.helmetToolStripMenuItem.Name = "helmetToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.helmetToolStripMenuItem, "Text");
-			this.helmetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
-			this.helmetToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.helmetToolStripMenuItem.Text = "M_HELMET";
-			this.helmetToolStripMenuItem.Click += new System.EventHandler(this.helmetToolStripMenuItem_Click);
 			// 
 			// chestToolStripMenuItem
 			// 
 			this.chestToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_chest;
 			this.chestToolStripMenuItem.Name = "chestToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.chestToolStripMenuItem, "Text");
-			this.chestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
-			this.chestToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.chestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+			this.chestToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
 			this.chestToolStripMenuItem.Text = "M_CHEST";
 			this.chestToolStripMenuItem.Click += new System.EventHandler(this.chestToolStripMenuItem_Click);
 			// 
@@ -728,8 +730,8 @@
 			this.leftArmToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_left_arm;
 			this.leftArmToolStripMenuItem.Name = "leftArmToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.leftArmToolStripMenuItem, "Text");
-			this.leftArmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
-			this.leftArmToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.leftArmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+			this.leftArmToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
 			this.leftArmToolStripMenuItem.Text = "M_LEFTARM";
 			this.leftArmToolStripMenuItem.Click += new System.EventHandler(this.leftArmToolStripMenuItem_Click);
 			// 
@@ -738,8 +740,8 @@
 			this.rightArmToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_right_arm;
 			this.rightArmToolStripMenuItem.Name = "rightArmToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.rightArmToolStripMenuItem, "Text");
-			this.rightArmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
-			this.rightArmToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.rightArmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
+			this.rightArmToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
 			this.rightArmToolStripMenuItem.Text = "M_RIGHTARM";
 			this.rightArmToolStripMenuItem.Click += new System.EventHandler(this.rightArmToolStripMenuItem_Click);
 			// 
@@ -748,8 +750,8 @@
 			this.leftLegToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_left_leg;
 			this.leftLegToolStripMenuItem.Name = "leftLegToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.leftLegToolStripMenuItem, "Text");
-			this.leftLegToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
-			this.leftLegToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.leftLegToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
+			this.leftLegToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
 			this.leftLegToolStripMenuItem.Text = "M_LEFTLEG";
 			this.leftLegToolStripMenuItem.Click += new System.EventHandler(this.leftLegToolStripMenuItem_Click);
 			// 
@@ -758,10 +760,70 @@
 			this.rightLegToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_right_leg;
 			this.rightLegToolStripMenuItem.Name = "rightLegToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.rightLegToolStripMenuItem, "Text");
-			this.rightLegToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
-			this.rightLegToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+			this.rightLegToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
+			this.rightLegToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
 			this.rightLegToolStripMenuItem.Text = "M_RIGHTLEG";
 			this.rightLegToolStripMenuItem.Click += new System.EventHandler(this.rightLegToolStripMenuItem_Click);
+			// 
+			// helmetToolStripMenuItem
+			// 
+			this.helmetToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_helmet;
+			this.helmetToolStripMenuItem.Name = "helmetToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.helmetToolStripMenuItem, "Text");
+			this.helmetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+			this.helmetToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.helmetToolStripMenuItem.Text = "M_HELMET";
+			this.helmetToolStripMenuItem.Click += new System.EventHandler(this.helmetToolStripMenuItem_Click);
+			// 
+			// chestArmorToolStripMenuItem
+			// 
+			this.chestArmorToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_chest_armor;
+			this.chestArmorToolStripMenuItem.Name = "chestArmorToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.chestArmorToolStripMenuItem, "Text");
+			this.chestArmorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D8)));
+			this.chestArmorToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.chestArmorToolStripMenuItem.Text = "M_CHESTARMOR";
+			this.chestArmorToolStripMenuItem.Click += new System.EventHandler(this.chestArmorToolStripMenuItem_Click);
+			// 
+			// leftArmArmorToolStripMenuItem
+			// 
+			this.leftArmArmorToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_left_arm_armor;
+			this.leftArmArmorToolStripMenuItem.Name = "leftArmArmorToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.leftArmArmorToolStripMenuItem, "Text");
+			this.leftArmArmorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D9)));
+			this.leftArmArmorToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.leftArmArmorToolStripMenuItem.Text = "M_LEFTARMARMOR";
+			this.leftArmArmorToolStripMenuItem.Click += new System.EventHandler(this.leftArmArmorToolStripMenuItem_Click);
+			// 
+			// rightArmArmorToolStripMenuItem
+			// 
+			this.rightArmArmorToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_right_arm_armor;
+			this.rightArmArmorToolStripMenuItem.Name = "rightArmArmorToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.rightArmArmorToolStripMenuItem, "Text");
+			this.rightArmArmorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D0)));
+			this.rightArmArmorToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.rightArmArmorToolStripMenuItem.Text = "M_RIGHTARMARMOR";
+			this.rightArmArmorToolStripMenuItem.Click += new System.EventHandler(this.rightArmArmorToolStripMenuItem_Click);
+			// 
+			// leftLegArmorToolStripMenuItem
+			// 
+			this.leftLegArmorToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_left_leg_armor;
+			this.leftLegArmorToolStripMenuItem.Name = "leftLegArmorToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.leftLegArmorToolStripMenuItem, "Text");
+			this.leftLegArmorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
+			this.leftLegArmorToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.leftLegArmorToolStripMenuItem.Text = "M_LEFTLEGARMOR";
+			this.leftLegArmorToolStripMenuItem.Click += new System.EventHandler(this.leftLegArmorToolStripMenuItem_Click);
+			// 
+			// rightLegArmorToolStripMenuItem
+			// 
+			this.rightLegArmorToolStripMenuItem.Image = global::MCSkin3D.Properties.Resources.show_right_leg_armor;
+			this.rightLegArmorToolStripMenuItem.Name = "rightLegArmorToolStripMenuItem";
+			this.languageProvider1.SetPropertyNames(this.rightLegArmorToolStripMenuItem, "Text");
+			this.rightLegArmorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
+			this.rightLegArmorToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.rightLegArmorToolStripMenuItem.Text = "M_RIGHTLEGARMOR";
+			this.rightLegArmorToolStripMenuItem.Click += new System.EventHandler(this.rightLegArmorToolStripMenuItem_Click);
 			// 
 			// optionsToolStripMenuItem
 			// 
@@ -769,9 +831,6 @@
             this.keyboardShortcutsToolStripMenuItem,
             this.backgroundColorToolStripMenuItem,
             this.mSKINDIRSToolStripMenuItem,
-            this.toolStripMenuItem6,
-            this.modeToolStripMenuItem1,
-            this.mINVERTBOTTOMToolStripMenuItem,
             this.toolStripSeparator12,
             this.rendererToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -783,7 +842,7 @@
 			// 
 			this.keyboardShortcutsToolStripMenuItem.Name = "keyboardShortcutsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.keyboardShortcutsToolStripMenuItem, "Text");
-			this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.keyboardShortcutsToolStripMenuItem.Text = "M_KEYSHORTCUTS";
 			this.keyboardShortcutsToolStripMenuItem.Click += new System.EventHandler(this.keyboardShortcutsToolStripMenuItem_Click);
 			// 
@@ -791,7 +850,7 @@
 			// 
 			this.backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.backgroundColorToolStripMenuItem, "Text");
-			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.backgroundColorToolStripMenuItem.Text = "M_BGCOLOR";
 			this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
 			// 
@@ -799,35 +858,14 @@
 			// 
 			this.mSKINDIRSToolStripMenuItem.Name = "mSKINDIRSToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mSKINDIRSToolStripMenuItem, "Text");
-			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
 			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
-			// 
-			// toolStripMenuItem6
-			// 
-			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-			this.toolStripMenuItem6.Size = new System.Drawing.Size(176, 6);
-			// 
-			// modeToolStripMenuItem1
-			// 
-			this.modeToolStripMenuItem1.Name = "modeToolStripMenuItem1";
-			this.languageProvider1.SetPropertyNames(this.modeToolStripMenuItem1, "Text");
-			this.modeToolStripMenuItem1.Size = new System.Drawing.Size(179, 22);
-			this.modeToolStripMenuItem1.Text = "M_10_MODE";
-			this.modeToolStripMenuItem1.Click += new System.EventHandler(this.modeToolStripMenuItem1_Click);
-			// 
-			// mINVERTBOTTOMToolStripMenuItem
-			// 
-			this.mINVERTBOTTOMToolStripMenuItem.Name = "mINVERTBOTTOMToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.mINVERTBOTTOMToolStripMenuItem, "Text");
-			this.mINVERTBOTTOMToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-			this.mINVERTBOTTOMToolStripMenuItem.Text = "M_INVERTBOTTOM";
-			this.mINVERTBOTTOMToolStripMenuItem.Click += new System.EventHandler(this.mINVERTBOTTOMToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator12
 			// 
 			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(176, 6);
+			this.toolStripSeparator12.Size = new System.Drawing.Size(174, 6);
 			// 
 			// rendererToolStripMenuItem
 			// 
@@ -836,7 +874,7 @@
             this.immediateToolStripMenuItem});
 			this.rendererToolStripMenuItem.Name = "rendererToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.rendererToolStripMenuItem, "Text");
-			this.rendererToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.rendererToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.rendererToolStripMenuItem.Text = "M_RENDERER";
 			// 
 			// clientArraysToolStripMenuItem
@@ -1052,7 +1090,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.panel4);
-			this.splitContainer1.Size = new System.Drawing.Size(1059, 644);
+			this.splitContainer1.Size = new System.Drawing.Size(1240, 707);
 			this.splitContainer1.SplitterDistance = 302;
 			this.splitContainer1.TabIndex = 4;
 			// 
@@ -1072,8 +1110,8 @@
 			// splitContainer3.Panel2
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.colorPanel);
-			this.splitContainer3.Size = new System.Drawing.Size(302, 644);
-			this.splitContainer3.SplitterDistance = 363;
+			this.splitContainer3.Size = new System.Drawing.Size(302, 707);
+			this.splitContainer3.SplitterDistance = 426;
 			this.splitContainer3.TabIndex = 1;
 			// 
 			// tabControl1
@@ -1086,7 +1124,7 @@
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(302, 346);
+			this.tabControl1.Size = new System.Drawing.Size(302, 409);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage1
@@ -1096,7 +1134,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Size = new System.Drawing.Size(294, 320);
+			this.tabPage1.Size = new System.Drawing.Size(294, 383);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Skins";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -1117,7 +1155,7 @@
 			this.treeView1.Name = "treeView1";
 			this.treeView1.ScrollPosition = new System.Drawing.Point(0, 0);
 			this.treeView1.ShowNodeToolTips = true;
-			this.treeView1.Size = new System.Drawing.Size(294, 295);
+			this.treeView1.Size = new System.Drawing.Size(294, 358);
 			this.treeView1.Sorted = true;
 			this.treeView1.TabIndex = 1;
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -1141,7 +1179,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(294, 320);
+			this.tabPage2.Size = new System.Drawing.Size(294, 383);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Parts";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -1153,7 +1191,7 @@
 			this.treeView2.HideSelection = false;
 			this.treeView2.Location = new System.Drawing.Point(0, 0);
 			this.treeView2.Name = "treeView2";
-			this.treeView2.Size = new System.Drawing.Size(294, 320);
+			this.treeView2.Size = new System.Drawing.Size(294, 383);
 			this.treeView2.TabIndex = 0;
 			this.treeView2.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView2_NodeMouseClick);
 			// 
@@ -1161,7 +1199,7 @@
 			// 
 			this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.hScrollBar1.LargeChange = 1;
-			this.hScrollBar1.Location = new System.Drawing.Point(0, 346);
+			this.hScrollBar1.Location = new System.Drawing.Point(0, 409);
 			this.hScrollBar1.Maximum = 0;
 			this.hScrollBar1.Name = "hScrollBar1";
 			this.hScrollBar1.Size = new System.Drawing.Size(302, 17);
@@ -1189,7 +1227,7 @@
 			this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel4.Location = new System.Drawing.Point(0, 0);
 			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(753, 644);
+			this.panel4.Size = new System.Drawing.Size(934, 707);
 			this.panel4.TabIndex = 1;
 			// 
 			// splitContainer4
@@ -1202,7 +1240,7 @@
 			this.splitContainer4.Name = "splitContainer4";
 			this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.splitContainer4.Panel1MinSize = 0;
-			this.splitContainer4.Size = new System.Drawing.Size(753, 597);
+			this.splitContainer4.Size = new System.Drawing.Size(934, 660);
 			this.splitContainer4.SplitterDistance = 0;
 			this.splitContainer4.SplitterIncrement = 5;
 			this.splitContainer4.SplitterWidth = 1;
@@ -1212,9 +1250,9 @@
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 622);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 685);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(753, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(934, 22);
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
@@ -1247,18 +1285,23 @@
             this.screenshotToolStripButton,
             this.toolStripSeparator9,
             this.toggleHeadToolStripButton,
-            this.toggleHelmetToolStripButton,
             this.toggleChestToolStripButton,
             this.toggleLeftArmToolStripButton,
             this.toggleRightArmToolStripButton,
             this.toggleLeftLegToolStripButton,
             this.toggleRightLegToolStripButton,
+            this.toggleHelmetToolStripButton,
+            this.toggleChestArmorToolStripButton,
+            this.toggleLeftArmArmorToolStripButton,
+            this.toggleRightArmArmorToolStripButton,
+            this.toggleLeftLegArmorToolStripButton,
+            this.toggleRightLegArmorToolStripButton,
             this.toolStripSeparator15,
             this.toolStripDropDownButton1,
             this.toolStripButton7});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(753, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(934, 25);
 			this.toolStrip1.TabIndex = 5;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1475,6 +1518,61 @@
 			this.toggleRightLegToolStripButton.Text = "T_TOGGLERIGHTLEG";
 			this.toggleRightLegToolStripButton.Click += new System.EventHandler(this.toggleRightLegToolStripButton_Click);
 			// 
+			// toggleChestArmorToolStripButton
+			// 
+			this.toggleChestArmorToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleChestArmorToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_chest_armor;
+			this.toggleChestArmorToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleChestArmorToolStripButton.Name = "toggleChestArmorToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleChestArmorToolStripButton, "Text");
+			this.toggleChestArmorToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleChestArmorToolStripButton.Text = "T_TOGGLECHESTARMOR";
+			this.toggleChestArmorToolStripButton.Click += new System.EventHandler(this.toggleChestArmorToolStripButton_Click);
+			// 
+			// toggleLeftArmArmorToolStripButton
+			// 
+			this.toggleLeftArmArmorToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleLeftArmArmorToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_arm_armor;
+			this.toggleLeftArmArmorToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleLeftArmArmorToolStripButton.Name = "toggleLeftArmArmorToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleLeftArmArmorToolStripButton, "Text");
+			this.toggleLeftArmArmorToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleLeftArmArmorToolStripButton.Text = "T_TOGGLELEFTARMARMOR";
+			this.toggleLeftArmArmorToolStripButton.Click += new System.EventHandler(this.toggleLeftArmArmorToolStripButton_Click);
+			// 
+			// toggleRightArmArmorToolStripButton
+			// 
+			this.toggleRightArmArmorToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleRightArmArmorToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_arm_armor;
+			this.toggleRightArmArmorToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleRightArmArmorToolStripButton.Name = "toggleRightArmArmorToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleRightArmArmorToolStripButton, "Text");
+			this.toggleRightArmArmorToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleRightArmArmorToolStripButton.Text = "T_TOGGLERIGHTARMARMOR";
+			this.toggleRightArmArmorToolStripButton.Click += new System.EventHandler(this.toggleRightArmArmorToolStripButton_Click);
+			// 
+			// toggleLeftLegArmorToolStripButton
+			// 
+			this.toggleLeftLegArmorToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleLeftLegArmorToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_left_leg_armor;
+			this.toggleLeftLegArmorToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleLeftLegArmorToolStripButton.Name = "toggleLeftLegArmorToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleLeftLegArmorToolStripButton, "Text");
+			this.toggleLeftLegArmorToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleLeftLegArmorToolStripButton.Text = "T_TOGGLELEFTLEGARMOR";
+			this.toggleLeftLegArmorToolStripButton.Click += new System.EventHandler(this.toggleLeftLegArmorToolStripButton_Click);
+			// 
+			// toggleRightLegArmorToolStripButton
+			// 
+			this.toggleRightLegArmorToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toggleRightLegArmorToolStripButton.Image = global::MCSkin3D.Properties.Resources.show_right_leg_armor;
+			this.toggleRightLegArmorToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toggleRightLegArmorToolStripButton.Name = "toggleRightLegArmorToolStripButton";
+			this.languageProvider1.SetPropertyNames(this.toggleRightLegArmorToolStripButton, "Text");
+			this.toggleRightLegArmorToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.toggleRightLegArmorToolStripButton.Text = "T_TOGGLERIGHTLEGARMOR";
+			this.toggleRightLegArmorToolStripButton.Click += new System.EventHandler(this.toggleRightLegArmorToolStripButton_Click);
+			// 
 			// toolStripSeparator15
 			// 
 			this.toolStripSeparator15.Name = "toolStripSeparator15";
@@ -1536,7 +1634,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1059, 668);
+			this.ClientSize = new System.Drawing.Size(1240, 731);
 			this.Controls.Add(this.labelEditTextBox);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mainMenuStrip);
@@ -1647,7 +1745,7 @@
 		private System.Windows.Forms.ToolStripButton screenshotToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripButton toggleHeadToolStripButton;
-		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleChestArmorToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleChestToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleLeftArmToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleRightArmToolStripButton;
@@ -1666,9 +1764,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem mFETCHNAMEToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mSKINDIRSToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
-		private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem mINVERTBOTTOMToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
 		private System.Windows.Forms.ToolStripButton resetCameraToolStripButton;
@@ -1708,6 +1803,16 @@
 		private System.Windows.Forms.ToolStripMenuItem clientArraysToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem immediateToolStripMenuItem;
 		public Languages.LanguageProvider languageProvider1;
+		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftArmArmorToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightArmArmorToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleLeftLegArmorToolStripButton;
+		private System.Windows.Forms.ToolStripButton toggleRightLegArmorToolStripButton;
+		private System.Windows.Forms.ToolStripMenuItem chestArmorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem leftArmArmorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem rightArmArmorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem leftLegArmorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem rightLegArmorToolStripMenuItem;
 	}
 }
 
