@@ -16,6 +16,7 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>True</IsSolid>
 						<Offset>-4,-8,-4</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
@@ -33,6 +34,7 @@
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-4,-8,-4</Offset>
 						<Position>0,0,0</Position>
 						<Rotation>0,0,0</Rotation>
@@ -50,6 +52,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>True</IsSolid>
 					<Offset>-4,0,-2</Offset>
 					<Position>0,0,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -67,6 +70,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>False</IsSolid>
 					<Offset>-4,0,-2</Offset>
 					<Position>0,0,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -84,6 +88,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>True</IsSolid>
 					<Offset>-3,-2,-2</Offset>
 					<Position>-5,2,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -101,6 +106,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>False</IsSolid>
 					<Offset>-3,-2,-2</Offset>
 					<Position>-5,2,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -118,6 +124,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>True</IsSolid>
 					<Offset>-1,-2,-2</Offset>
 					<Position>5,2,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -135,6 +142,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>False</IsSolid>
 					<Offset>-1,-2,-2</Offset>
 					<Position>5,2,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -152,6 +160,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>True</IsSolid>
 					<Offset>-2,0,-2</Offset>
 					<Position>-2,12,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -169,6 +178,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>False</IsSolid>
 					<Offset>-2,0,-2</Offset>
 					<Position>-2,12,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -186,6 +196,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>True</IsSolid>
 					<Offset>-2,0,-2</Offset>
 					<Position>2,12,0</Position>
 					<Rotation>0,0,0</Rotation>
@@ -203,6 +214,7 @@
 					<IsDecorative>False</IsDecorative>
 					<IsFixed>False</IsFixed>
 					<IsMirrored>False</IsMirrored>
+					<IsSolid>False</IsSolid>
 					<Offset>-2,0,-2</Offset>
 					<Position>2,12,0</Position>
 					<Rotation>0,0,0</Rotation>

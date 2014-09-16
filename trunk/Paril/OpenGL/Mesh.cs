@@ -27,6 +27,7 @@ namespace Paril.OpenGL
 		public bool DrawTransparent, LastDrawTransparent;
 		public IMeshUserData UserData;
 		public Matrix4 Matrix;
+		public bool IsSolid;
 
 		public Mesh(string name)
 		{
