@@ -52,6 +52,7 @@ namespace MCSkin3D.Models
 	{
 		public bool IsDecorative;
 		public bool IsFixed;
+		public bool IsSolid = false;
 
 		public override void Parse(XmlNode node)
 		{
@@ -65,6 +66,8 @@ namespace MCSkin3D.Models
 					IsDecorative = bool.Parse(child.InnerText);
 				else if (name == "isfixed")
 					IsFixed = bool.Parse(child.InnerText);
+				else if (name == "issolid")
+					IsSolid = bool.Parse(child.InnerText);
 			}
 		}
 	}
@@ -295,6 +298,7 @@ namespace MCSkin3D.Models
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
+							renderer.isSolid = box.IsSolid;
 						}
 						else if (z.RenderData is TCNRenderPlane)
 						{

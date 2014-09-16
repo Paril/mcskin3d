@@ -717,11 +717,12 @@ namespace MCSkin3D
 					meshIndex++;
 					bool meshVisible = CurrentModel.PartsEnabled[meshIndex];
 
-					if (meshVisible == false &&
-					    !(GlobalSettings.Ghost && !pickView))
+					if (meshVisible == false && !(GlobalSettings.Ghost && !pickView))
 						continue;
 
-					mesh.HasTransparency = _lastSkin.TransparentParts[meshIndex];
+					if (!mesh.IsSolid)
+						mesh.HasTransparency = _lastSkin.TransparentParts[meshIndex];
+
 					mesh.Texture = tex;
 
 					if (mesh.FollowCursor && GlobalSettings.FollowCursor)
