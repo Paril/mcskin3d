@@ -8,6 +8,7 @@ Version 1.5.0.300
 - New/Copied skins and folders now properly use the New prefix, and refer to language files for "New", "Copy", etc.
 - Tree view default height was wrong, caused some distortion on heads.
 - Re-upgraded to .NET 4.0
+- Reduced size of exception messages
 
 Version 1.4.2.252
 - Renamed to "LE" for Light Edition

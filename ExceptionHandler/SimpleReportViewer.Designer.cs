@@ -32,6 +32,7 @@
 			this.button1 = new System.Windows.Forms.Button();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.button2 = new System.Windows.Forms.Button();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -40,6 +41,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox1.BackColor = System.Drawing.SystemColors.Window;
+			this.textBox1.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.textBox1.Location = new System.Drawing.Point(12, 12);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
@@ -60,6 +62,10 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// languageProvider1
+			// 
+			this.languageProvider1.BaseControl = this;
+			// 
 			// button2
 			// 
 			this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -71,10 +77,6 @@
 			this.button2.Text = "C_COPYTOCLIPBOARD";
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
-			// 
-			// languageProvider1
-			// 
-			this.languageProvider1.BaseControl = this;
 			// 
 			// SimpleReportViewer
 			// 
@@ -90,6 +92,7 @@
 			this.languageProvider1.SetPropertyNames(this, "Text");
 			this.Text = "M_REPORTVIEWER";
 			this.Load += new System.EventHandler(this.SimpleReportViewer_Load);
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -106,7 +106,6 @@
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Splash";
-			this.TopMost = true;
 			this.Load += new System.EventHandler(this.Splash_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();

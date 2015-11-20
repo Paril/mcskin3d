@@ -75,14 +75,7 @@ namespace MCSkin3D.ExceptionHandler
 
 			foreach (var e in SoftwareData)
 				writer.WriteLine(e.Key + ": " + e.Value);
-
-			writer.WriteLine();
-			writer.WriteLine("Hardware");
-			writer.WriteLine("--------------------------------");
-
-			foreach (var e in HardwareData)
-				writer.WriteLine(e.Key + ": " + e.Value);
-
+			
 			writer.WriteLine();
 			writer.WriteLine("Exception");
 			writer.WriteLine("--------------------------------");

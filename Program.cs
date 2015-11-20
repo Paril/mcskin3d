@@ -17,6 +17,7 @@
 //
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Reflection;
@@ -69,6 +70,7 @@ namespace MCSkin3D
 #if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += Application_ThreadException;
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 #endif
 
 			Version = new Version(Application.ProductVersion);
@@ -88,6 +90,11 @@ namespace MCSkin3D
 				RaiseException(ex);
 			}
 #endif
+		}
+
+		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			RaiseException((Exception)e.ExceptionObject);
 		}
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

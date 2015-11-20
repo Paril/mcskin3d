@@ -189,7 +189,7 @@ namespace MCSkin3D.Languages
 	/// Class that provides language services to Form controls.
 	/// </summary>
 	[ProvideProperty("PropertyNames", typeof(object))]
-	public class LanguageProvider : Component, IExtenderProvider
+	public class LanguageProvider : Component, IExtenderProvider, ISupportInitialize
 	{
 		private readonly Dictionary<object, LanguageControlLink> _properties = new Dictionary<object, LanguageControlLink>();
 
@@ -247,11 +247,22 @@ namespace MCSkin3D.Languages
 			}
 		}
 
+
+		//
+		// Summary:
+		//     Signals the object that initialization is starting.
+		public void BeginInit() { }
+		
+		//
+		// Summary:
+		//     Signals the object that initialization is complete.
+		public void EndInit() { LanguageHandler.RegisterProvider(this); }
+	
 		Control _baseControl;
 		public Control BaseControl
 		{
 			get { return _baseControl; }
-			set { _baseControl = value; LanguageHandler.RegisterProvider(this); }
+			set { _baseControl = value; }
 		}
 
 		public void SetPropertyNames(object control, string names)

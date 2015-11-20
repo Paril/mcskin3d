@@ -126,6 +126,7 @@ namespace MCSkin3D.Forms
 			}
 			catch (Exception ex)
 			{
+				Program.Context.SplashForm.Invoke((Action)(() => { Close(); }));
 				Program.RaiseException(new Exception("Failed to initialize program during \"" + label1.Text + "\"", ex));
 				Application.Exit();
 			}

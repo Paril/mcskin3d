@@ -16,77 +16,7 @@ namespace MCSkin3D.ExceptionHandler
 		}
 
 		public Exception Exception { get; set; }
-
-		public string GetHardwareInfo()
-		{
-			try
-			{
-				string info = "Video Info:\r\n";
-
-				var searcher =
-					new ManagementObjectSearcher("Select * from Win32_VideoController");
-
-				foreach (ManagementObject video in searcher.Get())
-				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							info += prop.Name + ": " + prop.Value + "\r\n";
-					}
-				}
-
-				info += "\r\nMemory Info:\r\n";
-
-				searcher =
-					new ManagementObjectSearcher("Select * from Win32_PhysicalMemoryArray");
-
-				foreach (ManagementObject video in searcher.Get())
-				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							info += prop.Name + ": " + prop.Value + "\r\n";
-					}
-				}
-
-				info += "\r\nProcessor Info:\r\n";
-
-				searcher =
-					new ManagementObjectSearcher("Select * from Win32_Processor");
-
-				foreach (ManagementObject video in searcher.Get())
-				{
-					foreach (PropertyData prop in video.Properties)
-					{
-						if (prop.Value != null &&
-							prop.Name != "SystemName")
-							info += prop.Name + ": " + prop.Value + "\r\n";
-					}
-				}
-
-				try
-				{
-					info += "\r\nGL Data:\r\n";
-					info += "Vendor: " + GL.GetString(StringName.Vendor) + "\r\n";
-					info += "Version: " + GL.GetString(StringName.Version) + "\r\n";
-					info += "Renderer: " + GL.GetString(StringName.Renderer) + "\r\n";
-					info += "Extensions: " + GL.GetString(StringName.Extensions) + "\r\n";
-				}
-				catch (Exception)
-				{
-					info += "Couldn't get GL data\r\n";
-				}
-
-				return info;
-			}
-			catch (Exception ex)
-			{
-				return "Couldn't get hardware info: " + ex;
-			}
-		}
-
+		
 		public void InitSizes()
 		{
 			int oldHeight = label3.Height;
@@ -190,67 +120,19 @@ namespace MCSkin3D.ExceptionHandler
 				report.Data.Add(new ExceptionData(ex));
 
 			// build GL info
-			try
-			{
-				report.OpenGLData = new Dictionary<string, string>();
-				report.OpenGLData.Add("vendor", Editor.GLVendor);
-				report.OpenGLData.Add("version", Editor.GLVersion);
-				report.OpenGLData.Add("renderer", Editor.GLRenderer);
-				report.OpenGLData.Add("extensions", Editor.GLExtensions);
-			}
-			catch
-			{
-			}
+			report.OpenGLData = new Dictionary<string, string>();
+
+			if (!string.IsNullOrWhiteSpace(Editor.GLVendor))
+				report.OpenGLData.Add("OpenGL", Editor.GLVendor + " " + Editor.GLVersion + " " + Editor.GLRenderer);
+			else
+				report.OpenGLData.Add("OpenGL", "Not Loaded");
 
 			// build software info
 			report.SoftwareData = new Dictionary<string, string>();
 
-			report.SoftwareData.Add("osversion", Environment.OSVersion.ToString());
-			report.SoftwareData.Add("is64bit", (Is64BitOperatingSystem() ? "true" : "false"));
-			report.SoftwareData.Add("frameworkversion", Environment.Version.ToString());
-			report.SoftwareData.Add("softwareversion", Program.Version.ToString());
-
-			// build hardware info
-			report.HardwareData = new Dictionary<string, string>();
-
-			var searcher =
-				new ManagementObjectSearcher("Select * from Win32_VideoController");
-
-			foreach (ManagementObject video in searcher.Get())
-			{
-				foreach (PropertyData prop in video.Properties)
-				{
-					if (prop.Value != null &&
-						prop.Name != "SystemName")
-						report.HardwareData.Add("video|" + prop.Name, prop.Value.ToString());
-				}
-			}
-
-			searcher =
-				new ManagementObjectSearcher("Select * from Win32_PhysicalMemoryArray");
-
-			foreach (ManagementObject video in searcher.Get())
-			{
-				foreach (PropertyData prop in video.Properties)
-				{
-					if (prop.Value != null &&
-						prop.Name != "SystemName")
-						report.HardwareData.Add("memory|" + prop.Name, prop.Value.ToString());
-				}
-			}
-
-			searcher =
-				new ManagementObjectSearcher("Select * from Win32_Processor");
-
-			foreach (ManagementObject video in searcher.Get())
-			{
-				foreach (PropertyData prop in video.Properties)
-				{
-					if (prop.Value != null &&
-						prop.Name != "SystemName")
-						report.HardwareData.Add("processor|" + prop.Name, prop.Value.ToString());
-				}
-			}
+			report.SoftwareData.Add("OS", Environment.OSVersion.ToString() + " " + (Is64BitOperatingSystem() ? "x64" : "x86"));
+			report.SoftwareData.Add(".NET Version", Environment.Version.ToString());
+			report.SoftwareData.Add("MCSkin3D Version", Program.Version.ToString());
 
 			return report;
 		}
