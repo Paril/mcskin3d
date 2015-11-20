@@ -1,5 +1,3 @@
-﻿using System;
-
-namespace MCSkin3D.Models
+﻿namespace MCSkin3D.Models
 {
 }

@@ -1,0 +1,137 @@
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Cover">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-6,-5,0</Offset>
+						<Position>0,0,-1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,10,0</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Cover">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,-5,0</Offset>
+						<Position>0,0,1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,10,0</Size>
+						<TextureOffset>16,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Spine">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,-5,0</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,89.99998,0</Rotation>
+						<Size>2,10,0</Size>
+						<TextureOffset>12,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Helmet</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,-4,-0.99</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>5,8,1</Size>
+						<TextureOffset>0,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,-4,-0.01</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>5,8,1</Size>
+						<TextureOffset>12,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,-4,0</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>5,8,0</Size>
+						<TextureOffset>24,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Page">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,-4,0</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>5,8,0</Size>
+						<TextureOffset>24,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Book</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Book</Name>
+</Techne>

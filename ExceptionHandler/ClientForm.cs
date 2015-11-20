@@ -1,10 +1,10 @@
-﻿using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using OpenTK.Graphics.OpenGL;
 
 namespace MCSkin3D.ExceptionHandler
 {
@@ -31,7 +31,7 @@ namespace MCSkin3D.ExceptionHandler
 					foreach (PropertyData prop in video.Properties)
 					{
 						if (prop.Value != null &&
-						    prop.Name != "SystemName")
+							prop.Name != "SystemName")
 							info += prop.Name + ": " + prop.Value + "\r\n";
 					}
 				}
@@ -46,7 +46,7 @@ namespace MCSkin3D.ExceptionHandler
 					foreach (PropertyData prop in video.Properties)
 					{
 						if (prop.Value != null &&
-						    prop.Name != "SystemName")
+							prop.Name != "SystemName")
 							info += prop.Name + ": " + prop.Value + "\r\n";
 					}
 				}
@@ -61,7 +61,7 @@ namespace MCSkin3D.ExceptionHandler
 					foreach (PropertyData prop in video.Properties)
 					{
 						if (prop.Value != null &&
-						    prop.Name != "SystemName")
+							prop.Name != "SystemName")
 							info += prop.Name + ": " + prop.Value + "\r\n";
 					}
 				}
@@ -94,7 +94,7 @@ namespace MCSkin3D.ExceptionHandler
 			using (Graphics g = CreateGraphics())
 			{
 				SizeF size = g.MeasureString(label3.Text, label3.Font, label3.Width);
-				label3.Size = new Size((int) size.Width, (int) size.Height + 12);
+				label3.Size = new Size((int)size.Width, (int)size.Height + 12);
 			}
 
 			int offs = label3.Height - oldHeight;
@@ -184,7 +184,7 @@ namespace MCSkin3D.ExceptionHandler
 
 			report.Data = new List<ExceptionData>();
 
-			report.UserData = new Dictionary<string,string>();
+			report.UserData = new Dictionary<string, string>();
 
 			for (var ex = topException; ex != null; ex = ex.InnerException)
 				report.Data.Add(new ExceptionData(ex));

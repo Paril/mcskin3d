@@ -56,18 +56,18 @@ namespace Devcorp.Controls.Design
 		public static double GetColorDistance(Color c1, Color c2)
 		{
 			var rgb1 = new[]
-			           {
-			           	c1.R / 255.0,
-			           	c1.G / 255.0,
-			           	c1.B / 255.0
-			           };
+					   {
+						   c1.R / 255.0,
+						   c1.G / 255.0,
+						   c1.B / 255.0
+					   };
 
 			var rgb2 = new[]
-			           {
-			           	c2.R / 255.0,
-			           	c2.G / 255.0,
-			           	c2.B / 255.0
-			           };
+					   {
+						   c2.R / 255.0,
+						   c2.G / 255.0,
+						   c2.B / 255.0
+					   };
 
 			return GetColorDistance(rgb1[0], rgb1[1], rgb1[2], rgb2[0], rgb2[1], rgb2[2]);
 		}
@@ -90,7 +90,7 @@ namespace Devcorp.Controls.Design
 
 			for (int i = 0; i < colorCount; i++)
 			{
-				temp = HSBtoColor((int) ((i * 255.0) / colorCount), 255, 255);
+				temp = HSBtoColor((int)((i * 255.0) / colorCount), 255, 255);
 				colors[i] = Color.FromArgb(alpha, temp.R, temp.G, temp.B);
 			}
 
@@ -138,33 +138,33 @@ namespace Devcorp.Controls.Design
 			switch (strHex)
 			{
 				case ("A"):
-				{
-					return 10;
-				}
+					{
+						return 10;
+					}
 				case ("B"):
-				{
-					return 11;
-				}
+					{
+						return 11;
+					}
 				case ("C"):
-				{
-					return 12;
-				}
+					{
+						return 12;
+					}
 				case ("D"):
-				{
-					return 13;
-				}
+					{
+						return 13;
+					}
 				case ("E"):
-				{
-					return 14;
-				}
+					{
+						return 14;
+					}
 				case ("F"):
-				{
-					return 15;
-				}
+					{
+						return 15;
+					}
 				default:
-				{
-					return int.Parse(strHex);
-				}
+					{
+						return int.Parse(strHex);
+					}
 			}
 		}
 
@@ -237,7 +237,7 @@ namespace Devcorp.Controls.Design
 			{
 				// the color wheel consists of 6 sectors. Figure out which sector you're in.
 				double sectorPos = hsb.Hue / 60.0;
-				var sectorNumber = (int) (Math.Floor(sectorPos));
+				var sectorNumber = (int)(Math.Floor(sectorPos));
 				// get the fractional part of the sector
 				double fractionalSector = sectorPos - sectorNumber;
 
@@ -614,9 +614,9 @@ namespace Devcorp.Controls.Design
 		/// <param name="blue">Blue vaue must be in [0, 255].</param>
 		public static CMYK RGBtoCMYK(int red, int green, int blue)
 		{
-			double c = (double) (255 - red) / 255;
-			double m = (double) (255 - green) / 255;
-			double y = (double) (255 - blue) / 255;
+			double c = (double)(255 - red) / 255;
+			double m = (double)(255 - green) / 255;
+			double y = (double)(255 - blue) / 255;
 
 			double min = Math.Min(c, Math.Min(m, y));
 			if (min == 1.0)
@@ -762,7 +762,7 @@ namespace Devcorp.Controls.Design
 		/// <param name="k">Black value (must be between 0 and 1).</param>
 		public static Color CMYKtoColor(float c, float m, float y, float k)
 		{
-			return CMYKtoColor(c, m, y, (double) k);
+			return CMYKtoColor(c, m, y, (double)k);
 		}
 
 		/// <summary>
@@ -956,8 +956,8 @@ namespace Devcorp.Controls.Design
 
 			for (int i = 0; i < 3; i++)
 				Clinear[i] = (Clinear[i] <= 0.0031308)
-				             	? 12.92 * Clinear[i]
-				             	: (1 + 0.055) * Math.Pow(Clinear[i], (1.0 / 2.4)) - 0.055;
+								 ? 12.92 * Clinear[i]
+								 : (1 + 0.055) * Math.Pow(Clinear[i], (1.0 / 2.4)) - 0.055;
 
 			return new RGB(
 				Convert.ToInt32(Double.Parse(String.Format("{0:0.00}", Clinear[0] * 255.0))),

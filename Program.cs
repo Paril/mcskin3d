@@ -16,9 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.ExceptionHandler;
-using MCSkin3D.Languages;
-using SVN;
 using System;
 using System.IO;
 using System.Media;
@@ -26,6 +23,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
+using MCSkin3D.ExceptionHandler;
+using MCSkin3D.Languages;
+using SVN;
 using Version = Paril.Components.Update.Version;
 
 namespace MCSkin3D
@@ -78,9 +78,9 @@ namespace MCSkin3D
 			try
 			{
 #endif
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new MCSkin3DAppContext());
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new MCSkin3DAppContext());
 #if !DEBUG
 			}
 			catch (Exception ex)
@@ -101,7 +101,7 @@ namespace MCSkin3D
 
 			if (raiseForm.InvokeRequired)
 			{
-				raiseForm.Invoke((Action)delegate() { RaiseException(ex); });
+				raiseForm.Invoke((Action)delegate () { RaiseException(ex); });
 				return;
 			}
 

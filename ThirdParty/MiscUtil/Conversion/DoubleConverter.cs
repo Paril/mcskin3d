@@ -28,15 +28,15 @@ namespace MiscUtil.Conversion
 			// Translate the double into sign, exponent and mantissa.
 			long bits = BitConverter.DoubleToInt64Bits(d);
 			bool negative = (bits < 0);
-			var exponent = (int) ((bits >> 52) & 0x7ffL);
+			var exponent = (int)((bits >> 52) & 0x7ffL);
 			long mantissa = bits & 0xfffffffffffffL;
 
 			// Subnormal numbers; exponent is effectively one higher,
 			// but there's no extra normalisation bit in the mantissa
 			if (exponent == 0)
 				exponent++;
-				// Normal numbers; leave exponent as it is but add extra
-				// bit to the front of the mantissa
+			// Normal numbers; leave exponent as it is but add extra
+			// bit to the front of the mantissa
 			else
 				mantissa = mantissa | (1L << 52);
 
@@ -67,8 +67,8 @@ namespace MiscUtil.Conversion
 				for (int i = 0; i < -exponent; i++)
 					ad.MultiplyBy(5);
 				ad.Shift(-exponent);
-			} 
-				// Otherwise, we need to repeatedly multiply by 2
+			}
+			// Otherwise, we need to repeatedly multiply by 2
 			else
 			{
 				for (int i = 0; i < exponent; i++)
@@ -106,7 +106,7 @@ namespace MiscUtil.Conversion
 				string tmp = x.ToString(CultureInfo.InvariantCulture);
 				digits = new byte[tmp.Length];
 				for (int i = 0; i < tmp.Length; i++)
-					digits[i] = (byte) (tmp[i] - '0');
+					digits[i] = (byte)(tmp[i] - '0');
 				Normalize();
 			}
 
@@ -120,8 +120,8 @@ namespace MiscUtil.Conversion
 				for (int i = digits.Length - 1; i >= 0; i--)
 				{
 					int resultDigit = digits[i] * amount + result[i + 1];
-					result[i] = (byte) (resultDigit / 10);
-					result[i + 1] = (byte) (resultDigit % 10);
+					result[i] = (byte)(resultDigit / 10);
+					result[i + 1] = (byte)(resultDigit % 10);
 				}
 				if (result[0] != 0)
 					digits = result;
@@ -177,7 +177,7 @@ namespace MiscUtil.Conversion
 			{
 				var digitString = new char[digits.Length];
 				for (int i = 0; i < digits.Length; i++)
-					digitString[i] = (char) (digits[i] + '0');
+					digitString[i] = (char)(digits[i] + '0');
 
 				// Simplest case - nothing after the decimal point,
 				// and last real digit is non-zero, eg value=35
@@ -189,26 +189,26 @@ namespace MiscUtil.Conversion
 				if (decimalPoint < 0)
 				{
 					return new string(digitString) +
-					       new string('0', -decimalPoint);
+						   new string('0', -decimalPoint);
 				}
 
 				// Nothing before the decimal point, eg 0.035
 				if (decimalPoint >= digitString.Length)
 				{
 					return "0." +
-					       new string('0', (decimalPoint - digitString.Length)) +
-					       new string(digitString);
+						   new string('0', (decimalPoint - digitString.Length)) +
+						   new string(digitString);
 				}
 
 				// Most complicated case - part of the string comes
 				// before the decimal point, part comes after it,
 				// eg 3.5
 				return new string(digitString, 0,
-				                  digitString.Length - decimalPoint) +
-				       "." +
-				       new string(digitString,
-				                  digitString.Length - decimalPoint,
-				                  decimalPoint);
+								  digitString.Length - decimalPoint) +
+					   "." +
+					   new string(digitString,
+								  digitString.Length - decimalPoint,
+								  decimalPoint);
 			}
 		}
 

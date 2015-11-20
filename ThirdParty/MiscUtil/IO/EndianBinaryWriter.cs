@@ -1,7 +1,7 @@
-using MiscUtil.Conversion;
 using System;
 using System.IO;
 using System.Text;
+using MiscUtil.Conversion;
 
 namespace MiscUtil.IO
 {
@@ -39,7 +39,7 @@ namespace MiscUtil.IO
 		/// <param name="bitConverter">Converter to use when writing data</param>
 		/// <param name="stream">Stream to write data to</param>
 		public EndianBinaryWriter(EndianBitConverter bitConverter,
-		                          Stream stream) : this(bitConverter, stream, Encoding.UTF8)
+								  Stream stream) : this(bitConverter, stream, Encoding.UTF8)
 		{
 		}
 
@@ -256,7 +256,7 @@ namespace MiscUtil.IO
 		/// <param name="value">The value to write</param>
 		public void Write(sbyte value)
 		{
-			buffer[0] = unchecked((byte) value);
+			buffer[0] = unchecked((byte)value);
 			WriteInternal(buffer, 1);
 		}
 
@@ -335,11 +335,11 @@ namespace MiscUtil.IO
 			int index = 0;
 			while (value >= 128)
 			{
-				buffer[index++] = (byte) ((value & 0x7f) | 0x80);
+				buffer[index++] = (byte)((value & 0x7f) | 0x80);
 				value = value >> 7;
 				index++;
 			}
-			buffer[index++] = (byte) value;
+			buffer[index++] = (byte)value;
 			stream.Write(buffer, 0, index);
 		}
 
@@ -381,7 +381,7 @@ namespace MiscUtil.IO
 			{
 				Flush();
 				disposed = true;
-				((IDisposable) stream).Dispose();
+				((IDisposable)stream).Dispose();
 			}
 		}
 

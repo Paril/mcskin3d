@@ -46,11 +46,11 @@ namespace MB.Controls
 			if (TrackBarRenderer.IsSupported)
 			{
 				TrackBarRenderer.DrawHorizontalThumb(g, Slider.ThumbRect,
-				                                     (Slider.MouseInThumbRegion)
-				                                     	? (Control.MouseButtons & MouseButtons.Left) != 0
-				                                     	  	? TrackBarThumbState.Pressed
-				                                     	  	: TrackBarThumbState.Hot
-				                                     	: TrackBarThumbState.Normal);
+													 (Slider.MouseInThumbRegion)
+														 ? (Control.MouseButtons & MouseButtons.Left) != 0
+															   ? TrackBarThumbState.Pressed
+															   : TrackBarThumbState.Hot
+														 : TrackBarThumbState.Normal);
 			}
 			else
 			{
@@ -60,20 +60,20 @@ namespace MB.Controls
 					if ((Control.MouseButtons & MouseButtons.Left) != 0)
 					{
 						brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y),
-						                                new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.White,
-						                                SystemColors.Highlight);
+														new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.White,
+														SystemColors.Highlight);
 					}
 					else
 					{
 						brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y),
-						                                new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), SystemColors.Highlight,
-						                                Color.White);
+														new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), SystemColors.Highlight,
+														Color.White);
 					}
 				}
 				else
 				{
 					brush = new LinearGradientBrush(new Point(0, Slider.ThumbRect.Y),
-					                                new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.Gray, Color.White);
+													new Point(0, Slider.ThumbRect.Y + Slider.ThumbRect.Height), Color.Gray, Color.White);
 				}
 				g.FillRectangle(brush, Slider.ThumbRect);
 
@@ -107,34 +107,34 @@ namespace MB.Controls
 			if (!Slider.Enabled)
 			{
 				Color[] desaturatedColors = ColorSlider.DesaturateColors(thumbOuterColor, thumbInnerColor, thumbPenColor,
-				                                                         barOuterColor, barInnerColor, barPenColor,
-				                                                         elapsedOuterColor, elapsedInnerColor);
+																		 barOuterColor, barInnerColor, barPenColor,
+																		 elapsedOuterColor, elapsedInnerColor);
 				DrawColorSlider(g, desaturatedColors[0], desaturatedColors[1], desaturatedColors[2],
-				                desaturatedColors[3],
-				                desaturatedColors[4], desaturatedColors[5], desaturatedColors[6], desaturatedColors[7]);
+								desaturatedColors[3],
+								desaturatedColors[4], desaturatedColors[5], desaturatedColors[6], desaturatedColors[7]);
 			}
 			else
 			{
 				if (mouseEffects && Slider.MouseInRegion)
 				{
 					Color[] lightenedColors = ColorSlider.LightenColors(thumbOuterColor, thumbInnerColor, thumbPenColor,
-					                                                    barOuterColor, barInnerColor, barPenColor,
-					                                                    elapsedOuterColor, elapsedInnerColor);
+																		barOuterColor, barInnerColor, barPenColor,
+																		elapsedOuterColor, elapsedInnerColor);
 					DrawColorSlider(g, lightenedColors[0], lightenedColors[1], lightenedColors[2], lightenedColors[3],
-					                lightenedColors[4], lightenedColors[5], lightenedColors[6], lightenedColors[7]);
+									lightenedColors[4], lightenedColors[5], lightenedColors[6], lightenedColors[7]);
 				}
 				else
 				{
 					DrawColorSlider(g, thumbOuterColor, thumbInnerColor, thumbPenColor,
-					                barOuterColor, barInnerColor, barPenColor,
-					                elapsedOuterColor, elapsedInnerColor);
+									barOuterColor, barInnerColor, barPenColor,
+									elapsedOuterColor, elapsedInnerColor);
 				}
 			}
 		}
 
 		private void DrawColorSlider(Graphics g, Color thumbOuterColorPaint, Color thumbInnerColorPaint,
-		                             Color thumbPenColorPaint, Color barOuterColorPaint, Color barInnerColorPaint,
-		                             Color barPenColorPaint, Color elapsedOuterColorPaint, Color elapsedInnerColorPaint)
+									 Color thumbPenColorPaint, Color barOuterColorPaint, Color barInnerColorPaint,
+									 Color barPenColorPaint, Color elapsedOuterColorPaint, Color elapsedInnerColorPaint)
 		{
 			try
 			{
@@ -186,7 +186,7 @@ namespace MB.Controls
 					using (
 						var lgbElapsed =
 							new LinearGradientBrush(barHalfRect, elapsedOuterColorPaint, elapsedInnerColorPaint,
-							                        gradientOrientation))
+													gradientOrientation))
 					{
 						lgbElapsed.WrapMode = WrapMode.TileFlipXY;
 						if (Slider.Capture && drawSemitransparentThumb)
@@ -213,7 +213,7 @@ namespace MB.Controls
 				using (
 					var lgbThumb =
 						new LinearGradientBrush(thumbHalfRect, newthumbOuterColorPaint, newthumbInnerColorPaint,
-						                        gradientOrientation))
+												gradientOrientation))
 				{
 					lgbThumb.WrapMode = WrapMode.TileFlipXY;
 					g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -291,7 +291,7 @@ namespace MB.Controls
 		[Description("Set Slider's thumb's custom shape")]
 		[Category("ColorSlider")]
 		[Browsable(false)]
-		[DefaultValue(typeof (GraphicsPath), "null")]
+		[DefaultValue(typeof(GraphicsPath), "null")]
 		public GraphicsPath ThumbCustomShape
 		{
 			get { return thumbCustomShape; }
@@ -299,7 +299,7 @@ namespace MB.Controls
 			{
 				thumbCustomShape = value;
 				Slider.ThumbSize =
-					(int) (Slider.Orientation == Orientation.Horizontal ? value.GetBounds().Width : value.GetBounds().Height) + 1;
+					(int)(Slider.Orientation == Orientation.Horizontal ? value.GetBounds().Width : value.GetBounds().Height) + 1;
 				Slider.Invalidate();
 			}
 		}
@@ -310,7 +310,7 @@ namespace MB.Controls
 		/// <value>The size of the thumb round rectangle edges.</value>
 		[Description("Set Slider's thumb round rect size")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Size), "8; 8")]
+		[DefaultValue(typeof(Size), "8; 8")]
 		public Size ThumbRoundRectSize
 		{
 			get { return thumbRoundRectSize; }
@@ -332,7 +332,7 @@ namespace MB.Controls
 		/// <value>The size of the border round rect.</value>
 		[Description("Set Slider's border round rect size")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Size), "8; 8")]
+		[DefaultValue(typeof(Size), "8; 8")]
 		public Size BorderRoundRectSize
 		{
 			get { return borderRoundRectSize; }
@@ -405,7 +405,7 @@ namespace MB.Controls
 		/// <value>The thumb outer color.</value>
 		[Description("Set Slider thumb outer color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "White")]
+		[DefaultValue(typeof(Color), "White")]
 		public Color ThumbOuterColor
 		{
 			get { return thumbOuterColor; }
@@ -423,7 +423,7 @@ namespace MB.Controls
 		/// <value>The inner color of the thumb.</value>
 		[Description("Set Slider thumb inner color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "Gainsboro")]
+		[DefaultValue(typeof(Color), "Gainsboro")]
 		public Color ThumbInnerColor
 		{
 			get { return thumbInnerColor; }
@@ -441,7 +441,7 @@ namespace MB.Controls
 		/// <value>The color of the thumb pen.</value>
 		[Description("Set Slider thumb pen color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "Silver")]
+		[DefaultValue(typeof(Color), "Silver")]
 		public Color ThumbPenColor
 		{
 			get { return thumbPenColor; }
@@ -459,7 +459,7 @@ namespace MB.Controls
 		/// <value>The outer color of the bar.</value>
 		[Description("Set Slider bar outer color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "SkyBlue")]
+		[DefaultValue(typeof(Color), "SkyBlue")]
 		public Color BarOuterColor
 		{
 			get { return barOuterColor; }
@@ -477,7 +477,7 @@ namespace MB.Controls
 		/// <value>The inner color of the bar.</value>
 		[Description("Set Slider bar inner color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "DarkSlateBlue")]
+		[DefaultValue(typeof(Color), "DarkSlateBlue")]
 		public Color BarInnerColor
 		{
 			get { return barInnerColor; }
@@ -495,7 +495,7 @@ namespace MB.Controls
 		/// <value>The color of the bar pen.</value>
 		[Description("Set Slider bar pen color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "Gainsboro")]
+		[DefaultValue(typeof(Color), "Gainsboro")]
 		public Color BarPenColor
 		{
 			get { return barPenColor; }
@@ -512,7 +512,7 @@ namespace MB.Controls
 		/// <value>The outer color of the elapsed.</value>
 		[Description("Set Slider's elapsed part outer color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "DarkGreen")]
+		[DefaultValue(typeof(Color), "DarkGreen")]
 		public Color ElapsedOuterColor
 		{
 			get { return elapsedOuterColor; }
@@ -529,7 +529,7 @@ namespace MB.Controls
 		/// <value>The inner color of the elapsed.</value>
 		[Description("Set Slider's elapsed part inner color")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (Color), "Chartreuse")]
+		[DefaultValue(typeof(Color), "Chartreuse")]
 		public Color ElapsedInnerColor
 		{
 			get { return elapsedInnerColor; }
@@ -555,28 +555,28 @@ namespace MB.Controls
 		}
 
 		private readonly Color[,] aColorSchema = new[,]
-		                                         {
-		                                         	{
-		                                         		Color.White, Color.Gainsboro, Color.Silver, Color.SkyBlue,
-		                                         		Color.DarkSlateBlue, Color.Gainsboro,
-		                                         		Color.DarkGreen, Color.Chartreuse
-		                                         	},
-		                                         	{
-		                                         		Color.White, Color.Gainsboro, Color.Silver, Color.Red, Color.DarkRed,
-		                                         		Color.Gainsboro, Color.Coral,
-		                                         		Color.LightCoral
-		                                         	},
-		                                         	{
-		                                         		Color.White, Color.Gainsboro, Color.Silver, Color.GreenYellow, Color.Yellow
-		                                         		, Color.Gold, Color.Orange,
-		                                         		Color.OrangeRed
-		                                         	},
-		                                         	{
-		                                         		Color.White, Color.Gainsboro, Color.Silver, Color.Red, Color.Crimson,
-		                                         		Color.Gainsboro, Color.DarkViolet
-		                                         		, Color.Violet
-		                                         	}
-		                                         };
+												 {
+													 {
+														 Color.White, Color.Gainsboro, Color.Silver, Color.SkyBlue,
+														 Color.DarkSlateBlue, Color.Gainsboro,
+														 Color.DarkGreen, Color.Chartreuse
+													 },
+													 {
+														 Color.White, Color.Gainsboro, Color.Silver, Color.Red, Color.DarkRed,
+														 Color.Gainsboro, Color.Coral,
+														 Color.LightCoral
+													 },
+													 {
+														 Color.White, Color.Gainsboro, Color.Silver, Color.GreenYellow, Color.Yellow
+														 , Color.Gold, Color.Orange,
+														 Color.OrangeRed
+													 },
+													 {
+														 Color.White, Color.Gainsboro, Color.Silver, Color.Red, Color.Crimson,
+														 Color.Gainsboro, Color.DarkViolet
+														 , Color.Violet
+													 }
+												 };
 
 		private ColorSchemas colorSchema = ColorSchemas.PerlBlueGreen;
 
@@ -587,14 +587,14 @@ namespace MB.Controls
 		[Description(
 			"Set Slider color schema. Has no effect when slider colors are changed manually after schema was applied.")]
 		[Category("ColorSlider")]
-		[DefaultValue(typeof (ColorSchemas), "PerlBlueGreen")]
+		[DefaultValue(typeof(ColorSchemas), "PerlBlueGreen")]
 		public ColorSchemas ColorSchema
 		{
 			get { return colorSchema; }
 			set
 			{
 				colorSchema = value;
-				var sn = (byte) value;
+				var sn = (byte)value;
 				thumbOuterColor = aColorSchema[sn, 0];
 				thumbInnerColor = aColorSchema[sn, 1];
 				thumbPenColor = aColorSchema[sn, 2];
@@ -628,7 +628,7 @@ namespace MB.Controls
 	/// <summary>
 	/// Encapsulates control that visualy displays certain integer value and allows user to change it within desired range. It imitates <see cref="System.Windows.Forms.TrackBar"/> as far as mouse usage is concerned.
 	/// </summary>
-	[ToolboxBitmap(typeof (TrackBar))]
+	[ToolboxBitmap(typeof(TrackBar))]
 	[DefaultEvent("Scroll"), DefaultProperty("BarInnerColor")]
 	public partial class ColorSlider : Control
 	{
@@ -688,7 +688,7 @@ namespace MB.Controls
 			set
 			{
 				if (value > 0 &
-				    value < (barOrientation == Orientation.Horizontal ? ClientRectangle.Width : ClientRectangle.Height))
+					value < (barOrientation == Orientation.Horizontal ? ClientRectangle.Width : ClientRectangle.Height))
 					thumbSize = value;
 				else
 				{
@@ -886,9 +886,9 @@ namespace MB.Controls
 
 			Renderer = new DefaultSliderRenderer(this);
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer |
-			         ControlStyles.ResizeRedraw | ControlStyles.Selectable |
-			         ControlStyles.SupportsTransparentBackColor | ControlStyles.UserMouse |
-			         ControlStyles.UserPaint, true);
+					 ControlStyles.ResizeRedraw | ControlStyles.Selectable |
+					 ControlStyles.SupportsTransparentBackColor | ControlStyles.UserMouse |
+					 ControlStyles.UserPaint, true);
 			BackColor = Color.Transparent;
 
 			Minimum = min;
@@ -1021,10 +1021,10 @@ namespace MB.Controls
 				int margin = thumbSize >> 1;
 				p -= margin;
 				float coef = (barMaximum - barMinimum) /
-				             (float)
-				             ((barOrientation == Orientation.Horizontal ? ClientSize.Width : ClientSize.Height) -
-				              2 * margin);
-				trackerValue = (int) (p * coef + barMinimum);
+							 (float)
+							 ((barOrientation == Orientation.Horizontal ? ClientSize.Width : ClientSize.Height) -
+							  2 * margin);
+				trackerValue = (int)(p * coef + barMinimum);
 
 				if (trackerValue <= barMinimum)
 				{
@@ -1101,12 +1101,12 @@ namespace MB.Controls
 			{
 				case Keys.Down:
 				case Keys.Left:
-					SetProperValue(Value - (int) smallChange);
+					SetProperValue(Value - (int)smallChange);
 					if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.SmallDecrement, Value));
 					break;
 				case Keys.Up:
 				case Keys.Right:
-					SetProperValue(Value + (int) smallChange);
+					SetProperValue(Value + (int)smallChange);
 					if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.SmallIncrement, Value));
 					break;
 				case Keys.Home:
@@ -1116,11 +1116,11 @@ namespace MB.Controls
 					Value = barMaximum;
 					break;
 				case Keys.PageDown:
-					SetProperValue(Value - (int) largeChange);
+					SetProperValue(Value - (int)largeChange);
 					if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.LargeDecrement, Value));
 					break;
 				case Keys.PageUp:
-					SetProperValue(Value + (int) largeChange);
+					SetProperValue(Value + (int)largeChange);
 					if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.LargeIncrement, Value));
 					break;
 				default:
@@ -1189,7 +1189,7 @@ namespace MB.Controls
 			{
 				//use NTSC weighted avarage
 				var gray =
-					(int) (colorsToDesaturate[i].R * 0.3 + colorsToDesaturate[i].G * 0.6 + colorsToDesaturate[i].B * 0.1);
+					(int)(colorsToDesaturate[i].R * 0.3 + colorsToDesaturate[i].G * 0.6 + colorsToDesaturate[i].B * 0.1);
 				colorsToReturn[i] = Color.FromArgb(-0x010101 * (255 - gray) - 1);
 			}
 			return colorsToReturn;

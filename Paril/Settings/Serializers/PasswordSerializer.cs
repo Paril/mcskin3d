@@ -43,12 +43,12 @@ namespace Paril.Settings.Serializers
 			try
 			{
 				return Decrypt(str,
-				               passPhrase,
-				               saltValue,
-				               hashAlgorithm,
-				               passwordIterations,
-				               initVector,
-				               keySize);
+							   passPhrase,
+							   saltValue,
+							   hashAlgorithm,
+							   passwordIterations,
+							   initVector,
+							   keySize);
 			}
 			catch
 			{
@@ -58,13 +58,13 @@ namespace Paril.Settings.Serializers
 
 		public string Serialize(object obj)
 		{
-			return Encrypt((string) obj,
-			               passPhrase,
-			               saltValue,
-			               hashAlgorithm,
-			               passwordIterations,
-			               initVector,
-			               keySize);
+			return Encrypt((string)obj,
+						   passPhrase,
+						   saltValue,
+						   hashAlgorithm,
+						   passwordIterations,
+						   initVector,
+						   keySize);
 		}
 
 		#endregion
@@ -107,12 +107,12 @@ namespace Paril.Settings.Serializers
 		/// Encrypted value formatted as a base64-encoded string.
 		/// </returns>
 		public static string Encrypt(string plainText,
-		                             string passPhrase,
-		                             string saltValue,
-		                             string hashAlgorithm,
-		                             int passwordIterations,
-		                             string initVector,
-		                             int keySize)
+									 string passPhrase,
+									 string saltValue,
+									 string hashAlgorithm,
+									 int passwordIterations,
+									 string initVector,
+									 int keySize)
 		{
 			// Convert strings into byte arrays.
 			// Let us assume that strings only contain ASCII codes.
@@ -158,8 +158,8 @@ namespace Paril.Settings.Serializers
 
 			// Define cryptographic stream (always use Write mode for encryption).
 			var cryptoStream = new CryptoStream(memoryStream,
-			                                    encryptor,
-			                                    CryptoStreamMode.Write);
+												encryptor,
+												CryptoStreamMode.Write);
 			// Start encrypting.
 			cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
 
@@ -224,12 +224,12 @@ namespace Paril.Settings.Serializers
 		/// ciphertext.
 		/// </remarks>
 		public static string Decrypt(string cipherText,
-		                             string passPhrase,
-		                             string saltValue,
-		                             string hashAlgorithm,
-		                             int passwordIterations,
-		                             string initVector,
-		                             int keySize)
+									 string passPhrase,
+									 string saltValue,
+									 string hashAlgorithm,
+									 int passwordIterations,
+									 string initVector,
+									 int keySize)
 		{
 			// Convert strings defining encryption key characteristics into byte
 			// arrays. Let us assume that strings only contain ASCII codes.
@@ -275,8 +275,8 @@ namespace Paril.Settings.Serializers
 
 			// Define cryptographic stream (always use Read mode for encryption).
 			var cryptoStream = new CryptoStream(memoryStream,
-			                                    decryptor,
-			                                    CryptoStreamMode.Read);
+												decryptor,
+												CryptoStreamMode.Read);
 
 			// Since at this point we don't know what the size of decrypted data
 			// will be, allocate the buffer long enough to hold ciphertext;
@@ -285,8 +285,8 @@ namespace Paril.Settings.Serializers
 
 			// Start decrypting.
 			int decryptedByteCount = cryptoStream.Read(plainTextBytes,
-			                                           0,
-			                                           plainTextBytes.Length);
+													   0,
+													   plainTextBytes.Length);
 
 			// Close both streams.
 			memoryStream.Close();
@@ -295,8 +295,8 @@ namespace Paril.Settings.Serializers
 			// Convert decrypted data into a string. 
 			// Let us assume that the original plaintext string was UTF8-encoded.
 			string plainText = Encoding.UTF8.GetString(plainTextBytes,
-			                                           0,
-			                                           decryptedByteCount);
+													   0,
+													   decryptedByteCount);
 
 			// Return decrypted string.   
 			return plainText;

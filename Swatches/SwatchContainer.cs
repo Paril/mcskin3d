@@ -16,31 +16,32 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.Swatches;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Media;
 using System.Windows.Forms;
+using MCSkin3D.Swatches;
+using Microsoft.VisualBasic.FileIO;
 
 namespace MCSkin3D
 {
 	public partial class SwatchContainer : UserControl
 	{
 		private static readonly Type[] _swatchTypes = new[]
-		                                              {
-		                                              	typeof (ACOSwatch), typeof (ACTSwatch), typeof (GIMPSwatch),
-		                                              	typeof (MCSwatch)
-		                                              };
+													  {
+														  typeof (ACOSwatch), typeof (ACTSwatch), typeof (GIMPSwatch),
+														  typeof (MCSwatch)
+													  };
 
 		private static readonly string[] _swatchNames = new[]
-		                                                {
-		                                                	"Adobe Color (ACO)", "Adobe Color Table (ACT)", "GIMP Swatch (GPL)",
-		                                                	"MCSkin3D Swatch (.swtch)"
-		                                                };
+														{
+															"Adobe Color (ACO)", "Adobe Color Table (ACT)", "GIMP Swatch (GPL)",
+															"MCSkin3D Swatch (.swtch)"
+														};
 
-		private static readonly string[] _swatchFormatNames = new[] {"ACO", "ACT", "GPL", "SWTCH"};
+		private static readonly string[] _swatchFormatNames = new[] { "ACO", "ACT", "GPL", "SWTCH" };
 		private readonly SwatchDisplayer _swatchDisplayer;
 		private bool _creatingSwatch;
 
@@ -146,7 +147,7 @@ namespace MCSkin3D
 			{
 				if (SwatchDisplayer.Swatch.GetType() == _swatchTypes[i])
 				{
-					((ToolStripMenuItem) convertSwatchStripButton.DropDownItems[i]).Checked = true;
+					((ToolStripMenuItem)convertSwatchStripButton.DropDownItems[i]).Checked = true;
 					break;
 				}
 			}
@@ -207,7 +208,7 @@ namespace MCSkin3D
 
 		private void item_Click(object sender, EventArgs e)
 		{
-			var item = (ToolStripMenuItem) sender;
+			var item = (ToolStripMenuItem)sender;
 			int selectedFormat = convertSwatchStripButton.DropDownItems.IndexOf(item);
 			Type newType = _swatchTypes[selectedFormat];
 
@@ -215,8 +216,8 @@ namespace MCSkin3D
 				return;
 
 			string newPath = Path.GetDirectoryName(SwatchDisplayer.Swatch.FilePath) + '\\' +
-			                 Path.GetFileNameWithoutExtension(SwatchDisplayer.Swatch.FilePath) + '.' +
-			                 _swatchFormatNames[selectedFormat].ToLower();
+							 Path.GetFileNameWithoutExtension(SwatchDisplayer.Swatch.FilePath) + '.' +
+							 _swatchFormatNames[selectedFormat].ToLower();
 
 			if (File.Exists(newPath))
 			{
@@ -224,7 +225,7 @@ namespace MCSkin3D
 				return;
 			}
 
-			var swatch = (ISwatch) newType.GetConstructors()[0].Invoke(new object[] {newPath});
+			var swatch = (ISwatch)newType.GetConstructors()[0].Invoke(new object[] { newPath });
 
 			foreach (NamedColor c in SwatchDisplayer.Swatch)
 				swatch.Add(c);
@@ -298,18 +299,18 @@ namespace MCSkin3D
 
 			if (e.Index != -1)
 			{
-				var swatch = (ISwatch) comboBox1.Items[e.Index];
+				var swatch = (ISwatch)comboBox1.Items[e.Index];
 				int rightSide = TextRenderer.MeasureText(swatch.Format, comboBox1.Font).Width;
 
 				var bounds = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width - rightSide, e.Bounds.Height);
 
 				TextRenderer.DrawText(e.Graphics, swatch.Name, comboBox1.Font, bounds,
-				                      (e.State & DrawItemState.Selected) == 0 ? comboBox1.ForeColor : SystemColors.HighlightText,
-				                      TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+									  (e.State & DrawItemState.Selected) == 0 ? comboBox1.ForeColor : SystemColors.HighlightText,
+									  TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
 				TextRenderer.DrawText(e.Graphics, swatch.Format, comboBox1.Font,
-				                      new Rectangle(bounds.X + (e.Bounds.Width - rightSide), bounds.Y, rightSide, bounds.Height),
-				                      (e.State & DrawItemState.Selected) == 0 ? comboBox1.ForeColor : SystemColors.HighlightText,
-				                      TextFormatFlags.VerticalCenter | TextFormatFlags.WordEllipsis);
+									  new Rectangle(bounds.X + (e.Bounds.Width - rightSide), bounds.Y, rightSide, bounds.Height),
+									  (e.State & DrawItemState.Selected) == 0 ? comboBox1.ForeColor : SystemColors.HighlightText,
+									  TextFormatFlags.VerticalCenter | TextFormatFlags.WordEllipsis);
 			}
 
 			e.DrawFocusRectangle();
@@ -324,10 +325,11 @@ namespace MCSkin3D
 
 			if (
 				MessageBox.Show(Editor.GetLanguageString("M_SWATCHQUESTION"), Editor.GetLanguageString("M_SWATCHQUESTION_CAPTION"),
-				                MessageBoxButtons.YesNo) == DialogResult.No)
+								MessageBoxButtons.YesNo) == DialogResult.No)
 				return;
 
-			File.Delete(swatch.FilePath);
+			//File.Delete(swatch.FilePath);
+			FileSystem.DeleteFile(swatch.FilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
 			comboBox1.Items.Remove(swatch);
 		}
 
@@ -545,7 +547,7 @@ namespace MCSkin3D
 				return;
 			}
 
-			_fitPerRow = (int) Math.Floor(((Width) / (float) (SwatchSize + 1)));
+			_fitPerRow = (int)Math.Floor(((Width) / (float)(SwatchSize + 1)));
 
 			if (_fitPerRow == 0)
 			{
@@ -627,26 +629,26 @@ namespace MCSkin3D
 						break;
 
 					e.Graphics.FillRectangle(new SolidBrush(Swatch[index].Color),
-					                         new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize,
-					                                       SwatchSize));
+											 new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize,
+														   SwatchSize));
 
 					if (_lastLeftSwatch == index)
 					{
 						e.Graphics.DrawRectangle(new Pen(Color.Yellow, 1),
-						                         new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1,
-						                                       SwatchSize - 1));
+												 new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1,
+															   SwatchSize - 1));
 					}
 					else if (_lastRightSwatch == index)
 					{
 						e.Graphics.DrawRectangle(new Pen(Color.Red, 1),
-						                         new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1,
-						                                       SwatchSize - 1));
+												 new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1,
+															   SwatchSize - 1));
 					}
 					else
 					{
 						e.Graphics.DrawRectangle(Pens.Black,
-						                         new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1,
-						                                       SwatchSize - 1));
+												 new Rectangle(1 + (i * (SwatchSize + 1)), 1 + (y * (SwatchSize + 1)), SwatchSize - 1,
+															   SwatchSize - 1));
 					}
 					index++;
 				}

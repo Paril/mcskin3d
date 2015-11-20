@@ -119,10 +119,10 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				{
 					// At least a 16 byte block and an auth code remains.
 					_transform.TransformBlock(_slideBuffer,
-					                          _slideBufStartPos,
-					                          CRYPTO_BLOCK_SIZE,
-					                          outBuffer,
-					                          offset);
+											  _slideBufStartPos,
+											  CRYPTO_BLOCK_SIZE,
+											  outBuffer,
+											  offset);
 					nBytes += CRYPTO_BLOCK_SIZE;
 					offset += CRYPTO_BLOCK_SIZE;
 					_slideBufStartPos += CRYPTO_BLOCK_SIZE;
@@ -135,24 +135,24 @@ namespace ICSharpCode.SharpZipLib.Encryption
 						// At least one byte of data plus auth code
 						int finalBlock = byteCount - AUTH_CODE_LENGTH;
 						_transform.TransformBlock(_slideBuffer,
-						                          _slideBufStartPos,
-						                          finalBlock,
-						                          outBuffer,
-						                          offset);
+												  _slideBufStartPos,
+												  finalBlock,
+												  outBuffer,
+												  offset);
 
 						nBytes += finalBlock;
 						_slideBufStartPos += finalBlock;
 					}
 					else if (byteCount < AUTH_CODE_LENGTH)
 						throw new Exception("Internal error missed auth code"); // Coding bug
-					// Final block done. Check Auth code.
+																				// Final block done. Check Auth code.
 					byte[] calcAuthCode = _transform.GetAuthCode();
 					for (int i = 0; i < AUTH_CODE_LENGTH; i++)
 					{
 						if (calcAuthCode[i] != _slideBuffer[_slideBufStartPos + i])
 						{
 							throw new Exception("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. \r\n"
-							                    + "The file may be damaged.");
+												+ "The file may be damaged.");
 						}
 					}
 

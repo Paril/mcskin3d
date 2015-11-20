@@ -105,7 +105,7 @@ namespace MCSkin3D.ExceptionHandler
 					}
 				}
 			}
-			
+
 			return writer.ToString();
 		}
 	}

@@ -152,7 +152,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		public static string[] SplitQuoted(string original)
 		{
 			char escape = '\\';
-			char[] separators = {';'};
+			char[] separators = { ';' };
 
 			var result = new ArrayList();
 
@@ -194,7 +194,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 			}
 
-			return (string[]) result.ToArray(typeof (string));
+			return (string[])result.ToArray(typeof(string));
 		}
 
 		/// <summary>

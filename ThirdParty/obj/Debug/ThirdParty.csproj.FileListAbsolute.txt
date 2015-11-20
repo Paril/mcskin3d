@@ -2,3 +2,8 @@ F:\projects\MCSkinner spaces now\ThirdParty\bin\Debug\ThirdParty.dll
 F:\projects\MCSkinner spaces now\ThirdParty\bin\Debug\ThirdParty.pdb
 F:\projects\MCSkinner spaces now\ThirdParty\obj\Debug\ThirdParty.dll
 F:\projects\MCSkinner spaces now\ThirdParty\obj\Debug\ThirdParty.pdb
+C:\Users\Paril\Documents\GitHub\mcskin3d\Resources\ThirdParty.dll
+C:\Users\Paril\Documents\GitHub\mcskin3d\Resources\ThirdParty.pdb
+C:\Users\Paril\Documents\GitHub\mcskin3d\ThirdParty\obj\Debug\ThirdParty.dll
+C:\Users\Paril\Documents\GitHub\mcskin3d\ThirdParty\obj\Debug\ThirdParty.pdb
+C:\Users\Paril\Documents\GitHub\mcskin3d\ThirdParty\obj\Debug\ThirdParty.csprojResolveAssemblyReference.cache

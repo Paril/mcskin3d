@@ -10,14 +10,14 @@ namespace MCSkin3D.lemon42
 		{
 			int xd = p2.X - p1.X;
 			int yd = p2.Y - p1.Y;
-			return (int) Math.Sqrt(xd * xd + yd * yd);
+			return (int)Math.Sqrt(xd * xd + yd * yd);
 		}
 
 		public static PointF RotatePoint(PointF p, PointF p2, double angle)
 		{
 			//angle in radians.
-			return new PointF((float) (Math.Cos(angle) * (p.X - p2.X) - Math.Sin(angle) * (p.Y - p2.Y) + p2.X),
-			                  (float) (Math.Sin(angle) * (p.X - p2.X) + Math.Cos(angle) * (p.Y - p2.Y) + p2.Y));
+			return new PointF((float)(Math.Cos(angle) * (p.X - p2.X) - Math.Sin(angle) * (p.Y - p2.Y) + p2.X),
+							  (float)(Math.Sin(angle) * (p.X - p2.X) + Math.Cos(angle) * (p.Y - p2.Y) + p2.Y));
 		}
 
 		public static Bitmap ResizeImage(Image image, int size)
@@ -39,9 +39,9 @@ namespace MCSkin3D.lemon42
 			var returnBitmap = new Bitmap(b.Width, b.Height);
 			using (Graphics g = Graphics.FromImage(returnBitmap))
 			{
-				g.TranslateTransform((float) b.Width / 2, (float) b.Height / 2);
+				g.TranslateTransform((float)b.Width / 2, (float)b.Height / 2);
 				g.RotateTransform(angle);
-				g.TranslateTransform(-(float) b.Width / 2, -(float) b.Height / 2);
+				g.TranslateTransform(-(float)b.Width / 2, -(float)b.Height / 2);
 				g.DrawImage(b, new Point(0, 0));
 			}
 			return returnBitmap;

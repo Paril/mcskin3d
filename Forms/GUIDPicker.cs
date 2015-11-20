@@ -39,7 +39,7 @@ namespace MCSkin3D.Forms
 					while (!sr.EndOfStream)
 					{
 						string line = sr.ReadLine();
-						string[] split = line.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+						string[] split = line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
 						var index = new GUIDIndex();
 						index.Name = split[0];
@@ -106,7 +106,7 @@ namespace MCSkin3D.Forms
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var index = (GUIDIndex) comboBox1.SelectedItem;
+			var index = (GUIDIndex)comboBox1.SelectedItem;
 
 			textBox1.Text = index.Name;
 			textBox2.Text = index.Date.ToString();

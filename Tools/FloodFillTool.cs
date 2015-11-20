@@ -16,14 +16,13 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.lemon42;
-using OpenTK;
-using Paril.Compatibility;
-using Paril.OpenGL;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
+using MCSkin3D.lemon42;
+using OpenTK;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -49,7 +48,7 @@ namespace MCSkin3D
 		public void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"),
-			                                  Editor.MainForm.SelectedTool.MenuItem.Text);
+											  Editor.MainForm.SelectedTool.MenuItem.Text);
 			_boundBox = new Rectangle(0, 0, skin.Width, skin.Height);
 
 			if ((Control.ModifierKeys & Keys.Control) != 0)
@@ -68,14 +67,14 @@ namespace MCSkin3D
 				return false;
 
 			var curve = new BezierCurveQuadric(new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 2));
-			_threshold = (byte) ((1 - (curve.CalculatePoint(Threshold)).X) * 255);
+			_threshold = (byte)((1 - (curve.CalculatePoint(Threshold)).X) * 255);
 			//(byte)((1 - Math.Sin((1 - Threshold) * (Math.PI / 2))) * 255);
 
 			ColorPixel c = pixels[x, y];
 			Color oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 			ColorManager newColor = ((Control.ModifierKeys & Keys.Shift) != 0)
-			                        	? Editor.MainForm.ColorPanel.UnselectedColor
-			                        	: Editor.MainForm.ColorPanel.SelectedColor;
+										? Editor.MainForm.ColorPanel.UnselectedColor
+										: Editor.MainForm.ColorPanel.SelectedColor;
 
 			FloodFill(x, y, oldColor, newColor, pixels);
 			_done = true;
@@ -102,7 +101,7 @@ namespace MCSkin3D
 						ColorPixel px = pixels[rx, ry];
 						Color c = Color.FromArgb(px.Alpha, px.Red, px.Green, px.Blue);
 						Color blendMe = Color.FromArgb(64, Color.Green);
-						newColor = (Color) ColorBlending.AlphaBlend(blendMe, c);
+						newColor = (Color)ColorBlending.AlphaBlend(blendMe, c);
 
 						pixels[rx, ry] = new ColorPixel((newColor.R << 0) | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 					}
@@ -181,7 +180,7 @@ namespace MCSkin3D
 
 				if (!_undo.Points.ContainsKey(pop))
 				{
-					_undo.Points.Add(pop, Tuple.MakeTuple(real, new ColorAlpha(newColor.RGB, 0)));
+					_undo.Points.Add(pop, Tuple.Create(real, new ColorAlpha(newColor.RGB, 0)));
 
 					pixels[pop.X, pop.Y] =
 						new ColorPixel(newColor.RGB.R | (newColor.RGB.G << 8) | (newColor.RGB.B << 16) | (newColor.RGB.A << 24));

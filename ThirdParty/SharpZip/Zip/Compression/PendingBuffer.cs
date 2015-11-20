@@ -125,7 +125,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte) value);
+			buffer_[end++] = unchecked((byte)value);
 		}
 
 		/// <summary>
@@ -142,8 +142,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte) value);
-			buffer_[end++] = unchecked((byte) (value >> 8));
+			buffer_[end++] = unchecked((byte)value);
+			buffer_[end++] = unchecked((byte)(value >> 8));
 		}
 
 		/// <summary>
@@ -158,10 +158,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte) value);
-			buffer_[end++] = unchecked((byte) (value >> 8));
-			buffer_[end++] = unchecked((byte) (value >> 16));
-			buffer_[end++] = unchecked((byte) (value >> 24));
+			buffer_[end++] = unchecked((byte)value);
+			buffer_[end++] = unchecked((byte)(value >> 8));
+			buffer_[end++] = unchecked((byte)(value >> 16));
+			buffer_[end++] = unchecked((byte)(value >> 24));
 		}
 
 		/// <summary>
@@ -195,8 +195,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 #endif
 			if (bitCount > 0)
 			{
-				buffer_[end++] = unchecked((byte) bits);
-				if (bitCount > 8) buffer_[end++] = unchecked((byte) (bits >> 8));
+				buffer_[end++] = unchecked((byte)bits);
+				if (bitCount > 8) buffer_[end++] = unchecked((byte)(bits >> 8));
 			}
 			bits = 0;
 			bitCount = 0;
@@ -219,12 +219,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			//				//Console.WriteLine("writeBits("+b+","+count+")");
 			//			}
 #endif
-			bits |= (uint) (b << bitCount);
+			bits |= (uint)(b << bitCount);
 			bitCount += count;
 			if (bitCount >= 16)
 			{
-				buffer_[end++] = unchecked((byte) bits);
-				buffer_[end++] = unchecked((byte) (bits >> 8));
+				buffer_[end++] = unchecked((byte)bits);
+				buffer_[end++] = unchecked((byte)(bits >> 8));
 				bits >>= 16;
 				bitCount -= 16;
 			}
@@ -242,8 +242,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte) (s >> 8));
-			buffer_[end++] = unchecked((byte) s);
+			buffer_[end++] = unchecked((byte)(s >> 8));
+			buffer_[end++] = unchecked((byte)s);
 		}
 
 		/// <summary>
@@ -258,7 +258,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			if (bitCount >= 8)
 			{
-				buffer_[end++] = unchecked((byte) bits);
+				buffer_[end++] = unchecked((byte)bits);
 				bits >>= 8;
 				bitCount -= 8;
 			}

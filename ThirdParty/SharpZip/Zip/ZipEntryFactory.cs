@@ -35,9 +35,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -282,7 +282,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				result.Size = fi.Length;
 
 				useAttributes = true;
-				externalAttributes = ((int) fi.Attributes & getAttributes_);
+				externalAttributes = ((int)fi.Attributes & getAttributes_);
 			}
 			else
 			{
@@ -377,7 +377,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("Unhandled time setting in MakeDirectoryEntry");
 				}
 
-				externalAttributes = ((int) di.Attributes & getAttributes_);
+				externalAttributes = ((int)di.Attributes & getAttributes_);
 			}
 			else
 			{

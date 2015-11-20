@@ -19,7 +19,7 @@ namespace MiscUtil.IO
 		/// <exception cref="ArgumentNullException">stream is null</exception>
 		public NonClosingStreamWrapper(Stream stream)
 		{
-			if (stream==null)
+			if (stream == null)
 			{
 				throw new ArgumentNullException("stream");
 			}
@@ -38,7 +38,7 @@ namespace MiscUtil.IO
 		/// <summary>
 		/// Whether this stream has been closed or not
 		/// </summary>
-		bool closed=false;
+		bool closed = false;
 
 		/// <summary>
 		/// Throws an InvalidOperationException if the wrapper is closed.
@@ -72,11 +72,11 @@ namespace MiscUtil.IO
 		/// An IAsyncResult that represents the asynchronous read, 
 		/// which could still be pending.
 		/// </returns>
-		public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, 
-			                                   AsyncCallback callback, object state)
+		public override IAsyncResult BeginRead(byte[] buffer, int offset, int count,
+											   AsyncCallback callback, object state)
 		{
 			CheckClosed();
-			return stream.BeginRead (buffer, offset, count, callback, state);
+			return stream.BeginRead(buffer, offset, count, callback, state);
 		}
 
 		/// <summary>
@@ -96,11 +96,11 @@ namespace MiscUtil.IO
 		/// An IAsyncResult that represents the asynchronous write, 
 		/// which could still be pending.
 		/// </returns>
-		public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, 
-			                                    AsyncCallback callback, object state)
+		public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count,
+												AsyncCallback callback, object state)
 		{
 			CheckClosed();
-			return stream.BeginWrite (buffer, offset, count, callback, state);
+			return stream.BeginWrite(buffer, offset, count, callback, state);
 		}
 
 		/// <summary>
@@ -138,7 +138,7 @@ namespace MiscUtil.IO
 			{
 				stream.Flush();
 			}
-			closed = true;			
+			closed = true;
 		}
 
 		/// <summary>
@@ -166,7 +166,7 @@ namespace MiscUtil.IO
 		public override int EndRead(IAsyncResult asyncResult)
 		{
 			CheckClosed();
-			return stream.EndRead (asyncResult);
+			return stream.EndRead(asyncResult);
 		}
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace MiscUtil.IO
 		public override void EndWrite(IAsyncResult asyncResult)
 		{
 			CheckClosed();
-			stream.EndWrite (asyncResult);
+			stream.EndWrite(asyncResult);
 		}
 
 		/// <summary>

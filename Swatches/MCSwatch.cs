@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using Microsoft.VisualBasic.FileIO;
 
 namespace MCSkin3D.Swatches
 {
@@ -43,7 +41,8 @@ namespace MCSkin3D.Swatches
 				if (!string.IsNullOrEmpty(_name))
 				{
 					if (value == null)
-						File.Delete(FilePath);
+						FileSystem.DeleteFile(FilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+					//File.Delete(FilePath);
 					else
 					{
 						string oldFile = FilePath;
@@ -142,7 +141,7 @@ namespace MCSkin3D.Swatches
 				foreach (NamedColor c in _colors)
 				{
 					sw.Write(c.Color.R.ToString() + " " + c.Color.G.ToString() + " " + c.Color.B.ToString() + " " +
-					         c.Color.A.ToString());
+							 c.Color.A.ToString());
 
 					if (c.Name != null)
 						sw.Write(" " + c.Name);

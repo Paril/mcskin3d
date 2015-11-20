@@ -73,7 +73,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public void Write(int value)
 		{
 			if (windowFilled++ == WindowSize) throw new InvalidOperationException("Window full");
-			window[windowEnd++] = (byte) value;
+			window[windowEnd++] = (byte)value;
 			windowEnd &= WindowMask;
 		}
 

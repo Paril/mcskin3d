@@ -29,7 +29,7 @@ namespace PopupControl
 	/// <summary>
 	/// Represents a Windows combo box control with a custom popup control attached.
 	/// </summary>
-	[ToolboxBitmap(typeof (System.Windows.Forms.ComboBox)), ToolboxItem(true), ToolboxItemFilter("System.Windows.Forms"),
+	[ToolboxBitmap(typeof(System.Windows.Forms.ComboBox)), ToolboxItem(true), ToolboxItemFilter("System.Windows.Forms"),
 	 Description("Displays an editable text box with a drop-down list of permitted values.")]
 	public partial class PopupComboBox : ComboBox
 	{
@@ -147,7 +147,7 @@ namespace PopupControl
 		protected override void WndProc(ref Message m)
 		{
 			if (m.Msg == (NativeMethods.WM_COMMAND + NativeMethods.WM_REFLECT) &&
-			    NativeMethods.HIWORD(m.WParam) == NativeMethods.CBN_DROPDOWN)
+				NativeMethods.HIWORD(m.WParam) == NativeMethods.CBN_DROPDOWN)
 			{
 				BeginInvoke(new MethodInvoker(ShowDropDown));
 				return;

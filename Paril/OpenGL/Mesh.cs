@@ -1,10 +1,10 @@
-﻿using MCSkin3D;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using MCSkin3D;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Paril.Drawing;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace Paril.OpenGL
 {
@@ -92,7 +92,7 @@ namespace Paril.OpenGL
 
 		public void CalculateMatrix()
 		{
-			Matrix = 
+			Matrix =
 				Matrix4.CreateTranslation(Translate) *
 				Matrix4.CreateTranslation(-Pivot) *
 				Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(Rotate.X)) *

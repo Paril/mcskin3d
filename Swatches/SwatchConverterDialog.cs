@@ -18,7 +18,7 @@ namespace MCSkin3D.Swatches
 				var swatches = new List<string>();
 
 				foreach (object c in comboBox1.Items)
-					swatches.Add((string) c);
+					swatches.Add((string)c);
 
 				return swatches;
 			}

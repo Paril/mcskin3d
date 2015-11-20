@@ -404,7 +404,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			{
 				// output header
 				int header = (DEFLATED +
-				              ((DeflaterConstants.MAX_WBITS - 8) << 4)) << 8;
+							  ((DeflaterConstants.MAX_WBITS - 8) << 4)) << 8;
 				int level_flags = (level - 1) >> 1;
 				if (level_flags < 0 || level_flags > 3) level_flags = 3;
 				header |= level_flags << 6;

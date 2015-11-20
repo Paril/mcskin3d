@@ -16,11 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.Macros;
-using MCSkin3D.Properties;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using MCSkin3D.Macros;
+using MCSkin3D.Properties;
 
 namespace MCSkin3D.Languages
 {
@@ -33,7 +33,7 @@ namespace MCSkin3D.Languages
 			if (!Directory.Exists(path))
 				return;
 
-			foreach (string file in Directory.GetFiles(path, "*.lang"))
+			foreach (string file in Directory.EnumerateFiles(path, "*.lang"))
 			{
 				try
 				{
@@ -51,7 +51,7 @@ namespace MCSkin3D.Languages
 			foreach (Language l in Languages)
 			{
 				if (l.Name == p ||
-				    l.Culture.Name == p)
+					l.Culture.Name == p)
 					return l;
 			}
 

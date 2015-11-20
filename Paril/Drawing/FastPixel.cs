@@ -33,7 +33,7 @@ namespace Paril.Drawing
 		private BitmapData bmpData;
 		private IntPtr bmpPtr;
 		private bool locked;
-		private byte *rgbValues;
+		private byte* rgbValues;
 		private int rgbValuesLen;
 
 		public FastPixel(Bitmap bitmap)

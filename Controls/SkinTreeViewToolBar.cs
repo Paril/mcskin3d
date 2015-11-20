@@ -1,6 +1,6 @@
-﻿using MCSkin3D.Languages;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using MCSkin3D.Languages;
 using Szotar.WindowsForms;
 
 namespace MCSkin3D.Controls
@@ -23,7 +23,7 @@ namespace MCSkin3D.Controls
 
 		public ToolStripButton FetchToolStripButton { get; private set; }
 		public LanguageProvider LanguageProvider { get; private set; }
-		
+
 		public SkinTreeViewToolBar()
 		{
 			LanguageProvider = new LanguageProvider();
@@ -196,7 +196,7 @@ namespace MCSkin3D.Controls
 		{
 			Editor.MainForm.PerformTreeViewZoomIn();
 		}
-		
+
 		private void importToolStripButton_Click(object sender, EventArgs e)
 		{
 			Editor.MainForm.PerformImportSkin();

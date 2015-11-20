@@ -16,16 +16,28 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Timers;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using MCSkin3D.Controls;
 using MCSkin3D.Forms;
 using MCSkin3D.Languages;
 using MCSkin3D.Macros;
 using MCSkin3D.Properties;
+using Microsoft.VisualBasic.FileIO;
 using MultiPainter;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using Paril.Compatibility;
 using Paril.Components;
 using Paril.Components.Shortcuts;
 using Paril.Controls;
@@ -35,23 +47,6 @@ using Paril.Imaging;
 using Paril.Net;
 using Paril.OpenGL;
 using PopupControl;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Media;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Timers;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using KeyPressEventArgs = System.Windows.Forms.KeyPressEventArgs;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using Timer = System.Timers.Timer;
@@ -84,7 +79,6 @@ namespace MCSkin3D
 		private Skin _lastSkin;
 		private bool _mouseIsDown;
 		private Point _mousePoint;
-		internal PleaseWait _pleaseWaitForm;
 		private Texture _previewPaint;
 		private int _selectedBackground;
 		private ToolIndex _selectedTool;
@@ -157,7 +151,7 @@ namespace MCSkin3D
 		{
 			get
 			{
-				if (_selectedTool == _tools[(int) Tools.Camera])
+				if (_selectedTool == _tools[(int)Tools.Camera])
 					return MouseButtons.Left;
 				else
 					return MouseButtons.Right;
@@ -168,7 +162,7 @@ namespace MCSkin3D
 		{
 			get
 			{
-				if (_selectedTool == _tools[(int) Tools.Camera])
+				if (_selectedTool == _tools[(int)Tools.Camera])
 					return MouseButtons.Right;
 				else
 					return MouseButtons.Middle;
@@ -298,7 +292,7 @@ namespace MCSkin3D
 			_dynamicOverlay.Item = mDYNAMICOVERLAYToolStripMenuItem;
 			_backgrounds.Add(_dynamicOverlay);
 
-			foreach (string file in Directory.GetFiles(GlobalSettings.GetDataURI("Overlays"), "*.png"))
+			foreach (string file in Directory.EnumerateFiles(GlobalSettings.GetDataURI("Overlays"), "*.png"))
 			{
 				try
 				{
@@ -393,9 +387,9 @@ namespace MCSkin3D
 
 		private void item_Clicked(object sender, EventArgs e)
 		{
-			var item = (ToolStripMenuItem) sender;
+			var item = (ToolStripMenuItem)sender;
 			_backgrounds[_selectedBackground].Item.Checked = false;
-			_selectedBackground = (int) item.Tag;
+			_selectedBackground = (int)item.Tag;
 			GlobalSettings.LastBackground = _backgrounds[_selectedBackground].Path;
 			item.Checked = true;
 		}
@@ -449,10 +443,10 @@ namespace MCSkin3D
 			length /= 2;
 			height /= 2;
 
-			float tsX = (float) topSkinX / skinW;
-			float tsY = (float) topSkinY / skinH;
-			float tsW = (float) topSkinW / skinW;
-			float tsH = (float) topSkinH / skinH;
+			float tsX = (float)topSkinX / skinW;
+			float tsY = (float)topSkinY / skinH;
+			float tsW = (float)topSkinW / skinW;
+			float tsH = (float)topSkinH / skinH;
 
 			GL.TexCoord2(tsX, tsY + tsH - 0.00005);
 			GL.Vertex3(x - width, y + length, z + height); // Bottom Right Of The Quad (Top)
@@ -492,7 +486,7 @@ namespace MCSkin3D
 			float x = 0;
 			foreach (char c in s)
 			{
-				DrawCharacter2D(font, (byte) c, x, 0, size, size);
+				DrawCharacter2D(font, (byte)c, x, 0, size, size);
 				x += spacing;
 			}
 
@@ -505,7 +499,7 @@ namespace MCSkin3D
 			float y = rect.Y;
 			foreach (char c in s)
 			{
-				DrawCharacter2D(font, (byte) c, x, y, size, size);
+				DrawCharacter2D(font, (byte)c, x, y, size, size);
 				x += spacing;
 
 				if ((x + spacing) > rect.X + rect.Width)
@@ -615,10 +609,10 @@ namespace MCSkin3D
 						{
 							foreach (Face face in mesh.Faces)
 							{
-								RectangleF toint = face.TexCoordsToFloat((int) CurrentModel.DefaultWidth, (int) CurrentModel.DefaultHeight);
+								RectangleF toint = face.TexCoordsToFloat((int)CurrentModel.DefaultWidth, (int)CurrentModel.DefaultHeight);
 
 								if (toint.Width == 0 ||
-								    toint.Height == 0)
+									toint.Height == 0)
 									continue;
 								if (done.Contains(toint))
 									continue;
@@ -651,8 +645,8 @@ namespace MCSkin3D
 
 								GL.Color4(GlobalSettings.DynamicOverlayTextColor);
 								DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal),
-								                          (6 * GlobalSettings.DynamicOverlayTextSize) / _2DZoom,
-								                          (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2DZoom);
+														  (6 * GlobalSettings.DynamicOverlayTextSize) / _2DZoom,
+														  (8.0f * GlobalSettings.DynamicOverlayTextSize) / _2DZoom);
 								GL.Color4(Color.White);
 							}
 						}
@@ -702,7 +696,7 @@ namespace MCSkin3D
 				DrawSkinnedRectangle(0, GrassY, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
 			GL.Disable(EnableCap.CullFace);
 
-			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float) y / 25, (float) x / 25, 0) : Vector3.Zero;
+			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
 			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
 
 			// add meshes
@@ -794,7 +788,7 @@ namespace MCSkin3D
 		public bool GetPick(int x, int y, ref Point hitPixel)
 		{
 			if (x < 0 || y < 0
-			    || x > Renderer.Width || y > Renderer.Height)
+				|| x > Renderer.Width || y > Renderer.Height)
 			{
 				hitPixel = new Point(-1, -1);
 				return false;
@@ -823,7 +817,7 @@ namespace MCSkin3D
 			}
 			else
 			{
-				var halfHeight = (int) Math.Ceiling(Renderer.Height / 2.0f);
+				var halfHeight = (int)Math.Ceiling(Renderer.Height / 2.0f);
 
 				Setup3D(new Rectangle(0, 0, Renderer.Width, halfHeight));
 				DrawPlayer(GetPaintTexture(skin.Width, skin.Height), skin, true);
@@ -837,13 +831,13 @@ namespace MCSkin3D
 			var pixel = new byte[4];
 
 			GL.ReadPixels(x, Renderer.Height - y, 1, 1,
-			              PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
+						  PixelFormat.Rgb, PixelType.UnsignedByte, pixel);
 
 			uint pixVal = BitConverter.ToUInt32(pixel, 0);
 
 			if (pixVal != 0xFFFFFF)
 			{
-				hitPixel = new Point((int) (pixVal % skin.Width), (int) (pixVal / skin.Width));
+				hitPixel = new Point((int)(pixVal % skin.Width), (int)(pixVal / skin.Width));
 				return true;
 			}
 
@@ -891,9 +885,9 @@ namespace MCSkin3D
 			Texture img = (splitContainer4.SplitterDistance == 0) ? _toolboxDownNormal : _toolboxUpNormal;
 
 			if (rect.Contains(_mousePoint))
-				GL.Color4((byte) 255, (byte) 255, (byte) 255, (byte) 255);
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
 			else
-				GL.Color4((byte) 255, (byte) 255, (byte) 255, (byte) 64);
+				GL.Color4((byte)255, (byte)255, (byte)255, (byte)64);
 
 			img.Bind();
 
@@ -918,7 +912,7 @@ namespace MCSkin3D
 				return new Rectangle(0, 0, Renderer.Width, Renderer.Height);
 			else
 			{
-				var halfHeight = (int) Math.Ceiling(Renderer.Height / 2.0f);
+				var halfHeight = (int)Math.Ceiling(Renderer.Height / 2.0f);
 				return new Rectangle(0, 0, Renderer.Width, halfHeight);
 			}
 		}
@@ -1002,7 +996,7 @@ namespace MCSkin3D
 			GL.TexCoord2(xSep * 2, ySep); GL.Vertex3((width / 2), (height / 2), (depth / 2));
 			GL.TexCoord2(xSep, ySep); GL.Vertex3((width / 2), (height / 2), -(depth / 2));
 			GL.TexCoord2(xSep, 1); GL.Vertex3((width / 2), -(height / 2), -(depth / 2));
-			GL.TexCoord2(xSep * 2, 1);  GL.Vertex3((width / 2), -(height / 2), (depth / 2));
+			GL.TexCoord2(xSep * 2, 1); GL.Vertex3((width / 2), -(height / 2), (depth / 2));
 
 			GL.End();
 
@@ -1134,7 +1128,7 @@ namespace MCSkin3D
 		private void CalculateMatrices()
 		{
 			Rectangle viewport = GetViewport3D();
-			_projectionMatrix = Matrix4d.Perspective(45, viewport.Width / (double) viewport.Height, 4, 512);
+			_projectionMatrix = Matrix4d.Perspective(45, viewport.Width / (double)viewport.Height, 4, 512);
 
 			Bounds3 vec = Bounds3.EmptyBounds;
 			Bounds3 allBounds = Bounds3.EmptyBounds;
@@ -1504,7 +1498,6 @@ namespace MCSkin3D
 			toolStrip2.DeleteToolStripButton.Enabled = !itemSelected;
 			toolStrip2.DecResToolStripButton.Enabled = !itemSelected;
 			toolStrip2.IncResToolStripButton.Enabled = !itemSelected;
-			uploadToolStripButton.Enabled = !itemSelected;
 
 			changeNameToolStripMenuItem.Enabled = !itemSelected;
 			deleteToolStripMenuItem.Enabled = !itemSelected;
@@ -1536,7 +1529,7 @@ namespace MCSkin3D
 			{
 				Size glyphSize = CheckBoxRenderer.GetGlyphSize(g, state);
 				CheckBoxRenderer.DrawCheckBox(g, new Point((16 / 2) - (glyphSize.Width / 2), (16 / 2) - (glyphSize.Height / 2)),
-				                              state);
+											  state);
 			}
 
 			return uncheckedImage;
@@ -1545,7 +1538,7 @@ namespace MCSkin3D
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			if (treeView1.SelectedNode == _lastSkin ||
-			    !(e.Node is Skin))
+				!(e.Node is Skin))
 				return;
 
 			Renderer.MakeCurrent();
@@ -1564,7 +1557,7 @@ namespace MCSkin3D
 			//if (_lastSkin != null)
 			//	_lastSkin.Undo.Clear();
 
-			var skin = (Skin) treeView1.SelectedNode;
+			var skin = (Skin)treeView1.SelectedNode;
 			SetCanSave(skin.Dirty);
 
 			if (skin.GLImage == null)
@@ -1597,7 +1590,7 @@ namespace MCSkin3D
 				CheckUndo();
 			}
 
-			_lastSkin = (Skin) treeView1.SelectedNode;
+			_lastSkin = (Skin)treeView1.SelectedNode;
 
 			SetModel(skin.Model);
 			Renderer.Invalidate();
@@ -1970,10 +1963,10 @@ namespace MCSkin3D
 			if (_antialiasOpts == null)
 			{
 				_antialiasOpts = new[]
-				                 {
-				                 	xToolStripMenuItem4, xToolStripMenuItem, xToolStripMenuItem1, xToolStripMenuItem2,
-				                 	xToolStripMenuItem3
-				                 };
+								 {
+									 xToolStripMenuItem4, xToolStripMenuItem, xToolStripMenuItem1, xToolStripMenuItem2,
+									 xToolStripMenuItem3
+								 };
 			}
 
 			int index = 0;
@@ -2126,17 +2119,7 @@ namespace MCSkin3D
 
 		private void languageToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			CurrentLanguage = (Language)((ToolStripMenuItem) sender).Tag;
-		}
-
-		private void toolStripMenuItem3_Click(object sender, EventArgs e)
-		{
-			PerformUpload();
-		}
-
-		private void uploadToolStripButton_Click(object sender, EventArgs e)
-		{
-			PerformUpload();
+			CurrentLanguage = (Language)((ToolStripMenuItem)sender).Tag;
 		}
 
 		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -2222,7 +2205,7 @@ namespace MCSkin3D
 			string newSkinName = accountName;
 
 			while (File.Exists(folderLocation + newSkinName + ".png"))
-				newSkinName += " - New";
+				newSkinName += " - " + GetLanguageString("C_NEW");
 
 			try
 			{
@@ -2287,7 +2270,7 @@ namespace MCSkin3D
 					if (RecursiveNodeIsDirty(treeView1.Nodes))
 					{
 						DialogResult mb = MessageBox.Show(GetLanguageString("D_UNSAVED"), GetLanguageString("D_UNSAVED_CAPTION"),
-						                                  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+														  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						switch (mb)
 						{
 							case DialogResult.No:
@@ -2306,18 +2289,18 @@ namespace MCSkin3D
 
 		private void mLINESIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
-			GlobalSettings.DynamicOverlayLineSize = (int) mLINESIZEToolStripMenuItem.NumericBox.Value;
+			GlobalSettings.DynamicOverlayLineSize = (int)mLINESIZEToolStripMenuItem.NumericBox.Value;
 		}
 
 		private void mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
-			GlobalSettings.DynamicOverlayTextSize = (int) mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value;
+			GlobalSettings.DynamicOverlayTextSize = (int)mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value;
 		}
 
 		private void mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
-			GlobalSettings.DynamicOverlayGridColor = Color.FromArgb((int) mGRIDOPACITYToolStripMenuItem.NumericBox.Value,
-			                                                        GlobalSettings.DynamicOverlayGridColor);
+			GlobalSettings.DynamicOverlayGridColor = Color.FromArgb((int)mGRIDOPACITYToolStripMenuItem.NumericBox.Value,
+																	GlobalSettings.DynamicOverlayGridColor);
 		}
 
 		public void SetModel(Model Model)
@@ -2326,7 +2309,7 @@ namespace MCSkin3D
 				return;
 
 			if (_oldModel != null &&
-			    _oldModel.Model == Model)
+				_oldModel.Model == Model)
 				return;
 
 			if (_lastSkin.Model != Model)
@@ -2448,9 +2431,9 @@ namespace MCSkin3D
 				return;
 
 			if (treeView1.SelectedNode is Skin)
-				Process.Start("explorer.exe", "/select,\"" + ((Skin) treeView1.SelectedNode).File.FullName + "\"");
+				Process.Start("explorer.exe", "/select,\"" + ((Skin)treeView1.SelectedNode).File.FullName + "\"");
 			else
-				Process.Start("explorer.exe", ((FolderNode) treeView1.SelectedNode).Directory.FullName);
+				Process.Start("explorer.exe", ((FolderNode)treeView1.SelectedNode).Directory.FullName);
 		}
 
 		private void bROWSEIDToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2461,9 +2444,9 @@ namespace MCSkin3D
 		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
 		{
 			bROWSEIDToolStripMenuItem.Text = string.Format(GetLanguageString("M_BROWSE"),
-			                                               (treeView1.SelectedNode is Skin)
-			                                               	? GetLanguageString("M_SKIN")
-			                                               	: GetLanguageString("M_FOLDER"));
+														   (treeView1.SelectedNode is Skin)
+															   ? GetLanguageString("M_SKIN")
+															   : GetLanguageString("M_FOLDER"));
 		}
 
 		private void mRENDERSTATSToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2723,7 +2706,7 @@ namespace MCSkin3D
 							radios.Add(node);
 					}
 					else
-						node = (PartTreeNode) nodes[0];
+						node = (PartTreeNode)nodes[0];
 				}
 				else
 				{
@@ -2828,7 +2811,7 @@ namespace MCSkin3D
 		{
 			var nodeBounds = e.Node.Bounds;
 			var pos = e.Location;
-			var node = (PartTreeNode) e.Node;
+			var node = (PartTreeNode)e.Node;
 
 			if (pos.X > nodeBounds.X - 18 && pos.X < nodeBounds.X - 4)
 			{
@@ -2846,7 +2829,7 @@ namespace MCSkin3D
 
 		public void Invoke(Action action)
 		{
-			Invoke((Delegate) action);
+			Invoke((Delegate)action);
 		}
 
 		#endregion
@@ -2865,7 +2848,7 @@ namespace MCSkin3D
 					c += "|";
 
 				Keys key = shortcut.Keys & ~Keys.Modifiers;
-				var modifiers = (Keys) ((int) shortcut.Keys - (int) key);
+				var modifiers = (Keys)((int)shortcut.Keys - (int)key);
 
 				if (modifiers != 0)
 					c += shortcut.SaveName + "=" + key + "+" + modifiers;
@@ -2917,7 +2900,7 @@ namespace MCSkin3D
 				if (sh == null)
 					continue;
 
-				sh.Keys = (Keys) Enum.Parse(typeof (Keys), key) | (Keys) Enum.Parse(typeof (Keys), modifiers);
+				sh.Keys = (Keys)Enum.Parse(typeof(Keys), key) | (Keys)Enum.Parse(typeof(Keys), modifiers);
 			}
 		}
 
@@ -2971,17 +2954,17 @@ namespace MCSkin3D
 			InitMenuShortcut(helmetOnlyToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.Helmet));
 			InitMenuShortcut(allToolStripMenuItem, () => SetTransparencyMode(TransparencyMode.All));
 			InitMenuShortcut(headToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.Head));
+							 () => ToggleVisiblePart(ModelPart.Head));
 			InitMenuShortcut(helmetToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.Helmet));
+							 () => ToggleVisiblePart(ModelPart.Helmet));
 			InitMenuShortcut(chestToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.Chest));
+							 () => ToggleVisiblePart(ModelPart.Chest));
 			InitMenuShortcut(leftArmToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.LeftArm));
+							 () => ToggleVisiblePart(ModelPart.LeftArm));
 			InitMenuShortcut(rightArmToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.RightArm));
+							 () => ToggleVisiblePart(ModelPart.RightArm));
 			InitMenuShortcut(leftLegToolStripMenuItem,
-			                 () => ToggleVisiblePart(ModelPart.LeftLeg));
+							 () => ToggleVisiblePart(ModelPart.LeftLeg));
 			InitMenuShortcut(rightLegToolStripMenuItem,
 							 () => ToggleVisiblePart(ModelPart.RightLeg));
 			InitMenuShortcut(chestArmorToolStripMenuItem,
@@ -2997,7 +2980,6 @@ namespace MCSkin3D
 			InitMenuShortcut(saveToolStripMenuItem, PerformSave);
 			InitMenuShortcut(saveAsToolStripMenuItem, PerformSaveAs);
 			InitMenuShortcut(saveAllToolStripMenuItem, PerformSaveAll);
-			InitMenuShortcut(uploadToolStripMenuItem, PerformUpload);
 
 			foreach (ToolIndex item in _tools)
 				InitMenuShortcut(item.MenuItem, item.DefaultKeys, item.SetMeAsTool);
@@ -3016,7 +2998,7 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("S_COLORSWAP", Keys.S, PerformSwitchColor);
 			InitControlShortcut("S_SWATCH_ZOOMIN", ColorPanel.SwatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("S_SWATCH_ZOOMOUT", ColorPanel.SwatchContainer.SwatchDisplayer, Keys.OemMinus,
-			                    PerformSwatchZoomOut);
+								PerformSwatchZoomOut);
 			InitControlShortcut("S_TREEVIEW_ZOOMIN", treeView1, Keys.Control | Keys.Oemplus, PerformTreeViewZoomIn);
 			InitControlShortcut("S_TREEVIEW_ZOOMOUT", treeView1, Keys.Control | Keys.OemMinus, PerformTreeViewZoomOut);
 			InitUnlinkedShortcut("T_DECRES", Keys.Control | Keys.Shift | Keys.D, PerformDecreaseResolution);
@@ -3060,8 +3042,8 @@ namespace MCSkin3D
 
 		private void ToolMenuItemClicked(object sender, EventArgs e)
 		{
-			var item = (ToolStripItem) sender;
-			SetSelectedTool((ToolIndex) item.Tag);
+			var item = (ToolStripItem)sender;
+			SetSelectedTool((ToolIndex)item.Tag);
 		}
 
 		public void PerformTreeViewZoomIn()
@@ -3095,7 +3077,7 @@ namespace MCSkin3D
 			foreach (IShortcutImplementor shortcut in _shortcutEditor.Shortcuts)
 			{
 				if (shortcut.CanEvaluate() && (shortcut.Keys & ~Keys.Modifiers) == key &&
-				    (shortcut.Keys & ~(shortcut.Keys & ~Keys.Modifiers)) == modifiers)
+					(shortcut.Keys & ~(shortcut.Keys & ~Keys.Modifiers)) == modifiers)
 				{
 					shortcut.Pressed();
 					return true;
@@ -3112,8 +3094,8 @@ namespace MCSkin3D
 		private bool CheckKeyShortcut(KeyEventArgs e)
 		{
 			if (!colorPanel.HexTextBox.ContainsFocus &&
-			    !labelEditTextBox.ContainsFocus &&
-			    !colorPanel.SwatchContainer.SwatchRenameTextBoxHasFocus)
+				!labelEditTextBox.ContainsFocus &&
+				!colorPanel.SwatchContainer.SwatchRenameTextBoxHasFocus)
 			{
 				if (PerformShortcut(e.KeyCode & ~Keys.Modifiers, e.Modifiers))
 					return true;
@@ -3141,7 +3123,7 @@ namespace MCSkin3D
 			{
 				if (
 					MessageBox.Show(this, GetLanguageString("C_UNSAVED"), GetLanguageString("C_UNSAVED_CAPTION"),
-					                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+									MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 				{
 					e.Cancel = true;
 					return;
@@ -3178,7 +3160,7 @@ namespace MCSkin3D
 			if (Screen.PrimaryScreen.BitsPerPixel != 32)
 			{
 				MessageBox.Show(GetLanguageString("B_MSG_PIXELFORMAT"), GetLanguageString("B_CAP_SORRY"), MessageBoxButtons.OK,
-				                MessageBoxIcon.Error);
+								MessageBoxIcon.Error);
 				Application.Exit();
 			}
 
@@ -3193,7 +3175,7 @@ namespace MCSkin3D
 		private void DontCloseMe(object sender, ToolStripDropDownClosingEventArgs e)
 		{
 			if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked ||
-			    e.CloseReason == ToolStripDropDownCloseReason.Keyboard)
+				e.CloseReason == ToolStripDropDownCloseReason.Keyboard)
 				e.Cancel = true;
 		}
 
@@ -3282,7 +3264,7 @@ namespace MCSkin3D
 
 			if (_currentlyEditing is Skin)
 			{
-				var skin = (Skin) _currentlyEditing;
+				var skin = (Skin)_currentlyEditing;
 
 				if (skin.Name == newName)
 					return;
@@ -3292,11 +3274,9 @@ namespace MCSkin3D
 			}
 			else
 			{
-				var folder = (FolderNode) _currentlyEditing;
+				var folder = (FolderNode)_currentlyEditing;
 
-				folder.MoveTo(((_currentlyEditing.Parent != null)
-				               	? (GetFolderForNode(_currentlyEditing.Parent) + '\\' + newName)
-				               	: newName));
+				folder.MoveTo(GetFolderForNode(_currentlyEditing.Parent) + newName);
 			}
 		}
 
@@ -3535,10 +3515,10 @@ namespace MCSkin3D
 
 			var pixels = new int[Renderer.Width * Renderer.Height];
 			GL.ReadPixels(0, 0, Renderer.Width, Renderer.Height, PixelFormat.Rgba,
-			              PixelType.UnsignedByte, pixels);
+						  PixelType.UnsignedByte, pixels);
 
 			BitmapData locked = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadWrite,
-			                               System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+										   System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
 			unsafe
 			{
@@ -3546,15 +3526,15 @@ namespace MCSkin3D
 				{
 					void* outPixels = locked.Scan0.ToPointer();
 
-					var inInt = (int*) inPixels;
-					var outInt = (int*) outPixels;
+					var inInt = (int*)inPixels;
+					var outInt = (int*)outPixels;
 
 					for (int y = 0; y < b.Height; ++y)
 					{
 						for (int x = 0; x < b.Width; ++x)
 						{
 							Color color = Color.FromArgb((*inInt >> 24) & 0xFF, (*inInt >> 0) & 0xFF, (*inInt >> 8) & 0xFF,
-							                             (*inInt >> 16) & 0xFF);
+														 (*inInt >> 16) & 0xFF);
 							*outInt = color.ToArgb();
 
 							inInt++;
@@ -3617,8 +3597,8 @@ namespace MCSkin3D
 
 				unsafe
 				{
-					void *inPixels = grabber.Array;
-					void *outPixels = locked.Scan0.ToPointer();
+					void* inPixels = grabber.Array;
+					void* outPixels = locked.Scan0.ToPointer();
 
 					var inInt = (int*)inPixels;
 					var outInt = (int*)outPixels;
@@ -3665,7 +3645,7 @@ namespace MCSkin3D
 			{
 				if (node is Skin)
 				{
-					var skin = (Skin) node;
+					var skin = (Skin)node;
 
 					if (skin.Dirty)
 						return true;
@@ -3683,7 +3663,7 @@ namespace MCSkin3D
 			{
 				if (node is Skin)
 				{
-					var skin = (Skin) node;
+					var skin = (Skin)node;
 
 					if (skin.Dirty)
 						PerformSaveSkin(skin);
@@ -3722,7 +3702,7 @@ namespace MCSkin3D
 			string name = Path.GetFileNameWithoutExtension(fileName);
 
 			while (File.Exists(folderLocation + name + ".png"))
-				name += " (New)";
+				name += " - " + GetLanguageString("C_NEW");
 
 			File.Copy(fileName, folderLocation + name + ".png");
 
@@ -3760,7 +3740,7 @@ namespace MCSkin3D
 			}
 			else if (node is FolderNode)
 			{
-				var folder = (FolderNode) node;
+				var folder = (FolderNode)node;
 				return folder.Directory.FullName;
 			}
 
@@ -3774,20 +3754,20 @@ namespace MCSkin3D
 			if (node != null)
 			{
 				if (!(node is Skin))
-					folderLocation = GetFolderForNode(node) + '\\';
+					folderLocation = GetFolderForNode(node);
 				else if (node.Parent != null)
-					folderLocation = GetFolderForNode(node.Parent) + '\\';
+					folderLocation = GetFolderForNode(node.Parent);
 				else if (HasOneRoot)
-					folderLocation = RootFolderString + '\\';
+					folderLocation = RootFolderString;
 			}
 			else if (HasOneRoot)
-				folderLocation = RootFolderString + '\\';
+				folderLocation = RootFolderString;
 
 			return folderLocation;
 		}
 
 		public static void GetFolderLocationAndCollectionForNode(TreeView treeView, TreeNode _rightClickedNode,
-		                                                         out string folderLocation, out TreeNodeCollection collection)
+																 out string folderLocation, out TreeNodeCollection collection)
 		{
 			folderLocation = "";
 			collection = treeView.Nodes;
@@ -3796,19 +3776,19 @@ namespace MCSkin3D
 			{
 				if (!(_rightClickedNode is Skin))
 				{
-					folderLocation = GetFolderForNode(_rightClickedNode) + '\\';
+					folderLocation = GetFolderForNode(_rightClickedNode);
 					collection = _rightClickedNode.Nodes;
 				}
 				else if (_rightClickedNode.Parent != null)
 				{
-					folderLocation = GetFolderForNode(_rightClickedNode.Parent) + '\\';
+					folderLocation = GetFolderForNode(_rightClickedNode.Parent);
 					collection = _rightClickedNode.Parent.Nodes;
 				}
 				else if (HasOneRoot)
-					folderLocation = RootFolderString + '\\';
+					folderLocation = RootFolderString;
 			}
 			else if (HasOneRoot)
-				folderLocation = RootFolderString + '\\';
+				folderLocation = RootFolderString;
 		}
 
 		private void ImportSkins(string[] fileName, TreeNode parentNode)
@@ -3859,13 +3839,14 @@ namespace MCSkin3D
 			if (collection == null || string.IsNullOrEmpty(folderLocation))
 				return;
 
-			string newFolderName = "New Folder";
+			string newFolderName = GetLanguageString("M_NEWFOLDER");
 
 			while (Directory.Exists(folderLocation + newFolderName))
-				newFolderName = newFolderName.Insert(0, GetLanguageString("C_NEW"));
+				newFolderName = newFolderName.Insert(0, GetLanguageString("C_NEW") + " ");
 
 			Directory.CreateDirectory(folderLocation + newFolderName);
-			var newNode = new FolderNode(folderLocation + newFolderName);
+
+			var newNode = new FolderNode(newFolderName);
 			collection.Add(newNode);
 
 			newNode.EnsureVisible();
@@ -3873,6 +3854,22 @@ namespace MCSkin3D
 			treeView1.Invalidate();
 
 			PerformNameChange();
+		}
+
+		void FillRectangleAlternating(Bitmap b, int x, int y, int w, int h)
+		{
+			for (var rx = 0; rx < w; ++rx)
+				for (var ry = 0; ry < h; ++ry)
+				{
+					Color c;
+
+					if (((rx + x + ry + y) & 1) == 1)
+						c = Color.LightGray;
+					else
+						c = Color.DarkGray;
+
+					b.SetPixel(rx + x, ry + y, c);
+				}
 		}
 
 		public void PerformNewSkin()
@@ -3891,20 +3888,20 @@ namespace MCSkin3D
 			if (collection == null || string.IsNullOrEmpty(folderLocation))
 				return;
 
-			string newSkinName = "New Skin";
+			string newSkinName = GetLanguageString("M_NEWSKIN");
 
 			while (File.Exists(folderLocation + newSkinName + ".png"))
-				newSkinName = newSkinName.Insert(0, GetLanguageString("C_NEW"));
+				newSkinName = newSkinName.Insert(0, GetLanguageString("C_NEW") + " ");
 
-			using (var bmp = new Bitmap(64, 32))
+			using (var bmp = new Bitmap(64, 64))
 			{
 				using (Graphics g = Graphics.FromImage(bmp))
-				{
 					g.Clear(Color.FromArgb(0, 255, 255, 255));
 
-					g.FillRectangle(System.Drawing.Brushes.White, 0, 0, 32, 32);
-					g.FillRectangle(System.Drawing.Brushes.White, 32, 16, 32, 16);
-				}
+				FillRectangleAlternating(bmp, 0, 0, 32, 32);
+				FillRectangleAlternating(bmp, 32, 16, 32, 16);
+
+				FillRectangleAlternating(bmp, 16, 48, 32, 16);
 
 				bmp.SaveSafe(folderLocation + newSkinName + ".png");
 			}
@@ -3928,7 +3925,10 @@ namespace MCSkin3D
 					RecursiveDeleteSkins(sub);
 				else
 				{
-					var skin = (Skin) sub;
+					var skin = (Skin)sub;
+
+					if (_rightClickedNode == skin)
+						_rightClickedNode = null;
 
 					if (_lastSkin == skin)
 						_lastSkin = null;
@@ -3937,7 +3937,8 @@ namespace MCSkin3D
 				}
 			}
 
-			Directory.Delete(GetFolderForNode(node), true);
+			//Directory.Delete(GetFolderForNode(node), true);
+			FileSystem.DeleteDirectory(GetFolderForNode(node), UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
 		}
 
 		public void PerformDeleteSkin()
@@ -3949,38 +3950,44 @@ namespace MCSkin3D
 			{
 				if (
 					MessageBox.Show(this, GetLanguageString("B_MSG_DELETESKIN"), GetLanguageString("B_CAP_QUESTION"),
-					                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+									MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 				{
-					var skin = (Skin) treeView1.SelectedNode;
+					var skin = (Skin)treeView1.SelectedNode;
 
 					skin.Delete();
 					skin.Remove();
+
+					_lastSkin = null;
+
+					if (_rightClickedNode == skin)
+						_rightClickedNode = null;
+
+					if (_lastSkin == skin)
+						_lastSkin = null;
+
 					skin.Dispose();
 
 					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
 
 					Invalidate();
-
-					if (_rightClickedNode == skin)
-						_rightClickedNode = null;
 				}
 			}
 			else
 			{
 				if (
 					MessageBox.Show(this, GetLanguageString("B_MSG_DELETEFOLDER"), GetLanguageString("B_CAP_QUESTION"),
-					                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+									MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
 				{
 					var folder = new DirectoryInfo(GetFolderForNode(treeView1.SelectedNode));
 
 					RecursiveDeleteSkins(treeView1.SelectedNode);
 
+					if (_lastSkin.GetNodeChain().Contains(treeView1.SelectedNode))
+						_lastSkin = null;
+
 					treeView1.SelectedNode.Remove();
 					treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
 					Invalidate();
-
-					if (_rightClickedNode == treeView1.SelectedNode)
-						_rightClickedNode = null;
 				}
 			}
 		}
@@ -3991,17 +3998,17 @@ namespace MCSkin3D
 				return;
 
 			if (treeView1.SelectedNode == null ||
-			    !(treeView1.SelectedNode is Skin))
+				!(treeView1.SelectedNode is Skin))
 				return;
 
-			var skin = (Skin) treeView1.SelectedNode;
+			var skin = (Skin)treeView1.SelectedNode;
 			string newName = skin.Name;
 			string newFileName;
 
 			do
 			{
-				newName += " - Copy";
-				newFileName = skin.Directory.FullName + '\\' + newName + ".png";
+				newName += " - " + GetLanguageString("C_COPY");
+				newFileName = skin.Directory.FullName + newName + ".png";
 			} while (File.Exists(newFileName));
 
 			File.Copy(skin.File.FullName, newFileName);
@@ -4022,7 +4029,7 @@ namespace MCSkin3D
 				_currentlyEditing = treeView1.SelectedNode;
 
 				if (_currentlyEditing is Skin)
-					labelEditTextBox.Text = ((Skin) _currentlyEditing).Name;
+					labelEditTextBox.Text = ((Skin)_currentlyEditing).Name;
 				else
 					labelEditTextBox.Text = _currentlyEditing.Text;
 
@@ -4030,8 +4037,8 @@ namespace MCSkin3D
 				labelEditTextBox.Location =
 					PointToClient(
 						treeView1.PointToScreen(new Point(
-						                        	treeView1.SelectedNode.Bounds.Location.X + 22 + (treeView1.SelectedNode.Level * 1),
-						                        	treeView1.SelectedNode.Bounds.Location.Y + 2)));
+													treeView1.SelectedNode.Bounds.Location.X + 22 + (treeView1.SelectedNode.Level * 1),
+													treeView1.SelectedNode.Bounds.Location.Y + 2)));
 				labelEditTextBox.Size = new Size(treeView1.Width - labelEditTextBox.Location.X - 20, labelEditTextBox.Height);
 				labelEditTextBox.BringToFront();
 				labelEditTextBox.Focus();
@@ -4039,265 +4046,6 @@ namespace MCSkin3D
 		}
 
 		#endregion
-
-		#region File uploading (FIXME: REMOVE)
-
-		public enum ErrorCodes
-		{
-			Succeeded,
-			TimeOut,
-			WrongCredentials,
-			Unknown
-		}
-
-		private readonly Login login = new Login();
-		private Thread _uploadThread;
-
-		public class CookieAwareWebClient : WebClient
-		{
-			public CookieContainer Cookies = new CookieContainer();
-
-			protected override WebRequest GetWebRequest(Uri address)
-			{
-				WebRequest request = base.GetWebRequest(address);
-				if (request is HttpWebRequest)
-				{
-					(request as HttpWebRequest).CookieContainer = Cookies;
-					request.Timeout = 10000;
-					request.Proxy = null;
-				}
-				return request;
-			}
-
-			public Exception UploadFileEx(string url, string file, string paramName, string contentType, Dictionary<string, string> nvc)
-			{
-				//log.Debug(string.Format("Uploading {0} to {1}", file, url));
-				string boundary = "---------------------------" + DateTime.Now.Ticks.ToString();
-				byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
-
-				var wr = (HttpWebRequest)HttpWebRequest.Create(url);
-				wr.ContentType = "multipart/form-data; boundary=" + boundary;
-				wr.CookieContainer = Cookies;
-				wr.Referer = "http://www.minecraft.net/profile";
-				wr.Method = "POST";
-				wr.Timeout = 10000;
-				wr.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31";
-
-				wr.Headers.Set("Origin", "http://minecraft.net");
-				wr.AllowAutoRedirect = false;
-
-				Stream rs = wr.GetRequestStream();
-
-				const string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
-				foreach (var kvp in nvc)
-				{
-					rs.Write(boundarybytes, 0, boundarybytes.Length);
-					string formitem = string.Format(formdataTemplate, kvp.Key, kvp.Value);
-					byte[] formitembytes = Encoding.UTF8.GetBytes(formitem);
-					rs.Write(formitembytes, 0, formitembytes.Length);
-				}
-				rs.Write(boundarybytes, 0, boundarybytes.Length);
-
-				const string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
-				string header = string.Format(headerTemplate, paramName, Path.GetFileName(file), contentType);
-				byte[] headerbytes = Encoding.UTF8.GetBytes(header);
-				rs.Write(headerbytes, 0, headerbytes.Length);
-
-				var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-				var buffer = new byte[4096];
-				int bytesRead = 0;
-				while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-					rs.Write(buffer, 0, bytesRead);
-				fileStream.Close();
-
-				byte[] trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
-				rs.Write(trailer, 0, trailer.Length);
-				rs.Close();
-
-				HttpWebResponse wresp = null;
-				Exception ret = null;
-				try
-				{
-					wresp = (HttpWebResponse)wr.GetResponse();
-
-					if (wresp.Cookies["PLAY_FLASH"].Value.Contains("success"))
-						return null;
-
-					throw new Exception("Failed to upload skin");
-				}
-				catch (Exception ex)
-				{
-					if (wresp != null)
-					{
-						wresp.Close();
-						wresp = null;
-					}
-
-					ret = ex;
-				}
-				finally
-				{
-					wr = null;
-				}
-
-				return ret;
-			}
-		}
-
-		private void UploadThread(object param)
-		{
-			var parms = (object[]) param;
-			var error = (ErrorReturn) parms[3];
-
-			error.Code = ErrorCodes.Succeeded;
-			error.Exception = null;
-			error.ReportedError = null;
-
-			try
-			{
-				CookieAwareWebClient client = new CookieAwareWebClient();
-				var text = client.DownloadString("http://minecraft.net/login");
-
-				Match match = Regex.Match(text, @"<input type=""hidden"" name=""authenticityToken"" value=""(.*?)"">");
-				string authToken = null;
-				if (match.Success)
-					authToken = match.Groups[1].Value;
-
-				if (authToken == null)
-					return;
-
-				var data = new NameValueCollection();
-				data.Add("authenticityToken", authToken);
-				data.Add("username", (string)parms[0]);
-				data.Add("password", (string)parms[1]);
-				data.Add("redirect", "/profile");
-
-				var returnData = Encoding.UTF8.GetString(client.UploadValues("https://minecraft.net/login", data));
-
-				match = Regex.Match(returnData, @"<p class=""error"">([\w\W]*?)</p>");
-
-				if (match.Success)
-				{
-					error.ReportedError = match.Groups[1].Value.Trim();
-					error.Code = ErrorCodes.WrongCredentials;
-				}
-				else
-				{
-					var dict = new Dictionary<string, string>();
-					dict.Add("authenticityToken", authToken);
-					if ((error.Exception = client.UploadFileEx("http://minecraft.net/profile/skin", parms[2].ToString(), "skin", "image/png", dict)) != null)
-						error.Code = ErrorCodes.Unknown;
-				}
-			}
-			catch (Exception ex)
-			{
-				error.Exception = ex;
-			}
-			finally
-			{
-				Invoke(delegate { _pleaseWaitForm.Close(); });
-			}
-		}
-
-		private void PerformUpload()
-		{
-			if (!treeView1.Enabled)
-				return;
-
-			if (_lastSkin == null)
-				return;
-
-			if (_lastSkin.Width != 64 || _lastSkin.Height != 32)
-			{
-				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADRES"));
-				return;
-			}
-
-			login.Username = GlobalSettings.LastUsername;
-			login.Password = GlobalSettings.LastPassword;
-
-			bool dialogRes = true;
-			bool didShowDialog = false;
-
-			if ((ModifierKeys & Keys.Shift) != 0 || !GlobalSettings.RememberMe || !GlobalSettings.AutoLogin)
-			{
-				login.Remember = GlobalSettings.RememberMe;
-				login.AutoLogin = GlobalSettings.AutoLogin;
-				dialogRes = login.ShowDialog() == DialogResult.OK;
-				didShowDialog = true;
-			}
-
-			if (!dialogRes)
-				return;
-
-			_pleaseWaitForm = new PleaseWait();
-			_pleaseWaitForm.FormClosed += _pleaseWaitForm_FormClosed;
-
-			_uploadThread = new Thread(UploadThread);
-			var ret = new ErrorReturn();
-			_uploadThread.Start(new object[] {login.Username, login.Password, _lastSkin.File.FullName, ret});
-
-			_pleaseWaitForm.DialogResult = DialogResult.OK;
-			_pleaseWaitForm.ShowDialog();
-			_uploadThread = null;
-			bool didError = true;
-
-			if (ret.ReportedError != null)
-			{
-				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.ReportedError, "Error",
-				                MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			else if (ret.Exception != null)
-			{
-				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADERROR") + "\r\n" + ret.Exception.Message, "Error",
-				                MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			else if (_pleaseWaitForm.DialogResult != DialogResult.Abort)
-			{
-				MessageBox.Show(this, GetLanguageString("B_MSG_UPLOADSUCCESS"), "Woo!", MessageBoxButtons.OK,
-				                MessageBoxIcon.Information);
-				GlobalSettings.LastSkin = _lastSkin.File.ToString();
-				if (_uploadedSkin != null)
-					_uploadedSkin.IsLastSkin = false;
-				_uploadedSkin = _lastSkin;
-				_uploadedSkin.IsLastSkin = true;
-				treeView1.Invalidate();
-
-				didError = false;
-			}
-
-			if (didShowDialog)
-			{
-				GlobalSettings.RememberMe = login.Remember;
-				GlobalSettings.AutoLogin = login.AutoLogin;
-
-				if (GlobalSettings.RememberMe == false)
-					GlobalSettings.LastUsername = GlobalSettings.LastPassword = "";
-				else
-				{
-					GlobalSettings.LastUsername = login.Username;
-					GlobalSettings.LastPassword = login.Password;
-				}
-
-				if (didError && GlobalSettings.AutoLogin)
-				{
-					GlobalSettings.AutoLogin = false;
-					PerformUpload();
-				}
-			}
-		}
-
-		private void _pleaseWaitForm_FormClosed(object sender, FormClosedEventArgs e)
-		{
-			_uploadThread.Abort();
-		}
-
-		private class ErrorReturn
-		{
-			public ErrorCodes Code;
-			public Exception Exception;
-			public string ReportedError;
-		}
 
 		public void FinishedLoadingLanguages()
 		{
@@ -4312,8 +4060,6 @@ namespace MCSkin3D
 				languageToolStripMenuItem.DropDownItems.Add(lang.Item);
 			}
 		}
-
-		#endregion
 
 		#endregion
 
@@ -4450,9 +4196,9 @@ namespace MCSkin3D
 
 			// set up the GL control
 			var mode = new GraphicsMode();
-			
+
 			reset:
-			
+
 			Renderer =
 				new GLControl(new GraphicsMode(mode.ColorFormat, mode.Depth, mode.Stencil, GlobalSettings.Multisamples));
 

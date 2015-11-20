@@ -16,9 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Paril.OpenGL;
 using System.Drawing;
 using System.Windows.Forms;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -56,7 +56,7 @@ namespace MCSkin3D
 					wasWrapped = true;
 				}
 				else if (position.X >= screenBounds.X + screenBounds.Width - 1 &&
-				         oldMouseOnScreen.X < screenBounds.X + screenBounds.Width - 1)
+						 oldMouseOnScreen.X < screenBounds.X + screenBounds.Width - 1)
 				{
 					Cursor.Position = new Point(screenBounds.X, position.Y);
 					wasWrapped = true;
@@ -68,7 +68,7 @@ namespace MCSkin3D
 					wasWrapped = true;
 				}
 				else if (position.Y >= screenBounds.Y + screenBounds.Height - 1 &&
-				         oldMouseOnScreen.Y < screenBounds.Y + screenBounds.Height - 1)
+						 oldMouseOnScreen.Y < screenBounds.Y + screenBounds.Height - 1)
 				{
 					Cursor.Position = new Point(position.X, screenBounds.Y);
 					wasWrapped = true;

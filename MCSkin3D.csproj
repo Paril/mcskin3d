@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MCSkin3D</RootNamespace>
     <AssemblyName>MCSkin3D</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -82,6 +82,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\OpenTK.dll</HintPath>
@@ -178,9 +179,7 @@
     <Compile Include="Paril\Imaging\SafeSave.cs" />
     <Compile Include="Paril\OpenGL\ClientArrayMeshUserData.cs" />
     <Compile Include="Paril\OpenGL\ColorGrabber.cs" />
-    <Compile Include="Controls\Brushes.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Brushes.cs" />
     <Compile Include="Controls\Tools\StampOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -224,9 +223,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Paril\Components\Update\Version.cs" />
-    <Compile Include="Paril\Controls\NaturalSortedListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Paril\Controls\NaturalSortedListBox.cs" />
     <Compile Include="Paril\Controls\NumericUpDownMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -248,7 +245,7 @@
     <Compile Include="Paril\OpenGL\Texture.cs" />
     <Compile Include="Paril\OpenGL\TextureGL.cs" />
     <Compile Include="SkinLoader.cs" />
-    <Compile Include="SVN.cs" />
+    <Compile Include="Revision.cs" />
     <Compile Include="Swatches\ACOSwatch.cs" />
     <Compile Include="Swatches\ACTSwatch.cs" />
     <Compile Include="Swatches\GIMPSwatch.cs" />
@@ -293,18 +290,14 @@
     </Compile>
     <Compile Include="Languages\Language.cs" />
     <Compile Include="Languages\LanguageLoader.cs" />
-    <Compile Include="Languages\LanguageProvider.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Languages\LanguageProvider.cs" />
     <Compile Include="Controls\LuminanceSliderRenderer.cs" />
     <Compile Include="Paril\Compatibility\Tuple.cs" />
     <Compile Include="Paril\Components\Shortcuts\ControlShortcut.cs" />
     <Compile Include="Paril\Controls\Color\ColorPreview.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Paril\Controls\NativeToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Paril\Controls\NativeToolStrip.cs" />
     <Compile Include="Paril\Controls\VisibleSplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -332,9 +325,7 @@
     <Compile Include="Paril\Controls\Color\ColorPicker.designer.cs">
       <DependentUpon>ColorPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ColorSlider.cs" />
     <Compile Include="Controls\ColorSlider.designer.cs">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
@@ -362,9 +353,7 @@
     <Compile Include="Forms\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\NativeToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\NativeToolStrip.cs" />
     <Compile Include="Paril\Components\Undo\Undoable.cs" />
     <Compile Include="Paril\Components\Undo\UndoBuffer.cs" />
     <Compile Include="Paril\Settings\Serializers\ColorSerializer.cs" />
@@ -794,7 +783,8 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)\versioning.exe" "$(ProjectDir)\" "SVN.cs"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

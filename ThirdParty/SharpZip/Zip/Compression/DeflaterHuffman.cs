@@ -70,26 +70,26 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		// The lengths of the bit length codes are sent in order of decreasing
 		// probability, to avoid transmitting the lengths for unused bit length codes.
-		private static readonly int[] BL_ORDER = {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+		private static readonly int[] BL_ORDER = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 
 		private static readonly byte[] bit4Reverse = {
-		                                             	0,
-		                                             	8,
-		                                             	4,
-		                                             	12,
-		                                             	2,
-		                                             	10,
-		                                             	6,
-		                                             	14,
-		                                             	1,
-		                                             	9,
-		                                             	5,
-		                                             	13,
-		                                             	3,
-		                                             	11,
-		                                             	7,
-		                                             	15
-		                                             };
+														 0,
+														 8,
+														 4,
+														 12,
+														 2,
+														 10,
+														 6,
+														 14,
+														 1,
+														 9,
+														 5,
+														 13,
+														 3,
+														 11,
+														 7,
+														 15
+													 };
 
 		private static readonly short[] staticLCodes;
 		private static readonly byte[] staticLLength;
@@ -291,8 +291,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			int blTreeCodes = 4;
 			for (int i = 18; i > blTreeCodes; i--) if (blTree.length[BL_ORDER[i]] > 0) blTreeCodes = i + 1;
 			int opt_len = 14 + blTreeCodes * 3 + blTree.GetEncodedLength() +
-			              literalTree.GetEncodedLength() + distTree.GetEncodedLength() +
-			              extra_bits;
+						  literalTree.GetEncodedLength() + distTree.GetEncodedLength() +
+						  extra_bits;
 
 			int static_len = extra_bits;
 			for (int i = 0; i < LITERAL_NUM; i++) static_len += literalTree.freqs[i] * staticLLength[i];
@@ -356,7 +356,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			//				}
 			//			}
 			d_buf[last_lit] = 0;
-			l_buf[last_lit++] = (byte) literal;
+			l_buf[last_lit++] = (byte)literal;
 			literalTree.freqs[literal]++;
 			return IsFull();
 		}
@@ -373,8 +373,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			//				//Console.WriteLine("[" + distance + "," + length + "]");
 			//			}
 
-			d_buf[last_lit] = (short) distance;
-			l_buf[last_lit++] = (byte) (length - 3);
+			d_buf[last_lit] = (short)distance;
+			l_buf[last_lit++] = (byte)(length - 3);
 
 			int lc = Lcode(length - 3);
 			literalTree.freqs[lc]++;
@@ -394,10 +394,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>Value with bits reversed</returns>
 		public static short BitReverse(int toReverse)
 		{
-			return (short) (bit4Reverse[toReverse & 0xF] << 12 |
-			                bit4Reverse[(toReverse >> 4) & 0xF] << 8 |
-			                bit4Reverse[(toReverse >> 8) & 0xF] << 4 |
-			                bit4Reverse[toReverse >> 12]);
+			return (short)(bit4Reverse[toReverse & 0xF] << 12 |
+							bit4Reverse[(toReverse >> 4) & 0xF] << 8 |
+							bit4Reverse[(toReverse >> 8) & 0xF] << 4 |
+							bit4Reverse[toReverse >> 12]);
 		}
 
 		private static int Lcode(int length)
@@ -727,7 +727,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						if (++count >= max_count) break;
 					}
 
-					if (count < min_count) blTree.freqs[curlen] += (short) count;
+					if (count < min_count) blTree.freqs[curlen] += (short)count;
 					else if (curlen != 0) blTree.freqs[REP_3_6]++;
 					else if (count <= 10) blTree.freqs[REP_3_10]++;
 					else blTree.freqs[REP_11_138]++;
@@ -823,7 +823,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						// A leaf node
 						int bitLength = lengths[i];
 						bl_counts[bitLength - 1]++;
-						length[childs[2 * i]] = (byte) lengths[i];
+						length[childs[2 * i]] = (byte)lengths[i];
 					}
 				}
 
@@ -878,7 +878,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						if (childs[childPtr + 1] == -1)
 						{
 							// We found another leaf
-							length[childs[childPtr]] = (byte) bits;
+							length[childs[childPtr]] = (byte)bits;
 							n--;
 						}
 					}

@@ -16,8 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.Properties;
-using Paril.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -27,6 +25,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
+using MCSkin3D.Properties;
+using Paril.Extensions;
 using Timer = System.Timers.Timer;
 
 namespace MCSkin3D
@@ -104,7 +104,7 @@ namespace MCSkin3D
 			{
 				return new Point(
 					_scrollX,
-					GetScrollPos((int) Handle, SB_VERT));
+					GetScrollPos((int)Handle, SB_VERT));
 			}
 
 			set
@@ -204,7 +204,7 @@ namespace MCSkin3D
 
 		protected override void OnSizeChanged(EventArgs e)
 		{
-			_numVisible = (int) Math.Ceiling(Height / (float) ItemHeight);
+			_numVisible = (int)Math.Ceiling(Height / (float)ItemHeight);
 			base.OnSizeChanged(e);
 		}
 
@@ -305,8 +305,8 @@ namespace MCSkin3D
 			base.OnMouseMove(e);
 
 			if ((MouseButtons & MouseButtons.Left) == 0 ||
-			    SelectedNode == null ||
-			    !_canTryDragDrop)
+				SelectedNode == null ||
+				!_canTryDragDrop)
 				return;
 
 			if (mouseDown)
@@ -357,7 +357,7 @@ namespace MCSkin3D
 					}
 
 					g.DrawImage(prevImage, new Rectangle(0, 0, 32, 32), new Rectangle(0, 0, prevImage.Width, prevImage.Height),
-					            GraphicsUnit.Pixel);
+								GraphicsUnit.Pixel);
 				}
 
 				/*var kvps = new List<KeyValuePair<string, object>>();
@@ -378,7 +378,7 @@ namespace MCSkin3D
 				if (SelectedNode is Skin)
 				{
 					var strs = new StringCollection();
-					strs.Add(((Skin) SelectedNode).File.FullName);
+					strs.Add(((Skin)SelectedNode).File.FullName);
 					obj.SetFileDropList(strs);
 				}
 
@@ -419,24 +419,24 @@ namespace MCSkin3D
 
 			Size textLen = TextRenderer.MeasureText(e.Node.Text, Font);
 			if (realX + textLen.Width + ItemHeight + 15 > Width &&
-			    _newMaximum < (realX + textLen.Width + ItemHeight + 15) - Width)
+				_newMaximum < (realX + textLen.Width + ItemHeight + 15) - Width)
 				_newMaximum = (realX + textLen.Width + ItemHeight + 15) - Width;
 
 			realX -= _scrollX;
 
 			e.Graphics.FillRectangle(new SolidBrush(BackColor), 0, e.Bounds.Y, Width, e.Bounds.Height);
-			Skin skin = e.Node is Skin ? (Skin) e.Node : null;
+			Skin skin = e.Node is Skin ? (Skin)e.Node : null;
 			bool skinIsNull = skin == null;
 
 			if (e.Node.IsSelected || e.Node == _overNode)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, SystemColors.Highlight)), realX, e.Bounds.Y, Width,
-				                         e.Bounds.Height - 1);
+										 e.Bounds.Height - 1);
 			}
 			else if (!skinIsNull && skin.IsLastSkin)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(127, Color.Yellow)), realX, e.Bounds.Y, Width,
-				                         e.Bounds.Height - 1);
+										 e.Bounds.Height - 1);
 			}
 
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -453,8 +453,8 @@ namespace MCSkin3D
 				if (e.Node.Level == 0 && !Editor.HasOneRoot)
 				{
 					e.Graphics.DrawImage(clone, realX + (ItemHeight - clone.Width) - 1,
-					                     e.Bounds.Y + (ItemHeight - clone.Height) - 1, clone.Width,
-					                     clone.Height);
+										 e.Bounds.Y + (ItemHeight - clone.Height) - 1, clone.Width,
+										 clone.Height);
 				}
 			}
 			else
@@ -467,12 +467,12 @@ namespace MCSkin3D
 					if ((e.State & TreeNodeStates.Hot) != 0)
 					{
 						e.Graphics.DrawImage(arrow_state_blue_expanded,
-						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
+											 new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 					else
 					{
 						e.Graphics.DrawImage(arrow_state_grey_expanded,
-						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
+											 new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 				}
 				else
@@ -480,12 +480,12 @@ namespace MCSkin3D
 					if ((e.State & TreeNodeStates.Hot) != 0)
 					{
 						e.Graphics.DrawImage(arrow_state_blue_right,
-						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
+											 new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 					else
 					{
 						e.Graphics.DrawImage(arrow_state_grey_right,
-						                     new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
+											 new Rectangle(realX - 13, e.Bounds.Y + (ItemHeight / 2) - (16 / 2), 16, 16));
 					}
 				}
 			}
@@ -493,9 +493,9 @@ namespace MCSkin3D
 			string text = e.Node.ToString();
 
 			TextRenderer.DrawText(e.Graphics, text, Font,
-			                      new Rectangle(realX + ItemHeight + 1, e.Bounds.Y, Width, e.Bounds.Height),
-			                      (e.Node.IsSelected || e.Node == _overNode) ? Color.White : Color.Black,
-			                      TextFormatFlags.VerticalCenter);
+								  new Rectangle(realX + ItemHeight + 1, e.Bounds.Y, Width, e.Bounds.Height),
+								  (e.Node.IsSelected || e.Node == _overNode) ? Color.White : Color.Black,
+								  TextFormatFlags.VerticalCenter);
 
 			//TextRenderer.DrawText(e.Graphics, "64x32", new Font(Font.FontFamily, 7), new Rectangle(e.Bounds.X, e.Bounds.Y, Width - 20, e.Bounds.Height), (e.Node.IsSelected || e.Node == _overNode) ? Color.White : Color.Black, TextFormatFlags.Right | TextFormatFlags.VerticalCenter);
 		}
@@ -663,6 +663,8 @@ namespace MCSkin3D
 			{
 				if (selectedNode.GetNodeChain().Contains(node))
 					return false;
+				else if (selectedNode.GetParentCollection() == node.GetParentCollection())
+					return false;
 			}
 			else if (node is FolderNode && selectedNode is FolderNode)
 			{
@@ -693,11 +695,11 @@ namespace MCSkin3D
 			dragTimer.Stop();
 
 			if (e.Data.GetDataPresent(DataFormats.FileDrop) &&
-			    !e.Data.GetDataPresent("MCSkin3D.Skin"))
+				!e.Data.GetDataPresent("MCSkin3D.Skin"))
 			{
 				e.Effect = e.AllowedEffect & DragDropEffects.Copy;
 
-				var files = (string[]) e.Data.GetData(DataFormats.FileDrop);
+				var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				string folderLocation = Editor.GetFolderLocationForNode(_overNode);
 
 				if (string.IsNullOrEmpty(folderLocation))
@@ -754,6 +756,9 @@ namespace MCSkin3D
 
 		private void MoveNode(TreeNode from, TreeNodeCollection to, TreeNode toNode)
 		{
+			if (from.GetParentCollection() == to)
+				return;
+
 			string path = Editor.GetFolderForNode(toNode);
 
 			if (string.IsNullOrEmpty(path))
@@ -761,11 +766,11 @@ namespace MCSkin3D
 
 			if (from is Skin)
 			{
-				string newPath = Path.GetFileNameWithoutExtension(((Skin) from).File.Name);
-				((Skin) from).MoveTo(path + "\\" + newPath + ".png");
+				string newPath = Path.GetFileNameWithoutExtension(((Skin)from).File.Name);
+				((Skin)from).MoveTo(path + newPath + ".png");
 			}
 			else
-				((FolderNode) from).MoveTo(path + "\\" + ((FolderNode) from).Directory.Name);
+				((FolderNode)from).MoveTo(path + ((FolderNode)from).Directory.Name);
 
 			from.Remove();
 			to.Add(from);
@@ -793,7 +798,7 @@ namespace MCSkin3D
 		/// <returns>The node that was found, or null if not found.</returns>
 		public TreeNode NodeFromPath(string path, bool returnClosest = false)
 		{
-			string[] split = path.Split(new[] {PathSeparator}, StringSplitOptions.RemoveEmptyEntries);
+			string[] split = path.Split(new[] { PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
 			int splitIndex = 0;
 			TreeNode closestNode = null;
 

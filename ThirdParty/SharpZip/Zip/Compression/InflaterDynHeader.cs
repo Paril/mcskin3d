@@ -35,8 +35,8 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -51,8 +51,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		private const int LENS = 4;
 		private const int REPS = 5;
 
-		private static readonly int[] repMin = {3, 3, 11};
-		private static readonly int[] repBits = {2, 3, 7};
+		private static readonly int[] repMin = { 3, 3, 11 };
+		private static readonly int[] repBits = { 2, 3, 7 };
 
 		private static readonly int[] BL_ORDER =
 			{16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
@@ -105,7 +105,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 							if (len < 0) return false;
 							input.DropBits(3);
 							//  		System.err.println("blLens["+BL_ORDER[ptr]+"]: "+len);
-							blLens[BL_ORDER[ptr]] = (byte) len;
+							blLens[BL_ORDER[ptr]] = (byte)len;
 							ptr++;
 						}
 						blTree = new InflaterHuffmanTree(blLens);
@@ -114,14 +114,48 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						mode = LENS;
 						goto case LENS; // fall through
 					case LENS:
-					{
-						int symbol;
-						while (((symbol = blTree.GetSymbol(input)) & ~15) == 0)
 						{
-							/* Normal case: symbol in [0..15] */
+							int symbol;
+							while (((symbol = blTree.GetSymbol(input)) & ~15) == 0)
+							{
+								/* Normal case: symbol in [0..15] */
 
-							//  		  System.err.println("litdistLens["+ptr+"]: "+symbol);
-							litdistLens[ptr++] = lastLen = (byte) symbol;
+								//  		  System.err.println("litdistLens["+ptr+"]: "+symbol);
+								litdistLens[ptr++] = lastLen = (byte)symbol;
+
+								if (ptr == num)
+								{
+									/* Finished */
+									return true;
+								}
+							}
+
+							/* need more input ? */
+							if (symbol < 0) return false;
+
+							/* otherwise repeat code */
+							if (symbol >= 17)
+							{
+								/* repeat zero */
+								//  		  System.err.println("repeating zero");
+								lastLen = 0;
+							}
+							else if (ptr == 0) throw new SharpZipBaseException();
+							repSymbol = symbol - 16;
+						}
+						mode = REPS;
+						goto case REPS; // fall through
+					case REPS:
+						{
+							int bits = repBits[repSymbol];
+							int count = input.PeekBits(bits);
+							if (count < 0) return false;
+							input.DropBits(bits);
+							count += repMin[repSymbol];
+							//  	      System.err.println("litdistLens repeated: "+count);
+
+							if (ptr + count > num) throw new SharpZipBaseException();
+							while (count-- > 0) litdistLens[ptr++] = lastLen;
 
 							if (ptr == num)
 							{
@@ -129,40 +163,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 								return true;
 							}
 						}
-
-						/* need more input ? */
-						if (symbol < 0) return false;
-
-						/* otherwise repeat code */
-						if (symbol >= 17)
-						{
-							/* repeat zero */
-							//  		  System.err.println("repeating zero");
-							lastLen = 0;
-						}
-						else if (ptr == 0) throw new SharpZipBaseException();
-						repSymbol = symbol - 16;
-					}
-						mode = REPS;
-						goto case REPS; // fall through
-					case REPS:
-					{
-						int bits = repBits[repSymbol];
-						int count = input.PeekBits(bits);
-						if (count < 0) return false;
-						input.DropBits(bits);
-						count += repMin[repSymbol];
-						//  	      System.err.println("litdistLens repeated: "+count);
-
-						if (ptr + count > num) throw new SharpZipBaseException();
-						while (count-- > 0) litdistLens[ptr++] = lastLen;
-
-						if (ptr == num)
-						{
-							/* Finished */
-							return true;
-						}
-					}
 						mode = LENS;
 						goto decode_loop;
 				}

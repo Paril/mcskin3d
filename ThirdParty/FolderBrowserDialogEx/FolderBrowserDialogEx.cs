@@ -41,7 +41,7 @@ namespace DaveChambers.FolderBrowserDialogEx
 			var bi = new Win32.BROWSEINFO();
 			bi.iImage = 0;
 			bi.hwndOwner = owner.Handle;
-			if (0 != Win32.SHGetSpecialFolderLocation(owner.Handle, (int) RootFolder, ref bi.pidlRoot))
+			if (0 != Win32.SHGetSpecialFolderLocation(owner.Handle, (int)RootFolder, ref bi.pidlRoot))
 				bi.pidlRoot = IntPtr.Zero;
 			bi.lpszTitle = "";
 			bi.ulFlags = Win32.BIF_RETURNONLYFSDIRS; // do NOT use BIF_NEWDIALOGSTYLE or BIF_STATUSTEXT
@@ -91,15 +91,15 @@ namespace DaveChambers.FolderBrowserDialogEx
 					_adjustUi(hDlg, lpData);
 					break;
 				case Win32.BFFM_SELCHANGED:
-				{
-					bool ok = false;
-					var sb = new StringBuilder(Win32.MAX_PATH);
-					if (Win32.SHGetPathFromIDList(lParam, sb))
 					{
-						ok = true;
-						string dir = sb.ToString();
-						IntPtr hEdit = Win32.GetDlgItem(hDlg, CtlIds.PATH_EDIT);
-						Win32.SetWindowText(hEdit, dir);
+						bool ok = false;
+						var sb = new StringBuilder(Win32.MAX_PATH);
+						if (Win32.SHGetPathFromIDList(lParam, sb))
+						{
+							ok = true;
+							string dir = sb.ToString();
+							IntPtr hEdit = Win32.GetDlgItem(hDlg, CtlIds.PATH_EDIT);
+							Win32.SetWindowText(hEdit, dir);
 #if UsingStatusText
 	// We're not using status text, but if we were, this is how you'd set it
 							Win32.SendMessage(hDlg, Win32.BFFM_SETSTATUSTEXTW, 0, dir);
@@ -114,14 +114,14 @@ namespace DaveChambers.FolderBrowserDialogEx
 							if ((sfi.dwAttributes & Win32.SFGAO_LINK) == Win32.SFGAO_LINK)
 								ok = false;
 #endif
+						}
+
+						// if invalid selection, disable the OK button
+						if (!ok)
+							Win32.EnableWindow(Win32.GetDlgItem(hDlg, CtlIds.IDOK), false);
+
+						break;
 					}
-
-					// if invalid selection, disable the OK button
-					if (!ok)
-						Win32.EnableWindow(Win32.GetDlgItem(hDlg, CtlIds.IDOK), false);
-
-					break;
-				}
 			}
 
 			return 0;
@@ -132,10 +132,10 @@ namespace DaveChambers.FolderBrowserDialogEx
 			// Only do the adjustments if InitData was supplied
 			if (lpData == IntPtr.Zero)
 				return;
-			object obj = Marshal.PtrToStructure(lpData, typeof (InitData));
+			object obj = Marshal.PtrToStructure(lpData, typeof(InitData));
 			if (obj == null)
 				return;
-			var initdata = (InitData) obj;
+			var initdata = (InitData)obj;
 
 			// Only do the adjustments if we can find the dirtree control
 			IntPtr hTree = Win32.GetDlgItem(hDlg, CtlIds.TREEVIEW);
@@ -198,9 +198,9 @@ namespace DaveChambers.FolderBrowserDialogEx
 				Win32.ScreenToClient(hDlg, ref rcCancel);
 
 				rcCancel = new Win32.RECT(rcDlg.Right - (rcCancel.Width + hMargin),
-				                          rcDlg.Bottom - (rcCancel.Height + vMargin),
-				                          rcCancel.Width,
-				                          rcCancel.Height);
+										  rcDlg.Bottom - (rcCancel.Height + vMargin),
+										  rcCancel.Width,
+										  rcCancel.Height);
 
 				Win32.MoveWindow(hCancel, rcCancel, false);
 			}
@@ -214,9 +214,9 @@ namespace DaveChambers.FolderBrowserDialogEx
 				Win32.ScreenToClient(hDlg, ref rcOK);
 
 				rcOK = new Win32.RECT(rcCancel.Left - (rcCancel.Width + hMargin),
-				                      rcCancel.Top,
-				                      rcOK.Width,
-				                      rcOK.Height);
+									  rcCancel.Top,
+									  rcOK.Width,
+									  rcOK.Height);
 
 				Win32.MoveWindow(hOK, rcOK, false);
 			}
@@ -233,17 +233,17 @@ namespace DaveChambers.FolderBrowserDialogEx
 				// Create a button - button is only auto-created under BIF_NEWDIALOGSTYLE
 				// This is failing, and I don't know why!
 				hBtn = Win32.CreateWindowEx(0x50010000,
-				                            "button",
-				                            "&Make New Folder",
-				                            0x00000004,
-				                            hMargin,
-				                            rcOK.Top,
-				                            105,
-				                            rcOK.Height,
-				                            hDlg,
-				                            new IntPtr(CtlIds.NEW_FOLDER_BUTTON),
-				                            Process.GetCurrentProcess().Handle,
-				                            IntPtr.Zero);
+											"button",
+											"&Make New Folder",
+											0x00000004,
+											hMargin,
+											rcOK.Top,
+											105,
+											rcOK.Height,
+											hDlg,
+											new IntPtr(CtlIds.NEW_FOLDER_BUTTON),
+											Process.GetCurrentProcess().Handle,
+											IntPtr.Zero);
 			}
 
 			// Position the path editbox and it's label
@@ -270,9 +270,9 @@ namespace DaveChambers.FolderBrowserDialogEx
 					Win32.ReleaseDC(hLabel, hdc);
 
 					var rcLabel = new Win32.RECT(hMargin,
-					                             vMargin + ((rcEdit.Height - szLabel.Height) / 2),
-					                             szLabel.Width,
-					                             szLabel.Height);
+												 vMargin + ((rcEdit.Height - szLabel.Height) / 2),
+												 szLabel.Width,
+												 szLabel.Height);
 					Win32.MoveWindow(hLabel, rcLabel, false);
 
 					xEdit += rcLabel.Width;
@@ -281,18 +281,18 @@ namespace DaveChambers.FolderBrowserDialogEx
 
 				// Expand the folder tree to fill the dialog
 				rcEdit = new Win32.RECT(xEdit,
-				                        vMargin,
-				                        cxEdit,
-				                        rcEdit.Height);
+										vMargin,
+										cxEdit,
+										rcEdit.Height);
 
 				Win32.MoveWindow(hEdit, rcEdit, false);
 				treeTop = rcEdit.Bottom + 5;
 			}
 
 			var rcTree = new Win32.RECT(hMargin,
-			                            treeTop,
-			                            rcDlg.Width - (2 * hMargin),
-			                            rcDlg.Bottom - (treeTop + (2 * vMargin) + rcOK.Height));
+										treeTop,
+										rcDlg.Width - (2 * hMargin),
+										rcDlg.Bottom - (treeTop + (2 * vMargin) + rcOK.Height));
 
 			Win32.MoveWindow(hTree, rcTree, false);
 		}
@@ -308,9 +308,9 @@ namespace DaveChambers.FolderBrowserDialogEx
 			int cx = (rcRef.Width - rcDlg.Width) / 2;
 			int cy = (rcRef.Height - rcDlg.Height) / 2;
 			var rcNew = new Win32.RECT(rcRef.Left + cx,
-			                           rcRef.Top + cy,
-			                           rcDlg.Width,
-			                           rcDlg.Height);
+									   rcRef.Top + cy,
+									   rcDlg.Width,
+									   rcDlg.Height);
 			Win32.MoveWindow(hDlg, rcNew, true);
 		}
 
@@ -335,9 +335,10 @@ namespace DaveChambers.FolderBrowserDialogEx
 		public struct InitData
 		{
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)] // Titles shouldn't too long, should they?
-				public string Title;
+			public string Title;
 
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = Win32.MAX_PATH)] public string InitialPath;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = Win32.MAX_PATH)]
+			public string InitialPath;
 
 			public bool ShowEditbox;
 			public bool ShowNewFolderButton;

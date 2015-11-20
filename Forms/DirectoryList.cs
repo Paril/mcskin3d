@@ -1,9 +1,9 @@
-﻿using DaveChambers.FolderBrowserDialogEx;
-using Paril.Controls;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using DaveChambers.FolderBrowserDialogEx;
+using Paril.Controls;
 
 namespace MCSkin3D.Forms
 {
@@ -57,7 +57,7 @@ namespace MCSkin3D.Forms
 			listBox1.SelectedItems.Clear();
 
 			foreach (object item in list)
-				Directories.Remove((string) item);
+				Directories.Remove((string)item);
 			listBox1.EndUpdate();
 
 			button3.Enabled = Directories.Count != 0;

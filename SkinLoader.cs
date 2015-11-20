@@ -1,9 +1,9 @@
-﻿using MCSkin3D.Macros;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using MCSkin3D.Macros;
 
 namespace MCSkin3D
 {
@@ -15,7 +15,7 @@ namespace MCSkin3D
 		{
 			var di = new DirectoryInfo(path);
 
-			foreach (FileInfo file in di.GetFiles("*.png", SearchOption.TopDirectoryOnly))
+			foreach (FileInfo file in di.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly))
 			{
 				var skin = new Skin(file);
 				nodes.Add(skin);
@@ -28,13 +28,14 @@ namespace MCSkin3D
 				skins.Add(skin);
 			}
 
-			foreach (DirectoryInfo dir in di.GetDirectories())
+			foreach (DirectoryInfo dir in di.EnumerateDirectories())
 			{
 				if ((dir.Attributes & FileAttributes.Hidden) != 0)
 					continue;
 
-				var folderNode = new FolderNode(dir.FullName);
-				RecurseAddDirectories(dir.FullName, folderNode.Nodes, skins);
+				var leadingName = dir.FullName + '\\';
+				var folderNode = new FolderNode(new DirectoryInfo(leadingName).Name);
+				RecurseAddDirectories(leadingName, folderNode.Nodes, skins);
 				nodes.Add(folderNode);
 			}
 		}
@@ -51,7 +52,7 @@ namespace MCSkin3D
 				foreach (string x in GlobalSettings.SkinDirectories)
 				{
 					var expanded = MacroHandler.ReplaceMacros(x);
-					var folder = new FolderNode(expanded);
+					var folder = new FolderNode(new DirectoryInfo(expanded).Name);
 					RecurseAddDirectories(expanded, folder.Nodes, skins);
 					rootNodes.Add(folder);
 				}

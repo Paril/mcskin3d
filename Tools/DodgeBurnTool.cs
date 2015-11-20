@@ -16,9 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Paril.OpenGL;
 using System.Drawing;
 using System.Windows.Forms;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -33,7 +33,7 @@ namespace MCSkin3D
 		{
 			bool ctrlIng = (Control.ModifierKeys & Keys.Shift) != 0;
 			bool switchTools = (!Editor.MainForm.DodgeBurnOptions.Inverted && ctrlIng) ||
-			                   (Editor.MainForm.DodgeBurnOptions.Inverted && !ctrlIng);
+							   (Editor.MainForm.DodgeBurnOptions.Inverted && !ctrlIng);
 			float mod = l.A / 255.0f;
 
 			if (switchTools)

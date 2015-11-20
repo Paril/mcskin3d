@@ -19,23 +19,37 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.FileIO;
 
 namespace MCSkin3D
 {
 	[Serializable]
 	public class FolderNode : TreeNode
 	{
-		private string _path;
-
 		public FolderNode(string name)
 		{
-			_path = name;
-			Name = Text = new DirectoryInfo(name).Name;
+			Name = Text = name;
+		}
+
+		string TransformedPath
+		{
+			get
+			{
+				if (Parent == null)
+				{
+					if (Editor.HasOneRoot)
+						return Editor.RootFolderString + Text + '\\';
+
+					return Environment.CurrentDirectory + Text + '\\';
+				}
+
+				return (Parent as FolderNode).TransformedPath + Text + '\\';
+			}
 		}
 
 		public DirectoryInfo Directory
 		{
-			get { return new DirectoryInfo(_path); }
+			get { return new DirectoryInfo(TransformedPath); }
 		}
 
 		public override string ToString()
@@ -54,15 +68,13 @@ namespace MCSkin3D
 
 			while (System.IO.Directory.Exists(newFolder.FullName))
 			{
-				newFolderString += " - Moved";
+				newFolderString += " - " + Editor.GetLanguageString("C_MOVED");
 				newFolder = new DirectoryInfo(newFolderString);
-				//System.Media.SystemSounds.Beep.Play();
-				//return;
 			}
 
-			Directory.MoveTo(newFolder.FullName);
+			FileSystem.MoveDirectory(Directory.FullName, newFolder.FullName);
+			//Directory.MoveTo(newFolder.FullName);
 			Text = Name = newFolder.Name;
-			_path = newFolderString;
 		}
 	}
 }

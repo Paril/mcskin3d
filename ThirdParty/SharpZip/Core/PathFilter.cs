@@ -102,7 +102,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="minSize">The minimum file size to include.</param>
 		/// <param name="maxSize">The maximum file size to include.</param>
 		public ExtendedPathFilter(string filter,
-		                          long minSize, long maxSize)
+								  long minSize, long maxSize)
 			: base(filter)
 		{
 			MinSize = minSize;
@@ -116,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="minDate">The minimum <see cref="DateTime"/> to include.</param>
 		/// <param name="maxDate">The maximum <see cref="DateTime"/> to include.</param>
 		public ExtendedPathFilter(string filter,
-		                          DateTime minDate, DateTime maxDate)
+								  DateTime minDate, DateTime maxDate)
 			: base(filter)
 		{
 			MinDate = minDate;
@@ -132,8 +132,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="minDate">The minimum <see cref="DateTime"/> to include.</param>
 		/// <param name="maxDate">The maximum <see cref="DateTime"/> to include.</param>
 		public ExtendedPathFilter(string filter,
-		                          long minSize, long maxSize,
-		                          DateTime minDate, DateTime maxDate)
+								  long minSize, long maxSize,
+								  DateTime minDate, DateTime maxDate)
 			: base(filter)
 		{
 			MinSize = minSize;

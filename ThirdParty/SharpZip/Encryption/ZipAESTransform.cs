@@ -134,7 +134,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 					_encryptor.TransformBlock(_counterNonce, 0, _blockSize, _encryptBuffer, 0);
 					_encrPos = 0;
 				}
-				outputBuffer[ix + outputOffset] = (byte) (inputBuffer[ix + inputOffset] ^ _encryptBuffer[_encrPos++]);
+				outputBuffer[ix + outputOffset] = (byte)(inputBuffer[ix + inputOffset] ^ _encryptBuffer[_encrPos++]);
 				//
 				ix++;
 			}

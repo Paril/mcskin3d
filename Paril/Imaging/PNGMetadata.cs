@@ -1,10 +1,10 @@
-﻿using MiscUtil.Conversion;
-using MiscUtil.IO;
-using Paril.Cryptography;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using MiscUtil.Conversion;
+using MiscUtil.IO;
+using Paril.Cryptography;
 
 namespace Paril.Imaging
 {
@@ -147,7 +147,7 @@ namespace Paril.Imaging
 
 							while (true)
 							{
-								c = (char) br.ReadByte();
+								c = (char)br.ReadByte();
 
 								count++;
 
@@ -157,11 +157,11 @@ namespace Paril.Imaging
 								keyword.Add(c);
 							}
 
-							string text = Encoding.ASCII.GetString(br.ReadBytes((int) (len - count)));
+							string text = Encoding.ASCII.GetString(br.ReadBytes((int)(len - count)));
 							metadata.Add(new string(keyword.ToArray()), text);
 						}
 						else
-							br.ReadBytes((int) len);
+							br.ReadBytes((int)len);
 
 						br.ReadInt32();
 					}
@@ -184,7 +184,7 @@ namespace Paril.Imaging
 				{
 					int chunkLen = text.Key.Length + 1 + text.Value.Length;
 
-					bw.Write((uint) chunkLen);
+					bw.Write((uint)chunkLen);
 					bw.Write(Encoding.ASCII.GetBytes("tEXt"), 0, 4);
 
 					var _toCrc = new List<byte>();
@@ -193,7 +193,7 @@ namespace Paril.Imaging
 					_toCrc.AddRange(Encoding.ASCII.GetBytes(text.Value));
 
 					bw.Write(Encoding.ASCII.GetBytes(text.Key));
-					bw.Write((byte) 0);
+					bw.Write((byte)0);
 					bw.Write(Encoding.ASCII.GetBytes(text.Value));
 
 					var crc = new Crc32();

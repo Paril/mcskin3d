@@ -16,10 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Devcorp.Controls.Design;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Devcorp.Controls.Design;
 
 namespace Paril.Controls.Color
 {
@@ -64,9 +64,9 @@ namespace Paril.Controls.Color
 			InitializeComponent();
 
 			SetStyle(ControlStyles.OptimizedDoubleBuffer |
-			         ControlStyles.UserMouse |
-			         ControlStyles.UserPaint |
-			         ControlStyles.AllPaintingInWmPaint, true);
+					 ControlStyles.UserMouse |
+					 ControlStyles.UserPaint |
+					 ControlStyles.AllPaintingInWmPaint, true);
 		}
 
 		public HSL Color
@@ -108,9 +108,9 @@ namespace Paril.Controls.Color
 				CurrentLum = 0;
 			else
 			{
-				float div = (e.Y - 8) / (float) borderThing.Height;
+				float div = (e.Y - 8) / (float)borderThing.Height;
 
-				CurrentLum = 240 - (int) (div * 240);
+				CurrentLum = 240 - (int)(div * 240);
 			}
 
 			Invalidate();
@@ -154,12 +154,12 @@ namespace Paril.Controls.Color
 			float invLum = (240 - _curLum);
 
 			e.Graphics.FillPolygon(Brushes.Black,
-			                       new[]
-			                       {
-			                       	new Point(Width - 7, 6 + (int) (invLum * inc) + 2),
-			                       	new Point(Width - 1, 12 + (int) (invLum * inc) + 2),
-			                       	new Point(Width - 1, 0 + (int) (invLum * inc) + 2),
-			                       }
+								   new[]
+								   {
+									   new Point(Width - 7, 6 + (int) (invLum * inc) + 2),
+									   new Point(Width - 1, 12 + (int) (invLum * inc) + 2),
+									   new Point(Width - 1, 0 + (int) (invLum * inc) + 2),
+								   }
 				);
 		}
 	}

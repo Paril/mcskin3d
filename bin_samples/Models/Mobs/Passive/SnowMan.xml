@@ -1,0 +1,103 @@
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Head">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-4,-8,-4</Offset>
+						<Position>0,4,0</Position>
+						<Rotation>0,1.570796,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>-0.5</Scale>
+						<Part>Head</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Top">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,0,-1</Offset>
+						<Position>4.999883,6,-0.03426919</Position>
+						<Rotation>0,0.3926991,57.29578</Rotation>
+						<Size>12,2,2</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>-0.5</Scale>
+						<Part>Helmet</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Bottom">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,0,-1</Offset>
+						<Position>-4.999883,6,0.03426919</Position>
+						<Rotation>0,180.3927,-57.29578</Rotation>
+						<Size>12,2,2</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>-0.5</Scale>
+						<Part>Chest</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-5,-10,-5</Offset>
+						<Position>0,13,0</Position>
+						<Rotation>0,0.3926991,0</Rotation>
+						<Size>10,10,10</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>-0.5</Scale>
+						<Part>LeftArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-6,-12,-6</Offset>
+						<Position>0,24,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,12,12</Size>
+						<TextureOffset>0,36</TextureOffset>
+						<Scale>-0.5</Scale>
+						<Part>RightArm</Part>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>SnowMan</Name>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>SnowMan</Name>
+</Techne>

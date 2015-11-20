@@ -16,9 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using OpenTK.Graphics;
 using System;
 using System.Drawing;
+using OpenTK.Graphics;
 
 namespace MCSkin3D
 {
@@ -65,7 +65,7 @@ namespace MCSkin3D
 					return new Color4(1 - destination.R, 1 - destination.G, 1 - destination.B, 1 - destination.A);
 				case ColorBlendMode.SourceAlphaSaturation:
 					return new Color4(Math.Min(source.A, 1 - source.A), Math.Min(source.A, 1 - source.A),
-					                  Math.Min(source.A, 1 - source.A), 1);
+									  Math.Min(source.A, 1 - source.A), 1);
 			}
 
 			throw new Exception();
@@ -89,7 +89,7 @@ namespace MCSkin3D
 		public static Color4 Add(Color4 source, ColorBlendMode sourceMode, Color4 destination, ColorBlendMode destMode)
 		{
 			return AddColors(MultiplyColors(source, BlendFunc(source, destination, sourceMode)),
-			                 MultiplyColors(destination, BlendFunc(source, destination, destMode)));
+							 MultiplyColors(destination, BlendFunc(source, destination, destMode)));
 		}
 
 		public static Color4 AlphaBlend(Color4 source, Color4 dest)
@@ -105,8 +105,8 @@ namespace MCSkin3D
 
 		public static Color4 MultiplyByte(Color4 l, Color4 r)
 		{
-			var bL = (Color) l;
-			var bR = (Color) r;
+			var bL = (Color)l;
+			var bR = (Color)r;
 
 			int mR = bL.R * bR.R;
 			int mG = bL.G * bR.G;

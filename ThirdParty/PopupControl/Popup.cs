@@ -181,10 +181,10 @@ namespace PopupControl
 			content.Location = Point.Empty;
 			Items.Add(_host);
 			content.Disposed += (sender, e) =>
-			                    {
-			                    	content = null;
-			                    	Dispose(true);
-			                    };
+								{
+									content = null;
+									Dispose(true);
+								};
 			content.RegionChanged += (sender, e) => UpdateRegion();
 			content.Paint += (sender, e) => PaintSizeGrip(e);
 			UpdateRegion();
@@ -219,7 +219,7 @@ namespace PopupControl
 					_flags = PopupAnimations.None;
 			}
 			if ((_flags & (PopupAnimations.Blend | PopupAnimations.Center | PopupAnimations.Roll | PopupAnimations.Slide)) ==
-			    PopupAnimations.None)
+				PopupAnimations.None)
 				return;
 			if (_resizableTop) // popup is “inverted”, so the animation must be
 			{
@@ -235,7 +235,7 @@ namespace PopupControl
 				else if ((_flags & PopupAnimations.LeftToRight) != PopupAnimations.None)
 					_flags = (_flags & ~PopupAnimations.LeftToRight) | PopupAnimations.RightToLeft;
 			}
-			flags = flags | (NativeMethods.AnimationFlags.Mask & (NativeMethods.AnimationFlags) (int) _flags);
+			flags = flags | (NativeMethods.AnimationFlags.Mask & (NativeMethods.AnimationFlags)(int)_flags);
 			NativeMethods.SetTopMost(this);
 			NativeMethods.AnimateWindow(this, AnimationDuration, flags);
 		}
@@ -496,7 +496,7 @@ namespace PopupControl
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private bool OnGetMinMaxInfo(ref Message m)
 		{
-			var minmax = (NativeMethods.MINMAXINFO) Marshal.PtrToStructure(m.LParam, typeof (NativeMethods.MINMAXINFO));
+			var minmax = (NativeMethods.MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(NativeMethods.MINMAXINFO));
 			if (!MaximumSize.IsEmpty)
 				minmax.maxTrackSize = MaximumSize;
 			minmax.minTrackSize = MinimumSize;
@@ -508,7 +508,7 @@ namespace PopupControl
 		{
 			if (NonInteractive)
 			{
-				m.Result = (IntPtr) NativeMethods.HTTRANSPARENT;
+				m.Result = (IntPtr)NativeMethods.HTTRANSPARENT;
 				return true;
 			}
 
@@ -523,17 +523,17 @@ namespace PopupControl
 			{
 				if (_resizableLeft && gripBouns.TopLeft.Contains(clientLocation))
 				{
-					m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTTOPLEFT;
+					m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTTOPLEFT;
 					return true;
 				}
 				if (!_resizableLeft && gripBouns.TopRight.Contains(clientLocation))
 				{
-					m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTTOPRIGHT;
+					m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTTOPRIGHT;
 					return true;
 				}
 				if (gripBouns.Top.Contains(clientLocation))
 				{
-					m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTTOP;
+					m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTTOP;
 					return true;
 				}
 			}
@@ -541,28 +541,28 @@ namespace PopupControl
 			{
 				if (_resizableLeft && gripBouns.BottomLeft.Contains(clientLocation))
 				{
-					m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTBOTTOMLEFT;
+					m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTBOTTOMLEFT;
 					return true;
 				}
 				if (!_resizableLeft && gripBouns.BottomRight.Contains(clientLocation))
 				{
-					m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTBOTTOMRIGHT;
+					m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTBOTTOMRIGHT;
 					return true;
 				}
 				if (gripBouns.Bottom.Contains(clientLocation))
 				{
-					m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTBOTTOM;
+					m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTBOTTOM;
 					return true;
 				}
 			}
 			if (_resizableLeft && gripBouns.Left.Contains(clientLocation))
 			{
-				m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTLEFT;
+				m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTLEFT;
 				return true;
 			}
 			if (!_resizableLeft && gripBouns.Right.Contains(clientLocation))
 			{
-				m.Result = contentControl ? transparent : (IntPtr) NativeMethods.HTRIGHT;
+				m.Result = contentControl ? transparent : (IntPtr)NativeMethods.HTRIGHT;
 				return true;
 			}
 			return false;

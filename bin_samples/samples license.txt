@@ -1,0 +1,23 @@
+LICENCE AGREEMENT - MCSkin3D Template Skins
+The skins included herein (in the "Skins\" directory) all fall under this license.
+Please keep in mind that this does NOT apply to any skins that the end-user has created. They belong to the respective creator (you), and you may choose to do what you wish with those skins. This license file only covers skins which are included in the 'Samples' directory of the official releases.
+
+DEFINITIONS
+
+'Altered' skins herein refers to skins which have been modified either beyond recognition or by an amount allowed by the original skin creator. For instance, it is against this license to simply recolor a skin included as a template here and claim it as your own.
+
+USAGE
+
+The skins included in this program are licensed under a referential agreement. Basically, you are permitted to use these skins either as reference, or (provided they are 'simple' enough and not 'finished' skins) as a base for your own skins.
+
+REDISTRIBUTION
+
+You may not, under ANY circumstances, redistribute the skins without:
+a) Getting permission from the original author of the skin.
+b) Giving credit to the original author, unless stated by the creator that it is unnecessary.
+
+Redistribution of the original template images, unaltered, or only altered by a minute amount is NOT allowed, and penalties for this may include a warning or ban at the site they were uploaded at.
+
+ACCEPTANCE
+
+You are not required to accept this license in order to use or run a copy of the program. However, if you do deny this license, it is required that you delete the "Samples" directory (or download a sample-less copy, if available) in the 'Skins' folder.

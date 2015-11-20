@@ -48,7 +48,7 @@ namespace DaveChambers.FolderBrowserDialogEx
 		public const uint BIF_VALIDATE = 0x0020; // insist on valid result (or CANCEL)
 
 		public const uint BIF_NEWDIALOGSTYLE = 0x0040; // Use the new dialog layout with the ability to resize
-		// Caller needs to call OleInitialize() before using this API
+													   // Caller needs to call OleInitialize() before using this API
 		public const uint BIF_USENEWUI = 0x0040 + 0x0010; //(BIF_NEWDIALOGSTYLE | BIF_EDITBOX);
 
 		public const uint BIF_BROWSEINCLUDEURLS = 0x0080; // Allow URLs to be displayed or entered. (Requires BIF_USENEWUI)
@@ -69,7 +69,7 @@ namespace DaveChambers.FolderBrowserDialogEx
 		public const int SW_HIDE = 0;
 		public const int SW_SHOW = 5;
 
-//ShowWindowCommands nCmdShow);
+		//ShowWindowCommands nCmdShow);
 
 
 		public const int SWP_ASYNCWINDOWPOS = 0x4000;
@@ -189,7 +189,7 @@ namespace DaveChambers.FolderBrowserDialogEx
 
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
-		                                         IntPtr windowTitle);
+												 IntPtr windowTitle);
 
 
 		//[DllImport("shell32.dll", CharSet = CharSet.Auto)]
@@ -197,7 +197,7 @@ namespace DaveChambers.FolderBrowserDialogEx
 
 		[DllImport("shell32.dll", CharSet = CharSet.Auto)]
 		public static extern IntPtr SHGetFileInfo(IntPtr pidlPath, uint dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo,
-		                                          uint uFlags);
+												  uint uFlags);
 
 		[DllImport("user32.dll")]
 		public static extern bool EnableWindow(IntPtr hWnd, bool bEnable);
@@ -335,8 +335,10 @@ namespace DaveChambers.FolderBrowserDialogEx
 			public IntPtr hIcon;
 			public int iIcon;
 			public uint dwAttributes;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)] public string szDisplayName;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)] public string szTypeName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+			public string szDisplayName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+			public string szTypeName;
 		}
 
 		#endregion

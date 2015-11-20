@@ -39,10 +39,10 @@
 // HISTORY
 //	22-12-2009	DavidPierson	Added AES support
 
-using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Encryption;
 
 #if !NETCF_1_0
 
@@ -164,7 +164,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if (cryptoTransform_ != null)
 			{
 #if !NET_1_1 && !NETCF_2_0
-				if (cryptoTransform_ is ZipAESTransform) AESAuthCode = ((ZipAESTransform) cryptoTransform_).GetAuthCode();
+				if (cryptoTransform_ is ZipAESTransform) AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
 #endif
 				cryptoTransform_.Dispose();
 				cryptoTransform_ = null;
@@ -277,7 +277,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Initializes encryption keys based on given password.
 		/// </summary>
 		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
-		                                     out byte[] salt, out byte[] pwdVerifier)
+											 out byte[] salt, out byte[] pwdVerifier)
 		{
 			salt = new byte[entry.AESSaltLen];
 			// Salt needs to be cryptographically random, and unique per file
@@ -287,7 +287,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			int blockSize = entry.AESKeySize / 8; // bits to bytes
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
-			pwdVerifier = ((ZipAESTransform) cryptoTransform_).PwdVerifier;
+			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
 		}
 #endif
 
@@ -513,7 +513,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		private void GetAuthCodeIfAES()
 		{
 #if !NET_1_1 && !NETCF_2_0
-			if (cryptoTransform_ is ZipAESTransform) AESAuthCode = ((ZipAESTransform) cryptoTransform_).GetAuthCode();
+			if (cryptoTransform_ is ZipAESTransform) AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
 #endif
 		}
 

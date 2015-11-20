@@ -1,20 +1,25 @@
-﻿using MCSkin3D;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
+using MCSkin3D;
 
 namespace Paril.OpenGL
 {
 	[StructLayout(LayoutKind.Explicit)]
 	public struct ColorPixel
 	{
-		[FieldOffset(0)] private int _rgba;
+		[FieldOffset(0)]
+		private int _rgba;
 
-		[FieldOffset(0)] private byte _r;
-		[FieldOffset(1)] private byte _g;
-		[FieldOffset(2)] private byte _b;
-		[FieldOffset(3)] private byte _a;
+		[FieldOffset(0)]
+		private byte _r;
+		[FieldOffset(1)]
+		private byte _g;
+		[FieldOffset(2)]
+		private byte _b;
+		[FieldOffset(3)]
+		private byte _a;
 
 		public ColorPixel(int rgba)
 		{
@@ -68,7 +73,7 @@ namespace Paril.OpenGL
 		int Width { get; }
 		int Height { get; }
 		ColorPixel this[int x, int y] { get; set; }
-		ColorPixel *Array { get; }
+		ColorPixel* Array { get; }
 
 		void Resize(int width, int height);
 		void Load();
@@ -84,7 +89,7 @@ namespace Paril.OpenGL
 		#endregion
 
 		public OnWriteDelegate OnWrite;
-		private ColorPixel *_array;
+		private ColorPixel* _array;
 		private int _height;
 		private Texture _texture;
 		private int _width;
@@ -185,7 +190,7 @@ namespace Paril.OpenGL
 			}
 		}
 
-		public ColorPixel *Array
+		public ColorPixel* Array
 		{
 			get { return _array; }
 		}

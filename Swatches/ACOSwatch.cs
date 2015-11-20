@@ -1,10 +1,10 @@
-﻿using Devcorp.Controls.Design;
-using MiscUtil.Conversion;
-using MiscUtil.IO;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using Devcorp.Controls.Design;
+using MiscUtil.Conversion;
+using MiscUtil.IO;
 
 namespace MCSkin3D.Swatches
 {
@@ -23,7 +23,7 @@ namespace MCSkin3D.Swatches
 
 			for (ushort i = 0; i < len - 1; ++i)
 				chars[i] = (char)reader.ReadUInt16();
-	
+
 			reader.ReadUInt16();
 
 			return new string(chars);
@@ -35,11 +35,11 @@ namespace MCSkin3D.Swatches
 			if (s == null)
 				s = "";
 
-			writer.Write((ushort) s.Length + 1);
+			writer.Write((ushort)s.Length + 1);
 
 			for (ushort i = 0; i < s.Length; ++i)
-				writer.Write((ushort) s[i]);
-			writer.Write((ushort) 0);
+				writer.Write((ushort)s[i]);
+			writer.Write((ushort)0);
 		}
 
 		private static Color ReadRGBColor(EndianBinaryReader reader)
@@ -50,9 +50,9 @@ namespace MCSkin3D.Swatches
 			reader.ReadUInt16();
 
 			return Color.FromArgb(255,
-			                      (byte) ((r / (float) ushort.MaxValue) * 255),
-			                      (byte) ((g / (float) ushort.MaxValue) * 255),
-			                      (byte) ((b / (float) ushort.MaxValue) * 255));
+								  (byte)((r / (float)ushort.MaxValue) * 255),
+								  (byte)((g / (float)ushort.MaxValue) * 255),
+								  (byte)((b / (float)ushort.MaxValue) * 255));
 		}
 
 		private static Color ReadHSBColor(EndianBinaryReader reader)
@@ -106,9 +106,9 @@ namespace MCSkin3D.Swatches
 			reader.ReadUInt16();
 
 			return Color.FromArgb(255,
-			                      (byte) ((x / 10000.0f) * 255),
-			                      (byte) ((x / 10000.0f) * 255),
-			                      (byte) ((x / 10000.0f) * 255));
+								  (byte)((x / 10000.0f) * 255),
+								  (byte)((x / 10000.0f) * 255),
+								  (byte)((x / 10000.0f) * 255));
 		}
 
 		private void LoadACOData(EndianBinaryReader reader, int version)
@@ -177,19 +177,19 @@ namespace MCSkin3D.Swatches
 
 		private void WriteRGBColor(EndianBinaryWriter writer, NamedColor c)
 		{
-			writer.Write((ushort) ((c.Color.R / 255.0f) * ushort.MaxValue));
-			writer.Write((ushort) ((c.Color.G / 255.0f) * ushort.MaxValue));
-			writer.Write((ushort) ((c.Color.B / 255.0f) * ushort.MaxValue));
-			writer.Write((ushort) 0);
+			writer.Write((ushort)((c.Color.R / 255.0f) * ushort.MaxValue));
+			writer.Write((ushort)((c.Color.G / 255.0f) * ushort.MaxValue));
+			writer.Write((ushort)((c.Color.B / 255.0f) * ushort.MaxValue));
+			writer.Write((ushort)0);
 		}
 
 		private void SaveACOData(EndianBinaryWriter writer)
 		{
-			writer.Write((ushort) Count);
+			writer.Write((ushort)Count);
 
 			foreach (NamedColor c in this)
 			{
-				writer.Write((ushort) 0);
+				writer.Write((ushort)0);
 
 				WriteRGBColor(writer, c);
 				WriteString(writer, c.Name);
@@ -200,9 +200,9 @@ namespace MCSkin3D.Swatches
 		{
 			using (
 				var writer = new EndianBinaryWriter(EndianBitConverter.Big, File.Open(FilePath, FileMode.Create, FileAccess.Write),
-				                                    Encoding.Unicode))
+													Encoding.Unicode))
 			{
-				writer.Write((ushort) 2);
+				writer.Write((ushort)2);
 				SaveACOData(writer);
 			}
 		}

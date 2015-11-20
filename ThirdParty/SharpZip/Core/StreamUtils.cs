@@ -135,8 +135,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="name">The name to use with the event.</param>
 		/// <remarks>This form is specialised for use within #Zip to support events during archive operations.</remarks>
 		public static void Copy(Stream source, Stream destination,
-		                        byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender,
-		                        string name)
+								byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender,
+								string name)
 		{
 			Copy(source, destination, buffer, progressHandler, updateInterval, sender, name, -1);
 		}
@@ -155,9 +155,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// If the value is negative the target is calculated by looking at the stream.</param>
 		/// <remarks>This form is specialised for use within #Zip to support events during archive operations.</remarks>
 		public static void Copy(Stream source, Stream destination,
-		                        byte[] buffer,
-		                        ProgressHandler progressHandler, TimeSpan updateInterval,
-		                        object sender, string name, long fixedTarget)
+								byte[] buffer,
+								ProgressHandler progressHandler, TimeSpan updateInterval,
+								object sender, string name, long fixedTarget)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 

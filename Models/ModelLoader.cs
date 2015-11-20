@@ -16,16 +16,16 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.Models;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using Paril.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+using MCSkin3D.Models;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -40,7 +40,7 @@ namespace MCSkin3D
 
 			var tcnParser = new ModelFormatTCN();
 
-			foreach (string m in Directory.GetFiles(GlobalSettings.GetDataURI("Models"), "*.*", SearchOption.AllDirectories))
+			foreach (string m in Directory.EnumerateFiles(GlobalSettings.GetDataURI("Models"), "*.*", SearchOption.AllDirectories))
 			{
 				try
 				{
@@ -137,7 +137,7 @@ namespace MCSkin3D
 				{
 					if (boxObj is ModelRenderer)
 					{
-						var box = (ModelRenderer) boxObj;
+						var box = (ModelRenderer)boxObj;
 						foreach (ModelBox face in box.cubeList)
 						{
 							var mesh = new Mesh(face.Name);
@@ -145,15 +145,15 @@ namespace MCSkin3D
 							mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
 							mesh.Part = box.Flags;
 							mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX),
-							                          MathHelper.RadiansToDegrees(box.rotateAngleY),
-							                          MathHelper.RadiansToDegrees(box.rotateAngleZ));
+													  MathHelper.RadiansToDegrees(box.rotateAngleY),
+													  MathHelper.RadiansToDegrees(box.rotateAngleZ));
 							mesh.Pivot = mesh.Translate;
 							mesh.IsSolid = box.isSolid;
 
 							mesh.Mode = BeginMode.Quads;
 
-							var cwIndices = new[] {0, 1, 2, 3};
-							var cwwIndices = new[] {3, 2, 1, 0};
+							var cwIndices = new[] { 0, 1, 2, 3 };
+							var cwwIndices = new[] { 3, 2, 1, 0 };
 
 							foreach (TexturedQuad quad in face.field_40680_i)
 							{
@@ -192,21 +192,21 @@ namespace MCSkin3D
 					}
 					else if (boxObj is PlaneRenderer)
 					{
-						var box = (PlaneRenderer) boxObj;
+						var box = (PlaneRenderer)boxObj;
 
 						var mesh = new Mesh(box.Name);
 						mesh.Faces = new List<Face>();
 						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
 						mesh.Part = box.Flags;
 						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX),
-						                          MathHelper.RadiansToDegrees(box.rotateAngleY),
-						                          MathHelper.RadiansToDegrees(box.rotateAngleZ));
+												  MathHelper.RadiansToDegrees(box.rotateAngleY),
+												  MathHelper.RadiansToDegrees(box.rotateAngleZ));
 						mesh.Pivot = mesh.Translate;
 
 						mesh.Mode = BeginMode.Quads;
 
-						var cwIndices = new[] {0, 1, 2, 3};
-						var cwwIndices = new[] {3, 2, 1, 0};
+						var cwIndices = new[] { 0, 1, 2, 3 };
+						var cwwIndices = new[] { 3, 2, 1, 0 };
 
 						foreach (TexturedQuad quad in box.faces)
 						{
@@ -308,7 +308,7 @@ namespace MCSkin3D
 								writer.WriteElementString("Position", renderer.rotationPointX.ToString(CultureInfo.InvariantCulture) + "," + renderer.rotationPointY.ToString(CultureInfo.InvariantCulture) + "," +
 														  renderer.rotationPointZ.ToString(CultureInfo.InvariantCulture));
 								writer.WriteElementString("Rotation",
-								                          MathHelper.RadiansToDegrees(renderer.rotateAngleX).ToString(CultureInfo.InvariantCulture) + "," +
+														  MathHelper.RadiansToDegrees(renderer.rotateAngleX).ToString(CultureInfo.InvariantCulture) + "," +
 														  MathHelper.RadiansToDegrees(renderer.rotateAngleY).ToString(CultureInfo.InvariantCulture) + "," +
 														  MathHelper.RadiansToDegrees(renderer.rotateAngleZ).ToString(CultureInfo.InvariantCulture));
 								writer.WriteElementString("Size", (x.xMax - x.x).ToString(CultureInfo.InvariantCulture) + "," + (x.yMax - x.y).ToString(CultureInfo.InvariantCulture) + "," + (x.zMax - x.z).ToString(CultureInfo.InvariantCulture));
@@ -323,7 +323,7 @@ namespace MCSkin3D
 						}
 						else if (mesh is PlaneRenderer)
 						{
-							var renderer = (PlaneRenderer) mesh;
+							var renderer = (PlaneRenderer)mesh;
 
 							writer.WriteStartElement("Shape");
 							writer.WriteAttributeString("type", "ab894c83-e399-4236-808b-25a78d56f5e1");
@@ -392,7 +392,7 @@ namespace MCSkin3D
 			public float zMax;
 
 			public ModelBox(ModelRenderer modelrenderer, string name, int i, int j, float f, float f1, float f2, int k,
-			                int l, int i1, float f3)
+							int l, int i1, float f3)
 			{
 				sizeOfs = f3;
 				texX = i;
@@ -438,41 +438,41 @@ namespace MCSkin3D
 				field_40679_h[6] = positiontexturevertex6;
 				field_40679_h[7] = positiontexturevertex7;
 				field_40680_i[0] = new TexturedQuad(new[]
-				                                    {
-				                                    	positiontexturevertex5, positiontexturevertex1, positiontexturevertex2,
-				                                    	positiontexturevertex6
-				                                    }, i + i1 + k, j + i1, i + i1 + k + i1, j + i1 + l, modelrenderer.textureWidth,
-				                                    modelrenderer.textureHeight);
+													{
+														positiontexturevertex5, positiontexturevertex1, positiontexturevertex2,
+														positiontexturevertex6
+													}, i + i1 + k, j + i1, i + i1 + k + i1, j + i1 + l, modelrenderer.textureWidth,
+													modelrenderer.textureHeight);
 				field_40680_i[1] = new TexturedQuad(new[]
-				                                    {
-				                                    	positiontexturevertex, positiontexturevertex4, positiontexturevertex7,
-				                                    	positiontexturevertex3
-				                                    }, i + 0, j + i1, i + i1, j + i1 + l, modelrenderer.textureWidth,
-				                                    modelrenderer.textureHeight);
+													{
+														positiontexturevertex, positiontexturevertex4, positiontexturevertex7,
+														positiontexturevertex3
+													}, i + 0, j + i1, i + i1, j + i1 + l, modelrenderer.textureWidth,
+													modelrenderer.textureHeight);
 				field_40680_i[2] = new TexturedQuad(new[]
-				                                    {
-				                                    	positiontexturevertex5, positiontexturevertex4, positiontexturevertex,
-				                                    	positiontexturevertex1
-				                                    }, i + i1, j + 0, i + i1 + k, j + i1, modelrenderer.textureWidth,
-				                                    modelrenderer.textureHeight);
+													{
+														positiontexturevertex5, positiontexturevertex4, positiontexturevertex,
+														positiontexturevertex1
+													}, i + i1, j + 0, i + i1 + k, j + i1, modelrenderer.textureWidth,
+													modelrenderer.textureHeight);
 				field_40680_i[3] = new TexturedQuad(new[]
-				                                    {
-				                                    	positiontexturevertex2, positiontexturevertex3, positiontexturevertex7,
-				                                    	positiontexturevertex6
-				                                    }, i + i1 + k, j + i1, i + i1 + k + k, j + 0, modelrenderer.textureWidth,
-				                                    modelrenderer.textureHeight);
+													{
+														positiontexturevertex2, positiontexturevertex3, positiontexturevertex7,
+														positiontexturevertex6
+													}, i + i1 + k, j + i1, i + i1 + k + k, j + 0, modelrenderer.textureWidth,
+													modelrenderer.textureHeight);
 				field_40680_i[4] = new TexturedQuad(new[]
-				                                    {
-				                                    	positiontexturevertex1, positiontexturevertex, positiontexturevertex3,
-				                                    	positiontexturevertex2
-				                                    }, i + i1, j + i1, i + i1 + k, j + i1 + l, modelrenderer.textureWidth,
-				                                    modelrenderer.textureHeight);
+													{
+														positiontexturevertex1, positiontexturevertex, positiontexturevertex3,
+														positiontexturevertex2
+													}, i + i1, j + i1, i + i1 + k, j + i1 + l, modelrenderer.textureWidth,
+													modelrenderer.textureHeight);
 				field_40680_i[5] = new TexturedQuad(new[]
-				                                    {
-				                                    	positiontexturevertex4, positiontexturevertex5, positiontexturevertex6,
-				                                    	positiontexturevertex7
-				                                    }, i + i1 + k + i1, j + i1, i + i1 + k + i1 + k, j + i1 + l,
-				                                    modelrenderer.textureWidth, modelrenderer.textureHeight);
+													{
+														positiontexturevertex4, positiontexturevertex5, positiontexturevertex6,
+														positiontexturevertex7
+													}, i + i1 + k + i1, j + i1, i + i1 + k + i1 + k, j + i1 + l,
+													modelrenderer.textureWidth, modelrenderer.textureHeight);
 				if (modelrenderer.mirror)
 				{
 					for (int j1 = 0; j1 < field_40680_i.Length; j1++)
@@ -703,7 +703,7 @@ namespace MCSkin3D
 				corners[7] = positiontexturevertex7;
 				faces[0] =
 					new TexturedQuad(
-						new[] {positiontexturevertex1, positiontexturevertex, positiontexturevertex3, positiontexturevertex2},
+						new[] { positiontexturevertex1, positiontexturevertex, positiontexturevertex3, positiontexturevertex2 },
 						textureOffsetX, textureOffsetY, textureOffsetX + i, textureOffsetY + j, textureWidth, textureHeight);
 
 				if (mirror)
@@ -756,7 +756,7 @@ namespace MCSkin3D
 				corners[7] = positiontexturevertex7;
 				faces[0] =
 					new TexturedQuad(
-						new[] {positiontexturevertex5, positiontexturevertex1, positiontexturevertex2, positiontexturevertex6},
+						new[] { positiontexturevertex5, positiontexturevertex1, positiontexturevertex2, positiontexturevertex6 },
 						textureOffsetX, textureOffsetY, textureOffsetX + k, textureOffsetY + j, textureWidth, textureHeight);
 
 				if (mirror)
@@ -809,7 +809,7 @@ namespace MCSkin3D
 				corners[7] = positiontexturevertex7;
 				faces[0] =
 					new TexturedQuad(
-						new[] {positiontexturevertex5, positiontexturevertex4, positiontexturevertex, positiontexturevertex1},
+						new[] { positiontexturevertex5, positiontexturevertex4, positiontexturevertex, positiontexturevertex1 },
 						textureOffsetX, textureOffsetY, textureOffsetX + i, textureOffsetY + k, textureWidth, textureHeight);
 
 				if (mirror)

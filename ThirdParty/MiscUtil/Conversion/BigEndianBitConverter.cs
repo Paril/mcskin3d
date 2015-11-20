@@ -40,7 +40,7 @@ namespace MiscUtil.Conversion
 			int endOffset = index + bytes - 1;
 			for (int i = 0; i < bytes; i++)
 			{
-				buffer[endOffset - i] = unchecked((byte) (value & 0xff));
+				buffer[endOffset - i] = unchecked((byte)(value & 0xff));
 				value = value >> 8;
 			}
 		}

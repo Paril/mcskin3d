@@ -105,11 +105,11 @@ namespace MCSkin3D.Languages
 
 			// Uses the IWindowsFormsEditorService to display a 
 			// drop-down UI in the Properties window.
-			var edSvc = (IWindowsFormsEditorService) provider.GetService(typeof (IWindowsFormsEditorService));
+			var edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 			if (edSvc != null)
 			{
 				// Display an angle selection control and retrieve the value.
-				var dropDown = new LanguagePropertyChecker(context.Instance, (string) value);
+				var dropDown = new LanguagePropertyChecker(context.Instance, (string)value);
 				edSvc.DropDownControl(dropDown);
 
 				return dropDown.FinalValues;
@@ -137,7 +137,7 @@ namespace MCSkin3D.Languages
 
 			foreach (PropertyInfo prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
 			{
-				if (prop.PropertyType != typeof (string))
+				if (prop.PropertyType != typeof(string))
 					continue;
 
 				props.Add(prop);
@@ -188,7 +188,7 @@ namespace MCSkin3D.Languages
 	/// <summary>
 	/// Class that provides language services to Form controls.
 	/// </summary>
-	[ProvideProperty("PropertyNames", typeof (object))]
+	[ProvideProperty("PropertyNames", typeof(object))]
 	public class LanguageProvider : Component, IExtenderProvider
 	{
 		private readonly Dictionary<object, LanguageControlLink> _properties = new Dictionary<object, LanguageControlLink>();
@@ -263,7 +263,7 @@ namespace MCSkin3D.Languages
 		}
 
 		[DefaultValue("")]
-		[Editor(typeof (LanguageEditor), typeof (UITypeEditor))]
+		[Editor(typeof(LanguageEditor), typeof(UITypeEditor))]
 		public string GetPropertyNames(object control)
 		{
 			if (!_properties.ContainsKey(control))

@@ -106,11 +106,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if (bitsInBuffer_ < bitCount)
 			{
 				if (windowStart_ == windowEnd_) return -1; // ok
-				buffer_ |= (uint) ((window_[windowStart_++] & 0xff |
-				                    (window_[windowStart_++] & 0xff) << 8) << bitsInBuffer_);
+				buffer_ |= (uint)((window_[windowStart_++] & 0xff |
+									(window_[windowStart_++] & 0xff) << 8) << bitsInBuffer_);
 				bitsInBuffer_ += 16;
 			}
-			return (int) (buffer_ & ((1 << bitCount) - 1));
+			return (int)(buffer_ & ((1 << bitCount) - 1));
 		}
 
 		/// <summary>
@@ -186,7 +186,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			int count = 0;
 			while ((bitsInBuffer_ > 0) && (length > 0))
 			{
-				output[offset++] = (byte) buffer_;
+				output[offset++] = (byte)buffer_;
 				buffer_ >>= 8;
 				bitsInBuffer_ -= 8;
 				length--;
@@ -203,7 +203,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if (((windowStart_ - windowEnd_) & 1) != 0)
 			{
 				// We always want an even number of bytes in input, see peekBits
-				buffer_ = (uint) (window_[windowStart_++] & 0xff);
+				buffer_ = (uint)(window_[windowStart_++] & 0xff);
 				bitsInBuffer_ = 8;
 			}
 			return count + length;
@@ -258,7 +258,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if ((count & 1) != 0)
 			{
 				// We always want an even number of bytes in input, see PeekBits
-				buffer_ |= (uint) ((buffer[offset++] & 0xff) << bitsInBuffer_);
+				buffer_ |= (uint)((buffer[offset++] & 0xff) << bitsInBuffer_);
 				bitsInBuffer_ += 8;
 			}
 

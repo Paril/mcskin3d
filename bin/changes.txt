@@ -1,3 +1,14 @@
+Version 1.5.0.300
+- Lightened the load even more.
+- Made program more portable
+- New Skin now defaults to 1.8 human
+- New Skin now checkerboards the default area instead of white, makes it easier to see in 2D view
+- All "Delete" operations now send to Recycle Bin
+- Fixed a huge issue with the root folder (should fix any issues with moving, cloning and renaming)
+- New/Copied skins and folders now properly use the New prefix, and refer to language files for "New", "Copy", etc.
+- Tree view default height was wrong, caused some distortion on heads.
+- Re-upgraded to .NET 4.0
+
 Version 1.4.2.252
 - Renamed to "LE" for Light Edition
 -- I removed a lot of useless, bloat features.

@@ -1,0 +1,69 @@
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Lid">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,-5,-14</Offset>
+						<Position>1,7,15</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>30,5,14</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Knob">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,-2,-15</Offset>
+						<Position>16,7,15</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,4,1</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Helmet</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Base">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>0,0,0</Offset>
+						<Position>1,6,1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>30,10,14</Size>
+						<TextureOffset>0,19</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Large Chest</Name>
+			<TextureSize>128,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Large Chest</Name>
+</Techne>

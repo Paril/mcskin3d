@@ -132,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			uint s1 = checksum & 0xFFFF;
 			uint s2 = checksum >> 16;
 
-			s1 = (s1 + ((uint) value & 0xFF)) % BASE;
+			s1 = (s1 + ((uint)value & 0xFF)) % BASE;
 			s2 = (s1 + s2) % BASE;
 
 			checksum = (s2 << 16) + s1;
@@ -217,7 +217,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 				count -= n;
 				while (--n >= 0)
 				{
-					s1 = s1 + (uint) (buffer[offset++] & 0xff);
+					s1 = s1 + (uint)(buffer[offset++] & 0xff);
 					s2 = s2 + s1;
 				}
 				s1 %= BASE;

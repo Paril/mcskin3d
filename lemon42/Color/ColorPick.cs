@@ -31,9 +31,9 @@ namespace MCSkin3D.lemon42
 			InitializeComponent();
 
 			SetStyle(ControlStyles.OptimizedDoubleBuffer |
-			         ControlStyles.UserMouse |
-			         ControlStyles.UserPaint |
-			         ControlStyles.AllPaintingInWmPaint, true);
+					 ControlStyles.UserMouse |
+					 ControlStyles.UserPaint |
+					 ControlStyles.AllPaintingInWmPaint, true);
 		}
 
 		public short CurrentHue
@@ -102,12 +102,12 @@ namespace MCSkin3D.lemon42
 
 		public ColorManager.HSVColor CurrentHSV
 		{
-			get { return new ColorManager.HSVColor(_currentHue, (byte) _currentSat, (byte) _currentVal, (byte) _currentAlpha); }
+			get { return new ColorManager.HSVColor(_currentHue, (byte)_currentSat, (byte)_currentVal, (byte)_currentAlpha); }
 			set
 			{
 				if (_currentHue != value.H ||
-				    _currentSat != value.S ||
-				    _currentVal != value.V)
+					_currentSat != value.S ||
+					_currentVal != value.V)
 				{
 					_currentHue = value.H;
 					_currentSat = value.S;
@@ -191,17 +191,17 @@ namespace MCSkin3D.lemon42
 			g.SmoothingMode = SmoothingMode.AntiAlias;
 
 			PointF p = ColorPickUtil.RotatePoint(clickPoint, new PointF(Width / 2.0f, Width / 2.0f),
-			                                     ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
+												 ColorPickUtil.DegreeToRadian(rotatePoint ? _currentHue - initRot : 0));
 
 			if (drawPoint)
 				g.DrawEllipse(new Pen(Negative(CurrentHSV), 2), new RectangleF(p.X - 3, p.Y - 3, 6, 6));
 
 			PointF start = ColorPickUtil.RotatePoint(new PointF(Width - thickness, (Height / 2.0f) - 1.5f),
-			                                         new PointF(Width / 2.0f, Width / 2.0f),
-			                                         ColorPickUtil.DegreeToRadian(_currentHue));
+													 new PointF(Width / 2.0f, Width / 2.0f),
+													 ColorPickUtil.DegreeToRadian(_currentHue));
 			PointF end = ColorPickUtil.RotatePoint(new PointF(Width, (Height / 2.0f) - 1.5f),
-			                                       new PointF(Width / 2.0f, Width / 2.0f),
-			                                       ColorPickUtil.DegreeToRadian(_currentHue));
+												   new PointF(Width / 2.0f, Width / 2.0f),
+												   ColorPickUtil.DegreeToRadian(_currentHue));
 
 			g.DrawLine(new Pen(Negative(new ColorManager.HSVColor(CurrentHSV.H, 100, 100)), 2), start, end);
 		}
@@ -220,7 +220,7 @@ namespace MCSkin3D.lemon42
 				{
 					if (clickCircle)
 					{
-						_currentHue = (short) WrapDegree((int) AngleFromPoints(e.Location));
+						_currentHue = (short)WrapDegree((int)AngleFromPoints(e.Location));
 						rotatePoint = true;
 						OnHSVChanged(EventArgs.Empty);
 						setPoint();
@@ -240,7 +240,7 @@ namespace MCSkin3D.lemon42
 
 		public int WrapDegree(int angle)
 		{
-			return (angle < 0 || angle > 360 ? angle - 360 * (int) Math.Floor((double) angle / 360) : angle);
+			return (angle < 0 || angle > 360 ? angle - 360 * (int)Math.Floor((double)angle / 360) : angle);
 		}
 
 		private void SetRaw(Point p)
@@ -311,13 +311,13 @@ namespace MCSkin3D.lemon42
 			// saturation first, then value
 			// this design matches with the picture from wiki
 
-			var vStoH = new PointF((vH.X - vS.X) * (float) s, (vH.Y - vS.Y) * (float) s);
+			var vStoH = new PointF((vH.X - vS.X) * (float)s, (vH.Y - vS.Y) * (float)s);
 			var vS2 = new PointF(vS.X + vStoH.X, vS.Y + vStoH.Y);
-			var vVtovS2 = new PointF((vS2.X - vV.X) * (float) v, (vS2.Y - vV.Y) * (float) v);
+			var vVtovS2 = new PointF((vS2.X - vV.X) * (float)v, (vS2.Y - vV.Y) * (float)v);
 			var final = new PointF(vV.X + vVtovS2.X, vV.Y + vVtovS2.Y);
 
 			return ColorPickUtil.RotatePoint(final, new PointF(Width / 2.0f, Width / 2.0f),
-			                                 ColorPickUtil.DegreeToRadian(_currentHue));
+											 ColorPickUtil.DegreeToRadian(_currentHue));
 		}
 
 		public ColorManager.HSVColor ColorHSVForLocation(float x, float y, short ang)
@@ -374,20 +374,20 @@ namespace MCSkin3D.lemon42
 			double angle = Math.Acos(dotproduct / (vVtoPointLength * vVtovSLength));
 			double s = angle / (Math.PI / 3); // use this ratio for saturation
 			s = s <= 1.0
-			    	? s >= 0 ? s : 0
-			    	: 1.0;
+					? s >= 0 ? s : 0
+					: 1.0;
 
 			var vStovH = new PointF(vH.X - vS.X, vH.Y - vS.Y);
-			var vStovH2 = new PointF(vStovH.X * (float) s, vStovH.Y * (float) s); // apply scalar to get new vector
+			var vStovH2 = new PointF(vStovH.X * (float)s, vStovH.Y * (float)s); // apply scalar to get new vector
 			var vVtovH2 = new PointF(vVtovS.X + vStovH2.X, vVtovS.Y + vStovH2.Y);
 			double vVtovH2Length = Math.Sqrt(vVtovH2.X * vVtovH2.X + vVtovH2.Y * vVtovH2.Y);
 			double v = vVtoPointLength / vVtovH2Length; // ratio for value
 
 			v = v <= 1.0
-			    	? v >= 0 ? v : 0
-			    	: 1.0;
+					? v >= 0 ? v : 0
+					: 1.0;
 
-			return new ColorManager.HSVColor((short) h, (byte) (s * 100), (byte) (v * 100), (byte) _currentAlpha);
+			return new ColorManager.HSVColor((short)h, (byte)(s * 100), (byte)(v * 100), (byte)_currentAlpha);
 		}
 
 		private void ColorPick_Load(object sender, EventArgs e)
@@ -444,9 +444,9 @@ namespace MCSkin3D.lemon42
 			float dot11 = dot(v1, v1);
 			float dot12 = dot(v1, v2);
 
-			double invDenom = (double) 1 / (dot00 * dot11 - dot01 * dot01);
-			double u = ((double) dot11 * dot02 - dot01 * dot12) * invDenom;
-			double v = ((double) dot00 * dot12 - dot01 * dot02) * invDenom;
+			double invDenom = (double)1 / (dot00 * dot11 - dot01 * dot01);
+			double u = ((double)dot11 * dot02 - dot01 * dot12) * invDenom;
+			double v = ((double)dot00 * dot12 - dot01 * dot02) * invDenom;
 
 			return (u >= 0) && (v >= 0) && (u + v < 1);
 		}
@@ -454,15 +454,15 @@ namespace MCSkin3D.lemon42
 		public PointF[] Triangle(int angle)
 		{
 			PointF first = ColorPickUtil.RotatePoint(new PointF(Width - thickness, (Width - thickness) / 2.0f),
-			                                         new PointF(Width / 2.0f, Width / 2.0f),
-			                                         ColorPickUtil.DegreeToRadian(angle + 7));
+													 new PointF(Width / 2.0f, Width / 2.0f),
+													 ColorPickUtil.DegreeToRadian(angle + 7));
 
 			return new PointF[3]
-			       {
-			       	first,
-			       	ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(120)),
-			       	ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(240))
-			       };
+				   {
+					   first,
+					   ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(120)),
+					   ColorPickUtil.RotatePoint(first, new PointF(Width / 2.0f, Width / 2.0f), ColorPickUtil.DegreeToRadian(240))
+				   };
 		}
 
 		public PointF ClipPoint(PointF p, int angle)
@@ -501,7 +501,7 @@ namespace MCSkin3D.lemon42
 			}*/
 
 			PointF _clickPosition = ColorPickUtil.RotatePoint(p, new PointF(Width / 2.0f, Width / 2.0f),
-			                                                  ColorPickUtil.DegreeToRadian(-angle));
+															  ColorPickUtil.DegreeToRadian(-angle));
 			PointF[] polygon = Triangle(0);
 
 			if (_clickPosition.X < polygon[2].X)
@@ -510,7 +510,7 @@ namespace MCSkin3D.lemon42
 				_clickPosition.Y = polygon[2].Y;
 
 			return ColorPickUtil.RotatePoint(_clickPosition, new PointF(Width / 2.0f, Width / 2.0f),
-			                                 ColorPickUtil.DegreeToRadian(angle));
+											 ColorPickUtil.DegreeToRadian(angle));
 		}
 
 
@@ -560,7 +560,7 @@ namespace MCSkin3D.lemon42
 						int num_pts = (wheel_path.PointCount - 1);
 						var surround_colors = new Color[wheel_path.PointCount];
 						for (int i = 0; i < wheel_path.PointCount; i++)
-							surround_colors[i] = new ColorManager.HSVColor((short) ((double) i / num_pts * 360), 100, 100).ToColor();
+							surround_colors[i] = new ColorManager.HSVColor((short)((double)i / num_pts * 360), 100, 100).ToColor();
 
 						using (var brush = new PathGradientBrush(wheel_path))
 						{
@@ -598,10 +598,10 @@ namespace MCSkin3D.lemon42
 			var origin = new Point(size / 2, size / 2);
 			var first = new PointF(size, size / 2.0f);
 			var points = new PointF[3]
-				            {
+							{
 								first, ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(120)),
 								ColorPickUtil.RotatePoint(first, origin, ColorPickUtil.DegreeToRadian(240))
-				            };
+							};
 
 			for (var i = 0; i < points.Length; ++i)
 				points[i] = new PointF(Snap(points[i].X, 0.5f), Snap(points[i].Y, 0.5f));

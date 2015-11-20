@@ -1,0 +1,120 @@
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Base">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-10,-8,-1</Offset>
+						<Position>0,4,0</Position>
+						<Rotation>89.99998,0,0</Rotation>
+						<Size>20,16,2</Size>
+						<TextureOffset>0,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-8,-9,-1</Offset>
+						<Position>-9,4,0</Position>
+						<Rotation>0,270,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-8,-9,-1</Offset>
+						<Position>9,4,0</Position>
+						<Rotation>0,89.99998,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-8,-9,-1</Offset>
+						<Position>0,4,-7</Position>
+						<Rotation>0,180,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Side">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-8,-9,-1</Offset>
+						<Position>0,4,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Leather">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-9,-7,-1</Offset>
+						<Position>0,4,0</Position>
+						<Rotation>-89.99998,0,0</Rotation>
+						<Size>18,14,1</Size>
+						<TextureOffset>44,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Minecart</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Minecart</Name>
+</Techne>

@@ -37,8 +37,8 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using ICSharpCode.SharpZipLib.Checksums;
 using System;
+using ICSharpCode.SharpZipLib.Checksums;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -123,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </summary>		
 		public int Adler
 		{
-			get { return unchecked((int) adler.Value); }
+			get { return unchecked((int)adler.Value); }
 		}
 
 		/// <summary>
@@ -315,7 +315,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						if (strstart > blockStart)
 						{
 							huffman.FlushStoredBlock(window, blockStart,
-							                         strstart - blockStart, false);
+													 strstart - blockStart, false);
 							blockStart = strstart;
 						}
 						UpdateHash();
@@ -325,7 +325,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						if (strstart > blockStart)
 						{
 							huffman.FlushBlock(window, blockStart, strstart - blockStart,
-							                   false);
+											   false);
 							blockStart = strstart;
 						}
 						break;
@@ -380,11 +380,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private void UpdateHash()
 		{
-/*
-			if (DEBUGGING) {
-				Console.WriteLine("updateHash: "+strstart);
-			}
-*/
+			/*
+						if (DEBUGGING) {
+							Console.WriteLine("updateHash: "+strstart);
+						}
+			*/
 			ins_h = (window[strstart] << HASH_SHIFT) ^ window[strstart + 1];
 		}
 
@@ -412,7 +412,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 #endif
 			prev[strstart & WMASK] = match = head[hash];
-			head[hash] = unchecked((short) strstart);
+			head[hash] = unchecked((short)strstart);
 			ins_h = hash;
 			return match & 0xffff;
 		}
@@ -429,14 +429,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			for (int i = 0; i < HASH_SIZE; ++i)
 			{
 				int m = head[i] & 0xffff;
-				head[i] = (short) (m >= WSIZE ? (m - WSIZE) : 0);
+				head[i] = (short)(m >= WSIZE ? (m - WSIZE) : 0);
 			}
 
 			// Slide the prev table.
 			for (int i = 0; i < WSIZE; i++)
 			{
 				int m = prev[i] & 0xffff;
-				prev[i] = (short) (m >= WSIZE ? (m - WSIZE) : 0);
+				prev[i] = (short)(m >= WSIZE ? (m - WSIZE) : 0);
 			}
 		}
 
@@ -492,9 +492,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 #endif
 				if (window[curMatch + best_len] != scan_end ||
-				    window[curMatch + best_len - 1] != scan_end1 ||
-				    window[curMatch] != window[scan] ||
-				    window[curMatch + 1] != window[scan + 1]) continue;
+					window[curMatch + best_len - 1] != scan_end1 ||
+					window[curMatch] != window[scan] ||
+					window[curMatch + 1] != window[scan + 1])
+					continue;
 
 				match = curMatch + 2;
 				scan += 2;
@@ -548,8 +549,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			int storedLength = strstart - blockStart;
 
 			if ((storedLength >= MAX_BLOCK_SIZE) || // Block is full
-			    (blockStart < WSIZE && storedLength >= MAX_DIST) || // Block may move out of window
-			    flush)
+				(blockStart < WSIZE && storedLength >= MAX_DIST) || // Block may move out of window
+				flush)
 			{
 				bool lastBlock = finish;
 				if (storedLength > MAX_BLOCK_SIZE)
@@ -597,10 +598,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 				int hashHead;
 				if (lookahead >= MIN_MATCH &&
-				    (hashHead = InsertString()) != 0 &&
-				    strategy != DeflateStrategy.HuffmanOnly &&
-				    strstart - hashHead <= MAX_DIST &&
-				    FindLongestMatch(hashHead))
+					(hashHead = InsertString()) != 0 &&
+					strategy != DeflateStrategy.HuffmanOnly &&
+					strstart - hashHead <= MAX_DIST &&
+					FindLongestMatch(hashHead))
 				{
 					// longestMatch sets matchStart and matchLen
 #if DebugDeflation
@@ -672,7 +673,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					}
 #endif
 					huffman.FlushBlock(window, blockStart, strstart - blockStart,
-					                   finish);
+									   finish);
 					blockStart = strstart;
 					return false;
 				}
@@ -693,15 +694,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					int hashHead = InsertString();
 
 					if (strategy != DeflateStrategy.HuffmanOnly &&
-					    hashHead != 0 &&
-					    strstart - hashHead <= MAX_DIST &&
-					    FindLongestMatch(hashHead))
+						hashHead != 0 &&
+						strstart - hashHead <= MAX_DIST &&
+						FindLongestMatch(hashHead))
 					{
 						// longestMatch sets matchStart and matchLen
 
 						// Discard match if too small and too far away
 						if (matchLen <= 5 &&
-						    (strategy == DeflateStrategy.Filtered || (matchLen == MIN_MATCH && strstart - matchStart > TooFar)))
+							(strategy == DeflateStrategy.Filtered || (matchLen == MIN_MATCH && strstart - matchStart > TooFar)))
 							matchLen = MIN_MATCH - 1;
 					}
 				}
@@ -727,7 +728,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						if (lookahead >= MIN_MATCH) InsertString();
 					} while (--prevLen > 0);
 
-					strstart ++;
+					strstart++;
 					lookahead--;
 					prevAvailable = false;
 					matchLen = MIN_MATCH - 1;

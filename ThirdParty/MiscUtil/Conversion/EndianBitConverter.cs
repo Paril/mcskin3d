@@ -128,7 +128,7 @@ namespace MiscUtil.Conversion
 		/// <returns>A character formed by two bytes beginning at startIndex.</returns>
 		public char ToChar(byte[] value, int startIndex)
 		{
-			return unchecked((char) (CheckedFromBytes(value, startIndex, 2)));
+			return unchecked((char)(CheckedFromBytes(value, startIndex, 2)));
 		}
 
 		/// <summary>
@@ -163,7 +163,7 @@ namespace MiscUtil.Conversion
 		/// <returns>A 16-bit signed integer formed by two bytes beginning at startIndex.</returns>
 		public short ToInt16(byte[] value, int startIndex)
 		{
-			return unchecked((short) (CheckedFromBytes(value, startIndex, 2)));
+			return unchecked((short)(CheckedFromBytes(value, startIndex, 2)));
 		}
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace MiscUtil.Conversion
 		/// <returns>A 32-bit signed integer formed by four bytes beginning at startIndex.</returns>
 		public int ToInt32(byte[] value, int startIndex)
 		{
-			return unchecked((int) (CheckedFromBytes(value, startIndex, 4)));
+			return unchecked((int)(CheckedFromBytes(value, startIndex, 4)));
 		}
 
 		/// <summary>
@@ -196,7 +196,7 @@ namespace MiscUtil.Conversion
 		/// <returns>A 16-bit unsigned integer formed by two bytes beginning at startIndex.</returns>
 		public ushort ToUInt16(byte[] value, int startIndex)
 		{
-			return unchecked((ushort) (CheckedFromBytes(value, startIndex, 2)));
+			return unchecked((ushort)(CheckedFromBytes(value, startIndex, 2)));
 		}
 
 		/// <summary>
@@ -207,7 +207,7 @@ namespace MiscUtil.Conversion
 		/// <returns>A 32-bit unsigned integer formed by four bytes beginning at startIndex.</returns>
 		public uint ToUInt32(byte[] value, int startIndex)
 		{
-			return unchecked((uint) (CheckedFromBytes(value, startIndex, 4)));
+			return unchecked((uint)(CheckedFromBytes(value, startIndex, 4)));
 		}
 
 		/// <summary>
@@ -218,7 +218,7 @@ namespace MiscUtil.Conversion
 		/// <returns>A 64-bit unsigned integer formed by eight bytes beginning at startIndex.</returns>
 		public ulong ToUInt64(byte[] value, int startIndex)
 		{
-			return unchecked((ulong) (CheckedFromBytes(value, startIndex, 8)));
+			return unchecked((ulong)(CheckedFromBytes(value, startIndex, 8)));
 		}
 
 		/// <summary>
@@ -478,7 +478,7 @@ namespace MiscUtil.Conversion
 		/// <returns>An array of bytes with length 8.</returns>
 		public byte[] GetBytes(ulong value)
 		{
-			return GetBytes(unchecked((long) value), 8);
+			return GetBytes(unchecked((long)value), 8);
 		}
 
 		#endregion
@@ -634,7 +634,7 @@ namespace MiscUtil.Conversion
 		/// <param name="index">The first index into the array to copy the bytes into</param>
 		public void CopyBytes(ulong value, byte[] buffer, int index)
 		{
-			CopyBytes(unchecked((long) value), 8, buffer, index);
+			CopyBytes(unchecked((long)value), 8, buffer, index);
 		}
 
 		#endregion
@@ -650,12 +650,14 @@ namespace MiscUtil.Conversion
 			/// <summary>
 			/// Int32 version of the value.
 			/// </summary>
-			[FieldOffset(0)] private readonly int i;
+			[FieldOffset(0)]
+			private readonly int i;
 
 			/// <summary>
 			/// Single version of the value.
 			/// </summary>
-			[FieldOffset(0)] private readonly float f;
+			[FieldOffset(0)]
+			private readonly float f;
 
 			/// <summary>
 			/// Creates an instance representing the given integer.

@@ -13,12 +13,12 @@ namespace Paril.Controls
 			string s1, s2;
 
 			if (o1 is string)
-				s1 = (string) o1;
+				s1 = (string)o1;
 			else
 				s1 = o1.ToString();
 
 			if (o2 is string)
-				s2 = (string) o2;
+				s2 = (string)o2;
 			else
 				s2 = o2.ToString();
 
@@ -130,7 +130,7 @@ namespace Paril.Controls
 					int counter = Items.Count - 1;
 					swapped = false;
 
-					var source = (IList) DataSource;
+					var source = (IList)DataSource;
 
 					while (counter > 0)
 					{

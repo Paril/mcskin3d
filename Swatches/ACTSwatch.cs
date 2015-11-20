@@ -1,7 +1,7 @@
-﻿using MiscUtil.Conversion;
-using MiscUtil.IO;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
+using MiscUtil.Conversion;
+using MiscUtil.IO;
 
 namespace MCSkin3D.Swatches
 {
@@ -34,7 +34,7 @@ namespace MCSkin3D.Swatches
 		{
 			using (
 				var writer = new EndianBinaryWriter(EndianBitConverter.Little,
-				                                    File.Open(FilePath, FileMode.Create, FileAccess.Write)))
+													File.Open(FilePath, FileMode.Create, FileAccess.Write)))
 			{
 				foreach (NamedColor c in this)
 				{

@@ -16,12 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Paril.Compatibility;
-using Paril.Components;
-using Paril.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Paril.Components;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -58,7 +57,7 @@ namespace MCSkin3D
 
 		public void Undo(object obj)
 		{
-			var skin = (Skin) obj;
+			var skin = (Skin)obj;
 
 			using (var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 			{
@@ -83,7 +82,7 @@ namespace MCSkin3D
 
 		public void Redo(object obj)
 		{
-			var skin = (Skin) obj;
+			var skin = (Skin)obj;
 
 			using (var grabber = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 			{

@@ -25,19 +25,19 @@ namespace Devcorp.Controls.Design
 		public static bool operator ==(YUV item1, YUV item2)
 		{
 			return (
-			       	item1.Y == item2.Y
-			       	&& item1.U == item2.U
-			       	&& item1.V == item2.V
-			       );
+					   item1.Y == item2.Y
+					   && item1.U == item2.U
+					   && item1.V == item2.V
+				   );
 		}
 
 		public static bool operator !=(YUV item1, YUV item2)
 		{
 			return (
-			       	item1.Y != item2.Y
-			       	|| item1.U != item2.U
-			       	|| item1.V != item2.V
-			       );
+					   item1.Y != item2.Y
+					   || item1.U != item2.U
+					   || item1.V != item2.V
+				   );
 		}
 
 		#endregion
@@ -92,7 +92,7 @@ namespace Devcorp.Controls.Design
 		{
 			if (obj == null || GetType() != obj.GetType()) return false;
 
-			return (this == (YUV) obj);
+			return (this == (YUV)obj);
 		}
 
 		public override int GetHashCode()

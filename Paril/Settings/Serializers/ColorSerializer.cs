@@ -28,7 +28,7 @@ namespace Paril.Settings.Serializers
 
 		public string Serialize(object obj)
 		{
-			var c = (Color) obj;
+			var c = (Color)obj;
 
 			return c.R.ToString() + " " + c.G.ToString() + " " + c.B.ToString() + " " + c.A.ToString();
 		}

@@ -16,11 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using MCSkin3D;
 
 namespace Paril.Components.Shortcuts
 {
@@ -45,7 +45,7 @@ namespace Paril.Components.Shortcuts
 
 		private IShortcutImplementor SelectedShortcut
 		{
-			get { return (IShortcutImplementor) listBox1.SelectedItem; }
+			get { return (IShortcutImplementor)listBox1.SelectedItem; }
 		}
 
 		private IShortcutImplementor ShortcutInUse(Keys key)
@@ -194,8 +194,8 @@ namespace Paril.Components.Shortcuts
 			if (key != 0)
 			{
 				if (key != Keys.ControlKey &&
-				    key != Keys.ShiftKey &&
-				    key != Keys.Menu)
+					key != Keys.ShiftKey &&
+					key != Keys.Menu)
 				{
 					IShortcutImplementor already;
 					Keys oldCut = SelectedShortcut.Keys;
@@ -241,10 +241,10 @@ namespace Paril.Components.Shortcuts
 			if (e.Index == -1)
 				return;
 
-			var shortcut = (IShortcutImplementor) listBox1.Items[e.Index];
+			var shortcut = (IShortcutImplementor)listBox1.Items[e.Index];
 
 			TextRenderer.DrawText(e.Graphics, shortcut.ToString(), DefaultFont, e.Bounds, e.ForeColor,
-			                      TextFormatFlags.VerticalCenter);
+								  TextFormatFlags.VerticalCenter);
 		}
 
 		private void button2_Click(object sender, EventArgs e)

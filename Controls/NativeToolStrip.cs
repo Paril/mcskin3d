@@ -97,8 +97,8 @@ namespace Szotar.WindowsForms
 				return
 					VisualStyleRenderer.IsElementDefined(
 						VisualStyleElement.CreateElement("Menu",
-						                                 (int) MenuParts.BarBackground,
-						                                 (int) MenuBarStates.Active));
+														 (int)MenuParts.BarBackground,
+														 (int)MenuBarStates.Active));
 			}
 		}
 
@@ -109,8 +109,8 @@ namespace Szotar.WindowsForms
 			{
 				IntPtr hDC = dc.GetHdc();
 				if (0 ==
-				    NativeMethods.GetThemeMargins(renderer.Handle, hDC, renderer.Part, renderer.State, (int) marginType, IntPtr.Zero,
-				                                  out margins))
+					NativeMethods.GetThemeMargins(renderer.Handle, hDC, renderer.Part, renderer.State, (int)marginType, IntPtr.Zero,
+												  out margins))
 					return new Padding(margins.cxLeftWidth, margins.cyTopHeight, margins.cxRightWidth, margins.cyBottomHeight);
 				return new Padding(0);
 			}
@@ -127,23 +127,23 @@ namespace Szotar.WindowsForms
 			if (item.IsOnDropDown)
 			{
 				if (item.Enabled)
-					return hot ? (int) MenuPopupItemStates.Hover : (int) MenuPopupItemStates.Normal;
-				return hot ? (int) MenuPopupItemStates.DisabledHover : (int) MenuPopupItemStates.Disabled;
+					return hot ? (int)MenuPopupItemStates.Hover : (int)MenuPopupItemStates.Normal;
+				return hot ? (int)MenuPopupItemStates.DisabledHover : (int)MenuPopupItemStates.Disabled;
 			}
 			else
 			{
 				if (item.Pressed)
-					return item.Enabled ? (int) MenuBarItemStates.Pushed : (int) MenuBarItemStates.DisabledPushed;
+					return item.Enabled ? (int)MenuBarItemStates.Pushed : (int)MenuBarItemStates.DisabledPushed;
 				if (item.Enabled)
-					return hot ? (int) MenuBarItemStates.Hover : (int) MenuBarItemStates.Normal;
-				return hot ? (int) MenuBarItemStates.DisabledHover : (int) MenuBarItemStates.Disabled;
+					return hot ? (int)MenuBarItemStates.Hover : (int)MenuBarItemStates.Normal;
+				return hot ? (int)MenuBarItemStates.DisabledHover : (int)MenuBarItemStates.Disabled;
 			}
 		}
 
 		private VisualStyleElement Subclass(VisualStyleElement element)
 		{
 			return VisualStyleElement.CreateElement(SubclassPrefix + element.ClassName,
-			                                        element.Part, element.State);
+													element.Part, element.State);
 		}
 
 		private bool EnsureRenderer()
@@ -175,7 +175,7 @@ namespace Szotar.WindowsForms
 			foreach (Control control in toolStripPanel.Controls)
 			{
 				if (control is ToolStrip)
-					Initialize((ToolStrip) control);
+					Initialize((ToolStrip)control);
 			}
 
 			base.InitializePanel(toolStripPanel);
@@ -185,7 +185,7 @@ namespace Szotar.WindowsForms
 		{
 			if (EnsureRenderer())
 			{
-				renderer.SetParameters(MenuClass, (int) MenuParts.PopupBorders, 0);
+				renderer.SetParameters(MenuClass, (int)MenuParts.PopupBorders, 0);
 				if (e.ToolStrip.IsDropDown)
 				{
 					Region oldClip = e.Graphics.Clip;
@@ -229,7 +229,7 @@ namespace Szotar.WindowsForms
 		{
 			if (EnsureRenderer())
 			{
-				int partID = e.Item.IsOnDropDown ? (int) MenuParts.PopupItem : (int) MenuParts.BarItem;
+				int partID = e.Item.IsOnDropDown ? (int)MenuParts.PopupItem : (int)MenuParts.BarItem;
 				renderer.SetParameters(MenuClass, partID, GetItemState(e.Item));
 
 				Rectangle bgRect = GetBackgroundRectangle(e.Item);
@@ -267,7 +267,7 @@ namespace Szotar.WindowsForms
 			if (EnsureRenderer())
 			{
 				if (e.ToolStrip.IsDropDown)
-					renderer.SetParameters(MenuClass, (int) MenuParts.PopupBackground, 0);
+					renderer.SetParameters(MenuClass, (int)MenuParts.PopupBackground, 0);
 				else
 				{
 					// It's a MenuStrip or a ToolStrip. If it's contained inside a larger panel, it should have a
@@ -307,12 +307,12 @@ namespace Szotar.WindowsForms
 		{
 			if (EnsureRenderer())
 			{
-				var sb = (ToolStripSplitButton) e.Item;
+				var sb = (ToolStripSplitButton)e.Item;
 				base.OnRenderSplitButtonBackground(e);
 
 				// It doesn't matter what colour of arrow we tell it to draw. OnRenderArrow will compute it from the item anyway.
 				OnRenderArrow(new ToolStripArrowRenderEventArgs(e.Graphics, sb, sb.DropDownButtonBounds, Color.Red,
-				                                                ArrowDirection.Down));
+																ArrowDirection.Down));
 			}
 			else
 				base.OnRenderSplitButtonBackground(e);
@@ -320,7 +320,7 @@ namespace Szotar.WindowsForms
 
 		private Color GetItemTextColor(ToolStripItem item)
 		{
-			int partId = item.IsOnDropDown ? (int) MenuParts.PopupItem : (int) MenuParts.BarItem;
+			int partId = item.IsOnDropDown ? (int)MenuParts.PopupItem : (int)MenuParts.BarItem;
 			renderer.SetParameters(MenuClass, partId, GetItemState(item));
 			return renderer.GetColor(ColorProperty.TextColor);
 		}
@@ -339,7 +339,7 @@ namespace Szotar.WindowsForms
 			{
 				if (e.ToolStrip.IsDropDown)
 				{
-					renderer.SetParameters(MenuClass, (int) MenuParts.PopupGutter, 0);
+					renderer.SetParameters(MenuClass, (int)MenuParts.PopupGutter, 0);
 					// The AffectedBounds is usually too small, way too small to look right. Instead of using that,
 					// use the AffectedBounds but with the right width. Then narrow the rectangle to the correct edge
 					// based on whether or not it's RTL. (It doesn't need to be narrowed to an edge in LTR mode, but let's
@@ -347,7 +347,7 @@ namespace Szotar.WindowsForms
 					// Using the DisplayRectangle gets roughly the right size so that the separator is closer to the text.
 					Padding margins = GetThemeMargins(e.Graphics, MarginTypes.Sizing);
 					int extraWidth = (e.ToolStrip.Width - e.ToolStrip.DisplayRectangle.Width - margins.Left - margins.Right - 1) -
-					                 e.AffectedBounds.Width;
+									 e.AffectedBounds.Width;
 					Rectangle rect = e.AffectedBounds;
 					rect.Y += 2;
 					rect.Height -= 4;
@@ -370,7 +370,7 @@ namespace Szotar.WindowsForms
 		{
 			if (e.ToolStrip.IsDropDown && EnsureRenderer())
 			{
-				renderer.SetParameters(MenuClass, (int) MenuParts.PopupSeparator, 0);
+				renderer.SetParameters(MenuClass, (int)MenuParts.PopupSeparator, 0);
 				var rect = new Rectangle(e.ToolStrip.DisplayRectangle.Left, 0, e.ToolStrip.DisplayRectangle.Width, e.Item.Height);
 				renderer.DrawBackground(e.Graphics, rect, rect);
 			}
@@ -389,13 +389,13 @@ namespace Szotar.WindowsForms
 				if (e.Item.RightToLeft == RightToLeft.Yes)
 				{
 					bgRect = new Rectangle(e.ToolStrip.ClientSize.Width - bgRect.X - bgRect.Width, bgRect.Y, bgRect.Width,
-					                       bgRect.Height);
+										   bgRect.Height);
 				}
 
-				renderer.SetParameters(MenuClass, (int) MenuParts.PopupCheckBackground,
-				                       e.Item.Enabled
-				                       	? (int) MenuPopupCheckBackgroundStates.Normal
-				                       	: (int) MenuPopupCheckBackgroundStates.Disabled);
+				renderer.SetParameters(MenuClass, (int)MenuParts.PopupCheckBackground,
+									   e.Item.Enabled
+										   ? (int)MenuPopupCheckBackgroundStates.Normal
+										   : (int)MenuPopupCheckBackgroundStates.Disabled);
 				renderer.DrawBackground(e.Graphics, bgRect);
 
 				Rectangle checkRect = e.ImageRectangle;
@@ -403,10 +403,10 @@ namespace Szotar.WindowsForms
 				checkRect.Y = bgRect.Y + bgRect.Height / 2 - checkRect.Height / 2;
 
 				// I don't think ToolStrip even supports radio box items, so no need to render them.
-				renderer.SetParameters(MenuClass, (int) MenuParts.PopupCheck,
-				                       e.Item.Enabled
-				                       	? (int) MenuPopupCheckStates.CheckmarkNormal
-				                       	: (int) MenuPopupCheckStates.CheckmarkDisabled);
+				renderer.SetParameters(MenuClass, (int)MenuParts.PopupCheck,
+									   e.Item.Enabled
+										   ? (int)MenuPopupCheckStates.CheckmarkNormal
+										   : (int)MenuPopupCheckStates.CheckmarkDisabled);
 
 				renderer.DrawBackground(e.Graphics, checkRect);
 			}
@@ -563,7 +563,7 @@ namespace Szotar.WindowsForms
 		{
 			[DllImport("uxtheme.dll")]
 			public static extern int GetThemeMargins(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, int iPropId,
-			                                         IntPtr rect, out MARGINS pMargins);
+													 IntPtr rect, out MARGINS pMargins);
 
 			#region Nested type: MARGINS
 

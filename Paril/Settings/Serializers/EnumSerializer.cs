@@ -26,12 +26,12 @@ namespace Paril.Settings.Serializers
 
 		public string Serialize(object obj)
 		{
-			return ((int) obj).ToString();
+			return ((int)obj).ToString();
 		}
 
 		public object Deserialize(string str)
 		{
-			return Enum.Parse(typeof (E), str);
+			return Enum.Parse(typeof(E), str);
 		}
 
 		#endregion

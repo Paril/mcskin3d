@@ -1,9 +1,9 @@
-﻿using MCSkin3D.Languages;
-using MCSkin3D.Swatches;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
+using MCSkin3D.Languages;
+using MCSkin3D.Swatches;
 
 namespace MCSkin3D.Forms
 {

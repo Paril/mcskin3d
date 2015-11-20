@@ -16,7 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.Languages;
 using System;
 using System.Windows.Forms;
 

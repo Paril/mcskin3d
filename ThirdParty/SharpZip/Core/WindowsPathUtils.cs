@@ -69,7 +69,8 @@ namespace ICSharpCode.SharpZipLib.Core
 
 						// Scan for two separate elements \\machine\share\restofpath
 						while ((index <= path.Length) &&
-						       (((path[index] != '\\') && (path[index] != '/')) || (--elements > 0))) index++;
+							   (((path[index] != '\\') && (path[index] != '/')) || (--elements > 0)))
+							index++;
 
 						index++;
 

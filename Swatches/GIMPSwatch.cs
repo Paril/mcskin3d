@@ -28,7 +28,7 @@ namespace MCSkin3D.Swatches
 					if (string.IsNullOrEmpty(line))
 						continue;
 
-					string[] split = line.Split(new[] {' ', '\t', '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+					string[] split = line.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
 					int temp;
 

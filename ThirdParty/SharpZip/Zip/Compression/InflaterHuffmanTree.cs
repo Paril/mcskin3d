@@ -35,8 +35,8 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -131,12 +131,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 			}
 
-/* -jr comment this out! doesnt work for dynamic trees and pkzip 2.04g
-			if (code != 65536) 
-			{
-				throw new SharpZipBaseException("Code lengths don't add up properly.");
-			}
-*/
+			/* -jr comment this out! doesnt work for dynamic trees and pkzip 2.04g
+						if (code != 65536) 
+						{
+							throw new SharpZipBaseException("Code lengths don't add up properly.");
+						}
+			*/
 			/* Now create and fill the extra tables from longest to shortest
 			* bit len.  This way the sub trees will be aligned.
 			*/
@@ -149,7 +149,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				int start = code & 0x1ff80;
 				for (int i = start; i < end; i += 1 << 7)
 				{
-					tree[DeflaterHuffman.BitReverse(i)] = (short) ((-treePtr << 4) | bits);
+					tree[DeflaterHuffman.BitReverse(i)] = (short)((-treePtr << 4) | bits);
 					treePtr += 1 << (bits - 9);
 				}
 			}
@@ -164,7 +164,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				{
 					do
 					{
-						tree[revcode] = (short) ((i << 4) | bits);
+						tree[revcode] = (short)((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < 512);
 				}
@@ -175,7 +175,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					subTree = -(subTree >> 4);
 					do
 					{
-						tree[subTree | (revcode >> 9)] = (short) ((i << 4) | bits);
+						tree[subTree | (revcode >> 9)] = (short)((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < treeLen);
 				}

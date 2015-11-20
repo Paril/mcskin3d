@@ -38,9 +38,9 @@
 
 #if !NETCF_1_0
 
-using ICSharpCode.SharpZipLib.Checksums;
 using System;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Checksums;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {
@@ -63,33 +63,33 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			if (seed.Length == 0) throw new ArgumentException("Length is zero", "seed");
 
 			var newKeys = new uint[]
-			              {
-			              	0x12345678,
-			              	0x23456789,
-			              	0x34567890
-			              };
+						  {
+							  0x12345678,
+							  0x23456789,
+							  0x34567890
+						  };
 
 			for (int i = 0; i < seed.Length; ++i)
 			{
 				newKeys[0] = Crc32.ComputeCrc32(newKeys[0], seed[i]);
-				newKeys[1] = newKeys[1] + (byte) newKeys[0];
+				newKeys[1] = newKeys[1] + (byte)newKeys[0];
 				newKeys[1] = newKeys[1] * 134775813 + 1;
-				newKeys[2] = Crc32.ComputeCrc32(newKeys[2], (byte) (newKeys[1] >> 24));
+				newKeys[2] = Crc32.ComputeCrc32(newKeys[2], (byte)(newKeys[1] >> 24));
 			}
 
 			var result = new byte[12];
-			result[0] = (byte) (newKeys[0] & 0xff);
-			result[1] = (byte) ((newKeys[0] >> 8) & 0xff);
-			result[2] = (byte) ((newKeys[0] >> 16) & 0xff);
-			result[3] = (byte) ((newKeys[0] >> 24) & 0xff);
-			result[4] = (byte) (newKeys[1] & 0xff);
-			result[5] = (byte) ((newKeys[1] >> 8) & 0xff);
-			result[6] = (byte) ((newKeys[1] >> 16) & 0xff);
-			result[7] = (byte) ((newKeys[1] >> 24) & 0xff);
-			result[8] = (byte) (newKeys[2] & 0xff);
-			result[9] = (byte) ((newKeys[2] >> 8) & 0xff);
-			result[10] = (byte) ((newKeys[2] >> 16) & 0xff);
-			result[11] = (byte) ((newKeys[2] >> 24) & 0xff);
+			result[0] = (byte)(newKeys[0] & 0xff);
+			result[1] = (byte)((newKeys[0] >> 8) & 0xff);
+			result[2] = (byte)((newKeys[0] >> 16) & 0xff);
+			result[3] = (byte)((newKeys[0] >> 24) & 0xff);
+			result[4] = (byte)(newKeys[1] & 0xff);
+			result[5] = (byte)((newKeys[1] >> 8) & 0xff);
+			result[6] = (byte)((newKeys[1] >> 16) & 0xff);
+			result[7] = (byte)((newKeys[1] >> 24) & 0xff);
+			result[8] = (byte)(newKeys[2] & 0xff);
+			result[9] = (byte)((newKeys[2] >> 8) & 0xff);
+			result[10] = (byte)((newKeys[2] >> 16) & 0xff);
+			result[11] = (byte)((newKeys[2] >> 24) & 0xff);
 			return result;
 		}
 	}
@@ -109,7 +109,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		protected byte TransformByte()
 		{
 			uint temp = ((keys[2] & 0xFFFF) | 2);
-			return (byte) ((temp * (temp ^ 1)) >> 8);
+			return (byte)((temp * (temp ^ 1)) >> 8);
 		}
 
 		/// <summary>
@@ -123,9 +123,9 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			if (keyData.Length != 12) throw new InvalidOperationException("Key length is not valid");
 
 			keys = new uint[3];
-			keys[0] = (uint) ((keyData[3] << 24) | (keyData[2] << 16) | (keyData[1] << 8) | keyData[0]);
-			keys[1] = (uint) ((keyData[7] << 24) | (keyData[6] << 16) | (keyData[5] << 8) | keyData[4]);
-			keys[2] = (uint) ((keyData[11] << 24) | (keyData[10] << 16) | (keyData[9] << 8) | keyData[8]);
+			keys[0] = (uint)((keyData[3] << 24) | (keyData[2] << 16) | (keyData[1] << 8) | keyData[0]);
+			keys[1] = (uint)((keyData[7] << 24) | (keyData[6] << 16) | (keyData[5] << 8) | keyData[4]);
+			keys[2] = (uint)((keyData[11] << 24) | (keyData[10] << 16) | (keyData[9] << 8) | keyData[8]);
 		}
 
 		/// <summary>
@@ -134,9 +134,9 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		protected void UpdateKeys(byte ch)
 		{
 			keys[0] = Crc32.ComputeCrc32(keys[0], ch);
-			keys[1] = keys[1] + (byte) keys[0];
+			keys[1] = keys[1] + (byte)keys[0];
 			keys[1] = keys[1] * 134775813 + 1;
-			keys[2] = Crc32.ComputeCrc32(keys[2], (byte) (keys[1] >> 24));
+			keys[2] = Crc32.ComputeCrc32(keys[2], (byte)(keys[1] >> 24));
 		}
 
 		/// <summary>
@@ -201,7 +201,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			for (int i = inputOffset; i < inputOffset + inputCount; ++i)
 			{
 				byte oldbyte = inputBuffer[i];
-				outputBuffer[outputOffset++] = (byte) (inputBuffer[i] ^ TransformByte());
+				outputBuffer[outputOffset++] = (byte)(inputBuffer[i] ^ TransformByte());
 				UpdateKeys(oldbyte);
 			}
 			return inputCount;
@@ -295,7 +295,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		{
 			for (int i = inputOffset; i < inputOffset + inputCount; ++i)
 			{
-				var newByte = (byte) (inputBuffer[i] ^ TransformByte());
+				var newByte = (byte)(inputBuffer[i] ^ TransformByte());
 				outputBuffer[outputOffset++] = newByte;
 				UpdateKeys(newByte);
 			}
@@ -397,7 +397,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			{
 				if (key_ == null) GenerateKey();
 
-				return (byte[]) key_.Clone();
+				return (byte[])key_.Clone();
 			}
 
 			set
@@ -406,7 +406,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 				if (value.Length != 12) throw new CryptographicException("Key size is illegal");
 
-				key_ = (byte[]) value.Clone();
+				key_ = (byte[])value.Clone();
 			}
 		}
 

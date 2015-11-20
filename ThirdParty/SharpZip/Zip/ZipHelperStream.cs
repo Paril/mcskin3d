@@ -209,12 +209,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			WriteLEShort(entry.Version);
 			WriteLEShort(entry.Flags);
-			WriteLEShort((byte) method);
-			WriteLEInt((int) entry.DosTime);
+			WriteLEShort((byte)method);
+			WriteLEInt((int)entry.DosTime);
 
 			if (headerInfoAvailable)
 			{
-				WriteLEInt((int) entry.Crc);
+				WriteLEInt((int)entry.Crc);
 				if (entry.LocalHeaderRequiresZip64)
 				{
 					WriteLEInt(-1);
@@ -223,9 +223,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else
 				{
 					WriteLEInt(entry.IsCrypted
-					           	? (int) entry.CompressedSize + ZipConstants.CryptoHeaderSize
-					           	: (int) entry.CompressedSize);
-					WriteLEInt((int) entry.Size);
+								   ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize
+								   : (int)entry.CompressedSize);
+					WriteLEInt((int)entry.Size);
 				}
 			}
 			else
@@ -331,7 +331,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLELong(noOfEntries); // Total No of entries in central directory
 			WriteLELong(sizeEntries); // Size of the central directory
 			WriteLELong(centralDirOffset); // offset of start of central directory
-			// zip64 extensible data sector not catered for here (variable size)
+										   // zip64 extensible data sector not catered for here (variable size)
 
 			// Write the Zip64 end of central directory locator
 			WriteLEInt(ZipConstants.Zip64CentralDirLocatorSignature);
@@ -354,11 +354,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="startOfCentralDirectory">The start of the central directory.</param>
 		/// <param name="comment">The archive comment.  (This can be null).</param>
 		public void WriteEndOfCentralDirectory(long noOfEntries, long sizeEntries,
-		                                       long startOfCentralDirectory, byte[] comment)
+											   long startOfCentralDirectory, byte[] comment)
 		{
 			if ((noOfEntries >= 0xffff) ||
-			    (startOfCentralDirectory >= 0xffffffff) ||
-			    (sizeEntries >= 0xffffffff)) WriteZip64EndOfCentralDirectory(noOfEntries, sizeEntries, startOfCentralDirectory);
+				(startOfCentralDirectory >= 0xffffffff) ||
+				(sizeEntries >= 0xffffffff))
+				WriteZip64EndOfCentralDirectory(noOfEntries, sizeEntries, startOfCentralDirectory);
 
 			WriteLEInt(ZipConstants.EndOfCentralDirectorySignature);
 
@@ -375,18 +376,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else
 			{
-				WriteLEShort((short) noOfEntries); // entries in central dir for this disk
-				WriteLEShort((short) noOfEntries); // total entries in central directory
+				WriteLEShort((short)noOfEntries); // entries in central dir for this disk
+				WriteLEShort((short)noOfEntries); // total entries in central directory
 			}
 
 			// Size of the central directory
 			if (sizeEntries >= 0xffffffff) WriteLEUint(0xffffffff); // Zip64 marker
-			else WriteLEInt((int) sizeEntries);
+			else WriteLEInt((int)sizeEntries);
 
 
 			// offset of start of central directory
 			if (startOfCentralDirectory >= 0xffffffff) WriteLEUint(0xffffffff); // Zip64 marker
-			else WriteLEInt((int) startOfCentralDirectory);
+			else WriteLEInt((int)startOfCentralDirectory);
 
 			int commentLength = (comment != null) ? comment.Length : 0;
 
@@ -443,7 +444,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The value read.</returns>
 		public long ReadLELong()
 		{
-			return (uint) ReadLEInt() | ((long) ReadLEInt() << 32);
+			return (uint)ReadLEInt() | ((long)ReadLEInt() << 32);
 		}
 
 		/// <summary>
@@ -452,8 +453,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="value">The value to write.</param>
 		public void WriteLEShort(int value)
 		{
-			stream_.WriteByte((byte) (value & 0xff));
-			stream_.WriteByte((byte) ((value >> 8) & 0xff));
+			stream_.WriteByte((byte)(value & 0xff));
+			stream_.WriteByte((byte)((value >> 8) & 0xff));
 		}
 
 		/// <summary>
@@ -462,8 +463,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="value">The value to write.</param>
 		public void WriteLEUshort(ushort value)
 		{
-			stream_.WriteByte((byte) (value & 0xff));
-			stream_.WriteByte((byte) (value >> 8));
+			stream_.WriteByte((byte)(value & 0xff));
+			stream_.WriteByte((byte)(value >> 8));
 		}
 
 		/// <summary>
@@ -482,8 +483,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="value">The value to write.</param>
 		public void WriteLEUint(uint value)
 		{
-			WriteLEUshort((ushort) (value & 0xffff));
-			WriteLEUshort((ushort) (value >> 16));
+			WriteLEUshort((ushort)(value & 0xffff));
+			WriteLEUshort((ushort)(value >> 16));
 		}
 
 		/// <summary>
@@ -492,8 +493,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="value">The value to write.</param>
 		public void WriteLELong(long value)
 		{
-			WriteLEInt((int) value);
-			WriteLEInt((int) (value >> 32));
+			WriteLEInt((int)value);
+			WriteLEInt((int)(value >> 32));
 		}
 
 		/// <summary>
@@ -502,8 +503,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="value">The value to write.</param>
 		public void WriteLEUlong(ulong value)
 		{
-			WriteLEUint((uint) (value & 0xffffffff));
-			WriteLEUint((uint) (value >> 32));
+			WriteLEUint((uint)(value & 0xffffffff));
+			WriteLEUint((uint)(value >> 32));
 		}
 
 		#endregion
@@ -520,12 +521,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int result = 0;
 
 			// Add data descriptor if flagged as required
-			if ((entry.Flags & (int) GeneralBitFlags.Descriptor) != 0)
+			if ((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
 			{
 				// The signature is not PKZIP originally but is now described as optional
 				// in the PKZIP Appnote documenting trhe format.
 				WriteLEInt(ZipConstants.DataDescriptorSignature);
-				WriteLEInt(unchecked((int) (entry.Crc)));
+				WriteLEInt(unchecked((int)(entry.Crc)));
 
 				result += 8;
 
@@ -537,8 +538,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					WriteLEInt((int) entry.CompressedSize);
-					WriteLEInt((int) entry.Size);
+					WriteLEInt((int)entry.CompressedSize);
+					WriteLEInt((int)entry.Size);
 					result += 8;
 				}
 			}

@@ -37,9 +37,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+using System;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using System;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -94,35 +94,35 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Copy lengths for literal codes 257..285
 		/// </summary>
 		private static readonly int[] CPLENS = {
-		                                       	3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
-		                                       	35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258
-		                                       };
+												   3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
+												   35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258
+											   };
 
 		/// <summary>
 		/// Extra bits for literal codes 257..285
 		/// </summary>
 		private static readonly int[] CPLEXT = {
-		                                       	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
-		                                       	3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0
-		                                       };
+												   0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
+												   3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0
+											   };
 
 		/// <summary>
 		/// Copy offsets for distance codes 0..29
 		/// </summary>
 		private static readonly int[] CPDIST = {
-		                                       	1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
-		                                       	257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
-		                                       	8193, 12289, 16385, 24577
-		                                       };
+												   1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+												   257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
+												   8193, 12289, 16385, 24577
+											   };
 
 		/// <summary>
 		/// Extra bits for distance codes
 		/// </summary>
 		private static readonly int[] CPDEXT = {
-		                                       	0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
-		                                       	7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
-		                                       	12, 12, 13, 13
-		                                       };
+												   0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+												   7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
+												   12, 12, 13, 13
+											   };
 
 		#endregion
 
@@ -261,7 +261,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </returns>
 		public int Adler
 		{
-			get { return IsNeedingDictionary ? readAdler : (int) adler.Value; }
+			get { return IsNeedingDictionary ? readAdler : (int)adler.Value; }
 		}
 
 		/// <summary>
@@ -503,8 +503,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				neededBits -= 8;
 			}
 
-			if ((int) adler.Value != readAdler)
-				throw new SharpZipBaseException("Adler chksum doesn't match: " + (int) adler.Value + " vs. " + readAdler);
+			if ((int)adler.Value != readAdler)
+				throw new SharpZipBaseException("Adler chksum doesn't match: " + (int)adler.Value + " vs. " + readAdler);
 
 			mode = FINISHED;
 			return false;
@@ -575,34 +575,34 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					return true;
 
 				case DECODE_STORED_LEN1:
-				{
-					if ((uncomprLen = input.PeekBits(16)) < 0) return false;
-					input.DropBits(16);
-					mode = DECODE_STORED_LEN2;
-				}
+					{
+						if ((uncomprLen = input.PeekBits(16)) < 0) return false;
+						input.DropBits(16);
+						mode = DECODE_STORED_LEN2;
+					}
 					goto case DECODE_STORED_LEN2; // fall through
 
 				case DECODE_STORED_LEN2:
-				{
-					int nlen = input.PeekBits(16);
-					if (nlen < 0) return false;
-					input.DropBits(16);
-					if (nlen != (uncomprLen ^ 0xffff)) throw new SharpZipBaseException("broken uncompressed block");
-					mode = DECODE_STORED;
-				}
+					{
+						int nlen = input.PeekBits(16);
+						if (nlen < 0) return false;
+						input.DropBits(16);
+						if (nlen != (uncomprLen ^ 0xffff)) throw new SharpZipBaseException("broken uncompressed block");
+						mode = DECODE_STORED;
+					}
 					goto case DECODE_STORED; // fall through
 
 				case DECODE_STORED:
-				{
-					int more = outputWindow.CopyStored(input, uncomprLen);
-					uncomprLen -= more;
-					if (uncomprLen == 0)
 					{
-						mode = DECODE_BLOCKS;
-						return true;
+						int more = outputWindow.CopyStored(input, uncomprLen);
+						uncomprLen -= more;
+						if (uncomprLen == 0)
+						{
+							mode = DECODE_BLOCKS;
+							return true;
+						}
+						return !input.IsNeedingInput;
 					}
-					return !input.IsNeedingInput;
-				}
 
 				case DECODE_DYN_HEADER:
 					if (!dynHeader.Decode(input)) return false;
@@ -673,7 +673,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 			adler.Update(buffer, index, count);
 
-			if ((int) adler.Value != readAdler) throw new SharpZipBaseException("Wrong adler checksum");
+			if ((int)adler.Value != readAdler) throw new SharpZipBaseException("Wrong adler checksum");
 			adler.Reset();
 			outputWindow.CopyDict(buffer, index, count);
 			mode = DECODE_BLOCKS;

@@ -10,7 +10,7 @@ namespace MCSkin3D.Controls
 			base.OnPaint(e);
 
 			e.Graphics.FillRectangle(new SolidBrush(BackColor),
-			                         new Rectangle(ContentRectangle.X + 6, ContentRectangle.Y + 1, 17, 17));
+									 new Rectangle(ContentRectangle.X + 6, ContentRectangle.Y + 1, 17, 17));
 			e.Graphics.DrawRectangle(Pens.Black, new Rectangle(ContentRectangle.X + 6, ContentRectangle.Y + 1, 17, 17));
 		}
 	}

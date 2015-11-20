@@ -1,8 +1,8 @@
-﻿using MCSkin3D.Forms;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using MCSkin3D.Forms;
 
 namespace MCSkin3D
 {
@@ -33,7 +33,7 @@ namespace MCSkin3D
 			Form = new Editor();
 			Form.FormClosing += (sender, e) => GlobalSettings.Save();
 			Form.FormClosed += (sender, e) => ExitThread();
-			
+
 			SplashForm.Show();
 		}
 

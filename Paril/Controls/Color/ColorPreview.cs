@@ -47,18 +47,18 @@ namespace Paril.Controls.Color
 			e.Graphics.FillRectangle(brush, ClientRectangle);
 
 			e.Graphics.FillPolygon(new SolidBrush(System.Drawing.Color.FromArgb(255, ForeColor)), new[]
-			                                                                                      {
-			                                                                                      	new Point(Width, 0),
-			                                                                                      	new Point(Width, Height),
-			                                                                                      	new Point(0, Height)
-			                                                                                      });
+																								  {
+																									  new Point(Width, 0),
+																									  new Point(Width, Height),
+																									  new Point(0, Height)
+																								  });
 
 			e.Graphics.FillPolygon(new SolidBrush(ForeColor), new[]
-			                                                  {
-			                                                  	new Point(0, 0),
-			                                                  	new Point(Width, 0),
-			                                                  	new Point(0, Height)
-			                                                  });
+															  {
+																  new Point(0, 0),
+																  new Point(Width, 0),
+																  new Point(0, Height)
+															  });
 
 			ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Etched);
 

@@ -49,8 +49,8 @@ namespace MCSkin3D
 		private void SetExposure(float f)
 		{
 			_skipSet = true;
-			numericUpDown1.Value = (decimal) (f * 100.0f);
-			trackBar1.Value = (int) (f * 100.0f);
+			numericUpDown1.Value = (decimal)(f * 100.0f);
+			trackBar1.Value = (int)(f * 100.0f);
 			_skipSet = false;
 
 			GlobalSettings.NoiseSaturation = f;
@@ -61,7 +61,7 @@ namespace MCSkin3D
 			if (_skipSet)
 				return;
 
-			SetExposure((float) numericUpDown1.Value / 100.0f);
+			SetExposure((float)numericUpDown1.Value / 100.0f);
 		}
 
 		private void trackBar1_Scroll(object sender, EventArgs e)

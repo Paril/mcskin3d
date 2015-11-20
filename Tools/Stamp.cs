@@ -16,10 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Paril.Compatibility;
-using Paril.OpenGL;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -52,7 +52,7 @@ namespace MCSkin3D
 		public virtual void BeginClick(Skin skin, Point p, MouseEventArgs e)
 		{
 			_undo = new PixelsChangedUndoable(Editor.GetLanguageString("U_PIXELSCHANGED"),
-			                                  Editor.MainForm.SelectedTool.MenuItem.Text);
+											  Editor.MainForm.SelectedTool.MenuItem.Text);
 		}
 
 		public virtual void MouseMove(Skin skin, MouseEventArgs e)
@@ -81,7 +81,7 @@ namespace MCSkin3D
 					int yy = startY + ry;
 
 					if (xx < 0 || xx >= skin.Width ||
-					    yy < 0 || yy >= skin.Height)
+						yy < 0 || yy >= skin.Height)
 						continue;
 
 					if (brush[rx, ry] == 0.0f)
@@ -94,8 +94,8 @@ namespace MCSkin3D
 					{
 						Color oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 						Color color = Color.FromArgb(_stampedBrush[rx, ry].Alpha, _stampedBrush[rx, ry].Red, _stampedBrush[rx, ry].Green,
-						                             _stampedBrush[rx, ry].Blue);
-						color = Color.FromArgb((byte) (brush[rx, ry] * 255 * (color.A / 255.0f)), color);
+													 _stampedBrush[rx, ry].Blue);
+						color = Color.FromArgb((byte)(brush[rx, ry] * 255 * (color.A / 255.0f)), color);
 
 						newColor = BlendColor(color, oldColor);
 					}
@@ -132,7 +132,7 @@ namespace MCSkin3D
 
 		public Color BlendColor(Color l, Color r)
 		{
-			return (Color) ColorBlending.AlphaBlend(l, r);
+			return (Color)ColorBlending.AlphaBlend(l, r);
 		}
 
 		public bool MouseMoveOnSkin(ColorGrabber pixels, Skin skin, int x, int y, bool incremental)
@@ -159,7 +159,7 @@ namespace MCSkin3D
 					int yy = startY + ry;
 
 					if (xx < 0 || xx >= skin.Width ||
-					    yy < 0 || yy >= skin.Height)
+						yy < 0 || yy >= skin.Height)
 						continue;
 
 					if (brush[rx, ry] == 0.0f)
@@ -170,7 +170,7 @@ namespace MCSkin3D
 					if (HoldingShift)
 					{
 						if (_stampedBrush == null)
-							_stampedBrush = new ColorPixel[brush.Width,brush.Height];
+							_stampedBrush = new ColorPixel[brush.Width, brush.Height];
 
 						_brushThatWasStamped = brush;
 						_stampedBrush[rx, ry] = c;
@@ -179,22 +179,22 @@ namespace MCSkin3D
 
 					Color oldColor = Color.FromArgb(c.Alpha, c.Red, c.Green, c.Blue);
 					Color color = Color.FromArgb(_stampedBrush[rx, ry].Alpha, _stampedBrush[rx, ry].Red, _stampedBrush[rx, ry].Green,
-					                             _stampedBrush[rx, ry].Blue);
+												 _stampedBrush[rx, ry].Blue);
 
 					byte maxAlpha = color.A;
 					var alphaToAdd =
 						(float)
-						(byte) (brush[rx, ry] * 255 * ((Editor.MainForm.ColorPanel.SelectedColor.RGB.A / 255.0f) * (color.A / 255.0f)));
+						(byte)(brush[rx, ry] * 255 * ((Editor.MainForm.ColorPanel.SelectedColor.RGB.A / 255.0f) * (color.A / 255.0f)));
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
-					    _undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
+						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha >= maxAlpha)
 						continue;
 
 					if (!incremental && _undo.Points.ContainsKey(new Point(xx, yy)) &&
-					    _undo.Points[new Point(xx, yy)].Item2.TotalAlpha + alphaToAdd >= maxAlpha)
+						_undo.Points[new Point(xx, yy)].Item2.TotalAlpha + alphaToAdd >= maxAlpha)
 						alphaToAdd = maxAlpha - _undo.Points[new Point(xx, yy)].Item2.TotalAlpha;
 
-					color = Color.FromArgb((byte) (alphaToAdd), color);
+					color = Color.FromArgb((byte)(alphaToAdd), color);
 
 					Color newColor = BlendColor(color, oldColor);
 
@@ -204,12 +204,10 @@ namespace MCSkin3D
 					if (_undo.Points.ContainsKey(new Point(xx, yy)))
 					{
 						Tuple<Color, ColorAlpha> tupl = _undo.Points[new Point(xx, yy)];
-
-						tupl.Item2 = new ColorAlpha(newColor, tupl.Item2.TotalAlpha + alphaToAdd);
-						_undo.Points[new Point(xx, yy)] = tupl;
+						_undo.Points[new Point(xx, yy)] = Tuple.Create(tupl.Item1, new ColorAlpha(newColor, tupl.Item2.TotalAlpha + alphaToAdd));
 					}
 					else
-						_undo.Points.Add(new Point(xx, yy), Tuple.MakeTuple(oldColor, new ColorAlpha(newColor, alphaToAdd)));
+						_undo.Points.Add(new Point(xx, yy), Tuple.Create(oldColor, new ColorAlpha(newColor, alphaToAdd)));
 
 					pixels[xx, yy] = new ColorPixel(newColor.R | (newColor.G << 8) | (newColor.B << 16) | (newColor.A << 24));
 				}

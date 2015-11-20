@@ -24,11 +24,11 @@ namespace MiscUtil.IO
 		/// <param name="encoding">The encoding to report.</param>
 		public StringWriterWithEncoding(Encoding encoding)
 		{
-            if (encoding == null)
-            {
-                throw new ArgumentNullException("encoding");
-            }
-            this.encoding = encoding;
+			if (encoding == null)
+			{
+				throw new ArgumentNullException("encoding");
+			}
+			this.encoding = encoding;
 		}
 
 		/// <summary>
@@ -37,14 +37,14 @@ namespace MiscUtil.IO
 		/// </summary>
 		/// <param name="formatProvider">An IFormatProvider object that controls formatting.</param>
 		/// <param name="encoding">The encoding to report.</param>
-		public StringWriterWithEncoding (IFormatProvider formatProvider, Encoding encoding) 
-			: base (formatProvider)
+		public StringWriterWithEncoding(IFormatProvider formatProvider, Encoding encoding)
+			: base(formatProvider)
 		{
-            if (encoding == null)
-            {
-                throw new ArgumentNullException("encoding");
-            }
-            this.encoding = encoding;
+			if (encoding == null)
+			{
+				throw new ArgumentNullException("encoding");
+			}
+			this.encoding = encoding;
 		}
 
 		/// <summary>
@@ -53,14 +53,14 @@ namespace MiscUtil.IO
 		/// </summary>
 		/// <param name="sb">The StringBuilder to write to. </param>
 		/// <param name="encoding">The encoding to report.</param>
-		public StringWriterWithEncoding (StringBuilder sb, Encoding encoding) 
-			: base (sb)
+		public StringWriterWithEncoding(StringBuilder sb, Encoding encoding)
+			: base(sb)
 		{
-            if (encoding == null)
-            {
-                throw new ArgumentNullException("encoding");
-            }
-            this.encoding = encoding;
+			if (encoding == null)
+			{
+				throw new ArgumentNullException("encoding");
+			}
+			this.encoding = encoding;
 		}
 
 		/// <summary>
@@ -70,13 +70,13 @@ namespace MiscUtil.IO
 		/// <param name="sb">The StringBuilder to write to. </param>
 		/// <param name="formatProvider">An IFormatProvider object that controls formatting.</param>
 		/// <param name="encoding">The encoding to report.</param>
-		public StringWriterWithEncoding (StringBuilder sb, IFormatProvider formatProvider, Encoding encoding)
-			: base (sb, formatProvider)
+		public StringWriterWithEncoding(StringBuilder sb, IFormatProvider formatProvider, Encoding encoding)
+			: base(sb, formatProvider)
 		{
-            if (encoding == null)
-            {
-                throw new ArgumentNullException("encoding");
-            }
+			if (encoding == null)
+			{
+				throw new ArgumentNullException("encoding");
+			}
 			this.encoding = encoding;
 		}
 

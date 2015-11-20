@@ -30,19 +30,19 @@ namespace Devcorp.Controls.Design
 		public static bool operator ==(CIEXYZ item1, CIEXYZ item2)
 		{
 			return (
-			       	item1.X == item2.X
-			       	&& item1.Y == item2.Y
-			       	&& item1.Z == item2.Z
-			       );
+					   item1.X == item2.X
+					   && item1.Y == item2.Y
+					   && item1.Z == item2.Z
+				   );
 		}
 
 		public static bool operator !=(CIEXYZ item1, CIEXYZ item2)
 		{
 			return (
-			       	item1.X != item2.X
-			       	|| item1.Y != item2.Y
-			       	|| item1.Z != item2.Z
-			       );
+					   item1.X != item2.X
+					   || item1.Y != item2.Y
+					   || item1.Z != item2.Z
+				   );
 		}
 
 		#endregion
@@ -91,7 +91,7 @@ namespace Devcorp.Controls.Design
 		{
 			if (obj == null || GetType() != obj.GetType()) return false;
 
-			return (this == (CIEXYZ) obj);
+			return (this == (CIEXYZ)obj);
 		}
 
 		public override int GetHashCode()

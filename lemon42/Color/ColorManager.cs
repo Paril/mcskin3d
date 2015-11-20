@@ -140,7 +140,7 @@ namespace MCSkin3D.lemon42
 			v = Math.Round(v * 100);
 			s = Math.Round(s * 100);
 			h = Math.Round(h);
-			return new HSVColor((short) h, (byte) s, (byte) v, a);
+			return new HSVColor((short)h, (byte)s, (byte)v, a);
 		}
 
 		public static Color HSVtoRGB(HSVColor c)
@@ -159,7 +159,7 @@ namespace MCSkin3D.lemon42
 			double sat = s / 100.0f;
 			double val = v / 100.0f;
 			//variables and calculation
-			var tempT = (int) Math.Floor((hue / 60) % 6);
+			var tempT = (int)Math.Floor((hue / 60) % 6);
 			double f = hue / 60.0f - tempT;
 			double l = val * (1 - sat);
 			double m = val * (1 - f * sat);
@@ -203,7 +203,7 @@ namespace MCSkin3D.lemon42
 			g = Math.Round(g * 255);
 			b = Math.Round(b * 255);
 
-			return Color.FromArgb(a, (byte) r, (byte) g, (byte) b);
+			return Color.FromArgb(a, (byte)r, (byte)g, (byte)b);
 		}
 
 		public event ColorChangedEventHandler ColorChanged;
@@ -215,7 +215,7 @@ namespace MCSkin3D.lemon42
 
 		public static ColorManager FromHSVA(int h, byte s, byte v, byte a)
 		{
-			return new ColorManager(new HSVColor((short) h, s, v, a));
+			return new ColorManager(new HSVColor((short)h, s, v, a));
 		}
 
 		#region Nested type: HSVColor

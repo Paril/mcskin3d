@@ -30,7 +30,7 @@ namespace PopupControl
 	/// <summary>
 	/// Represents a Windows combo box control which can be used in a popup's content control.
 	/// </summary>
-	[ToolboxBitmap(typeof (System.Windows.Forms.ComboBox)), ToolboxItem(true), ToolboxItemFilter("System.Windows.Forms"),
+	[ToolboxBitmap(typeof(System.Windows.Forms.ComboBox)), ToolboxItem(true), ToolboxItemFilter("System.Windows.Forms"),
 	 Description("Displays an editable text box with a drop-down list of permitted values.")]
 	public partial class ComboBox : System.Windows.Forms.ComboBox
 	{
@@ -56,7 +56,7 @@ namespace PopupControl
 					_modalMenuFilter = Type.GetType("System.Windows.Forms.ToolStripManager+ModalMenuFilter");
 				if (_modalMenuFilter == null)
 				{
-					_modalMenuFilter = new List<Type>(typeof (ToolStripManager).Assembly.GetTypes())
+					_modalMenuFilter = new List<Type>(typeof(ToolStripManager).Assembly.GetTypes())
 						.Find(type => type.FullName == "System.Windows.Forms.ToolStripManager+ModalMenuFilter");
 				}
 				return _modalMenuFilter;
@@ -73,7 +73,7 @@ namespace PopupControl
 					if (t != null)
 					{
 						_suspendMenuMode = t.GetMethod("SuspendMenuMode",
-						                               BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+													   BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 					}
 				}
 				return _suspendMenuMode;

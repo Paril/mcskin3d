@@ -1,0 +1,52 @@
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Board">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-12,-14,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>24,12,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Helmet</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Stick">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-1,-2,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,14,2</Size>
+						<TextureOffset>0,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Sign</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Sign</Name>
+</Techne>

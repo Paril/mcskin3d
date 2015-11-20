@@ -25,19 +25,19 @@ namespace Devcorp.Controls.Design
 		public static bool operator ==(CIELab item1, CIELab item2)
 		{
 			return (
-			       	item1.L == item2.L
-			       	&& item1.A == item2.A
-			       	&& item1.B == item2.B
-			       );
+					   item1.L == item2.L
+					   && item1.A == item2.A
+					   && item1.B == item2.B
+				   );
 		}
 
 		public static bool operator !=(CIELab item1, CIELab item2)
 		{
 			return (
-			       	item1.L != item2.L
-			       	|| item1.A != item2.A
-			       	|| item1.B != item2.B
-			       );
+					   item1.L != item2.L
+					   || item1.A != item2.A
+					   || item1.B != item2.B
+				   );
 		}
 
 		#endregion
@@ -86,7 +86,7 @@ namespace Devcorp.Controls.Design
 		{
 			if (obj == null || GetType() != obj.GetType()) return false;
 
-			return (this == (CIELab) obj);
+			return (this == (CIELab)obj);
 		}
 
 		public override int GetHashCode()

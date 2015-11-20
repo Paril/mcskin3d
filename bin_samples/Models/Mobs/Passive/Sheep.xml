@@ -1,0 +1,120 @@
+﻿<Techne Version="2.2">
+	<Author />
+	<DateCreated />
+	<Description />
+	<Models>
+		<Model texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Leg">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,12,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Leg">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,12,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,12,-5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,12,-5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Head">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-3,-4,-6</Offset>
+						<Position>0,6,-8</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,6,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+					</Shape>
+					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body">
+						<Animation>
+							<AnimationAngles>0,0,0</AnimationAngles>
+							<AnimationDuration>0,0,0</AnimationDuration>
+							<AnimationType>0,0,0</AnimationType>
+						</Animation>
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-4,-10,-7</Offset>
+						<Position>0,5,2</Position>
+						<Rotation>89.99998,0,0</Rotation>
+						<Size>8,16,6</Size>
+						<TextureOffset>28,8</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Sheep</Name>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Sheep</Name>
+</Techne>

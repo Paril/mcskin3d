@@ -33,10 +33,10 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.Collections;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -337,7 +337,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileFilter">The <see cref="PathFilter">file filter</see> to apply.</param>
 		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
 		public void CreateZip(string zipFileName, string sourceDirectory,
-		                      bool recurse, string fileFilter, string directoryFilter)
+							  bool recurse, string fileFilter, string directoryFilter)
 		{
 			CreateZip(File.Create(zipFileName), sourceDirectory, recurse, fileFilter, directoryFilter);
 		}
@@ -364,7 +364,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
 		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
 		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter,
-		                      string directoryFilter)
+							  string directoryFilter)
 		{
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
@@ -417,12 +417,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
 		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory,
-		                       Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
-		                       string fileFilter, string directoryFilter, bool restoreDateTime)
+							   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
+							   string fileFilter, string directoryFilter, bool restoreDateTime)
 		{
 			Stream inputStream = File.Open(zipFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
 			ExtractZip(inputStream, targetDirectory, overwrite, confirmDelegate, fileFilter, directoryFilter, restoreDateTime,
-			           true);
+					   true);
 		}
 
 		/// <summary>
@@ -437,9 +437,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
 		/// <param name="isStreamOwner">Flag indicating whether the inputStream will be closed by this method.</param>
 		public void ExtractZip(Stream inputStream, string targetDirectory,
-		                       Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
-		                       string fileFilter, string directoryFilter, bool restoreDateTime,
-		                       bool isStreamOwner)
+							   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
+							   string fileFilter, string directoryFilter, bool restoreDateTime,
+							   bool isStreamOwner)
 		{
 			if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null)) throw new ArgumentNullException("confirmDelegate");
 
@@ -461,7 +461,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				IEnumerator enumerator = zipFile_.GetEnumerator();
 				while (continueRunning_ && enumerator.MoveNext())
 				{
-					var entry = (ZipEntry) enumerator.Current;
+					var entry = (ZipEntry)enumerator.Current;
 					if (entry.IsFile)
 					{
 						// TODO Path.GetDirectory can fail here on invalid characters.
@@ -540,7 +540,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ((events_ != null) && (events_.Progress != null))
 			{
 				StreamUtils.Copy(stream, outputStream_, buffer_,
-				                 events_.Progress, events_.ProgressInterval, this, name);
+								 events_.Progress, events_.ProgressInterval, this, name);
 			}
 			else StreamUtils.Copy(stream, outputStream_, buffer_);
 
@@ -573,7 +573,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							if ((events_ != null) && (events_.Progress != null))
 							{
 								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_,
-								                 events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
+												 events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
 							}
 							else
 								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
@@ -586,10 +586,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 						if (RestoreAttributesOnExtract && entry.IsDOSEntry && (entry.ExternalFileAttributes != -1))
 						{
-							var fileAttributes = (FileAttributes) entry.ExternalFileAttributes;
+							var fileAttributes = (FileAttributes)entry.ExternalFileAttributes;
 							// TODO: FastZip - Setting of other file attributes on extraction is a little trickier.
 							fileAttributes &= (FileAttributes.Archive | FileAttributes.Normal | FileAttributes.ReadOnly |
-							                   FileAttributes.Hidden);
+											   FileAttributes.Hidden);
 							File.SetAttributes(targetName, fileAttributes);
 						}
 #endif
@@ -660,7 +660,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private static int MakeExternalAttributes(FileInfo info)
 		{
-			return (int) info.Attributes;
+			return (int)info.Attributes;
 		}
 
 #if NET_1_0 || NET_1_1 || NETCF_1_0
@@ -674,8 +674,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private static bool NameIsValid(string name)
 		{
 			return (name != null) &&
-			       (name.Length > 0) &&
-			       (name.IndexOfAny(Path.GetInvalidPathChars()) < 0);
+				   (name.Length > 0) &&
+				   (name.IndexOfAny(Path.GetInvalidPathChars()) < 0);
 		}
 #endif
 

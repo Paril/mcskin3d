@@ -61,16 +61,16 @@ namespace Paril.Settings
 			{
 				if (field is PropertyInfo)
 				{
-					var info = (PropertyInfo) field;
+					var info = (PropertyInfo)field;
 
-					if (info.GetCustomAttributes(typeof (TypeSerializerAttribute), false).Length != 0)
+					if (info.GetCustomAttributes(typeof(TypeSerializerAttribute), false).Length != 0)
 					{
-						var converter = (TypeSerializerAttribute) info.GetCustomAttributes(typeof (TypeSerializerAttribute), false)[0];
+						var converter = (TypeSerializerAttribute)info.GetCustomAttributes(typeof(TypeSerializerAttribute), false)[0];
 						Type type = Type.GetType(converter.TypeName);
 
 						if (type != null)
 						{
-							var conv = (ITypeSerializer) (type.GetConstructors()[0].Invoke(null));
+							var conv = (ITypeSerializer)(type.GetConstructors()[0].Invoke(null));
 							return conv.Serialize(obj);
 						}
 					}
@@ -88,7 +88,7 @@ namespace Paril.Settings
 				else
 				{
 					throw new Exception(
-						"Failed to serialize member " + ((MemberInfo) field).Name + " [" + ((MemberInfo) field).MemberType.ToString() +
+						"Failed to serialize member " + ((MemberInfo)field).Name + " [" + ((MemberInfo)field).MemberType.ToString() +
 						"]", ex);
 				}
 			}
@@ -98,16 +98,16 @@ namespace Paril.Settings
 		{
 			if (field is PropertyInfo)
 			{
-				var info = (PropertyInfo) field;
+				var info = (PropertyInfo)field;
 
-				if (info.GetCustomAttributes(typeof (TypeSerializerAttribute), false).Length != 0)
+				if (info.GetCustomAttributes(typeof(TypeSerializerAttribute), false).Length != 0)
 				{
-					var converter = (TypeSerializerAttribute) info.GetCustomAttributes(typeof (TypeSerializerAttribute), false)[0];
+					var converter = (TypeSerializerAttribute)info.GetCustomAttributes(typeof(TypeSerializerAttribute), false)[0];
 					Type type = Type.GetType(converter.TypeName);
 
 					if (type != null)
 					{
-						var conv = (ITypeSerializer) (type.GetConstructors()[0].Invoke(null));
+						var conv = (ITypeSerializer)(type.GetConstructors()[0].Invoke(null));
 						return conv.Deserialize(str);
 					}
 				}
@@ -123,7 +123,7 @@ namespace Paril.Settings
 
 		public string Serialize(object obj)
 		{
-			var arr = (string[]) obj;
+			var arr = (string[])obj;
 			string combined = "";
 
 			foreach (string c in arr)
@@ -139,7 +139,7 @@ namespace Paril.Settings
 
 		public object Deserialize(string str)
 		{
-			return str.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+			return str.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 		}
 
 		#endregion
@@ -159,13 +159,13 @@ namespace Paril.Settings
 				if (!(v is Type))
 					continue;
 
-				var type = (Type) v;
+				var type = (Type)v;
 
 				writer.WriteLine("[" + type.Name + "]");
 
 				foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
 				{
-					if (prop.GetCustomAttributes(typeof (SavableAttribute), false).Length != 0)
+					if (prop.GetCustomAttributes(typeof(SavableAttribute), false).Length != 0)
 					{
 						string str = _serializer.Serialize(prop, prop.GetValue(null, null));
 						writer.WriteLine(prop.Name + "=" + str);
@@ -184,20 +184,20 @@ namespace Paril.Settings
 			{
 				if (str is Type)
 				{
-					var type = (Type) str;
+					var type = (Type)str;
 
 					foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
 					{
-						object[] attribs = prop.GetCustomAttributes(typeof (DefaultValueAttribute), false);
+						object[] attribs = prop.GetCustomAttributes(typeof(DefaultValueAttribute), false);
 						if (attribs.Length != 0)
 						{
-							var dva = (DefaultValueAttribute) attribs[0];
+							var dva = (DefaultValueAttribute)attribs[0];
 
-							object[] converters = prop.GetCustomAttributes(typeof (TypeSerializerAttribute), false);
+							object[] converters = prop.GetCustomAttributes(typeof(TypeSerializerAttribute), false);
 
 							if (converters.Length != 0)
 							{
-								var serialize = (TypeSerializerAttribute) converters[0];
+								var serialize = (TypeSerializerAttribute)converters[0];
 
 								if (serialize.DeserializeDefault)
 									prop.SetValue(null, _serializer.Deserialize(prop, dva.Value.ToString(), prop.PropertyType), null);
@@ -234,14 +234,14 @@ namespace Paril.Settings
 
 				if (line.StartsWith("[") && line.EndsWith("]"))
 				{
-					string header = line.Split(new[] {'[', ']'}, StringSplitOptions.RemoveEmptyEntries)[0];
+					string header = line.Split(new[] { '[', ']' }, StringSplitOptions.RemoveEmptyEntries)[0];
 
 					foreach (object v in Structures)
 					{
 						if (!(v is Type))
 							continue;
 
-						if (header == ((Type) v).Name)
+						if (header == ((Type)v).Name)
 						{
 							currentObject = v;
 							break;
@@ -257,12 +257,12 @@ namespace Paril.Settings
 
 					if (currentObject is Type)
 					{
-						var type = (Type) currentObject;
+						var type = (Type)currentObject;
 
 						foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public))
 						{
-							if (prop.GetCustomAttributes(typeof (SavableAttribute), false).Length != 0 &&
-							    prop.Name == pair[0])
+							if (prop.GetCustomAttributes(typeof(SavableAttribute), false).Length != 0 &&
+								prop.Name == pair[0])
 							{
 								object val = _serializer.Deserialize(prop, pair[1], prop.PropertyType);
 								prop.SetValue(null, val, null);

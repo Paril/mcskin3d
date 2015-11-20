@@ -16,9 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using OpenTK.Graphics;
 using System;
 using System.Drawing;
+using OpenTK.Graphics;
 
 namespace Paril.Drawing
 {
@@ -115,22 +115,22 @@ namespace Paril.Drawing
 
 		public byte RByte
 		{
-			get { return (byte) (_r * 255.0f); }
+			get { return (byte)(_r * 255.0f); }
 		}
 
 		public byte GByte
 		{
-			get { return (byte) (_g * 255.0f); }
+			get { return (byte)(_g * 255.0f); }
 		}
 
 		public byte BByte
 		{
-			get { return (byte) (_b * 255.0f); }
+			get { return (byte)(_b * 255.0f); }
 		}
 
 		public byte AByte
 		{
-			get { return (byte) (_a * 255.0f); }
+			get { return (byte)(_a * 255.0f); }
 		}
 
 		public float Hue
@@ -165,7 +165,7 @@ namespace Paril.Drawing
 
 		public static implicit operator Color(NColor c)
 		{
-			return Color.FromArgb((byte) (c.A * 255.0f), (byte) (c.R * 255.0f), (byte) (c.G * 255.0f), (byte) (c.B * 255.0f));
+			return Color.FromArgb((byte)(c.A * 255.0f), (byte)(c.R * 255.0f), (byte)(c.G * 255.0f), (byte)(c.B * 255.0f));
 		}
 
 		public static implicit operator NColor(Color c)

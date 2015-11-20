@@ -16,10 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using System.Collections.Generic;
 
 namespace Paril.OpenGL
 {
@@ -109,8 +109,8 @@ namespace Paril.OpenGL
 		{
 			List<Color4> colors = new List<Color4>();
 
-			Color4 color = new Color4(1, 1, 1, mesh.DrawTransparent ? 0.25f : 1.0f); 
-	
+			Color4 color = new Color4(1, 1, 1, mesh.DrawTransparent ? 0.25f : 1.0f);
+
 			foreach (var x in mesh.Faces)
 				colors.AddRange(new Color4[] { color, color, color, color });
 

@@ -40,12 +40,12 @@
 // HISTORY
 //	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
 
+using System;
+using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Encryption;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using System;
-using System.IO;
 
 #if !NETCF_1_0
 
@@ -227,10 +227,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int header = inputBuffer.ReadLeInt();
 
 			if (header == ZipConstants.CentralHeaderSignature ||
-			    header == ZipConstants.EndOfCentralDirectorySignature ||
-			    header == ZipConstants.CentralHeaderDigitalSignature ||
-			    header == ZipConstants.ArchiveExtraDataSignature ||
-			    header == ZipConstants.Zip64CentralFileHeaderSignature)
+				header == ZipConstants.EndOfCentralDirectorySignature ||
+				header == ZipConstants.CentralHeaderDigitalSignature ||
+				header == ZipConstants.ArchiveExtraDataSignature ||
+				header == ZipConstants.Zip64CentralFileHeaderSignature)
 			{
 				// No more individual entries exist
 				Close();
@@ -245,11 +245,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (header != ZipConstants.LocalHeaderSignature)
 				throw new ZipException("Wrong Local header signature: 0x" + String.Format("{0:X}", header));
 
-			var versionRequiredToExtract = (short) inputBuffer.ReadLeShort();
+			var versionRequiredToExtract = (short)inputBuffer.ReadLeShort();
 
 			flags = inputBuffer.ReadLeShort();
 			method = inputBuffer.ReadLeShort();
-			var dostime = (uint) inputBuffer.ReadLeInt();
+			var dostime = (uint)inputBuffer.ReadLeInt();
 			int crc2 = inputBuffer.ReadLeInt();
 			csize = inputBuffer.ReadLeInt();
 			size = inputBuffer.ReadLeInt();
@@ -266,7 +266,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			entry = new ZipEntry(name, versionRequiredToExtract);
 			entry.Flags = flags;
 
-			entry.CompressionMethod = (CompressionMethod) method;
+			entry.CompressionMethod = (CompressionMethod)method;
 
 			if ((flags & 8) == 0)
 			{
@@ -274,7 +274,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				entry.Size = size & 0xFFFFFFFFL;
 				entry.CompressedSize = csize & 0xFFFFFFFFL;
 
-				entry.CryptoCheckValue = (byte) ((crc2 >> 24) & 0xff);
+				entry.CryptoCheckValue = (byte)((crc2 >> 24) & 0xff);
 			}
 			else
 			{
@@ -286,7 +286,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if (csize != 0) entry.CompressedSize = csize & 0xFFFFFFFFL;
 
-				entry.CryptoCheckValue = (byte) ((dostime >> 8) & 0xff);
+				entry.CryptoCheckValue = (byte)((dostime >> 8) & 0xff);
 			}
 
 			entry.DosTime = dostime;
@@ -307,8 +307,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (entry.Size >= 0) size = entry.Size;
 
-			if (method == (int) CompressionMethod.Stored &&
-			    (!isCrypted && csize != size || (isCrypted && csize - ZipConstants.CryptoHeaderSize != size)))
+			if (method == (int)CompressionMethod.Stored &&
+				(!isCrypted && csize != size || (isCrypted && csize - ZipConstants.CryptoHeaderSize != size)))
 				throw new ZipException("Stored, but compressed != uncompressed");
 
 			// Determine how to handle reading of data if this is attempted.
@@ -355,11 +355,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			size = 0;
 
 			if (testCrc &&
-			    ((crc.Value & 0xFFFFFFFFL) != entry.Crc) && (entry.Crc != -1)) throw new ZipException("CRC mismatch");
+				((crc.Value & 0xFFFFFFFFL) != entry.Crc) && (entry.Crc != -1))
+				throw new ZipException("CRC mismatch");
 
 			crc.Reset();
 
-			if (method == (int) CompressionMethod.Deflated) inf.Reset();
+			if (method == (int)CompressionMethod.Deflated) inf.Reset();
 			entry = null;
 		}
 
@@ -378,7 +379,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (entry == null) return;
 
-			if (method == (int) CompressionMethod.Deflated)
+			if (method == (int)CompressionMethod.Deflated)
 			{
 				if ((flags & 8) != 0)
 				{
@@ -396,7 +397,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.Available += inf.RemainingInput;
 			}
 
-			if ((inputBuffer.Available > csize) && (csize >= 0)) inputBuffer.Available = (int) (inputBuffer.Available - csize);
+			if ((inputBuffer.Available > csize) && (csize >= 0)) inputBuffer.Available = (int)(inputBuffer.Available - csize);
 			else
 			{
 				csize -= inputBuffer.Available;
@@ -481,7 +482,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("Invalid password");
 
 				if (csize >= ZipConstants.CryptoHeaderSize) csize -= ZipConstants.CryptoHeaderSize;
-				else if ((entry.Flags & (int) GeneralBitFlags.Descriptor) == 0)
+				else if ((entry.Flags & (int)GeneralBitFlags.Descriptor) == 0)
 					throw new ZipException(string.Format("Entry compressed size {0} too small for encryption", csize));
 #endif
 			}
@@ -492,9 +493,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 #endif
 			}
 
-			if ((csize > 0) || ((flags & (int) GeneralBitFlags.Descriptor) != 0))
+			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0))
 			{
-				if ((method == (int) CompressionMethod.Deflated) && (inputBuffer.Available > 0)) inputBuffer.SetInflaterInput(inf);
+				if ((method == (int)CompressionMethod.Deflated) && (inputBuffer.Available > 0)) inputBuffer.SetInflaterInput(inf);
 
 				internalReader = BodyRead;
 				return BodyRead(destination, offset, count);
@@ -568,7 +569,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			switch (method)
 			{
-				case (int) CompressionMethod.Deflated:
+				case (int)CompressionMethod.Deflated:
 					count = base.Read(buffer, offset, count);
 					if (count <= 0)
 					{
@@ -577,15 +578,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 						// A csize of -1 is from an unpatched local header
 						if ((flags & 8) == 0 &&
-						    (inf.TotalIn != csize && csize != 0xFFFFFFFF && csize != -1 || inf.TotalOut != size))
+							(inf.TotalIn != csize && csize != 0xFFFFFFFF && csize != -1 || inf.TotalOut != size))
 							throw new ZipException("Size mismatch: " + csize + ";" + size + " <-> " + inf.TotalIn + ";" + inf.TotalOut);
 						inf.Reset();
 						finished = true;
 					}
 					break;
 
-				case (int) CompressionMethod.Stored:
-					if ((count > csize) && (csize >= 0)) count = (int) csize;
+				case (int)CompressionMethod.Stored:
+					if ((count > csize) && (csize >= 0)) count = (int)csize;
 
 					if (count > 0)
 					{

@@ -157,7 +157,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 #if !NETCF_1_0
 			if (cryptoTransform != null) clearTextLength = cryptoTransform.TransformBlock(rawData, 0, rawLength, clearText, 0);
-			else 
+			else
 #endif
 				clearTextLength = rawLength;
 
@@ -275,7 +275,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <returns>The long value read.</returns>
 		public long ReadLeLong()
 		{
-			return (uint) ReadLeInt() | ((long) ReadLeInt() << 32);
+			return (uint)ReadLeInt() | ((long)ReadLeInt() << 32);
 		}
 
 #if !NETCF_1_0
@@ -446,7 +446,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			else
 			{
 				int length = 2048;
-				if (count < length) length = (int) count;
+				if (count < length) length = (int)count;
 
 				var tmp = new byte[length];
 				int readCount = 1;
@@ -454,7 +454,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 				while ((toSkip > 0) && (readCount > 0))
 				{
-					if (toSkip < length) length = (int) toSkip;
+					if (toSkip < length) length = (int)toSkip;
 
 					readCount = baseInputStream.Read(tmp, 0, length);
 					toSkip -= readCount;

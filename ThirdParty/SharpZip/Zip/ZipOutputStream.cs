@@ -41,12 +41,12 @@
 //	22-12-2009	Z-1649	Added AES support
 //	22-02-2010	Z-1648	Zero byte entries would create invalid zip files
 
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections;
 using System.IO;
+using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -190,8 +190,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			unchecked
 			{
-				baseOutputStream_.WriteByte((byte) (value & 0xff));
-				baseOutputStream_.WriteByte((byte) ((value >> 8) & 0xff));
+				baseOutputStream_.WriteByte((byte)(value & 0xff));
+				baseOutputStream_.WriteByte((byte)((value >> 8) & 0xff));
 			}
 		}
 
@@ -214,8 +214,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			unchecked
 			{
-				WriteLeInt((int) value);
-				WriteLeInt((int) (value >> 32));
+				WriteLeInt((int)value);
+				WriteLeInt((int)(value >> 32));
 			}
 		}
 
@@ -257,7 +257,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int compressionLevel = defaultCompressionLevel;
 
 			// Clear flags that the library manages internally
-			entry.Flags &= (int) GeneralBitFlags.UnicodeText;
+			entry.Flags &= (int)GeneralBitFlags.UnicodeText;
 			patchEntryHeader = false;
 
 			bool headerInfoAvailable;
@@ -332,13 +332,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			WriteLeShort(entry.Version);
 			WriteLeShort(entry.Flags);
-			WriteLeShort((byte) entry.CompressionMethodForHeader);
-			WriteLeInt((int) entry.DosTime);
+			WriteLeShort((byte)entry.CompressionMethodForHeader);
+			WriteLeInt((int)entry.DosTime);
 
 			// TODO: Refactor header writing.  Its done in several places.
 			if (headerInfoAvailable)
 			{
-				WriteLeInt((int) entry.Crc);
+				WriteLeInt((int)entry.Crc);
 				if (entry.LocalHeaderRequiresZip64)
 				{
 					WriteLeInt(-1);
@@ -347,9 +347,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else
 				{
 					WriteLeInt(entry.IsCrypted
-					           	? (int) entry.CompressedSize + ZipConstants.CryptoHeaderSize
-					           	: (int) entry.CompressedSize);
-					WriteLeInt((int) entry.Size);
+								   ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize
+								   : (int)entry.CompressedSize);
+					WriteLeInt((int)entry.Size);
 				}
 			}
 			else
@@ -499,7 +499,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				long curPos = baseOutputStream_.Position;
 				baseOutputStream_.Seek(crcPatchPos, SeekOrigin.Begin);
-				WriteLeInt((int) curEntry.Crc);
+				WriteLeInt((int)curEntry.Crc);
 
 				if (curEntry.LocalHeaderRequiresZip64)
 				{
@@ -511,8 +511,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					WriteLeInt((int) curEntry.CompressedSize);
-					WriteLeInt((int) curEntry.Size);
+					WriteLeInt((int)curEntry.CompressedSize);
+					WriteLeInt((int)curEntry.Size);
 				}
 				baseOutputStream_.Seek(curPos, SeekOrigin.Begin);
 			}
@@ -521,7 +521,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ((curEntry.Flags & 8) != 0)
 			{
 				WriteLeInt(ZipConstants.DataDescriptorSignature);
-				WriteLeInt(unchecked((int) curEntry.Crc));
+				WriteLeInt(unchecked((int)curEntry.Crc));
 
 				if (curEntry.LocalHeaderRequiresZip64)
 				{
@@ -531,8 +531,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					WriteLeInt((int) curEntry.CompressedSize);
-					WriteLeInt((int) curEntry.Size);
+					WriteLeInt((int)curEntry.CompressedSize);
+					WriteLeInt((int)curEntry.Size);
 					offset += ZipConstants.DataDescriptorSize;
 				}
 			}
@@ -550,7 +550,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			var cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
 			var rnd = new Random();
 			rnd.NextBytes(cryptBuffer);
-			cryptBuffer[11] = (byte) (crcValue >> 24);
+			cryptBuffer[11] = (byte)(crcValue >> 24);
 
 			EncryptBlock(cryptBuffer, 0, cryptBuffer.Length);
 			baseOutputStream_.Write(cryptBuffer, 0, cryptBuffer.Length);
@@ -569,7 +569,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			extraData.AddLeShort(VENDOR_VERSION); // 2 = AE-2
 			extraData.AddLeShort(VENDOR_ID); // "AE"
 			extraData.AddData(entry.AESEncryptionStrength); //  1 = 128, 2 = 192, 3 = 256
-			extraData.AddLeShort((int) entry.CompressionMethod); // The actual compression method used to compress the file
+			extraData.AddLeShort((int)entry.CompressionMethod); // The actual compression method used to compress the file
 			extraData.AddNewEntry(0x9901);
 		}
 
@@ -691,19 +691,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeShort(ZipConstants.VersionMadeBy);
 				WriteLeShort(entry.Version);
 				WriteLeShort(entry.Flags);
-				WriteLeShort((short) entry.CompressionMethodForHeader);
-				WriteLeInt((int) entry.DosTime);
-				WriteLeInt((int) entry.Crc);
+				WriteLeShort((short)entry.CompressionMethodForHeader);
+				WriteLeInt((int)entry.DosTime);
+				WriteLeInt((int)entry.Crc);
 
 				if (entry.IsZip64Forced() ||
-				    (entry.CompressedSize >= uint.MaxValue))
+					(entry.CompressedSize >= uint.MaxValue))
 					WriteLeInt(-1);
-				else WriteLeInt((int) entry.CompressedSize);
+				else WriteLeInt((int)entry.CompressedSize);
 
 				if (entry.IsZip64Forced() ||
-				    (entry.Size >= uint.MaxValue))
+					(entry.Size >= uint.MaxValue))
 					WriteLeInt(-1);
-				else WriteLeInt((int) entry.Size);
+				else WriteLeInt((int)entry.Size);
 
 				byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
 
@@ -715,11 +715,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					ed.StartNewEntry();
 					if (entry.IsZip64Forced() ||
-					    (entry.Size >= 0xffffffff))
+						(entry.Size >= 0xffffffff))
 						ed.AddLeLong(entry.Size);
 
 					if (entry.IsZip64Forced() ||
-					    (entry.CompressedSize >= 0xffffffff))
+						(entry.CompressedSize >= 0xffffffff))
 						ed.AddLeLong(entry.CompressedSize);
 
 					if (entry.Offset >= 0xffffffff)
@@ -746,7 +746,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeShort(entryComment.Length);
 				WriteLeShort(0); // disk number
 				WriteLeShort(0); // internal file attributes
-				// external file attributes
+								 // external file attributes
 
 				if (entry.ExternalFileAttributes != -1) WriteLeInt(entry.ExternalFileAttributes);
 				else
@@ -760,7 +760,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				if (entry.Offset >= uint.MaxValue) WriteLeInt(-1);
-				else WriteLeInt((int) entry.Offset);
+				else WriteLeInt((int)entry.Offset);
 
 				if (name.Length > 0) baseOutputStream_.Write(name, 0, name.Length);
 

@@ -16,14 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Paril.Controls;
-using Paril.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using Paril.Controls;
+using Paril.Drawing;
 
 namespace MCSkin3D
 {
@@ -35,7 +35,7 @@ namespace MCSkin3D
 		public Brush(string name, int w, int h)
 		{
 			Name = name;
-			Luminance = new float[w,h];
+			Luminance = new float[w, h];
 		}
 
 		public Brush(string file)
@@ -43,7 +43,7 @@ namespace MCSkin3D
 			Name = Path.GetFileNameWithoutExtension(file);
 
 			Image = new Bitmap(file);
-			Luminance = new float[Image.Width,Image.Height];
+			Luminance = new float[Image.Width, Image.Height];
 
 			using (var fp = new FastPixel(Image, true))
 			{
@@ -96,7 +96,7 @@ namespace MCSkin3D
 				for (int y = 0; y < Height; ++y)
 				{
 					for (int x = 0; x < Width; ++x)
-						fp.SetPixel(x, y, Color.FromArgb((byte) (Luminance[x, y] * 255), 0, 0, 0));
+						fp.SetPixel(x, y, Color.FromArgb((byte)(Luminance[x, y] * 255), 0, 0, 0));
 				}
 			}
 
@@ -115,7 +115,7 @@ namespace MCSkin3D
 
 		private static void BrushBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SelectedBrush = (Brush) BrushBox.SelectedItem;
+			SelectedBrush = (Brush)BrushBox.SelectedItem;
 
 			if (Editor.MainForm.SelectedTool != null)
 				Editor.MainForm.SelectedTool.Tool.SelectedBrushChanged();
@@ -123,21 +123,58 @@ namespace MCSkin3D
 
 		public static void LoadBrushes()
 		{
-			foreach (string file in Directory.GetFiles(GlobalSettings.GetDataURI("Brushes"), "*.png", SearchOption.AllDirectories))
+			if (Directory.Exists("Brushes"))
 			{
-				try
+				foreach (string file in Directory.EnumerateFiles(GlobalSettings.GetDataURI("Brushes"), "*.png", SearchOption.AllDirectories))
 				{
-					BrushList.Add(new Brush(file));
+					try
+					{
+						BrushList.Add(new Brush(file));
+					}
+					catch
+					{
+					}
 				}
-				catch
+			}
+
+			// make square brushes
+			for (var s = 2; s <= 16; ++s)
+			{
+				var brush = new Brush("Square (" + s + ")", s, s);
+				brush.Luminance = new float[s, s];
+
+				for (var x = 0; x < s; ++x)
+					for (var y = 0; y < s; ++y)
+						brush.Luminance[x, y] = 1;
+
+				brush.BuildImage(false);
+				BrushList.Add(brush);
+
+				if ((s & 1) == 1)
 				{
+					brush = new Brush("Circle (" + s + ")", s, s);
+					brush.Luminance = new float[s, s];
+
+					int r = s / 2; // radius
+					int ox = s / 2, oy = s / 2; // origin
+
+					for (int x = -r; x <= r; x++)
+					{
+						int height = (int)Math.Sqrt(r * r - x * x);
+
+						for (int y = -height; y <= height; y++)
+							brush.Luminance[ox + x, oy + y] = 1;
+					}
+
+					brush.BuildImage(false);
+					BrushList.Add(brush);
 				}
 			}
 
 			BrushList.Sort();
 
 			var onebyone = new Brush("Pixel", 1, 1);
-			onebyone.Luminance = new float[,] {{1}};
+			onebyone.Luminance = new float[,] { { 1 } };
 			onebyone.BuildImage(false);
 
 			BrushList.Insert(0, onebyone);
@@ -169,12 +206,12 @@ namespace MCSkin3D
 
 			if (e.Index != -1)
 			{
-				var brush = (Brush) Items[e.Index];
+				var brush = (Brush)Items[e.Index];
 
 				if (brush.Width <= e.Bounds.Height)
 				{
 					e.Graphics.DrawImage(brush.Image, e.Bounds.X + (e.Bounds.Height / 2) - (brush.Width / 2),
-					                     e.Bounds.Y + (e.Bounds.Height / 2) - (brush.Height / 2), brush.Width, brush.Height);
+										 e.Bounds.Y + (e.Bounds.Height / 2) - (brush.Height / 2), brush.Width, brush.Height);
 				}
 				else
 					e.Graphics.DrawImage(brush.Image, e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
@@ -182,9 +219,9 @@ namespace MCSkin3D
 				//e.Graphics.DrawRectangle(Pens.Black, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height));
 
 				TextRenderer.DrawText(e.Graphics, brush.Name, Font,
-				                      new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height),
-				                      (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText,
-				                      TextFormatFlags.VerticalCenter);
+									  new Rectangle(e.Bounds.X + e.Bounds.Height + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height),
+									  (e.State & DrawItemState.Selected) != 0 ? SystemColors.HighlightText : SystemColors.WindowText,
+									  TextFormatFlags.VerticalCenter);
 			}
 
 			e.DrawFocusRectangle();

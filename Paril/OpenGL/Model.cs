@@ -1,13 +1,13 @@
-﻿using MCSkin3D;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
+using MCSkin3D;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace Paril.OpenGL
 {
@@ -232,24 +232,24 @@ namespace Paril.OpenGL
 		public static string SideFromNormal(Vector3 vector3)
 		{
 			var vecs = new[]
-			           {
-			           	new Vector3(0, 1, 0),
-			           	new Vector3(0, -1, 0),
-			           	new Vector3(1, 0, 0),
-			           	new Vector3(-1, 0, 0),
-			           	new Vector3(0, 0, 1),
-			           	new Vector3(0, 0, -1)
-			           };
+					   {
+						   new Vector3(0, 1, 0),
+						   new Vector3(0, -1, 0),
+						   new Vector3(1, 0, 0),
+						   new Vector3(-1, 0, 0),
+						   new Vector3(0, 0, 1),
+						   new Vector3(0, 0, -1)
+					   };
 
 			var names = new[]
-			            {
-			            	"Bottom",
-			            	"Top",
-			            	"Right",
-			            	"Left",
-			            	"Back",
-			            	"Front"
-			            };
+						{
+							"Bottom",
+							"Top",
+							"Right",
+							"Left",
+							"Back",
+							"Front"
+						};
 
 			int closestIndex = -1;
 			float closestDist = float.MaxValue;

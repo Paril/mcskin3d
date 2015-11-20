@@ -16,19 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using MCSkin3D.Forms;
-using OpenTK;
-using Paril.Components;
-using Paril.Drawing;
-using Paril.Extensions;
-using Paril.Imaging;
-using Paril.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
+using MCSkin3D.Forms;
+using Microsoft.VisualBasic.FileIO;
+using OpenTK;
+using Paril.Components;
+using Paril.Drawing;
+using Paril.Imaging;
+using Paril.OpenGL;
 
 namespace MCSkin3D
 {
@@ -98,7 +98,7 @@ namespace MCSkin3D
 		}
 
 		#region IDisposable Members
-		
+
 		public void Dispose()
 		{
 			if (GLImage != null)
@@ -147,16 +147,16 @@ namespace MCSkin3D
 				}
 
 				float scale = Size.Width / 64.0f;
-				var headSize = (int) (8.0f * scale);
-				var helmetLoc = (int) (40.0f * scale);
+				var headSize = (int)(8.0f * scale);
+				var helmetLoc = (int)(40.0f * scale);
 
 				Head = new Bitmap(headSize, headSize);
 				using (Graphics g = Graphics.FromImage(Head))
 				{
 					g.DrawImage(image, new Rectangle(0, 0, headSize, headSize), new Rectangle(headSize, headSize, headSize, headSize),
-					            GraphicsUnit.Pixel);
+								GraphicsUnit.Pixel);
 					g.DrawImage(image, new Rectangle(0, 0, headSize, headSize), new Rectangle(helmetLoc, headSize, headSize, headSize),
-					            GraphicsUnit.Pixel);
+								GraphicsUnit.Pixel);
 				}
 
 				if (Model == null)
@@ -282,7 +282,8 @@ namespace MCSkin3D
 			if (System.IO.File.Exists(Directory.FullName + "\\" + newName))
 				return false;
 
-			File.MoveToParent(newName);
+			FileSystem.RenameFile(File.FullName, newName);
+			//File.MoveToParent(newName);
 			Name = Path.GetFileNameWithoutExtension(newName);
 
 			return true;
@@ -323,15 +324,17 @@ namespace MCSkin3D
 
 		public void Delete()
 		{
-			File.Delete();
+			FileSystem.DeleteFile(File.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+			//File.Delete();
 		}
 
 		public void MoveTo(string newPath)
 		{
 			while (System.IO.File.Exists(newPath))
-				newPath = newPath.Insert(newPath.Length - 4, " - Moved");
+				newPath = newPath.Insert(newPath.Length - 4, " - " + Editor.GetLanguageString("C_MOVED"));
 
-			File.MoveTo(newPath);
+			FileSystem.MoveFile(File.FullName, newPath);
+			//File.MoveTo(newPath);
 		}
 
 		public void CheckTransparentPart(ColorGrabber grabber, int index)
@@ -343,7 +346,7 @@ namespace MCSkin3D
 				foreach (Vector2 c in f.TexCoords)
 				{
 					var coord = new Vector2(c.X * Width, c.Y * Height);
-					bounds.AddPoint(new Point((int) coord.X, (int) coord.Y));
+					bounds.AddPoint(new Point((int)coord.X, (int)coord.Y));
 				}
 
 				Rectangle rect = bounds.ToRectangle();

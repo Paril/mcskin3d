@@ -1,7 +1,7 @@
-using MiscUtil.Conversion;
 using System;
 using System.IO;
 using System.Text;
+using MiscUtil.Conversion;
 
 namespace MiscUtil.IO
 {
@@ -50,7 +50,7 @@ namespace MiscUtil.IO
 		/// <param name="bitConverter">Converter to use when reading data</param>
 		/// <param name="stream">Stream to read data from</param>
 		public EndianBinaryReader(EndianBitConverter bitConverter,
-		                          Stream stream) : this(bitConverter, stream, Encoding.UTF8)
+								  Stream stream) : this(bitConverter, stream, Encoding.UTF8)
 		{
 		}
 
@@ -155,7 +155,7 @@ namespace MiscUtil.IO
 		public sbyte ReadSByte()
 		{
 			ReadInternal(buffer, 1);
-			return unchecked((sbyte) buffer[0]);
+			return unchecked((sbyte)buffer[0]);
 		}
 
 		/// <summary>
@@ -326,8 +326,8 @@ namespace MiscUtil.IO
 					amountToRead = count * minBytesPerChar;
 					firstTime = false;
 				}
-					// After that we can only assume we need to fully read "chars left -1" characters
-					// and a single byte of the character we may be in the middle of
+				// After that we can only assume we need to fully read "chars left -1" characters
+				// and a single byte of the character we may be in the middle of
 				else
 					amountToRead = ((count - read - 1) * minBytesPerChar) + 1;
 				if (amountToRead > byteBuffer.Length)
@@ -518,7 +518,7 @@ namespace MiscUtil.IO
 				{
 					throw new EndOfStreamException
 						(String.Format("End of stream reached with {0} byte{1} left to read.", size - index,
-						               size - index == 1 ? "s" : ""));
+									   size - index == 1 ? "s" : ""));
 				}
 				index += read;
 			}
@@ -558,7 +558,7 @@ namespace MiscUtil.IO
 			if (!disposed)
 			{
 				disposed = true;
-				((IDisposable) stream).Dispose();
+				((IDisposable)stream).Dispose();
 			}
 		}
 

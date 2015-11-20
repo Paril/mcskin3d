@@ -1,10 +1,10 @@
-﻿using MCSkin3D.lemon42;
-using Paril.Controls.Color;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using MCSkin3D.lemon42;
+using Paril.Controls.Color;
 
 namespace MCSkin3D.Controls
 {
@@ -160,7 +160,7 @@ namespace MCSkin3D.Controls
 			if (!_editingHex)
 			{
 				textBox1.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", newColor.RGB.R, newColor.RGB.G, newColor.RGB.B,
-				                              newColor.RGB.A);
+											  newColor.RGB.A);
 			}
 
 			_skipColors = false;
@@ -194,7 +194,7 @@ namespace MCSkin3D.Controls
 		{
 			if (colorTabControl.SelectedIndex == 0 || colorTabControl.SelectedIndex == 1)
 			{
-				var panel = (Panel) colorTabControl.SelectedTab.Controls[0];
+				var panel = (Panel)colorTabControl.SelectedTab.Controls[0];
 
 				panel.Controls.Add(colorPick1);
 				panel.Controls.Add(colorPreview1);
@@ -244,8 +244,8 @@ namespace MCSkin3D.Controls
 				hueNumericUpDown.Value = 360;
 			_skipColors = false;
 
-			SetColor(ColorManager.FromHSVA((short) hueNumericUpDown.Value, SelectedColor.HSV.S, SelectedColor.HSV.V,
-			                               SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA((short)hueNumericUpDown.Value, SelectedColor.HSV.S, SelectedColor.HSV.V,
+										   SelectedColor.HSV.A));
 		}
 
 		private void saturationNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -253,8 +253,8 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte) saturationNumericUpDown.Value, SelectedColor.HSV.V,
-			                               SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte)saturationNumericUpDown.Value, SelectedColor.HSV.V,
+										   SelectedColor.HSV.A));
 		}
 
 		private void valueNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -262,8 +262,8 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte) valueNumericUpDown.Value,
-			                               SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte)valueNumericUpDown.Value,
+										   SelectedColor.HSV.A));
 		}
 
 		private void redNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -271,8 +271,8 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA((byte) redNumericUpDown.Value, SelectedColor.RGB.G, SelectedColor.RGB.B,
-			                               SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA((byte)redNumericUpDown.Value, SelectedColor.RGB.G, SelectedColor.RGB.B,
+										   SelectedColor.RGB.A));
 		}
 
 		private void greenNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -280,8 +280,8 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte) greenNumericUpDown.Value, SelectedColor.RGB.B,
-			                               SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte)greenNumericUpDown.Value, SelectedColor.RGB.B,
+										   SelectedColor.RGB.A));
 		}
 
 		private void blueNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -289,8 +289,8 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte) blueNumericUpDown.Value,
-			                               SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte)blueNumericUpDown.Value,
+										   SelectedColor.RGB.A));
 		}
 
 		private void alphaNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -299,7 +299,7 @@ namespace MCSkin3D.Controls
 				return;
 
 			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, SelectedColor.RGB.B,
-			                               (byte) alphaNumericUpDown.Value));
+										   (byte)alphaNumericUpDown.Value));
 		}
 
 		private void hueColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -315,7 +315,7 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte) e.NewValue, SelectedColor.HSV.V, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, (byte)e.NewValue, SelectedColor.HSV.V, SelectedColor.HSV.A));
 		}
 
 		private void valueColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -323,7 +323,7 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte) e.NewValue, SelectedColor.HSV.A));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, (byte)e.NewValue, SelectedColor.HSV.A));
 		}
 
 		private void redColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -331,7 +331,7 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA((byte) e.NewValue, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA((byte)e.NewValue, SelectedColor.RGB.G, SelectedColor.RGB.B, SelectedColor.RGB.A));
 		}
 
 		private void greenColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -339,7 +339,7 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte) e.NewValue, SelectedColor.RGB.B, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, (byte)e.NewValue, SelectedColor.RGB.B, SelectedColor.RGB.A));
 		}
 
 		private void blueColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -347,7 +347,7 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte) e.NewValue, SelectedColor.RGB.A));
+			SetColor(ColorManager.FromRGBA(SelectedColor.RGB.R, SelectedColor.RGB.G, (byte)e.NewValue, SelectedColor.RGB.A));
 		}
 
 		private void alphaColorSlider_Scroll(object sender, ScrollEventArgs e)
@@ -355,7 +355,7 @@ namespace MCSkin3D.Controls
 			if (_skipColors)
 				return;
 
-			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, SelectedColor.HSV.V, (byte) e.NewValue));
+			SetColor(ColorManager.FromHSVA(SelectedColor.HSV.H, SelectedColor.HSV.S, SelectedColor.HSV.V, (byte)e.NewValue));
 		}
 
 		private void swatchContainer_SwatchChanged(object sender, SwatchChangedEventArgs e)
@@ -404,7 +404,7 @@ namespace MCSkin3D.Controls
 				return;
 
 			SetColor(ColorManager.FromHSVA(colorPick1.CurrentHSV.H, colorPick1.CurrentHSV.S, colorPick1.CurrentHSV.V,
-			                               SelectedColor.HSV.A));
+										   SelectedColor.HSV.A));
 		}
 	}
 

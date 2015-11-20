@@ -21,7 +21,7 @@ namespace Paril.Components.Update
 		public Version(string s) :
 			this()
 		{
-			string[] split = s.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+			string[] split = s.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
 			for (int i = 0; i < split.Length; ++i)
 				this[i] = int.Parse(split[i]);
@@ -79,7 +79,7 @@ namespace Paril.Components.Update
 		public static bool operator ==(Version left, Version right)
 		{
 			return left.Major == right.Major && left.Minor == right.Minor && left.Revision == right.Revision &&
-			       left.Build == right.Build;
+				   left.Build == right.Build;
 		}
 
 		public static bool operator !=(Version left, Version right)
@@ -90,7 +90,7 @@ namespace Paril.Components.Update
 		public static bool operator >(Version left, Version right)
 		{
 			return (left.Major > right.Major) ||
-			       (left.Major == right.Major && left.Minor > right.Minor) ||
+				   (left.Major == right.Major && left.Minor > right.Minor) ||
 				   (left.Major == right.Major && left.Minor == right.Minor && left.Build > right.Build) ||
 				   (left.Major == right.Major && left.Minor == right.Minor && left.Build == right.Build &&
 					left.Revision > right.Revision);
@@ -114,7 +114,7 @@ namespace Paril.Components.Update
 		public override bool Equals(object obj)
 		{
 			if (obj is Version)
-				return this == (Version) obj;
+				return this == (Version)obj;
 
 			return base.Equals(obj);
 		}

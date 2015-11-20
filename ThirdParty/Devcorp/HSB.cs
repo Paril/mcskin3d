@@ -26,19 +26,19 @@ namespace Devcorp.Controls.Design
 		public static bool operator ==(HSB item1, HSB item2)
 		{
 			return (
-			       	item1.Hue == item2.Hue
-			       	&& item1.Saturation == item2.Saturation
-			       	&& item1.Brightness == item2.Brightness
-			       );
+					   item1.Hue == item2.Hue
+					   && item1.Saturation == item2.Saturation
+					   && item1.Brightness == item2.Brightness
+				   );
 		}
 
 		public static bool operator !=(HSB item1, HSB item2)
 		{
 			return (
-			       	item1.Hue != item2.Hue
-			       	|| item1.Saturation != item2.Saturation
-			       	|| item1.Brightness != item2.Brightness
-			       );
+					   item1.Hue != item2.Hue
+					   || item1.Saturation != item2.Saturation
+					   || item1.Brightness != item2.Brightness
+				   );
 		}
 
 		#endregion
@@ -96,7 +96,7 @@ namespace Devcorp.Controls.Design
 		{
 			if (obj == null || GetType() != obj.GetType()) return false;
 
-			return (this == (HSB) obj);
+			return (this == (HSB)obj);
 		}
 
 		public override int GetHashCode()

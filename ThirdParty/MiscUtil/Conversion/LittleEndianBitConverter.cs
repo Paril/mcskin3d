@@ -39,7 +39,7 @@ namespace MiscUtil.Conversion
 		{
 			for (int i = 0; i < bytes; i++)
 			{
-				buffer[i + index] = unchecked((byte) (value & 0xff));
+				buffer[i + index] = unchecked((byte)(value & 0xff));
 				value = value >> 8;
 			}
 		}

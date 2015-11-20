@@ -9,7 +9,7 @@ namespace MCSkin3D.Swatches
 
 		private static void AddDirectory(string dir, List<ISwatch> swatches)
 		{
-			foreach (string swatchFile in Directory.GetFiles(dir, "*"))
+			foreach (string swatchFile in Directory.EnumerateFiles(dir, "*"))
 			{
 				string ext = Path.GetExtension(swatchFile);
 
