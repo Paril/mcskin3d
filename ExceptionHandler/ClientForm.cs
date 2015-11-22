@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using OpenTK.Graphics.OpenGL;
 
 namespace MCSkin3D.ExceptionHandler
 {

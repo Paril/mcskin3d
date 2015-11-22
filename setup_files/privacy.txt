@@ -1,0 +1,10 @@
+MCSkin3D Privacy Policy
+
+- Username/Password Information
+The username and password are both saved in the settings.ini file, the password being the encrypted of the two. The encryption algorithm is AES, a very strong standard, and uses salts and seeds derived from environment-specific data on your machine - using this method, they are very secure against attacks, since the attacker would require very specific information about your Windows installation in order to properly decode the password. The username and password are both sent over HTTPS to Minecraft.net, and never leave this two-way connection. No data is sent externally for processing, review, survey, etc.
+
+- IP addresses
+Your IP is never recorded or sent anywhere during HTTP out transmissions (update checking, importing/downloading skins, etc), nor is any extraneous data recorded.
+
+- Source
+The entire program is open source, licensed under the GNU GPL v3; you can compile MCSkin3D using Microsoft Visual C# Express for no charge if you wish to ensure that the build that you have downloaded has not been tampered with.

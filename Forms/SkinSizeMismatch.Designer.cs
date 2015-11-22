@@ -33,6 +33,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.button3 = new System.Windows.Forms.Button();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// button1
@@ -93,12 +94,13 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button1;
 			this.ClientSize = new System.Drawing.Size(411, 184);
-			this.Controls.Add(this.button3);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.button3);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "SkinSizeMismatch";
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 
 		}

@@ -37,6 +37,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -112,6 +113,7 @@
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 
 		}

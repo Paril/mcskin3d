@@ -30,6 +30,7 @@
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -56,6 +57,7 @@
 			this.Name = "EraserOptions";
 			this.Size = new System.Drawing.Size(407, 70);
 			this.Load += new System.EventHandler(this.EraserOptions_Load);
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 
 		}

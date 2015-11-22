@@ -78,6 +78,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).BeginInit();
 			this.swatchTabPage.SuspendLayout();
 			this.panel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// colorTabControl
@@ -107,8 +108,8 @@
 			// 
 			// panel2
 			// 
-			this.panel2.Controls.Add(this.alphaColorSlider);
 			this.panel2.Controls.Add(this.colorPick1);
+			this.panel2.Controls.Add(this.alphaColorSlider);
 			this.panel2.Controls.Add(this.colorPreview1);
 			this.panel2.Controls.Add(this.colorPreview2);
 			this.panel2.Controls.Add(this.textBox1);
@@ -585,6 +586,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.valueNumericUpDown)).EndInit();
 			this.swatchTabPage.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 
 		}

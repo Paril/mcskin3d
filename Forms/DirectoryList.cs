@@ -40,8 +40,12 @@ namespace MCSkin3D.Forms
 			if (browser.ShowDialog(this) == DialogResult.OK)
 			{
 				lastDir = browser.SelectedPath;
-				var dir = new DirectoryInfo(lastDir);
-				Directories.Add(dir.FullName);
+				var dir = new DirectoryInfo(lastDir).FullName;
+
+				if (!dir.EndsWith("\\") && !dir.EndsWith("/"))
+					dir += "\\";
+
+				Directories.Add(dir);
 			}
 
 			listBox1.SortList();

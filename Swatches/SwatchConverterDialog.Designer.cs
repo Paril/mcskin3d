@@ -35,6 +35,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// languageProvider1
@@ -114,8 +115,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button2;
 			this.ClientSize = new System.Drawing.Size(374, 112);
-			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.label3);
+			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.button2);
@@ -125,6 +126,7 @@
 			this.languageProvider1.SetPropertyNames(this, "Text");
 			this.Text = "M_CONVERTSWATCH";
 			this.Load += new System.EventHandler(this.SwatchConverterDialog_Load);
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 
 		}

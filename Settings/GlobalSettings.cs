@@ -201,7 +201,7 @@ namespace MCSkin3D
 			else
 				InstallData.DataLocation = ".\\";
 
-			if (!InstallData.DataLocation.EndsWith("\\"))
+			if (!InstallData.DataLocation.EndsWith("\\") && !InstallData.DataLocation.EndsWith("/"))
 				InstallData.DataLocation += '\\';
 
 			MacroHandler.RegisterMacro("DataLocation", InstallData.DataLocation);
@@ -212,6 +212,17 @@ namespace MCSkin3D
 				Settings.Structures.Add(typeof(GlobalSettings));
 
 				Settings.Load(GetDataURI("settings.ini"));
+
+				for (var i = 0; i < GlobalSettings.SkinDirectories.Length; ++i)
+				{
+					var dir = GlobalSettings.SkinDirectories[i];
+
+					if (!dir.EndsWith("\\") && !dir.EndsWith("/"))
+						dir += "\\";
+
+					GlobalSettings.SkinDirectories[i] = dir;
+				}
+
 				Loaded = true;
 			}
 			catch

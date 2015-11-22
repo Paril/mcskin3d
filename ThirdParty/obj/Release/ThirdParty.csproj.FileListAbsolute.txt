@@ -9,4 +9,3 @@ C:\Users\Paril\Documents\GitHub\mcskin3d\Resources\ThirdParty.dll
 C:\Users\Paril\Documents\GitHub\mcskin3d\Resources\ThirdParty.pdb
 C:\Users\Paril\Documents\GitHub\mcskin3d\ThirdParty\obj\Release\ThirdParty.dll
 C:\Users\Paril\Documents\GitHub\mcskin3d\ThirdParty\obj\Release\ThirdParty.pdb
-C:\Users\Paril\Documents\GitHub\mcskin3d\ThirdParty\obj\Release\ThirdParty.csprojResolveAssemblyReference.cache

@@ -171,6 +171,7 @@
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.miniToolStrip = new MCSkin3D.Controls.SkinTreeViewToolBar();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
@@ -1295,7 +1296,8 @@
             this.toggleRightLegArmorToolStripButton,
             this.toolStripSeparator15,
             this.toolStripDropDownButton1,
-            this.toolStripButton7});
+            this.toolStripButton7,
+            this.toolStripButton1});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(934, 25);
@@ -1586,6 +1588,18 @@
 			this.toolStripButton7.Text = "W_POPOUT";
 			this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
 			// 
+			// toolStripButton1
+			// 
+			this.toolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton1.Image = global::MCSkin3D.Properties.Resources.arrow_Up_16xLG;
+			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton1.Name = "toolStripButton1";
+			this.languageProvider1.SetPropertyNames(this.toolStripButton1, "Text");
+			this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton1.Text = "W_OPTIONS";
+			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+			// 
 			// labelEditTextBox
 			// 
 			this.labelEditTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -1802,6 +1816,7 @@
 		private System.Windows.Forms.ToolStripMenuItem rightLegArmorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
 		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton toolStripButton1;
 	}
 }
 

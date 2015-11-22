@@ -150,7 +150,7 @@ namespace MCSkin3D
 							mesh.Pivot = mesh.Translate;
 							mesh.IsSolid = box.isSolid;
 
-							mesh.Mode = BeginMode.Quads;
+							mesh.Mode = PrimitiveType.Quads;
 
 							var cwIndices = new[] { 0, 1, 2, 3 };
 							var cwwIndices = new[] { 3, 2, 1, 0 };
@@ -203,7 +203,7 @@ namespace MCSkin3D
 												  MathHelper.RadiansToDegrees(box.rotateAngleZ));
 						mesh.Pivot = mesh.Translate;
 
-						mesh.Mode = BeginMode.Quads;
+						mesh.Mode = PrimitiveType.Quads;
 
 						var cwIndices = new[] { 0, 1, 2, 3 };
 						var cwwIndices = new[] { 3, 2, 1, 0 };

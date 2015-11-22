@@ -84,12 +84,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\OpenTK.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+    <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\OpenTK.GLControl.dll</HintPath>
       <Private>False</Private>
@@ -408,6 +408,10 @@
     <Compile Include="Updater\Updater.cs" />
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
+    <EmbeddedResource Include="Resources\OpenTK.dll" />
+    <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
+    <None Include="Resources\arrow_Up_16xLG.png" />
+    <None Include="Resources\arrow_Down_16xLG.png" />
     <EmbeddedResource Include="Resources\ThirdParty.dll" />
     <None Include="Resources\show_right_leg_armor.png" />
     <None Include="Resources\show_right_arm_armor.png" />
@@ -595,10 +599,6 @@
       <Name>ThirdParty</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\OpenTK.dll" />
-    <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\erase.png" />

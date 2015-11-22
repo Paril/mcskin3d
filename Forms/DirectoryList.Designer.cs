@@ -39,6 +39,9 @@
 			// 
 			// listBox1
 			// 
+			this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.listBox1.FormattingEnabled = true;
 			this.listBox1.HorizontalScrollbar = true;
 			this.listBox1.IntegralHeight = false;
@@ -50,6 +53,7 @@
 			// 
 			// button1
 			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.button1.Image = global::MCSkin3D.Properties.Resources._112_Plus_Green_16x16_72;
 			this.button1.Location = new System.Drawing.Point(223, 229);
 			this.button1.Name = "button1";
@@ -60,6 +64,7 @@
 			// 
 			// button2
 			// 
+			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.button2.Image = global::MCSkin3D.Properties.Resources._112_Minus_Orange_16x16_72;
 			this.button2.Location = new System.Drawing.Point(249, 229);
 			this.button2.Name = "button2";
@@ -70,6 +75,7 @@
 			// 
 			// tableLayoutPanel1
 			// 
+			this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.tableLayoutPanel1.AutoSize = true;
 			this.tableLayoutPanel1.ColumnCount = 2;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());

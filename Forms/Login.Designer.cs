@@ -38,6 +38,7 @@
 			this.button2 = new System.Windows.Forms.Button();
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -142,6 +143,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button1;
 			this.ClientSize = new System.Drawing.Size(351, 196);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.checkBox2);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
@@ -150,7 +152,6 @@
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -158,6 +159,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Login";
 			this.Load += new System.EventHandler(this.Login_Load);
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

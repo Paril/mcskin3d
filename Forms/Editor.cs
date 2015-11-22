@@ -25,7 +25,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using MCSkin3D.Controls;
@@ -49,7 +48,6 @@ using Paril.OpenGL;
 using PopupControl;
 using KeyPressEventArgs = System.Windows.Forms.KeyPressEventArgs;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
-using Timer = System.Timers.Timer;
 
 namespace MCSkin3D
 {
@@ -71,7 +69,6 @@ namespace MCSkin3D
 		static float _3DRotationX = 180, _3DRotationY;
 		private float _3DZoom = -80;
 		private Texture _alphaTex;
-		private float _animationTime;
 		private UndoBuffer _currentUndoBuffer;
 		private ViewMode _currentViewMode = ViewMode.Perspective;
 		private Texture _font;
@@ -82,10 +79,6 @@ namespace MCSkin3D
 		private Texture _previewPaint;
 		private int _selectedBackground;
 		private ToolIndex _selectedTool;
-		private Texture _toolboxDownHover;
-		private Texture _toolboxDownNormal;
-		private Texture _toolboxUpHover;
-		private Texture _toolboxUpNormal;
 		static Texture _cubeSides;
 
 		#endregion
@@ -102,7 +95,6 @@ namespace MCSkin3D
 		public static Stopwatch _compileTimer = new Stopwatch();
 		private static bool _firstCalc;
 		private static ToolStripMenuItem[] _antialiasOpts;
-		private readonly Timer _animTimer = new Timer(25);
 		private readonly ImportSite _importFromSite = new ImportSite();
 		private Rectangle _currentViewport;
 		private BackgroundImage _dynamicOverlay;
@@ -110,7 +102,7 @@ namespace MCSkin3D
 		private bool _mouseIn3D;
 		private string[] _newSkinDirs;
 		private ModelToolStripMenuItem _oldModel;
-		private bool _opening;
+		private bool _opening = true;
 		private Point _pickPosition = new Point(-1, -1);
 		private TreeNode _rightClickedNode;
 		private bool _waitingForRestart;
@@ -271,11 +263,7 @@ namespace MCSkin3D
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvMode.Modulate);
-
-			_toolboxUpNormal = new TextureGL(Resources.buttong);
-			_toolboxUpHover = new TextureGL(Resources.buttong_2);
-			_toolboxDownNormal = new TextureGL(Resources.buttong_down);
-			_toolboxDownHover = new TextureGL(Resources.buttong_down2);
+			
 			_cubeSides = new TextureGL(Resources.cube_sides);
 			_cubeSides.SetMipmapping(true);
 			_cubeSides.SetRepeat(true);
@@ -437,7 +425,7 @@ namespace MCSkin3D
 		{
 			texture.Bind();
 
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
 			width /= 2;
 			length /= 2;
@@ -469,7 +457,7 @@ namespace MCSkin3D
 			const float txw = 8.0f / 128.0f;
 			const float txh = 8.0f / 64.0f;
 
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(tx, ty);
 			GL.Vertex2(xOfs, yOfs);
 			GL.TexCoord2(tx + txw, ty);
@@ -521,7 +509,7 @@ namespace MCSkin3D
 			{
 				_alphaTex.Bind();
 
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 				GL.TexCoord2(0, 0);
 				GL.Vertex2(0, 0);
 				GL.TexCoord2(_currentViewport.Width / 16.0f, 0);
@@ -552,7 +540,7 @@ namespace MCSkin3D
 			{
 				float w = skin.Width;
 				float h = skin.Height;
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 				GL.TexCoord2(0, 0);
 				GL.Vertex2(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
 				GL.TexCoord2(1, 0);
@@ -573,7 +561,7 @@ namespace MCSkin3D
 					GL.Color4(GlobalSettings.DynamicOverlayGridColor);
 					GL.PushMatrix();
 					GL.Translate(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2), 0);
-					GL.Begin(BeginMode.Lines);
+					GL.Begin(PrimitiveType.Lines);
 
 					float wX = skin.Width / CurrentModel.DefaultWidth;
 					float wY = skin.Height / CurrentModel.DefaultHeight;
@@ -620,7 +608,7 @@ namespace MCSkin3D
 								done.Add(toint);
 
 								GL.Color4(GlobalSettings.DynamicOverlayLineColor);
-								GL.Begin(BeginMode.Quads);
+								GL.Begin(PrimitiveType.Quads);
 								GL.Vertex2(toint.X, toint.Y);
 								GL.Vertex2(toint.X + toint.Width, toint.Y);
 								GL.Vertex2(toint.X + toint.Width, toint.Y + stub);
@@ -657,7 +645,7 @@ namespace MCSkin3D
 					{
 						_backgrounds[_selectedBackground].GLImage.Bind();
 
-						GL.Begin(BeginMode.Quads);
+						GL.Begin(PrimitiveType.Quads);
 						GL.TexCoord2(0, 0);
 						GL.Vertex2(-(CurrentModel.DefaultWidth / 2), -(CurrentModel.DefaultHeight / 2));
 						GL.TexCoord2(1, 0);
@@ -691,13 +679,13 @@ namespace MCSkin3D
 				GL.Disable(EnableCap.Blend);
 
 			GL.Enable(EnableCap.CullFace);
-			GL.CullFace(CullFaceMode.Front);
+
 			if (grass)
 				DrawSkinnedRectangle(0, GrassY, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
+
 			GL.Disable(EnableCap.CullFace);
 
 			Vector3 helmetRotate = (GlobalSettings.FollowCursor) ? new Vector3((float)y / 25, (float)x / 25, 0) : Vector3.Zero;
-			double sinAnim = (GlobalSettings.Animate) ? Math.Sin(_animationTime) : 0;
 
 			// add meshes
 			if (GlobalSettings.RenderBenchmark && Editor.IsRendering)
@@ -729,8 +717,8 @@ namespace MCSkin3D
 					if (mesh.LastDrawTransparent != mesh.DrawTransparent)
 						MeshRenderer.UpdateUserData(mesh);
 
-					if (GlobalSettings.Animate && mesh.RotateFactor != 0)
-						mesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
+					//if (GlobalSettings.Animate && mesh.RotateFactor != 0)
+					//	mesh.Rotate += new Vector3((float)sinAnim * mesh.RotateFactor, 0, 0);
 
 					MeshRenderer.AddMesh(mesh);
 				}
@@ -845,12 +833,6 @@ namespace MCSkin3D
 			return false;
 		}
 
-		private void animTimer_Elapsed(object sender, ElapsedEventArgs e)
-		{
-			_animationTime += 0.24f;
-			Renderer.Invalidate();
-		}
-
 		private void rendererControl_MouseWheel(object sender, MouseEventArgs e)
 		{
 			CheckMouse(e.Y);
@@ -868,42 +850,6 @@ namespace MCSkin3D
 				_2DZoom = 0.25f;
 
 			Renderer.Invalidate();
-		}
-
-		private void DrawGLToolbar()
-		{
-			// 2D
-			Setup2D(new Rectangle(0, 0, Renderer.Width, Renderer.Height));
-			TextureGL.Unbind();
-			GL.Enable(EnableCap.Blend);
-
-			float halfWidth = Renderer.Width / 2.0f;
-			float halfImgWidth = 56.0f / 2.0f;
-
-			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
-
-			Texture img = (splitContainer4.SplitterDistance == 0) ? _toolboxDownNormal : _toolboxUpNormal;
-
-			if (rect.Contains(_mousePoint))
-				GL.Color4((byte)255, (byte)255, (byte)255, (byte)255);
-			else
-				GL.Color4((byte)255, (byte)255, (byte)255, (byte)64);
-
-			img.Bind();
-
-			const float widSep = 56.0f / 64.0f;
-			const float heiSep = 22.0f / 32.0f;
-
-			GL.Begin(BeginMode.Quads);
-			GL.TexCoord2(0, 0);
-			GL.Vertex2(halfWidth - halfImgWidth, -1);
-			GL.TexCoord2(widSep, 0);
-			GL.Vertex2(halfWidth + halfImgWidth, -1);
-			GL.TexCoord2(widSep, heiSep);
-			GL.Vertex2(halfWidth + halfImgWidth, 21);
-			GL.TexCoord2(0, heiSep);
-			GL.Vertex2(halfWidth - halfImgWidth, 21);
-			GL.End();
 		}
 
 		public Rectangle GetViewport3D()
@@ -935,7 +881,7 @@ namespace MCSkin3D
 			else
 				GL.Color4((byte)88, (byte)88, (byte)88, (byte)(255 - 88));
 
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
 			float xSep = 64.0f / 256.0f;
 			float ySep = 64.0f / 128.0f;
@@ -1113,9 +1059,6 @@ namespace MCSkin3D
 				}
 
 				if (!_screenshotMode)
-					DrawGLToolbar();
-
-				if (!_screenshotMode)
 					Renderer.SwapBuffers();
 				IsRendering = false;
 			}
@@ -1217,28 +1160,19 @@ namespace MCSkin3D
 			Renderer.Invalidate();
 		}
 
-		private void _animTimer_Elapsed(object sender, ElapsedEventArgs e)
+		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
+			_opening = !_opening;
+
 			if (_opening)
 			{
-				splitContainer4.SplitterDistance += splitContainer4.SplitterIncrement;
-
-				if (splitContainer4.SplitterDistance >= 74)
-				{
-					splitContainer4.SplitterDistance = 74;
-					_animTimer.Stop();
-				}
+				splitContainer4.SplitterDistance = 74;
+				toolStripButton1.Image = Resources.arrow_Up_16xLG;
 			}
 			else
 			{
-				if ((splitContainer4.SplitterDistance - splitContainer4.SplitterIncrement) <= splitContainer4.Panel1MinSize)
-				{
-					splitContainer4.SplitterDistance = splitContainer4.Panel1MinSize;
-					_animTimer.Stop();
-					return;
-				}
-
-				splitContainer4.SplitterDistance -= splitContainer4.SplitterIncrement;
+				splitContainer4.SplitterDistance = splitContainer4.Panel1MinSize;
+				toolStripButton1.Image = Resources.arrow_Down_16xLG;
 			}
 		}
 
@@ -1326,18 +1260,7 @@ namespace MCSkin3D
 			var rect = new RectangleF(halfWidth - halfImgWidth, 0, halfImgWidth * 2, 22);
 
 			_mousePoint = e.Location;
-
-			if (rect.Contains(e.Location))
-			{
-				if (splitContainer4.SplitterDistance == 0)
-					_opening = true;
-				else
-					_opening = false;
-
-				_animTimer.Start();
-				return;
-			}
-
+			
 			_mouseIsDown = true;
 			//_isValidPick = GetPick(e.X, e.Y, ref _pickPosition);
 
@@ -4101,9 +4024,6 @@ namespace MCSkin3D
 #if BETA
 			Text += " [Beta]";
 #endif
-
-			_animTimer.Elapsed += _animTimer_Elapsed;
-			_animTimer.SynchronizingObject = this;
 
 			// Settings
 			this.mGRIDOPACITYToolStripMenuItem.NumericBox.ValueChanged += new System.EventHandler(this.mGRIDOPACITYToolStripMenuItem_NumericBox_ValueChanged);

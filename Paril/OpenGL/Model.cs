@@ -161,7 +161,7 @@ namespace Paril.OpenGL
 				var mesh = new Mesh(n.Attributes["Name"].InnerText);
 
 				if (n.Attributes["Mode"] != null)
-					mesh.Mode = (BeginMode)Enum.Parse(typeof(BeginMode), n.Attributes["Mode"].InnerText);
+					mesh.Mode = (PrimitiveType)Enum.Parse(typeof(PrimitiveType), n.Attributes["Mode"].InnerText);
 				if (n.Attributes["Translate"] != null)
 					mesh.Translate = Mesh.StringToVertex3(n.Attributes["Translate"].InnerText);
 				if (n.Attributes["Pivot"] != null)

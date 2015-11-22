@@ -15,7 +15,7 @@ namespace Paril.OpenGL
 		public List<Face> Faces;
 		public bool FollowCursor;
 		public bool HasTransparency;
-		public BeginMode Mode;
+		public PrimitiveType Mode;
 		public string Name;
 
 		public ModelPart Part;

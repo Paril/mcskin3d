@@ -1,3 +1,6 @@
+Version 1.5.0.301
+- Minor fixes
+
 Version 1.5.0.300
 - Lightened the load even more.
 - Made program more portable
@@ -9,6 +12,7 @@ Version 1.5.0.300
 - Tree view default height was wrong, caused some distortion on heads.
 - Re-upgraded to .NET 4.0
 - Reduced size of exception messages
+- Moved tool options dropdown to top-right
 
 Version 1.4.2.252
 - Renamed to "LE" for Light Edition

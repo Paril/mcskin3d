@@ -50,6 +50,7 @@
 			this.panel2.SuspendLayout();
 			this.nativeToolStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -270,6 +271,7 @@
 			this.nativeToolStrip1.PerformLayout();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -69,10 +69,9 @@ namespace Paril.OpenGL
 
 			PreRender();
 
-			GL.Disable(EnableCap.CullFace);
+			GL.Enable(EnableCap.CullFace);
 			foreach (Mesh mesh in _opaqueMeshes)
 				RenderMesh(mesh);
-			GL.Enable(EnableCap.CullFace);
 
 			GL.Enable(EnableCap.Blend);
 
@@ -90,8 +89,6 @@ namespace Paril.OpenGL
 			}
 
 			GL.Disable(EnableCap.Blend);
-			GL.CullFace(CullFaceMode.Front);
-			GL.Disable(EnableCap.CullFace);
 
 			PostRender();
 
@@ -107,11 +104,10 @@ namespace Paril.OpenGL
 			GL.Disable(EnableCap.Blend);
 
 			PreRender();
-
-			GL.Disable(EnableCap.CullFace);
+			
+			GL.Enable(EnableCap.CullFace);
 			foreach (Mesh mesh in _opaqueMeshes)
 				RenderMesh(mesh);
-			GL.Enable(EnableCap.CullFace);
 
 			foreach (Mesh mesh in _transparentMeshes)
 			{

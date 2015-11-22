@@ -32,6 +32,7 @@
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).BeginInit();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -86,6 +87,7 @@
 			this.Name = "PencilOptions";
 			this.Size = new System.Drawing.Size(407, 70);
 			this.Load += new System.EventHandler(this.PencilOptions_Load);
+			((System.ComponentModel.ISupportInitialize)(this.languageProvider1)).EndInit();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.ResumeLayout(false);
