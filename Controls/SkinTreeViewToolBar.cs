@@ -27,6 +27,8 @@ namespace MCSkin3D.Controls
 		public SkinTreeViewToolBar()
 		{
 			LanguageProvider = new LanguageProvider();
+			LanguageProvider.BeginInit();
+
 			TreeZoomOutToolStripButton = new ToolStripButton();
 			TreeZoomInToolStripButton = new ToolStripButton();
 
@@ -46,145 +48,146 @@ namespace MCSkin3D.Controls
 			// 
 			// toolStrip2
 			// 
-			this.Items.AddRange(new ToolStripItem[] {
-				this.TreeZoomOutToolStripButton,
-				this.TreeZoomInToolStripButton,
+			Items.AddRange(new ToolStripItem[] {
+				TreeZoomOutToolStripButton,
+				TreeZoomInToolStripButton,
 				new ToolStripSeparator(),
-				this.ImportToolStripButton,
-				this.NewSkinToolStripButton,
-				this.NewFolderToolStripButton,
+				ImportToolStripButton,
+				NewSkinToolStripButton,
+				NewFolderToolStripButton,
 				new ToolStripSeparator(),
-				this.RenameToolStripButton,
-				this.DeleteToolStripButton,
-				this.CloneToolStripButton,
+				RenameToolStripButton,
+				DeleteToolStripButton,
+				CloneToolStripButton,
 				new ToolStripSeparator(),
-				this.DecResToolStripButton,
-				this.IncResToolStripButton,
+				DecResToolStripButton,
+				IncResToolStripButton,
 				new ToolStripSeparator(),
-				this.FetchToolStripButton});
+				FetchToolStripButton});
 			// 
 			// treeZoomOutToolStripButton
 			// 
-			this.TreeZoomOutToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.TreeZoomOutToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomOutHS;
-			this.TreeZoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.TreeZoomOutToolStripButton.Name = "treeZoomOutToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.TreeZoomOutToolStripButton, "Text");
-			this.TreeZoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.TreeZoomOutToolStripButton.Text = "T_TREE_ZOOMOUT";
-			this.TreeZoomOutToolStripButton.Click += new System.EventHandler(this.treeZoomOutToolStripButton_Click);
+			TreeZoomOutToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			TreeZoomOutToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomOutHS;
+			TreeZoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+			TreeZoomOutToolStripButton.Name = "treeZoomOutToolStripButton";
+			LanguageProvider.SetPropertyNames(TreeZoomOutToolStripButton, "Text");
+			TreeZoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
+			TreeZoomOutToolStripButton.Text = "T_TREE_ZOOMOUT";
+			TreeZoomOutToolStripButton.Click += new System.EventHandler(treeZoomOutToolStripButton_Click);
 			// 
 			// treeZoomInToolStripButton
 			// 
-			this.TreeZoomInToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.TreeZoomInToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomInHS;
-			this.TreeZoomInToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-			this.TreeZoomInToolStripButton.Name = "treeZoomInToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.TreeZoomInToolStripButton, "Text");
-			this.TreeZoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.TreeZoomInToolStripButton.Text = "T_TREE_ZOOMIN";
-			this.TreeZoomInToolStripButton.Click += new System.EventHandler(this.treeZoomInToolStripButton_Click);
+			TreeZoomInToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			TreeZoomInToolStripButton.Image = global::MCSkin3D.Properties.Resources.ZoomInHS;
+			TreeZoomInToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+			TreeZoomInToolStripButton.Name = "treeZoomInToolStripButton";
+			LanguageProvider.SetPropertyNames(TreeZoomInToolStripButton, "Text");
+			TreeZoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
+			TreeZoomInToolStripButton.Text = "T_TREE_ZOOMIN";
+			TreeZoomInToolStripButton.Click += new System.EventHandler(treeZoomInToolStripButton_Click);
 			// 
 			// importToolStripButton
 			// 
-			this.ImportToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.ImportToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
-			this.ImportToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.ImportToolStripButton.Name = "importToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.ImportToolStripButton, "Text");
-			this.ImportToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.ImportToolStripButton.Text = "T_TREE_IMPORTHERE";
-			this.ImportToolStripButton.Click += new System.EventHandler(this.importToolStripButton_Click);
+			ImportToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			ImportToolStripButton.Image = global::MCSkin3D.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
+			ImportToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			ImportToolStripButton.Name = "importToolStripButton";
+			LanguageProvider.SetPropertyNames(ImportToolStripButton, "Text");
+			ImportToolStripButton.Size = new System.Drawing.Size(23, 22);
+			ImportToolStripButton.Text = "T_TREE_IMPORTHERE";
+			ImportToolStripButton.Click += new System.EventHandler(importToolStripButton_Click);
 			// 
 			// newSkinToolStripButton
 			// 
-			this.NewSkinToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.NewSkinToolStripButton.Image = global::MCSkin3D.Properties.Resources.newskin;
-			this.NewSkinToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.NewSkinToolStripButton.Name = "newSkinToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.NewSkinToolStripButton, "Text");
-			this.NewSkinToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.NewSkinToolStripButton.Text = "M_NEWSKIN_HERE";
-			this.NewSkinToolStripButton.Click += new System.EventHandler(this.newSkinToolStripButton_Click);
+			NewSkinToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			NewSkinToolStripButton.Image = global::MCSkin3D.Properties.Resources.newskin;
+			NewSkinToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			NewSkinToolStripButton.Name = "newSkinToolStripButton";
+			LanguageProvider.SetPropertyNames(NewSkinToolStripButton, "Text");
+			NewSkinToolStripButton.Size = new System.Drawing.Size(23, 22);
+			NewSkinToolStripButton.Text = "M_NEWSKIN_HERE";
+			NewSkinToolStripButton.Click += new System.EventHandler(newSkinToolStripButton_Click);
 			// 
 			// newFolderToolStripButton
 			// 
-			this.NewFolderToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.NewFolderToolStripButton.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
-			this.NewFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.NewFolderToolStripButton.Name = "newFolderToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.NewFolderToolStripButton, "Text");
-			this.NewFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.NewFolderToolStripButton.Text = "T_TREE_NEWFOLDER";
-			this.NewFolderToolStripButton.Click += new System.EventHandler(this.newFolderToolStripButton_Click);
+			NewFolderToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			NewFolderToolStripButton.Image = global::MCSkin3D.Properties.Resources.NewFolderHS;
+			NewFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			NewFolderToolStripButton.Name = "newFolderToolStripButton";
+			LanguageProvider.SetPropertyNames(NewFolderToolStripButton, "Text");
+			NewFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
+			NewFolderToolStripButton.Text = "T_TREE_NEWFOLDER";
+			NewFolderToolStripButton.Click += new System.EventHandler(newFolderToolStripButton_Click);
 			// 
 			// renameToolStripButton
 			// 
-			this.RenameToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.RenameToolStripButton.Image = global::MCSkin3D.Properties.Resources.Rename;
-			this.RenameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.RenameToolStripButton.Name = "renameToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.RenameToolStripButton, "Text");
-			this.RenameToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.RenameToolStripButton.Text = "T_TREE_RENAME";
-			this.RenameToolStripButton.Click += new System.EventHandler(this.renameToolStripButton_Click);
+			RenameToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			RenameToolStripButton.Image = global::MCSkin3D.Properties.Resources.Rename;
+			RenameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			RenameToolStripButton.Name = "renameToolStripButton";
+			LanguageProvider.SetPropertyNames(RenameToolStripButton, "Text");
+			RenameToolStripButton.Size = new System.Drawing.Size(23, 22);
+			RenameToolStripButton.Text = "T_TREE_RENAME";
+			RenameToolStripButton.Click += new System.EventHandler(renameToolStripButton_Click);
 			// 
 			// deleteToolStripButton
 			// 
-			this.DeleteToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.DeleteToolStripButton.Image = global::MCSkin3D.Properties.Resources.delete;
-			this.DeleteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.DeleteToolStripButton.Name = "deleteToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.DeleteToolStripButton, "Text");
-			this.DeleteToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.DeleteToolStripButton.Text = "T_TREE_DELETE";
-			this.DeleteToolStripButton.Click += new System.EventHandler(this.deleteToolStripButton_Click);
+			DeleteToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			DeleteToolStripButton.Image = global::MCSkin3D.Properties.Resources.delete;
+			DeleteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			DeleteToolStripButton.Name = "deleteToolStripButton";
+			LanguageProvider.SetPropertyNames(DeleteToolStripButton, "Text");
+			DeleteToolStripButton.Size = new System.Drawing.Size(23, 22);
+			DeleteToolStripButton.Text = "T_TREE_DELETE";
+			DeleteToolStripButton.Click += new System.EventHandler(deleteToolStripButton_Click);
 			// 
 			// cloneToolStripButton
 			// 
-			this.CloneToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.CloneToolStripButton.Image = global::MCSkin3D.Properties.Resources.clone;
-			this.CloneToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.CloneToolStripButton.Name = "cloneToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.CloneToolStripButton, "Text");
-			this.CloneToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.CloneToolStripButton.Text = "T_TREE_CLONE";
-			this.CloneToolStripButton.Click += new System.EventHandler(this.cloneToolStripButton_Click);
+			CloneToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			CloneToolStripButton.Image = global::MCSkin3D.Properties.Resources.clone;
+			CloneToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			CloneToolStripButton.Name = "cloneToolStripButton";
+			LanguageProvider.SetPropertyNames(CloneToolStripButton, "Text");
+			CloneToolStripButton.Size = new System.Drawing.Size(23, 22);
+			CloneToolStripButton.Text = "T_TREE_CLONE";
+			CloneToolStripButton.Click += new System.EventHandler(cloneToolStripButton_Click);
 			// 
 			// decResToolStripButton
 			// 
-			this.DecResToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.DecResToolStripButton.Image = global::MCSkin3D.Properties.Resources.incres;
-			this.DecResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.DecResToolStripButton.Name = "decResToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.DecResToolStripButton, "Text");
-			this.DecResToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.DecResToolStripButton.Text = "T_DECRES";
-			this.DecResToolStripButton.Click += new System.EventHandler(this.decResToolStripButton_Click);
+			DecResToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			DecResToolStripButton.Image = global::MCSkin3D.Properties.Resources.incres;
+			DecResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			DecResToolStripButton.Name = "decResToolStripButton";
+			LanguageProvider.SetPropertyNames(DecResToolStripButton, "Text");
+			DecResToolStripButton.Size = new System.Drawing.Size(23, 22);
+			DecResToolStripButton.Text = "T_DECRES";
+			DecResToolStripButton.Click += new System.EventHandler(decResToolStripButton_Click);
 			// 
 			// incResToolStripButton
 			// 
-			this.IncResToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.IncResToolStripButton.Image = global::MCSkin3D.Properties.Resources.decres;
-			this.IncResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.IncResToolStripButton.Name = "incResToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.IncResToolStripButton, "Text");
-			this.IncResToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.IncResToolStripButton.Text = "T_INCRES";
-			this.IncResToolStripButton.Click += new System.EventHandler(this.incResToolStripButton_Click);
+			IncResToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			IncResToolStripButton.Image = global::MCSkin3D.Properties.Resources.decres;
+			IncResToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			IncResToolStripButton.Name = "incResToolStripButton";
+			LanguageProvider.SetPropertyNames(IncResToolStripButton, "Text");
+			IncResToolStripButton.Size = new System.Drawing.Size(23, 22);
+			IncResToolStripButton.Text = "T_INCRES";
+			IncResToolStripButton.Click += new System.EventHandler(incResToolStripButton_Click);
 			// 
 			// fetchToolStripButton
 			// 
-			this.FetchToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.FetchToolStripButton.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
-			this.FetchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.FetchToolStripButton.Name = "fetchToolStripButton";
-			this.LanguageProvider.SetPropertyNames(this.FetchToolStripButton, "Text");
-			this.FetchToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.FetchToolStripButton.Text = "M_FETCH_NAME";
-			this.FetchToolStripButton.Click += new System.EventHandler(this.fetchToolStripButton_Click);
+			FetchToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			FetchToolStripButton.Image = global::MCSkin3D.Properties.Resources.import_from_mc;
+			FetchToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			FetchToolStripButton.Name = "fetchToolStripButton";
+			LanguageProvider.SetPropertyNames(FetchToolStripButton, "Text");
+			FetchToolStripButton.Size = new System.Drawing.Size(23, 22);
+			FetchToolStripButton.Text = "M_FETCH_NAME";
+			FetchToolStripButton.Click += new System.EventHandler(fetchToolStripButton_Click);
 
-			this.LanguageProvider.BaseControl = this;
+			LanguageProvider.BaseControl = this;
+			LanguageProvider.EndInit();
 		}
 
 		private void treeZoomOutToolStripButton_Click(object sender, EventArgs e)

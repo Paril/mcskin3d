@@ -214,7 +214,7 @@ namespace MCSkin3D.Languages
 
 			base.Dispose(disposing);
 		}
-
+		
 		Language _language;
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

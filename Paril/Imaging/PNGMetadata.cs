@@ -128,9 +128,8 @@ namespace Paril.Imaging
 			try
 			{
 				var metadata = new Dictionary<string, string>();
-
-				using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-				using (var br = new EndianBinaryReader(EndianBitConverter.Big, fs))
+				
+				using (var br = new EndianBinaryReader(EndianBitConverter.Big, new FileStream(fileName, FileMode.Open, FileAccess.Read)))
 				{
 					br.ReadBytes(8);
 
@@ -177,8 +176,7 @@ namespace Paril.Imaging
 
 		public static void WriteMetadata(string fileName, Dictionary<string, string> data)
 		{
-			using (var fs = new FileStream(fileName, FileMode.Append, FileAccess.Write))
-			using (var bw = new EndianBinaryWriter(EndianBitConverter.Big, fs))
+			using (var bw = new EndianBinaryWriter(EndianBitConverter.Big, new FileStream(fileName, FileMode.Append, FileAccess.Write)))
 			{
 				foreach (var text in data)
 				{

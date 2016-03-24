@@ -16,7 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -31,12 +30,6 @@ namespace MCSkin3D
 	{
 		private static Settings Settings;
 		public static bool Loaded;
-
-		[Savable]
-		public static bool Animate { get; set; }
-
-		[Savable]
-		public static bool FollowCursor { get; set; }
 
 		[Savable]
 		[DefaultValue(true)]
@@ -135,7 +128,7 @@ namespace MCSkin3D
 		public static bool ResChangeDontShowAgain { get; set; }
 
 		[Savable]
-		[DefaultValue("$(DataLocation)Skins\\")]
+		[DefaultValue(".\\Skins\\")]
 		[TypeSerializer(typeof(StringArraySerializer), true)]
 		public static string[] SkinDirectories { get; set; }
 
@@ -174,37 +167,14 @@ namespace MCSkin3D
 		[DefaultValue(false)]
 		public static bool GridEnabled { get; set; }
 
-		[Savable]
-		[DefaultValue(-1)]
-		public static int RenderMode { get; set; }
-
-		public static class InstallData
-		{
-			[Savable]
-			[DefaultValue(".\\")]
-			public static string DataLocation { get; set; }
-		}
-
 		public static string GetDataURI(string fileOrFolder)
 		{
-			return new DirectoryInfo(Environment.ExpandEnvironmentVariables(InstallData.DataLocation)).FullName + fileOrFolder;
+			return Directory.GetCurrentDirectory() + '\\' + fileOrFolder;
 		}
-
+	
 		public static void Load()
 		{
-			if (File.Exists("installData.ini"))
-			{
-				var installData = new Settings();
-				installData.Structures.Add(typeof(InstallData));
-				installData.Load("installData.ini");
-			}
-			else
-				InstallData.DataLocation = ".\\";
-
-			if (!InstallData.DataLocation.EndsWith("\\") && !InstallData.DataLocation.EndsWith("/"))
-				InstallData.DataLocation += '\\';
-
-			MacroHandler.RegisterMacro("DataLocation", InstallData.DataLocation);
+			MacroHandler.RegisterMacro("DataLocation", ".\\");
 
 			try
 			{
@@ -213,14 +183,14 @@ namespace MCSkin3D
 
 				Settings.Load(GetDataURI("settings.ini"));
 
-				for (var i = 0; i < GlobalSettings.SkinDirectories.Length; ++i)
+				for (var i = 0; i < SkinDirectories.Length; ++i)
 				{
-					var dir = GlobalSettings.SkinDirectories[i];
+					var dir = SkinDirectories[i];
 
 					if (!dir.EndsWith("\\") && !dir.EndsWith("/"))
 						dir += "\\";
 
-					GlobalSettings.SkinDirectories[i] = dir;
+					SkinDirectories[i] = dir;
 				}
 
 				Loaded = true;
@@ -231,7 +201,7 @@ namespace MCSkin3D
 				Loaded = false;
 			}
 
-			MacroHandler.RegisterMacro("DefaultSkinFolder", MacroHandler.ReplaceMacros(GlobalSettings.SkinDirectories[0]));
+			MacroHandler.RegisterMacro("DefaultSkinFolder", MacroHandler.ReplaceMacros(SkinDirectories[0]));
 		}
 
 		public static void Save()

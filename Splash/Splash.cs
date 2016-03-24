@@ -16,8 +16,12 @@ namespace MCSkin3D.Forms
 			InitializeComponent();
 		}
 
+		public static string LoadingValue = "(nothing?)";
+
 		public void SetLoadingString(string s)
 		{
+			LoadingValue = s;
+
 			if (InvokeRequired)
 			{
 				Invoke((Action<string>)SetLoadingString, s);
@@ -127,7 +131,7 @@ namespace MCSkin3D.Forms
 			catch (Exception ex)
 			{
 				Program.Context.SplashForm.Invoke((Action)(() => { Close(); }));
-				Program.RaiseException(new Exception("Failed to initialize program during \"" + label1.Text + "\"", ex));
+				Program.RaiseException(new Exception("Failed to initialize program during \"" + LoadingValue + "\"", ex));
 				Application.Exit();
 			}
 		}

@@ -168,8 +168,6 @@ namespace Paril.OpenGL
 					mesh.Pivot = Mesh.StringToVertex3(n.Attributes["Pivot"].InnerText);
 				if (n.Attributes["IsHelmet"] != null)
 					mesh.HasTransparency = bool.Parse(n.Attributes["IsHelmet"].InnerText);
-				if (n.Attributes["FollowCursor"] != null)
-					mesh.FollowCursor = bool.Parse(n.Attributes["FollowCursor"].InnerText);
 				if (n.Attributes["RotateFactor"] != null)
 					mesh.RotateFactor = float.Parse(n.Attributes["RotateFactor"].InnerText);
 				if (n.Attributes["Rotate"] != null)

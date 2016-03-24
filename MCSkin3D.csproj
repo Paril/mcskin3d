@@ -160,6 +160,7 @@
     <Compile Include="Paril\Controls\TextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Paril\OpenGL\ImmediateRenderer.cs" />
     <Compile Include="Splash\Splash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,7 +306,6 @@
     <Compile Include="Paril\Drawing\Color.cs" />
     <Compile Include="Paril\Extensions\Extensions.cs" />
     <Compile Include="Paril\OpenGL\ClientArrayRenderer.cs" />
-    <Compile Include="Paril\OpenGL\ImmediateRenderer.cs" />
     <Compile Include="Paril\OpenGL\Renderer.cs" />
     <Compile Include="Tools\PencilTool.cs" />
     <Compile Include="Models\ModelLoader.cs" />
@@ -408,6 +408,7 @@
     <Compile Include="Updater\Updater.cs" />
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
+    <EmbeddedResource Include="Resources\simpleColor.fs" />
     <EmbeddedResource Include="Resources\OpenTK.dll" />
     <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
     <None Include="Resources\arrow_Up_16xLG.png" />
@@ -431,6 +432,9 @@
     <None Include="icons\mcskin3d192.png" />
     <Content Include="Icon_new.ico" />
     <None Include="Resources\Generic_Application.png" />
+    <EmbeddedResource Include="Resources\simpleTextured.fs" />
+    <EmbeddedResource Include="Resources\simpleTextured.vs" />
+    <EmbeddedResource Include="Resources\simpleColor.vs" />
     <None Include="Resources\sort-descending.png" />
     <None Include="Resources\sort-ascending.png" />
     <None Include="Resources\filter-icons3.png" />
@@ -467,8 +471,6 @@
     <None Include="Resources\browseto.png" />
     <None Include="Resources\stamp_pattern.png" />
     <None Include="Resources\tinyfont.png" />
-    <None Include="Resources\FFFATLAN.TTF" />
-    <None Include="Resources\ProggyTinySZ.ttf" />
     <None Include="Resources\samesize.png" />
     <None Include="Resources\right_arrow_next.png" />
     <None Include="Resources\112_Minus_Orange_16x16_72.png" />
@@ -477,11 +479,7 @@
     <None Include="Resources\112_Minus_Orange_24x24_72.png" />
     <None Include="Resources\112_Plus_Green_24x24_72.png" />
     <None Include="Resources\112_Plus_Green_32x32_72.png" />
-    <None Include="Resources\buttong_down2.png" />
-    <None Include="Resources\buttong_down.png" />
-    <None Include="Resources\buttong_2.png" />
     <None Include="Resources\slkscr.ttf" />
-    <None Include="Resources\uni05_53.ttf" />
     <None Include="Resources\ZoomOutHS.png" />
     <None Include="Resources\ZoomInHS.png" />
     <None Include="Resources\Rename.png" />
@@ -610,12 +608,6 @@
     <None Include="Resources\dodge.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\camera.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Save.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\SaveAllHS.png" />
   </ItemGroup>
   <ItemGroup>
@@ -667,24 +659,6 @@
     <None Include="Resources\show_right_leg.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ZoomInHS.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomOutHS.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\buttong.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\buttong-2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\buttong-down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\buttong-down2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\copy.cur" />
   </ItemGroup>
   <ItemGroup>
@@ -700,12 +674,6 @@
     <None Include="Resources\NewFolderHS.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Rename.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\delete.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\clone.png" />
   </ItemGroup>
   <ItemGroup>
@@ -713,9 +681,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Folder_32x32_image.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\darkenlighten.png" />

@@ -13,7 +13,6 @@ namespace Paril.OpenGL
 		public Bounds3 Bounds;
 		public Vector3 Center;
 		public List<Face> Faces;
-		public bool FollowCursor;
 		public bool HasTransparency;
 		public PrimitiveType Mode;
 		public string Name;

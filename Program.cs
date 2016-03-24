@@ -21,6 +21,7 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using MCSkin3D.ExceptionHandler;
@@ -36,6 +37,24 @@ namespace MCSkin3D
 		public static Version Version;
 		public static MCSkin3DAppContext Context;
 
+		public static Stream GetResourceStream(string name)
+		{
+			name = "MCSkin3D.Resources." + name;
+			return Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+		}
+
+		public static string GetResourceString(string name, Encoding encoding)
+		{
+			using (var stream = GetResourceStream(name))
+			using (var br = new StreamReader(stream, encoding))
+				return br.ReadToEnd();
+		}
+
+		public static string GetResourceString(string name)
+		{
+			return GetResourceString(name, Encoding.ASCII);
+		}
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -45,9 +64,7 @@ namespace MCSkin3D
 			AppDomain.CurrentDomain.AssemblyResolve +=
 			(sender, args) =>
 			{
-				String resourceName = "MCSkin3D.Resources." + new AssemblyName(args.Name).Name + ".dll";
-
-				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+				using (Stream stream = GetResourceStream(new AssemblyName(args.Name).Name + ".dll"))
 				{
 					if (stream == null)
 						return null;
@@ -93,7 +110,7 @@ namespace MCSkin3D
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			RaiseException((Exception)e.ExceptionObject);
+			RaiseException(e.ExceptionObject as Exception);
 		}
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

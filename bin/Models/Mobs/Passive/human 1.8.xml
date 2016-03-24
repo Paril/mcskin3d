@@ -40,7 +40,7 @@
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
 						<TextureOffset>32,0</TextureOffset>
-						<Scale>0.5</Scale>
+						<Scale>0.25</Scale>
 						<Part>Helmet</Part>
 					</Shape>
 				  <Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body">
@@ -76,7 +76,7 @@
 					<Rotation>0,0,0</Rotation>
 					<Size>8,12,4</Size>
 					<TextureOffset>16,32</TextureOffset>
-					<Scale>0.5</Scale>
+					<Scale>0.25</Scale>
 					<Part>ChestArmor</Part>
 				  </Shape>
 				  <Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Arm">
@@ -112,7 +112,7 @@
 					<Rotation>0,0,0</Rotation>
 					<Size>4,12,4</Size>
 					<TextureOffset>40,32</TextureOffset>
-					<Scale>0.5</Scale>
+					<Scale>0.25</Scale>
 					<Part>RightArmArmor</Part>
 				  </Shape>
 				  <Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Arm">
@@ -148,7 +148,7 @@
 					<Rotation>0,0,0</Rotation>
 					<Size>4,12,4</Size>
 					<TextureOffset>48,48</TextureOffset>
-					<Scale>0.5</Scale>
+					<Scale>0.25</Scale>
 					<Part>LeftArmArmor</Part>
 				  </Shape>
 				  <Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Right Leg">
@@ -184,7 +184,7 @@
 					<Rotation>0,0,0</Rotation>
 					<Size>4,12,4</Size>
 					<TextureOffset>0,32</TextureOffset>
-					<Scale>0.5</Scale>
+					<Scale>0.25</Scale>
 					<Part>RightLegArmor</Part>
 				  </Shape>
 				  <Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Left Leg">
@@ -220,7 +220,7 @@
 					<Rotation>0,0,0</Rotation>
 					<Size>4,12,4</Size>
 					<TextureOffset>0,48</TextureOffset>
-					<Scale>0.5</Scale>
+					<Scale>0.25</Scale>
 					<Part>LeftLegArmor</Part>
 				  </Shape>
 				</Folder>

@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 using MCSkin3D;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Paril.OpenGL
 {
@@ -45,21 +45,7 @@ namespace Paril.OpenGL
 			if (GlobalSettings.RenderBenchmark && Editor.IsRendering)
 				Editor._sortTimer.Stop();
 		}
-
-		/*private float lerp(float min, float max, float value)
-		{
-			return min + value * (max - min);
-		}
-
-		private Color4 GetHeatMap(int count, int index)
-		{
-			Color4 blue = Color4.Blue;
-			Color4 red = Color4.Red;
-			float l = lerp(0, 1.0f, index / (float)count);
-
-			return new Color4(l, 0, (1 - l), 255);
-		}*/
-
+		
 		public void Render()
 		{
 			Sort();
@@ -70,6 +56,8 @@ namespace Paril.OpenGL
 			PreRender();
 
 			GL.Enable(EnableCap.CullFace);
+			GL.CullFace(CullFaceMode.Front);
+
 			foreach (Mesh mesh in _opaqueMeshes)
 				RenderMesh(mesh);
 
@@ -77,11 +65,6 @@ namespace Paril.OpenGL
 
 			foreach (Mesh mesh in _transparentMeshes)
 			{
-				/*foreach (var f in mesh.Faces)
-					for (int i = 0; i < f.Colors.Length; ++i)
-						f.Colors[i] = GetHeatMap(TransparentMeshes.Count, TransparentMeshes.IndexOf(mesh));
-				*/
-
 				GL.CullFace(CullFaceMode.Back);
 				RenderMesh(mesh);
 				GL.CullFace(CullFaceMode.Front);
@@ -89,6 +72,7 @@ namespace Paril.OpenGL
 			}
 
 			GL.Disable(EnableCap.Blend);
+			GL.Disable(EnableCap.CullFace);
 
 			PostRender();
 
@@ -106,18 +90,19 @@ namespace Paril.OpenGL
 			PreRender();
 			
 			GL.Enable(EnableCap.CullFace);
+			GL.CullFace(CullFaceMode.Back);
+
 			foreach (Mesh mesh in _opaqueMeshes)
 				RenderMesh(mesh);
 
 			foreach (Mesh mesh in _transparentMeshes)
 			{
-				GL.CullFace(CullFaceMode.Back);
-				RenderMesh(mesh);
 				GL.CullFace(CullFaceMode.Front);
+				RenderMesh(mesh);
+				GL.CullFace(CullFaceMode.Back);
 				RenderMesh(mesh);
 			}
 
-			GL.CullFace(CullFaceMode.Front);
 			GL.Disable(EnableCap.CullFace);
 
 			PostRender();

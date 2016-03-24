@@ -1,3 +1,15 @@
+Version 1.5.0.402
+- Downgraded GLSL requirement to 330
+
+Version 1.5.0.401
+- Fixed camera closeness pick issue
+
+Version 1.5.0.400
+- Moved to GL 4, may not work on old old systems. Sorry!
+- Removed 32-bit pixel format requirement
+- Mathematically-accurate picking
+- Some fixes here and there
+
 Version 1.5.0.301
 - Minor fixes
 

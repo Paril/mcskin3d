@@ -40,7 +40,7 @@
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
 						<TextureOffset>32,0</TextureOffset>
-						<Scale>0.5</Scale>
+						<Scale>0.25</Scale>
 						<Part>Helmet</Part>
 					</Shape>
 					<Shape type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" name="Body">

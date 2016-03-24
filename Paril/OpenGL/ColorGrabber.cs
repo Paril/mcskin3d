@@ -80,7 +80,7 @@ namespace Paril.OpenGL
 		void Save();
 	}
 
-	public unsafe class ColorGrabber : IColorGrabber<Texture>
+	public unsafe sealed class ColorGrabber : IColorGrabber<Texture>
 	{
 		#region Delegates
 

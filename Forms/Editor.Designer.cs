@@ -51,8 +51,6 @@
 			this.hybridViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.threeDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.animateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.followCursorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.grassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ghostHiddenPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.antialiasingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,10 +99,6 @@
 			this.keyboardShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.rendererToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.clientArraysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.immediateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
 			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -377,8 +371,6 @@
 			// threeDToolStripMenuItem
 			// 
 			this.threeDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.animateToolStripMenuItem,
-            this.followCursorToolStripMenuItem,
             this.grassToolStripMenuItem,
             this.ghostHiddenPartsToolStripMenuItem,
             this.antialiasingToolStripMenuItem});
@@ -386,26 +378,6 @@
 			this.languageProvider1.SetPropertyNames(this.threeDToolStripMenuItem, "Text");
 			this.threeDToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.threeDToolStripMenuItem.Text = "M_3D";
-			// 
-			// animateToolStripMenuItem
-			// 
-			this.animateToolStripMenuItem.Name = "animateToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.animateToolStripMenuItem, "Text");
-			this.animateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-			this.animateToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
-			this.animateToolStripMenuItem.Text = "M_ANIMATE";
-			this.animateToolStripMenuItem.Visible = false;
-			this.animateToolStripMenuItem.Click += new System.EventHandler(this.animateToolStripMenuItem_Click);
-			// 
-			// followCursorToolStripMenuItem
-			// 
-			this.followCursorToolStripMenuItem.Name = "followCursorToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.followCursorToolStripMenuItem, "Text");
-			this.followCursorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-			this.followCursorToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
-			this.followCursorToolStripMenuItem.Text = "M_FOLLOWCUR";
-			this.followCursorToolStripMenuItem.Visible = false;
-			this.followCursorToolStripMenuItem.Click += new System.EventHandler(this.followCursorToolStripMenuItem_Click);
 			// 
 			// grassToolStripMenuItem
 			// 
@@ -823,8 +795,6 @@
             this.keyboardShortcutsToolStripMenuItem,
             this.backgroundColorToolStripMenuItem,
             this.mSKINDIRSToolStripMenuItem,
-            this.toolStripSeparator12,
-            this.rendererToolStripMenuItem,
             this.toolStripMenuItem4,
             this.languageToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -855,37 +825,6 @@
 			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
 			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
 			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(172, 6);
-			// 
-			// rendererToolStripMenuItem
-			// 
-			this.rendererToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clientArraysToolStripMenuItem,
-            this.immediateToolStripMenuItem});
-			this.rendererToolStripMenuItem.Name = "rendererToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.rendererToolStripMenuItem, "Text");
-			this.rendererToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-			this.rendererToolStripMenuItem.Text = "M_RENDERER";
-			// 
-			// clientArraysToolStripMenuItem
-			// 
-			this.clientArraysToolStripMenuItem.Name = "clientArraysToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.clientArraysToolStripMenuItem, "Text");
-			this.clientArraysToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.clientArraysToolStripMenuItem.Text = "M_CLIENTARRAYS";
-			this.clientArraysToolStripMenuItem.Click += new System.EventHandler(this.clientArraysToolStripMenuItem_Click);
-			// 
-			// immediateToolStripMenuItem
-			// 
-			this.immediateToolStripMenuItem.Name = "immediateToolStripMenuItem";
-			this.languageProvider1.SetPropertyNames(this.immediateToolStripMenuItem, "Text");
-			this.immediateToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.immediateToolStripMenuItem.Text = "M_IMMEDIATE";
-			this.immediateToolStripMenuItem.Click += new System.EventHandler(this.immediateToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem4
 			// 
@@ -1255,7 +1194,6 @@
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
-			this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
 			// 
 			// toolStripStatusLabel1
 			// 
@@ -1642,7 +1580,6 @@
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.Name = "Editor";
 			this.Text = "MCSkin3D";
-			this.Load += new System.EventHandler(this.MCSkin3D_Load);
 			this.mainMenuStrip.ResumeLayout(false);
 			this.mainMenuStrip.PerformLayout();
 			this.contextMenuStrip1.ResumeLayout(false);
@@ -1679,8 +1616,6 @@
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem threeDToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem animateToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem followCursorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem grassToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem twoDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem alphaCheckerboardToolStripMenuItem;
@@ -1799,10 +1734,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem officialMinecraftForumsThreadToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem planetMinecraftSubmissionToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
-		private System.Windows.Forms.ToolStripMenuItem rendererToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem clientArraysToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem immediateToolStripMenuItem;
 		public Languages.LanguageProvider languageProvider1;
 		private System.Windows.Forms.ToolStripButton toggleHelmetToolStripButton;
 		private System.Windows.Forms.ToolStripButton toggleLeftArmArmorToolStripButton;
