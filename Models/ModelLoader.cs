@@ -81,7 +81,7 @@ namespace MCSkin3D
 			private Dictionary<string, TextureOffset> modelTextureMap = new Dictionary<string, TextureOffset>();
 			public int textureWidth = 64;
 			public int textureHeight = 32;
-			
+
 			public ModelRenderer getRandomModelBox(Random rand)
 			{
 				return (ModelRenderer)this.boxList[rand.Next(this.boxList.Count)];
@@ -135,103 +135,111 @@ namespace MCSkin3D
 				using (XmlWriter writer = XmlWriter.Create(fileName, settings))
 				{
 					writer.WriteStartElement("Techne");
-					writer.WriteAttributeString("Version", "2.2");
-					writer.WriteElementString("Author", "Mojang");
-					writer.WriteElementString("DateCreated", "");
-					writer.WriteElementString("Description", "Compiled from Minecraft source. Mojang pls don't sue :(");
-
-					writer.WriteStartElement("Models");
-					writer.WriteStartElement("Model");
-					writer.WriteAttributeString("Texture", "none.png");
-
-					writer.WriteElementString("BaseClass", "ModelBase");
-
-					writer.WriteStartElement("Geometry");
-
-					writer.WriteStartElement("Folder");
-					writer.WriteAttributeString("Type", "f8bf7d5b-37bf-455b-93f9-b6f9e81620e1");
-					writer.WriteAttributeString("Name", "Model");
-
-					int tw = textureWidth, th = textureHeight;
-
-					Action<ModelRenderer, ModelBox, Vector3, Vector3> renderRecursive = null;
-
-					renderRecursive = (renderer, x, translation, rotation) =>
 					{
-						if (!renderer.showModel)
-							return;
+						writer.WriteAttributeString("Version", "2.2");
+						writer.WriteElementString("Author", "Mojang");
+						writer.WriteElementString("DateCreated", "");
+						writer.WriteElementString("Description", "Compiled from Minecraft source. Mojang pls don't sue :(");
 
-						writer.WriteStartElement("Shape");
-						writer.WriteAttributeString("Type", "d9e621f7-957f-4b77-b1ae-20dcd0da7751");
-						writer.WriteAttributeString("Name", x.boxName == null ? (renderer.boxName == null ? "Unknown" : renderer.boxName) : x.boxName);
+						writer.WriteStartElement("Models");
+						{
+							writer.WriteStartElement("Model");
+							{
+								writer.WriteAttributeString("Texture", "none.png");
+								writer.WriteElementString("BaseClass", "ModelBase");
+								writer.WriteElementString("Name", name);
 
-						translation.X += renderer.rotationPointX;
-						translation.Y += renderer.rotationPointY;
-						translation.Z += renderer.rotationPointZ;
+								if (!string.IsNullOrEmpty(textureRef))
+									writer.WriteElementString("BaseTexture", System.Convert.ToBase64String(File.ReadAllBytes(rootPos)));
 
-						rotation.X += renderer.rotateAngleX;
-						rotation.Y += renderer.rotateAngleY;
-						rotation.Z += renderer.rotateAngleZ;
+								int tw = textureWidth, th = textureHeight;
 
-						writer.WriteElementString("IsDecorative", "False");
-						writer.WriteElementString("IsFixed", "False");
-						writer.WriteElementString("IsMirrored", x.mirrored.ToString());
-						writer.WriteElementString("Offset",
-													x.posX1.ToString(CultureInfo.InvariantCulture) + "," +
-													x.posY1.ToString(CultureInfo.InvariantCulture) + "," +
-													x.posZ1.ToString(CultureInfo.InvariantCulture));
-						writer.WriteElementString("Position", translation.X.ToString(CultureInfo.InvariantCulture) + "," +
-													translation.Y.ToString(CultureInfo.InvariantCulture) + "," +
-													translation.Z.ToString(CultureInfo.InvariantCulture));
-						writer.WriteElementString("Rotation",
-													OpenTK.MathHelper.RadiansToDegrees(rotation.X).ToString(CultureInfo.InvariantCulture) + "," +
-													OpenTK.MathHelper.RadiansToDegrees(rotation.Y).ToString(CultureInfo.InvariantCulture) + "," +
-													OpenTK.MathHelper.RadiansToDegrees(rotation.Z).ToString(CultureInfo.InvariantCulture));
-						writer.WriteElementString("Size", (x.posX2 - x.posX1).ToString(CultureInfo.InvariantCulture) + "," + (x.posY2 - x.posY1).ToString(CultureInfo.InvariantCulture) + "," + (x.posZ2 - x.posZ1).ToString(CultureInfo.InvariantCulture));
-						writer.WriteElementString("TextureOffset", x.textureX + "," + x.textureY);
+								writer.WriteStartElement("Geometry");
+								{
+									writer.WriteStartElement("Folder");
+									{
+										writer.WriteAttributeString("Type", "f8bf7d5b-37bf-455b-93f9-b6f9e81620e1");
+										writer.WriteAttributeString("Name", "Model");
 
-						// Paril: MCSkin3D additions
-						writer.WriteElementString("Scale", x.sizeOfs.ToString(CultureInfo.InvariantCulture));
-						//writer.WriteElementString("Part", renderer.Flags.ToString());
-						writer.WriteElementString("Hidden", renderer.isHidden.ToString());
+										Action<ModelRenderer, ModelBox, Vector3, Vector3> renderRecursive = null;
+
+										renderRecursive = (renderer, x, translation, rotation) =>
+										{
+											if (!renderer.showModel)
+												return;
+
+											writer.WriteStartElement("Shape");
+											{
+												writer.WriteAttributeString("Type", "d9e621f7-957f-4b77-b1ae-20dcd0da7751");
+												writer.WriteAttributeString("Name", x.boxName == null ? (renderer.boxName == null ? "Unknown" : renderer.boxName) : x.boxName);
+
+												translation.X += renderer.rotationPointX;
+												translation.Y += renderer.rotationPointY;
+												translation.Z += renderer.rotationPointZ;
+
+												rotation.X += renderer.rotateAngleX;
+												rotation.Y += renderer.rotateAngleY;
+												rotation.Z += renderer.rotateAngleZ;
+
+												writer.WriteElementString("IsDecorative", "False");
+												writer.WriteElementString("IsFixed", "False");
+												writer.WriteElementString("IsMirrored", x.mirrored.ToString());
+												writer.WriteElementString("Offset",
+																			x.posX1.ToString(CultureInfo.InvariantCulture) + "," +
+																			x.posY1.ToString(CultureInfo.InvariantCulture) + "," +
+																			x.posZ1.ToString(CultureInfo.InvariantCulture));
+												writer.WriteElementString("Position", translation.X.ToString(CultureInfo.InvariantCulture) + "," +
+																			translation.Y.ToString(CultureInfo.InvariantCulture) + "," +
+																			translation.Z.ToString(CultureInfo.InvariantCulture));
+												writer.WriteElementString("Rotation",
+																			OpenTK.MathHelper.RadiansToDegrees(rotation.X).ToString(CultureInfo.InvariantCulture) + "," +
+																			OpenTK.MathHelper.RadiansToDegrees(rotation.Y).ToString(CultureInfo.InvariantCulture) + "," +
+																			OpenTK.MathHelper.RadiansToDegrees(rotation.Z).ToString(CultureInfo.InvariantCulture));
+												writer.WriteElementString("Size", (x.posX2 - x.posX1).ToString(CultureInfo.InvariantCulture) + "," + (x.posY2 - x.posY1).ToString(CultureInfo.InvariantCulture) + "," + (x.posZ2 - x.posZ1).ToString(CultureInfo.InvariantCulture));
+												writer.WriteElementString("TextureOffset", x.textureX + "," + x.textureY);
+
+												// Paril: MCSkin3D additions
+												writer.WriteElementString("Scale", x.sizeOfs.ToString(CultureInfo.InvariantCulture));
+												writer.WriteElementString("Part", renderer.part.ToString());
+												writer.WriteElementString("Hidden", renderer.isHidden.ToString());
+
+												writer.WriteEndElement();
+											}
+
+											if (renderer.childModels != null)
+												foreach (var child in renderer.childModels)
+													foreach (var box in child.cubeList)
+														renderRecursive(child, box, translation, rotation);
+										};
+
+										foreach (ModelRenderer renderer in boxList)
+										{
+											if (renderer.parent != null)
+												continue;
+
+											foreach (ModelBox x in renderer.cubeList)
+												renderRecursive(renderer, x, new Vector3(renderer.offsetX, renderer.offsetY, renderer.offsetZ), Vector3.Zero);
+
+											tw = (int)System.Math.Max(renderer.textureWidth, tw);
+											th = (int)System.Math.Max(renderer.textureHeight, th);
+										}
+
+										writer.WriteEndElement();
+									}
+
+									writer.WriteEndElement();
+								}
+
+								writer.WriteElementString("TextureSize", tw + "," + th);
+								writer.WriteEndElement();
+							}
+							writer.WriteEndElement();
+						}
+
+						writer.WriteElementString("Name", name);
 
 						writer.WriteEndElement();
-
-						if (renderer.childModels != null)
-							foreach (var child in renderer.childModels)
-								foreach (var box in child.cubeList)
-									renderRecursive(child, box, translation, rotation);
-					};
-
-					foreach (ModelRenderer renderer in boxList)
-					{
-						if (renderer.parent != null)
-							continue;
-
-						foreach (ModelBox x in renderer.cubeList)
-							renderRecursive(renderer, x, new Vector3(renderer.offsetX, renderer.offsetY, renderer.offsetZ), Vector3.Zero);
-
-						tw = (int)System.Math.Max(renderer.textureWidth, tw);
-						th = (int)System.Math.Max(renderer.textureHeight, th);
 					}
-
-					writer.WriteEndElement();
-
-					writer.WriteEndElement();
-
-					writer.WriteElementString("GlScale", "1,1,1");
-					writer.WriteElementString("Name", name);
-					writer.WriteElementString("TextureSize", tw + "," + th);
-
-					if (!string.IsNullOrEmpty(textureRef))
-						writer.WriteElementString("BaseTexture", System.Convert.ToBase64String(File.ReadAllBytes(rootPos)));
-
-					writer.WriteEndElement();
-					writer.WriteEndElement();
-
-					writer.WriteElementString("Name", name);
-
-					writer.WriteEndElement();
 				}
 			}
 

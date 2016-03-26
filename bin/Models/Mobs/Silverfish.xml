@@ -5,6 +5,8 @@
 	<Models>
 		<Model Texture="none.png">
 			<BaseClass>ModelBase</BaseClass>
+			<Name>Silverfish</Name>
+			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABmJLR0QAUQB+AGmWMcGiAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEF0lEQVRo3u2Yu04bURCG/Rp5AaQ0FhYFd3ETNwkURTQpKUkZAcYYYzC+cfENDBIJKB2KkNJSp0hSUSRV6hQp8hYTfxMGrTdegx3wxoSRjs7uOWcX/n9m/hlvIHBlS0tLEk8WZWNjQ6anp2V4eFimpqYkUMOKRxnJneRkbGxMJiYmqs48+/Iz0JbW0dEhxWJRmEdHR5UA5lpnVwpvJJbIy+zsrJLQ1gRsb28r6Mqlep+Z+3Q6LSsrKxKPx2V9fV1BQhDryWRSYrGYlEolyeVy+tzOzo4YATbawgCVz+clkUhIJpNRYOVyWYGlUilZW1tTEpp5txHxPP6yihi7v4w8qVq34bV+r+TiRUIbHVhcXFQdGBwclL6+PhkfHxevtCFi3OvzF+eB8IeL32DeP9WZdztnxovsK50rTviDNNvzIvFeIgFhy5dTGtIA7+3tlZ6eHtWDRgjASpcfq4DzXubCYbpqhiAIw4w0JaUitHbtJO3OCQA4uVwoFDS/l5eXZWtrSwVxf39fqA6rq6uCVjAbcAPvvGbv3bev+t7PP75f/+MGNhrfk0jhRJid65y1Z50g3eeca3dmiNfu7q4KnYkbeX96eip7e3sqbqRENBpVghrVAFKqXi5DSIXkqmdYa5kG4FlA4mmAb25uagrgfcQR0OFwWNcgqFECLj+FPEGYN2tpQMtF0IQQIvIneSHsSAPWaHa6urokFArpQBvcDVAtu8n7pgGVv3HrqIE0/rd7K4kAtlzlHkIA293drSR0dnbKwMCAZ5PkjgDzcr0IcKeArxEAaBimIgDeWmNKIuCDwaBWBq8ImA+eX48rUgMLCwvqZQZgbbDO7IyAltvR0ZE2PSg/g5ynKqAHVATE8eDgQJsjNAEd4Fw2m9Wz7KMbXgT884bSQwCgAQRwukKrBgzWAc8ZBJOKAHCu2bdWuS0JsLbX8j8SieiMV7mmDT47O9OqYATwG4EzkMTsVR7fVkiwQVrZtXvP60zLCMC7ALMmiAgAOEApgaTJ4eGhEgAp7BM5NEY850UA3ZwBQvDqEeDcp4HyJRqc3wTo//v7+7XkNfs+N7BaBNi3Bbu3a19Mq0DlH4IIlH9oaEhGRkb+igDngNx6KeAkzDcCCD/mmZkZLX2Tk5PSDOi2MStn5DjqjrBR6izP2TexY+3BEXB8fCwMhBCwiB9kUBUQSH4rQISRc9v3OhXdxJDZKz18Iw7wAMbrVAFUnroOGag+TZCBdzY8t4mEcO61nievnbPt13rGV8NDeG5ubs7zi3AzEeDlXd+97zY8xo8g+nyvr0CNCqLz2pkCtfZ9N2ownqMEuj93N2rucnZTyPtGAOJnX4btKzD3iB8tsn0g8d8992SIH0BRfMSPz2OURUQQUgDP/oMl4NEe7dEe7X+2X7PVAQN9gYvvAAAAAElFTkSuQmCC</BaseTexture>
 			<Geometry>
 				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -17,6 +19,7 @@
 						<Size>3,2,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -29,6 +32,7 @@
 						<Size>4,3,2</Size>
 						<TextureOffset>0,4</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -41,6 +45,7 @@
 						<Size>6,4,3</Size>
 						<TextureOffset>0,9</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -53,6 +58,7 @@
 						<Size>3,3,3</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -65,6 +71,7 @@
 						<Size>2,2,3</Size>
 						<TextureOffset>0,22</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -77,6 +84,7 @@
 						<Size>2,1,2</Size>
 						<TextureOffset>11,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -89,6 +97,7 @@
 						<Size>1,1,2</Size>
 						<TextureOffset>13,4</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -101,6 +110,7 @@
 						<Size>10,8,3</Size>
 						<TextureOffset>20,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -113,6 +123,7 @@
 						<Size>6,4,3</Size>
 						<TextureOffset>20,11</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -125,14 +136,12 @@
 						<Size>6,5,2</Size>
 						<TextureOffset>20,18</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 				</Folder>
 			</Geometry>
-			<GlScale>1,1,1</GlScale>
-			<Name>Silverfish</Name>
 			<TextureSize>64,32</TextureSize>
-			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABmJLR0QAUQB+AGmWMcGiAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEF0lEQVRo3u2Yu04bURCG/Rp5AaQ0FhYFd3ETNwkURTQpKUkZAcYYYzC+cfENDBIJKB2KkNJSp0hSUSRV6hQp8hYTfxMGrTdegx3wxoSRjs7uOWcX/n9m/hlvIHBlS0tLEk8WZWNjQ6anp2V4eFimpqYkUMOKRxnJneRkbGxMJiYmqs48+/Iz0JbW0dEhxWJRmEdHR5UA5lpnVwpvJJbIy+zsrJLQ1gRsb28r6Mqlep+Z+3Q6LSsrKxKPx2V9fV1BQhDryWRSYrGYlEolyeVy+tzOzo4YATbawgCVz+clkUhIJpNRYOVyWYGlUilZW1tTEpp5txHxPP6yihi7v4w8qVq34bV+r+TiRUIbHVhcXFQdGBwclL6+PhkfHxevtCFi3OvzF+eB8IeL32DeP9WZdztnxovsK50rTviDNNvzIvFeIgFhy5dTGtIA7+3tlZ6eHtWDRgjASpcfq4DzXubCYbpqhiAIw4w0JaUitHbtJO3OCQA4uVwoFDS/l5eXZWtrSwVxf39fqA6rq6uCVjAbcAPvvGbv3bev+t7PP75f/+MGNhrfk0jhRJid65y1Z50g3eeca3dmiNfu7q4KnYkbeX96eip7e3sqbqRENBpVghrVAFKqXi5DSIXkqmdYa5kG4FlA4mmAb25uagrgfcQR0OFwWNcgqFECLj+FPEGYN2tpQMtF0IQQIvIneSHsSAPWaHa6urokFArpQBvcDVAtu8n7pgGVv3HrqIE0/rd7K4kAtlzlHkIA293drSR0dnbKwMCAZ5PkjgDzcr0IcKeArxEAaBimIgDeWmNKIuCDwaBWBq8ImA+eX48rUgMLCwvqZQZgbbDO7IyAltvR0ZE2PSg/g5ynKqAHVATE8eDgQJsjNAEd4Fw2m9Wz7KMbXgT884bSQwCgAQRwukKrBgzWAc8ZBJOKAHCu2bdWuS0JsLbX8j8SieiMV7mmDT47O9OqYATwG4EzkMTsVR7fVkiwQVrZtXvP60zLCMC7ALMmiAgAOEApgaTJ4eGhEgAp7BM5NEY850UA3ZwBQvDqEeDcp4HyJRqc3wTo//v7+7XkNfs+N7BaBNi3Bbu3a19Mq0DlH4IIlH9oaEhGRkb+igDngNx6KeAkzDcCCD/mmZkZLX2Tk5PSDOi2MStn5DjqjrBR6izP2TexY+3BEXB8fCwMhBCwiB9kUBUQSH4rQISRc9v3OhXdxJDZKz18Iw7wAMbrVAFUnroOGag+TZCBdzY8t4mEcO61nievnbPt13rGV8NDeG5ubs7zi3AzEeDlXd+97zY8xo8g+nyvr0CNCqLz2pkCtfZ9N2ownqMEuj93N2rucnZTyPtGAOJnX4btKzD3iB8tsn0g8d8992SIH0BRfMSPz2OURUQQUgDP/oMl4NEe7dEe7X+2X7PVAQN9gYvvAAAAAElFTkSuQmCC</BaseTexture>
 		</Model>
 	</Models>
 	<Name>Silverfish</Name>

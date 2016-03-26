@@ -5,6 +5,8 @@
 	<Models>
 		<Model Texture="none.png">
 			<BaseClass>ModelBase</BaseClass>
+			<Name>Blaze</Name>
+			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABmJLR0QAmgAnADR+QyAeAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAI/UlEQVRo3r1Zf2hcVRa+782bZJLJNuuP2meSnWamTTLbjHES62RMQqqlprEN0ygushQa9J91qbhYlBV23YUlu3SxLHRZ/EcRVtjFoiAUXdh/FlqiVBChSoXQUBBRkS5Kd1FaDD2ec+457903qc5kQvvgct9798579/vud369MabBAVfHgRscBljF/lwRont4XcApBc9wPybnO7q8qDc34ChjCz1jirf5ZtuPPT4P8d5AtovPN3QwYFgAWN4hRDxryeD2AIxuysL9OG27tFux9bW3830i4UYQQCDLeZ/7QmcmIkCvN0YAA33ckgCLdc0SMIDTBgS824iYG0FArtM3lfmAAec6fHNnb9b0ZjwmoQ+vN0YAyR5+UQf8l1YJqI6n6kBv8T3opT5tbpgCJqd8BtvbbkFXSoHJGauCjSuApP89u0/3x2/abMF7SSIKwfVTAEtc5M2Sx03+SYdndg52maHNsQ+oSKthq0q/LduxXhNQ8Pux/QbbEfEDC6wAMoGfHWxPgM+JM6Sx60UAASGwJHUCr3IPGWSWSaHzewX4HLZ5+W1rTpBlvyjnC5aEq3EUIOA9QgBHAf/6RQECTXIfnw2sswtIDW1m/CG5FqBzsuNEyD65t26fwJ6fzGB1PA5/V+NwSDJnEnyx+7SExM0ePPxAeg0BG7ZJY8EO3Jwy/erxsU3cFUQ2Pyi7Pu/0NDbU3bHWBODrvRYc9dQ+yfEOXz5VBfhmL3z9AfZLhscuvtkDcKEIkSpwHD7N2etVIWo5b5/zkeQLb+Nv3ymxzzj/ap6f/+VbPXbO2VxLCunt9CLgpIb8Jo9t3d35mi9NFKPz15gAL2RphwVDQM5NAlzey4v+amkSLhIR5/dbEgg8NkvEgwD/GWdA50/kGSwBvHS6xOC++EfOAj/j2/7yLJz+Qwjw2Va4ws+eYNJa8gHGRHaf74qdXsnZ9TnxCTXHNyhJa22cCFguwtkXhuHKmRIT8d8TBQb/Di16aQi+IJDnhqNzajyGClhaxP5iDt49FsDJIyED+1YIWH0BX3H8Vnz+sB37X44JYGJbJUAAV0fbEsmPAleHR/c1S4wUci0CVk9ugVenDZxFQOdf9OCNoyNw+lkDn/07b2WLzo88Ou0+AedzvEcEfHPSg2M/D5k0ImDp6ZBV8fLjBYD3euDDPxr44Pmb4dLrBv75iGEClvH6/aMefPmiaVkBo/1ZM7G3ncFVBXRNlLFHwNO5JkTcfEtE4jg+5sFZBPvMbAbePGzgr4fS8LdfB/DKgmFAh3CcSHkbF0zgPkZA1NP18p997u/GmF/IGFjB878fDOAEkvn7Ow1ceNnj+Yu1EN77i4GXiIBzht/32jMeq6MVAioCJkp5/aTTU/MoO8Cj2qD+YUcR4BMjWd7VxT0GfosEHJ+2iyXwh3bi+KjhRt59EjO95+negSLfGwiQAAyDj+HYMZx/BHseRwJOHLH9o0NIBhKwK5thkpaQgDNPoQJeao2AKTUD39p92GbtnHabdr4k/sCtC/I/SvH83fUPI+C0wKGsxz0BIqA7sT2KgB6b9DikjXV3M3gaO+DFhAykcQ5e78JzInMEn3e3jP8LQf5q3PA1jVdRJX/COa8g0fsfDuBSiwrQnS3oDqesp1cnOOfYu0aGSi2ICEkclKwo6F0IECUEo1riorSLXb4teLImqvymOzM29uP4WHcXLODvCODTY/Y5Uzh+yAiZ+Jxi1ueaYXRTBp7E/qFSAIeF5I2kwgSckqAwbcxWJxqo5EuOUoZvT3O/Jg+BU2iXl38H3K847ZRt662ty+4C8XwW2/2+dUZFXMHYoA1J5Lh+igjc+Bw2Ab4qzyfA5XxgwQqwsBU2GbwS8P877Ln2DgHN1tY6lwDXJC8fvj1lRnJ+QpKDrpNydq2Z3adqz6a/mQSB/Zghrp8AUcDnz4kSlAxRxHpra826aDG0QPpCU6qzSU5bA7vofGfaftCQ3W103DMTcOZH8qf1UGrLXj9lvf+6DwaugGnnTzlEYFtvbV02TvrppqESvhi8hLCaPJdAlJskeHy+jckr9fkMent3EClpoLujRRPAnWYiiAA9FwU0qq1pvMckzYRATzkZ224JXX0ZawY1aTq/PmGpDLeZO/pSrBwqYGjelHp32WnO8vJ+wqSmJQpUjFaC2SZNwHWASEJkDnjeqLbWsZ6M2OecbyZm/USYGrrFgps3cYESOtlaKItnFbTFNb06NlXRfL2yjDU1JZpK3hl5xz7xK82ZgEpeTCC6R06wQW1NC6H7rBD8Ljfj2Drt4kTVfqu7VxY4J0D7JU/PiR1PTfhW1k4Cs1ueUxbymPS0HZ/Y3x6Rr+ZEz6ExzQNobc2ZAAGvt38xh0a1dSRb/TrrLFrHCDg5U9rtQd09Px7nb3l+nNSo01RfQr9DYVlgfuxHCOx2WROF2z3yLg3b1BoToMBV+krGiiWjUW2t4Kvy4kE3rMnO6Lc7bg5RumNhXZTQ4mZO3rnPecbWrMfm4pI752SAalLXrPx+UAFuCFR/gNeNamvascl72iMFuLGe5k/el44WZc0ly8DJdlnyUqENdWcjUlxHGTlM+fQVOgrTsT3ig3Sd9Mxy0wSoE3Slr3kBktCoti4bk9xFcYz0mx29fpyXe04VZ+JoYcnIsL2renQ36f688y6dmyDIj1Wm66ua5jPLOBVecRIiNQEca1RbJwjw4q8127rtbpdcH+EAsZVbW7RTqhJ313k3vTjKlJwQpxFBnR/9PtfhJ+RfbpoA1+4dNRAZjWrr0LFpmqsLJ1Jo0bozEUkpm8rWZ4f6jhmZGz1f/u0hsBX5vRuKeX2eWWOC/deq/L7XCaoDXDGJCED3GtXWVVf6ns3G2Gu70aCuShvZGn++LjgxfcaPwWlt79qzPofGlOQpeQdFGR2f3JXmfsqYdUSBuiJI7zWqrd08obQlwyFNHeW0I31VANcHYsuuSbmhttDVlkiho4QrFdf+VZk/Ubc2cpQ7i37z1WHk9RX8SrIoalRb86LE6dHnanWYTELK2f2U/RPTDZFuBjcvWd2+OimXdL78/UV9ddSPiil9f8Ux0aFb0lGh1ej4DnZofr1YG4IrAAAAAElFTkSuQmCC</BaseTexture>
 			<Geometry>
 				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -17,6 +19,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -29,6 +32,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -41,6 +45,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -53,6 +58,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -65,6 +71,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -77,6 +84,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -89,6 +97,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -101,6 +110,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -113,6 +123,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -125,6 +136,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -137,6 +149,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -149,6 +162,7 @@
 						<Size>2,8,2</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -161,14 +175,12 @@
 						<Size>8,8,8</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 				</Folder>
 			</Geometry>
-			<GlScale>1,1,1</GlScale>
-			<Name>Blaze</Name>
 			<TextureSize>64,32</TextureSize>
-			<BaseTexture>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</BaseTexture>
 		</Model>
 	</Models>
 	<Name>Blaze</Name>

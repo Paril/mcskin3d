@@ -5,6 +5,8 @@
 	<Models>
 		<Model Texture="none.png">
 			<BaseClass>ModelBase</BaseClass>
+			<Name>Chicken</Name>
+			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAARBJREFUaN7tlcENwjAMRTsUCyB2YAFOXFkFiX245MQtC6AsEjCSkbEanEDSRK6/ZLmV2yr+9Uumich7H51zEfOUoet5F2lcTpuPyPnG/XbMeq65oOkQQsSc885hv303D9elBkDzGN0NgKbh72Mu+fO/TkJ3A2jTc0ENoZk3KEXuehY3gnL/vI0ouOZ7Anv2pQjvkPh3PYsbwLmnwWs0qzFgbry/jT5m3ngtI7oiABkbSI0+ZjUG8PHGBnIRUCsJAZ7VGSAhkDoV1EhCQD0ShkBjBPC4XS0CYNoQe0fpqNdCA0wbYu8oHfVaaAyDQOmo10LDEFgLAlItVVeDgFRL1dUgINVSdUPAZDKZTCaTydRWD0ujeW9gLuMuAAAAAElFTkSuQmCC</BaseTexture>
 			<Geometry>
 				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -17,6 +19,7 @@
 						<Size>4,6,3</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -29,6 +32,7 @@
 						<Size>4,2,2</Size>
 						<TextureOffset>14,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -41,6 +45,7 @@
 						<Size>2,2,2</Size>
 						<TextureOffset>14,4</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -53,6 +58,7 @@
 						<Size>6,8,6</Size>
 						<TextureOffset>0,9</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -65,6 +71,7 @@
 						<Size>3,5,3</Size>
 						<TextureOffset>26,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -77,6 +84,7 @@
 						<Size>3,5,3</Size>
 						<TextureOffset>26,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -89,6 +97,7 @@
 						<Size>1,4,6</Size>
 						<TextureOffset>24,13</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -101,14 +110,12 @@
 						<Size>1,4,6</Size>
 						<TextureOffset>24,13</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 				</Folder>
 			</Geometry>
-			<GlScale>1,1,1</GlScale>
-			<Name>Chicken</Name>
 			<TextureSize>64,32</TextureSize>
-			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAARBJREFUaN7tlcENwjAMRTsUCyB2YAFOXFkFiX245MQtC6AsEjCSkbEanEDSRK6/ZLmV2yr+9Uumich7H51zEfOUoet5F2lcTpuPyPnG/XbMeq65oOkQQsSc885hv303D9elBkDzGN0NgKbh72Mu+fO/TkJ3A2jTc0ENoZk3KEXuehY3gnL/vI0ouOZ7Anv2pQjvkPh3PYsbwLmnwWs0qzFgbry/jT5m3ngtI7oiABkbSI0+ZjUG8PHGBnIRUCsJAZ7VGSAhkDoV1EhCQD0ShkBjBPC4XS0CYNoQe0fpqNdCA0wbYu8oHfVaaAyDQOmo10LDEFgLAlItVVeDgFRL1dUgINVSdUPAZDKZTCaTydRWD0ujeW9gLuMuAAAAAElFTkSuQmCC</BaseTexture>
 		</Model>
 	</Models>
 	<Name>Chicken</Name>

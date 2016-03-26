@@ -159,8 +159,7 @@ namespace MCSkin3D.Models
 		public string BaseClass;
 
 		public List<TCNFolder> Geometry = new List<TCNFolder>();
-
-		public Vector3 GlScale;
+		
 		public string Name;
 		public Vector2 TextureSize;
 		public string texture;
@@ -202,8 +201,6 @@ namespace MCSkin3D.Models
 					if (rootFolder.Shapes.Count != 0)
 						Geometry.Add(rootFolder);
 				}
-				else if (name == "glscale")
-					GlScale = Mesh.StringToVertex3(child.InnerText);
 				else if (name == "name")
 					Name = child.InnerText;
 				else if (name == "texturesize")

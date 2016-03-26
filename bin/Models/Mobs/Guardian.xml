@@ -5,6 +5,8 @@
 	<Models>
 		<Model Texture="none.png">
 			<BaseClass>ModelBase</BaseClass>
+			<Name>Guardian</Name>
+			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB94GBREiBZZCqYUAABOLSURBVHjazVtrbJvndWY7D1iacfOgouhlW7cGcTMbTdPEcePKdnSzrIi6iyJFURRF3SVKoijJsiWRulCUTF3srIkTN83S9DL0R4EE/dv+KPJvWOLWrZM0XQt3C4oUG1oMCRqsKDDg7Dzn+87Hl9SFlO2o+4CD7+N3fc/znvO855z3peuNt//FBfn1FS/911o50Xu/IPr92/Tc8pTr5adWRI78zSfJFH0GEl1foNFMgip6Wql9aYL6O+opEmylno4mEW96igLLcRrPLNLwepLvmaTY5iJ5F8apIzVJoeVpigQaRQKLcfIvxii4OEHjW0sUWJkiF29PrJa50B6zTbpFn8tQ9PkMjWwsUuprT1NXekaOsQ9vztHHP+Tae1NFfjZXSq+2fp7odz8nev+XDgBQuP++T4uYx/pc1UQXBebHqGIiRKXBeupt91jKdzZRX6iJqie76Vy8m4J8z9lYkMr5uJL3nXPjVDUeEsW7O1rkmUiwma9b7yuPh/h6V2EAWPnayR6qHgkKAEOXF8lzoV/O4fdnPvJnewNwo+0h+tValfT+z2OldKPtQfrNehn/rqJ/GzlJhQDw/8OnaO3QYREcm79VUrJ3G9fdlLavbRz6K3vvdu6zxHqfKg4QOuqqHCBwDEFvQ1koHV6flZ5XAADOX9/z4b0B+FHb5+jW6BmCBVyvP0b/kSqld5Jn6NepMro1UkqVxx907SQKgCqGxqcNEDKiTAnF43E5xrkNUfwjDki4poqmHcCyyuP5YgBQhWHy+hsWATAKWsCvLj5Eb/Y8SG+fP0Gveh6gX84/SrcGHqb3Uyfoh81HyfyY6fsqaaP30WBV2lKuxOn5TJ5VKAgbhz4q95rWk73fTabCpitom9DLUBZKq/87FsGAnGAdG1ges/f33XtPLgDvXDhK7wwco9e9D9B7yYfo3YVH6d/7Pk/vpb5ANxqPFAQASqa5oVBElTBN3VLG7Zg6zmUMl9AeX7MtRkFQwAoBACXPDnU4AAAQHCsAZbbidSxNLNtI8bcXjtDvLx6lN5qP0O+SD9D/zB+lX4SP0E3+/YfksSIAOGz0eLb30k4vuwUgPd4wuCBtKwxwIFn+KJF3ZAwAdnMB+L2psAIAKwAg6PH77r3XVWsrv40T3j1/H73ecj+9P3+M3mcA3mVA/nfuKP246X76w/znigIg6/duRxF1iYxNglmCK3F6WK1C78fvTB5hFgNA7Pl1YX8ImB8gKBgN2vMsn/3Le7a7wH92fpquP/FZ+m3fUboVOUb/3X+UbtTeT7dCR+g3oc8UBEB9OGX3XO5oUOIQoNWjlruYwJiAZQxrUmsY/HJK/BoKoUdDly6KkivfuEbDV5aktysjbdle35iV+0W+sirPiPB5iA6Zer/rxbbT9EL7GfpWsIy+3lFG3/Q/Tjj3reDj9G0+VwgAk7zSjg+7DX92bxsiMzwSmGSYyWF+t80TbgEMAKiJo8Hq7xCAoYSneyhbNx6RIMtzoVcEx7hujhAATQB4xl9GmSEvrYQ9tNrXSM/6yynT30xLPQ20PuSjnZTOJ0Flc3MkABi5fm0BBKVSORyRHRn0HWnDVUxWV0Xrp3qd3oYipgVoIFQ90rENHLxLFdf3uQopWEgsP87GAmrC6TyXUKLLN3ElTJNATTJEL8P8IThGD4tbsHmrC6hCUA4AqLnDVSQshlvAHWwXMIFxJa5FdhUOeGiv6xBV3iKwXA5IS3RnmXNWqfzhrySH9U0ixT5xbctlSmogvC8B+X38wxYJ3n/vn8s+ZyukYCHRCC9lBz0a3mZZ3u0omU92GibjnBUxuh0LUSu5YwA+ZCn/9+4/ESAq7jYA5fFOqhzrpJqJbjoZbaOu9iYKtXmo1/8EVbZW08lhHyc/XVQe4/s40TkZ9VFoPkZf5P3JYS91++so7K939qfGA3xPOz3mq6VTQ/67YwEMwomGQy6ExdsCoTsFwJeK09h6gtqZaYOLk1QzGZHMrtpbTY80V5KfU2Gkw6Psi0iX6xJD1JAYpvGNZaqfHaLaxAhF2jmFDtSTJxml5vkoneqoo0a+Vj8/dHcsgHv+2Cf+VPbbcgP0TnjeJCW3E4aqKZpxvJIUnmua7qelr1+l+HPrhLwcpDP+1Br1rs9TzUAHxZ6+JNdjL2zQ5Fc3+fhZ8jIInYlxZ8TIRpFum/3dOedTNmeA+QHi0FfX5Z3RZ9Zo8cVnaOWFqxLw4PuLLz4t1xrHIhIngPhchTaYY2Us5ISoGIrSdtCSH9ebSYxvLkoeblTshS0au5yivsws+bjIgYbWTfdx758lb2KUOtfO09iXV2mAr6ORKJ6cHct+Lx/s3MSoxLkH7xy+nOSob1MKJpW9fgYkQYHkuD3ecwywMEkjmSQXZ3zkW4rRCINVEIBqLjpUjYdF4ezwlE1e0gZbm2krihpdCxOU+uev0MBWQnq1drqXQsmYNORUV4MUQdDwjrlRamdwVp57Uio+sB5864rN9pmcmKHETpvdRl7xMWqdGhQLSPP32pZj4k7lkRbpBJWGmQGqYuUD/A0EP/PfuFoYAFReQrMxg8XdOQlN2ji3YefyEJBa/fl+Gr+akepO02QfBVl5KAyr6k5MsjX0CDBoWGdigno3E9Q4PyJVn4yTH1jAanvW+BtqHWaShfdGuaQGN4Pyp8ONYmFfYqBhbR7+Fjini7+D78HVLj1fBAAwZZCWGcSknDC2xOmJdE7aepj6uORVNz1AAxvz9IX6Mnq4oZweboJU0fGmSjpeVya/H2msoOMNFXK9Pt7DBDgkhJctiFhxgrZnIydm0LjATdGgVXOEGwFoWBp6HQD3sMU90lxB7WxpNZMW6L6FMUmSCgKgxcuUEcCkjLAUjczP2tDovmATdfNQFeEITcyfP/zK91+in77+Q3rr9dforTev009v/iv94HsvUcvkAHVdHBPTx3CH7+XHBdoeM6gyA6poV5vUD8eYcIOO8hPCOQAWvY89rA/XArxHxFg0ANnGlJAZ3ioIa7ZLZGwfRS+GeNyGaYILWqf66a03rtvK36Cfvfkag/GagABw0GNwtzA/h+9lrc0C2wRArSNtB0YAq7u9VkBHpRghL1wOBIh3Px5qZpdocgDANYDTnblQzCgQF2RzS1fZ2F4tY+vQX+RYAJRojvdTGxMOfA6+98r3vsMAvEpv/uRVeosVBxivfP9l6Q3whXeBGzc3bFtAbpE0ywHZGqFlCRYh9wYbJaaAG5z0e6hxakDABwCIMwAGrABxCABAp4AICwJQyWVqPGyaozYqZSQrJinBCmq4pA3Wb+cP4WMgvRougcMdPPEIN5BJcXaMe6VP4gwco6HnkkPiCpoY6feuc8z2I1eJy2xD2gAJESdM/xSX3QGCZIBs6hgS69n6EJPgOsgRe5mLuLJYGIDHmZExFO401K3Z7pCbrVmJC0YBmBsmNpT50aAvdTcKoAAC52GaaCSOx5jF0Ytn42EnX1CTv+n6qOvHDELGCIKUD9bs703z5EpFj5eCy1M0yhMnNdM90gFqCQAaAAxuJsnHvQ+gCgKAxsIKMkbQkRsAHc5JUvQeKNww0y9mVsazQie8NfzxZlEcAqUxwXHCd06IqmvJmvXBWI5ASK1Kh9+brk+4brr+1pXNFksc94MlIKbA0AZ2j19e5lggTpiVEuWnreALboZzuDa0ZYXnBQHArA0iODV7JaYto1BpFjHVEvAxKDbyj4vcI1ZjkHvjPFyia27CatCTSxLbQ3k0ys/TXxoKp+z34ZvofYBglsrNQisCr1abA4QL+BtR26JimJ7jbwdsy/Dzvl3AGi8MABKahvBp15Vra0WJn1kYpAefjnEIvNe9PWWrIi/PnaV/uvgErc400vC0T5RZLZt2QfDt3WSnTZ9DoqPvh+j5fLnrAIBcQsm4kM4wV1+KAQDbD1aa6LvpdnpquUNAAA8AiEKKs/U48oEBoCAUIzE2u0Y2/XPM9IHliaIAeGm2kr693CLKx2YCIgGbDAFCKD7sUtlJcVX+AwWgWKnq80n8XR+L8HR3Yt8W8OJqD21cbN4Gwm69/oFbwH43NBpBSQSBCRPbXgXT3Swg3xJMAPZS3gQAG0YgCCI+hL0HAgCSIA2fsRagGADyLcBUHiPJfi1ANygN5SEA4kAAwMIHWfwQrJOFDXsBoFu+Bcwu9+Uo72VzVinEAZgiUzF7X+KRxdWDcQH0fnd7nYy1ZoNMwYYGQUwLUP+H4hDcq/dB9NndRgETBHUBE4Cd2mK+/463NmZ+hKDIvBB8FAJALeD5C+cofb6OBidbHcV3amChxu5kAeoCu7Vlt/ffFiADmXnJ76UCxHnAbh/dyQpup4F7vV8VVxAOBADkDhBYQGx9aU8Advr47dyvJm6yPgSFUGR++a6gvIDryBH2a2V7A8BDH1ZvIRlCbf8gAMg3dVVWKkOspGkJJlBQHtf3er8LRIby8jiXq8v7fZJkIKGQGjwnL2OX5oXsIK3c84lnL3NuHnQSFa3jp405BbO2oDl9OWeAc89u8BpBztZW45ItegZDsh/aWrDXEFoJjk6yjG8scMl9mVrSkwTuQZbnX+FnOR/xLU1KdRikjHgESdHIRpKiK2HXfkQAqOUqCgoMKC0hU2vhYidSTE+8VwgPCxhh9vjACM/InuJp8+z8nk5ulkgWl7sqJLtGoJSnyIYvL3HPTAvAqOvLokjuRbgTcotxyeSsjA/gB+xZJavUFZc2Iedv49QYwDlV6KRVBsO9+wYAqCK7QyGhmRVGQ6yc3prBgamjyIFGDPLEhJenwk4PB5zCiNbucusH2eKK1hcxFyjKpc8LAChs1E5Y1SiQqhZVArJSdFLuQQ+PXbJy/oDMMQwwcF7pFJwT8FAATVoTMqYFLCSviRTcUF1B7/u4xl7R7RWkUWNHbQ35PEpdj7ZVS+0fftXJPfjYUJszg6TTWKbiG04pPbtGoJQBQM96l0alhgBF8f5GBh3lbJS2AQTqjEi4YAEAIrTMpTa74oMCDJRFlQnSPWf1PI5bZgbl/n0DAJS1mgJkAUJ41ipnwQJKI01O1QUKALBuf23O4odcELavF8B1TICigQCwid+nNUOp4fEeRRQprvIeVghLQw9jTTGUhqJwmTpuB1xUFYdlwEJxzQcO2S8AeNBj19bRqNqZPjrDoa4sRTnfJ7k//K3j4qjU2RAGd/nqnBKa5fMWEUajU9uKmUqUeAbVZ1SPgotWz4XF2nplGg2/MccH0GEVIGG4CfgHroFz5f1tMsWGDsFvWABcAuYfSU6JtewbAHwIJKLjO3oE5Swci2XY8274GNi5p6NBMkGtE2bylsJYnFBiVHatkQCTKAifASZMuWa6W9wLFgfw8d1HW8/Kt0HGnsEOARyugDZUMRg6B9iZGBNQZIxnd5X5gWkLtH0DAEThd0BUlcZHwvYHpGjKjA0XgW+iRzq9tY6p68yR9nbKBsYaEbIuAguQIZfJDY2Fu4F7sAcZgnNQTgcIEAx7CLRwvxKksj5AhKWgCIvOCyYtHXDvvgHA0IFJDZ1rA6Kos6NhID/xM5tl4b9QAkNaylkOkyU8Xf6WNpbA6PT3yWhAxu7Y5rJwAf5fAKV1GAQomEB5uKlCiqsKFogXFWEoaAERl4oU/B5t1hEskLSGz30DgKHtXNyaXWmaiAgJ9STivESlRoYd+CmIBqMAKr/4w8MXo/6c9QLWUFdirPEryVkNjnOnh/0SZOHPEu1McAiCPFP9DrgAv41Xh8DvsYYAXDEmQVHcGY49zEnoLJAmXALT7gAFPIA2thlxQNEAYC4fzAoXwIeEDFkwEpSGG6hmpteZgJzaTNHA1ZQMg2lnHsG9w8KGww4X6B5WE31yxRnfsdgBZg7FxbzxpwvM7dvLaVDSxh4gwP3qZqxyu1on9rBOdBSsA9Z0WxwAv8aDbUmeeFiYkJo6GoYeQGg8xYFInH1RrrOJLV29TPiXSP5Kb10tpr5vrgAHCPh3iMUhMce80dNSy0fD2bqk9/kY5xE0CavzeYTKIOD+9Tm5DhcKyOTHglxHnRKh/G0BsN+iqBY8dRGS/v0F1oM5P/nrS0ezDJdg/cpY2JoXZMUxI+TlpSvgEuyhZF/Iy8Ojx3mudXlcgMdQiZlgDYcBXhe7H0YgLclVt1QLmIObdr5i5zGYsI3yOiXkMWhHONAsf8fBMzW81HbUDrkB2B0DAPPF/4DOsFUoACiX4cP4A9VZ+e9PSNYhwd/x+yzfj+Vzp4a8ElRheZxMt/vqhV+Od3qomkeGKvud4KFqNvGa0TD1dmT/k4T9yVADJ1pBjgO4UDMakvsABKbisRIFivfzM1rLLOW2ob2+RJT/w9S1NwD67yvsQZYQ/DYBKFZ0mVvk2jP7kkvXronsN8kp2gX2cgsoa2WBi86fkQACANhp+/8EwKf+7mNUNABmr5sbCFCXoENxBcB8Tl3C+r1125axm+z1LJQsdG3fAJhAAABYgAKAoQfH+ZyQfc/BApCvsAnIHQOgHKDr7KE4AAAQO5HiH9MCdlJcAYHcNQCQE+wEwB/LAnZSNh8UbAVB2A0AHQF0FFBX2M0CipleL6TwnVrATi6wJwDwcyiGvR4j6oOg92H2SoQCCNcEzSERe6tU5Zf9QQCwm+nnW0BRLqDDW74oAFBM2X+n+3BelT8oAAqNAKYU3Jy/mNkCxfUYva8WYPa64xpsDcoTUB77g3SBuwHA/wH8bizBRqJGkAAAAABJRU5ErkJggg==</BaseTexture>
 			<Geometry>
 				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -17,6 +19,7 @@
 						<Size>12,12,16</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -29,6 +32,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -41,6 +45,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -53,6 +58,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -65,6 +71,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -77,6 +84,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -89,6 +97,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -101,6 +110,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -113,6 +123,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -125,6 +136,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -137,6 +149,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -149,6 +162,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -161,6 +175,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -173,6 +188,7 @@
 						<Size>2,2,1</Size>
 						<TextureOffset>8,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -185,6 +201,7 @@
 						<Size>4,4,8</Size>
 						<TextureOffset>40,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -197,6 +214,7 @@
 						<Size>3,3,7</Size>
 						<TextureOffset>0,54</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -209,6 +227,7 @@
 						<Size>2,2,6</Size>
 						<TextureOffset>41,32</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -221,6 +240,7 @@
 						<Size>1,9,9</Size>
 						<TextureOffset>25,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -233,6 +253,7 @@
 						<Size>2,12,12</Size>
 						<TextureOffset>0,28</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -245,6 +266,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -257,6 +279,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -269,6 +292,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -281,6 +305,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -293,6 +318,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -305,6 +331,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -317,6 +344,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -329,6 +357,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -341,6 +370,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -353,6 +383,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -365,6 +396,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -377,6 +409,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -389,6 +422,7 @@
 						<Size>2,2,1</Size>
 						<TextureOffset>8,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -401,6 +435,7 @@
 						<Size>4,4,8</Size>
 						<TextureOffset>40,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -413,6 +448,7 @@
 						<Size>3,3,7</Size>
 						<TextureOffset>0,54</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -425,6 +461,7 @@
 						<Size>2,2,6</Size>
 						<TextureOffset>41,32</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -437,6 +474,7 @@
 						<Size>1,9,9</Size>
 						<TextureOffset>25,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -449,6 +487,7 @@
 						<Size>2,12,12</Size>
 						<TextureOffset>0,28</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -461,6 +500,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -473,6 +513,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -485,6 +526,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -497,6 +539,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -509,6 +552,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -521,6 +565,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -533,6 +578,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -545,6 +591,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -557,6 +604,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -569,6 +617,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -581,6 +630,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -593,6 +643,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -605,6 +656,7 @@
 						<Size>2,2,1</Size>
 						<TextureOffset>8,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -617,6 +669,7 @@
 						<Size>4,4,8</Size>
 						<TextureOffset>40,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -629,6 +682,7 @@
 						<Size>3,3,7</Size>
 						<TextureOffset>0,54</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -641,6 +695,7 @@
 						<Size>2,2,6</Size>
 						<TextureOffset>41,32</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -653,6 +708,7 @@
 						<Size>1,9,9</Size>
 						<TextureOffset>25,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -665,6 +721,7 @@
 						<Size>12,2,12</Size>
 						<TextureOffset>16,40</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -677,6 +734,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -689,6 +747,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -701,6 +760,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -713,6 +773,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -725,6 +786,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -737,6 +799,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -749,6 +812,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -761,6 +825,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -773,6 +838,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -785,6 +851,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -797,6 +864,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -809,6 +877,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -821,6 +890,7 @@
 						<Size>2,2,1</Size>
 						<TextureOffset>8,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -833,6 +903,7 @@
 						<Size>4,4,8</Size>
 						<TextureOffset>40,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -845,6 +916,7 @@
 						<Size>3,3,7</Size>
 						<TextureOffset>0,54</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -857,6 +929,7 @@
 						<Size>2,2,6</Size>
 						<TextureOffset>41,32</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -869,6 +942,7 @@
 						<Size>1,9,9</Size>
 						<TextureOffset>25,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -881,6 +955,7 @@
 						<Size>12,2,12</Size>
 						<TextureOffset>16,40</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -893,6 +968,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -905,6 +981,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -917,6 +994,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -929,6 +1007,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -941,6 +1020,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -953,6 +1033,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -965,6 +1046,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -977,6 +1059,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -989,6 +1072,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1001,6 +1085,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1013,6 +1098,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1025,6 +1111,7 @@
 						<Size>2,9,2</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1037,6 +1124,7 @@
 						<Size>2,2,1</Size>
 						<TextureOffset>8,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1049,6 +1137,7 @@
 						<Size>4,4,8</Size>
 						<TextureOffset>40,0</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1061,6 +1150,7 @@
 						<Size>3,3,7</Size>
 						<TextureOffset>0,54</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1073,6 +1163,7 @@
 						<Size>2,2,6</Size>
 						<TextureOffset>41,32</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
@@ -1085,14 +1176,12 @@
 						<Size>1,9,9</Size>
 						<TextureOffset>25,19</TextureOffset>
 						<Scale>0</Scale>
+						<Part>None</Part>
 						<Hidden>False</Hidden>
 					</Shape>
 				</Folder>
 			</Geometry>
-			<GlScale>1,1,1</GlScale>
-			<Name>Guardian</Name>
 			<TextureSize>64,64</TextureSize>
-			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB94GBREiBZZCqYUAABOLSURBVHjazVtrbJvndWY7D1iacfOgouhlW7cGcTMbTdPEcePKdnSzrIi6iyJFURRF3SVKoijJsiWRulCUTF3srIkTN83S9DL0R4EE/dv+KPJvWOLWrZM0XQt3C4oUG1oMCRqsKDDg7Dzn+87Hl9SFlO2o+4CD7+N3fc/znvO855z3peuNt//FBfn1FS/911o50Xu/IPr92/Tc8pTr5adWRI78zSfJFH0GEl1foNFMgip6Wql9aYL6O+opEmylno4mEW96igLLcRrPLNLwepLvmaTY5iJ5F8apIzVJoeVpigQaRQKLcfIvxii4OEHjW0sUWJkiF29PrJa50B6zTbpFn8tQ9PkMjWwsUuprT1NXekaOsQ9vztHHP+Tae1NFfjZXSq+2fp7odz8nev+XDgBQuP++T4uYx/pc1UQXBebHqGIiRKXBeupt91jKdzZRX6iJqie76Vy8m4J8z9lYkMr5uJL3nXPjVDUeEsW7O1rkmUiwma9b7yuPh/h6V2EAWPnayR6qHgkKAEOXF8lzoV/O4fdnPvJnewNwo+0h+tValfT+z2OldKPtQfrNehn/rqJ/GzlJhQDw/8OnaO3QYREcm79VUrJ3G9fdlLavbRz6K3vvdu6zxHqfKg4QOuqqHCBwDEFvQ1koHV6flZ5XAADOX9/z4b0B+FHb5+jW6BmCBVyvP0b/kSqld5Jn6NepMro1UkqVxx907SQKgCqGxqcNEDKiTAnF43E5xrkNUfwjDki4poqmHcCyyuP5YgBQhWHy+hsWATAKWsCvLj5Eb/Y8SG+fP0Gveh6gX84/SrcGHqb3Uyfoh81HyfyY6fsqaaP30WBV2lKuxOn5TJ5VKAgbhz4q95rWk73fTabCpitom9DLUBZKq/87FsGAnGAdG1ges/f33XtPLgDvXDhK7wwco9e9D9B7yYfo3YVH6d/7Pk/vpb5ANxqPFAQASqa5oVBElTBN3VLG7Zg6zmUMl9AeX7MtRkFQwAoBACXPDnU4AAAQHCsAZbbidSxNLNtI8bcXjtDvLx6lN5qP0O+SD9D/zB+lX4SP0E3+/YfksSIAOGz0eLb30k4vuwUgPd4wuCBtKwxwIFn+KJF3ZAwAdnMB+L2psAIAKwAg6PH77r3XVWsrv40T3j1/H73ecj+9P3+M3mcA3mVA/nfuKP246X76w/znigIg6/duRxF1iYxNglmCK3F6WK1C78fvTB5hFgNA7Pl1YX8ImB8gKBgN2vMsn/3Le7a7wH92fpquP/FZ+m3fUboVOUb/3X+UbtTeT7dCR+g3oc8UBEB9OGX3XO5oUOIQoNWjlruYwJiAZQxrUmsY/HJK/BoKoUdDly6KkivfuEbDV5aktysjbdle35iV+0W+sirPiPB5iA6Zer/rxbbT9EL7GfpWsIy+3lFG3/Q/Tjj3reDj9G0+VwgAk7zSjg+7DX92bxsiMzwSmGSYyWF+t80TbgEMAKiJo8Hq7xCAoYSneyhbNx6RIMtzoVcEx7hujhAATQB4xl9GmSEvrYQ9tNrXSM/6yynT30xLPQ20PuSjnZTOJ0Flc3MkABi5fm0BBKVSORyRHRn0HWnDVUxWV0Xrp3qd3oYipgVoIFQ90rENHLxLFdf3uQopWEgsP87GAmrC6TyXUKLLN3ElTJNATTJEL8P8IThGD4tbsHmrC6hCUA4AqLnDVSQshlvAHWwXMIFxJa5FdhUOeGiv6xBV3iKwXA5IS3RnmXNWqfzhrySH9U0ixT5xbctlSmogvC8B+X38wxYJ3n/vn8s+ZyukYCHRCC9lBz0a3mZZ3u0omU92GibjnBUxuh0LUSu5YwA+ZCn/9+4/ESAq7jYA5fFOqhzrpJqJbjoZbaOu9iYKtXmo1/8EVbZW08lhHyc/XVQe4/s40TkZ9VFoPkZf5P3JYS91++so7K939qfGA3xPOz3mq6VTQ/67YwEMwomGQy6ExdsCoTsFwJeK09h6gtqZaYOLk1QzGZHMrtpbTY80V5KfU2Gkw6Psi0iX6xJD1JAYpvGNZaqfHaLaxAhF2jmFDtSTJxml5vkoneqoo0a+Vj8/dHcsgHv+2Cf+VPbbcgP0TnjeJCW3E4aqKZpxvJIUnmua7qelr1+l+HPrhLwcpDP+1Br1rs9TzUAHxZ6+JNdjL2zQ5Fc3+fhZ8jIInYlxZ8TIRpFum/3dOedTNmeA+QHi0FfX5Z3RZ9Zo8cVnaOWFqxLw4PuLLz4t1xrHIhIngPhchTaYY2Us5ISoGIrSdtCSH9ebSYxvLkoeblTshS0au5yivsws+bjIgYbWTfdx758lb2KUOtfO09iXV2mAr6ORKJ6cHct+Lx/s3MSoxLkH7xy+nOSob1MKJpW9fgYkQYHkuD3ecwywMEkjmSQXZ3zkW4rRCINVEIBqLjpUjYdF4ezwlE1e0gZbm2krihpdCxOU+uev0MBWQnq1drqXQsmYNORUV4MUQdDwjrlRamdwVp57Uio+sB5864rN9pmcmKHETpvdRl7xMWqdGhQLSPP32pZj4k7lkRbpBJWGmQGqYuUD/A0EP/PfuFoYAFReQrMxg8XdOQlN2ji3YefyEJBa/fl+Gr+akepO02QfBVl5KAyr6k5MsjX0CDBoWGdigno3E9Q4PyJVn4yTH1jAanvW+BtqHWaShfdGuaQGN4Pyp8ONYmFfYqBhbR7+Fjini7+D78HVLj1fBAAwZZCWGcSknDC2xOmJdE7aepj6uORVNz1AAxvz9IX6Mnq4oZweboJU0fGmSjpeVya/H2msoOMNFXK9Pt7DBDgkhJctiFhxgrZnIydm0LjATdGgVXOEGwFoWBp6HQD3sMU90lxB7WxpNZMW6L6FMUmSCgKgxcuUEcCkjLAUjczP2tDovmATdfNQFeEITcyfP/zK91+in77+Q3rr9dforTev009v/iv94HsvUcvkAHVdHBPTx3CH7+XHBdoeM6gyA6poV5vUD8eYcIOO8hPCOQAWvY89rA/XArxHxFg0ANnGlJAZ3ioIa7ZLZGwfRS+GeNyGaYILWqf66a03rtvK36Cfvfkag/GagABw0GNwtzA/h+9lrc0C2wRArSNtB0YAq7u9VkBHpRghL1wOBIh3Px5qZpdocgDANYDTnblQzCgQF2RzS1fZ2F4tY+vQX+RYAJRojvdTGxMOfA6+98r3vsMAvEpv/uRVeosVBxivfP9l6Q3whXeBGzc3bFtAbpE0ywHZGqFlCRYh9wYbJaaAG5z0e6hxakDABwCIMwAGrABxCABAp4AICwJQyWVqPGyaozYqZSQrJinBCmq4pA3Wb+cP4WMgvRougcMdPPEIN5BJcXaMe6VP4gwco6HnkkPiCpoY6feuc8z2I1eJy2xD2gAJESdM/xSX3QGCZIBs6hgS69n6EJPgOsgRe5mLuLJYGIDHmZExFO401K3Z7pCbrVmJC0YBmBsmNpT50aAvdTcKoAAC52GaaCSOx5jF0Ytn42EnX1CTv+n6qOvHDELGCIKUD9bs703z5EpFj5eCy1M0yhMnNdM90gFqCQAaAAxuJsnHvQ+gCgKAxsIKMkbQkRsAHc5JUvQeKNww0y9mVsazQie8NfzxZlEcAqUxwXHCd06IqmvJmvXBWI5ASK1Kh9+brk+4brr+1pXNFksc94MlIKbA0AZ2j19e5lggTpiVEuWnreALboZzuDa0ZYXnBQHArA0iODV7JaYto1BpFjHVEvAxKDbyj4vcI1ZjkHvjPFyia27CatCTSxLbQ3k0ys/TXxoKp+z34ZvofYBglsrNQisCr1abA4QL+BtR26JimJ7jbwdsy/Dzvl3AGi8MABKahvBp15Vra0WJn1kYpAefjnEIvNe9PWWrIi/PnaV/uvgErc400vC0T5RZLZt2QfDt3WSnTZ9DoqPvh+j5fLnrAIBcQsm4kM4wV1+KAQDbD1aa6LvpdnpquUNAAA8AiEKKs/U48oEBoCAUIzE2u0Y2/XPM9IHliaIAeGm2kr693CLKx2YCIgGbDAFCKD7sUtlJcVX+AwWgWKnq80n8XR+L8HR3Yt8W8OJqD21cbN4Gwm69/oFbwH43NBpBSQSBCRPbXgXT3Swg3xJMAPZS3gQAG0YgCCI+hL0HAgCSIA2fsRagGADyLcBUHiPJfi1ANygN5SEA4kAAwMIHWfwQrJOFDXsBoFu+Bcwu9+Uo72VzVinEAZgiUzF7X+KRxdWDcQH0fnd7nYy1ZoNMwYYGQUwLUP+H4hDcq/dB9NndRgETBHUBE4Cd2mK+/463NmZ+hKDIvBB8FAJALeD5C+cofb6OBidbHcV3amChxu5kAeoCu7Vlt/ffFiADmXnJ76UCxHnAbh/dyQpup4F7vV8VVxAOBADkDhBYQGx9aU8Advr47dyvJm6yPgSFUGR++a6gvIDryBH2a2V7A8BDH1ZvIRlCbf8gAMg3dVVWKkOspGkJJlBQHtf3er8LRIby8jiXq8v7fZJkIKGQGjwnL2OX5oXsIK3c84lnL3NuHnQSFa3jp405BbO2oDl9OWeAc89u8BpBztZW45ItegZDsh/aWrDXEFoJjk6yjG8scMl9mVrSkwTuQZbnX+FnOR/xLU1KdRikjHgESdHIRpKiK2HXfkQAqOUqCgoMKC0hU2vhYidSTE+8VwgPCxhh9vjACM/InuJp8+z8nk5ulkgWl7sqJLtGoJSnyIYvL3HPTAvAqOvLokjuRbgTcotxyeSsjA/gB+xZJavUFZc2Iedv49QYwDlV6KRVBsO9+wYAqCK7QyGhmRVGQ6yc3prBgamjyIFGDPLEhJenwk4PB5zCiNbucusH2eKK1hcxFyjKpc8LAChs1E5Y1SiQqhZVArJSdFLuQQ+PXbJy/oDMMQwwcF7pFJwT8FAATVoTMqYFLCSviRTcUF1B7/u4xl7R7RWkUWNHbQ35PEpdj7ZVS+0fftXJPfjYUJszg6TTWKbiG04pPbtGoJQBQM96l0alhgBF8f5GBh3lbJS2AQTqjEi4YAEAIrTMpTa74oMCDJRFlQnSPWf1PI5bZgbl/n0DAJS1mgJkAUJ41ipnwQJKI01O1QUKALBuf23O4odcELavF8B1TICigQCwid+nNUOp4fEeRRQprvIeVghLQw9jTTGUhqJwmTpuB1xUFYdlwEJxzQcO2S8AeNBj19bRqNqZPjrDoa4sRTnfJ7k//K3j4qjU2RAGd/nqnBKa5fMWEUajU9uKmUqUeAbVZ1SPgotWz4XF2nplGg2/MccH0GEVIGG4CfgHroFz5f1tMsWGDsFvWABcAuYfSU6JtewbAHwIJKLjO3oE5Swci2XY8274GNi5p6NBMkGtE2bylsJYnFBiVHatkQCTKAifASZMuWa6W9wLFgfw8d1HW8/Kt0HGnsEOARyugDZUMRg6B9iZGBNQZIxnd5X5gWkLtH0DAEThd0BUlcZHwvYHpGjKjA0XgW+iRzq9tY6p68yR9nbKBsYaEbIuAguQIZfJDY2Fu4F7sAcZgnNQTgcIEAx7CLRwvxKksj5AhKWgCIvOCyYtHXDvvgHA0IFJDZ1rA6Kos6NhID/xM5tl4b9QAkNaylkOkyU8Xf6WNpbA6PT3yWhAxu7Y5rJwAf5fAKV1GAQomEB5uKlCiqsKFogXFWEoaAERl4oU/B5t1hEskLSGz30DgKHtXNyaXWmaiAgJ9STivESlRoYd+CmIBqMAKr/4w8MXo/6c9QLWUFdirPEryVkNjnOnh/0SZOHPEu1McAiCPFP9DrgAv41Xh8DvsYYAXDEmQVHcGY49zEnoLJAmXALT7gAFPIA2thlxQNEAYC4fzAoXwIeEDFkwEpSGG6hmpteZgJzaTNHA1ZQMg2lnHsG9w8KGww4X6B5WE31yxRnfsdgBZg7FxbzxpwvM7dvLaVDSxh4gwP3qZqxyu1on9rBOdBSsA9Z0WxwAv8aDbUmeeFiYkJo6GoYeQGg8xYFInH1RrrOJLV29TPiXSP5Kb10tpr5vrgAHCPh3iMUhMce80dNSy0fD2bqk9/kY5xE0CavzeYTKIOD+9Tm5DhcKyOTHglxHnRKh/G0BsN+iqBY8dRGS/v0F1oM5P/nrS0ezDJdg/cpY2JoXZMUxI+TlpSvgEuyhZF/Iy8Ojx3mudXlcgMdQiZlgDYcBXhe7H0YgLclVt1QLmIObdr5i5zGYsI3yOiXkMWhHONAsf8fBMzW81HbUDrkB2B0DAPPF/4DOsFUoACiX4cP4A9VZ+e9PSNYhwd/x+yzfj+Vzp4a8ElRheZxMt/vqhV+Od3qomkeGKvud4KFqNvGa0TD1dmT/k4T9yVADJ1pBjgO4UDMakvsABKbisRIFivfzM1rLLOW2ob2+RJT/w9S1NwD67yvsQZYQ/DYBKFZ0mVvk2jP7kkvXronsN8kp2gX2cgsoa2WBi86fkQACANhp+/8EwKf+7mNUNABmr5sbCFCXoENxBcB8Tl3C+r1125axm+z1LJQsdG3fAJhAAABYgAKAoQfH+ZyQfc/BApCvsAnIHQOgHKDr7KE4AAAQO5HiH9MCdlJcAYHcNQCQE+wEwB/LAnZSNh8UbAVB2A0AHQF0FFBX2M0CipleL6TwnVrATi6wJwDwcyiGvR4j6oOg92H2SoQCCNcEzSERe6tU5Zf9QQCwm+nnW0BRLqDDW74oAFBM2X+n+3BelT8oAAqNAKYU3Jy/mNkCxfUYva8WYPa64xpsDcoTUB77g3SBuwHA/wH8bizBRqJGkAAAAABJRU5ErkJggg==</BaseTexture>
 		</Model>
 	</Models>
 	<Name>Guardian</Name>

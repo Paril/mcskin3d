@@ -3979,11 +3979,11 @@ namespace MCSkin3D
 			{
 				using (Graphics g = Graphics.FromImage(bmp))
 				{
-					g.Clear(Color.FromArgb(0, 255, 255, 255));
+					g.Clear(Color.FromArgb(255, 255, 255, 255));
 
-					if (specificModel.HasDefaultTexture)
+					/*if (specificModel.HasDefaultTexture)
 						using (var bitmap = specificModel.LoadDefaultTexture())
-							g.DrawImage(bitmap, 0, 0);
+							g.DrawImage(bitmap, 0, 0);*/
 				}
 
 				/*FillRectangleAlternating(bmp, 0, 0, 32, 32);
