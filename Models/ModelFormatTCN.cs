@@ -290,49 +290,22 @@ namespace MCSkin3D.Models
 						{
 							var box = (TCNRenderBox)z.RenderData;
 
-							var renderer = new ModelLoader.ModelRenderer(mb, (int)box.TextureOffset.X, (int)box.TextureOffset.Y, box.Part);
-							renderer.mirror = box.IsMirrored;
-							renderer.addBox(z.name, box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
-											(int)box.Size.Z, box.Scale);
+							var renderer = new ModelLoader.ModelRenderer(mb, (int)box.TextureOffset.X, (int)box.TextureOffset.Y);
+							renderer.part = box.Part;
+							renderer.addBox(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
+											(int)box.Size.Z, box.IsMirrored, box.Scale, z.name);
 							renderer.setRotationPoint(box.Position.X, box.Position.Y, box.Position.Z);
 							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
 							renderer.isSolid = box.IsSolid;
 						}
-						else if (z.RenderData is TCNRenderPlane)
-						{
-							var box = (TCNRenderPlane)z.RenderData;
-
-							var renderer = new ModelLoader.PlaneRenderer(mb, z.name, (int)box.TextureOffset.X, (int)box.TextureOffset.Y,
-																		 box.Part);
-							renderer.mirror = box.IsMirrored;
-							renderer.setRotationPoint(box.Position.X, box.Position.Y, box.Position.Z);
-							renderer.rotateAngleX = MathHelper.DegreesToRadians(box.Rotation.X);
-							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
-							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
-
-							switch (box.Side)
-							{
-								case 0:
-									renderer.addBackPlane(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
-														  (int)box.Size.Z, box.Scale);
-									break;
-								case 1:
-									renderer.addSidePlane(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
-														  (int)box.Size.Z, box.Scale);
-									break;
-								case 2:
-									renderer.addTopPlane(box.Offset.X, box.Offset.Y, box.Offset.Z, (int)box.Size.X, (int)box.Size.Y,
-														 (int)box.Size.Z, box.Scale);
-									break;
-							}
-						}
 					}
 				}
 			}
 
-			return mb.Compile(Name, 1, (int)Models[0].TextureSize.X, (int)Models[0].TextureSize.Y);
+			var model = mb.Compile(Name, 1, (int)Models[0].TextureSize.X, (int)Models[0].TextureSize.Y);
+			return model;
 		}
 	}
 

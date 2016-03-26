@@ -90,15 +90,20 @@ namespace MCSkin3D
 #endif
 
 			Version = new Version(Application.ProductVersion);
+
+#if !DEBUG
 			Version.Revision = Repository.Revision;
+#endif
 
 #if !DEBUG
 			try
 			{
 #endif
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MCSkin3DAppContext());
+				Models.Convert.ConversionInterface.Convert();
+
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault(false);
+				Application.Run(new MCSkin3DAppContext());
 #if !DEBUG
 			}
 			catch (Exception ex)

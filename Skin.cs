@@ -170,17 +170,17 @@ namespace MCSkin3D
 						if (Model == null)
 						{
 							if (image.Height == 64)
-								Model = ModelLoader.GetModelForPath("Mobs/Passive/Human (1.8)");
+								Model = ModelLoader.GetModelForPath("Players/Steve (Full)");
 							else
-								Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+								Model = ModelLoader.GetModelForPath("Players/Steve");
 						}
 					}
 					else
 					{
 						if (image.Height == 64)
-							Model = ModelLoader.GetModelForPath("Mobs/Passive/Human (1.8)");
+							Model = ModelLoader.GetModelForPath("Players/Steve (Full)");
 						else
-							Model = ModelLoader.GetModelForPath("Mobs/Passive/Human");
+							Model = ModelLoader.GetModelForPath("Players/Steve");
 					}
 				}
 			}

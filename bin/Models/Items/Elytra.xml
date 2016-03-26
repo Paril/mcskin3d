@@ -1,0 +1,43 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<Offset>-10,0,0</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>10,20,2</Size>
+						<TextureOffset>22,0</TextureOffset>
+						<Scale>1</Scale>
+						<Hidden>False</Hidden>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<Offset>0,0,0</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>10,20,2</Size>
+						<TextureOffset>22,0</TextureOffset>
+						<Scale>1</Scale>
+						<Hidden>False</Hidden>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<GlScale>1,1,1</GlScale>
+			<Name>Elytra</Name>
+			<TextureSize>64,32</TextureSize>
+			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAAAXNSR0IArs4c6QAAAAZiS0dEADUANQA15JFv0QAAAAlwSFlzAAAOwgAADsIBFShKgAAAAAd0SU1FB98KBwc4B3RvG58AAAFESURBVGje7ZhLa8JAFIXnr7XQLkrT2o1EjLhIUapI8UV9LJTYQuumtNiNXZT+0pQzcOAaxEVmUWZyDxwmZiH5vrlGjTH/mItakrOL7ffRmtBDAabqoYiz6ziXk1EZQVIAennXOmhlJJwSELwEAJ5HDRUAYK7sTfMhv0161RFACVf11IKz7cd1uBIAy3sAZOB11OjYAj7uTMMXIIFlcS7pL22DFUBQucrRR7uzrR8CRpuvUhcKcIw6it0muBQwf9vnwQrgmBNYHgN+sPr0Q0DZPzJFAZSQjp/9EuAyAQCVwLI49/TqgYDV+0+piwS4hC0KQMu+txcCEAmOY5bj74UAlzGVwLLDbGfHP+iPAO8f2Gmu3HXZoAXwWyT7+LWPxbjrXglw/cVGAYDlCgnePCu8n7w4XyRhIaBYo9FoNBqNRqPROOUPKLXWoOhtEcwAAAAASUVORK5CYII=</BaseTexture>
+		</Model>
+	</Models>
+	<Name>Elytra</Name>
+</Techne>

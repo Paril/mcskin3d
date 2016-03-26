@@ -646,7 +646,7 @@ namespace MCSkin3D
 			GL.CullFace(CullFaceMode.Front);
 
 			if (grassToolStripMenuItem.Checked)
-				DrawSkinnedRectangle(0, GrassY, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
+				DrawSkinnedRectangle(0, GrassY + 0.25f, 0, 1024, 0, 1024, 0, 0, 1024, 1024, _grassTop, 16, 16);
 
 			GL.Disable(EnableCap.CullFace);
 
@@ -1184,6 +1184,8 @@ namespace MCSkin3D
 					int sizeOfMiniport = 120;
 					float sizeOfCube = sizeOfMiniport;
 
+					GL.Clear(ClearBufferMask.DepthBufferBit);
+
 					Setup2D(new Rectangle(Renderer.Width - sizeOfMiniport, Renderer.Height - sizeOfMiniport, sizeOfMiniport, sizeOfMiniport));
 					GL.Enable(EnableCap.DepthTest);
 					GL.Enable(EnableCap.CullFace);
@@ -1205,6 +1207,7 @@ namespace MCSkin3D
 					GL.Disable(EnableCap.Blend);
 					GL.Disable(EnableCap.CullFace);
 					GL.CullFace(CullFaceMode.Front);
+
 				}
 				else if (_currentViewMode == ViewMode.Orthographic)
 				{
@@ -1224,7 +1227,6 @@ namespace MCSkin3D
 
 				GL.PopMatrix();
 				_renderTimer.Stop();
-
 
 				if (!_screenshotMode)
 					Renderer.SwapBuffers();
@@ -2130,11 +2132,11 @@ namespace MCSkin3D
 			return CurrentLanguage.StringTable[id];
 		}
 
-		public void FinishedLoadingModels()
+		static void CreateModelDropdownItems(ToolStripItemCollection mainCollection, bool main, Action<Model> callback)
 		{
 			foreach (var x in ModelLoader.Models)
 			{
-				ToolStripItemCollection collection = toolStripDropDownButton1.DropDownItems;
+				ToolStripItemCollection collection = mainCollection;
 				string path = Path.GetDirectoryName(x.Value.File.ToString()).Substring(Environment.CurrentDirectory.Length + 7);
 
 				while (!string.IsNullOrEmpty(path))
@@ -2155,8 +2157,20 @@ namespace MCSkin3D
 					path = path.Remove(0, sub.Length + 1);
 				}
 
-				collection.Add(new ModelToolStripMenuItem(x.Value));
+				collection.Add(new ModelToolStripMenuItem(x.Value, main, callback));
 			}
+		}
+
+		public void FinishedLoadingModels()
+		{
+			CreateModelDropdownItems(toolStripDropDownButton1.DropDownItems, true, (model) =>
+			{
+				SetModel(model);
+			});
+			CreateModelDropdownItems(toolStrip2.NewSkinToolStripButton.DropDownItems, false, (model) =>
+			{
+				PerformNewSkin(model);
+			});
 
 			toolStripDropDownButton1.Enabled = true;
 			toolStripDropDownButton1.Text = "None";
@@ -2449,7 +2463,9 @@ namespace MCSkin3D
 
 			for (ToolStripItem parent = _oldModel.OwnerItem; parent != null; parent = parent.OwnerItem)
 				parent.Image = Resources.right_arrow_next;
-			
+
+			treeView1.Invalidate();
+
 			CalculateMatrices();
 			Renderer.Invalidate();
 		}
@@ -3084,7 +3100,7 @@ namespace MCSkin3D
 			InitUnlinkedShortcut("S_RENAME", Keys.Control | Keys.R, PerformNameChange);
 			InitUnlinkedShortcut("T_TREE_IMPORTHERE", Keys.Control | Keys.I, PerformImportSkin);
 			InitUnlinkedShortcut("T_TREE_NEWFOLDER", Keys.Control | Keys.Shift | Keys.N, PerformNewFolder);
-			InitUnlinkedShortcut("M_NEWSKIN_HERE", Keys.Control | Keys.Shift | Keys.M, PerformNewSkin);
+			InitUnlinkedShortcut("M_NEWSKIN_HERE", Keys.Control | Keys.Shift | Keys.M, () => PerformNewSkin(null));
 			InitUnlinkedShortcut("S_COLORSWAP", Keys.S, PerformSwitchColor);
 			InitControlShortcut("S_SWATCH_ZOOMIN", ColorPanel.SwatchContainer.SwatchDisplayer, Keys.Oemplus, PerformSwatchZoomIn);
 			InitControlShortcut("S_SWATCH_ZOOMOUT", ColorPanel.SwatchContainer.SwatchDisplayer, Keys.OemMinus,
@@ -3935,7 +3951,7 @@ namespace MCSkin3D
 				}
 		}
 
-		public void PerformNewSkin()
+		public void PerformNewSkin(Model specificModel = null)
 		{
 			if (!treeView1.Enabled)
 				return;
@@ -3956,17 +3972,30 @@ namespace MCSkin3D
 			while (File.Exists(folderLocation + newSkinName + ".png"))
 				newSkinName = newSkinName.Insert(0, GetLanguageString("C_NEW") + " ");
 
-			using (var bmp = new Bitmap(64, 64))
+			if (specificModel == null)
+				specificModel = CurrentModel;
+
+			using (var bmp = new Bitmap((int)specificModel.DefaultWidth, (int)specificModel.DefaultHeight))
 			{
 				using (Graphics g = Graphics.FromImage(bmp))
+				{
 					g.Clear(Color.FromArgb(0, 255, 255, 255));
 
-				FillRectangleAlternating(bmp, 0, 0, 32, 32);
+					if (specificModel.HasDefaultTexture)
+						using (var bitmap = specificModel.LoadDefaultTexture())
+							g.DrawImage(bitmap, 0, 0);
+				}
+
+				/*FillRectangleAlternating(bmp, 0, 0, 32, 32);
 				FillRectangleAlternating(bmp, 32, 16, 32, 16);
 
-				FillRectangleAlternating(bmp, 16, 48, 32, 16);
+				FillRectangleAlternating(bmp, 16, 48, 32, 16);*/
 
 				bmp.SaveSafe(folderLocation + newSkinName + ".png");
+
+				var md = new Dictionary<string, string>();
+				md.Add("Model", specificModel.Path);
+				PNGMetadata.WriteMetadata(folderLocation + newSkinName + ".png", md);
 			}
 
 			var newSkin = new Skin(folderLocation + newSkinName + ".png");
@@ -4125,29 +4154,7 @@ namespace MCSkin3D
 		}
 
 		#endregion
-
-		#region Nested type: ModelToolStripMenuItem
-
-		public class ModelToolStripMenuItem : ToolStripMenuItem
-		{
-			public Model Model;
-
-			public ModelToolStripMenuItem(Model model) :
-				base(model.Name)
-			{
-				Name = model.Name;
-				Model = model;
-				Model.DropDownItem = this;
-			}
-
-			protected override void OnClick(EventArgs e)
-			{
-				MainForm.SetModel(Model);
-			}
-		}
-
-		#endregion
-
+		
 		#region Constructor
 
 		ToolStripMenuItem[] _partItems;
@@ -4163,6 +4170,9 @@ namespace MCSkin3D
 
 #if BETA
 			Text += " [Beta]";
+#endif
+#if DEBUG
+			Text += " [Debug]";
 #endif
 
 			// Settings
@@ -4203,6 +4213,11 @@ namespace MCSkin3D
 		public static string GLRenderer { get; private set; }
 		public static string GLVendor { get; private set; }
 		public static string GLVersion { get; private set; }
+
+		private void Editor_Load(object sender, EventArgs e)
+		{
+
+		}
 
 		public void Initialize(Language language)
 		{

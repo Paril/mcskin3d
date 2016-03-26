@@ -70,60 +70,169 @@ namespace MCSkin3D
 		 * Magic from Java
 		 */
 
-		#region Nested type: Entity
-
-		public class Entity
-		{
-		}
-
-		#endregion
-
-		#region Nested type: EntityLiving
-
-		public class EntityLiving
-		{
-		}
-
-		#endregion
-
-		#region Nested type: Map
-
-		public class Map
-		{
-		}
-
-		#endregion
-
 		#region Nested type: ModelBase
 
 		public class ModelBase
 		{
-			private readonly Dictionary<string, TextureOffset> field_39000_a;
-			public List<object> boxList;
-			public bool field_40301_k;
+			public float swingProgress;
 			public bool isRiding;
-			public float onGround;
-			public int textureHeight;
-			public int textureWidth;
-
-			public ModelBase()
+			public bool isChild = true;
+			public List<ModelRenderer> boxList = new List<ModelRenderer>();
+			private Dictionary<string, TextureOffset> modelTextureMap = new Dictionary<string, TextureOffset>();
+			public int textureWidth = 64;
+			public int textureHeight = 32;
+			
+			public ModelRenderer getRandomModelBox(Random rand)
 			{
-				isRiding = false;
-				boxList = new List<object>();
-				field_40301_k = true;
-				field_39000_a = new Dictionary<string, TextureOffset>();
-				textureWidth = 64;
-				textureHeight = 32;
+				return (ModelRenderer)this.boxList[rand.Next(this.boxList.Count)];
 			}
 
-			protected void setTextureOffset(String s, int i, int j)
+			protected virtual void setTextureOffset(string partName, int x, int y)
 			{
-				field_39000_a.Add(s, new TextureOffset(i, j));
+				this.modelTextureMap.Add(partName, new TextureOffset(x, y));
 			}
 
-			public TextureOffset func_40297_a(String s)
+			public virtual TextureOffset getTextureOffset(string partName)
 			{
-				return field_39000_a[s];
+				return (TextureOffset)this.modelTextureMap[partName];
+			}
+
+			/**
+			 * Copies the angles from one object to another. This is used when objects should stay aligned with each other, like
+			 * the hair over a players head.
+			 */
+			public static void copyModelAngles(ModelRenderer source, ModelRenderer dest)
+			{
+				dest.rotateAngleX = source.rotateAngleX;
+				dest.rotateAngleY = source.rotateAngleY;
+				dest.rotateAngleZ = source.rotateAngleZ;
+				dest.rotationPointX = source.rotationPointX;
+				dest.rotationPointY = source.rotationPointY;
+				dest.rotationPointZ = source.rotationPointZ;
+			}
+
+			public virtual void setModelAttributes(ModelBase model)
+			{
+				this.swingProgress = model.swingProgress;
+				this.isRiding = model.isRiding;
+				this.isChild = model.isChild;
+			}
+
+			// Paril
+			public void Save(string name, float scale, string fileName, string textureRef)
+			{
+				var settings = new XmlWriterSettings();
+				settings.ConformanceLevel = ConformanceLevel.Fragment;
+				settings.Indent = true;
+				settings.NewLineOnAttributes = false;
+				settings.IndentChars = "\t";
+				settings.Encoding = Encoding.UTF8;
+
+				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
+				var rootPos = Environment.ExpandEnvironmentVariables(@"%appdata%\.minecraft\versions\1.9.1-pre3\1.9.1-pre3\assets\minecraft\textures\entity\" + textureRef);
+
+				using (XmlWriter writer = XmlWriter.Create(fileName, settings))
+				{
+					writer.WriteStartElement("Techne");
+					writer.WriteAttributeString("Version", "2.2");
+					writer.WriteElementString("Author", "Mojang");
+					writer.WriteElementString("DateCreated", "");
+					writer.WriteElementString("Description", "Compiled from Minecraft source. Mojang pls don't sue :(");
+
+					writer.WriteStartElement("Models");
+					writer.WriteStartElement("Model");
+					writer.WriteAttributeString("Texture", "none.png");
+
+					writer.WriteElementString("BaseClass", "ModelBase");
+
+					writer.WriteStartElement("Geometry");
+
+					writer.WriteStartElement("Folder");
+					writer.WriteAttributeString("Type", "f8bf7d5b-37bf-455b-93f9-b6f9e81620e1");
+					writer.WriteAttributeString("Name", "Model");
+
+					int tw = textureWidth, th = textureHeight;
+
+					Action<ModelRenderer, ModelBox, Vector3, Vector3> renderRecursive = null;
+
+					renderRecursive = (renderer, x, translation, rotation) =>
+					{
+						if (!renderer.showModel)
+							return;
+
+						writer.WriteStartElement("Shape");
+						writer.WriteAttributeString("Type", "d9e621f7-957f-4b77-b1ae-20dcd0da7751");
+						writer.WriteAttributeString("Name", x.boxName == null ? (renderer.boxName == null ? "Unknown" : renderer.boxName) : x.boxName);
+
+						translation.X += renderer.rotationPointX;
+						translation.Y += renderer.rotationPointY;
+						translation.Z += renderer.rotationPointZ;
+
+						rotation.X += renderer.rotateAngleX;
+						rotation.Y += renderer.rotateAngleY;
+						rotation.Z += renderer.rotateAngleZ;
+
+						writer.WriteElementString("IsDecorative", "False");
+						writer.WriteElementString("IsFixed", "False");
+						writer.WriteElementString("IsMirrored", x.mirrored.ToString());
+						writer.WriteElementString("Offset",
+													x.posX1.ToString(CultureInfo.InvariantCulture) + "," +
+													x.posY1.ToString(CultureInfo.InvariantCulture) + "," +
+													x.posZ1.ToString(CultureInfo.InvariantCulture));
+						writer.WriteElementString("Position", translation.X.ToString(CultureInfo.InvariantCulture) + "," +
+													translation.Y.ToString(CultureInfo.InvariantCulture) + "," +
+													translation.Z.ToString(CultureInfo.InvariantCulture));
+						writer.WriteElementString("Rotation",
+													OpenTK.MathHelper.RadiansToDegrees(rotation.X).ToString(CultureInfo.InvariantCulture) + "," +
+													OpenTK.MathHelper.RadiansToDegrees(rotation.Y).ToString(CultureInfo.InvariantCulture) + "," +
+													OpenTK.MathHelper.RadiansToDegrees(rotation.Z).ToString(CultureInfo.InvariantCulture));
+						writer.WriteElementString("Size", (x.posX2 - x.posX1).ToString(CultureInfo.InvariantCulture) + "," + (x.posY2 - x.posY1).ToString(CultureInfo.InvariantCulture) + "," + (x.posZ2 - x.posZ1).ToString(CultureInfo.InvariantCulture));
+						writer.WriteElementString("TextureOffset", x.textureX + "," + x.textureY);
+
+						// Paril: MCSkin3D additions
+						writer.WriteElementString("Scale", x.sizeOfs.ToString(CultureInfo.InvariantCulture));
+						//writer.WriteElementString("Part", renderer.Flags.ToString());
+						writer.WriteElementString("Hidden", renderer.isHidden.ToString());
+
+						writer.WriteEndElement();
+
+						if (renderer.childModels != null)
+							foreach (var child in renderer.childModels)
+								foreach (var box in child.cubeList)
+									renderRecursive(child, box, translation, rotation);
+					};
+
+					foreach (ModelRenderer renderer in boxList)
+					{
+						if (renderer.parent != null)
+							continue;
+
+						foreach (ModelBox x in renderer.cubeList)
+							renderRecursive(renderer, x, new Vector3(renderer.offsetX, renderer.offsetY, renderer.offsetZ), Vector3.Zero);
+
+						tw = (int)System.Math.Max(renderer.textureWidth, tw);
+						th = (int)System.Math.Max(renderer.textureHeight, th);
+					}
+
+					writer.WriteEndElement();
+
+					writer.WriteEndElement();
+
+					writer.WriteElementString("GlScale", "1,1,1");
+					writer.WriteElementString("Name", name);
+					writer.WriteElementString("TextureSize", tw + "," + th);
+
+					if (!string.IsNullOrEmpty(textureRef))
+						writer.WriteElementString("BaseTexture", System.Convert.ToBase64String(File.ReadAllBytes(rootPos)));
+
+					writer.WriteEndElement();
+					writer.WriteEndElement();
+
+					writer.WriteElementString("Name", name);
+
+					writer.WriteEndElement();
+				}
 			}
 
 			public Model Compile(string name, float scale, float defaultWidth, float defaultHeight)
@@ -133,93 +242,38 @@ namespace MCSkin3D
 				model.DefaultWidth = defaultWidth;
 				model.DefaultHeight = defaultHeight;
 
-				foreach (object boxObj in boxList)
+				foreach (ModelRenderer box in boxList)
 				{
-					if (boxObj is ModelRenderer)
+					foreach (ModelBox face in box.cubeList)
 					{
-						var box = (ModelRenderer)boxObj;
-						foreach (ModelBox face in box.cubeList)
-						{
-							var mesh = new Mesh(face.Name);
-							mesh.Faces = new List<Face>();
-							mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-							mesh.Part = box.Flags;
-							mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX),
-													  MathHelper.RadiansToDegrees(box.rotateAngleY),
-													  MathHelper.RadiansToDegrees(box.rotateAngleZ));
-							mesh.Pivot = mesh.Translate;
-							mesh.IsSolid = box.isSolid;
-
-							mesh.Mode = PrimitiveType.Quads;
-
-							var cwIndices = new[] { 0, 1, 2, 3 };
-							var cwwIndices = new[] { 3, 2, 1, 0 };
-
-							foreach (TexturedQuad quad in face.field_40680_i)
-							{
-								var vertices = new List<Vector3>();
-								var texcoords = new List<Vector2>();
-
-								foreach (PositionTextureVertex x in quad.vertexPositions)
-								{
-									vertices.Add(x.vector3D * scale);
-									texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
-								}
-
-								var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), cwwIndices);
-
-								Vector3 zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
-								Vector3 one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
-								Vector3 two = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[2]);
-
-								Vector3 dir = Vector3.Cross(one - zero, two - zero);
-								newFace.Normal = Vector3.Normalize(dir);
-
-								dir = Vector3.Cross(newFace.Vertices[1] - newFace.Vertices[0], newFace.Vertices[2] - newFace.Vertices[0]);
-								Vector3 realNormal = Vector3.Normalize(dir);
-
-								if (realNormal == new Vector3(0, 1, 0))
-									newFace.Downface = true;
-
-								mesh.Faces.Add(newFace);
-							}
-
-							mesh.CalculateCenter();
-							mesh.CalculateMatrix();
-
-							model.Meshes.Add(mesh);
-						}
-					}
-					else if (boxObj is PlaneRenderer)
-					{
-						var box = (PlaneRenderer)boxObj;
-
-						var mesh = new Mesh(box.Name);
+						var mesh = new Mesh(face.boxName);
 						mesh.Faces = new List<Face>();
 						mesh.Translate = new Vector3(box.rotationPointX, box.rotationPointY, box.rotationPointZ);
-						mesh.Part = box.Flags;
+						mesh.Part = box.part;
 						mesh.Rotate = new Vector3(MathHelper.RadiansToDegrees(box.rotateAngleX),
-												  MathHelper.RadiansToDegrees(box.rotateAngleY),
-												  MathHelper.RadiansToDegrees(box.rotateAngleZ));
+													MathHelper.RadiansToDegrees(box.rotateAngleY),
+													MathHelper.RadiansToDegrees(box.rotateAngleZ));
 						mesh.Pivot = mesh.Translate;
+						mesh.IsSolid = box.isSolid;
 
 						mesh.Mode = PrimitiveType.Quads;
 
 						var cwIndices = new[] { 0, 1, 2, 3 };
 						var cwwIndices = new[] { 3, 2, 1, 0 };
 
-						foreach (TexturedQuad quad in box.faces)
+						foreach (TexturedQuad quad in face.quadList)
 						{
 							var vertices = new List<Vector3>();
 							var texcoords = new List<Vector2>();
 
 							foreach (PositionTextureVertex x in quad.vertexPositions)
 							{
-								vertices.Add(x.vector3D * scale);
+								var scaled = (x.vector3D * scale);
+								vertices.Add(new Vector3((float)scaled.X, (float)scaled.Y, (float)scaled.Z));
 								texcoords.Add(new Vector2(x.texturePositionX, x.texturePositionY));
 							}
 
-							var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), cwIndices);
+							var newFace = new Face(vertices.ToArray(), texcoords.ToArray(), cwwIndices);
 
 							Vector3 zero = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[0]);
 							Vector3 one = Model.TranslateVertex(mesh.Translate, mesh.Rotate, mesh.Pivot, newFace.Vertices[1]);
@@ -251,238 +305,126 @@ namespace MCSkin3D
 
 				return model;
 			}
-
-			public void Save(string name, float scale, int defaultWidth, int defaultHeight, string fileName)
-			{
-				var settings = new XmlWriterSettings();
-				settings.ConformanceLevel = ConformanceLevel.Fragment;
-				settings.Indent = true;
-				settings.NewLineOnAttributes = false;
-				settings.IndentChars = "\t";
-
-				using (XmlWriter writer = XmlWriter.Create(fileName, settings))
-				{
-					writer.WriteStartElement("Techne");
-					writer.WriteAttributeString("Version", "2.2");
-					writer.WriteElementString("Author", "");
-					writer.WriteElementString("DateCreated", "");
-					writer.WriteElementString("Description", "");
-
-					writer.WriteStartElement("Models");
-					writer.WriteStartElement("Model");
-					writer.WriteAttributeString("texture", "none.png");
-
-					writer.WriteElementString("BaseClass", "ModelBase");
-
-					writer.WriteStartElement("Geometry");
-
-					writer.WriteStartElement("Folder");
-					writer.WriteAttributeString("type", "f8bf7d5b-37bf-455b-93f9-b6f9e81620e1");
-					writer.WriteAttributeString("Name", "Model");
-
-					foreach (object mesh in boxList)
-					{
-						if (mesh is ModelRenderer)
-						{
-							var renderer = (ModelRenderer)mesh;
-
-							foreach (ModelBox x in renderer.cubeList)
-							{
-								writer.WriteStartElement("Shape");
-								writer.WriteAttributeString("type", "d9e621f7-957f-4b77-b1ae-20dcd0da7751");
-								writer.WriteAttributeString("name", x.Name);
-
-								writer.WriteStartElement("Animation");
-								writer.WriteElementString("AnimationAngles", "0,0,0");
-								writer.WriteElementString("AnimationDuration", "0,0,0");
-								writer.WriteElementString("AnimationType", "0,0,0");
-								writer.WriteEndElement();
-
-								writer.WriteElementString("IsDecorative", "False");
-								writer.WriteElementString("IsFixed", "False");
-								writer.WriteElementString("IsMirrored", renderer.mirror.ToString());
-								writer.WriteElementString("Offset",
-														  x.x.ToString(CultureInfo.InvariantCulture) + "," +
-														  x.y.ToString(CultureInfo.InvariantCulture) + "," +
-														  x.z.ToString(CultureInfo.InvariantCulture));
-								writer.WriteElementString("Position", renderer.rotationPointX.ToString(CultureInfo.InvariantCulture) + "," + renderer.rotationPointY.ToString(CultureInfo.InvariantCulture) + "," +
-														  renderer.rotationPointZ.ToString(CultureInfo.InvariantCulture));
-								writer.WriteElementString("Rotation",
-														  MathHelper.RadiansToDegrees(renderer.rotateAngleX).ToString(CultureInfo.InvariantCulture) + "," +
-														  MathHelper.RadiansToDegrees(renderer.rotateAngleY).ToString(CultureInfo.InvariantCulture) + "," +
-														  MathHelper.RadiansToDegrees(renderer.rotateAngleZ).ToString(CultureInfo.InvariantCulture));
-								writer.WriteElementString("Size", (x.xMax - x.x).ToString(CultureInfo.InvariantCulture) + "," + (x.yMax - x.y).ToString(CultureInfo.InvariantCulture) + "," + (x.zMax - x.z).ToString(CultureInfo.InvariantCulture));
-								writer.WriteElementString("TextureOffset", x.texX + "," + x.texY);
-
-								// Paril: MCSkin3D additions
-								writer.WriteElementString("Scale", x.sizeOfs.ToString(CultureInfo.InvariantCulture));
-								writer.WriteElementString("Part", renderer.Flags.ToString());
-
-								writer.WriteEndElement();
-							}
-						}
-						else if (mesh is PlaneRenderer)
-						{
-							var renderer = (PlaneRenderer)mesh;
-
-							writer.WriteStartElement("Shape");
-							writer.WriteAttributeString("type", "ab894c83-e399-4236-808b-25a78d56f5e1");
-							writer.WriteAttributeString("name", renderer.Name);
-
-							writer.WriteElementString("IsMirrored", renderer.mirror.ToString());
-							writer.WriteElementString("Offset",
-													  renderer.x.ToString(CultureInfo.InvariantCulture) + "," +
-													  renderer.y.ToString(CultureInfo.InvariantCulture) + "," +
-													  renderer.z.ToString(CultureInfo.InvariantCulture));
-							writer.WriteElementString("Position", renderer.rotationPointX.ToString(CultureInfo.InvariantCulture) + "," + renderer.rotationPointY.ToString(CultureInfo.InvariantCulture) + "," +
-													  renderer.rotationPointZ.ToString(CultureInfo.InvariantCulture));
-							writer.WriteElementString("Rotation",
-													  MathHelper.RadiansToDegrees(renderer.rotateAngleX).ToString(CultureInfo.InvariantCulture) + "," +
-													  MathHelper.RadiansToDegrees(renderer.rotateAngleY).ToString(CultureInfo.InvariantCulture) + "," +
-													  MathHelper.RadiansToDegrees(renderer.rotateAngleZ).ToString(CultureInfo.InvariantCulture));
-							writer.WriteElementString("Size",
-													  (renderer.xMax - renderer.x).ToString(CultureInfo.InvariantCulture) + "," + (renderer.yMax - renderer.y).ToString(CultureInfo.InvariantCulture) + "," +
-													  (renderer.zMax - renderer.z).ToString(CultureInfo.InvariantCulture));
-							writer.WriteElementString("TextureOffset", renderer.textureOffsetX + "," + renderer.textureOffsetY);
-
-							writer.WriteElementString("Scale", renderer.Offset.ToString());
-							writer.WriteElementString("Part", renderer.Flags.ToString());
-
-							writer.WriteElementString("Side", renderer.Side.ToString());
-
-							writer.WriteEndElement();
-						}
-					}
-
-					writer.WriteEndElement();
-
-					writer.WriteEndElement();
-
-					writer.WriteElementString("GlScale", "1,1,1");
-					writer.WriteElementString("Name", name);
-					writer.WriteElementString("TextureSize", defaultWidth + "," + defaultHeight);
-
-					writer.WriteEndElement();
-					writer.WriteEndElement();
-
-					writer.WriteElementString("Name", name);
-
-					writer.WriteEndElement();
-				}
-			}
 		}
-
 		#endregion
 
 		#region Nested type: ModelBox
 
 		public class ModelBox
 		{
-			public string Name;
-			public String field_40673_g;
-			public PositionTextureVertex[] field_40679_h;
-			public TexturedQuad[] field_40680_i;
-			public float sizeOfs;
-			public int texX, texY;
-			public float x;
-			public float xMax;
-			public float y;
-			public float yMax;
-			public float z;
-			public float zMax;
+			/**
+			 * The (x,y,z) vertex positions and (u,v) texture coordinates for each of the 8 points on a cube
+			 */
+			public PositionTextureVertex[] vertexPositions;
 
-			public ModelBox(ModelRenderer modelrenderer, string name, int i, int j, float f, float f1, float f2, int k,
-							int l, int i1, float f3)
+			/** An array of 6 TexturedQuads, one for each face of a cube */
+			public TexturedQuad[] quadList;
+
+			/** X vertex coordinate of lower box corner */
+			public float posX1;
+
+			/** Y vertex coordinate of lower box corner */
+			public float posY1;
+
+			/** Z vertex coordinate of lower box corner */
+			public float posZ1;
+
+			/** X vertex coordinate of upper box corner */
+			public float posX2;
+
+			/** Y vertex coordinate of upper box corner */
+			public float posY2;
+
+			/** Z vertex coordinate of upper box corner */
+			public float posZ2;
+			public string boxName = "Unknown";
+
+			public int textureX, textureY;
+			public float sizeOfs;
+			public bool mirrored;
+
+			public ModelBox(ModelRenderer renderer, int p_i46359_2_, int p_i46359_3_, float p_i46359_4_, float p_i46359_5_, float p_i46359_6_, int p_i46359_7_, int p_i46359_8_, int p_i46359_9_, float p_i46359_10_) :
+				this(renderer, p_i46359_2_, p_i46359_3_, p_i46359_4_, p_i46359_5_, p_i46359_6_, p_i46359_7_, p_i46359_8_, p_i46359_9_, p_i46359_10_, renderer.mirror)
 			{
-				sizeOfs = f3;
-				texX = i;
-				texY = j;
-				Name = name;
-				x = f;
-				y = f1;
-				z = f2;
-				xMax = f + k;
-				yMax = f1 + l;
-				zMax = f2 + i1;
-				field_40679_h = new PositionTextureVertex[8];
-				field_40680_i = new TexturedQuad[6];
-				float f4 = f + k;
-				float f5 = f1 + l;
-				float f6 = f2 + i1;
-				f -= f3;
-				f1 -= f3;
-				f2 -= f3;
-				f4 += f3;
-				f5 += f3;
-				f6 += f3;
-				if (modelrenderer.mirror)
+			}
+
+			public ModelBox(ModelRenderer renderer, int textureX, int textureY, float p_i46301_4_, float p_i46301_5_, float p_i46301_6_, int p_i46301_7_, int p_i46301_8_, int p_i46301_9_, float p_i46301_10_, bool p_i46301_11_)
+			{
+				this.textureX = textureX;
+				this.textureY = textureY;
+				this.sizeOfs = p_i46301_10_;
+				this.mirrored = p_i46301_11_;
+
+				this.posX1 = p_i46301_4_;
+				this.posY1 = p_i46301_5_;
+				this.posZ1 = p_i46301_6_;
+				this.posX2 = p_i46301_4_ + (float)p_i46301_7_;
+				this.posY2 = p_i46301_5_ + (float)p_i46301_8_;
+				this.posZ2 = p_i46301_6_ + (float)p_i46301_9_;
+				this.vertexPositions = new PositionTextureVertex[8];
+				this.quadList = new TexturedQuad[6];
+				float f = p_i46301_4_ + (float)p_i46301_7_;
+				float f1 = p_i46301_5_ + (float)p_i46301_8_;
+				float f2 = p_i46301_6_ + (float)p_i46301_9_;
+				p_i46301_4_ = p_i46301_4_ - p_i46301_10_;
+				p_i46301_5_ = p_i46301_5_ - p_i46301_10_;
+				p_i46301_6_ = p_i46301_6_ - p_i46301_10_;
+				f = f + p_i46301_10_;
+				f1 = f1 + p_i46301_10_;
+				f2 = f2 + p_i46301_10_;
+
+				if (p_i46301_11_)
 				{
-					float f7 = f4;
-					f4 = f;
-					f = f7;
+					float f3 = f;
+					f = p_i46301_4_;
+					p_i46301_4_ = f3;
 				}
-				var positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
-				var positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8F);
-				var positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8F, 8F);
-				var positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8F, 0.0F);
-				var positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
-				var positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8F);
-				var positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8F, 8F);
-				var positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8F, 0.0F);
-				field_40679_h[0] = positiontexturevertex;
-				field_40679_h[1] = positiontexturevertex1;
-				field_40679_h[2] = positiontexturevertex2;
-				field_40679_h[3] = positiontexturevertex3;
-				field_40679_h[4] = positiontexturevertex4;
-				field_40679_h[5] = positiontexturevertex5;
-				field_40679_h[6] = positiontexturevertex6;
-				field_40679_h[7] = positiontexturevertex7;
-				field_40680_i[0] = new TexturedQuad(new[]
-													{
-														positiontexturevertex5, positiontexturevertex1, positiontexturevertex2,
-														positiontexturevertex6
-													}, i + i1 + k, j + i1, i + i1 + k + i1, j + i1 + l, modelrenderer.textureWidth,
-													modelrenderer.textureHeight);
-				field_40680_i[1] = new TexturedQuad(new[]
-													{
-														positiontexturevertex, positiontexturevertex4, positiontexturevertex7,
-														positiontexturevertex3
-													}, i + 0, j + i1, i + i1, j + i1 + l, modelrenderer.textureWidth,
-													modelrenderer.textureHeight);
-				field_40680_i[2] = new TexturedQuad(new[]
-													{
-														positiontexturevertex5, positiontexturevertex4, positiontexturevertex,
-														positiontexturevertex1
-													}, i + i1, j + 0, i + i1 + k, j + i1, modelrenderer.textureWidth,
-													modelrenderer.textureHeight);
-				field_40680_i[3] = new TexturedQuad(new[]
-													{
-														positiontexturevertex2, positiontexturevertex3, positiontexturevertex7,
-														positiontexturevertex6
-													}, i + i1 + k, j + i1, i + i1 + k + k, j + 0, modelrenderer.textureWidth,
-													modelrenderer.textureHeight);
-				field_40680_i[4] = new TexturedQuad(new[]
-													{
-														positiontexturevertex1, positiontexturevertex, positiontexturevertex3,
-														positiontexturevertex2
-													}, i + i1, j + i1, i + i1 + k, j + i1 + l, modelrenderer.textureWidth,
-													modelrenderer.textureHeight);
-				field_40680_i[5] = new TexturedQuad(new[]
-													{
-														positiontexturevertex4, positiontexturevertex5, positiontexturevertex6,
-														positiontexturevertex7
-													}, i + i1 + k + i1, j + i1, i + i1 + k + i1 + k, j + i1 + l,
-													modelrenderer.textureWidth, modelrenderer.textureHeight);
-				if (modelrenderer.mirror)
+
+				PositionTextureVertex positiontexturevertex7 = new PositionTextureVertex(p_i46301_4_, p_i46301_5_, p_i46301_6_, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex = new PositionTextureVertex(f, p_i46301_5_, p_i46301_6_, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex1 = new PositionTextureVertex(f, f1, p_i46301_6_, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex2 = new PositionTextureVertex(p_i46301_4_, f1, p_i46301_6_, 8.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex3 = new PositionTextureVertex(p_i46301_4_, p_i46301_5_, f2, 0.0F, 0.0F);
+				PositionTextureVertex positiontexturevertex4 = new PositionTextureVertex(f, p_i46301_5_, f2, 0.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex5 = new PositionTextureVertex(f, f1, f2, 8.0F, 8.0F);
+				PositionTextureVertex positiontexturevertex6 = new PositionTextureVertex(p_i46301_4_, f1, f2, 8.0F, 0.0F);
+				this.vertexPositions[0] = positiontexturevertex7;
+				this.vertexPositions[1] = positiontexturevertex;
+				this.vertexPositions[2] = positiontexturevertex1;
+				this.vertexPositions[3] = positiontexturevertex2;
+				this.vertexPositions[4] = positiontexturevertex3;
+				this.vertexPositions[5] = positiontexturevertex4;
+				this.vertexPositions[6] = positiontexturevertex5;
+				this.vertexPositions[7] = positiontexturevertex6;
+				this.quadList[0] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex4, positiontexturevertex, positiontexturevertex1, positiontexturevertex5 }, textureX + p_i46301_9_ + p_i46301_7_, textureY + p_i46301_9_, textureX + p_i46301_9_ + p_i46301_7_ + p_i46301_9_, textureY + p_i46301_9_ + p_i46301_8_, renderer.textureWidth, renderer.textureHeight);
+				this.quadList[1] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex7, positiontexturevertex3, positiontexturevertex6, positiontexturevertex2 }, textureX, textureY + p_i46301_9_, textureX + p_i46301_9_, textureY + p_i46301_9_ + p_i46301_8_, renderer.textureWidth, renderer.textureHeight);
+				this.quadList[2] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex4, positiontexturevertex3, positiontexturevertex7, positiontexturevertex }, textureX + p_i46301_9_, textureY, textureX + p_i46301_9_ + p_i46301_7_, textureY + p_i46301_9_, renderer.textureWidth, renderer.textureHeight);
+				this.quadList[3] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex1, positiontexturevertex2, positiontexturevertex6, positiontexturevertex5 }, textureX + p_i46301_9_ + p_i46301_7_, textureY + p_i46301_9_, textureX + p_i46301_9_ + p_i46301_7_ + p_i46301_7_, textureY, renderer.textureWidth, renderer.textureHeight);
+				this.quadList[4] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex, positiontexturevertex7, positiontexturevertex2, positiontexturevertex1 }, textureX + p_i46301_9_, textureY + p_i46301_9_, textureX + p_i46301_9_ + p_i46301_7_, textureY + p_i46301_9_ + p_i46301_8_, renderer.textureWidth, renderer.textureHeight);
+				this.quadList[5] = new TexturedQuad(new PositionTextureVertex[] { positiontexturevertex3, positiontexturevertex4, positiontexturevertex5, positiontexturevertex6 }, textureX + p_i46301_9_ + p_i46301_7_ + p_i46301_9_, textureY + p_i46301_9_, textureX + p_i46301_9_ + p_i46301_7_ + p_i46301_9_ + p_i46301_7_, textureY + p_i46301_9_ + p_i46301_8_, renderer.textureWidth, renderer.textureHeight);
+
+				if (p_i46301_11_)
 				{
-					for (int j1 = 0; j1 < field_40680_i.Length; j1++)
-						field_40680_i[j1].flipFace();
+					for (int i = 0; i < this.quadList.Length; ++i)
+					{
+						this.quadList[i].flipFace();
+					}
 				}
 			}
 
-			public ModelBox func_40671_a(String s)
+#if RENDER
+		public void render(VertexBuffer renderer, float scale)
+		{
+			for (int i = 0; i < this.quadList.length; ++i)
 			{
-				field_40673_g = s;
+				this.quadList[i].draw(renderer, scale);
+			}
+		}
+#endif
+
+			public ModelBox setBoxName(string name)
+			{
+				this.boxName = name;
 				return this;
 			}
 		}
@@ -493,340 +435,319 @@ namespace MCSkin3D
 
 		public class ModelRenderer
 		{
-			private readonly ModelBase baseModel;
+			/** The size of the texture file's width in pixels. */
+			public float textureWidth;
 
-			public ModelPart Flags;
-			public string boxName;
-			public List<ModelRenderer> childModels;
-			public List<ModelBox> cubeList;
-			public bool isHidden;
-			public bool mirror;
-			public float rotateAngleX;
-			public float rotateAngleY;
-			public float rotateAngleZ;
+			/** The size of the texture file's height in pixels. */
+			public float textureHeight;
+
+			/** The X offset into the texture used for displaying this model */
+			private int textureOffsetX;
+
+			/** The Y offset into the texture used for displaying this model */
+			private int textureOffsetY;
 			public float rotationPointX;
 			public float rotationPointY;
 			public float rotationPointZ;
+			public float rotateAngleX;
+			public float rotateAngleY;
+			public float rotateAngleZ;
+			private bool compiled;
+
+			/** The GL display list rendered by the Tessellator for this model */
+			private int displayList;
 			public bool showModel;
-			public float textureHeight;
-			private int textureOffsetX;
-			private int textureOffsetY;
-			public float textureWidth;
 
+			/** Hides the model. */
+			public bool isHidden;
+			public List<ModelBox> cubeList;
+			public List<ModelRenderer> childModels;
+			public string boxName;
+			private ModelBase baseModel;
+			public float offsetX;
+			public float offsetY;
+			public float offsetZ;
+
+			public ModelRenderer parent;
+
+			public ModelPart part;
 			public bool isSolid;
+			public float scale = 1;
+			public bool mirror = false;
 
-			public ModelRenderer(ModelBase b, ModelPart flags) :
-				this(b, null, flags)
+			public ModelRenderer(ModelBase model, string boxNameIn)
+			{
+				this.textureWidth = 64.0F;
+				this.textureHeight = 32.0F;
+				this.showModel = true;
+				this.cubeList = new List<ModelBox>();
+				this.baseModel = model;
+				model.boxList.Add(this);
+				this.boxName = boxNameIn;
+				this.setTextureSize(model.textureWidth, model.textureHeight);
+			}
+
+			public ModelRenderer(ModelBase model) :
+				this(model, (string)null)
 			{
 			}
 
-			public ModelRenderer(ModelBase modelbase, string s, ModelPart flags)
+			public ModelRenderer(ModelBase model, int texOffX, int texOffY) :
+				this(model)
 			{
-				textureWidth = 64F;
-				textureHeight = 32F;
-				mirror = false;
-				showModel = true;
-				isHidden = false;
-				cubeList = new List<ModelBox>();
-				baseModel = modelbase;
-				modelbase.boxList.Add(this);
-				boxName = s;
-				setTextureSize(modelbase.textureWidth, modelbase.textureHeight);
-
-				Flags = flags;
+				this.setTextureOffset(texOffX, texOffY);
 			}
 
-			public ModelRenderer(ModelBase modelbase, int i, int j, ModelPart flags) :
-				this(modelbase, null, flags)
+			/**
+			 * Sets the current box's rotation points and rotation angles to another box.
+			 */
+			public void addChild(ModelRenderer renderer)
 			{
-				setTextureOffset(i, j);
+				if (this.childModels == null)
+				{
+					this.childModels = new List<ModelRenderer>();
+				}
+
+				this.childModels.Add(renderer);
+				renderer.parent = this;
 			}
 
-			public void addChild(ModelRenderer modelrenderer)
+			public ModelRenderer setTextureOffset(int x, int y)
 			{
-				if (childModels == null)
-					childModels = new List<ModelRenderer>();
-				childModels.Add(modelrenderer);
-			}
-
-			public ModelRenderer setTextureOffset(int i, int j)
-			{
-				textureOffsetX = i;
-				textureOffsetY = j;
+				this.textureOffsetX = x;
+				this.textureOffsetY = y;
 				return this;
 			}
 
-			public ModelRenderer addBox(string name, String s, float f, float f1, float f2, int i, int j, int k)
+			public ModelRenderer addBox(string partName, float offX, float offY, float offZ, int width, int height, int depth)
 			{
-				s = (new StringBuilder()).Append(boxName).Append(".").Append(s).ToString();
-				TextureOffset textureoffset = baseModel.func_40297_a(s);
-				setTextureOffset(textureoffset.field_40734_a, textureoffset.field_40733_b);
-				cubeList.Add((new ModelBox(this, name, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, 0.0F)).func_40671_a(s));
+				partName = this.boxName + "." + partName;
+				TextureOffset textureoffset = this.baseModel.getTextureOffset(partName);
+				this.setTextureOffset(textureoffset.textureOffsetX, textureoffset.textureOffsetY);
+				this.cubeList.Add((new ModelBox(this, this.textureOffsetX, this.textureOffsetY, offX, offY, offZ, width, height, depth, 0.0F)).setBoxName(partName));
 				return this;
 			}
 
-			public ModelRenderer addBox(string name, float f, float f1, float f2, int i, int j, int k)
+			public ModelRenderer addBox(float offX, float offY, float offZ, int width, int height, int depth, string name = null)
 			{
-				cubeList.Add(new ModelBox(this, name, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, 0.0F));
+				this.cubeList.Add(new ModelBox(this, this.textureOffsetX, this.textureOffsetY, offX, offY, offZ, width, height, depth, 0.0F).setBoxName(name));
 				return this;
 			}
 
-			public void addBox(string name, float f, float f1, float f2, int i, int j, int k, float f3)
+			public ModelRenderer addBox(float p_178769_1_, float p_178769_2_, float p_178769_3_, int p_178769_4_, int p_178769_5_, int p_178769_6_, bool p_178769_7_, float scale, string name = null)
 			{
-				cubeList.Add(new ModelBox(this, name, textureOffsetX, textureOffsetY, f, f1, f2, i, j, k, f3));
-			}
-
-			public void setRotationPoint(float f, float f1, float f2)
-			{
-				rotationPointX = f;
-				rotationPointY = f1;
-				rotationPointZ = f2;
-			}
-
-			public ModelRenderer setTextureSize(int i, int j)
-			{
-				textureWidth = i;
-				textureHeight = j;
+				this.cubeList.Add(new ModelBox(this, this.textureOffsetX, this.textureOffsetY, p_178769_1_, p_178769_2_, p_178769_3_, p_178769_4_, p_178769_5_, p_178769_6_, scale, p_178769_7_).setBoxName(name));
 				return this;
+			}
+
+			public ModelRenderer addBox(float p_178769_1_, float p_178769_2_, float p_178769_3_, int p_178769_4_, int p_178769_5_, int p_178769_6_, bool p_178769_7_, string name = null)
+			{
+				this.cubeList.Add(new ModelBox(this, this.textureOffsetX, this.textureOffsetY, p_178769_1_, p_178769_2_, p_178769_3_, p_178769_4_, p_178769_5_, p_178769_6_, 0.0F, p_178769_7_).setBoxName(name));
+				return this;
+			}
+
+			/**
+			 * Creates a textured box. Args: originX, originY, originZ, width, height, depth, scaleFactor.
+			 */
+			public void addBox(float p_78790_1_, float p_78790_2_, float p_78790_3_, int width, int height, int depth, float scaleFactor, string name = null)
+			{
+				this.cubeList.Add(new ModelBox(this, this.textureOffsetX, this.textureOffsetY, p_78790_1_, p_78790_2_, p_78790_3_, width, height, depth, scaleFactor).setBoxName(name));
+			}
+
+			public void setRotationPoint(float rotationPointXIn, float rotationPointYIn, float rotationPointZIn)
+			{
+				this.rotationPointX = rotationPointXIn;
+				this.rotationPointY = rotationPointYIn;
+				this.rotationPointZ = rotationPointZIn;
+			}
+
+#if RENDER
+		public void render(float p_78785_1_)
+		{
+			if (!this.isHidden)
+			{
+				if (this.showModel)
+				{
+					if (!this.compiled)
+					{
+						this.compileDisplayList(p_78785_1_);
+					}
+
+					GlStateManager.translate(this.offsetX, this.offsetY, this.offsetZ);
+
+					if (this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F)
+					{
+						if (this.rotationPointX == 0.0F && this.rotationPointY == 0.0F && this.rotationPointZ == 0.0F)
+						{
+							GlStateManager.callList(this.displayList);
+
+							if (this.childModels != null)
+							{
+								for (int k = 0; k < this.childModels.size(); ++k)
+								{
+									((ModelRenderer)this.childModels.get(k)).render(p_78785_1_);
+								}
+							}
+						}
+						else
+						{
+							GlStateManager.translate(this.rotationPointX * p_78785_1_, this.rotationPointY * p_78785_1_, this.rotationPointZ * p_78785_1_);
+							GlStateManager.callList(this.displayList);
+
+							if (this.childModels != null)
+							{
+								for (int j = 0; j < this.childModels.size(); ++j)
+								{
+									((ModelRenderer)this.childModels.get(j)).render(p_78785_1_);
+								}
+							}
+
+							GlStateManager.translate(-this.rotationPointX * p_78785_1_, -this.rotationPointY * p_78785_1_, -this.rotationPointZ * p_78785_1_);
+						}
+					}
+					else
+					{
+						GlStateManager.pushMatrix();
+						GlStateManager.translate(this.rotationPointX * p_78785_1_, this.rotationPointY * p_78785_1_, this.rotationPointZ * p_78785_1_);
+
+						if (this.rotateAngleZ != 0.0F)
+						{
+							GlStateManager.rotate(this.rotateAngleZ * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+						}
+
+						if (this.rotateAngleY != 0.0F)
+						{
+							GlStateManager.rotate(this.rotateAngleY * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+						}
+
+						if (this.rotateAngleX != 0.0F)
+						{
+							GlStateManager.rotate(this.rotateAngleX * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+						}
+
+						GlStateManager.callList(this.displayList);
+
+						if (this.childModels != null)
+						{
+							for (int i = 0; i < this.childModels.size(); ++i)
+							{
+								((ModelRenderer)this.childModels.get(i)).render(p_78785_1_);
+							}
+						}
+
+						GlStateManager.popMatrix();
+					}
+
+					GlStateManager.translate(-this.offsetX, -this.offsetY, -this.offsetZ);
+				}
 			}
 		}
 
-		#endregion
-
-		#region Nested type: PlaneRenderer
-
-		public class PlaneRenderer
+		public void renderWithRotation(float p_78791_1_)
 		{
-			public ModelPart Flags;
-			public string Name;
-			public float Offset;
-			public int Side;
-			public bool compiled;
-			public PositionTextureVertex[] corners;
-			public int displayList;
-			public TexturedQuad[] faces;
-			public bool isHidden;
-			public bool mirror;
-			public float rotateAngleX;
-			public float rotateAngleY;
-			public float rotateAngleZ;
-			public float rotationPointX;
-			public float rotationPointY;
-			public float rotationPointZ;
-			public bool showModel;
-			public float textureHeight;
-			public int textureOffsetX;
-			public int textureOffsetY;
-			public float textureWidth;
-			public float x;
-			public float xMax;
-			public float y;
-			public float yMax;
-			public float z;
-			public float zMax;
-
-			public PlaneRenderer(ModelBase modelbase, string name, int i, int j, ModelPart flags)
+			if (!this.isHidden)
 			{
-				Name = name;
-				textureWidth = 64.0F;
-				textureHeight = 32.0F;
-				compiled = false;
-				displayList = 0;
-				mirror = false;
-				showModel = true;
-				isHidden = false;
-				textureOffsetX = i;
-				textureOffsetY = j;
-				modelbase.boxList.Add(this);
-
-				Flags = flags;
-			}
-
-			public void addBackPlane(float f, float f1, float f2, int i, int j, int k)
-			{
-				addBackPlane(f, f1, f2, i, j, k, 0.0F);
-			}
-
-			public void addSidePlane(float f, float f1, float f2, int i, int j, int k)
-			{
-				addSidePlane(f, f1, f2, i, j, k, 0.0F);
-			}
-
-			public void addTopPlane(float f, float f1, float f2, int i, int j, int k)
-			{
-				addTopPlane(f, f1, f2, i, j, k, 0.0F);
-			}
-
-			public void addBackPlane(float f, float f1, float f2, int i, int j, int k, float f3)
-			{
-				Side = 0;
-				Offset = f3;
-
-				x = f;
-				y = f1;
-				z = f2;
-				xMax = (f + i);
-				yMax = (f1 + j);
-				zMax = (f2 + k);
-				corners = new PositionTextureVertex[8];
-				faces = new TexturedQuad[1];
-				float f4 = f + i;
-				float f5 = f1 + j;
-				float f6 = f2 + k;
-				f -= f3;
-				f1 -= f3;
-				f2 -= f3;
-				f4 += f3;
-				f5 += f3;
-				f6 += f3;
-				if (mirror)
+				if (this.showModel)
 				{
-					float f7 = f4;
-					f4 = f;
-					f = f7;
+					if (!this.compiled)
+					{
+						this.compileDisplayList(p_78791_1_);
+					}
+
+					GlStateManager.pushMatrix();
+					GlStateManager.translate(this.rotationPointX * p_78791_1_, this.rotationPointY * p_78791_1_, this.rotationPointZ * p_78791_1_);
+
+					if (this.rotateAngleY != 0.0F)
+					{
+						GlStateManager.rotate(this.rotateAngleY * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+					}
+
+					if (this.rotateAngleX != 0.0F)
+					{
+						GlStateManager.rotate(this.rotateAngleX * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+					}
+
+					if (this.rotateAngleZ != 0.0F)
+					{
+						GlStateManager.rotate(this.rotateAngleZ * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+					}
+
+					GlStateManager.callList(this.displayList);
+					GlStateManager.popMatrix();
 				}
-				var positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
-				var positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8.0F);
-				var positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8.0F, 8.0F);
-				var positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8.0F, 0.0F);
-				var positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
-				var positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8.0F);
-				var positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8.0F, 8.0F);
-				var positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8.0F, 0.0F);
-				corners[0] = positiontexturevertex;
-				corners[1] = positiontexturevertex1;
-				corners[2] = positiontexturevertex2;
-				corners[3] = positiontexturevertex3;
-				corners[4] = positiontexturevertex4;
-				corners[5] = positiontexturevertex5;
-				corners[6] = positiontexturevertex6;
-				corners[7] = positiontexturevertex7;
-				faces[0] =
-					new TexturedQuad(
-						new[] { positiontexturevertex1, positiontexturevertex, positiontexturevertex3, positiontexturevertex2 },
-						textureOffsetX, textureOffsetY, textureOffsetX + i, textureOffsetY + j, textureWidth, textureHeight);
-
-				if (mirror)
-					faces[0].flipFace();
 			}
+		}
 
-			public void addSidePlane(float f, float f1, float f2, int i, int j, int k, float f3)
+		/**
+		 * Allows the changing of Angles after a box has been rendered
+		 */
+		public void postRender(float scale)
+		{
+			if (!this.isHidden)
 			{
-				Side = 1;
-				Offset = f3;
-
-				x = f;
-				y = f1;
-				z = f2;
-				xMax = (f + i);
-				yMax = (f1 + j);
-				zMax = (f2 + k);
-				corners = new PositionTextureVertex[8];
-				faces = new TexturedQuad[1];
-				float f4 = f + i;
-				float f5 = f1 + j;
-				float f6 = f2 + k;
-				f -= f3;
-				f1 -= f3;
-				f2 -= f3;
-				f4 += f3;
-				f5 += f3;
-				f6 += f3;
-				if (mirror)
+				if (this.showModel)
 				{
-					float f7 = f4;
-					f4 = f;
-					f = f7;
+					if (!this.compiled)
+					{
+						this.compileDisplayList(scale);
+					}
+
+					if (this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F)
+					{
+						if (this.rotationPointX != 0.0F || this.rotationPointY != 0.0F || this.rotationPointZ != 0.0F)
+						{
+							GlStateManager.translate(this.rotationPointX * scale, this.rotationPointY * scale, this.rotationPointZ * scale);
+						}
+					}
+					else
+					{
+						GlStateManager.translate(this.rotationPointX * scale, this.rotationPointY * scale, this.rotationPointZ * scale);
+
+						if (this.rotateAngleZ != 0.0F)
+						{
+							GlStateManager.rotate(this.rotateAngleZ * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+						}
+
+						if (this.rotateAngleY != 0.0F)
+						{
+							GlStateManager.rotate(this.rotateAngleY * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+						}
+
+						if (this.rotateAngleX != 0.0F)
+						{
+							GlStateManager.rotate(this.rotateAngleX * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+						}
+					}
 				}
-				var positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
-				var positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8.0F);
-				var positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8.0F, 8.0F);
-				var positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8.0F, 0.0F);
-				var positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
-				var positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8.0F);
-				var positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8.0F, 8.0F);
-				var positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8.0F, 0.0F);
-				corners[0] = positiontexturevertex;
-				corners[1] = positiontexturevertex1;
-				corners[2] = positiontexturevertex2;
-				corners[3] = positiontexturevertex3;
-				corners[4] = positiontexturevertex4;
-				corners[5] = positiontexturevertex5;
-				corners[6] = positiontexturevertex6;
-				corners[7] = positiontexturevertex7;
-				faces[0] =
-					new TexturedQuad(
-						new[] { positiontexturevertex5, positiontexturevertex1, positiontexturevertex2, positiontexturevertex6 },
-						textureOffsetX, textureOffsetY, textureOffsetX + k, textureOffsetY + j, textureWidth, textureHeight);
+			}
+		}
 
-				if (mirror)
-					faces[0].flipFace();
+		/**
+		 * Compiles a GL display list for this model
+		 */
+		private void compileDisplayList(float scale)
+		{
+			this.displayList = GLAllocation.generateDisplayLists(1);
+			GlStateManager.glNewList(this.displayList, 4864);
+			VertexBuffer vertexbuffer = Tessellator.getInstance().getBuffer();
+
+			for (int i = 0; i < this.cubeList.size(); ++i)
+			{
+				((ModelBox)this.cubeList.get(i)).render(vertexbuffer, scale);
 			}
 
-			public void addTopPlane(float f, float f1, float f2, int i, int j, int k, float f3)
+			GlStateManager.glEndList();
+			this.compiled = true;
+		}
+#endif
+
+			/**
+			 * Returns the model renderer with the new texture parameters.
+			 */
+			public ModelRenderer setTextureSize(int textureWidthIn, int textureHeightIn)
 			{
-				Side = 2;
-				Offset = f3;
-
-				x = f;
-				y = f1;
-				z = f2;
-				xMax = (f + i);
-				yMax = (f1 + j);
-				zMax = (f2 + k);
-				corners = new PositionTextureVertex[8];
-				faces = new TexturedQuad[1];
-				float f4 = f + i;
-				float f5 = f1 + j;
-				float f6 = f2 + k;
-				f -= f3;
-				f1 -= f3;
-				f2 -= f3;
-				f4 += f3;
-				f5 += f3;
-				f6 += f3;
-				if (mirror)
-				{
-					float f7 = f4;
-					f4 = f;
-					f = f7;
-				}
-				var positiontexturevertex = new PositionTextureVertex(f, f1, f2, 0.0F, 0.0F);
-				var positiontexturevertex1 = new PositionTextureVertex(f4, f1, f2, 0.0F, 8.0F);
-				var positiontexturevertex2 = new PositionTextureVertex(f4, f5, f2, 8.0F, 8.0F);
-				var positiontexturevertex3 = new PositionTextureVertex(f, f5, f2, 8.0F, 0.0F);
-				var positiontexturevertex4 = new PositionTextureVertex(f, f1, f6, 0.0F, 0.0F);
-				var positiontexturevertex5 = new PositionTextureVertex(f4, f1, f6, 0.0F, 8.0F);
-				var positiontexturevertex6 = new PositionTextureVertex(f4, f5, f6, 8.0F, 8.0F);
-				var positiontexturevertex7 = new PositionTextureVertex(f, f5, f6, 8.0F, 0.0F);
-				corners[0] = positiontexturevertex;
-				corners[1] = positiontexturevertex1;
-				corners[2] = positiontexturevertex2;
-				corners[3] = positiontexturevertex3;
-				corners[4] = positiontexturevertex4;
-				corners[5] = positiontexturevertex5;
-				corners[6] = positiontexturevertex6;
-				corners[7] = positiontexturevertex7;
-				faces[0] =
-					new TexturedQuad(
-						new[] { positiontexturevertex5, positiontexturevertex4, positiontexturevertex, positiontexturevertex1 },
-						textureOffsetX, textureOffsetY, textureOffsetX + i, textureOffsetY + k, textureWidth, textureHeight);
-
-				if (mirror)
-					faces[0].flipFace();
-			}
-
-			public void setRotationPoint(float f, float f1, float f2)
-			{
-				rotationPointX = f;
-				rotationPointY = f1;
-				rotationPointZ = f2;
-			}
-
-			public PlaneRenderer setTextureSize(int i, int j)
-			{
-				textureWidth = i;
-				textureHeight = j;
+				this.textureWidth = (float)textureWidthIn;
+				this.textureHeight = (float)textureHeightIn;
 				return this;
 			}
 		}
@@ -837,32 +758,32 @@ namespace MCSkin3D
 
 		public class PositionTextureVertex
 		{
+			public Vector3d vector3D;
 			public float texturePositionX;
 			public float texturePositionY;
-			public Vector3 vector3D;
 
-			public PositionTextureVertex(float f, float f1, float f2, float f3, float f4) :
-				this(new Vector3(f, f1, f2), f3, f4)
+			public PositionTextureVertex(float p_i1158_1_, float p_i1158_2_, float p_i1158_3_, float p_i1158_4_, float p_i1158_5_) :
+				this(new Vector3d((double)p_i1158_1_, (double)p_i1158_2_, (double)p_i1158_3_), p_i1158_4_, p_i1158_5_)
 			{
 			}
 
-			public PositionTextureVertex(PositionTextureVertex positiontexturevertex, float f, float f1)
+			public PositionTextureVertex setTexturePosition(float p_78240_1_, float p_78240_2_)
 			{
-				vector3D = positiontexturevertex.vector3D;
-				texturePositionX = f;
-				texturePositionY = f1;
+				return new PositionTextureVertex(this, p_78240_1_, p_78240_2_);
 			}
 
-			public PositionTextureVertex(Vector3 vec3d, float f, float f1)
+			public PositionTextureVertex(PositionTextureVertex textureVertex, float texturePositionXIn, float texturePositionYIn)
 			{
-				vector3D = vec3d;
-				texturePositionX = f;
-				texturePositionY = f1;
+				this.vector3D = textureVertex.vector3D;
+				this.texturePositionX = texturePositionXIn;
+				this.texturePositionY = texturePositionYIn;
 			}
 
-			public PositionTextureVertex setTexturePosition(float f, float f1)
+			public PositionTextureVertex(Vector3d p_i47091_1_, float p_i47091_2_, float p_i47091_3_)
 			{
-				return new PositionTextureVertex(this, f, f1);
+				this.vector3D = p_i47091_1_;
+				this.texturePositionX = p_i47091_2_;
+				this.texturePositionY = p_i47091_3_;
 			}
 		}
 
@@ -872,13 +793,16 @@ namespace MCSkin3D
 
 		public class TextureOffset
 		{
-			public int field_40733_b;
-			public int field_40734_a;
+			/** The x coordinate offset of the texture */
+			public int textureOffsetX;
 
-			public TextureOffset(int i, int j)
+			/** The y coordinate offset of the texture */
+			public int textureOffsetY;
+
+			public TextureOffset(int textureOffsetXIn, int textureOffsetYIn)
 			{
-				field_40734_a = i;
-				field_40733_b = j;
+				this.textureOffsetX = textureOffsetXIn;
+				this.textureOffsetY = textureOffsetYIn;
 			}
 		}
 
@@ -888,35 +812,71 @@ namespace MCSkin3D
 
 		public class TexturedQuad
 		{
-			public int nVertices;
 			public PositionTextureVertex[] vertexPositions;
+			public int nVertices;
+			private bool invertNormal;
 
-			public TexturedQuad(PositionTextureVertex[] apositiontexturevertex)
+			public TexturedQuad(PositionTextureVertex[] vertices)
 			{
-				nVertices = 0;
-				vertexPositions = apositiontexturevertex;
-				nVertices = apositiontexturevertex.Length;
+				this.vertexPositions = vertices;
+				this.nVertices = vertices.Length;
 			}
 
-			public TexturedQuad(PositionTextureVertex[] apositiontexturevertex, int i, int j, int k, int l, float f, float f1) :
-				this(apositiontexturevertex)
+			public TexturedQuad(PositionTextureVertex[] vertices, int texcoordU1, int texcoordV1, int texcoordU2, int texcoordV2, float textureWidth, float textureHeight) :
+				this(vertices)
 			{
-				float f2 = 0.0F / f;
-				float f3 = 0.0F / f1;
-				apositiontexturevertex[0] = apositiontexturevertex[0].setTexturePosition(k / f - f2, j / f1 + f3);
-				apositiontexturevertex[1] = apositiontexturevertex[1].setTexturePosition(i / f + f2, j / f1 + f3);
-				apositiontexturevertex[2] = apositiontexturevertex[2].setTexturePosition(i / f + f2, l / f1 - f3);
-				apositiontexturevertex[3] = apositiontexturevertex[3].setTexturePosition(k / f - f2, l / f1 - f3);
+				float f = 0.0F / textureWidth;
+				float f1 = 0.0F / textureHeight;
+				vertices[0] = vertices[0].setTexturePosition((float)texcoordU2 / textureWidth - f, (float)texcoordV1 / textureHeight + f1);
+				vertices[1] = vertices[1].setTexturePosition((float)texcoordU1 / textureWidth + f, (float)texcoordV1 / textureHeight + f1);
+				vertices[2] = vertices[2].setTexturePosition((float)texcoordU1 / textureWidth + f, (float)texcoordV2 / textureHeight - f1);
+				vertices[3] = vertices[3].setTexturePosition((float)texcoordU2 / textureWidth - f, (float)texcoordV2 / textureHeight - f1);
 			}
 
 			public void flipFace()
 			{
-				var apositiontexturevertex = new PositionTextureVertex[vertexPositions.Length];
-				for (int i = 0; i < vertexPositions.Length; i++)
-					apositiontexturevertex[i] = vertexPositions[vertexPositions.Length - i - 1];
+				PositionTextureVertex[] apositiontexturevertex = new PositionTextureVertex[this.vertexPositions.Length];
 
-				vertexPositions = apositiontexturevertex;
+				for (int i = 0; i < this.vertexPositions.Length; ++i)
+				{
+					apositiontexturevertex[i] = this.vertexPositions[this.vertexPositions.Length - i - 1];
+				}
+
+				this.vertexPositions = apositiontexturevertex;
 			}
+
+#if RENDER
+		/**
+		 * Draw this primitve. This is typically called only once as the generated drawing instructions are saved by the
+		 * renderer and reused later.
+		 */
+		public void draw(VertexBuffer renderer, float scale)
+		{
+			Vec3d vec3d = this.vertexPositions[1].vector3D.subtractReverse(this.vertexPositions[0].vector3D);
+			Vec3d vec3d1 = this.vertexPositions[1].vector3D.subtractReverse(this.vertexPositions[2].vector3D);
+			Vec3d vec3d2 = vec3d1.crossProduct(vec3d).normalize();
+			float f = (float)vec3d2.xCoord;
+			float f1 = (float)vec3d2.yCoord;
+			float f2 = (float)vec3d2.zCoord;
+
+			if (this.invertNormal)
+			{
+				f = -f;
+				f1 = -f1;
+				f2 = -f2;
+			}
+
+			renderer.begin(7, DefaultVertexFormats.OLDMODEL_POSITION_TEX_NORMAL);
+
+			for (int i = 0; i < 4; ++i)
+			{
+				PositionTextureVertex positiontexturevertex = this.vertexPositions[i];
+				renderer.pos(positiontexturevertex.vector3D.xCoord * (double)scale, positiontexturevertex.vector3D.yCoord * (double)scale, positiontexturevertex.vector3D.zCoord * (double)scale).tex((double)positiontexturevertex.texturePositionX, (double)positiontexturevertex.texturePositionY).normal(f, f1, f2).endVertex();
+			}
+
+			Tessellator.getInstance().draw();
+		}
+#endif
 		}
 
 		#endregion

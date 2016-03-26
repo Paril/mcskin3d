@@ -1580,6 +1580,7 @@
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.Name = "Editor";
 			this.Text = "MCSkin3D";
+			this.Load += new System.EventHandler(this.Editor_Load);
 			this.mainMenuStrip.ResumeLayout(false);
 			this.mainMenuStrip.PerformLayout();
 			this.contextMenuStrip1.ResumeLayout(false);

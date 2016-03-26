@@ -126,6 +126,9 @@
     <Compile Include="Controls\ListViewExpanded.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ModelToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SkinTreeViewToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -155,8 +158,71 @@
       <DependentUpon>GUIDPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Languages\LanguageHandler.cs" />
+    <Compile Include="LZString.cs" />
     <Compile Include="Macros\Macros.cs" />
     <Compile Include="MCSkin3DAppContext.cs" />
+    <Compile Include="Models\Convert\AbstractClientPlayer.cs" />
+    <Compile Include="Models\Convert\Compat.cs" />
+    <Compile Include="Models\Convert\ConversionInterface.cs" />
+    <Compile Include="Models\Convert\EntityArmorStand.cs" />
+    <Compile Include="Models\Convert\EntityBat.cs" />
+    <Compile Include="Models\Convert\EntityGuardian.cs" />
+    <Compile Include="Models\Convert\EntityHorse.cs" />
+    <Compile Include="Models\Convert\EntityMagmaCube.cs" />
+    <Compile Include="Models\Convert\EntityRabbit.cs" />
+    <Compile Include="Models\Convert\EntityShulker.cs" />
+    <Compile Include="Models\Convert\EntityWolf.cs" />
+    <Compile Include="Models\Convert\EntityZombie.cs" />
+    <Compile Include="Models\Convert\EnumHandSide.cs" />
+    <Compile Include="Models\Convert\ModelHorse.cs" />
+    <Compile Include="Models\Convert\IMultipassModel.cs" />
+    <Compile Include="Models\Convert\Math.cs" />
+    <Compile Include="Models\Convert\MathHelper.cs" />
+    <Compile Include="Models\Convert\ModelArmorStand.cs" />
+    <Compile Include="Models\Convert\ModelArmorStandArmor.cs" />
+    <Compile Include="Models\Convert\ModelBanner.cs" />
+    <Compile Include="Models\Convert\ModelBat.cs" />
+    <Compile Include="Models\Convert\ModelBiped.cs" />
+    <Compile Include="Models\Convert\ModelBlaze.cs" />
+    <Compile Include="Models\Convert\ModelBoat.cs" />
+    <Compile Include="Models\Convert\ModelBook.cs" />
+    <Compile Include="Models\Convert\ModelChest.cs" />
+    <Compile Include="Models\Convert\ModelChicken.cs" />
+    <Compile Include="Models\Convert\ModelCow.cs" />
+    <Compile Include="Models\Convert\ModelCreeper.cs" />
+    <Compile Include="Models\Convert\ModelElytra.cs" />
+    <Compile Include="Models\Convert\ModelEnderCrystal.cs" />
+    <Compile Include="Models\Convert\ModelEnderman.cs" />
+    <Compile Include="Models\Convert\ModelEnterMite.cs" />
+    <Compile Include="Models\Convert\ModelGhast.cs" />
+    <Compile Include="Models\Convert\ModelGuardian.cs" />
+    <Compile Include="Models\Convert\ModelIronGolem.cs" />
+    <Compile Include="Models\Convert\ModelLargeChest.cs" />
+    <Compile Include="Models\Convert\ModelLeashKnot.cs" />
+    <Compile Include="Models\Convert\ModelMagmaCube.cs" />
+    <Compile Include="Models\Convert\ModelMinecart.cs" />
+    <Compile Include="Models\Convert\ModelOcelot.cs" />
+    <Compile Include="Models\Convert\ModelPig.cs" />
+    <Compile Include="Models\Convert\ModelPlayer.cs" />
+    <Compile Include="Models\Convert\ModelQuadruped.cs" />
+    <Compile Include="Models\Convert\ModelRabbit.cs" />
+    <Compile Include="Models\Convert\ModelSheep1.cs" />
+    <Compile Include="Models\Convert\ModelSheep2.cs" />
+    <Compile Include="Models\Convert\ModelShield.cs" />
+    <Compile Include="Models\Convert\ModelShulker.cs" />
+    <Compile Include="Models\Convert\ModelSign.cs" />
+    <Compile Include="Models\Convert\ModelSilverfish.cs" />
+    <Compile Include="Models\Convert\ModelSkeleton.cs" />
+    <Compile Include="Models\Convert\ModelSlime.cs" />
+    <Compile Include="Models\Convert\ModelSnowMan.cs" />
+    <Compile Include="Models\Convert\ModelSpider.cs" />
+    <Compile Include="Models\Convert\ModelSquid.cs" />
+    <Compile Include="Models\Convert\ModelVillager.cs" />
+    <Compile Include="Models\Convert\ModelWitch.cs" />
+    <Compile Include="Models\Convert\ModelWither.cs" />
+    <Compile Include="Models\Convert\ModelWolf.cs" />
+    <Compile Include="Models\Convert\ShulkerBullet.cs" />
+    <Compile Include="Models\Convert\ZombieVillager.cs" />
     <Compile Include="Paril\Controls\TextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -176,7 +242,6 @@
     </Compile>
     <Compile Include="lemon42\Color\ColorPickUtil.cs" />
     <Compile Include="Models\IModelFormat.cs" />
-    <Compile Include="Models\MCModels.cs" />
     <Compile Include="Models\ModelFormatTCN.cs" />
     <Compile Include="Paril\Imaging\SafeSave.cs" />
     <Compile Include="Paril\OpenGL\ClientArrayMeshUserData.cs" />
@@ -408,7 +473,6 @@
     <Compile Include="Updater\Updater.cs" />
     <Compile Include="ViewMode.cs" />
     <Compile Include="VisiblePartFlags.cs" />
-    <EmbeddedResource Include="Resources\simpleColor.fs" />
     <EmbeddedResource Include="Resources\OpenTK.dll" />
     <EmbeddedResource Include="Resources\OpenTK.GLControl.dll" />
     <None Include="Resources\arrow_Up_16xLG.png" />
@@ -432,9 +496,6 @@
     <None Include="icons\mcskin3d192.png" />
     <Content Include="Icon_new.ico" />
     <None Include="Resources\Generic_Application.png" />
-    <EmbeddedResource Include="Resources\simpleTextured.fs" />
-    <EmbeddedResource Include="Resources\simpleTextured.vs" />
-    <EmbeddedResource Include="Resources\simpleColor.vs" />
     <None Include="Resources\sort-descending.png" />
     <None Include="Resources\sort-ascending.png" />
     <None Include="Resources\filter-icons3.png" />

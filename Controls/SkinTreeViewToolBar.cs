@@ -11,7 +11,7 @@ namespace MCSkin3D.Controls
 		public ToolStripButton TreeZoomInToolStripButton { get; private set; }
 
 		public ToolStripButton ImportToolStripButton { get; private set; }
-		public ToolStripButton NewSkinToolStripButton { get; private set; }
+		public ToolStripSplitButton NewSkinToolStripButton { get; private set; }
 		public ToolStripButton NewFolderToolStripButton { get; private set; }
 
 		public ToolStripButton RenameToolStripButton { get; private set; }
@@ -33,7 +33,7 @@ namespace MCSkin3D.Controls
 			TreeZoomInToolStripButton = new ToolStripButton();
 
 			ImportToolStripButton = new ToolStripButton();
-			NewSkinToolStripButton = new ToolStripButton();
+			NewSkinToolStripButton = new ToolStripSplitButton();
 			NewFolderToolStripButton = new ToolStripButton();
 
 			RenameToolStripButton = new ToolStripButton();
@@ -107,7 +107,7 @@ namespace MCSkin3D.Controls
 			LanguageProvider.SetPropertyNames(NewSkinToolStripButton, "Text");
 			NewSkinToolStripButton.Size = new System.Drawing.Size(23, 22);
 			NewSkinToolStripButton.Text = "M_NEWSKIN_HERE";
-			NewSkinToolStripButton.Click += new System.EventHandler(newSkinToolStripButton_Click);
+			NewSkinToolStripButton.ButtonClick += new System.EventHandler(newSkinToolStripButton_Click);
 			// 
 			// newFolderToolStripButton
 			// 

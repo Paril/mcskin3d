@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml;
 using MCSkin3D;
+using MCSkin3D.Controls;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -19,7 +20,7 @@ namespace Paril.OpenGL
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
 		public bool[] PartsEnabled;
-		public Editor.ModelToolStripMenuItem DropDownItem { get; set; }
+		public ModelToolStripMenuItem DropDownItem { get; set; }
 
 		public string Path
 		{
@@ -269,6 +270,11 @@ namespace Paril.OpenGL
 			}
 
 			return names[closestIndex];
+		}
+
+		internal IDisposable LoadDefaultTexture()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
