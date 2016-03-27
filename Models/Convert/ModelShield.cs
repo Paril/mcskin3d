@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,10 @@ namespace MCSkin3D.Models.Convert
 			this.textureWidth = 64;
 			this.textureHeight = 64;
 			this.field_187063_a = new ModelRenderer(this, 0, 0);
-			this.field_187063_a.addBox(-6.0F, -11.0F, -2.0F, 12, 22, 1, 0.0F);
+			this.field_187063_a.addBox(-6.0F, -11.0F, -2.0F, 12, 22, 1, 0.0F, "Shield");
 			this.field_187064_b = new ModelRenderer(this, 26, 0);
-			this.field_187064_b.addBox(-1.0F, -3.0F, -1.0F, 2, 6, 6, 0.0F);
+			this.field_187064_b.addBox(-1.0F, -3.0F, -1.0F, 2, 6, 6, 0.0F, "Handle");
 		}
 	}
 }
+#endif

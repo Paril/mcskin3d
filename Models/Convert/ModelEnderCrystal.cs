@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,17 +21,17 @@ namespace MCSkin3D.Models.Convert
 		public ModelEnderCrystal(float p_i1170_1_, boolean p_i1170_2_)
 		{
 			this.glass = new ModelRenderer(this, "glass");
-			this.glass.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8);
+			this.glass.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8, "glass");
 			this.glass.setRotationPoint(0, -8f, 0);
 			this.glass.rotateAngleX = ((float)Math.PI / 3F);
 			this.glass.rotateAngleY = ((float)Math.PI / 3F);
 			this.cube = new ModelRenderer(this, "cube");
-			this.cube.setTextureOffset(32, 0).addBox(-4.0F, -12.0F, -4.0F, 8, 8, 8);
+			this.cube.setTextureOffset(32, 0).addBox(-4.0F, -12.0F, -4.0F, 8, 8, 8, "cube");
 
 			if (p_i1170_2_)
 			{
 				this.baseM = new ModelRenderer(this, "base");
-				this.baseM.setTextureOffset(0, 16).addBox(-6.0F, 0.0F, -6.0F, 12, 4, 12);
+				this.baseM.setTextureOffset(0, 16).addBox(-6.0F, 0.0F, -6.0F, 12, 4, 12, "cube");
 			}
 		}
 
@@ -67,3 +68,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

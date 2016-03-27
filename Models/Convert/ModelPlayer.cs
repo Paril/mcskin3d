@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,44 +32,58 @@ namespace MCSkin3D.Models.Convert
 			{
 				boxList.Remove(this.bipedRightArm);
 
-				this.bipedLeftArm = new ModelRenderer(this, 32, 48);
+				this.bipedLeftArm = new ModelRenderer(this, 32, 48, ModelPart.LeftArm);
 				this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, p_i46304_1_, "Left Arm");
 				this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
-				this.bipedRightArm = new ModelRenderer(this, 40, 16);
+				this.bipedRightArm = new ModelRenderer(this, 40, 16, ModelPart.RightArm);
 				this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, p_i46304_1_, "Right Arm");
 				this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
-				this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
+				this.bipedLeftArmwear = new ModelRenderer(this, 48, 48, ModelPart.LeftArmArmor);
 				this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, p_i46304_1_ + 0.25F, "Left Armwear");
 				this.bipedLeftArmwear.setRotationPoint(5.0F, 2.5F, 0.0F);
-				this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
+				this.bipedRightArmwear = new ModelRenderer(this, 40, 32, ModelPart.RightArmArmor);
 				this.bipedRightArmwear.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, p_i46304_1_ + 0.25F, "Right Armwear");
 				this.bipedRightArmwear.setRotationPoint(-5.0F, 2.5F, 10.0F);
 			}
 			else
 			{
-				this.bipedLeftArm = new ModelRenderer(this, 32, 48);
+				this.bipedLeftArm = new ModelRenderer(this, 32, 48, ModelPart.LeftArm);
 				this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, p_i46304_1_, "Left Arm");
 				this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-				this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
+				this.bipedLeftArmwear = new ModelRenderer(this, 48, 48, ModelPart.LeftArmArmor);
 				this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, p_i46304_1_ + 0.25F, "Left Armwear");
 				this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
-				this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
+				this.bipedRightArmwear = new ModelRenderer(this, 40, 32, ModelPart.RightArmArmor);
 				this.bipedRightArmwear.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, p_i46304_1_ + 0.25F, "Right Armwear");
 				this.bipedRightArmwear.setRotationPoint(-5.0F, 2.0F, 10.0F);
 			}
 
-			this.bipedLeftLeg = new ModelRenderer(this, 16, 48);
+			this.bipedLeftLeg = new ModelRenderer(this, 16, 48, ModelPart.LeftLeg);
 			this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, p_i46304_1_, "Left Leg");
 			this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
-			this.bipedLeftLegwear = new ModelRenderer(this, 0, 48);
+			this.bipedLeftLegwear = new ModelRenderer(this, 0, 48, ModelPart.LeftLegArmor);
 			this.bipedLeftLegwear.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, p_i46304_1_ + 0.25F, "Left Legwear");
 			this.bipedLeftLegwear.setRotationPoint(1.9F, 12.0F, 0.0F);
-			this.bipedRightLegwear = new ModelRenderer(this, 0, 32);
+			this.bipedRightLegwear = new ModelRenderer(this, 0, 32, ModelPart.RightLegArmor);
 			this.bipedRightLegwear.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, p_i46304_1_ + 0.25F, "Right Legwear");
 			this.bipedRightLegwear.setRotationPoint(-1.9F, 12.0F, 0.0F);
-			this.bipedBodyWear = new ModelRenderer(this, 16, 32);
+			this.bipedBodyWear = new ModelRenderer(this, 16, 32, ModelPart.ChestArmor);
 			this.bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, p_i46304_1_ + 0.25F, "Bodywear");
 			this.bipedBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
+
+			this.bipedHead.isSolid = true;
+			this.bipedBody.isSolid = true;
+			this.bipedLeftLeg.isSolid = true;
+			this.bipedRightLeg.isSolid = true;
+			this.bipedLeftArm.isSolid = true;
+			this.bipedRightArm.isSolid = true;
+
+			this.bipedLeftLegwear.isArmor = true;
+			this.bipedRightLegwear.isArmor = true;
+			this.bipedBodyWear.isArmor = true;
+			this.bipedHeadwear.isArmor = true;
+			this.bipedLeftArmwear.isArmor = true;
+			this.bipedRightArmwear.isArmor = true;
 		}
 
 #if RENDER
@@ -178,3 +193,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

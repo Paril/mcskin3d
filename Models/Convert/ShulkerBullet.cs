@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,9 @@ namespace MCSkin3D.Models.Convert
 			this.textureWidth = 64;
 			this.textureHeight = 32;
 			this.field_187069_a = new ModelRenderer(this);
-			this.field_187069_a.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -1.0F, 8, 8, 2, 0.0F);
-			this.field_187069_a.setTextureOffset(0, 10).addBox(-1.0F, -4.0F, -4.0F, 2, 8, 8, 0.0F);
-			this.field_187069_a.setTextureOffset(20, 0).addBox(-4.0F, -1.0F, -4.0F, 8, 2, 8, 0.0F);
+			this.field_187069_a.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -1.0F, 8, 8, 2, 0.0F, "Bullet Piece");
+			this.field_187069_a.setTextureOffset(0, 10).addBox(-1.0F, -4.0F, -4.0F, 2, 8, 8, 0.0F, "Bullet Piece");
+			this.field_187069_a.setTextureOffset(20, 0).addBox(-4.0F, -1.0F, -4.0F, 8, 2, 8, 0.0F, "Bullet Piece");
 			this.field_187069_a.setRotationPoint(0.0F, 0.0F, 0.0F);
 		}
 
@@ -44,3 +45,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

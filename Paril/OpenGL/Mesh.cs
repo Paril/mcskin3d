@@ -27,6 +27,7 @@ namespace Paril.OpenGL
 		public IMeshUserData UserData;
 		public Matrix4 Matrix;
 		public bool IsSolid;
+		public bool IsArmor;
 
 		public Mesh(string name)
 		{

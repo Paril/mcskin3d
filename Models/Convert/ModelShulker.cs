@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,11 @@ namespace MCSkin3D.Models.Convert
 			this.field_187068_c = new ModelRenderer(this);
 			this.field_187067_b = new ModelRenderer(this);
 			this.field_187066_a = new ModelRenderer(this);
-			this.field_187068_c.setTextureOffset(0, 0).addBox(-8.0F, -16.0F, -8.0F, 16, 12, 16);
+			this.field_187068_c.setTextureOffset(0, 0).addBox(-8.0F, -16.0F, -8.0F, 16, 12, 16, "Top");
 			this.field_187068_c.setRotationPoint(0.0F, 24.0F, 0.0F);
-			this.field_187067_b.setTextureOffset(0, 28).addBox(-8.0F, -8.0F, -8.0F, 16, 8, 16);
+			this.field_187067_b.setTextureOffset(0, 28).addBox(-8.0F, -8.0F, -8.0F, 16, 8, 16, "Bottom");
 			this.field_187067_b.setRotationPoint(0.0F, 24.0F, 0.0F);
-			this.field_187066_a.setTextureOffset(0, 52).addBox(-3.0F, 0.0F, -3.0F, 6, 6, 6);
+			this.field_187066_a.setTextureOffset(0, 52).addBox(-3.0F, 0.0F, -3.0F, 6, 6, 6, "Head");
 			this.field_187066_a.setRotationPoint(0.0F, 12.0F, 0.0F);
 		}
 
@@ -77,3 +78,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

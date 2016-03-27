@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,38 +46,38 @@ namespace MCSkin3D.Models.Convert
 		{
 			float f = 0.0F;
 			int i = 15;
-			this.spiderHead = new ModelRenderer(this, 32, 4);
-			this.spiderHead.addBox(-4.0F, -4.0F, -8.0F, 8, 8, 8, f);
+			this.spiderHead = new ModelRenderer(this, 32, 4, ModelPart.Head);
+			this.spiderHead.addBox(-4.0F, -4.0F, -8.0F, 8, 8, 8, f, "Head");
 			this.spiderHead.setRotationPoint(0.0F, (float)i, -3.0F);
-			this.spiderNeck = new ModelRenderer(this, 0, 0);
-			this.spiderNeck.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 6, f);
+			this.spiderNeck = new ModelRenderer(this, 0, 0, ModelPart.Head);
+			this.spiderNeck.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 6, f, "Neck");
 			this.spiderNeck.setRotationPoint(0.0F, (float)i, 0.0F);
-			this.spiderBody = new ModelRenderer(this, 0, 12);
-			this.spiderBody.addBox(-5.0F, -4.0F, -6.0F, 10, 8, 12, f);
+			this.spiderBody = new ModelRenderer(this, 0, 12, ModelPart.Chest);
+			this.spiderBody.addBox(-5.0F, -4.0F, -6.0F, 10, 8, 12, f, "Body");
 			this.spiderBody.setRotationPoint(0.0F, (float)i, 9.0F);
 			this.spiderLeg1 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg1.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg1.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 1");
 			this.spiderLeg1.setRotationPoint(-4.0F, (float)i, 2.0F);
 			this.spiderLeg2 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg2.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg2.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 2");
 			this.spiderLeg2.setRotationPoint(4.0F, (float)i, 2.0F);
 			this.spiderLeg3 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg3.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg3.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 3");
 			this.spiderLeg3.setRotationPoint(-4.0F, (float)i, 1.0F);
 			this.spiderLeg4 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg4.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg4.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 4");
 			this.spiderLeg4.setRotationPoint(4.0F, (float)i, 1.0F);
 			this.spiderLeg5 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg5.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg5.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 5");
 			this.spiderLeg5.setRotationPoint(-4.0F, (float)i, 0.0F);
 			this.spiderLeg6 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg6.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg6.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 6");
 			this.spiderLeg6.setRotationPoint(4.0F, (float)i, 0.0F);
 			this.spiderLeg7 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg7.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg7.addBox(-15.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 7");
 			this.spiderLeg7.setRotationPoint(-4.0F, (float)i, -1.0F);
 			this.spiderLeg8 = new ModelRenderer(this, 18, 0);
-			this.spiderLeg8.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f);
+			this.spiderLeg8.addBox(-1.0F, -1.0F, -1.0F, 16, 2, 2, f, "Leg 8");
 			this.spiderLeg8.setRotationPoint(4.0F, (float)i, -1.0F);
 		}
 
@@ -156,3 +157,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

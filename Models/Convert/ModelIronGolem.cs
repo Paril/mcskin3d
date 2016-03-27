@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,27 +41,27 @@ namespace MCSkin3D.Models.Convert
 		{
 			int i = 128;
 			int j = 128;
-			this.ironGolemHead = (new ModelRenderer(this)).setTextureSize(i, j);
+			this.ironGolemHead = (new ModelRenderer(this, ModelPart.Head)).setTextureSize(i, j);
 			this.ironGolemHead.setRotationPoint(0.0F, 0.0F + p_i46362_2_, -2.0F);
-			this.ironGolemHead.setTextureOffset(0, 0).addBox(-4.0F, -12.0F, -5.5F, 8, 10, 8, p_i46362_1_);
-			this.ironGolemHead.setTextureOffset(24, 0).addBox(-1.0F, -5.0F, -7.5F, 2, 4, 2, p_i46362_1_);
-			this.ironGolemBody = (new ModelRenderer(this)).setTextureSize(i, j);
+			this.ironGolemHead.setTextureOffset(0, 0).addBox(-4.0F, -12.0F, -5.5F, 8, 10, 8, p_i46362_1_, "Head");
+			this.ironGolemHead.setTextureOffset(24, 0).addBox(-1.0F, -5.0F, -7.5F, 2, 4, 2, p_i46362_1_, "Nose");
+			this.ironGolemBody = (new ModelRenderer(this, ModelPart.Chest)).setTextureSize(i, j);
 			this.ironGolemBody.setRotationPoint(0.0F, 0.0F + p_i46362_2_, 0.0F);
-			this.ironGolemBody.setTextureOffset(0, 40).addBox(-9.0F, -2.0F, -6.0F, 18, 12, 11, p_i46362_1_);
-			this.ironGolemBody.setTextureOffset(0, 70).addBox(-4.5F, 10.0F, -3.0F, 9, 5, 6, p_i46362_1_ + 0.5F);
-			this.ironGolemRightArm = (new ModelRenderer(this)).setTextureSize(i, j);
+			this.ironGolemBody.setTextureOffset(0, 40).addBox(-9.0F, -2.0F, -6.0F, 18, 12, 11, p_i46362_1_, "Chest");
+			this.ironGolemBody.setTextureOffset(0, 70).addBox(-4.5F, 10.0F, -3.0F, 9, 5, 6, p_i46362_1_ + 0.5F, "Waist");
+			this.ironGolemRightArm = (new ModelRenderer(this, ModelPart.RightArm)).setTextureSize(i, j);
 			this.ironGolemRightArm.setRotationPoint(0.0F, -7.0F, 0.0F);
-			this.ironGolemRightArm.setTextureOffset(60, 21).addBox(-13.0F, -2.5F, -3.0F, 4, 30, 6, p_i46362_1_);
-			this.ironGolemLeftArm = (new ModelRenderer(this)).setTextureSize(i, j);
+			this.ironGolemRightArm.setTextureOffset(60, 21).addBox(-13.0F, -2.5F, -3.0F, 4, 30, 6, p_i46362_1_, "Right Arm");
+			this.ironGolemLeftArm = (new ModelRenderer(this, ModelPart.LeftArm)).setTextureSize(i, j);
 			this.ironGolemLeftArm.setRotationPoint(0.0F, -7.0F, 0.0F);
-			this.ironGolemLeftArm.setTextureOffset(60, 58).addBox(9.0F, -2.5F, -3.0F, 4, 30, 6, p_i46362_1_);
-			this.ironGolemLeftLeg = (new ModelRenderer(this, 0, 22)).setTextureSize(i, j);
+			this.ironGolemLeftArm.setTextureOffset(60, 58).addBox(9.0F, -2.5F, -3.0F, 4, 30, 6, p_i46362_1_, "Left Arm");
+			this.ironGolemLeftLeg = (new ModelRenderer(this, 0, 22, ModelPart.RightLeg)).setTextureSize(i, j);
 			this.ironGolemLeftLeg.setRotationPoint(-4.0F, 18.0F + p_i46362_2_, 0.0F);
-			this.ironGolemLeftLeg.setTextureOffset(37, 0).addBox(-3.5F, -3.0F, -3.0F, 6, 16, 5, p_i46362_1_);
-			this.ironGolemRightLeg = (new ModelRenderer(this, 0, 22)).setTextureSize(i, j);
+			this.ironGolemLeftLeg.setTextureOffset(37, 0).addBox(-3.5F, -3.0F, -3.0F, 6, 16, 5, p_i46362_1_, "Right Leg");
+			this.ironGolemRightLeg = (new ModelRenderer(this, 0, 22, ModelPart.LeftLeg)).setTextureSize(i, j);
 			this.ironGolemRightLeg.mirror = true;
 			this.ironGolemRightLeg.setTextureOffset(60, 0).setRotationPoint(5.0F, 18.0F + p_i46362_2_, 0.0F);
-			this.ironGolemRightLeg.addBox(-3.5F, -3.0F, -3.0F, 6, 16, 5, p_i46362_1_);
+			this.ironGolemRightLeg.addBox(-3.5F, -3.0F, -3.0F, 6, 16, 5, p_i46362_1_, "Left Leg");
 		}
 
 #if RENDER
@@ -133,3 +134,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

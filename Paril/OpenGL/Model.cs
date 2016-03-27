@@ -20,6 +20,7 @@ namespace Paril.OpenGL
 		public List<Mesh> Meshes = new List<Mesh>();
 		public string Name;
 		public bool[] PartsEnabled;
+		public string DefaultTexture;
 		public ModelToolStripMenuItem DropDownItem { get; set; }
 
 		public string Path
@@ -122,7 +123,7 @@ namespace Paril.OpenGL
 			return Vector3.Transform(v, m);
 		}
 
-		public static Model Load(string fileName)
+		/*public static Model Load(string fileName)
 		{
 			if (new FileInfo(fileName).Extension == ".xml" &&
 				new FileInfo(fileName.Substring(0, fileName.Length - 4) + ".gz.xml").Exists)
@@ -226,7 +227,7 @@ namespace Paril.OpenGL
 			inStream.Dispose();
 
 			return model;
-		}
+		}*/
 
 		public static string SideFromNormal(Vector3 vector3)
 		{

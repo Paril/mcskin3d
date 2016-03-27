@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,3 +41,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using static MCSkin3D.ModelLoader;
+﻿#if CONVERT_MODELS
+using static MCSkin3D.ModelLoader;
 
 namespace MCSkin3D.Models.Convert
 {
@@ -41,32 +42,32 @@ namespace MCSkin3D.Models.Convert
 			this.rightArmPose = ModelBiped.ArmPose.EMPTY;
 			this.textureWidth = textureWidthIn;
 			this.textureHeight = textureHeightIn;
-			this.bipedHead = new ModelRenderer(this, 0, 0);
+			this.bipedHead = new ModelRenderer(this, 0, 0, ModelPart.Head);
 			this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, modelSize, "Head");
 			this.bipedHead.setRotationPoint(0.0F, 0.0F + p_i1149_2_, 0.0F);
-			this.bipedHeadwear = new ModelRenderer(this, 32, 0);
+			this.bipedHeadwear = new ModelRenderer(this, 32, 0, ModelPart.Helmet);
 			this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, modelSize + 0.5F, "Headwear");
 			this.bipedHeadwear.setRotationPoint(0.0F, 0.0F + p_i1149_2_, 0.0F);
-			this.bipedBody = new ModelRenderer(this, 16, 16);
+			this.bipedBody = new ModelRenderer(this, 16, 16, ModelPart.Chest);
 			this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelSize, "Body");
 			this.bipedBody.setRotationPoint(0.0F, 0.0F + p_i1149_2_, 0.0F);
-			this.bipedRightArm = new ModelRenderer(this, 40, 16);
+			this.bipedRightArm = new ModelRenderer(this, 40, 16, ModelPart.RightArm);
 			this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize, "Right Arm");
 			this.bipedRightArm.setRotationPoint(-5.0F, 2.0F + p_i1149_2_, 0.0F);
-			this.bipedLeftArm = new ModelRenderer(this, 40, 16);
+			this.bipedLeftArm = new ModelRenderer(this, 40, 16, ModelPart.LeftArm);
 			this.bipedLeftArm.mirror = true;
 			this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize, "Left Arm");
 			this.bipedLeftArm.setRotationPoint(5.0F, 2.0F + p_i1149_2_, 0.0F);
-			this.bipedRightLeg = new ModelRenderer(this, 0, 16);
+			this.bipedRightLeg = new ModelRenderer(this, 0, 16, ModelPart.RightLeg);
 			this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize, "Right Leg");
 			this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F + p_i1149_2_, 0.0F);
-			this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
+			this.bipedLeftLeg = new ModelRenderer(this, 0, 16, ModelPart.LeftLeg);
 			this.bipedLeftLeg.mirror = true;
 			this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize, "Left Leg");
 			this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F + p_i1149_2_, 0.0F);
 		}
 
-	#if RENDER
+#if RENDER
 		/**
 			* Sets the models various rotation angles then renders the model.
 			*/
@@ -110,7 +111,7 @@ namespace MCSkin3D.Models.Convert
 
 			GlStateManager.popMatrix();
 		}
-	#endif
+#endif
 
 		//@SuppressWarnings("incomplete-switch")
 
@@ -311,12 +312,12 @@ namespace MCSkin3D.Models.Convert
 			this.bipedLeftLeg.showModel = invisible;
 		}
 
-	#if RENDER
+#if RENDER
 		public void postRenderArm(float p_187073_1_, EnumHandSide p_187073_2_)
 		{
 			this.getArmForSide(p_187073_2_).postRender(p_187073_1_);
 		}
-	#endif
+#endif
 
 		protected ModelRenderer getArmForSide(EnumHandSide p_187074_1_)
 		{
@@ -337,3 +338,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

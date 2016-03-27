@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,24 +18,24 @@ namespace MCSkin3D.Models.Convert
 			this.textureHeight = 64;
 			this.field_82905_a = new ModelRenderer[3];
 			this.field_82905_a[0] = new ModelRenderer(this, 0, 16);
-			this.field_82905_a[0].addBox(-10.0F, 3.9F, -0.5F, 20, 3, 3, p_i46302_1_);
+			this.field_82905_a[0].addBox(-10.0F, 3.9F, -0.5F, 20, 3, 3, p_i46302_1_, "Neck");
 			this.field_82905_a[1] = (new ModelRenderer(this)).setTextureSize(this.textureWidth, this.textureHeight);
 			this.field_82905_a[1].setRotationPoint(-2.0F, 6.9F, -0.5F);
-			this.field_82905_a[1].setTextureOffset(0, 22).addBox(0.0F, 0.0F, 0.0F, 3, 10, 3, p_i46302_1_);
-			this.field_82905_a[1].setTextureOffset(24, 22).addBox(-4.0F, 1.5F, 0.5F, 11, 2, 2, p_i46302_1_);
-			this.field_82905_a[1].setTextureOffset(24, 22).addBox(-4.0F, 4.0F, 0.5F, 11, 2, 2, p_i46302_1_);
-			this.field_82905_a[1].setTextureOffset(24, 22).addBox(-4.0F, 6.5F, 0.5F, 11, 2, 2, p_i46302_1_);
+			this.field_82905_a[1].setTextureOffset(0, 22).addBox(0.0F, 0.0F, 0.0F, 3, 10, 3, p_i46302_1_, "Spine");
+			this.field_82905_a[1].setTextureOffset(24, 22).addBox(-4.0F, 1.5F, 0.5F, 11, 2, 2, p_i46302_1_, "Spine Bit");
+			this.field_82905_a[1].setTextureOffset(24, 22).addBox(-4.0F, 4.0F, 0.5F, 11, 2, 2, p_i46302_1_, "Spine Bit");
+			this.field_82905_a[1].setTextureOffset(24, 22).addBox(-4.0F, 6.5F, 0.5F, 11, 2, 2, p_i46302_1_, "Spine Bit");
 			this.field_82905_a[2] = new ModelRenderer(this, 12, 22);
-			this.field_82905_a[2].addBox(0.0F, 0.0F, 0.0F, 3, 6, 3, p_i46302_1_);
+			this.field_82905_a[2].addBox(0.0F, 0.0F, 0.0F, 3, 6, 3, p_i46302_1_, "Tail");
 			this.field_82904_b = new ModelRenderer[3];
 			this.field_82904_b[0] = new ModelRenderer(this, 0, 0);
-			this.field_82904_b[0].addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8, p_i46302_1_);
+			this.field_82904_b[0].addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8, p_i46302_1_, "Head Middle");
 			this.field_82904_b[1] = new ModelRenderer(this, 32, 0);
-			this.field_82904_b[1].addBox(-4.0F, -4.0F, -4.0F, 6, 6, 6, p_i46302_1_);
+			this.field_82904_b[1].addBox(-4.0F, -4.0F, -4.0F, 6, 6, 6, p_i46302_1_, "Head Right");
 			this.field_82904_b[1].rotationPointX = -8.0F;
 			this.field_82904_b[1].rotationPointY = 4.0F;
 			this.field_82904_b[2] = new ModelRenderer(this, 32, 0);
-			this.field_82904_b[2].addBox(-4.0F, -4.0F, -4.0F, 6, 6, 6, p_i46302_1_);
+			this.field_82904_b[2].addBox(-4.0F, -4.0F, -4.0F, 6, 6, 6, p_i46302_1_, "Head Left");
 			this.field_82904_b[2].rotationPointX = 10.0F;
 			this.field_82904_b[2].rotationPointY = 4.0F;
 		}
@@ -92,3 +93,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

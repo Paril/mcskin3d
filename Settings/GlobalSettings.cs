@@ -167,6 +167,10 @@ namespace MCSkin3D
 		[DefaultValue(false)]
 		public static bool GridEnabled { get; set; }
 
+		[Savable]
+		[DefaultValue(true)]
+		public static bool UseTextureBases { get; set; }
+
 		public static string GetDataURI(string fileOrFolder)
 		{
 			return Directory.GetCurrentDirectory() + '\\' + fileOrFolder;

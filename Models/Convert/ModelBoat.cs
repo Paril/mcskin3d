@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,15 +26,15 @@ namespace MCSkin3D.Models.Convert
 			int k = 20;
 			int l = 4;
 			int i1 = 28;
-			this.boatSides[0].addBox((float)(-i1 / 2), (float)(-k / 2 + 1), -3.0F, i1, k - 4, 3, 0.0F);
+			this.boatSides[0].addBox((float)(-i1 / 2), (float)(-k / 2 + 1), -3.0F, i1, k - 4, 3, 0.0F, "Bottom");
 			this.boatSides[0].setRotationPoint(0.0F, (float)(l - 1), 1.0F);
-			this.boatSides[1].addBox((float)(-i / 2 + 3), (float)(-j - 1), -1.0F, k - 2, j, 2, 0.0F);
+			this.boatSides[1].addBox((float)(-i / 2 + 3), (float)(-j - 1), -1.0F, k - 2, j, 2, 0.0F, "Back");
 			this.boatSides[1].setRotationPoint((float)(-i / 2 + 1), (float)l, 4.0F);
-			this.boatSides[2].addBox((float)(-i / 2 + 8), (float)(-j - 1), -1.0F, k - 4, j, 2, 0.0F);
+			this.boatSides[2].addBox((float)(-i / 2 + 8), (float)(-j - 1), -1.0F, k - 4, j, 2, 0.0F, "Front");
 			this.boatSides[2].setRotationPoint((float)(i / 2 - 1), (float)l, 0.0F);
-			this.boatSides[3].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F);
+			this.boatSides[3].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F, "Right");
 			this.boatSides[3].setRotationPoint(0.0F, (float)l, (float)(-k / 2 + 1));
-			this.boatSides[4].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F);
+			this.boatSides[4].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F, "Left");
 			this.boatSides[4].setRotationPoint(0.0F, (float)l, (float)(k / 2 - 1));
 			this.boatSides[0].rotateAngleX = ((float)Math.PI / 2F);
 			this.boatSides[1].rotateAngleY = ((float)Math.PI * 3F / 2F);
@@ -46,9 +47,10 @@ namespace MCSkin3D.Models.Convert
 			this.field_187057_b[1].rotateAngleY = (float)Math.PI;
 			this.field_187057_b[0].rotateAngleZ = this.field_187057_b[1].rotateAngleZ = 0.19634955F;
 			this.field_187058_c = (new ModelRenderer(this, 0, 0)).setTextureSize(128, 64);
-			this.field_187058_c.addBox((float)(-i1 / 2), (float)(-k / 2 + 1), -3.0F, i1, k - 4, 3, 0.0F);
+			this.field_187058_c.addBox((float)(-i1 / 2), (float)(-k / 2 + 1), -3.0F, i1, k - 4, 3, 0.0F, "Depth box");
 			this.field_187058_c.setRotationPoint(0.0F, (float)(l - 7), 1.0F);
 			this.field_187058_c.rotateAngleX = ((float)Math.PI / 2F);
+			this.field_187058_c.isHidden = true;
 		}
 
 #if RENDER
@@ -95,8 +97,8 @@ namespace MCSkin3D.Models.Convert
 			int j = 7;
 			int k = 6;
 			float f = -5.0F;
-			modelrenderer.addBox(-1.0F, 0.0F, f, 2, 2, i - 2);
-			modelrenderer.addBox(p_187056_1_ ? -1.001F : 0.001F, (float)(-k / 2), (float)(i - j) + f, 1, k, j);
+			modelrenderer.addBox(-1.0F, 0.0F, f, 2, 2, i - 2, "Oar handle");
+			modelrenderer.addBox(p_187056_1_ ? -1.001F : 0.001F, (float)(-k / 2), (float)(i - j) + f, 1, k, j, "Oar head");
 			return modelrenderer;
 		}
 
@@ -119,3 +121,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

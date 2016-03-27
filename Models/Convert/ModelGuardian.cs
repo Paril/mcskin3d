@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,31 +19,31 @@ namespace MCSkin3D.Models.Convert
 			this.textureWidth = 64;
 			this.textureHeight = 64;
 			this.guardianSpines = new ModelRenderer[12];
-			this.guardianBody = new ModelRenderer(this);
-			this.guardianBody.setTextureOffset(0, 0).addBox(-6.0F, 10.0F, -8.0F, 12, 12, 16);
-			this.guardianBody.setTextureOffset(0, 28).addBox(-8.0F, 10.0F, -6.0F, 2, 12, 12);
-			this.guardianBody.setTextureOffset(0, 28).addBox(6.0F, 10.0F, -6.0F, 2, 12, 12, true);
-			this.guardianBody.setTextureOffset(16, 40).addBox(-6.0F, 8.0F, -6.0F, 12, 2, 12);
-			this.guardianBody.setTextureOffset(16, 40).addBox(-6.0F, 22.0F, -6.0F, 12, 2, 12);
+			this.guardianBody = new ModelRenderer(this, ModelPart.Chest);
+			this.guardianBody.setTextureOffset(0, 0).addBox(-6.0F, 10.0F, -8.0F, 12, 12, 16, "Front");
+			this.guardianBody.setTextureOffset(0, 28).addBox(-8.0F, 10.0F, -6.0F, 2, 12, 12, "Right");
+			this.guardianBody.setTextureOffset(0, 28).addBox(6.0F, 10.0F, -6.0F, 2, 12, 12, true, "Left");
+			this.guardianBody.setTextureOffset(16, 40).addBox(-6.0F, 8.0F, -6.0F, 12, 2, 12, "Top");
+			this.guardianBody.setTextureOffset(16, 40).addBox(-6.0F, 22.0F, -6.0F, 12, 2, 12, "Bottom");
 
 			for (int i = 0; i < this.guardianSpines.Length; ++i)
 			{
-				this.guardianSpines[i] = new ModelRenderer(this, 0, 0);
-				this.guardianSpines[i].addBox(-1.0F, -4.5F, -1.0F, 2, 9, 2);
+				this.guardianSpines[i] = new ModelRenderer(this, 0, 0, ModelPart.LeftArm);
+				this.guardianSpines[i].addBox(-1.0F, -4.5F, -1.0F, 2, 9, 2, "Spine");
 				this.guardianBody.addChild(this.guardianSpines[i]);
 			}
 
-			this.guardianEye = new ModelRenderer(this, 8, 0);
-			this.guardianEye.addBox(-1.0F, 15.0F, 0.0F, 2, 2, 1);
+			this.guardianEye = new ModelRenderer(this, 8, 0, ModelPart.Helmet);
+			this.guardianEye.addBox(-1.0F, 15.0F, 0.0F, 2, 2, 1, "Eye");
 			this.guardianBody.addChild(this.guardianEye);
 			this.guardianTail = new ModelRenderer[3];
-			this.guardianTail[0] = new ModelRenderer(this, 40, 0);
-			this.guardianTail[0].addBox(-2.0F, 14.0F, 7.0F, 4, 4, 8);
-			this.guardianTail[1] = new ModelRenderer(this, 0, 54);
-			this.guardianTail[1].addBox(0.0F, 14.0F, 0.0F, 3, 3, 7);
-			this.guardianTail[2] = new ModelRenderer(this);
-			this.guardianTail[2].setTextureOffset(41, 32).addBox(0.0F, 14.0F, 0.0F, 2, 2, 6);
-			this.guardianTail[2].setTextureOffset(25, 19).addBox(1.0F, 10.5F, 3.0F, 1, 9, 9);
+			this.guardianTail[0] = new ModelRenderer(this, 40, 0, ModelPart.LeftLeg);
+			this.guardianTail[0].addBox(-2.0F, 14.0F, 7.0F, 4, 4, 8, "Tail");
+			this.guardianTail[1] = new ModelRenderer(this, 0, 54, ModelPart.LeftLeg);
+			this.guardianTail[1].addBox(0.0F, 14.0F, 0.0F, 3, 3, 7, "Tail");
+			this.guardianTail[2] = new ModelRenderer(this, ModelPart.LeftLeg);
+			this.guardianTail[2].setTextureOffset(41, 32).addBox(0.0F, 14.0F, 0.0F, 2, 2, 6, "Tail");
+			this.guardianTail[2].setTextureOffset(25, 19).addBox(1.0F, 10.5F, 3.0F, 1, 9, 9, "Tail");
 			this.guardianBody.addChild(this.guardianTail[0]);
 			this.guardianTail[0].addChild(this.guardianTail[1]);
 			this.guardianTail[1].addChild(this.guardianTail[2]);
@@ -140,3 +141,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

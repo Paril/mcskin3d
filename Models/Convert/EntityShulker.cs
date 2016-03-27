@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 
 namespace MCSkin3D.Models.Convert
 {
@@ -6,7 +7,8 @@ namespace MCSkin3D.Models.Convert
 	{
 		internal float func_184688_a(float f)
 		{
-			return 0.3f;
+			return 0.5f;
 		}
 	}
 }
+#endif

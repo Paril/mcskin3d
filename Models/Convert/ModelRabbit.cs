@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,62 +55,62 @@ namespace MCSkin3D.Models.Convert
 			this.setTextureOffset("head.ear1", 0, 10);
 			this.setTextureOffset("head.ear2", 6, 10);
 			this.rabbitLeftFoot = new ModelRenderer(this, 26, 24);
-			this.rabbitLeftFoot.addBox(-1.0F, 5.5F, -3.7F, 2, 1, 7);
+			this.rabbitLeftFoot.addBox(-1.0F, 5.5F, -3.7F, 2, 1, 7, "Left Foot");
 			this.rabbitLeftFoot.setRotationPoint(3.0F, 17.5F, 3.7F);
 			this.rabbitLeftFoot.mirror = true;
 			this.setRotationOffset(this.rabbitLeftFoot, 0.0F, 0.0F, 0.0F);
 			this.rabbitRightFoot = new ModelRenderer(this, 8, 24);
-			this.rabbitRightFoot.addBox(-1.0F, 5.5F, -3.7F, 2, 1, 7);
+			this.rabbitRightFoot.addBox(-1.0F, 5.5F, -3.7F, 2, 1, 7, "Right Foot");
 			this.rabbitRightFoot.setRotationPoint(-3.0F, 17.5F, 3.7F);
 			this.rabbitRightFoot.mirror = true;
 			this.setRotationOffset(this.rabbitRightFoot, 0.0F, 0.0F, 0.0F);
 			this.rabbitLeftThigh = new ModelRenderer(this, 30, 15);
-			this.rabbitLeftThigh.addBox(-1.0F, 0.0F, 0.0F, 2, 4, 5);
+			this.rabbitLeftThigh.addBox(-1.0F, 0.0F, 0.0F, 2, 4, 5, "Left Thigh");
 			this.rabbitLeftThigh.setRotationPoint(3.0F, 17.5F, 3.7F);
 			this.rabbitLeftThigh.mirror = true;
 			this.setRotationOffset(this.rabbitLeftThigh, -0.34906584F, 0.0F, 0.0F);
 			this.rabbitRightThigh = new ModelRenderer(this, 16, 15);
-			this.rabbitRightThigh.addBox(-1.0F, 0.0F, 0.0F, 2, 4, 5);
+			this.rabbitRightThigh.addBox(-1.0F, 0.0F, 0.0F, 2, 4, 5, "Right Thigh");
 			this.rabbitRightThigh.setRotationPoint(-3.0F, 17.5F, 3.7F);
 			this.rabbitRightThigh.mirror = true;
 			this.setRotationOffset(this.rabbitRightThigh, -0.34906584F, 0.0F, 0.0F);
 			this.rabbitBody = new ModelRenderer(this, 0, 0);
-			this.rabbitBody.addBox(-3.0F, -2.0F, -10.0F, 6, 5, 10);
+			this.rabbitBody.addBox(-3.0F, -2.0F, -10.0F, 6, 5, 10, "Body");
 			this.rabbitBody.setRotationPoint(0.0F, 19.0F, 8.0F);
 			this.rabbitBody.mirror = true;
 			this.setRotationOffset(this.rabbitBody, -0.34906584F, 0.0F, 0.0F);
 			this.rabbitLeftArm = new ModelRenderer(this, 8, 15);
-			this.rabbitLeftArm.addBox(-1.0F, 0.0F, -1.0F, 2, 7, 2);
+			this.rabbitLeftArm.addBox(-1.0F, 0.0F, -1.0F, 2, 7, 2, "Left Arm");
 			this.rabbitLeftArm.setRotationPoint(3.0F, 17.0F, -1.0F);
 			this.rabbitLeftArm.mirror = true;
 			this.setRotationOffset(this.rabbitLeftArm, -0.17453292F, 0.0F, 0.0F);
 			this.rabbitRightArm = new ModelRenderer(this, 0, 15);
-			this.rabbitRightArm.addBox(-1.0F, 0.0F, -1.0F, 2, 7, 2);
+			this.rabbitRightArm.addBox(-1.0F, 0.0F, -1.0F, 2, 7, 2, "Right Arm");
 			this.rabbitRightArm.setRotationPoint(-3.0F, 17.0F, -1.0F);
 			this.rabbitRightArm.mirror = true;
 			this.setRotationOffset(this.rabbitRightArm, -0.17453292F, 0.0F, 0.0F);
 			this.rabbitHead = new ModelRenderer(this, 32, 0);
-			this.rabbitHead.addBox(-2.5F, -4.0F, -5.0F, 5, 4, 5);
+			this.rabbitHead.addBox(-2.5F, -4.0F, -5.0F, 5, 4, 5, "Head");
 			this.rabbitHead.setRotationPoint(0.0F, 16.0F, -1.0F);
 			this.rabbitHead.mirror = true;
 			this.setRotationOffset(this.rabbitHead, 0.0F, 0.0F, 0.0F);
 			this.rabbitRightEar = new ModelRenderer(this, 52, 0);
-			this.rabbitRightEar.addBox(-2.5F, -9.0F, -1.0F, 2, 5, 1);
+			this.rabbitRightEar.addBox(-2.5F, -9.0F, -1.0F, 2, 5, 1, "Right Ear");
 			this.rabbitRightEar.setRotationPoint(0.0F, 16.0F, -1.0F);
 			this.rabbitRightEar.mirror = true;
 			this.setRotationOffset(this.rabbitRightEar, 0.0F, -0.2617994F, 0.0F);
 			this.rabbitLeftEar = new ModelRenderer(this, 58, 0);
-			this.rabbitLeftEar.addBox(0.5F, -9.0F, -1.0F, 2, 5, 1);
+			this.rabbitLeftEar.addBox(0.5F, -9.0F, -1.0F, 2, 5, 1, "Left Ear");
 			this.rabbitLeftEar.setRotationPoint(0.0F, 16.0F, -1.0F);
 			this.rabbitLeftEar.mirror = true;
 			this.setRotationOffset(this.rabbitLeftEar, 0.0F, 0.2617994F, 0.0F);
 			this.rabbitTail = new ModelRenderer(this, 52, 6);
-			this.rabbitTail.addBox(-1.5F, -1.5F, 0.0F, 3, 3, 2);
+			this.rabbitTail.addBox(-1.5F, -1.5F, 0.0F, 3, 3, 2, "Tail");
 			this.rabbitTail.setRotationPoint(0.0F, 20.0F, 7.0F);
 			this.rabbitTail.mirror = true;
 			this.setRotationOffset(this.rabbitTail, -0.3490659F, 0.0F, 0.0F);
 			this.rabbitNose = new ModelRenderer(this, 32, 9);
-			this.rabbitNose.addBox(-0.5F, -2.5F, -5.5F, 1, 1, 1);
+			this.rabbitNose.addBox(-0.5F, -2.5F, -5.5F, 1, 1, 1, "Nose");
 			this.rabbitNose.setRotationPoint(0.0F, 16.0F, -1.0F);
 			this.rabbitNose.mirror = true;
 			this.setRotationOffset(this.rabbitNose, 0.0F, 0.0F, 0.0F);
@@ -208,3 +209,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

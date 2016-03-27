@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,22 +21,22 @@ namespace MCSkin3D.Models.Convert
 		public ModelQuadruped(int p_i1154_1_, float p_i1154_2_)
 		{
 			this.head = new ModelRenderer(this, 0, 0);
-			this.head.addBox(-4.0F, -4.0F, -8.0F, 8, 8, 8, p_i1154_2_);
+			this.head.addBox(-4.0F, -4.0F, -8.0F, 8, 8, 8, p_i1154_2_, "Head");
 			this.head.setRotationPoint(0.0F, (float)(18 - p_i1154_1_), -6.0F);
 			this.body = new ModelRenderer(this, 28, 8);
-			this.body.addBox(-5.0F, -10.0F, -7.0F, 10, 16, 8, p_i1154_2_);
+			this.body.addBox(-5.0F, -10.0F, -7.0F, 10, 16, 8, p_i1154_2_, "Body");
 			this.body.setRotationPoint(0.0F, (float)(17 - p_i1154_1_), 2.0F);
 			this.leg1 = new ModelRenderer(this, 0, 16);
-			this.leg1.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_);
+			this.leg1.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_, "Back Right Leg");
 			this.leg1.setRotationPoint(-3.0F, (float)(24 - p_i1154_1_), 7.0F);
 			this.leg2 = new ModelRenderer(this, 0, 16);
-			this.leg2.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_);
+			this.leg2.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_, "Back Left Leg");
 			this.leg2.setRotationPoint(3.0F, (float)(24 - p_i1154_1_), 7.0F);
 			this.leg3 = new ModelRenderer(this, 0, 16);
-			this.leg3.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_);
+			this.leg3.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_, "Front Right Leg");
 			this.leg3.setRotationPoint(-3.0F, (float)(24 - p_i1154_1_), -5.0F);
 			this.leg4 = new ModelRenderer(this, 0, 16);
-			this.leg4.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_);
+			this.leg4.addBox(-2.0F, 0.0F, -2.0F, 4, p_i1154_1_, 4, p_i1154_2_, "Front Left Leg");
 			this.leg4.setRotationPoint(3.0F, (float)(24 - p_i1154_1_), -5.0F);
 		}
 
@@ -93,3 +94,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

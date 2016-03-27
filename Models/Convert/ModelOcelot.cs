@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,26 +47,26 @@ namespace MCSkin3D.Models.Convert
 			this.ocelotHead.addBox("ear2", 1.0F, -3.0F, 0.0F, 1, 1, 2);
 			this.ocelotHead.setRotationPoint(0.0F, 15.0F, -9.0F);
 			this.ocelotBody = new ModelRenderer(this, 20, 0);
-			this.ocelotBody.addBox(-2.0F, 3.0F, -8.0F, 4, 16, 6, 0.0F);
+			this.ocelotBody.addBox(-2.0F, 3.0F, -8.0F, 4, 16, 6, 0.0F, "Body");
 			this.ocelotBody.setRotationPoint(0.0F, 12.0F, -10.0F);
 			this.ocelotTail = new ModelRenderer(this, 0, 15);
-			this.ocelotTail.addBox(-0.5F, 0.0F, 0.0F, 1, 8, 1);
+			this.ocelotTail.addBox(-0.5F, 0.0F, 0.0F, 1, 8, 1, "Tail");
 			this.ocelotTail.rotateAngleX = 0.9F;
 			this.ocelotTail.setRotationPoint(0.0F, 15.0F, 8.0F);
 			this.ocelotTail2 = new ModelRenderer(this, 4, 15);
-			this.ocelotTail2.addBox(-0.5F, 0.0F, 0.0F, 1, 8, 1);
+			this.ocelotTail2.addBox(-0.5F, 0.0F, 0.0F, 1, 8, 1, "Tail End");
 			this.ocelotTail2.setRotationPoint(0.0F, 20.0F, 14.0F);
 			this.ocelotBackLeftLeg = new ModelRenderer(this, 8, 13);
-			this.ocelotBackLeftLeg.addBox(-1.0F, 0.0F, 1.0F, 2, 6, 2);
+			this.ocelotBackLeftLeg.addBox(-1.0F, 0.0F, 1.0F, 2, 6, 2, "Back Left Leg");
 			this.ocelotBackLeftLeg.setRotationPoint(1.1F, 18.0F, 5.0F);
 			this.ocelotBackRightLeg = new ModelRenderer(this, 8, 13);
-			this.ocelotBackRightLeg.addBox(-1.0F, 0.0F, 1.0F, 2, 6, 2);
+			this.ocelotBackRightLeg.addBox(-1.0F, 0.0F, 1.0F, 2, 6, 2, "Back Right Leg");
 			this.ocelotBackRightLeg.setRotationPoint(-1.1F, 18.0F, 5.0F);
 			this.ocelotFrontLeftLeg = new ModelRenderer(this, 40, 0);
-			this.ocelotFrontLeftLeg.addBox(-1.0F, 0.0F, 0.0F, 2, 10, 2);
+			this.ocelotFrontLeftLeg.addBox(-1.0F, 0.0F, 0.0F, 2, 10, 2, "Front Left Leg");
 			this.ocelotFrontLeftLeg.setRotationPoint(1.2F, 13.8F, -5.0F);
 			this.ocelotFrontRightLeg = new ModelRenderer(this, 40, 0);
-			this.ocelotFrontRightLeg.addBox(-1.0F, 0.0F, 0.0F, 2, 10, 2);
+			this.ocelotFrontRightLeg.addBox(-1.0F, 0.0F, 0.0F, 2, 10, 2, "Front Right Leg");
 			this.ocelotFrontRightLeg.setRotationPoint(-1.2F, 13.8F, -5.0F);
 		}
 
@@ -222,3 +223,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

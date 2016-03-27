@@ -1,4 +1,5 @@
-﻿using static MCSkin3D.ModelLoader;
+﻿#if CONVERT_MODELS
+using static MCSkin3D.ModelLoader;
 
 namespace MCSkin3D.Models.Convert
 {
@@ -9,11 +10,11 @@ namespace MCSkin3D.Models.Convert
 
 		public ModelElytra()
 		{
-			this.field_187061_b = new ModelRenderer(this, 22, 0);
-			this.field_187061_b.addBox(-10.0F, 0.0F, 0.0F, 10, 20, 2, 1.0F);
-			this.field_187060_a = new ModelRenderer(this, 22, 0);
+			this.field_187061_b = new ModelRenderer(this, 22, 0, ModelPart.RightArm);
+			this.field_187061_b.addBox(-14.0F, 0.0F, 0.0F, 10, 20, 2, 1.0F, "Right Wing");
+			this.field_187060_a = new ModelRenderer(this, 22, 0, ModelPart.LeftArm);
 			this.field_187060_a.mirror = true;
-			this.field_187060_a.addBox(0.0F, 0.0F, 0.0F, 10, 20, 2, 1.0F);
+			this.field_187060_a.addBox(0.0F, 0.0F, 0.0F, 10, 20, 2, 1.0F, "Left Wing");
 		}
 
 #if RENDER
@@ -90,3 +91,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

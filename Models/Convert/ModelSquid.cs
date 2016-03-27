@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace MCSkin3D.Models.Convert
 		{
 			int i = -16;
 			this.squidBody = new ModelRenderer(this, 0, 0);
-			this.squidBody.addBox(-6.0F, -8.0F, -6.0F, 12, 16, 12);
+			this.squidBody.addBox(-6.0F, -8.0F, -6.0F, 12, 16, 12, "Body");
 			this.squidBody.rotationPointY += (float)(24 + i);
 
 			for (int j = 0; j < this.squidTentacles.Length; ++j)
@@ -27,7 +28,7 @@ namespace MCSkin3D.Models.Convert
 				double d0 = (double)j * Math.PI * 2.0D / (double)this.squidTentacles.Length;
 				float f = (float)Math.cos(d0) * 5.0F;
 				float f1 = (float)Math.sin(d0) * 5.0F;
-				this.squidTentacles[j].addBox(-1.0F, 0.0F, -1.0F, 2, 18, 2);
+				this.squidTentacles[j].addBox(-1.0F, 0.0F, -1.0F, 2, 18, 2, "Tentacle" + j);
 				this.squidTentacles[j].rotationPointX = f;
 				this.squidTentacles[j].rotationPointZ = f1;
 				this.squidTentacles[j].rotationPointY = (float)(31 + i);
@@ -66,3 +67,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

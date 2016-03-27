@@ -41,7 +41,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CONVERT_MODELS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -166,6 +166,7 @@
     <Compile Include="Models\Convert\ConversionInterface.cs" />
     <Compile Include="Models\Convert\EntityArmorStand.cs" />
     <Compile Include="Models\Convert\EntityBat.cs" />
+    <Compile Include="Models\Convert\EntityDragon.cs" />
     <Compile Include="Models\Convert\EntityGuardian.cs" />
     <Compile Include="Models\Convert\EntityHorse.cs" />
     <Compile Include="Models\Convert\EntityMagmaCube.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Models\Convert\EntityWolf.cs" />
     <Compile Include="Models\Convert\EntityZombie.cs" />
     <Compile Include="Models\Convert\EnumHandSide.cs" />
+    <Compile Include="Models\Convert\ModelDragon.cs" />
     <Compile Include="Models\Convert\ModelHorse.cs" />
     <Compile Include="Models\Convert\IMultipassModel.cs" />
     <Compile Include="Models\Convert\Math.cs" />

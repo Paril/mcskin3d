@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,17 +23,18 @@ namespace MCSkin3D.Models.Convert
 			int j = 8;
 			int k = 16;
 			int l = 4;
-			this.sideModels[0].addBox((float)(-i / 2), (float)(-k / 2), -1.0F, i, k, 2, 0.0F);
+			this.sideModels[0].addBox((float)(-i / 2), (float)(-k / 2), -1.0F, i, k, 2, 0.0F, "Bottom");
 			this.sideModels[0].setRotationPoint(0.0F, (float)l, 0.0F);
-			this.sideModels[5].addBox((float)(-i / 2 + 1), (float)(-k / 2 + 1), -1.0F, i - 2, k - 2, 1, 0.0F);
+			this.sideModels[5].addBox((float)(-i / 2 + 1), (float)(-k / 2 + 1), -1.0F, i - 2, k - 2, 1, 0.0F, "Leather");
 			this.sideModels[5].setRotationPoint(0.0F, (float)l, 0.0F);
-			this.sideModels[1].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F);
+			this.sideModels[5].isHidden = true;
+			this.sideModels[1].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F, "Front");
 			this.sideModels[1].setRotationPoint((float)(-i / 2 + 1), (float)l, 0.0F);
-			this.sideModels[2].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F);
+			this.sideModels[2].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F, "Back");
 			this.sideModels[2].setRotationPoint((float)(i / 2 - 1), (float)l, 0.0F);
-			this.sideModels[3].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F);
+			this.sideModels[3].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F, "Left");
 			this.sideModels[3].setRotationPoint(0.0F, (float)l, (float)(-k / 2 + 1));
-			this.sideModels[4].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F);
+			this.sideModels[4].addBox((float)(-i / 2 + 2), (float)(-j - 1), -1.0F, i - 4, j, 2, 0.0F, "Right");
 			this.sideModels[4].setRotationPoint(0.0F, (float)l, (float)(k / 2 - 1));
 			this.sideModels[0].rotateAngleX = ((float)Math.PI / 2F);
 			this.sideModels[1].rotateAngleY = ((float)Math.PI * 3F / 2F);
@@ -57,3 +59,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

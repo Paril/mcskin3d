@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,33 +37,33 @@ namespace MCSkin3D.Models.Convert
 		{
 			float f = 0.0F;
 			float f1 = 13.5F;
-			this.wolfHeadMain = new ModelRenderer(this, 0, 0);
-			this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, f);
+			this.wolfHeadMain = new ModelRenderer(this, 0, 0, ModelPart.Head);
+			this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, f, "Head");
 			this.wolfHeadMain.setRotationPoint(-1.0F, f1, -7.0F);
-			this.wolfBody = new ModelRenderer(this, 18, 14);
-			this.wolfBody.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, f);
+			this.wolfBody = new ModelRenderer(this, 18, 14, ModelPart.Chest);
+			this.wolfBody.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, f, "Body");
 			this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
-			this.wolfMane = new ModelRenderer(this, 21, 0);
-			this.wolfMane.addBox(-3.0F, -3.0F, -3.0F, 8, 6, 7, f);
+			this.wolfMane = new ModelRenderer(this, 21, 0, ModelPart.Head);
+			this.wolfMane.addBox(-3.0F, -3.0F, -3.0F, 8, 6, 7, f, "Mane");
 			this.wolfMane.setRotationPoint(-1.0F, 14.0F, 2.0F);
 			this.wolfLeg1 = new ModelRenderer(this, 0, 18);
-			this.wolfLeg1.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f);
+			this.wolfLeg1.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f, "Back Right Leg");
 			this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
 			this.wolfLeg2 = new ModelRenderer(this, 0, 18);
-			this.wolfLeg2.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f);
+			this.wolfLeg2.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f, "Back Left Leg");
 			this.wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F);
 			this.wolfLeg3 = new ModelRenderer(this, 0, 18);
-			this.wolfLeg3.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f);
+			this.wolfLeg3.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f, "Front Right Leg");
 			this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
 			this.wolfLeg4 = new ModelRenderer(this, 0, 18);
-			this.wolfLeg4.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f);
+			this.wolfLeg4.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f, "Front Left Leg");
 			this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
 			this.wolfTail = new ModelRenderer(this, 9, 18);
-			this.wolfTail.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f);
+			this.wolfTail.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, f, "Tail");
 			this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);
-			this.wolfHeadMain.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, f);
-			this.wolfHeadMain.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, f);
-			this.wolfHeadMain.setTextureOffset(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, f);
+			this.wolfHeadMain.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, f, "Ear Right");
+			this.wolfHeadMain.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, f, "Ear Left");
+			this.wolfHeadMain.setTextureOffset(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, f, "Snout");
 		}
 
 #if RENDER
@@ -177,3 +178,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

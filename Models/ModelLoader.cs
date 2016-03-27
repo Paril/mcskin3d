@@ -150,7 +150,7 @@ namespace MCSkin3D
 								writer.WriteElementString("Name", name);
 
 								if (!string.IsNullOrEmpty(textureRef))
-									writer.WriteElementString("BaseTexture", System.Convert.ToBase64String(File.ReadAllBytes(rootPos)));
+									writer.WriteElementString("DefaultTexture", System.Convert.ToBase64String(File.ReadAllBytes(rootPos)));
 
 								int tw = textureWidth, th = textureHeight;
 
@@ -160,6 +160,7 @@ namespace MCSkin3D
 									{
 										writer.WriteAttributeString("Type", "f8bf7d5b-37bf-455b-93f9-b6f9e81620e1");
 										writer.WriteAttributeString("Name", "Model");
+										HashSet<ModelBox> rendered = new HashSet<ModelBox>();
 
 										Action<ModelRenderer, ModelBox, Vector3, Vector3> renderRecursive = null;
 
@@ -167,6 +168,11 @@ namespace MCSkin3D
 										{
 											if (!renderer.showModel)
 												return;
+
+											if (rendered.Contains(x))
+												return;
+
+											rendered.Add(x);
 
 											writer.WriteStartElement("Shape");
 											{
@@ -184,6 +190,7 @@ namespace MCSkin3D
 												writer.WriteElementString("IsDecorative", "False");
 												writer.WriteElementString("IsFixed", "False");
 												writer.WriteElementString("IsMirrored", x.mirrored.ToString());
+												writer.WriteElementString("IsSolid", renderer.isSolid.ToString());
 												writer.WriteElementString("Offset",
 																			x.posX1.ToString(CultureInfo.InvariantCulture) + "," +
 																			x.posY1.ToString(CultureInfo.InvariantCulture) + "," +
@@ -202,6 +209,7 @@ namespace MCSkin3D
 												writer.WriteElementString("Scale", x.sizeOfs.ToString(CultureInfo.InvariantCulture));
 												writer.WriteElementString("Part", renderer.part.ToString());
 												writer.WriteElementString("Hidden", renderer.isHidden.ToString());
+												writer.WriteElementString("IsArmor", renderer.isArmor.ToString());
 
 												writer.WriteEndElement();
 											}
@@ -243,12 +251,13 @@ namespace MCSkin3D
 				}
 			}
 
-			public Model Compile(string name, float scale, float defaultWidth, float defaultHeight)
+			public Model Compile(string name, float scale, float defaultWidth, float defaultHeight, string defaultTexture)
 			{
 				var model = new Model();
 				model.Name = name;
 				model.DefaultWidth = defaultWidth;
 				model.DefaultHeight = defaultHeight;
+				model.DefaultTexture = defaultTexture;
 
 				foreach (ModelRenderer box in boxList)
 				{
@@ -263,6 +272,7 @@ namespace MCSkin3D
 													MathHelper.RadiansToDegrees(box.rotateAngleZ));
 						mesh.Pivot = mesh.Translate;
 						mesh.IsSolid = box.isSolid;
+						mesh.IsArmor = box.isArmor;
 
 						mesh.Mode = PrimitiveType.Quads;
 
@@ -479,11 +489,12 @@ namespace MCSkin3D
 			public ModelRenderer parent;
 
 			public ModelPart part;
-			public bool isSolid;
+			public bool isSolid = false;
+			public bool isArmor = false;
 			public float scale = 1;
 			public bool mirror = false;
 
-			public ModelRenderer(ModelBase model, string boxNameIn)
+			public ModelRenderer(ModelBase model, string boxNameIn, ModelPart part = ModelPart.None)
 			{
 				this.textureWidth = 64.0F;
 				this.textureHeight = 32.0F;
@@ -493,15 +504,16 @@ namespace MCSkin3D
 				model.boxList.Add(this);
 				this.boxName = boxNameIn;
 				this.setTextureSize(model.textureWidth, model.textureHeight);
+				this.part = part;
 			}
 
-			public ModelRenderer(ModelBase model) :
-				this(model, (string)null)
+			public ModelRenderer(ModelBase model, ModelPart part = ModelPart.None) :
+				this(model, (string)null, part)
 			{
 			}
 
-			public ModelRenderer(ModelBase model, int texOffX, int texOffY) :
-				this(model)
+			public ModelRenderer(ModelBase model, int texOffX, int texOffY, ModelPart part = ModelPart.None) :
+				this(model, part)
 			{
 				this.setTextureOffset(texOffX, texOffY);
 			}
@@ -527,12 +539,12 @@ namespace MCSkin3D
 				return this;
 			}
 
-			public ModelRenderer addBox(string partName, float offX, float offY, float offZ, int width, int height, int depth)
+			public ModelRenderer addBox(string partName, float offX, float offY, float offZ, int width, int height, int depth, bool mirror = false)
 			{
 				partName = this.boxName + "." + partName;
 				TextureOffset textureoffset = this.baseModel.getTextureOffset(partName);
 				this.setTextureOffset(textureoffset.textureOffsetX, textureoffset.textureOffsetY);
-				this.cubeList.Add((new ModelBox(this, this.textureOffsetX, this.textureOffsetY, offX, offY, offZ, width, height, depth, 0.0F)).setBoxName(partName));
+				this.cubeList.Add((new ModelBox(this, this.textureOffsetX, this.textureOffsetY, offX, offY, offZ, width, height, depth, 0.0F, mirror)).setBoxName(partName));
 				return this;
 			}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,6 @@ namespace MCSkin3D.Models.Convert
 {
 	internal class EntityGuardian : Entity
 	{
-		internal float ticksExisted = 0;
-
 		internal float func_175469_o(float f)
 		{
 			return f;
@@ -20,3 +19,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

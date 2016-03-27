@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,19 +24,19 @@ namespace MCSkin3D.Models.Convert
 				this.boxList.Remove(this.bipedRightLeg);
 				this.boxList.Remove(this.bipedLeftLeg);
 
-				this.bipedRightArm = new ModelRenderer(this, 40, 16);
-				this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, p_i46303_1_);
+				this.bipedRightArm = new ModelRenderer(this, 40, 16, ModelPart.RightArm);
+				this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, p_i46303_1_, "Right Arm");
 				this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
-				this.bipedLeftArm = new ModelRenderer(this, 40, 16);
+				this.bipedLeftArm = new ModelRenderer(this, 40, 16, ModelPart.LeftArm);
 				this.bipedLeftArm.mirror = true;
-				this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, p_i46303_1_);
+				this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, p_i46303_1_, "Left Arm");
 				this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-				this.bipedRightLeg = new ModelRenderer(this, 0, 16);
-				this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, p_i46303_1_);
+				this.bipedRightLeg = new ModelRenderer(this, 0, 16, ModelPart.RightLeg);
+				this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, p_i46303_1_, "Right Leg");
 				this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
-				this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
+				this.bipedLeftLeg = new ModelRenderer(this, 0, 16, ModelPart.LeftLeg);
 				this.bipedLeftLeg.mirror = true;
-				this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, p_i46303_1_);
+				this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, p_i46303_1_, "Left Leg");
 				this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
 			}
 		}
@@ -107,3 +108,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

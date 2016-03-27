@@ -53,6 +53,7 @@ namespace MCSkin3D.Models
 		public bool IsDecorative;
 		public bool IsFixed;
 		public bool IsSolid = false;
+		public bool IsArmor = false;
 
 		public override void Parse(XmlNode node)
 		{
@@ -68,6 +69,8 @@ namespace MCSkin3D.Models
 					IsFixed = bool.Parse(child.InnerText);
 				else if (name == "issolid")
 					IsSolid = bool.Parse(child.InnerText);
+				else if (name == "isarmor")
+					IsArmor = bool.Parse(child.InnerText);
 			}
 		}
 	}
@@ -162,16 +165,10 @@ namespace MCSkin3D.Models
 		
 		public string Name;
 		public Vector2 TextureSize;
-		public string texture;
+		public string DefaultTexture;
 
 		public void Parse(XmlNode node)
 		{
-			foreach (XmlAttribute a in node.Attributes)
-			{
-				if (a.Name.ToLower() == "texture")
-					texture = a.Value;
-			}
-
 			foreach (XmlNode child in node.ChildNodes)
 			{
 				string name = child.Name.ToLower();
@@ -205,6 +202,8 @@ namespace MCSkin3D.Models
 					Name = child.InnerText;
 				else if (name == "texturesize")
 					TextureSize = Mesh.StringToVertex2(child.InnerText);
+				else if (name == "defaulttexture")
+					DefaultTexture = child.InnerText;
 			}
 		}
 	}
@@ -296,12 +295,13 @@ namespace MCSkin3D.Models
 							renderer.rotateAngleY = MathHelper.DegreesToRadians(box.Rotation.Y);
 							renderer.rotateAngleZ = MathHelper.DegreesToRadians(box.Rotation.Z);
 							renderer.isSolid = box.IsSolid;
+							renderer.isArmor = box.IsArmor;
 						}
 					}
 				}
 			}
 
-			var model = mb.Compile(Name, 1, (int)Models[0].TextureSize.X, (int)Models[0].TextureSize.Y);
+			var model = mb.Compile(Name, 1, (int)Models[0].TextureSize.X, (int)Models[0].TextureSize.Y, Models[0].DefaultTexture);
 			return model;
 		}
 	}

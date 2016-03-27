@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,27 +30,27 @@ namespace MCSkin3D.Models.Convert
 		{
 			this.textureWidth = 64;
 			this.textureHeight = 64;
-			this.batHead = new ModelRenderer(this, 0, 0);
+			this.batHead = new ModelRenderer(this, 0, 0, ModelPart.Head);
 			this.batHead.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 6, "Head");
-			ModelRenderer modelrenderer = new ModelRenderer(this, 24, 0);
-			modelrenderer.addBox(-4.0F, -6.0F, -2.0F, 3, 4, 1, "Left Ear");
+			ModelRenderer modelrenderer = new ModelRenderer(this, 24, 0, ModelPart.Head);
+			modelrenderer.addBox(-4.0F, -6.0F, -2.0F, 3, 4, 1, "Right Ear");
 			this.batHead.addChild(modelrenderer);
-			ModelRenderer modelrenderer1 = new ModelRenderer(this, 24, 0);
+			ModelRenderer modelrenderer1 = new ModelRenderer(this, 24, 0, ModelPart.Head);
 			modelrenderer1.mirror = true;
-			modelrenderer1.addBox(1.0F, -6.0F, -2.0F, 3, 4, 1, "Right Ear");
+			modelrenderer1.addBox(1.0F, -6.0F, -2.0F, 3, 4, 1, "Left Ear");
 			this.batHead.addChild(modelrenderer1);
-			this.batBody = new ModelRenderer(this, 0, 16);
-			this.batBody.addBox(-3.0F, 4.0F, -3.0F, 6, 12, 6);
-			this.batBody.setTextureOffset(0, 34).addBox(-5.0F, 16.0F, 0.0F, 10, 6, 1, "Body");
-			this.batRightWing = new ModelRenderer(this, 42, 0);
+			this.batBody = new ModelRenderer(this, 0, 16, ModelPart.Chest);
+			this.batBody.addBox(-3.0F, 4.0F, -3.0F, 6, 12, 6, "Body");
+			this.batBody.setTextureOffset(0, 34).addBox(-5.0F, 16.0F, 0.0F, 10, 6, 1, "Feet");
+			this.batRightWing = new ModelRenderer(this, 42, 0, ModelPart.RightArm);
 			this.batRightWing.addBox(-12.0F, 1.0F, 1.5F, 10, 16, 1, "Right Wing");
-			this.batOuterRightWing = new ModelRenderer(this, 24, 16);
+			this.batOuterRightWing = new ModelRenderer(this, 24, 16, ModelPart.RightArm);
 			this.batOuterRightWing.setRotationPoint(-12.0F, 1.0F, 1.5F);
 			this.batOuterRightWing.addBox(-8.0F, 1.0F, 0.0F, 8, 12, 1, "Right Outer Wing");
-			this.batLeftWing = new ModelRenderer(this, 42, 0);
+			this.batLeftWing = new ModelRenderer(this, 42, 0, ModelPart.LeftArm);
 			this.batLeftWing.mirror = true;
 			this.batLeftWing.addBox(2.0F, 1.0F, 1.5F, 10, 16, 1, "Left Wing");
-			this.batOuterLeftWing = new ModelRenderer(this, 24, 16);
+			this.batOuterLeftWing = new ModelRenderer(this, 24, 16, ModelPart.LeftArm);
 			this.batOuterLeftWing.mirror = true;
 			this.batOuterLeftWing.setRotationPoint(12.0F, 1.0F, 1.5F);
 			this.batOuterLeftWing.addBox(0.0F, 1.0F, 0.0F, 8, 12, 1, "Left Outer Wing");
@@ -111,5 +112,5 @@ namespace MCSkin3D.Models.Convert
 			}
 		}
 	}
-
 }
+#endif

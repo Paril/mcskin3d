@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,12 @@ namespace MCSkin3D.Models.Convert
 		{
 			for (int i = 0; i < this.blazeSticks.Length; ++i)
 			{
-				this.blazeSticks[i] = new ModelRenderer(this, 0, 16);
-				this.blazeSticks[i].addBox(0.0F, 0.0F, 0.0F, 2, 8, 2);
+				this.blazeSticks[i] = new ModelRenderer(this, 0, 16, ModelPart.Chest);
+				this.blazeSticks[i].addBox(0.0F, 0.0F, 0.0F, 2, 8, 2, "Stick");
 			}
 
-			this.blazeHead = new ModelRenderer(this, 0, 0);
-			this.blazeHead.addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8);
+			this.blazeHead = new ModelRenderer(this, 0, 0, ModelPart.Head);
+			this.blazeHead.addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8, "Head");
 		}
 
 #if RENDER
@@ -82,3 +83,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

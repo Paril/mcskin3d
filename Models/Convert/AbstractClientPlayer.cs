@@ -1,4 +1,5 @@
-﻿namespace MCSkin3D.Models.Convert
+﻿#if CONVERT_MODELS
+namespace MCSkin3D.Models.Convert
 {
 	internal class AbstractClientPlayer : EntityLivingBase
 	{
@@ -7,3 +8,4 @@
 		internal float field_184837_c;
 	}
 }
+#endif

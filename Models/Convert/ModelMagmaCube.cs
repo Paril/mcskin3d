@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,11 +31,11 @@ namespace MCSkin3D.Models.Convert
 				}
 
 				this.segments[i] = new ModelRenderer(this, j, k);
-				this.segments[i].addBox(-4.0F, (float)(16 + i), -4.0F, 8, 1, 8);
+				this.segments[i].addBox(-4.0F, (float)(16 + i), -4.0F, 8, 1, 8, "Segment " + i);
 			}
 
 			this.core = new ModelRenderer(this, 0, 16);
-			this.core.addBox(-2.0F, 18.0F, -2.0F, 4, 4, 4);
+			this.core.addBox(-2.0F, 18.0F, -2.0F, 4, 4, 4, "Core");
 		}
 
 		/**
@@ -74,3 +75,4 @@ namespace MCSkin3D.Models.Convert
 #endif
 	}
 }
+#endif

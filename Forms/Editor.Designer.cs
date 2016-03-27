@@ -169,6 +169,8 @@
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.miniToolStrip = new MCSkin3D.Controls.SkinTreeViewToolBar();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.useTextureBasesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -795,6 +797,8 @@
             this.keyboardShortcutsToolStripMenuItem,
             this.backgroundColorToolStripMenuItem,
             this.mSKINDIRSToolStripMenuItem,
+            this.toolStripSeparator12,
+            this.useTextureBasesMenuItem,
             this.toolStripMenuItem4,
             this.languageToolStripMenuItem});
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -806,7 +810,7 @@
 			// 
 			this.keyboardShortcutsToolStripMenuItem.Name = "keyboardShortcutsToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.keyboardShortcutsToolStripMenuItem, "Text");
-			this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.keyboardShortcutsToolStripMenuItem.Text = "M_KEYSHORTCUTS";
 			this.keyboardShortcutsToolStripMenuItem.Click += new System.EventHandler(this.keyboardShortcutsToolStripMenuItem_Click);
 			// 
@@ -814,7 +818,7 @@
 			// 
 			this.backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.backgroundColorToolStripMenuItem, "Text");
-			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.backgroundColorToolStripMenuItem.Text = "M_BGCOLOR";
 			this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
 			// 
@@ -822,20 +826,20 @@
 			// 
 			this.mSKINDIRSToolStripMenuItem.Name = "mSKINDIRSToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.mSKINDIRSToolStripMenuItem, "Text");
-			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
 			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(172, 6);
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(188, 6);
 			// 
 			// languageToolStripMenuItem
 			// 
 			this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
 			this.languageProvider1.SetPropertyNames(this.languageToolStripMenuItem, "Text");
-			this.languageToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.languageToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.languageToolStripMenuItem.Text = "M_LANGUAGE";
 			// 
 			// helpToolStripMenuItem
@@ -1568,6 +1572,19 @@
 			// 
 			this.languageProvider1.BaseControl = this;
 			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(188, 6);
+			// 
+			// useTextureBasesMenuItem
+			// 
+			this.useTextureBasesMenuItem.Name = "useTextureBasesMenuItem";
+			this.languageProvider1.SetPropertyNames(this.useTextureBasesMenuItem, "Text");
+			this.useTextureBasesMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.useTextureBasesMenuItem.Text = "M_USETEXTUREBASES";
+			this.useTextureBasesMenuItem.Click += new System.EventHandler(this.useTextureBasesMenuItem_Click);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1749,6 +1766,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
 		private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripMenuItem useTextureBasesMenuItem;
 	}
 }
 

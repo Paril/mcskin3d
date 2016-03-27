@@ -6,99 +6,113 @@
 		<Model Texture="none.png">
 			<BaseClass>ModelBase</BaseClass>
 			<Name>Enderman</Name>
-			<BaseTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAAY5JREFUaN7lWNESgzAI8yv8/z/tXjZPHSShYitb73rXedo1AQJ0WchY17WhudQZ7TS18Qb5AXtY/yUBO8tXIaCRqRNwXlcgwDJgmAALfBUP8AjYEdHnAZUIAGdvPy+CnobJIVw9DVIPEABawuEyyvYx1sMIMP8fAbUO7ukBImZmCCEP2AhglnRip8vio7MIxYEsaVkdeYNjYfbN/BBA1twP9AxpB0qlMwj48gBP5Ji1rXc8nfBImk6A5+KqShNwdTwgKy0xYRzdS4yoY651W8EDRwGVJEDVITGtjiEAaEBq3o4SwGqRVAKsdVYIsAzDCACV6VwCFMBCpqLvgudzQ6CnjL5afmeX4pdE0LIQuYCBzZbQfT4rC6COUQGn9B3MQ28pSIxDSDdNrKdQSZJ7lDurMeZm6iEjKVENh8cQgBowBFK5gEHhsO3xFA/oKXp6vg8RoHaD2QRkiaDnAYcZAcB+E6GTRVAhQCVJyVImKOUiBLW3KL4jzU2POHp64RIQ/ADO6D6Ry1gl9tlN1Xm+AK8s2jHadDijAAAAAElFTkSuQmCC</BaseTexture>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAAY5JREFUaN7lWNESgzAI8yv8/z/tXjZPHSShYitb73rXedo1AQJ0WchY17WhudQZ7TS18Qb5AXtY/yUBO8tXIaCRqRNwXlcgwDJgmAALfBUP8AjYEdHnAZUIAGdvPy+CnobJIVw9DVIPEABawuEyyvYx1sMIMP8fAbUO7ukBImZmCCEP2AhglnRip8vio7MIxYEsaVkdeYNjYfbN/BBA1twP9AxpB0qlMwj48gBP5Ji1rXc8nfBImk6A5+KqShNwdTwgKy0xYRzdS4yoY651W8EDRwGVJEDVITGtjiEAaEBq3o4SwGqRVAKsdVYIsAzDCACV6VwCFMBCpqLvgudzQ6CnjL5afmeX4pdE0LIQuYCBzZbQfT4rC6COUQGn9B3MQ28pSIxDSDdNrKdQSZJ7lDurMeZm6iEjKVENh8cQgBowBFK5gEHhsO3xFA/oKXp6vg8RoHaD2QRkiaDnAYcZAcB+E6GTRVAhQCVJyVImKOUiBLW3KL4jzU2POHp64RIQ/ADO6D6Ry1gl9tlN1Xm+AK8s2jHadDijAAAAAElFTkSuQmCC</DefaultTexture>
 			<Geometry>
 				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
 					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-4,-8,-4</Offset>
 						<Position>0,-13,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
 						<TextureOffset>0,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>None</Part>
+						<Part>Head</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
-					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Jaw">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-4,-8,-4</Offset>
 						<Position>0,-13,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,8,8</Size>
 						<TextureOffset>0,16</TextureOffset>
 						<Scale>-0.5</Scale>
-						<Part>None</Part>
+						<Part>Helmet</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
-					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-4,0,-2</Offset>
 						<Position>0,-14,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>8,12,4</Size>
 						<TextureOffset>32,16</TextureOffset>
 						<Scale>0</Scale>
-						<Part>None</Part>
+						<Part>Chest</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
-					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Arm">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-1,-2,-1</Offset>
 						<Position>-5,-12,0</Position>
 						<Rotation>0,0,5.729578</Rotation>
 						<Size>2,30,2</Size>
 						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>None</Part>
+						<Part>RightArm</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
-					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Arm">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-1,-2,-1</Offset>
 						<Position>5,-12,0</Position>
 						<Rotation>0,0,-5.729578</Rotation>
 						<Size>2,30,2</Size>
 						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>None</Part>
+						<Part>LeftArm</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
-					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-1,0,-1</Offset>
 						<Position>-2,-5,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>2,30,2</Size>
 						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>None</Part>
+						<Part>RightLeg</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
-					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Unknown">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
 						<IsDecorative>False</IsDecorative>
 						<IsFixed>False</IsFixed>
 						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
 						<Offset>-1,0,-1</Offset>
 						<Position>2,-5,0</Position>
 						<Rotation>0,0,0</Rotation>
 						<Size>2,30,2</Size>
 						<TextureOffset>56,0</TextureOffset>
 						<Scale>0</Scale>
-						<Part>None</Part>
+						<Part>LeftLeg</Part>
 						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
 					</Shape>
 				</Folder>
 			</Geometry>

@@ -99,7 +99,10 @@ namespace MCSkin3D
 			try
 			{
 #endif
+
+#if CONVERT_MODELS
 				Models.Convert.ConversionInterface.Convert();
+#endif
 
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace MCSkin3D.Models.Convert
 			for (int i = 0; i < this.field_178713_d.Length; ++i)
 			{
 				this.field_178713_d[i] = new ModelRenderer(this, field_178714_b[i,0], field_178714_b[i,1]);
-				this.field_178713_d[i].addBox((float)field_178716_a[i,0] * -0.5F, 0.0F, (float)field_178716_a[i,2] * -0.5F, field_178716_a[i,0], field_178716_a[i,1], field_178716_a[i,2]);
+				this.field_178713_d[i].addBox((float)field_178716_a[i,0] * -0.5F, 0.0F, (float)field_178716_a[i,2] * -0.5F, field_178716_a[i,0], field_178716_a[i,1], field_178716_a[i,2], "Body");
 				this.field_178713_d[i].setRotationPoint(0.0F, (float)(24 - field_178716_a[i,1]), f);
 
 				if (i < this.field_178713_d.Length - 1)
@@ -61,3 +62,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

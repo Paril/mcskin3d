@@ -1,4 +1,5 @@
-﻿namespace MCSkin3D.Models.Convert
+﻿#if CONVERT_MODELS
+namespace MCSkin3D.Models.Convert
 {
 	public struct EnumHandSide
 	{
@@ -23,3 +24,4 @@
 		}
 	}
 }
+#endif

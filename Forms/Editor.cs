@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -597,6 +598,13 @@ namespace MCSkin3D
 							GL.End();
 							GL.Color4(Color.White);
 
+							GL.Color4(Color.Black);
+							var shadow = toint;
+							shadow.Offset((1.0f * GlobalSettings.DynamicOverlayTextSize) / _2DZoom, (1.0f * GlobalSettings.DynamicOverlayTextSize) / _2DZoom);
+
+							DrawStringWithinRectangle(_font, shadow, mesh.Name + " " + Model.SideFromNormal(face.Normal),
+														(6 * GlobalSettings.DynamicOverlayTextSize) / _2DZoom,
+														(8.0f * GlobalSettings.DynamicOverlayTextSize) / _2DZoom);
 							GL.Color4(GlobalSettings.DynamicOverlayTextColor);
 							DrawStringWithinRectangle(_font, toint, mesh.Name + " " + Model.SideFromNormal(face.Normal),
 														(6 * GlobalSettings.DynamicOverlayTextSize) / _2DZoom,
@@ -2866,6 +2874,8 @@ namespace MCSkin3D
 				meshIndex++;
 			}
 
+			treeView2.Sort();
+
 			radios.Reverse();
 
 			foreach (PartTreeNode n in owners)
@@ -3966,30 +3976,55 @@ namespace MCSkin3D
 
 			if (collection == null || string.IsNullOrEmpty(folderLocation))
 				return;
-
-			string newSkinName = GetLanguageString("M_NEWSKIN");
-
-			while (File.Exists(folderLocation + newSkinName + ".png"))
-				newSkinName = newSkinName.Insert(0, GetLanguageString("C_NEW") + " ");
-
 			if (specificModel == null)
 				specificModel = CurrentModel;
+
+			if (specificModel == null)
+				specificModel = ModelLoader.Models["Players/Steve"];
+
+			string newSkinName = GetLanguageString("M_NEWSKIN") + " " + specificModel.Name;
+			
+			while (File.Exists(folderLocation + newSkinName + ".png"))
+				newSkinName = newSkinName.Insert(0, GetLanguageString("C_NEW") + " ");
 
 			using (var bmp = new Bitmap((int)specificModel.DefaultWidth, (int)specificModel.DefaultHeight))
 			{
 				using (Graphics g = Graphics.FromImage(bmp))
 				{
-					g.Clear(Color.FromArgb(255, 255, 255, 255));
+					g.Clear(Color.FromArgb(0, 255, 255, 255));
 
-					/*if (specificModel.HasDefaultTexture)
-						using (var bitmap = specificModel.LoadDefaultTexture())
-							g.DrawImage(bitmap, 0, 0);*/
+					if (GlobalSettings.UseTextureBases && !string.IsNullOrEmpty(specificModel.DefaultTexture))
+					{
+						using (var mp = new MemoryStream(Convert.FromBase64String(specificModel.DefaultTexture)))
+						using (var bitmap = Bitmap.FromStream(mp))
+							g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
+					}
+					else
+					{
+						foreach (var mesh in specificModel.Meshes)
+						{
+							foreach (var face in mesh.Faces)
+							{
+								var color = new ConvertableColor(ColorRepresentation.RGB, (face.Normal.X / 2) + 0.5f, (face.Normal.Y / 2) + 0.5f, (face.Normal.Z / 2) + 0.5f, !mesh.IsArmor ? 1.0f : 0.5f);
+
+								var baseColor = color.ToColor();
+								color.L += 0.1f;
+								var lightColor = color.ToColor();
+
+								if (mesh.IsArmor)
+									lightColor = baseColor;
+
+								Rectangle coords = face.TexCoordsToInteger(bmp.Width, bmp.Height);
+
+								for (var y = coords.Top; y < coords.Bottom; ++y)
+								{
+									for (var x = coords.Left; x < coords.Right; ++x)
+										bmp.SetPixel(x, y, ((x + y) % 2) == 0 ? baseColor : lightColor);
+								}
+							}
+						}
+					}
 				}
-
-				/*FillRectangleAlternating(bmp, 0, 0, 32, 32);
-				FillRectangleAlternating(bmp, 32, 16, 32, 16);
-
-				FillRectangleAlternating(bmp, 16, 48, 32, 16);*/
 
 				bmp.SaveSafe(folderLocation + newSkinName + ".png");
 
@@ -4202,6 +4237,7 @@ namespace MCSkin3D
 			mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
 			mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
 			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
+			useTextureBasesMenuItem.Checked = GlobalSettings.UseTextureBases;
 			mINFINITEMOUSEToolStripMenuItem.Checked = GlobalSettings.InfiniteMouse;
 			mRENDERSTATSToolStripMenuItem.Checked = GlobalSettings.RenderBenchmark;
 			treeView1.ItemHeight = GlobalSettings.TreeViewHeight;
@@ -4351,6 +4387,12 @@ namespace MCSkin3D
 			gridEnabledToolStripMenuItem.Checked = GlobalSettings.GridEnabled;
 
 			Renderer.Invalidate();
+		}
+
+		private void useTextureBasesMenuItem_Click(object sender, EventArgs e)
+		{
+			GlobalSettings.UseTextureBases = !GlobalSettings.UseTextureBases;
+			useTextureBasesMenuItem.Checked = GlobalSettings.UseTextureBases;
 		}
 
 		private void officialMinecraftForumsThreadToolStripMenuItem_Click(object sender, EventArgs e)

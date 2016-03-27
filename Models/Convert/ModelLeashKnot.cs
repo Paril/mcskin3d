@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if CONVERT_MODELS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace MCSkin3D.Models.Convert
 			this.textureWidth = p_i46365_3_;
 			this.textureHeight = p_i46365_4_;
 			this.field_110723_a = new ModelRenderer(this, p_i46365_1_, p_i46365_2_);
-			this.field_110723_a.addBox(-3.0F, -6.0F, -3.0F, 6, 8, 6, 0.0F);
+			this.field_110723_a.addBox(-3.0F, -6.0F, -3.0F, 6, 8, 6, 0.0F, "Knot");
 			this.field_110723_a.setRotationPoint(0.0F, 0.0F, 0.0F);
 		}
 
@@ -47,3 +48,4 @@ namespace MCSkin3D.Models.Convert
 		}
 	}
 }
+#endif

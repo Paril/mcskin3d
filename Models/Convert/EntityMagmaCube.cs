@@ -1,4 +1,5 @@
-﻿namespace MCSkin3D.Models.Convert
+﻿#if CONVERT_MODELS
+namespace MCSkin3D.Models.Convert
 {
 	internal class EntityMagmaCube : EntityLivingBase
 	{
@@ -6,3 +7,4 @@
 		internal float squishFactor = 0.25f;
 	}
 }
+#endif
