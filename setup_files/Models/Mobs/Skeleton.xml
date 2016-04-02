@@ -1,0 +1,123 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Skeleton</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4y++GnxgAAAyJJREFUaEPlmLHKIkEQhH09H8lIEATBQAQDQRDEQDAxMTIQBEEwMfVt9u4bupa+udnVf3XdvbOg6Jm52tmu7nH0v84jzOfzDI5GoxA1huPxOBsOh6W0bf5dyPB6vQ70BYBlJv+bAsj8ZDL5vgJg0neeqKIQv+YEEDkBUCfiawqQMv9VBZDx2WwWxtz+X1UAGfdkXQUoo23TXkyn0wzKGGY3m022Wq1yLhaL0HF0XIToWKMA0vCML5T2VaH8BcoYcpIsjeYQFwBjGCFut9sQRean0yk7Ho9hznPS6JlUATDr7w0VAFoazUFGSBoTJMic7sjU5XLJrtdrdr/fs9vtFng4HIJ5NGhllrkKwLOsyTzrrSuAEl8ul3lXSZQxSWP0fD6HSPd3u10oBuYhGrTeNHupkJj0nSdCrVkazYEkPdV5PtP7/T6Y73a7gYwxrzlFQaPPv06CpzdLkSDz1hWAZIh0j8jFpkLQeYwPBoNAnQDMoEHrn9VeGqfMt6YAOvYk3+v18mPNGl9jrKvjMaUh8gzPsocKwd4yz7/rfuCktKYAJCoDREzQUZLDHB3v9/v59zoaImb4TDNGy3Oe2k96nQBRe1kazYOk6RjGiLb8djz63WCyv1B7fmzsv85s+e3AyG90IEYwr3lZAWrLj83KaLK3ASMyzP5+nupsnE9Mk1UHm+j7ORVN9jZwN6jzdJMxlybvS52A2vNjI93IqWiyQnDrkwhR41RiWpcu1kPeCeO1V/J7CF7CRkXRZE/DG7Ol8A6t21ISMm/TgDifOJqsOl6tsIyJJAbLxp5ah3pnaq1qfg/BRmU02dNImfVzkyWBJjaVysnTZNXBJlxIRdFkhZBJb9aP47nGfk3knRQgXnslv4dgI76KiqLJfgQSV/RjYhl4J7RpQFFeiiarDn6V8VVUFE32I6izNs1PiU0Lgam4q3Xk9wfYpIwm+whSXU3l5Gmy6uDHRxlN9hGkuprKydNk1ZHa1NNkH0Gqq6mcPE3WHPjMcmz5644OihjhRidJ7gN0rHHMpSn6ixANfObibBwyhhGi/mwVmb/yP8n2mprQ6fwCNc7lnsMOsI4AAAAASUVORK5CYII=</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-8,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Headwear">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-8,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>Helmet</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,0,-2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,4</Size>
+						<TextureOffset>16,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-2,-1</Offset>
+						<Position>-5,2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,12,2</Size>
+						<TextureOffset>40,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-2,-1</Offset>
+						<Position>5,2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,12,2</Size>
+						<TextureOffset>40,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>-2,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,12,2</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>2,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,12,2</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Skeleton</Name>
+</Techne>

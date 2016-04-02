@@ -130,7 +130,7 @@ namespace MCSkin3D
 
 				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-				var rootPos = Environment.ExpandEnvironmentVariables(@"%appdata%\.minecraft\versions\1.9.1-pre3\1.9.1-pre3\assets\minecraft\textures\entity\" + textureRef);
+				var rootPos = Environment.ExpandEnvironmentVariables(@"%appdata%\.minecraft\versions\1.9.2\1.9.2\assets\minecraft\textures\entity\" + textureRef);
 
 				using (XmlWriter writer = XmlWriter.Create(fileName, settings))
 				{
@@ -470,10 +470,8 @@ namespace MCSkin3D
 			public float rotateAngleX;
 			public float rotateAngleY;
 			public float rotateAngleZ;
-			private bool compiled;
 
 			/** The GL display list rendered by the Tessellator for this model */
-			private int displayList;
 			public bool showModel;
 
 			/** Hides the model. */
@@ -834,7 +832,6 @@ namespace MCSkin3D
 		{
 			public PositionTextureVertex[] vertexPositions;
 			public int nVertices;
-			private bool invertNormal;
 
 			public TexturedQuad(PositionTextureVertex[] vertices)
 			{

@@ -1,0 +1,78 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>EnderMite</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABmJLR0QAQQAuAFTCBTSBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gMOCgoKVDJeXgAAA0hJREFUaN7tmH1TUlEQxs8HaCYzA8fwBaIUBHmrUfONkITMNF9CybL+6ft/hG1/i0volJZ/JBfYmZ1zuefey32e3X3OnhvCpa0v7stWuS3ruTNZnt+R1GRepieey9PHz2QunpXQY/XykXntZSvMxTIhGc/2TofxB3Hz39lN992r1Ytnoi8m2+VDgQyAdzwlM0/mrxCwWvxmvpZrhfRUwcD8LQE33XdvwOsl9eKpnMbL5pu5j8L5t6W2ZkNDVjO7Ul06tlE9bOWPgl4T1rJ7Qe8NtUKLDApvlk6ugO89vu2+ezP9c6kVPhnQ15n3Ni6/aMjuq+92nnlKgjkFIH0L5K5GZAFZSdekmNyUUqoqKwvvLPrbxZaB5jdlQWbM9dTt9TS/KfX73jTlLYqaASaIZMK2aoKKlpUD51S0ZPLRrMTHZszRiGSPQEaSAICbl866JDjgavFENnKHRgCEAHZqPGkkxMamJTGRltnYAvN/rP2+N+oW13p38P+cAZGsfbdG+YuJmI+ImwOm5quF41szAFFEEDcWD7rPiYwReV7YR0oB8LY8avTpDQDPOW+OAB97mLAewTNgLbNnJPhzopQButy1xEeijqP+9AcKTAloioLTleGz7JTPbXXw61hFuJZ5zYDuc6KUAfbCPgLaACnwjdyBAeMY5zzguYalk96AeY7tGj3250SGACLKC/vo9b96ufYTVTvOfpD9lR/WHzgBfg3AbS+hBPlzIkUAUfWx0/k1Lb3JAIADlGaI9OY6COAc80ScFpn7nACeEyUC2J11ljt1hE43KeYKMigBQSMfNPImkAiendclE9FjZBWIrBGxzfxht84pAYQNZ04jb0sbREEA4DXypvbsCyAk0gSYol8SwIg7CdSyNjthoI0ou3qb4mc7ag8BkENzQ5oPMgGa2m1pVL4C3uqalFYCyA4DH6nG5i4ZYMpdOjcSru/vIcLFjtofOPsFvG2O6ltW6KaIEQIQPG16jIiBs2blwoCyCdL131QeoAAnG7T97YJHDwba/GvvfKISUpO5MHS2Uriwr7Z8rtYvwcNHAN/ryQDtBvvjk/V/aoRM8Bi1CbJ9Pb874tcKA98HIH4ARQj9g8ZQ9QEjG9nIRjbM9hP8/g8zTmlkpwAAAABJRU5ErkJggg==</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-1</Offset>
+						<Position>0,21,-3.5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,3,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,0,-2.5</Offset>
+						<Position>0,20,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,4,5</Size>
+						<TextureOffset>0,5</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1.5,0,-0.5</Offset>
+						<Position>0,21,3</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>3,3,1</Size>
+						<TextureOffset>0,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-0.5,0,-0.5</Offset>
+						<Position>0,22,4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>1,2,1</Size>
+						<TextureOffset>0,18</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>EnderMite</Name>
+</Techne>

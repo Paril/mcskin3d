@@ -1,0 +1,48 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Sign</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAADqElEQVRo3u1X2VITURDlM9y3KnmRfVGCsiQQXAAVIkGx5AF3trCIK0+AQDbLKhdwf7BKWd+s8sV/a+d00pPrZWaSDFRRTJyqU3NzMz0zfbr7dE9RUfr49bqPJvt9hDPwba5zC2Qf5z/LA7zGGdht+6LtHg+vVfML2AH/q7Da3017144Lkyo2k70MrDeSYXM/PtlKK9FuE+uJMEO3h43Yb77qNffVCEsUrZ6v7qv/52KfNwFiuDgWoNVYiFajKWykHVgx1qrTVqn5Lzkhhtjz/Yz7OqW2nXOS7iqy2bvKAACRwosichuM8BYH1xM9DggzAbAT6C8oz7KDGlU9srna502A1NLsUBNjbriZXo6kEJtoYceBhYifFiMBzhQg+aiVkUgD/y+M+mkeGPGzfXS8hYHr7WrYrsb1a3K131YGSO3HjJeWWpbI/gQWu2nNiPZaPAVcw7+VLABAnKoFKAO9bnUVVwGH9A6Rq71rDdBFTGpf3UfExXEnZOxDlmmczV51Ol97VxmAB4kAblrUP4DoZ9BFPwxwBhiEmPvpzmBlr4uZOGcXYbf2rjQAtYM6Rb2KBswbiKc1IDGZqnNkQNS4LjYe4DJJTgWNvSDbshZAK0wdaOZrRAec+n4+c0E2+x3RAL3/65kAp0UHrDTAyV4mPic11/t/PvZ5EyCphCgKCWobVEXQriywTnCbDJslIPYsguk5wC6t7dqckx7Y2bvOAP3mmYEmbDoGEhLKPJAiKLPW7UVTQKw671upuJ1zep/PZu/qGwCYGWwydUCAdsazgAHUNiOSQiKtDdL/gfhExka9j9McsNPfEq6/Cb7MtNPX2Q5mcWk6uP2vq712fDfa2u83t3bu83KvHG2+Yk6f4d7T9OlFBzVUHKaR62fo3VQb+WuOe5+IpqqjdPdqOUX6fFR3ah/h9/LTi+z8va4K7xNQX3qA+tvL6c6VMnb6QaiKPjy7RI2VR+h+d6X3CUC6B+tO0u3LpdRcfYymBxoZIABkeJ6AwZ4ajjw0ABEXAuS35wmAoygBnFHzH5+3c+SxBjmeJwDOIuIdDcVMwtKTCzTQWcIknCs/5H0ChsK1HHXUPNbSCrFXEG0QMwBUH+1v7GY9vTW+9OA49iGKBUHA5+lOwkAE0UNXAAmB2hOFoQFogdAARBsOg4T3j88T5gPMBp4nALUPAlACcB4TIeofGYCz5wk4W3aQHfWV7OfWJ6KIsbggSgCCh7qXWUBti6M36grvs/j/UWDHXxjQo3/pwcJLAAAAAElFTkSuQmCC</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Board">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-12,-14,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>24,12,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Stick">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-2,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,14,2</Size>
+						<TextureOffset>0,14</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Sign</Name>
+</Techne>

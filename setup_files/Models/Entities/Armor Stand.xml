@@ -1,0 +1,168 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Armor Stand</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOvwAADr8BOAVTJAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAABB9JREFUeNrtW82KFDEQ7ncQBEHwOXwAby7obfUg6isIOjeHXXHw4sourF5G0T043gYVBJ2X2IfwOaLVu9/wTZGkku6enQQ6UOSnkp7Ul0qlUt3TNJdp9eGp+/Rqz/1899B9ObjvGpXAR96FL89Fn6a0JILL5IR8ADx7dLudOPJcvjz/25v9IH9nCasuk9KrJJMFT9qOXtxZ9/tx9KDlhfhC4P8+few+Ht5t+X/eP2nH4neLWHlWf14laAVyEUDK4ENjNB8AgP/97f4aABFeQBDybZWdaIDe/7yC0ALwUcaYFL4AIGURHqsvWlEEADxp7H8IgNUEHzwmi4/ntyt+uOc+H9zb4O0cAFkhmQxUUiaFVZKcVRkCYgyDEOMDSOEL4flFGEMWAgZK9ioDwAKwgUQ5ZEC1Bkib2JiiAIipv2UgU/hi/KQNW4BtTBE2wDkXJZ+BlJyBiwEiZYDANgAgFA+ApSHW+A2jSAAArOIBiBlIWdWU8XxM6vFVABAykJKnAhAaXzwAfYk9QwEBAEi5CD/AEmDbYI0AlJJw5MWcGovfBaih4gnW+CQN6Ov09NGAvvEEa3yyBsScntitsasG+OIJ2tfQ8QQY1FA8gi9xya6w9u58To/F53oqAKF4Av+WL56gL1s8Pmsr6JtczOmx+FxPBaBvPMEanwSANjAhp8Xicz0VgL7xBGv81h2hIUNyVjxBQNDxBGt80iS0cUs5BWL9cgBgQ9olnsDHc+xoNgMi2Nu4wlo2AIKHbEHOFugTT7DG7/wu0CXeoE8BXzyBI9MxX2VQTzD2HgATSvUUUyNSVjyht63KUcfQuavVMsdTTDl6Y/GEwYx1qjrGzl1uT/UUrXiBdfQOFhRN8QSt9wBdPEUrXrD1YznXE+T97Tt3Uz3FYq7BXTxB68qc4ykWn7SKzWYzN51ON0jahmqvAoDFYuGWy6WX5vN5yxeCUDn9qwBAJn12dtYSyhACwkqOlc7pXwUAmDCIBWQCADn9qwFAiCfvU+/JZOJy+xcPgOxTrcJcZ1WHocvpX5URDK0mhMMWyOlfPACipqHVZKMGlc7tX/yrMVklnwGLGcGc/lf+IqULAFBnPsf18Sa84+Njl9u/+DdJ2NNswHhfczvbgNT+xbvG2n2VfYuVTnF3rf5XLpBvdZi008IuLFTbZ9B8Zz8TtoH+/dCJwXPh5zdjGtOYeh+DCI3peJ8Ob8W+E64eiNB7Nv3yI/SdcLWC6++CdYwQ/w1AOIvjfxzsRP/qANDfBXO8T4RlIFI+mRmNypjGNKYxjWlMgzqrW6YKALj20v391bTEZdTRxmWuR8fXAMD51/8TvX6yplDdyr3jq9CAGwu3Or3IUfbV0ebj63zNrwKAm6uWFq+bjTzUnpq3VAMAJ88vqLl13hLqaLNyXxn0D14yGcGkZ20TAAAAAElFTkSuQmCC</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-7,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,7,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-6,0,-1.5</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,3,3</Size>
+						<TextureOffset>0,26</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,-2,-1</Offset>
+						<Position>-5,2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,12,2</Size>
+						<TextureOffset>24,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>0,-2,-1</Offset>
+						<Position>5,2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,12,2</Size>
+						<TextureOffset>32,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>-1.9,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,11,2</Size>
+						<TextureOffset>8,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>1.9,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,11,2</Size>
+						<TextureOffset>40,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Side">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,3,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,7,2</Size>
+						<TextureOffset>16,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Side">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>1,3,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,7,2</Size>
+						<TextureOffset>48,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Waist">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,10,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,2,2</Size>
+						<TextureOffset>0,48</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Base">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-6,11,-6</Offset>
+						<Position>0,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,1,12</Size>
+						<TextureOffset>0,32</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Armor Stand</Name>
+</Techne>

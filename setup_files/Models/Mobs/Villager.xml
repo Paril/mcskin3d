@@ -1,0 +1,153 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Villager</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAAwBQTFRFAAAAIxgUMyQRNSUfIyMjOCchPCojPz8/NkQuPEwzRzEqUTkwUzoxVjwzWD40SFo9YUM5dUcvd0I1U2hGVGpIWG5LWnFNY31Ua2trAJYRkF5Ds3titXtnvohst4JyvYty////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHCHpTwAAAQB0Uk5T////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AFP3ByUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAM3SURBVFjD7ZbdepswDIbZshGMMW7n2l0JXXr/N8n06wCB4mwHO9n3PI1Qit7IkmyoJtGVNaqdpufnYZiyUkwJ/6aVqgzA0HEcrwPpDwAUD5jhG2gYMXyOgOBwDEDELiAcATD/TwAY/SngcpBBivGgiBg+L+JSuARYxMESECD2DoDRWxms+7+2iRXSjqrc/1E/s082A2gB96BjABaf1i8i/5ZUlQeIKzBmX2yEaIr3BuS5kkSBjxgKAClwONeMEADAlhKs0gkcv5LGPJFiOW9/KzsTAIGMiACZwI+3cXz7uGZfLK3fzBtnlJAQUukEDpdf7+/vlyFPpFi4Z/77kgPlT8uodAKHyw8QAHQixYZ1ApICD2YIlU7ecCEN64m8j1cCMVI1HQhad/+ll44mbw4Bn6GNmW2mpZ44/6fvWXuYXQD1sxRQg76AZgCeww1AfH2NuA9KANetDF5B2MFDAI3CNiCWAHaLyEtIN0Bdn+oeBAatbUGnk+1wBV3XkjrnXN8750H4eFHLgNMC0LeQTds6B4SOvbp2+A8A4PjAERC9WAHUC0BNALi9s449/h4JEpjUbgLAQFJw0dmZZ3tnFRCT2iUALiwI7gdZi0HWknOiaPgGl5BoBxiD9gaA+7EWCMCAGq44qCavJ9dlgPFrwLwGDIAEHAOwBhgNEEwdT2ICJK1BXW90QQGtFFEAIDwJ1C4B9RzQU0xvs0fa3EznswLO55+gFiNaKAYkoADwqAw7AA5Ui6umNlIbWi2iQ0gxQEfH2uxhX7cBsscWZk9QeK8PVa9deASAjyg50ZPXLjyUAQHw4Rqi10F6dAnyghAeXgLNv9RArskpBuD4Yg1w7XJNdahwLJtGTqgXT3rBxy48e9cA2om3zUTzXNFTyvPNnJwx9AazAsgxRmnLNdWjohcXTwccxFG8kVbHqUBVAwFNA7c3hj7Yw2YXAuB+ECymwWWR01D0xlvpdgYgrCkCYjDkJRq3WAbgkJAyAGsQ6R2mDMBdUICXIj4MkCKG7CU980oAdMKFxkQF8OtTeRe0jRDltYi0ZYsBhkcA4rJHr+bFXfg/B/96DvJv4nnyFxmwpxngCQ4HTAngNzNyaQwddIkZAAAAAElFTkSuQmCC</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-10,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,10,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Nose">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-1,-6</Offset>
+						<Position>0,-2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,4,2</Size>
+						<TextureOffset>24,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,0,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,6</Size>
+						<TextureOffset>16,20</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Cloak">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,0,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,18,6</Size>
+						<TextureOffset>0,38</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Arms Right">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-2,-2</Offset>
+						<Position>0,3,-1</Position>
+						<Rotation>-42.97183,0,0</Rotation>
+						<Size>4,8,4</Size>
+						<TextureOffset>44,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Arms Left">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>4,-2,-2</Offset>
+						<Position>0,3,-1</Position>
+						<Rotation>-42.97183,0,0</Rotation>
+						<Size>4,8,4</Size>
+						<TextureOffset>44,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Arms Center">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,2,-2</Offset>
+						<Position>0,3,-1</Position>
+						<Rotation>-42.97183,0,0</Rotation>
+						<Size>8,4,4</Size>
+						<TextureOffset>40,38</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-2,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>2,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Villager</Name>
+</Techne>

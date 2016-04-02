@@ -1,0 +1,63 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Banner</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Slate">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-10,0,-2</Offset>
+						<Position>0,-32,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>20,40,1</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Stand">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-30,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,42,2</Size>
+						<TextureOffset>44,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Top">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-10,-32,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>20,2,2</Size>
+						<TextureOffset>0,42</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Banner</Name>
+</Techne>

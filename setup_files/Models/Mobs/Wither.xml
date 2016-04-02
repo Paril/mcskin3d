@@ -1,0 +1,153 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Wither</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Neck">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-10,3.9,-0.5</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>20,3,3</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Spine">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>0,0,0</Offset>
+						<Position>-2,6.9,-0.5</Position>
+						<Rotation>20.7,0,0</Rotation>
+						<Size>3,10,3</Size>
+						<TextureOffset>0,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Spine Bit">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,1.5,0.5</Offset>
+						<Position>-2,6.9,-0.5</Position>
+						<Rotation>20.7,0,0</Rotation>
+						<Size>11,2,2</Size>
+						<TextureOffset>24,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Spine Bit">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,4,0.5</Offset>
+						<Position>-2,6.9,-0.5</Position>
+						<Rotation>20.7,0,0</Rotation>
+						<Size>11,2,2</Size>
+						<TextureOffset>24,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Spine Bit">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,6.5,0.5</Offset>
+						<Position>-2,6.9,-0.5</Position>
+						<Rotation>20.7,0,0</Rotation>
+						<Size>11,2,2</Size>
+						<TextureOffset>24,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tail">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>0,0,0</Offset>
+						<Position>-2,16.25444,3.034749</Position>
+						<Rotation>65.7,0,0</Rotation>
+						<Size>3,6,3</Size>
+						<TextureOffset>12,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head Middle">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-4,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head Right">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-4,-4</Offset>
+						<Position>-8,4,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,6,6</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head Left">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-4,-4</Offset>
+						<Position>10,4,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,6,6</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Wither</Name>
+</Techne>

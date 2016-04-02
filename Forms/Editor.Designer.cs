@@ -99,6 +99,8 @@
 			this.keyboardShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mSKINDIRSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.useTextureBasesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
 			this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -169,8 +171,6 @@
 			this.labelEditTextBox = new System.Windows.Forms.TextBox();
 			this.miniToolStrip = new MCSkin3D.Controls.SkinTreeViewToolBar();
 			this.languageProvider1 = new MCSkin3D.Languages.LanguageProvider();
-			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.useTextureBasesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -829,6 +829,19 @@
 			this.mSKINDIRSToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
 			this.mSKINDIRSToolStripMenuItem.Text = "M_SKINDIRS";
 			this.mSKINDIRSToolStripMenuItem.Click += new System.EventHandler(this.mSKINDIRSToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(188, 6);
+			// 
+			// useTextureBasesMenuItem
+			// 
+			this.useTextureBasesMenuItem.Name = "useTextureBasesMenuItem";
+			this.languageProvider1.SetPropertyNames(this.useTextureBasesMenuItem, "Text");
+			this.useTextureBasesMenuItem.Size = new System.Drawing.Size(191, 22);
+			this.useTextureBasesMenuItem.Text = "M_USETEXTUREBASES";
+			this.useTextureBasesMenuItem.Click += new System.EventHandler(this.useTextureBasesMenuItem_Click);
 			// 
 			// toolStripMenuItem4
 			// 
@@ -1571,19 +1584,6 @@
 			// languageProvider1
 			// 
 			this.languageProvider1.BaseControl = this;
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(188, 6);
-			// 
-			// useTextureBasesMenuItem
-			// 
-			this.useTextureBasesMenuItem.Name = "useTextureBasesMenuItem";
-			this.languageProvider1.SetPropertyNames(this.useTextureBasesMenuItem, "Text");
-			this.useTextureBasesMenuItem.Size = new System.Drawing.Size(191, 22);
-			this.useTextureBasesMenuItem.Text = "M_USETEXTUREBASES";
-			this.useTextureBasesMenuItem.Click += new System.EventHandler(this.useTextureBasesMenuItem_Click);
 			// 
 			// Editor
 			// 

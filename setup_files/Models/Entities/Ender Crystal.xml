@@ -1,0 +1,63 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Ender Crystal</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="glass">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-4,-4</Offset>
+						<Position>0,-8,0</Position>
+						<Rotation>60,60,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="cube">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-12,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="cube">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-6,0,-6</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,4,12</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Ender Crystal</Name>
+</Techne>

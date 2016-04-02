@@ -1,0 +1,108 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Minecart</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Bottom">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-10,-8,-1</Offset>
+						<Position>0,4,0</Position>
+						<Rotation>90,0,0</Rotation>
+						<Size>20,16,2</Size>
+						<TextureOffset>0,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Front">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-9,-1</Offset>
+						<Position>-9,4,0</Position>
+						<Rotation>0,270,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Back">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-9,-1</Offset>
+						<Position>9,4,0</Position>
+						<Rotation>0,90,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-9,-1</Offset>
+						<Position>0,4,-7</Position>
+						<Rotation>0,180,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-9,-1</Offset>
+						<Position>0,4,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>16,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Leather">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-9,-7,-1</Offset>
+						<Position>0,4,0</Position>
+						<Rotation>-90,0,0</Rotation>
+						<Size>18,14,1</Size>
+						<TextureOffset>44,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>True</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Minecart</Name>
+</Techne>

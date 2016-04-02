@@ -1,0 +1,123 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Steve (Minimal)</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>True</IsSolid>
+						<Offset>-4,-8,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Headwear">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-8,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>32,0</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>Helmet</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>True</IsSolid>
+						<Offset>-4,0,-2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,4</Size>
+						<TextureOffset>16,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>True</IsSolid>
+						<Offset>-3,-2,-2</Offset>
+						<Position>-5,2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>40,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>True</IsSolid>
+						<Offset>-1,-2,-2</Offset>
+						<Position>5,2,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>40,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>True</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-1.9,12,0.1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>True</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>1.9,12,0.1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Steve (Minimal)</Name>
+</Techne>

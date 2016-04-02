@@ -1,0 +1,108 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Sheep (Wool)</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,-4,-4</Offset>
+						<Position>0,6,-8</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,6,6</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0.6</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-10,-7</Offset>
+						<Position>0,5,2</Position>
+						<Rotation>90,0,0</Rotation>
+						<Size>8,16,6</Size>
+						<TextureOffset>28,8</TextureOffset>
+						<Scale>1.75</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Back Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,12,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Back Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,12,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Front Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,12,-5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Back Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,12,-5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Sheep (Wool)</Name>
+</Techne>

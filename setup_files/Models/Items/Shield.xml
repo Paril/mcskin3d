@@ -1,0 +1,48 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Shield</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Shield">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-6,-11,-2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,22,1</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Handle">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-3,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,6,6</Size>
+						<TextureOffset>26,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Shield</Name>
+</Techne>

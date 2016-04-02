@@ -228,13 +228,13 @@ namespace MCSkin3D
 			CalculateMatrices();
 			Renderer.Invalidate();
 		}
-		
+
 		byte[] _charWidths = new byte[128];
 
 		private void InitGL()
 		{
 			GL.ClearColor(GlobalSettings.BackgroundColor);
-			
+
 			GL.Enable(EnableCap.Texture2D);
 			GL.ShadeModel(ShadingModel.Smooth); // Enable Smooth Shading
 			GL.Enable(EnableCap.DepthTest); // Enables Depth Testing
@@ -330,13 +330,13 @@ namespace MCSkin3D
 
 			_previewPaint = new TextureGL();
 			GlobalDirtiness.CurrentSkin = new TextureGL();
-			
+
 			_previewPaint.SetMipmapping(false);
 			_previewPaint.SetRepeat(false);
 
 			GlobalDirtiness.CurrentSkin.SetMipmapping(false);
 			GlobalDirtiness.CurrentSkin.SetRepeat(false);
-			
+
 			_alphaTex = new TextureGL();
 			_alphaTex.Upload(new byte[]
 			{
@@ -451,7 +451,7 @@ namespace MCSkin3D
 			GL.Vertex2(xOfs, height + yOfs);
 			GL.End();
 		}
-		
+
 		private void DrawStringWithinRectangle(Texture font, RectangleF rect, string s, float spacing, float size)
 		{
 			float start = rect.X + (2 * GlobalSettings.DynamicOverlayTextSize) / _2DZoom, x = start;
@@ -501,7 +501,7 @@ namespace MCSkin3D
 			GL.Translate((_2DCamOffsetX), (_2DCamOffsetY), 0);
 			GL.Translate((_currentViewport.Width / 2) + -_2DCamOffsetX, (_currentViewport.Height / 2) + -_2DCamOffsetY, 0);
 			GL.Scale(_2DZoom, _2DZoom, 1);
-			
+
 			GL.Enable(EnableCap.Blend);
 
 			GL.Translate((_2DCamOffsetX), (_2DCamOffsetY), 0);
@@ -520,7 +520,7 @@ namespace MCSkin3D
 				GL.Vertex2(-(CurrentModel.DefaultWidth / 2), (CurrentModel.DefaultHeight / 2));
 				GL.End();
 			}
-			
+
 			TextureGL.Unbind();
 
 			if (GlobalSettings.GridEnabled && GlobalSettings.DynamicOverlayGridColor.A > 0)
@@ -691,7 +691,7 @@ namespace MCSkin3D
 
 			if (GlobalSettings.RenderBenchmark && IsRendering)
 				_compileTimer.Stop();
-			
+
 			MeshRenderer.Render();
 		}
 
@@ -709,7 +709,7 @@ namespace MCSkin3D
 				using (var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 				{
 					bool pick = GetPick(_mousePoint.X, _mousePoint.Y, out _pickPosition);
-					
+
 					currentSkin.Load();
 					if (_selectedTool.Tool.RequestPreview(currentSkin, skin, _pickPosition.X, _pickPosition.Y))
 					{
@@ -723,6 +723,11 @@ namespace MCSkin3D
 					}
 				}
 			}
+		}
+
+		static bool prettyDarnCloseToZero(float v, float ep = float.Epsilon)
+		{
+			return (v > -ep && v < ep);
 		}
 
 		// adapted from http://java3d.sourcearchive.com/documentation/0.0.cvs.20090202.dfsg/Intersect_8java-source.html#l01099
@@ -899,6 +904,102 @@ namespace MCSkin3D
 			return false;
 		}
 
+		static bool rayTriangleIntersect(
+			Vector3 orig, Vector3 dir,
+			Vector3 v0, Vector3 v1, Vector3 v2,
+			ref float t, ref float u, ref float v)
+		{
+			Vector3 v0v1 = v1 - v0;
+			Vector3 v0v2 = v2 - v0;
+			Vector3 pvec = Vector3.Cross(dir, v0v2);
+			float det = Vector3.Dot(v0v1, pvec);
+#if CULLING
+			// if the determinant is negative the triangle is backfacing
+			// if the determinant is close to 0, the ray misses the triangle
+			if (det < 1e-8f) return false;
+#else
+			// ray and triangle are parallel if det is close to 0
+			if (prettyDarnCloseToZero(det, 1e-8f)) return false;
+#endif
+
+			float invDet = 1 / det;
+
+			Vector3 tvec = orig - v0;
+			u = Vector3.Dot(tvec, pvec) * invDet;
+			if (u < 0 || u > 1) return false;
+
+			Vector3 qvec = Vector3.Cross(tvec, v0v1);
+			v = Vector3.Dot(dir, qvec) * invDet;
+			if (v < 0 || u + v > 1) return false;
+
+			t = Vector3.Dot(v0v2, qvec) * invDet;
+
+			return true;
+		}
+
+		private static bool pointAndPoly(Vector3[] coordinates, Vector3 point)
+		{
+			Vector3 vec0 = new Vector3(); // Edge vector from point 0 to point 1;
+			Vector3 vec1 = new Vector3(); // Edge vector from point 0 to point 2 or 3;
+			Vector3 pNrm = new Vector3();
+			float absNrmX, absNrmY, absNrmZ, pD = 0.0f;
+			Vector3 tempV3d = new Vector3();
+			float pNrmDotrDir = 0.0f;
+
+			float tempD;
+
+			int i, j;
+
+			// Compute plane normal.
+			for (i = 0; i < coordinates.Length - 1;)
+			{
+				vec0.X = coordinates[i + 1].X - coordinates[i].X;
+				vec0.Y = coordinates[i + 1].Y - coordinates[i].Y;
+				vec0.Z = coordinates[i + 1].Z - coordinates[i++].Z;
+				if (vec0.Length > 0.0)
+					break;
+			}
+
+			for (j = i; j < coordinates.Length - 1; j++)
+			{
+				vec1.X = coordinates[j + 1].X - coordinates[j].X;
+				vec1.Y = coordinates[j + 1].Y - coordinates[j].Y;
+				vec1.Z = coordinates[j + 1].Z - coordinates[j].Z;
+				if (vec1.Length > 0.0)
+					break;
+			}
+
+			if (j == (coordinates.Length - 1))
+			{
+				// System.out.println("(1) Degenerated polygon.");
+				return false;  // Degenerated polygon.
+			}
+
+			/* 
+			   System.out.println("Ray orgin : " + ray.origin + " dir " + ray.direction);
+			   System.out.println("Triangle/Quad :");
+			   for(i=0; i<coordinates.length; i++) 
+			   System.out.println("P" + i + " " + coordinates[i]);
+			   */
+
+			pNrm = Vector3.Cross(vec0, vec1);
+
+			if (pNrm.Length == 0.0)
+			{
+				// System.out.println("(2) Degenerated polygon.");
+				return false;  // Degenerated polygon.
+			}
+			// Compute plane D.
+			tempV3d = coordinates[0];
+			pD = Vector3.Dot(pNrm, tempV3d);
+
+			if (prettyDarnCloseToZero(pD - Vector3.Dot(pNrm, point), 0.001f))
+				return true;
+
+			return false;
+
+		}
+
 		public bool Unproject(ref Matrix4 matrix, Rectangle viewport, Vector2 inPoint, out Vector3 outPoint, float z, float minDepth, float maxDepth)
 		{
 			if (viewport.X != 0)
@@ -906,13 +1007,13 @@ namespace MCSkin3D
 			if (viewport.Y != 0)
 				inPoint.Y -= viewport.Y;
 
-			var mp = new Vector3(	((inPoint.X - 0) / viewport.Width * 2.0f) - 1.0f,
+			var mp = new Vector3(((inPoint.X - 0) / viewport.Width * 2.0f) - 1.0f,
 									-(((inPoint.Y - 0) / viewport.Height * 2.0f) - 1.0f),
 									(z - minDepth) / (maxDepth - minDepth));
 
 			var invert = Matrix4.Invert(matrix);
 			Vector3.Transform(ref mp, ref invert, out outPoint);
-			
+
 			float a = (((mp.X * invert.M14) + (mp.Y * invert.M24)) + (mp.Z * invert.M34)) + invert.M44;
 
 			if (a <= float.Epsilon)
@@ -920,6 +1021,14 @@ namespace MCSkin3D
 
 			outPoint /= a;
 			return true;
+		}
+
+		static float distValue(float min, float max, float v)
+		{
+			if (v < min || v > max)
+				throw new Exception();
+
+			return (v - min) / (max - min);
 		}
 
 		public bool GetPick(int x, int y, out Point hitPixel)
@@ -992,7 +1101,7 @@ namespace MCSkin3D
 					if (hitFace.HasValue)
 					{
 						var face = hitFace.Value;
-						var tl = hitVerts[1];
+						/*var tl = hitVerts[1];
 						var br = hitVerts[3];
 
 						var inside = outputFar - tl;
@@ -1025,17 +1134,48 @@ namespace MCSkin3D
 							
 						hitPixel = new Point(
 							(int)Math.Floor((face.TexCoords[1].X + ((face.TexCoords[3].X - face.TexCoords[1].X) * texcoord.X)) * CurrentModel.DefaultWidth),
-							(int)Math.Floor((face.TexCoords[1].Y + ((face.TexCoords[3].Y - face.TexCoords[1].Y) * texcoord.Y)) * CurrentModel.DefaultHeight));
+							(int)Math.Floor((face.TexCoords[1].Y + ((face.TexCoords[3].Y - face.TexCoords[1].Y) * texcoord.Y)) * CurrentModel.DefaultHeight));*/
+
+						var tri0 = new int[] { face.Indices[0], face.Indices[1], face.Indices[2] };
+						var tri1 = new int[] { face.Indices[0], face.Indices[2], face.Indices[3] };
+
+						var orig = CameraPosition;
+						var dir = outputFar - CameraPosition;
+
+						float t = 0, u = 0, v = 0;
+						int[] indicesHit;
+
+						if (rayTriangleIntersect(orig, dir, hitVerts[tri0[0]], hitVerts[tri0[1]], hitVerts[tri0[2]], ref t, ref u, ref v))
+						{
+							Text = "tri0";
+							indicesHit = tri0;
+						}
+						else if (rayTriangleIntersect(orig, dir, hitVerts[tri1[0]], hitVerts[tri1[1]], hitVerts[tri1[2]], ref t, ref u, ref v))
+						{
+							Text = "tri1";
+							indicesHit = tri1;
+						}
+						else
+							// how?
+							return false;
+
+						var st0 = face.TexCoords[indicesHit[0]];
+						var st1 = face.TexCoords[indicesHit[1]];
+						var st2 = face.TexCoords[indicesHit[2]];
+
+						//var coord = u * tc0 + v * tc1 + (1 - u - v) * tc2;
+						var coord = (1 - u - v) * st0 + u * st1 + v * st2;
+						hitPixel = new Point((int)Math.Floor(coord.X * CurrentModel.DefaultWidth), (int)Math.Floor(coord.Y * CurrentModel.DefaultHeight));
 
 						return true;
 					}
-						
+
 					return false;
 				}
 
 				return false;
 			}
-			
+
 			return false;
 		}
 
@@ -1050,7 +1190,7 @@ namespace MCSkin3D
 
 			if (_2DZoom < 0.25f)
 				_2DZoom = 0.25f;
-			
+
 			CalculateMatrices();
 			Renderer.Invalidate();
 		}
@@ -1178,7 +1318,7 @@ namespace MCSkin3D
 				_mousePoint = Renderer.PointToClient(MousePosition);
 
 				SetPreview();
-				
+
 				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 				Skin skin = _lastSkin;
@@ -1245,7 +1385,7 @@ namespace MCSkin3D
 				Program.RaiseException(ex);
 			}
 		}
-		
+
 		Matrix4 _orthoMatrix, _orthoCameraMatrix, _projectionMatrix, _viewMatrix3d;
 
 		private void CalculateMatrices()
@@ -1351,7 +1491,7 @@ namespace MCSkin3D
 			CalculateMatrices();
 			Renderer.Invalidate();
 		}
-		
+
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
 			_opening = !_opening;
@@ -1445,7 +1585,7 @@ namespace MCSkin3D
 				return;
 
 			CheckMouse(e.Y);
-			
+
 			_mousePoint = e.Location;
 			_mouseIsDown = true;
 
@@ -1713,7 +1853,7 @@ namespace MCSkin3D
 		{
 			Close();
 		}
-		
+
 		private void grassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ToggleGrass();
@@ -2222,7 +2362,7 @@ namespace MCSkin3D
 				}
 			}
 		}
-		
+
 		private void languageToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CurrentLanguage = (Language)((ToolStripMenuItem)sender).Tag;
@@ -2392,7 +2532,7 @@ namespace MCSkin3D
 		private void mLINESIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayLineSize = (int)mLINESIZEToolStripMenuItem.NumericBox.Value;
-			
+
 			CalculateMatrices();
 			Renderer.Invalidate();
 		}
@@ -2400,7 +2540,7 @@ namespace MCSkin3D
 		private void mOVERLAYTEXTSIZEToolStripMenuItem_NumericBox_ValueChanged(object sender, EventArgs e)
 		{
 			GlobalSettings.DynamicOverlayTextSize = (int)mOVERLAYTEXTSIZEToolStripMenuItem.NumericBox.Value;
-			
+
 			CalculateMatrices();
 			Renderer.Invalidate();
 		}
@@ -2409,7 +2549,7 @@ namespace MCSkin3D
 		{
 			GlobalSettings.DynamicOverlayGridColor = Color.FromArgb((int)mGRIDOPACITYToolStripMenuItem.NumericBox.Value,
 																	GlobalSettings.DynamicOverlayGridColor);
-			
+
 			Renderer.Invalidate();
 		}
 
@@ -3272,7 +3412,7 @@ namespace MCSkin3D
 			transparencyModeToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			visiblePartsToolStripMenuItem.DropDown.Closing += DontCloseMe;
 			mSHAREDToolStripMenuItem.DropDown.Closing += DontCloseMe;
-			
+
 			if (!Directory.Exists(GlobalSettings.GetDataURI("Models")) ||
 				Environment.CurrentDirectory.StartsWith(Environment.ExpandEnvironmentVariables("%temp%")))
 			{
@@ -3983,7 +4123,7 @@ namespace MCSkin3D
 				specificModel = ModelLoader.Models["Players/Steve"];
 
 			string newSkinName = GetLanguageString("M_NEWSKIN") + " " + specificModel.Name;
-			
+
 			while (File.Exists(folderLocation + newSkinName + ".png"))
 				newSkinName = newSkinName.Insert(0, GetLanguageString("C_NEW") + " ");
 
@@ -4189,7 +4329,7 @@ namespace MCSkin3D
 		}
 
 		#endregion
-		
+
 		#region Constructor
 
 		ToolStripMenuItem[] _partItems;
@@ -4232,7 +4372,7 @@ namespace MCSkin3D
 			automaticallyCheckForUpdatesToolStripMenuItem.Checked = GlobalSettings.AutoUpdate;
 
 			SetSampleMenuItem(GlobalSettings.Multisamples);
-			
+
 			mLINECOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayLineColor;
 			mTEXTCOLORToolStripMenuItem.BackColor = GlobalSettings.DynamicOverlayTextColor;
 			mGRIDCOLORToolStripMenuItem.BackColor = Color.FromArgb(255, GlobalSettings.DynamicOverlayGridColor);
@@ -4404,7 +4544,7 @@ namespace MCSkin3D
 		{
 			Process.Start("http://www.planetminecraft.com/mod/mcskin3d/");
 		}
-		
+
 		private void toolStripMenuItem4_Click_1(object sender, EventArgs e)
 		{
 			Dictionary<Vector3, int> vertDict = new Dictionary<Vector3, int>();

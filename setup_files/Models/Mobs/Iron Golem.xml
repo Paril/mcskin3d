@@ -1,0 +1,138 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Iron Golem</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-12,-5.5</Offset>
+						<Position>0,-7,-2</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,10,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Nose">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-5,-7.5</Offset>
+						<Position>0,-7,-2</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,4,2</Size>
+						<TextureOffset>24,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Chest">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-9,-2,-6</Offset>
+						<Position>0,-7,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>18,12,11</Size>
+						<TextureOffset>0,40</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Waist">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4.5,10,-3</Offset>
+						<Position>0,-7,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>9,5,6</Size>
+						<TextureOffset>0,70</TextureOffset>
+						<Scale>0.5</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-13,-2.5,-3</Offset>
+						<Position>0,-7,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,30,6</Size>
+						<TextureOffset>60,21</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>9,-2.5,-3</Offset>
+						<Position>0,-7,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,30,6</Size>
+						<TextureOffset>60,58</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3.5,-3,-3</Offset>
+						<Position>-4,11,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,16,5</Size>
+						<TextureOffset>37,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3.5,-3,-3</Offset>
+						<Position>5,11,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,16,5</Size>
+						<TextureOffset>60,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>128,128</TextureSize>
+		</Model>
+	</Models>
+	<Name>Iron Golem</Name>
+</Techne>

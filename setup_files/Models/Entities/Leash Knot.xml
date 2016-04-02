@@ -1,0 +1,33 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Leash Knot</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB90ECg0KHB5/xGMAAAFlSURBVFiF7VY9SwQxFMxvUvCjsLO9ShRP5AqvEwRR0ULtxMJGKwsttPAXiPh7lv0jkQnMMftI3N24S0DuwZDLe7l7M5Ps5lxd18577zBq3M63/PHOygKn+2sBqbz7S8RIfNwfhQZoSKBRKp/d/O1uEnA+23RfTwcLsJEqVwI2P5oDhCVg84M2R7AZQKupPJbPJqBELAGFPXQ2n9344WTbK6iO+H6+CCNqevAwR4114OVmrzHHmlYCYH95uNHYVwVqsbp1IIXODijzx7NJQ2nKIXzH1uCC1js50Ka6j0N23tkB3d/X62kAXYEqoMs54W/xc+8zQAUp1dz7VD3bgZiq2B7rCbc1fSqyHPhNvc3DhavZeoCuoTtc20qgqqrwJsRYNIoTgAtFglvwOX0vuxXFHGCocj5OitEJxJpadH62x2hOAr1vuz6hd3xK/agElEgKWXf+UESy/3QMHfPd1bIElrGMfxU/l5IqcBDqI/oAAAAASUVORK5CYII=</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Knot">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,-6,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,8,6</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>32,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Leash Knot</Name>
+</Techne>

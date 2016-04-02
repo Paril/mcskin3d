@@ -1,0 +1,108 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Creeper</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-8,-4</Offset>
+						<Position>0,6,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,0,-2</Offset>
+						<Position>0,6,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,4</Size>
+						<TextureOffset>16,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Leg 1">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-2,18,4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Leg 2">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>2,18,4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Leg 3">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-2,18,-4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Leg 4">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>2,18,-4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Creeper</Name>
+</Techne>

@@ -213,6 +213,8 @@ namespace MCSkin3D.Models.Convert
 				Add("Mobs/Zombie Villager", zombieVillager, "zombie_villager/zombie_villager.png");
 			}
 
+			Add("Players/Cape", new ModelCape(), "cape.png");
+
 			{
 				var steve = new ModelPlayer(0, false);
 				steve.setRotationAngles(0, 0, 0, 0, 0, 0, new Entity());
@@ -223,6 +225,18 @@ namespace MCSkin3D.Models.Convert
 				var alex = new ModelPlayer(0, true);
 				alex.setRotationAngles(0, 0, 0, 0, 0, 0, new Entity());
 				Add("Players/Alex", alex, "alex.png");
+			}
+
+			{
+				var steve = new ModelPlayer(0, false, false);
+				steve.setRotationAngles(0, 0, 0, 0, 0, 0, new Entity());
+				Add("Players/Steve (Minimal)", steve, "steve_min.png");
+			}
+
+			{
+				var alex = new ModelPlayer(0, true, false);
+				alex.setRotationAngles(0, 0, 0, 0, 0, 0, new Entity());
+				Add("Players/Alex (Minimal)", alex, "alex_min.png");
 			}
 		}
 

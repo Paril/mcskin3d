@@ -1,0 +1,153 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Bat</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,-3,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,6,6</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Ear">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-6,-2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>3,4,1</Size>
+						<TextureOffset>24,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Ear">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>1,-6,-2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>3,4,1</Size>
+						<TextureOffset>24,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,4,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,12,6</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Wing">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-12,1,1.5</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>10,16,1</Size>
+						<TextureOffset>42,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Outer Wing">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,1,0</Offset>
+						<Position>-12,1,1.5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,1</Size>
+						<TextureOffset>24,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Wing">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>2,1,1.5</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>10,16,1</Size>
+						<TextureOffset>42,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Outer Wing">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>0,1,0</Offset>
+						<Position>12,1,1.5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,1</Size>
+						<TextureOffset>24,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Feet">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-5,16,0</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>10,6,1</Size>
+						<TextureOffset>0,34</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Bat</Name>
+</Techne>

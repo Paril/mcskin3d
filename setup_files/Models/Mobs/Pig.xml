@@ -1,0 +1,123 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Pig</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-4,-8</Offset>
+						<Position>0,12,-6</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Snout">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-9</Offset>
+						<Position>0,12,-6</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,3,1</Size>
+						<TextureOffset>16,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-5,-10,-7</Offset>
+						<Position>0,11,2</Position>
+						<Rotation>90,0,0</Rotation>
+						<Size>10,16,8</Size>
+						<TextureOffset>28,8</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Back Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,18,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Back Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,18,7</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Front Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-3,18,-5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Front Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>3,18,-5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Pig</Name>
+</Techne>

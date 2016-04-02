@@ -1,3 +1,10 @@
+Version 1.6.0.500
+- Regression back to GL 1.0 for support purposes
+- Added shadow to dynamic overlay text
+- New models, re-compiled from Minecraft source, all from 1.9
+- Texture bases integrated into the actual model file; can be turned off and returned to a blank template via Options
+- Some adjustments to help New Skin work better with models
+
 Version 1.5.0.402
 - Downgraded GLSL requirement to 330
 

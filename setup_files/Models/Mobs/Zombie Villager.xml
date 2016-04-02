@@ -1,0 +1,138 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Zombie Villager</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-10,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,10,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Nose">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-3,-6</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,4,2</Size>
+						<TextureOffset>24,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,0,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,12,6</Size>
+						<TextureOffset>16,20</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Cloak">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,0,-3</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,18,6</Size>
+						<TextureOffset>0,38</TextureOffset>
+						<Scale>0.05</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,-2,-2</Offset>
+						<Position>-5,2,0</Position>
+						<Rotation>-80,-5.729578,5.729578</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>44,38</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Arm">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-2,-2</Offset>
+						<Position>5,2,0</Position>
+						<Rotation>-80,5.729578,-5.729578</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>44,38</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>-2,12,0.1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>True</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,0,-2</Offset>
+						<Position>2,12,0.1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,12,4</Size>
+						<TextureOffset>0,22</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Zombie Villager</Name>
+</Techne>

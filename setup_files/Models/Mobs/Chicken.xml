@@ -1,0 +1,138 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Chicken</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAARBJREFUaN7tlcENwjAMRTsUCyB2YAFOXFkFiX245MQtC6AsEjCSkbEanEDSRK6/ZLmV2yr+9Uumich7H51zEfOUoet5F2lcTpuPyPnG/XbMeq65oOkQQsSc885hv303D9elBkDzGN0NgKbh72Mu+fO/TkJ3A2jTc0ENoZk3KEXuehY3gnL/vI0ouOZ7Anv2pQjvkPh3PYsbwLmnwWs0qzFgbry/jT5m3ngtI7oiABkbSI0+ZjUG8PHGBnIRUCsJAZ7VGSAhkDoV1EhCQD0ShkBjBPC4XS0CYNoQe0fpqNdCA0wbYu8oHfVaaAyDQOmo10LDEFgLAlItVVeDgFRL1dUgINVSdUPAZDKZTCaTydRWD0ujeW9gLuMuAAAAAElFTkSuQmCC</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,-6,-2</Offset>
+						<Position>0,15,-4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,6,3</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Bill">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,-4,-4</Offset>
+						<Position>0,15,-4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,2,2</Size>
+						<TextureOffset>14,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Chin">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-2,-3</Offset>
+						<Position>0,15,-4</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,2,2</Size>
+						<TextureOffset>14,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Head</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,-4,-3</Offset>
+						<Position>0,16,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,8,6</Size>
+						<TextureOffset>0,9</TextureOffset>
+						<Scale>0</Scale>
+						<Part>Chest</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-3</Offset>
+						<Position>-2,19,1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>3,5,3</Size>
+						<TextureOffset>26,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Leg">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-3</Offset>
+						<Position>1,19,1</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>3,5,3</Size>
+						<TextureOffset>26,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftLeg</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Right Wing">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>0,0,-3</Offset>
+						<Position>-4,13,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>1,4,6</Size>
+						<TextureOffset>24,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>RightArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Left Wing">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-3</Offset>
+						<Position>4,13,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>1,4,6</Size>
+						<TextureOffset>24,13</TextureOffset>
+						<Scale>0</Scale>
+						<Part>LeftArm</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Chicken</Name>
+</Techne>

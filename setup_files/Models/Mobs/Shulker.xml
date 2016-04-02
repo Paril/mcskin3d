@@ -1,0 +1,63 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Shulker</Name>
+			<DefaultTexture>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</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Top">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-16,-8</Offset>
+						<Position>0,16,0</Position>
+						<Rotation>0,22.50001,0</Rotation>
+						<Size>16,12,16</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Bottom">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-8,-8,-8</Offset>
+						<Position>0,24,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>16,8,16</Size>
+						<TextureOffset>0,28</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Head">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-3,0,-3</Offset>
+						<Position>0,12,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>6,6,6</Size>
+						<TextureOffset>0,52</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,64</TextureSize>
+		</Model>
+	</Models>
+	<Name>Shulker</Name>
+</Techne>

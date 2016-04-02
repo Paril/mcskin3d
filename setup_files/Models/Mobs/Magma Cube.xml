@@ -1,0 +1,153 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Magma Cube</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7CAAAOwgEVKEqAAAADXElEQVRo3t1YS47aQBB9Hs0wJgSRyElE8AKNCEJiMSJS38UH4wQ+BadAyirbbLOIlAuUVFlU9dA2hjJuBpi0VDK4XJ5+r199GMBYC4BdDnYT8ArggdoM4CXAGcDP/hmAc4Cnel0CjJbr29d3HBpuZWUAuzshYCSAeAYB6wCeK2A3EcA9JWWl/jdPwAgCPAF4GABzqYB2qoCRnvpCCZrr9VTgt0gEQ2U/D6T+Yg9yLwN49UlJuZPvH04kIE3T2yXApQI0VzKgakhU9mMlY6VELXfPvf0aMFYwI4D7muOJXnv6OVdFZL4m9NulwM0T8EUBJv6U7wVoAvB9kArLQA1uKGpZ/A81oK+nngP8Pdnl+FgV4VPDqUqmqoIMpxHQlP8XIcDq4xYBVnybOSFNU07T9DqnbfVxKwWseMvvwV+NBKuPW0XQirf8l5o0DxNg9/GjbdCKt/yXmjQPrhZ9/OggZMVb/teeNM1l9XFrg1Z8iznhVSfNVjXgWB+3JGrFt5gTLjJpHibA6ONWkbLiLf+lJs2DawvwFmACmAowlXotwERqhfrDZxE8U3TfSOykuRUMoAIgiiHAg6eAhHIHcA94SEDZnYDYSZMAkCeg7LABqgMrqif+8nmzTwr9UjuiAKuKf9QD2AYF138/x5zRjoBCAa4D4KHcNwHoooEI6q6A2EGIClWApkI3BXgwG7UyIOJnFXwlFTxJESkQOwiFBFBnAqh6mkS1wlgDXCchpgjGDkJU7k6/GwHlPngqa0CD7lApmkWVlKb7LbYQNQgRSfHbRqWA3/yfA0DD7uBJaeoQ62rKnEJA10GICukA0QTQGkx/a9I+1h02NQLWwTuC+w7As0gduRQ9zADM9Ro7CFnvtwnwwH6Af3sQZQC81h0qabGpyr3SLvX+HMAUgJsAS/ntgQzASlpk9CBkvf+kGrBX+Jq6Q3FEIQ33rROKHYTOowCq5b03ai6QjSPxgftWEXsMJsqnIfgzdn9zeob/N+DaK1FZjgG4B5HmHCLXAYBHtfcAJgCehsATdmbFW/6rr55uMteczHzO9kWiI7UEwDDIXZdKXlvxlv/qy6ktg9NyQ8Dlkq8ZAHcnYEcaMwvirHjLf30CUtmMU0lOFXSmBWsB9U/k9AdqMwVlxVt+a/0DnLrlVwcikwcAAAAASUVORK5CYII=</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 0">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,16,-4</Offset>
+						<Position>0,-1.7,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 1">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,17,-4</Offset>
+						<Position>0,-1.275,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>0,1</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 2">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,18,-4</Offset>
+						<Position>0,-0.85,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>24,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 3">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,19,-4</Offset>
+						<Position>0,-0.425,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>24,19</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 4">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,20,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>0,4</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 5">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,21,-4</Offset>
+						<Position>0,0.425,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>0,5</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 6">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,22,-4</Offset>
+						<Position>0,0.85,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>0,6</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Segment 7">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,23,-4</Offset>
+						<Position>0,1.275,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,1,8</Size>
+						<TextureOffset>0,7</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Core">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-2,18,-2</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>4,4,4</Size>
+						<TextureOffset>0,16</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Magma Cube</Name>
+</Techne>

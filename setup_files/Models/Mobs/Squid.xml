@@ -1,0 +1,153 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Squid</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAACXBIWXMAAA7BAAAOwQG4kWvtAAACMUlEQVRo3u2YMU4DQQxF9wwbmnQRDUcAiTNQgLhCSqQcgZKOmuPRISQqCsogR/LqY749s7smMGhHsjbJOrP5bzy2J103cvRn53u008urwey9KdZNHFnzVD1IBV/cbL9c9bW+Z5Dk3u7h6WDoq/7NAfDMApDPHjeb/cvr83DdrdeHK/rPFf7jIFCQ2u3d/WAMgLxX4SIaTT9vBgCuPgq3ECwAFH/d94PJe7knPk0B8MQjBBsBHgDdBv8agEYAilcAYs0BKG0BLwIYgKYioJQEoxyAUYCJsKkkWFMGbWMkr6Xu2zKo1ybLYMm8blEhZTVCvwLAE5fRDh8dQEb//pdtFABdQRuybE+zJBjlADanTZYsumx+wd+ZCoAdajCjMwAqXPazrQBjADBBDDJrs9MAWPEqSpOVB0BPdgwCE4P+EQAUj/NH35kMgJU1FFcDIOoDPGDRlmHip0RBFQAMSbtKDEC0+l4jxMR4K1oSnw6AhT7ubdbarlYn+7f3j2+C5DO5NxdA6ZyRDkAntj/QW1ER6gEQs/6YU2rmxyg7GoAxPzDyF/O2TO3/B7UAUg83UdhFZXCuP9tizN9WgqMAwIfWCFL/GgC2vtsyyOa2STn9eOs9sAZATdn0Vh+7UAYAK07Gv8huFfBWvxZAqQ9gKx/1ATgvg5t2urMQrPjSio7xr2ltLQQPVjoAew4oCWK+UStcmrt0GLK+qed71hKzs771YysU+XurWTLm2y1jGctYxozxCbkYi7MkeETnAAAAAElFTkSuQmCC</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Body">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-6,-8,-6</Offset>
+						<Position>0,8,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>12,16,12</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle0">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>5,15,0</Position>
+						<Rotation>0,90,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle1">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>3.535534,15,3.535534</Position>
+						<Rotation>0,45,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle2">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>3.061516E-16,15,5</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle3">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>-3.535534,15,3.535534</Position>
+						<Rotation>0,-45,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle4">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>-5,15,6.123032E-16</Position>
+						<Rotation>0,-90,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle5">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>-3.535534,15,-3.535534</Position>
+						<Rotation>0,-135,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle6">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>-9.184548E-16,15,-5</Position>
+						<Rotation>0,-180,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Tentacle7">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,0,-1</Offset>
+						<Position>3.535534,15,-3.535534</Position>
+						<Rotation>0,-225,0</Rotation>
+						<Size>2,18,2</Size>
+						<TextureOffset>48,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Squid</Name>
+</Techne>

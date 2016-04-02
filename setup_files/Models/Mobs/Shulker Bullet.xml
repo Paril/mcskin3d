@@ -1,0 +1,63 @@
+﻿<Techne Version="2.2">
+	<Author>Mojang</Author>
+	<DateCreated />
+	<Description>Compiled from Minecraft source. Mojang pls don't sue :(</Description>
+	<Models>
+		<Model Texture="none.png">
+			<BaseClass>ModelBase</BaseClass>
+			<Name>Shulker Bullet</Name>
+			<DefaultTexture>iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAAAXNSR0IArs4c6QAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB98GFw4HH6XlKOQAAALPSURBVGje7VjfKwVBFN6/V1HCTf4BoUjRvaUkD148iDd5k3i8RVGSJBQ3SSkhjf1m5zvOjr13d7WXu+1Ofe3unLMzc74zP86cIAjLmzkOzG3LmM62MQ9bpr07Y2HuN+23lVk0bV0kn430gVDWeT4MkuAXtgG8nG8IbB1kTs76p1OlE8qCosu7uQg+zF00MBgrBmYgADInRztJALka+H9xomEN6rS/jUMdidFyEIAn6wongMZ9Xi9Lp8QPzzhoz/kezEIA2p4fbZiZ4XH7BFCnPc96gjOheAKcFzEADOhyfzVGAjq3Bjo9egsyrUsPphFAktHX2d6KbYME0HgtB/DO2dAfApxX2PH00Jh9smMhwHmIenMjEzEPQpaXAIAkawJQR4L6SgDXOz0K4/H0PUM9DhB6VwdrMQ/lJYBEyyzzCKbsTwlIYj6NgDwzgJucXmbA0tSkbIK6PYzj5mhdlljxS0AdSeiIzPue0UsAnvA3KeqlEuAdc9K+2mx7bbLFE8CjLMEz6Nh6hjpOb2GsETsxRM8Osks84eIFkYfAURqXNyO560v+x3fa//Y4bppP85qTAJ7vGTyTTa8lA5YBigHuf9/AGAHN6F3HIyre6Pr/bwnoFsAQ30FQBH9Kd4sACV/fx7+XVAL09A/RTwLY3mAS4KZ55QjgOiMqSsCsXIAqR0C9B7gz3eJxp4IEpByDPtIiwYEjICmwiecB4skQnanhHV3rlY4A3u/9PIBkaMJpz8gMdczQ6HyBTWa48LQXAWmzDZmpvKQVQoC+fhLiXRUDoA45AICXJRLBfaJ0BPAa7GdoOMX1NRjfzBrpfAHAY7KUBMBwJkJ4v4exOgHKmQLvQw+5gKR8QekISMrA8LortyyXCyQB1MU7k5ncJ0pHgM7A6MSk3O+Z+/c2QTwfT9RmWdZNMNP93jsGuT8k6fXqayAJ+MtSeQLqUpe61GXQyhfi99xaoTNBdgAAAABJRU5ErkJggg==</DefaultTexture>
+			<Geometry>
+				<Folder Type="f8bf7d5b-37bf-455b-93f9-b6f9e81620e1" Name="Model">
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Bullet Piece">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-4,-1</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,8,2</Size>
+						<TextureOffset>0,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Bullet Piece">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-1,-4,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>2,8,8</Size>
+						<TextureOffset>0,10</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+					<Shape Type="d9e621f7-957f-4b77-b1ae-20dcd0da7751" Name="Bullet Piece">
+						<IsDecorative>False</IsDecorative>
+						<IsFixed>False</IsFixed>
+						<IsMirrored>False</IsMirrored>
+						<IsSolid>False</IsSolid>
+						<Offset>-4,-1,-4</Offset>
+						<Position>0,0,0</Position>
+						<Rotation>0,0,0</Rotation>
+						<Size>8,2,8</Size>
+						<TextureOffset>20,0</TextureOffset>
+						<Scale>0</Scale>
+						<Part>None</Part>
+						<Hidden>False</Hidden>
+						<IsArmor>False</IsArmor>
+					</Shape>
+				</Folder>
+			</Geometry>
+			<TextureSize>64,32</TextureSize>
+		</Model>
+	</Models>
+	<Name>Shulker Bullet</Name>
+</Techne>
