@@ -77,9 +77,26 @@ namespace MCSkin3D.Forms
 
 		object _lockObj = new object();
 
+		Action ErrorHandlerWrap(Action a)
+		{
+			return () =>
+			{
+				try
+				{
+					a();
+				}
+				catch (Exception ex)
+				{
+					Program.Context.SplashForm.Invoke((Action)(() => { Close(); }));
+					Program.RaiseException(new Exception("Failed to initialize program during \"" + LoadingValue + "\"", ex));
+					Application.Exit();
+				}
+			};
+		}
+
 		void PerformLoading()
 		{
-			try
+			ErrorHandlerWrap(() =>
 			{
 				SetLoadingString("Loading Languages...");
 
@@ -87,7 +104,7 @@ namespace MCSkin3D.Forms
 
 				SetLoadingString("Initializing base forms...");
 
-				Program.Context.SplashForm.Invoke((Action)(() =>
+				Program.Context.SplashForm.Invoke(ErrorHandlerWrap(() =>
 					{
 						Editor.MainForm.FinishedLoadingLanguages();
 						Editor.MainForm.Initialize(language);
@@ -99,7 +116,7 @@ namespace MCSkin3D.Forms
 
 					if (Program.Context.Updater.CheckForUpdates())
 					{
-						Program.Context.SplashForm.Invoke((Action)(() =>
+						Program.Context.SplashForm.Invoke(ErrorHandlerWrap(() =>
 						{
 							Editor.ShowUpdateDialog(Program.Context.SplashForm);
 						}));
@@ -109,31 +126,25 @@ namespace MCSkin3D.Forms
 				SetLoadingString("Loading swatches...");
 
 				SwatchLoader.LoadSwatches();
-				Program.Context.SplashForm.Invoke((Action)SwatchLoader.FinishedLoadingSwatches);
+				Program.Context.SplashForm.Invoke(ErrorHandlerWrap(SwatchLoader.FinishedLoadingSwatches));
 
 				SetLoadingString("Loading models...");
 
 				ModelLoader.LoadModels();
-				Program.Context.SplashForm.Invoke((Action)Editor.MainForm.FinishedLoadingModels);
+				Program.Context.SplashForm.Invoke(ErrorHandlerWrap(Editor.MainForm.FinishedLoadingModels));
 
 				SetLoadingString("Loading skins...");
 
 				SkinLoader.LoadSkins();
 
-				Program.Context.SplashForm.Invoke((Action)Program.Context.DoneLoadingSplash);
-				Program.Context.Form.Invoke((Action)(() =>
+				Program.Context.SplashForm.Invoke(ErrorHandlerWrap(Program.Context.DoneLoadingSplash));
+
+				Program.Context.Form.Invoke(ErrorHandlerWrap(() =>
 					{
 						Program.Context.SplashForm.Close();
 						GC.Collect();
-					}
-					));
-			}
-			catch (Exception ex)
-			{
-				Program.Context.SplashForm.Invoke((Action)(() => { Close(); }));
-				Program.RaiseException(new Exception("Failed to initialize program during \"" + LoadingValue + "\"", ex));
-				Application.Exit();
-			}
+					}));
+			})();
 		}
 
 		public static void BeginLoaderThread()

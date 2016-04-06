@@ -1147,12 +1147,10 @@ namespace MCSkin3D
 
 						if (rayTriangleIntersect(orig, dir, hitVerts[tri0[0]], hitVerts[tri0[1]], hitVerts[tri0[2]], ref t, ref u, ref v))
 						{
-							Text = "tri0";
 							indicesHit = tri0;
 						}
 						else if (rayTriangleIntersect(orig, dir, hitVerts[tri1[0]], hitVerts[tri1[1]], hitVerts[tri1[2]], ref t, ref u, ref v))
 						{
-							Text = "tri1";
 							indicesHit = tri1;
 						}
 						else

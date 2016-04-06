@@ -1,3 +1,6 @@
+Version 1.6.0.600
+- Fixed a major issue with 3d picking algorithm
+
 Version 1.6.0.500
 - Regression back to GL 1.0 for support purposes
 - Added shadow to dynamic overlay text
