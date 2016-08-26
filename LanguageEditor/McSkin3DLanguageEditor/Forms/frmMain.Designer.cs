@@ -31,13 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pTop = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.pSplit = new System.Windows.Forms.Panel();
-            this.lvItemsOthers = new MCSkin3DLanguageEditor.Jonas.fixListView();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.spcMain = new System.Windows.Forms.SplitContainer();
             this.lvItems = new MCSkin3DLanguageEditor.Jonas.fixListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvItemsOthers = new MCSkin3DLanguageEditor.Jonas.fixListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pNew = new MCSkin3DLanguageEditor.Jonas.fixPanel();
             this.linkNew = new MCSkin3DLanguageEditor.Jonas.fixLinkLabel();
             this.pSave = new MCSkin3DLanguageEditor.Jonas.fixPanel();
@@ -45,6 +45,9 @@
             this.linkSave = new MCSkin3DLanguageEditor.Jonas.fixLinkLabel();
             this.linkOpenFile = new MCSkin3DLanguageEditor.Jonas.fixLinkLabel();
             this.pTop.SuspendLayout();
+            this.spcMain.Panel1.SuspendLayout();
+            this.spcMain.Panel2.SuspendLayout();
+            this.spcMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // pTop
@@ -60,7 +63,7 @@
             this.pTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pTop.Location = new System.Drawing.Point(0, 0);
             this.pTop.Name = "pTop";
-            this.pTop.Size = new System.Drawing.Size(475, 62);
+            this.pTop.Size = new System.Drawing.Size(560, 62);
             this.pTop.TabIndex = 1;
             this.pTop.Paint += new System.Windows.Forms.PaintEventHandler(this.pTop_Paint);
             // 
@@ -71,55 +74,40 @@
             this.label1.Size = new System.Drawing.Size(451, 15);
             this.label1.TabIndex = 1;
             this.label1.Text = "Welcome to the official language file editor for MCSkin3D.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pSplit
+            // spcMain
             // 
-            this.pSplit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
-            this.pSplit.Location = new System.Drawing.Point(0, 303);
-            this.pSplit.Name = "pSplit";
-            this.pSplit.Size = new System.Drawing.Size(475, 1);
-            this.pSplit.TabIndex = 13;
+            this.spcMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spcMain.Location = new System.Drawing.Point(0, 62);
+            this.spcMain.Name = "spcMain";
+            this.spcMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // lvItemsOthers
+            // spcMain.Panel1
             // 
-            this.lvItemsOthers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader3,
-            this.columnHeader4});
-            this.lvItemsOthers.FullRowSelect = true;
-            this.lvItemsOthers.Location = new System.Drawing.Point(12, 315);
-            this.lvItemsOthers.MultiSelect = false;
-            this.lvItemsOthers.Name = "lvItemsOthers";
-            this.lvItemsOthers.Size = new System.Drawing.Size(451, 118);
-            this.lvItemsOthers.TabIndex = 14;
-            this.lvItemsOthers.UseCompatibleStateImageBehavior = false;
-            this.lvItemsOthers.View = System.Windows.Forms.View.Details;
-            this.lvItemsOthers.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvItemsOthers_MouseDoubleClick);
+            this.spcMain.Panel1.Controls.Add(this.lvItems);
             // 
-            // columnHeader3
+            // spcMain.Panel2
             // 
-            this.columnHeader3.Text = "Name";
-            this.columnHeader3.Width = 158;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Value";
-            this.columnHeader4.Width = 267;
+            this.spcMain.Panel2.Controls.Add(this.lvItemsOthers);
+            this.spcMain.Size = new System.Drawing.Size(560, 480);
+            this.spcMain.SplitterDistance = 163;
+            this.spcMain.TabIndex = 15;
             // 
             // lvItems
             // 
             this.lvItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
+            this.lvItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvItems.FullRowSelect = true;
-            this.lvItems.Location = new System.Drawing.Point(12, 68);
+            this.lvItems.Location = new System.Drawing.Point(0, 0);
             this.lvItems.MultiSelect = false;
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(451, 224);
-            this.lvItems.TabIndex = 12;
+            this.lvItems.Size = new System.Drawing.Size(560, 163);
+            this.lvItems.TabIndex = 13;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
-            this.lvItems.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvItems_MouseDoubleClick);
             // 
             // columnHeader1
             // 
@@ -131,12 +119,37 @@
             this.columnHeader2.Text = "Value";
             this.columnHeader2.Width = 267;
             // 
+            // lvItemsOthers
+            // 
+            this.lvItemsOthers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4});
+            this.lvItemsOthers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvItemsOthers.FullRowSelect = true;
+            this.lvItemsOthers.Location = new System.Drawing.Point(0, 0);
+            this.lvItemsOthers.MultiSelect = false;
+            this.lvItemsOthers.Name = "lvItemsOthers";
+            this.lvItemsOthers.Size = new System.Drawing.Size(560, 313);
+            this.lvItemsOthers.TabIndex = 15;
+            this.lvItemsOthers.UseCompatibleStateImageBehavior = false;
+            this.lvItemsOthers.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Name";
+            this.columnHeader3.Width = 158;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Value";
+            this.columnHeader4.Width = 267;
+            // 
             // pNew
             // 
             this.pNew.BackgroundImage = global::MCSkin3DLanguageEditor.Properties.Resources.new_doc;
             this.pNew.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pNew.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pNew.Location = new System.Drawing.Point(74, 33);
+            this.pNew.Location = new System.Drawing.Point(11, 34);
             this.pNew.Name = "pNew";
             this.pNew.Size = new System.Drawing.Size(16, 16);
             this.pNew.TabIndex = 7;
@@ -148,7 +161,7 @@
             this.linkNew.AutoSize = true;
             this.linkNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkNew.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(238)))));
-            this.linkNew.Location = new System.Drawing.Point(89, 35);
+            this.linkNew.Location = new System.Drawing.Point(26, 36);
             this.linkNew.Name = "linkNew";
             this.linkNew.Size = new System.Drawing.Size(86, 13);
             this.linkNew.TabIndex = 6;
@@ -163,7 +176,7 @@
             this.pSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pSave.Enabled = false;
-            this.pSave.Location = new System.Drawing.Point(297, 34);
+            this.pSave.Location = new System.Drawing.Point(234, 35);
             this.pSave.Name = "pSave";
             this.pSave.Size = new System.Drawing.Size(16, 16);
             this.pSave.TabIndex = 5;
@@ -174,7 +187,7 @@
             this.pOpen.BackgroundImage = global::MCSkin3DLanguageEditor.Properties.Resources._112_ArrowCurve_Blue_Left_16x16_72;
             this.pOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pOpen.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pOpen.Location = new System.Drawing.Point(185, 34);
+            this.pOpen.Location = new System.Drawing.Point(122, 35);
             this.pOpen.Name = "pOpen";
             this.pOpen.Size = new System.Drawing.Size(16, 16);
             this.pOpen.TabIndex = 4;
@@ -187,7 +200,7 @@
             this.linkSave.Enabled = false;
             this.linkSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkSave.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(238)))));
-            this.linkSave.Location = new System.Drawing.Point(312, 35);
+            this.linkSave.Location = new System.Drawing.Point(249, 36);
             this.linkSave.Name = "linkSave";
             this.linkSave.Size = new System.Drawing.Size(88, 13);
             this.linkSave.TabIndex = 3;
@@ -202,7 +215,7 @@
             this.linkOpenFile.AutoSize = true;
             this.linkOpenFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkOpenFile.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(238)))));
-            this.linkOpenFile.Location = new System.Drawing.Point(200, 36);
+            this.linkOpenFile.Location = new System.Drawing.Point(137, 37);
             this.linkOpenFile.Name = "linkOpenFile";
             this.linkOpenFile.Size = new System.Drawing.Size(90, 13);
             this.linkOpenFile.TabIndex = 2;
@@ -216,16 +229,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(475, 445);
-            this.Controls.Add(this.lvItemsOthers);
-            this.Controls.Add(this.pSplit);
-            this.Controls.Add(this.lvItems);
+            this.ClientSize = new System.Drawing.Size(560, 542);
+            this.Controls.Add(this.spcMain);
             this.Controls.Add(this.pTop);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(400, 450);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MCSkin3D - Language Editor";
@@ -234,6 +244,9 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.pTop.ResumeLayout(false);
             this.pTop.PerformLayout();
+            this.spcMain.Panel1.ResumeLayout(false);
+            this.spcMain.Panel2.ResumeLayout(false);
+            this.spcMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -246,15 +259,15 @@
         private Jonas.fixLinkLabel linkSave;
         private Jonas.fixPanel pOpen;
         private Jonas.fixPanel pSave;
-        private System.Windows.Forms.Panel pSplit;
+        private Jonas.fixPanel pNew;
+        private Jonas.fixLinkLabel linkNew;
+        private System.Windows.Forms.SplitContainer spcMain;
         private Jonas.fixListView lvItems;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private Jonas.fixListView lvItemsOthers;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private Jonas.fixPanel pNew;
-        private Jonas.fixLinkLabel linkNew;
 
     }
 }
