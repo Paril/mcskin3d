@@ -1,4 +1,4 @@
-﻿//
+//
 //    MCSkin3D, a 3d skin management studio for Minecraft
 //    Copyright (C) 2013 Altered Softworks & MCSkin3D Team
 //
@@ -82,6 +82,9 @@ namespace MCSkin3D
 		private ToolIndex _selectedTool;
 		static Texture _cubeSides;
 
+		//huangbobo
+		private int resolution_Zoom=1;
+		//huangbobo
 		#endregion
 
 		// ===============================================
@@ -708,7 +711,7 @@ namespace MCSkin3D
 
 				using (var currentSkin = new ColorGrabber(GlobalDirtiness.CurrentSkin, skin.Width, skin.Height))
 				{
-					bool pick = GetPick(_mousePoint.X, _mousePoint.Y, out _pickPosition);
+					bool pick = GetPick(_mousePoint.X, _mousePoint.Y, out _pickPosition);//是否显示笔刷
 
 					currentSkin.Load();
 					if (_selectedTool.Tool.RequestPreview(currentSkin, skin, _pickPosition.X, _pickPosition.Y))
@@ -1035,7 +1038,7 @@ namespace MCSkin3D
 		{
 			hitPixel = new Point(-1, -1);
 
-			if (x < 0 || y < 0 || x >= Renderer.Width || y >= Renderer.Height)
+			if (x < 0 || y < 0 || x >= Renderer.Width || y >= Renderer.Height)//判断像素是否超界
 				return false;
 
 			var vp2d = GetViewport2D();
@@ -1053,7 +1056,7 @@ namespace MCSkin3D
 						output.Y >= CurrentModel.DefaultHeight)
 						return false;
 
-					hitPixel = new Point((int)Math.Floor(output.X), (int)Math.Floor(output.Y));
+					hitPixel = new Point((int)Math.Floor(output.X*resolution_Zoom), (int)Math.Floor(output.Y * resolution_Zoom));
 					return true;
 				}
 
@@ -1163,7 +1166,7 @@ namespace MCSkin3D
 
 						//var coord = u * tc0 + v * tc1 + (1 - u - v) * tc2;
 						var coord = (1 - u - v) * st0 + u * st1 + v * st2;
-						hitPixel = new Point((int)Math.Floor(coord.X * CurrentModel.DefaultWidth), (int)Math.Floor(coord.Y * CurrentModel.DefaultHeight));
+						hitPixel = new Point((int)Math.Floor(coord.X * CurrentModel.DefaultWidth*resolution_Zoom), (int)Math.Floor(coord.Y * CurrentModel.DefaultHeight* resolution_Zoom));//2019.7.18 3d预览同步放大系数
 
 						return true;
 					}
@@ -1193,7 +1196,7 @@ namespace MCSkin3D
 			Renderer.Invalidate();
 		}
 
-		public Rectangle GetViewport3D()
+		public Rectangle GetViewport3D()//获得3d可视区域
 		{
 			if (_currentViewMode == ViewMode.Perspective)
 				return new Rectangle(0, 0, Renderer.Width, Renderer.Height);
@@ -1204,7 +1207,7 @@ namespace MCSkin3D
 			}
 		}
 
-		public Rectangle GetViewport2D()
+		public Rectangle GetViewport2D()//获得2d可视区域
 		{
 			if (_currentViewMode == ViewMode.Orthographic)
 				return new Rectangle(0, 0, Renderer.Width, Renderer.Height);
@@ -1635,10 +1638,12 @@ namespace MCSkin3D
 						if (e.Button == MouseButtons.Left)
 						{
 							_selectedTool.Tool.MouseMove(_lastSkin, e);
-							UseToolOnViewport(e.X, e.Y);
+							UseToolOnViewport(e.X, e.Y);//在区域内使用工具
 						}
 						else
-							_tools[(int)Tools.Camera].Tool.MouseMove(_lastSkin, e);
+						
+						_tools[(int)Tools.Camera].Tool.MouseMove(_lastSkin, e);
+						
 					}
 
 					_mousePoint = e.Location;
@@ -1791,15 +1796,20 @@ namespace MCSkin3D
 
 			Renderer.MakeCurrent();
 
+			
 			if (_lastSkin != null && treeView1.SelectedNode != _lastSkin)
 			{
 				// Copy over the current changes to the tex stored in the skin.
 				// This allows us to pick up where we left off later, without undoing any work.
 				_lastSkin.CommitChanges(GlobalDirtiness.CurrentSkin, false);
 
+
+
 				// if we aren't dirty, unload
 				if (!_lastSkin.Dirty)
 					_lastSkin.Unload();
+
+
 			}
 
 			//if (_lastSkin != null)
@@ -1839,6 +1849,15 @@ namespace MCSkin3D
 			}
 
 			_lastSkin = (Skin)treeView1.SelectedNode;
+
+
+			//20190718
+			//int a = ;
+			resolution_Zoom = _lastSkin.Width / 64;
+			//resolution_Zoom = GlobalDirtiness.CurrentSkin.Width / 64;
+			MessageBox.Show("当前分辨率：" + _lastSkin.Width + "*" + _lastSkin.Height);
+			//MessageBox.Show("该切了");
+
 
 			SetModel(skin.Model);
 			Renderer.Invalidate();
@@ -2393,7 +2412,8 @@ namespace MCSkin3D
 				return;
 
 			_lastSkin.Resize(_lastSkin.Width / 2, _lastSkin.Height / 2);
-
+			resolution_Zoom = _lastSkin.Width / 64;
+			MessageBox.Show("当前分辨率：" + _lastSkin.Width + "*" + _lastSkin.Height);
 			using (var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height))
 			{
 				grabber.Load();
@@ -2415,7 +2435,8 @@ namespace MCSkin3D
 				return;
 
 			_lastSkin.Resize(_lastSkin.Width * 2, _lastSkin.Height * 2);
-
+			resolution_Zoom = _lastSkin.Width / 64;
+			MessageBox.Show("当前分辨率："+_lastSkin.Width+"*"+ _lastSkin.Height);
 			using (var grabber = new ColorGrabber(_lastSkin.GLImage, _lastSkin.Width, _lastSkin.Height))
 			{
 				grabber.Load();
@@ -3457,7 +3478,7 @@ namespace MCSkin3D
 					currentSkin.Load();
 					currentSkin.OnWrite = PixelWritten;
 
-					if (_selectedTool.Tool.MouseMoveOnSkin(currentSkin, skin, _pickPosition.X, _pickPosition.Y))
+					if (_selectedTool.Tool.MouseMoveOnSkin(currentSkin, skin, _pickPosition.X, _pickPosition.Y))//画笔作用的坐标
 					{
 						SetCanSave(true);
 						skin.Dirty = true;
@@ -4339,7 +4360,7 @@ namespace MCSkin3D
 			InitializeComponent();
 
 			KeyPreview = true;
-			Text = Program.Name + " v" + Program.Version.ToString();
+			Text = Program.Name + " v" + Program.Version.ToString()+" (HD编辑fixed by Orznge)";//打扰了
 
 #if BETA
 			Text += " [Beta]";
@@ -4505,6 +4526,11 @@ namespace MCSkin3D
 
 			CreatePartList();
 			Renderer.Invalidate();
+		}
+
+		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+
 		}
 
 		private void rendererControl_MouseEnter(object sender, EventArgs e)
