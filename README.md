@@ -1,3 +1,7 @@
+> Development has moved to MCSkinn, the modern Minecraft skin editor reborn!
+> 
+> check it out: https://github.com/InkoreStudios/MCSkinn
+
 # mcskin3d
 The super duper 3d skin editing utility!
 
